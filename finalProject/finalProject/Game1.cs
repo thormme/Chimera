@@ -9,6 +9,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using JigLibX.Physics;
+using JigLibX.Geometry;
+using JigLibX.Collision;
+
 namespace finalProject
 {
     /// <summary>
@@ -23,6 +27,14 @@ namespace finalProject
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            InitializePhysics();
+        }
+
+        private void InitializePhysics()
+        {
+            PhysicsSystem world = new PhysicsSystem();
+            world.CollisionSystem = new CollisionSystemSAP();
         }
 
         /// <summary>
