@@ -8,10 +8,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-
-using JigLibX.Physics;
-using JigLibX.Geometry;
-using JigLibX.Collision;
+using BEPUphysics;
+using BEPUphysics.Entities.Prefabs;
 
 namespace finalProject
 {
@@ -22,19 +20,17 @@ namespace finalProject
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        public Space mSpace;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            InitializePhysics();
-        }
+            mSpace = new Space();
 
-        private void InitializePhysics()
-        {
-            PhysicsSystem world = new PhysicsSystem();
-            world.CollisionSystem = new CollisionSystemSAP();
+            mSpace.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
+
         }
 
         /// <summary>
@@ -83,6 +79,7 @@ namespace finalProject
                 this.Exit();
 
             // TODO: Add your update logic here
+            mSpace.Update();
 
             base.Update(gameTime);
         }
