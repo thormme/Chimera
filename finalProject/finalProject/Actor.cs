@@ -5,7 +5,8 @@ using System.Text;
 
 namespace finalProject
 {
-    class Actor
+    public class Actor : PhysicsObject
     {
+
     }
 }

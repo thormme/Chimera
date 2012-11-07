@@ -9,9 +9,16 @@ namespace finalProject
     abstract class GameObject
     {
         private IRenderable mRenderable;
-        public Vector3 Position {
-            get { return mRenderable.Position; }
-            set { mRenderable.Position = value; }
+        public Vector3 Position 
+        {
+            virtual get
+            {
+                return mRenderable.Position;
+            }
+            virtual set
+            {
+                mRenderable.Position = value;
+            }
         }
 
         public virtual void Render()
