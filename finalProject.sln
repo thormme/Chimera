@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "finalProject", "finalProject\finalProject\finalProject.csproj", "{099FF29B-954A-4208-A12C-A2121DDFB7E9}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "finalProjectContent", "finalProject\finalProjectContent\finalProjectContent.contentproj", "{DDBC472F-F07E-420A-9AD7-31C03422F337}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "finalProjectContent", "finalProject\finalProjectContent\finalProjectContent.contentproj", "{DDBC472F-F07E-420A-9AD7-31C03422F337}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicsLibrary", "GraphicsLibrary\GraphicsLibrary.csproj", "{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,10 @@ Global
 		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.Release|x86.Build.0 = Release|x86
 		{DDBC472F-F07E-420A-9AD7-31C03422F337}.Debug|x86.ActiveCfg = Debug|x86
 		{DDBC472F-F07E-420A-9AD7-31C03422F337}.Release|x86.ActiveCfg = Release|x86
+		{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}.Debug|x86.ActiveCfg = Debug|x86
+		{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}.Debug|x86.Build.0 = Debug|x86
+		{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}.Release|x86.ActiveCfg = Release|x86
+		{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
