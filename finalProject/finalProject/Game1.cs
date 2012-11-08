@@ -1,4 +1,5 @@
 using BEPUphysics;
+using GameConstructLibrary;
 using GraphicsLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -16,7 +17,8 @@ namespace finalProject
         SpriteBatch spriteBatch;
         public Space mSpace;
 
-        private InanimateModel dude = null;
+        private Camera camera;
+        private AnimateModel dude = null;
 
         public Game1()
         {
@@ -26,7 +28,6 @@ namespace finalProject
             mSpace = new Space();
 
             mSpace.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
-
         }
 
         /// <summary>
@@ -81,13 +82,17 @@ namespace finalProject
 
             if (dude == null)
             {
-                dude = new InanimateModel("dude");
-                //dude.PlayAnimation("Take 001");
+                camera = new Camera(graphics.GraphicsDevice.Viewport);
+                dude = new AnimateModel("dude");
+                dude.PlayAnimation("Take 001");
             }
 
-            Vector3 cameraPosition = new Vector3(0.0f, -40.0f, 0.0f);
-            Vector3 cameraTarget = new Vector3(0.0f, 0.0f, -100.0f);
-            GraphicsManager.Update(cameraPosition, 0.0f, 0.0f, cameraTarget, Vector3.Up, GraphicsDevice.Viewport.AspectRatio);
+            if (dude.GetType() == typeof(AnimateModel))
+            {
+                dude.Update(gameTime);
+            }
+
+            GraphicsManager.Update(camera);
 
             base.Update(gameTime);
         }

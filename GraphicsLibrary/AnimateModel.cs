@@ -34,9 +34,13 @@ namespace GraphicsLibrary
             mAnimationPlayer.StartClip(clip);
         }
 
+        public void Update(GameTime gameTime)
+        {
+            mAnimationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+        }
+
         protected override void Draw(Matrix worldTransform)
         {
-            mAnimationPlayer.Update(new TimeSpan(0, 0, 0), true, Matrix.Identity);
             Matrix[] skinTransforms = mAnimationPlayer.GetSkinTransforms();
             GraphicsManager.RenderSkinnedModel(mModelName, skinTransforms, worldTransform);
         }

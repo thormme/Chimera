@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameConstructLibrary;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GraphicsLibrary
@@ -7,7 +8,7 @@ namespace GraphicsLibrary
     {
         private Texture2D mHeightMap;
 
-        public Terrain(string heightMapName)
+        public Terrain(TerrainHeightMap heightMap)
         {
             throw new System.NotImplementedException();
         }

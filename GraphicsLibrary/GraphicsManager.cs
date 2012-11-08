@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameConstructLibrary;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -69,27 +70,11 @@ namespace GraphicsLibrary
         /// <param name="cameraUp"></param>
         /// <param name="cameraForward"></param>
         /// <param name="cameraLeft"></param>
-        static public void Update(Vector3 cameraPosition, 
-                                  float cameraYaw,
-                                  float cameraPitch,
-                                  Vector3 cameraTarget,
-                                  Vector3 cameraUp,
-                                  float aspectRatio)
+        static public void Update(Camera camera)
         {
-            //mView = Matrix.CreateTranslation(-1.0f * cameraPosition) *
-            //        Matrix.CreateRotationY(MathHelper.ToRadians(cameraYaw)) *
-            //        Matrix.CreateRotationX(MathHelper.ToRadians(cameraPitch)) *
-            //        Matrix.CreateLookAt(cameraPosition, cameraTarget, cameraUp);
-            mView = Matrix.CreateTranslation(0, -40, 0) *
-                          Matrix.CreateRotationY(MathHelper.ToRadians(0)) *
-                          Matrix.CreateRotationX(MathHelper.ToRadians(0)) *
-                          Matrix.CreateLookAt(new Vector3(0, 0, -100),
-                                              new Vector3(0, 0, 0), Vector3.Up);
+            mView = camera.ViewTransform;
 
-            mProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
-                                                              aspectRatio,
-                                                              1,
-                                                              1000);
+            mProjection = camera.ProjectionTransform;
         }
 
         /// <summary>
@@ -159,18 +144,20 @@ namespace GraphicsLibrary
             {
                 foreach (SkinnedEffect effect in mesh.Effects)
                 {
-                    effect.SetBoneTransforms(boneTransforms);
-
-                    effect.View       = mView;
+                    effect.View = mView;
                     effect.Projection = mProjection;
-                    
+
                     effect.EnableDefaultLighting();
 
                     effect.SpecularColor = new Vector3(0.25f);
                     effect.SpecularPower = 16;
 
+                    effect.World = worldTransforms;
+
                     if (isSkinned)
                     {
+                        effect.SetBoneTransforms(boneTransforms);
+
                         RenderSkinnedMesh(effect, mesh);
                     }
                     else
