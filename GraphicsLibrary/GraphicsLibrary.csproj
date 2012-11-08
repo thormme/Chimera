@@ -10,7 +10,8 @@
     <RootNamespace>GraphicsLibrary</RootNamespace>
     <AssemblyName>GraphicsLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
     <XnaProfile>HiDef</XnaProfile>
@@ -93,13 +94,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimateModel.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="AnimationClip.cs" />
+    <Compile Include="AnimationPlayer.cs" />
     <Compile Include="InanimateModel.cs" />
-    <Compile Include="IRenderable.cs" />
+    <Compile Include="Renderable.cs" />
+    <Compile Include="GraphicsManager.cs" />
+    <Compile Include="KeyFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SkinnedEffect.cs" />
+    <Compile Include="SkinningData.cs" />
+    <Compile Include="Terrain.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="shaders\" />
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

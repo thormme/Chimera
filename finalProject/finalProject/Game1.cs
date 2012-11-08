@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using BEPUphysics;
+using GraphicsLibrary;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using BEPUphysics;
-using BEPUphysics.Entities.Prefabs;
 
 namespace finalProject
 {
@@ -21,6 +15,8 @@ namespace finalProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public Space mSpace;
+
+        private InanimateModel dude = null;
 
         public Game1()
         {
@@ -42,6 +38,7 @@ namespace finalProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            GraphicsManager.CelShading = true;
 
             base.Initialize();
         }
@@ -56,6 +53,7 @@ namespace finalProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            GraphicsManager.LoadContent(this.Content);
         }
 
         /// <summary>
@@ -81,6 +79,16 @@ namespace finalProject
             // TODO: Add your update logic here
             mSpace.Update();
 
+            if (dude == null)
+            {
+                dude = new InanimateModel("dude");
+                //dude.PlayAnimation("Take 001");
+            }
+
+            Vector3 cameraPosition = new Vector3(0.0f, -40.0f, 0.0f);
+            Vector3 cameraTarget = new Vector3(0.0f, 0.0f, -100.0f);
+            GraphicsManager.Update(cameraPosition, 0.0f, 0.0f, cameraTarget, Vector3.Up, GraphicsDevice.Viewport.AspectRatio);
+
             base.Update(gameTime);
         }
 
@@ -93,6 +101,8 @@ namespace finalProject
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            dude.Render(new Vector3(0.0f, 0.0f, 0.0f));
 
             base.Draw(gameTime);
         }

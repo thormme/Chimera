@@ -1,15 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GraphicsLibrary
 {
-    class Terrain : Renderable
+    public class Terrain : Renderable
     {
+        private Texture2D mHeightMap;
+
         public Terrain(string heightMapName)
         {
-
+            throw new System.NotImplementedException();
         }
 
-        public override void Render()
+        protected override void Draw(Matrix worldTransform)
         {
             throw new System.NotImplementedException();
         }

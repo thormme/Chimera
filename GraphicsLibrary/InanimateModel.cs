@@ -1,17 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GraphicsLibrary
 {
-    class InanimateModel : Renderable
+    public class InanimateModel : Renderable
     {
+        private string mModelName;
+
         public InanimateModel(string modelName)
         {
-            throw new System.NotImplementedException();
+            mModelName = modelName;
         }
 
-        public override void Render()
+        protected override void Draw(Matrix worldTransform)
         {
-            throw new System.NotImplementedException();
+            GraphicsManager.RenderUnskinnedModel(mModelName, worldTransform);
         }
     }
 }
