@@ -12,6 +12,7 @@ using Nuclex.Input;
 using Nuclex.UserInterface;
 using GameConstructLibrary;
 using GraphicsLibrary;
+//using GraphicsLibrary;
 
 namespace MapEditor
 {
@@ -27,14 +28,20 @@ namespace MapEditor
         private InputManager mInput;
         private GuiManager mGUI;
 
+        private MapEditorDialog mMapEditorDialog;
+
         private Camera mCamera;
-        private AnimateModel mModel;
+        //private AnimateModel mModel;
 
         public Editor()
         {
+            
+            string blah = DirectoryManager.GetRoot();
+
             graphics = new GraphicsDeviceManager(this);
             mInput = new InputManager(Services, Window.Handle);
             mGUI = new GuiManager(Services);
+
             Content.RootDirectory = "Content";
 
             Components.Add(mInput);
@@ -58,10 +65,13 @@ namespace MapEditor
             Screen mainScreen = new Screen(viewport.Width, viewport.Height);
             mGUI.Screen = mainScreen;
 
-            mCamera = new Camera(viewport);
-            mModel = new AnimateModel("dude");
+            GraphicsManager.CelShading = true;
 
-            mainScreen.Desktop.Children.Add(new MapEditorDialog(mainScreen));
+            mMapEditorDialog = new MapEditorDialog(mainScreen);
+            mCamera = new Camera(viewport);
+            //mModel = new AnimateModel("dude");
+
+            mainScreen.Desktop.Children.Add(mMapEditorDialog);
         }
 
         /// <summary>
@@ -71,6 +81,7 @@ namespace MapEditor
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+            GraphicsManager.LoadContent(Content, graphics.GraphicsDevice);
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
@@ -96,7 +107,7 @@ namespace MapEditor
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            GraphicsManager.Update(mCamera);
 
             base.Update(gameTime);
         }
@@ -109,7 +120,7 @@ namespace MapEditor
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            mMapEditorDialog.Render();
 
             base.Draw(gameTime);
         }

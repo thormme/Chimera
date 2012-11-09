@@ -98,7 +98,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="levels\maps\level0.bmp">
+      <Name>level0</Name>
+      <Importer>TextureImporter</Importer>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="shaders\TerrainShader.fx">
       <Name>TerrainShader</Name>

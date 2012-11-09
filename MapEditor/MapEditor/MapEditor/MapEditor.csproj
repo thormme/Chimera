@@ -167,7 +167,6 @@
   <ItemGroup>
     <Compile Include="DummyLevel.cs" />
     <Compile Include="DummyObject.cs" />
-    <Compile Include="Globals.cs" />
     <Compile Include="LevelManager.cs" />
     <Compile Include="LoadLevelDialog.cs" />
     <Compile Include="MapEditorDialog.cs" />

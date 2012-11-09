@@ -21,8 +21,8 @@ namespace MapEditor
     public class MapEditorDialog : WindowControl
     {
         private Screen mMainScreen;
-        private DummyLevel mGameLevel;
-        public DummyLevel DummyLevel { get { return mGameLevel; } set { mGameLevel = value ; } }
+        private DummyLevel mDummyLevel;
+        public DummyLevel DummyLevel { get { return mDummyLevel; } set { mDummyLevel = value ; } }
 
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mEditHeightsButton;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mEditObjectsButton;
@@ -35,7 +35,7 @@ namespace MapEditor
             base()
         {
             mMainScreen = mainScreen;
-            mGameLevel = new DummyLevel(100, 100);
+            mDummyLevel = new DummyLevel(100, 100);
             InitializeComponent();
         }
 
@@ -89,9 +89,14 @@ namespace MapEditor
 
         #endregion // Not component designer generated code
 
-        public void update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             
+        }
+
+        public void Render()
+        {
+            mDummyLevel.Render();
         }
 
         private void NewClicked(object sender, EventArgs arguments)
