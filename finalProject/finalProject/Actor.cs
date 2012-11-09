@@ -14,9 +14,6 @@ namespace finalProject
 
         }
 
-        public virtual void Update()
-        {
-
-        }
+        public abstract virtual void Update(double timeStep);
     }
 }
