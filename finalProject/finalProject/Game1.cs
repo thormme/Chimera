@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using BEPUphysics;
+using GameConstructLibrary;
+using GraphicsLibrary;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using BEPUphysics;
-using BEPUphysics.Entities.Prefabs;
 
 namespace finalProject
 {
@@ -22,6 +17,10 @@ namespace finalProject
         SpriteBatch spriteBatch;
         public Space mSpace;
 
+        private Camera camera;
+        private AnimateModel dude = null;
+        private Terrain testLevel = null;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -30,7 +29,6 @@ namespace finalProject
             mSpace = new Space();
 
             mSpace.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
-
         }
 
         /// <summary>
@@ -42,6 +40,7 @@ namespace finalProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            GraphicsManager.CelShading = true;
 
             base.Initialize();
         }
@@ -56,6 +55,7 @@ namespace finalProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice);
         }
 
         /// <summary>
@@ -78,8 +78,29 @@ namespace finalProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            UpdateCamera(gameTime);
+
             // TODO: Add your update logic here
             mSpace.Update();
+
+            if (dude == null)
+            {
+                camera = new Camera(graphics.GraphicsDevice.Viewport);
+                dude = new AnimateModel("dude");
+                dude.PlayAnimation("Take 001");
+            }
+
+            if (dude.GetType() == typeof(AnimateModel))
+            {
+                dude.Update(gameTime);
+            }
+
+            if (testLevel == null)
+            {
+                testLevel = new Terrain("test_level");
+            }
+
+            GraphicsManager.Update(camera);
 
             base.Update(gameTime);
         }
@@ -93,8 +114,55 @@ namespace finalProject
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            testLevel.Render(new Vector3(0.0f, 0.0f, 0.0f));
+            dude.Render(new Vector3(0.0f, 0.0f, 0.0f));
 
             base.Draw(gameTime);
+        }
+
+        private void UpdateCamera(GameTime gameTime)
+        {
+            float time = (float)gameTime.ElapsedGameTime.Milliseconds;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                camera.RotatePitch(time * 0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                camera.RotatePitch(time * -0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                camera.RotateYaw(time * -0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                camera.RotateYaw(time * 0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                camera.MoveForward(time * 0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                camera.MoveRight(time * -0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                camera.MoveForward(time * -0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                camera.MoveRight(time * 0.1f);
+            }
         }
     }
 }

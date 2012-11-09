@@ -1,17 +1,22 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameConstructLibrary;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GraphicsLibrary
 {
-    class Terrain : Renderable
+    public class Terrain : Renderable
     {
-        public Terrain(string heightMapName)
-        {
+        private string mName;
+        private TerrainHeightMap mHeightMap;
 
+        public Terrain(string terrainName)
+        {
+            mName = terrainName;
         }
 
-        public override void Render()
+        protected override void Draw(Matrix worldTransform)
         {
-            throw new System.NotImplementedException();
+            GraphicsManager.RenderTerrain(mName, worldTransform);
         }
     }
 }
