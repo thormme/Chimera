@@ -28,18 +28,24 @@ namespace MapEditor
         public DummyLevel(int width, int height)
         {
 
+            /*
             mTerrain = new Terrain("test_level");
             mHeightMap = new TerrainHeightMap(width, height);
             mDummies = new List<DummyObject>();
+             */
             mLevelManager = new LevelManager();
+            
 
+            Load("default");
+
+            /*
             DummyObject trial = new DummyObject();
             trial.Type = "Lion";
             trial.Position = new Vector3(0, 0, 0);
             trial.Orientation = new Vector3(0, 0, 0);
             trial.Scale = new Vector3(0, 0, 0);
-            trial.Model = "Lion";
             Add(trial);
+             */
 
         }
 

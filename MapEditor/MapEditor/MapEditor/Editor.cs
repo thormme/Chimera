@@ -12,7 +12,6 @@ using Nuclex.Input;
 using Nuclex.UserInterface;
 using GameConstructLibrary;
 using GraphicsLibrary;
-//using GraphicsLibrary;
 
 namespace MapEditor
 {
@@ -31,7 +30,7 @@ namespace MapEditor
         private MapEditorDialog mMapEditorDialog;
 
         private Camera mCamera;
-        //private AnimateModel mModel;
+        private InanimateModel mModel;
 
         public Editor()
         {
@@ -69,7 +68,7 @@ namespace MapEditor
 
             mMapEditorDialog = new MapEditorDialog(mainScreen);
             mCamera = new Camera(viewport);
-            //mModel = new AnimateModel("dude");
+            mModel = new InanimateModel("dude");
 
             mainScreen.Desktop.Children.Add(mMapEditorDialog);
         }
@@ -106,7 +105,7 @@ namespace MapEditor
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
+            mCamera.MoveForward(1);
             GraphicsManager.Update(mCamera);
 
             base.Update(gameTime);
@@ -119,7 +118,8 @@ namespace MapEditor
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            
+            mModel.Render(new Vector3(0, 0, 0));
             mMapEditorDialog.Render();
 
             base.Draw(gameTime);

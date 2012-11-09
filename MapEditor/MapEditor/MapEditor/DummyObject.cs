@@ -13,11 +13,10 @@ namespace MapEditor
         public Vector3 Position { get; set; }
         public Vector3 Orientation { get; set; }
         public Vector3 Scale { get; set; }
-        public string Model { get; set; }
 
         public DummyObject()
         {
-            Console.WriteLine("constructed");
+
         }
     }
 }
