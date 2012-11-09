@@ -15,17 +15,63 @@ namespace GameConstructLibrary
 {
     public class TerrainHeightMap
     {
+        public struct VertexPositionColorNormal
+        {
+            public Vector3 Position;
+            public Microsoft.Xna.Framework.Color Color;
+            public Vector3 Normal;
+
+            public readonly static VertexDeclaration VertexDeclaration = new VertexDeclaration
+            (
+                new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
+                new VertexElement(sizeof(float) * 3, VertexElementFormat.Color, VertexElementUsage.Color, 0),
+                new VertexElement(sizeof(float) * 3 + 4, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0)
+            );
+        }
+
+        private GraphicsDevice mDevice;
+        public GraphicsDevice Device
+        {
+            get { return this.mDevice; }
+            set { this.mDevice = value; }
+        }
+
         Bitmap map;
 
         const int vertexSpacing = 1;
-        VertexPositionColor[] vertices; // Change to texture eventually
+        VertexPositionColorNormal[] vertices;
         int[] indices;
+
+        private VertexBuffer mVertexBuffer;
+        public VertexBuffer VertexBuffer
+        {
+            get { return this.mVertexBuffer; }
+            set { this.mVertexBuffer = value; }
+        }
+
+        private IndexBuffer mIndexBuffer;
+        public IndexBuffer IndexBuffer
+        {
+            get { return this.mIndexBuffer; }
+            set { this.mIndexBuffer = value; }
+        }
+
+        public int NumVertices
+        {
+            get { return this.vertices.Length; }
+        }
+
+        public int NumIndices
+        {
+            get { return this.indices.Length; }
+        }
 
         /// <summary>
         /// Used to create a height map
         /// </summary>
-        public TerrainHeightMap(int width, int height)
+        public TerrainHeightMap(int width, int height, GraphicsDevice device)
         {
+            mDevice = device;
             map = new Bitmap(width, height);
             LoadData();
         }
@@ -33,9 +79,10 @@ namespace GameConstructLibrary
         /// <summary>
         /// Used to load a height map
         /// </summary>
-        public TerrainHeightMap(string file)
+        public TerrainHeightMap(string file, GraphicsDevice device)
         {
-            map = new Bitmap("../../../../finalProjectContent/Levels/Maps/" + file);
+            mDevice = device;
+            map = new Bitmap("../../../../finalProjectContent/levels/maps/" + file + ".bmp");
             LoadData();
         }
 
@@ -43,17 +90,21 @@ namespace GameConstructLibrary
         {
             MakeVertices();
             MakeIndices();
+
+            CalculateNormals();
+
+            MakeBuffer();
         }
 
         private void MakeVertices()
         {
-            vertices = new VertexPositionColor[map.Width * map.Height];
+            vertices = new VertexPositionColorNormal[map.Width * map.Height];
             for (int x = 0; x < map.Width; x++)
             {
                 for (int z = 0; z < map.Height; z++)
                 {
-                    vertices[x + z * map.Width].Position = new Vector3(x, map.GetPixel(x, z).R, z);
-                    vertices[x + z * map.Width].Color = Microsoft.Xna.Framework.Color.White;
+                    vertices[x + z * map.Width].Position = new Vector3(x - map.Width / 2, map.GetPixel(x, z).R, z - map.Height / 2);
+                    vertices[x + z * map.Width].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                 }
             }
         }
@@ -66,22 +117,59 @@ namespace GameConstructLibrary
             {
                 for (int x = 0; x < map.Width - 1; x++)
                 {
-                    int p0 = x + z * map.Width;
-                    int p1 = (x + 1) + z * map.Width;
-                    int p2 = x + (z + 1) * map.Width;
-                    int p3 = (x + 1) + (z + 1) * map.Width;
+                    int lowerLeft = x + z * map.Width;
+                    int lowerRight = (x + 1) + z * map.Width;
+                    int topLeft = x + (z + 1) * map.Width;
+                    int topRight = (x + 1) + (z + 1) * map.Width;
 
                     // Make first triangle
-                    indices[counter++] = p2;
-                    indices[counter++] = p1;
-                    indices[counter++] = p0;
+                    indices[counter++] = topLeft;
+                    indices[counter++] = lowerLeft;
+                    indices[counter++] = lowerRight;
 
                     // Make second triangle
-                    indices[counter++] = p2;
-                    indices[counter++] = p3;
-                    indices[counter++] = p1;
+                    indices[counter++] = topLeft;
+                    indices[counter++] = lowerRight;
+                    indices[counter++] = topRight;
                 }
             }
+        }
+
+        private void CalculateNormals()
+        {
+            for (int i = 0; i < vertices.Length; ++i)
+            {
+                vertices[i].Normal = new Vector3(0.0f, 0.0f, 0.0f);
+            }
+
+            for (int i = 0; i < indices.Length / 3; ++i)
+            {
+                int index0 = indices[i * 3];
+                int index1 = indices[i * 3 + 1];
+                int index2 = indices[i * 3 + 2];
+
+                Vector3 edge0  = vertices[index0].Position - vertices[index2].Position;
+                Vector3 edge1  = vertices[index0].Position - vertices[index1].Position;
+                Vector3 normal = Vector3.Cross(edge0, edge1);
+
+                vertices[index0].Normal += normal;
+                vertices[index1].Normal += normal;
+                vertices[index2].Normal += normal;
+            }
+
+            for (int i = 0; i < vertices.Length; ++i)
+            {
+                vertices[i].Normal.Normalize();
+            }
+        }
+
+        private void MakeBuffer()
+        {
+            mVertexBuffer = new VertexBuffer(mDevice, VertexPositionColorNormal.VertexDeclaration, vertices.Length, BufferUsage.WriteOnly);
+            mVertexBuffer.SetData(vertices);
+
+            mIndexBuffer = new IndexBuffer(mDevice, typeof(int), indices.Length, BufferUsage.WriteOnly);
+            mIndexBuffer.SetData(indices);
         }
 
         public void ModifyVertices(Vector3 position, int size, int intensity, bool setHeight)
@@ -123,7 +211,6 @@ namespace GameConstructLibrary
 
         public void Save(string file)
         {
-
             // Update map with modifications
             for (int x = 0; x < map.Width; x++)
             {

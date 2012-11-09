@@ -6,16 +6,17 @@ namespace GraphicsLibrary
 {
     public class Terrain : Renderable
     {
-        private Texture2D mHeightMap;
+        private string mName;
+        private TerrainHeightMap mHeightMap;
 
-        public Terrain(TerrainHeightMap heightMap)
+        public Terrain(string terrainName)
         {
-            throw new System.NotImplementedException();
+            mName = terrainName;
         }
 
         protected override void Draw(Matrix worldTransform)
         {
-            throw new System.NotImplementedException();
+            GraphicsManager.RenderTerrain(mName, worldTransform);
         }
     }
 }

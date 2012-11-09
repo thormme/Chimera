@@ -16,8 +16,10 @@ namespace GraphicsLibrary
         static private Matrix mProjection;
 
         static private Effect configurableShader;
+        static private Effect terrainShader;
 
         static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string,Model>();
+        static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
 
         static public bool CelShading { get; set; }
 
@@ -29,9 +31,10 @@ namespace GraphicsLibrary
         /// Loads all models from content/models/ and shader file in to memory.
         /// </summary>
         /// <param name="content">Global game content manager.</param>
-        static public void LoadContent(ContentManager content)
+        static public void LoadContent(ContentManager content, GraphicsDevice device)
         {
             configurableShader = content.Load<Effect>("shaders/ConfigurableShader");
+            terrainShader      = content.Load<Effect>("shaders/TerrainShader");
 
             DirectoryInfo dir = new DirectoryInfo(BASE_DIRECTORY + "models/");
             if (!dir.Exists)
@@ -61,6 +64,47 @@ namespace GraphicsLibrary
                 }
 
                 AddModel(modelName, input);
+            }
+
+            dir = new DirectoryInfo(BASE_DIRECTORY + "levels/maps/");
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException("Could not find levels/maps directory in content.");
+            }
+
+            files = dir.GetFiles("*.bmp");
+            foreach (FileInfo file in files)
+            {
+                string terrainName = Path.GetFileNameWithoutExtension(file.Name);
+                TerrainHeightMap heightMap = new TerrainHeightMap(terrainName, device);
+
+                List<Texture2D> textures = new List<Texture2D>();
+                List<float> heights = new List<float>();
+
+                string[] textureNames = { "low", "medium", "high" };
+                float[] textureHeights = { 0.33f, 0.66f, 1.0f };
+
+                int index = 0;
+                foreach (string name in textureNames)
+                {
+                    FileInfo[] textureFiles = dir.GetFiles(terrainName + "_texture_" + name + ".*");
+                    if (textureFiles.Length > 0)
+                    {
+                        string inputTextureName = Path.GetFileNameWithoutExtension(textureFiles[0].Name);
+                        Texture2D inputTexture = content.Load<Texture2D>("levels/maps/" + inputTextureName);
+                        textures.Add(inputTexture);
+                        heights.Add(textureHeights[index]);
+                    }
+
+                    ++index;
+                }
+
+                TerrainDescription newTerrain = new TerrainDescription(heightMap, textures, heights);
+                if (mUniqueTerrainLibrary.ContainsKey(terrainName))
+                {
+                    throw new Exception("Duplicate model key: " + terrainName);
+                }
+                mUniqueTerrainLibrary.Add(terrainName, newTerrain);
             }
         }
 
@@ -106,6 +150,41 @@ namespace GraphicsLibrary
             RenderMesh(modelName,emptyTransforms, worldTransforms, false);
         }
 
+        /// <summary>
+        /// Renders Terrain.
+        /// </summary>
+        static public void RenderTerrain(string terrainName, Matrix worldTransforms)
+        {
+            TerrainDescription heightmap;
+            if (!mUniqueTerrainLibrary.TryGetValue(terrainName, out heightmap))
+            {
+                throw new KeyNotFoundException("Unable to find terrain key: " + terrainName);
+            }
+
+            //terrainShader.Parameters["xTextureHigh"].SetValue(heightmap.HeightHigh);
+
+            terrainShader.Parameters["xWorld"].SetValue(worldTransforms);
+            terrainShader.Parameters["xView"].SetValue(mView);
+            terrainShader.Parameters["xProjection"].SetValue(mProjection);
+
+            Vector3 lightDirection = new Vector3(-0.5265408f, -0.5735765f, -0.6275069f);
+            terrainShader.Parameters["xLightDirection"].SetValue(lightDirection);
+
+            terrainShader.CurrentTechnique = terrainShader.Techniques["Technique1"];
+            terrainShader.CurrentTechnique.Passes[0].Apply();
+
+            GraphicsDevice device = heightmap.Terrain.Device;
+            device.Indices = heightmap.Terrain.IndexBuffer;
+            device.SetVertexBuffer(heightmap.Terrain.VertexBuffer);
+            device.DrawIndexedPrimitives(
+                PrimitiveType.TriangleList, 
+                0, 
+                0, 
+                heightmap.Terrain.NumVertices, 
+                0, 
+                heightmap.Terrain.NumIndices / 3);
+        }
+
         ///////////////////////////// Internal functions /////////////////////////////
 
         /// <summary>
@@ -130,7 +209,7 @@ namespace GraphicsLibrary
             {
                 return result;
             }
-            throw new KeyNotFoundException("Unable to find key: " + modelName);
+            throw new KeyNotFoundException("Unable to find model key: " + modelName);
         }
 
         /// <summary>

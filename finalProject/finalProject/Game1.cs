@@ -19,6 +19,7 @@ namespace finalProject
 
         private Camera camera;
         private AnimateModel dude = null;
+        private Terrain testLevel = null;
 
         public Game1()
         {
@@ -54,7 +55,7 @@ namespace finalProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            GraphicsManager.LoadContent(this.Content);
+            GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice);
         }
 
         /// <summary>
@@ -77,6 +78,8 @@ namespace finalProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            UpdateCamera(gameTime);
+
             // TODO: Add your update logic here
             mSpace.Update();
 
@@ -90,6 +93,11 @@ namespace finalProject
             if (dude.GetType() == typeof(AnimateModel))
             {
                 dude.Update(gameTime);
+            }
+
+            if (testLevel == null)
+            {
+                testLevel = new Terrain("test_level");
             }
 
             GraphicsManager.Update(camera);
@@ -106,10 +114,55 @@ namespace finalProject
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            testLevel.Render(new Vector3(0.0f, 0.0f, 0.0f));
             dude.Render(new Vector3(0.0f, 0.0f, 0.0f));
 
             base.Draw(gameTime);
+        }
+
+        private void UpdateCamera(GameTime gameTime)
+        {
+            float time = (float)gameTime.ElapsedGameTime.Milliseconds;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                camera.RotatePitch(time * 0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                camera.RotatePitch(time * -0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                camera.RotateYaw(time * -0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                camera.RotateYaw(time * 0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                camera.MoveForward(time * 0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                camera.MoveRight(time * -0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                camera.MoveForward(time * -0.1f);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                camera.MoveRight(time * 0.1f);
+            }
         }
     }
 }

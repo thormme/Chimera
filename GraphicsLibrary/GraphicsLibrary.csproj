@@ -104,6 +104,7 @@
     <Compile Include="SkinnedEffect.cs" />
     <Compile Include="SkinningData.cs" />
     <Compile Include="Terrain.cs" />
+    <Compile Include="TerrainDescription.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
