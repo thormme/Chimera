@@ -93,10 +93,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimateModel.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="InanimateModel.cs" />
     <Compile Include="IRenderable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Terrain.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="shaders\" />
