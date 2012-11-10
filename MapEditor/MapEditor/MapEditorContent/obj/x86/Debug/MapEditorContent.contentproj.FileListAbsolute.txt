@@ -1,1 +1,0 @@
-c:\users\michael\documents\visual studio 2010\Projects\MapEditor\MapEditor\MapEditorContent\obj\x86\Debug\MapEditorContent.contentprojResolveAssemblyReference.cache
