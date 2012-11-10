@@ -23,6 +23,7 @@ namespace finalProject
 
         private Vector3 dudePosition = new Vector3(0.0f, 0.0f, 0.0f);
         private Vector3 dudeOrientation = new Vector3(0.0f, 0.0f, 1.0f);
+        private bool dudeControlToggle = false;
 
         public Game1()
         {
@@ -126,24 +127,52 @@ namespace finalProject
 
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                dudePosition += time * 0.1f * dudeOrientation;
+                if (dudeControlToggle == true)
+                {
+                    camera.MoveForward(0.1f * time);
+                }
+                else
+                {
+                    dudePosition += time * 0.1f * dudeOrientation;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                dudePosition += time * -0.1f * dudeOrientation;
+                if (dudeControlToggle == true)
+                {
+                    camera.MoveForward(-0.1f * time);
+                }
+                else
+                {
+                    dudePosition += time * -0.1f * dudeOrientation;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                Matrix rotate = Matrix.CreateRotationY(MathHelper.ToRadians(time * 0.1f));
-                dudeOrientation = Vector3.Transform(dudeOrientation, rotate);
+                if (dudeControlToggle == true)
+                {
+                    camera.MoveRight(0.1f * time);
+                }
+                else
+                {
+                    Matrix rotate = Matrix.CreateRotationY(MathHelper.ToRadians(time * 0.1f));
+                    dudeOrientation = Vector3.Transform(dudeOrientation, rotate);
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                Matrix rotate = Matrix.CreateRotationY(MathHelper.ToRadians(time * -0.1f));
-                dudeOrientation = Vector3.Transform(dudeOrientation, rotate);
+                if (dudeControlToggle == true)
+                {
+                    camera.MoveRight(-0.1f * time);
+                }
+                else
+                {
+                    Matrix rotate = Matrix.CreateRotationY(MathHelper.ToRadians(time * -0.1f));
+                    dudeOrientation = Vector3.Transform(dudeOrientation, rotate);
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
@@ -160,30 +189,70 @@ namespace finalProject
                 dudePosition += time * -0.1f * right;
             }
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Z))
+            {
+                if (dudeControlToggle == false)
+                {
+                    dudeControlToggle = true;
+                }
+                else
+                {
+                    dudeControlToggle = false;
+                }
+            }
+
             bool reset = true;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                camera.RotatePitch(-0.1f * time);
-                reset = false;
+                if (dudeControlToggle == true)
+                {
+                    camera.RotatePitch(-0.1f * time);
+                }
+                else
+                {
+                    camera.PanPitch(-0.1f * time);
+                    reset = false;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                camera.RotatePitch(0.1f * time);
-                reset = false;
+                if (dudeControlToggle == true)
+                {
+                    camera.RotatePitch(0.1f * time);
+                }
+                else
+                {
+                    camera.PanPitch(0.1f * time);
+                    reset = false;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                camera.RotateYaw(0.1f * time);
-                reset = false;
+                if (dudeControlToggle == true)
+                {
+                    camera.RotateYaw(0.1f * time);
+                }
+                else
+                {
+                    camera.PanYaw(0.1f * time);
+                    reset = false;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                camera.RotateYaw(-0.1f * time);
-                reset = false;
+                if (dudeControlToggle == true)
+                {
+                    camera.RotateYaw(-0.1f * time);
+                }
+                else
+                {
+                    camera.PanYaw(-0.1f * time);
+                    reset = false;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
@@ -198,10 +267,13 @@ namespace finalProject
                 camera.ResetYaw();
             }
 
-            camera.Target = dudePosition + new Vector3(0.0f, 75.0f, 0.0f);
-            Vector3 direction = dudeOrientation;
-            direction.Normalize();
-            camera.Position = camera.Target - 250.0f * direction;
+            if (dudeControlToggle == false)
+            {
+                camera.Target = dudePosition + new Vector3(0.0f, 75.0f, 0.0f);
+                Vector3 direction = dudeOrientation;
+                direction.Normalize();
+                camera.Position = camera.Target - 250.0f * direction;
+            }
         }
     }
 }

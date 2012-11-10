@@ -14,6 +14,7 @@ namespace GameConstructLibrary
             this.mPosition = new Vector3(0.0f, 0.0f, 0.0f);
             this.mTarget   = new Vector3(0.0f, 0.0f, 1.0f);
 
+            this.mForward = mTarget - mPosition;
             this.mUp = new Vector3(0.0f, 1.0f, 0.0f);
 
             this.mPitch = 0.0f;
@@ -27,24 +28,30 @@ namespace GameConstructLibrary
         public Vector3 Position
         {
             get { return this.mPosition; }
-            set { this.mPosition = value; }
+            set
+            {
+                this.mPosition = value;
+                this.mForward = mTarget - mPosition;
+                this.mForward.Normalize();
+            }
         }
 
         private Vector3 mTarget;
         public Vector3 Target
         {
             get { return this.mTarget; }
-            set { this.mTarget = value; }
+            set
+            { 
+                this.mTarget = value;
+                this.mForward = mTarget - mPosition;
+                this.mForward.Normalize();
+            }
         }
 
+        private Vector3 mForward;
         public Vector3 Forward
         {
-            get
-            {
-                Vector3 forward = mTarget - mPosition;
-                forward.Normalize();
-                return forward;
-            }
+            get { return mForward; }
         }
 
         public Vector3 Right
@@ -61,7 +68,6 @@ namespace GameConstructLibrary
         public Vector3 Up
         {
             get { return this.mUp; }
-            set { this.mUp = value; }
         }
 
         private Matrix  mViewTransform;
@@ -74,21 +80,19 @@ namespace GameConstructLibrary
                     Matrix.CreateLookAt(this.mPosition, this.mTarget, mUp);
                 return this.mViewTransform;
             }
-            set { this.mViewTransform = value; }
         }
 
         private Matrix  mProjectionTransform;
         public Matrix ProjectionTransform
         {
             get { return this.mProjectionTransform; }
-            set { this.mProjectionTransform = value; }
         }
 
         /// <summary>
-        /// Rotates the camera vertically.
+        /// Rotates the camera vertically without updating the forward or up vector.
         /// </summary>
         /// <param name="theta">Change in radians to rotate</param>
-        public void RotatePitch(float theta)
+        public void PanPitch(float theta)
         {
             mPitch = (mPitch + theta) % 360.0f;
             mUp = Vector3.Transform(
@@ -97,12 +101,35 @@ namespace GameConstructLibrary
         }
 
         /// <summary>
-        /// Rotates the camera horizontally.
+        /// Pans the camera horizontally without updating the forward or right vector.
         /// </summary>
         /// <param name="theta">Change in radians to rotate</param>
-        public void RotateYaw(float theta)
+        public void PanYaw(float theta)
         {
             mYaw = (mYaw + theta) % 360.0f;
+        }
+
+        /// <summary>
+        /// Rotates camera, updating forward vector and up vector.
+        /// </summary>
+        /// <param name="theta">Amount of rotation in degrees.</param>
+        public void RotatePitch(float theta)
+        {
+            Matrix rotate = Matrix.CreateFromAxisAngle(Right, MathHelper.ToRadians(theta));
+            this.mForward = Vector3.Transform(this.mForward, rotate);
+            this.mForward.Normalize();
+            this.mTarget = mPosition + mForward;
+            this.mUp = Vector3.Cross(mForward, Right);
+            this.mPitch = 0.0f;
+        }
+
+        public void RotateYaw(float theta)
+        {
+            Matrix rotate = Matrix.CreateFromAxisAngle(mUp, MathHelper.ToRadians(theta));
+            this.mForward = Vector3.Transform(this.mForward, rotate);
+            this.mForward.Normalize();
+            this.mTarget = mPosition + mForward;
+            this.mYaw = 0.0f;
         }
 
         /// <summary>
@@ -127,7 +154,8 @@ namespace GameConstructLibrary
         /// <param name="distance">Number of units to move forward.</param>
         public void MoveForward(float distance)
         {
-            mPosition += distance * Forward;
+            mPosition += distance * mForward;
+            mTarget += distance * mForward;
         }
 
         /// <summary>
@@ -137,6 +165,7 @@ namespace GameConstructLibrary
         public void MoveRight(float distance)
         {
             mPosition += distance * Right;
+            mTarget += distance * Right;
         }
     }
 }
