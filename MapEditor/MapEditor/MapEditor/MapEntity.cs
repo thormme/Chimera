@@ -23,18 +23,16 @@ namespace MapEditor
         {
             mCamera = camera;
             mPosition = new Vector3(0.0f, 0.0f, 0.0f);
-            mMovement = new Vector2(0.0f, -1.0f);
-            mOrientation = new Vector2(1.0f, 0.0f);
+            mMovement = new Vector2(0.0f, 0.0f);
+            mOrientation = new Vector2(0.0f, 0.0f);
         }
 
         public void Update(GameTime gameTime)
         {
-
-            //mCamera.MoveForward(speed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds);
-            //mCamera.MoveRight(speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds);
+            mCamera.MoveForward(speed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds);
+            mCamera.MoveRight(speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds);
             mCamera.RotatePitch(sensitivity * mOrientation.Y * gameTime.ElapsedGameTime.Milliseconds);
             mCamera.RotateYaw(sensitivity * mOrientation.X * gameTime.ElapsedGameTime.Milliseconds);
-            
         }
 
     }

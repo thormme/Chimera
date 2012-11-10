@@ -36,7 +36,7 @@ namespace MapEditor
 
         public Editor()
         {
-
+            
             graphics = new GraphicsDeviceManager(this);
             mInput = new InputManager(Services, Window.Handle);
             mGUI = new GuiManager(Services);
@@ -67,7 +67,7 @@ namespace MapEditor
 
             GraphicsManager.CelShading = true;
 
-            mDummyLevel = new DummyLevel(1000, 1000);
+            mDummyLevel = new DummyLevel(1000, 1000, graphics.GraphicsDevice);
 
             mMapEditorDialog = new MapEditorDialog(mainScreen, mDummyLevel);
             mCamera = new Camera(viewport);

@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.IO;
 using GraphicsLibrary;
+using GameConstructLibrary;
 
 
 namespace MapEditor
@@ -19,33 +20,27 @@ namespace MapEditor
     /// </summary>
     public class DummyLevel
     {
-        
+        private GraphicsDevice mGraphics;
+        public GraphicsDevice Graphics { get { return mGraphics; } set { mGraphics = value; } }
         private TerrainHeightMap mHeightMap;
         private Terrain mTerrain;
         private List<DummyObject> mDummies;
         private LevelManager mLevelManager;
 
-        public DummyLevel(int width, int height)
+        public DummyLevel(int width, int height, GraphicsDevice graphics)
         {
 
-            /*
-            mTerrain = new Terrain("test_level");
-            mHeightMap = new TerrainHeightMap(width, height);
-            mDummies = new List<DummyObject>();
-             */
             mLevelManager = new LevelManager();
-            
+            mGraphics = graphics;
 
             Load("default");
-
-            /*
-            DummyObject trial = new DummyObject();
-            trial.Type = "Lion";
-            trial.Position = new Vector3(0, 0, 0);
-            trial.Orientation = new Vector3(0, 0, 0);
-            trial.Scale = new Vector3(0, 0, 0);
-            Add(trial);
-             */
+            
+            DummyObject root = new DummyObject();
+            root.Type = "Root";
+            root.Position = new Vector3(0, 0, 0);
+            root.Orientation = new Vector3(0, 0, 0);
+            root.Scale = new Vector3(0, 0, 0);
+            Add(root);
 
         }
 
@@ -72,9 +67,8 @@ namespace MapEditor
 
         public void Load(string file)
         {
-            Console.WriteLine(file);
             // Load the height map
-            mHeightMap = new TerrainHeightMap(file);
+            mHeightMap = new TerrainHeightMap(file, mGraphics);
             mTerrain = new Terrain(file);
 
            // Load the rest of the level

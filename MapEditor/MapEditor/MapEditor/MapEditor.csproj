@@ -177,7 +177,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Editor.cs" />
     <Compile Include="SaveLevelDialog.cs" />
-    <Compile Include="TerrainHeightMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
