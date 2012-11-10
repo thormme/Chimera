@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using GameConstructLibrary;
 
 
 namespace MapEditor
@@ -39,7 +40,7 @@ namespace MapEditor
         /// </summary>
         public TerrainHeightMap(string file)
         {
-            map = new Bitmap(Globals.MapPath + file);
+            map = new Bitmap(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
             LoadData();
         }
 
@@ -140,7 +141,7 @@ namespace MapEditor
             // Redefine bitmap for permissions purposes
             Bitmap newMap = new Bitmap(map);
             map.Dispose();
-            newMap.Save(Globals.MapPath + file);
+            newMap.Save(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
             
             // Reassign map
             map = new Bitmap(newMap);

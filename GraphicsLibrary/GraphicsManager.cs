@@ -23,7 +23,7 @@ namespace GraphicsLibrary
 
         static public bool CelShading { get; set; }
 
-        static private string BASE_DIRECTORY = "../../../../finalProjectContent/";
+        static private string BASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
 
         ///////////////////////////////// Interface //////////////////////////////////
 

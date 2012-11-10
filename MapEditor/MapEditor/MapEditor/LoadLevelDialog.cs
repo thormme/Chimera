@@ -13,6 +13,7 @@ using Nuclex.UserInterface;
 using Nuclex.UserInterface.Controls;
 using Nuclex.UserInterface.Controls.Desktop;
 using System.IO;
+using GameConstructLibrary;
 
 namespace MapEditor
 {
@@ -85,7 +86,7 @@ namespace MapEditor
         private void PopulateList()
         {
             
-            DirectoryInfo di = new DirectoryInfo(Globals.LevelPath);
+            DirectoryInfo di = new DirectoryInfo(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/");
             FileInfo[] levels = di.GetFiles("*");
             foreach (FileInfo level in levels)
             {

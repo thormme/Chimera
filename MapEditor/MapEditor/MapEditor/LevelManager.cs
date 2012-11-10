@@ -6,6 +6,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using System.Reflection;
 using System.Xml.Serialization;
+using GameConstructLibrary;
 
 namespace MapEditor
 {
@@ -27,7 +28,7 @@ namespace MapEditor
 
         public void Save(string file, List<DummyObject> objects)
         {
-            writer = new StreamWriter(Globals.LevelPath + file);
+            writer = new StreamWriter(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/" + file);
             foreach (DummyObject obj in objects)
             {
                 XmlSerializer serializer = new XmlSerializer(obj.GetType(), root);
@@ -40,13 +41,12 @@ namespace MapEditor
         {
             List<DummyObject> objects = new List<DummyObject>();
 
-            reader = new StreamReader(Globals.LevelPath + file);
+            reader = new StreamReader(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/" + file);
             XmlSerializer deserializer = new XmlSerializer(typeof(List<DummyObject>), root);
 
             objects = (List<DummyObject>)deserializer.Deserialize(reader);
 
             reader.Close();
-
             return objects;
         }
     }
