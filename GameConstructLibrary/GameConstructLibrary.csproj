@@ -143,6 +143,7 @@
     <Compile Include="InputAction.cs" />
     <Compile Include="KeyInputAction.cs" />
     <Compile Include="MouseButtonInputAction.cs" />
+    <Compile Include="MouseMovementInputAction.cs" />
     <Compile Include="NonPlayerCreature.cs" />
     <Compile Include="Part.cs" />
     <Compile Include="PhysicsObject.cs" />

@@ -35,7 +35,7 @@ namespace GameConstructLibrary
         protected override bool IsDown()
         {
             float degree = GetDegree();
-            return (degree > mDeadZoneMin && degree < mDeadZoneMax);
+            return (degree < mDeadZoneMin || degree > mDeadZoneMax);
         }
 
         protected override float GetDegree()

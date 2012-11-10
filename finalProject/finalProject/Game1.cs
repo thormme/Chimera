@@ -135,16 +135,14 @@ namespace finalProject
         {
             float time = (float)gameTime.ElapsedGameTime.Milliseconds;
 
-            if (forward.Active)
+            
+            if (dudeControlToggle == true)
             {
-                if (dudeControlToggle == true)
-                {
-                    camera.MoveForward(0.1f * time);
-                }
-                else
-                {
-                    dudePosition += time * 0.1f * dudeOrientation;
-                }
+                camera.MoveForward(forward.Degree * 0.1f * time);
+            }
+            else
+            {
+                dudePosition += forward.Degree * time * 0.1f * dudeOrientation;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))

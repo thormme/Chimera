@@ -20,6 +20,7 @@ namespace GameConstructLibrary
         public enum GamePadThumbStickAxis { X, Y };
         public enum GamePadTrigger { Left, Right };
         public enum MouseButton { Left, Right, Middle };
+        public enum MouseAxis { X, Y };
         private enum InputType { /*/*/GamePadButton, /*/*/GamePadThumbStick, /*/*/GamePadTrigger, /*/*/Key, /**/MouseButton, MousePosition };
 
         protected PlayerIndex mPlayerIndex;
@@ -66,7 +67,7 @@ namespace GameConstructLibrary
         /// <summary>
         /// Step the input. Stores current input state and changes since the last update step.
         /// </summary>
-        void StepInputAction()
+        protected virtual void StepInputAction()
         {
             bool down = IsDown();
             bool released = false, pressed = false;
