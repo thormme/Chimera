@@ -30,7 +30,9 @@ namespace MapEditor
         private MapEditorDialog mMapEditorDialog;
 
         private Camera mCamera;
+        private MapEntity mMapEntity;
         private InanimateModel mModel;
+        private DummyLevel mDummyLevel;
 
         public Editor()
         {
@@ -47,6 +49,7 @@ namespace MapEditor
             Components.Add(mGUI);
             mGUI.DrawOrder = 1000;
             IsMouseVisible = true;
+
         }
 
         /// <summary>
@@ -66,8 +69,12 @@ namespace MapEditor
 
             GraphicsManager.CelShading = true;
 
-            mMapEditorDialog = new MapEditorDialog(mainScreen);
+            mDummyLevel = new DummyLevel(1000, 1000);
+
+            mMapEditorDialog = new MapEditorDialog(mainScreen, mDummyLevel);
             mCamera = new Camera(viewport);
+            mMapEntity = new MapEntity(mCamera);
+
             mModel = new InanimateModel("dude");
 
             mainScreen.Desktop.Children.Add(mMapEditorDialog);
@@ -80,10 +87,9 @@ namespace MapEditor
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            GraphicsManager.LoadContent(Content, graphics.GraphicsDevice);
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            GraphicsManager.LoadContent(Content, graphics.GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>
@@ -92,7 +98,7 @@ namespace MapEditor
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            
         }
 
         /// <summary>
@@ -105,9 +111,11 @@ namespace MapEditor
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            mCamera.MoveForward(1);
-            GraphicsManager.Update(mCamera);
 
+            mCamera.MoveForward(1);
+            mMapEntity.Update(gameTime);
+            GraphicsManager.Update(mCamera);
+            
             base.Update(gameTime);
         }
 
@@ -118,9 +126,9 @@ namespace MapEditor
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            
+
             mModel.Render(new Vector3(0, 0, 0));
-            mMapEditorDialog.Render();
+            mDummyLevel.Render();
 
             base.Draw(gameTime);
         }
