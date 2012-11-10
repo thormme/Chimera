@@ -31,11 +31,11 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mLoadButton;
 
         // Creates a new level that is 100x100 by default
-        public MapEditorDialog(Screen mainScreen) :
+        public MapEditorDialog(Screen mainScreen, DummyLevel dummyLevel) :
             base()
         {
             mMainScreen = mainScreen;
-            mDummyLevel = new DummyLevel(100, 100);
+            mDummyLevel = dummyLevel;
             InitializeComponent();
         }
 
@@ -92,11 +92,6 @@ namespace MapEditor
         public void Update(GameTime gameTime)
         {
             
-        }
-
-        public void Render()
-        {
-            mDummyLevel.Render();
         }
 
         private void NewClicked(object sender, EventArgs arguments)

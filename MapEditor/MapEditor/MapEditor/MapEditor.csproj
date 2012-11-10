@@ -165,6 +165,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MapEntity.cs" />
     <Compile Include="DummyLevel.cs" />
     <Compile Include="DummyObject.cs" />
     <Compile Include="LevelManager.cs" />
