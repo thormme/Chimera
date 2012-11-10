@@ -21,7 +21,7 @@ namespace MapEditor
         public MapEntity(Camera camera)
         {
             mCamera = camera;
-            mMovement = new Vector2(0.0f, 0.0f);
+            mMovement = new Vector2(1.0f, 0.0f);
         }
 
         public void Update(GameTime gameTime)
