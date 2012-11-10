@@ -12,6 +12,12 @@ namespace GameConstructLibrary
         ButtonAction mButtonAction;
         Buttons mButton;
 
+        /// <summary>
+        /// Constructs an InputAction which tracks GamePad buttons.
+        /// </summary>
+        /// <param name="playerIndex">The index of the player using this input.</param>
+        /// <param name="buttonAction">What state the button should be in to activate.</param>
+        /// <param name="button">The button to track.</param>
         public GamePadButtonInputAction(PlayerIndex playerIndex, ButtonAction buttonAction, Buttons button)
             : base(playerIndex, buttonAction)
         {

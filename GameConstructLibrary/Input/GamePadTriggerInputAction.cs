@@ -14,6 +14,15 @@ namespace GameConstructLibrary
         float mDeadZoneMin;
         float mDeadZoneMax;
 
+        /// <summary>
+        /// Constructs an InputAction which tracks GamePad triggers.
+        /// </summary>
+        /// <param name="playerIndex">The index of the player using this input.</param>
+        /// <param name="buttonAction">What state the button should be in to activate.</param>
+        /// <param name="trigger">Which trigger to track.</param>
+        /// <param name="deadZoneType">The type of dead zone.</param>
+        /// <param name="deadZoneMin">The minimum Degree which will not be sensed.</param>
+        /// <param name="deadZoneMax">The maximum Degree which will not be sensed.</param>
         public GamePadTriggerInputAction(
             PlayerIndex playerIndex,
             ButtonAction buttonAction,
