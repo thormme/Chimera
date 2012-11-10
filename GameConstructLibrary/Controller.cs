@@ -8,8 +8,8 @@ namespace GameConstructLibrary
 {
     abstract public class Controller
     {
-        static const int MaxDurdleMoveTime = 5000;
-        static const int MaxDurdleWaitTime = 5000;
+        private const int MaxDurdleMoveTime = 5000;
+        private const int MaxDurdleWaitTime = 5000;
 
         protected Creature mCreature;
 

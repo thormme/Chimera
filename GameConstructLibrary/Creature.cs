@@ -8,8 +8,8 @@ namespace GameConstructLibrary
 {
     abstract public class Creature : MyActor
     {
-        protected static const float JumpVelocity = 50.0f;
-        protected static const Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
+        protected static float JumpVelocity = 50.0f;
+        protected Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
 
         protected RadialSensor mSensor;
         protected List<Part> mParts;
