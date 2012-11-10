@@ -39,23 +39,36 @@ namespace GraphicsLibrary
         /// <param name="worldScale">Scale along each axis of the object.</param>
         public void Render(Vector3 worldPosition, Vector3 worldViewDirection, float worldScale)
         {
-            // Gather axis and angle for rotation.
-            Vector3 rotationAxis;
-            if (worldPosition.Length() != 0.0f)
-            {
-                rotationAxis = Vector3.Cross(worldPosition, mDefaultWorldView);
-            }
-            else
-            {
-                rotationAxis = Vector3.Up;
-            }
-            rotationAxis.Normalize();
+            Vector3 worldViewXZ = new Vector3(worldViewDirection.X, 0.0f, worldViewDirection.Z);
+            worldViewXZ.Normalize();
 
-            float rotationAngle = (float)Math.Acos(Vector3.Dot(worldPosition, mDefaultWorldView));
+            Vector3 defaultViewXZ = new Vector3(mDefaultWorldView.X, 0.0f, mDefaultWorldView.Z);
+            defaultViewXZ.Normalize();
+
+            Vector3 worldViewYZ = new Vector3(0.0f, worldViewDirection.Y, 1.0f);
+            worldViewYZ.Normalize();
+
+            Vector3 defaultViewYZ = new Vector3(0.0f, mDefaultWorldView.Y, 1.0f);
+            defaultViewYZ.Normalize();
+
+            float yawAngle = (float)Math.Acos(Vector3.Dot(worldViewXZ, defaultViewXZ));
+
+            if (Vector3.Cross(worldViewXZ, defaultViewXZ).Y > 0)
+            {
+                yawAngle *= -1.0f;
+            }
+
+            float pitchAngle = (float)Math.Acos(Vector3.Dot(worldViewYZ, defaultViewYZ));
+
+            if (Vector3.Cross(worldViewYZ, defaultViewYZ).X < 0)
+            {
+                pitchAngle *= -1.0f;
+            }
 
             Matrix worldTransforms = Matrix.CreateScale(worldScale);
-            worldTransforms *= Matrix.CreateFromAxisAngle(rotationAxis, rotationAngle);
-            worldTransforms *= Matrix.CreateTranslation(-1.0f * worldPosition);
+            worldTransforms *= Matrix.CreateRotationX(pitchAngle);
+            worldTransforms *= Matrix.CreateRotationY(yawAngle);
+            worldTransforms *= Matrix.CreateTranslation(worldPosition);
 
             Draw(worldTransforms);
         }

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using GameConstructLibrary;
 
 namespace GraphicsLibrary
 {
@@ -16,7 +17,7 @@ namespace GraphicsLibrary
         static private Matrix mProjection;
 
         static private Effect configurableShader;
-        static private Effect terrainShader;
+        static private SkinnedEffect terrainShader;
 
         static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string,Model>();
         static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
@@ -34,7 +35,7 @@ namespace GraphicsLibrary
         static public void LoadContent(ContentManager content, GraphicsDevice device)
         {
             configurableShader = content.Load<Effect>("shaders/ConfigurableShader");
-            terrainShader      = content.Load<Effect>("shaders/TerrainShader");
+            terrainShader = new SkinnedEffect(configurableShader);
 
             DirectoryInfo dir = new DirectoryInfo(BASE_DIRECTORY + "models/");
             if (!dir.Exists)
@@ -161,27 +162,40 @@ namespace GraphicsLibrary
                 throw new KeyNotFoundException("Unable to find terrain key: " + terrainName);
             }
 
-            //terrainShader.Parameters["xTextureHigh"].SetValue(heightmap.HeightHigh);
+            terrainShader.Texture = heightmap.TextureHigh;
 
-            terrainShader.Parameters["xWorld"].SetValue(worldTransforms);
-            terrainShader.Parameters["xView"].SetValue(mView);
-            terrainShader.Parameters["xProjection"].SetValue(mProjection);
+            terrainShader.View = mView;
+            terrainShader.Projection = mProjection;
 
-            Vector3 lightDirection = new Vector3(-0.5265408f, -0.5735765f, -0.6275069f);
-            terrainShader.Parameters["xLightDirection"].SetValue(lightDirection);
+            terrainShader.EnableDefaultLighting();
 
-            terrainShader.CurrentTechnique = terrainShader.Techniques["Technique1"];
-            terrainShader.CurrentTechnique.Passes[0].Apply();
+            terrainShader.SpecularColor = new Vector3(0.25f);
+            terrainShader.SpecularPower = 16;
+
+            terrainShader.World = worldTransforms;
 
             GraphicsDevice device = heightmap.Terrain.Device;
             device.Indices = heightmap.Terrain.IndexBuffer;
             device.SetVertexBuffer(heightmap.Terrain.VertexBuffer);
+
+            terrainShader.CurrentTechnique = terrainShader.Techniques["TerrainOutline"];
+            terrainShader.CurrentTechnique.Passes[0].Apply();
             device.DrawIndexedPrimitives(
                 PrimitiveType.TriangleList, 
                 0, 
                 0, 
                 heightmap.Terrain.NumVertices, 
                 0, 
+                heightmap.Terrain.NumIndices / 3);
+
+            terrainShader.CurrentTechnique = terrainShader.Techniques["TerrainCelShade"];
+            terrainShader.CurrentTechnique.Passes[0].Apply();
+            device.DrawIndexedPrimitives(
+                PrimitiveType.TriangleList,
+                0,
+                0,
+                heightmap.Terrain.NumVertices,
+                0,
                 heightmap.Terrain.NumIndices / 3);
         }
 
