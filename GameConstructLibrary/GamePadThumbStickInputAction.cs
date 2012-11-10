@@ -12,8 +12,8 @@ namespace GameConstructLibrary
         GamePadThumbStick mGamePadThumbStick;
         GamePadThumbStickAxis mGamePadThumbStickAxis;
         GamePadDeadZone mGamePadDeadZone;
-        double mDeadZoneMin;
-        double mDeadZoneMax;
+        float mDeadZoneMin;
+        float mDeadZoneMax;
 
         public GamePadThumbStickInputAction(
             PlayerIndex playerIndex,
@@ -21,8 +21,8 @@ namespace GameConstructLibrary
             GamePadThumbStick thumbStick,
             GamePadThumbStickAxis thumbStickAxis,
             GamePadDeadZone deadZoneType,
-            double deadZoneMin,
-            double deadZoneMax)
+            float deadZoneMin,
+            float deadZoneMax)
             : base(playerIndex, buttonAction)
         {
             mGamePadThumbStick = thumbStick;
@@ -34,11 +34,11 @@ namespace GameConstructLibrary
 
         protected override bool IsDown()
         {
-            double degree = GetDegree();
+            float degree = GetDegree();
             return (degree > mDeadZoneMin && degree < mDeadZoneMax);
         }
 
-        protected override double GetDegree()
+        protected override float GetDegree()
         {
             GamePadState gamePad = Microsoft.Xna.Framework.Input.GamePad.GetState(mPlayerIndex, mGamePadDeadZone);
             GamePadThumbSticks sticks = gamePad.ThumbSticks;

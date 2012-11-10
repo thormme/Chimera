@@ -11,16 +11,16 @@ namespace GameConstructLibrary
     {
         GamePadTrigger mGamePadTrigger;
         GamePadDeadZone mGamePadDeadZone;
-        double mDeadZoneMin;
-        double mDeadZoneMax;
+        float mDeadZoneMin;
+        float mDeadZoneMax;
 
         public GamePadTriggerInputAction(
             PlayerIndex playerIndex,
             ButtonAction buttonAction,
             GamePadTrigger trigger,
             GamePadDeadZone deadZoneType,
-            double deadZoneMin,
-            double deadZoneMax)
+            float deadZoneMin,
+            float deadZoneMax)
             : base(playerIndex, buttonAction)
         {
             mGamePadTrigger = trigger;
@@ -31,11 +31,11 @@ namespace GameConstructLibrary
 
         protected override bool IsDown()
         {
-            double degree = GetDegree();
+            float degree = GetDegree();
             return (degree > mDeadZoneMin && degree < mDeadZoneMax);
         }
 
-        protected override double GetDegree()
+        protected override float GetDegree()
         {
             GamePadState gamePad = Microsoft.Xna.Framework.Input.GamePad.GetState(mPlayerIndex, mGamePadDeadZone);
 
