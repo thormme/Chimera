@@ -8,6 +8,8 @@ namespace GameConstructLibrary
 {
     public class PlayerController : Controller
     {
+        PlayerController(Creature creature) : base(creature) {}
+
         private Camera mCamera;
         private Vector2 mMoveDirection;
 

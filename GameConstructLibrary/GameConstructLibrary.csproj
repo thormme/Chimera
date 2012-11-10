@@ -93,11 +93,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actor.cs" />
     <Compile Include="Camera.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClosestPhysicsObject.cs" />
+    <Compile Include="Controller.cs" />
+    <Compile Include="Creature.cs" />
     <Compile Include="DirectoryManager.cs" />
+    <Compile Include="HostileController.cs" />
+    <Compile Include="NonPlayerCreature.cs" />
+    <Compile Include="Part.cs" />
+    <Compile Include="PhysicsObject.cs" />
+    <Compile Include="PlayerController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RadialSensor.cs" />
+    <Compile Include="Rand.cs" />
+    <Compile Include="SensitiveSensor.cs" />
     <Compile Include="TerrainHeightMap.cs">
       <SubType>Code</SubType>
     </Compile>
