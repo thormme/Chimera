@@ -13,6 +13,8 @@ namespace finalProject
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        private InputAction forward;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public Space mSpace;
@@ -33,6 +35,8 @@ namespace finalProject
             mSpace = new Space();
 
             mSpace.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
+
+            forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
         }
 
         /// <summary>
@@ -86,6 +90,7 @@ namespace finalProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            InputAction.Update();
             UpdateCamera(gameTime);
 
             // TODO: Add your update logic here
@@ -125,7 +130,7 @@ namespace finalProject
         {
             float time = (float)gameTime.ElapsedGameTime.Milliseconds;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            if (forward.Active)
             {
                 if (dudeControlToggle == true)
                 {

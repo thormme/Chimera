@@ -101,7 +101,13 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Creature.cs" />
     <Compile Include="DirectoryManager.cs" />
+    <Compile Include="GamePadButtonInputAction.cs" />
+    <Compile Include="GamePadThumbStickInputAction.cs" />
+    <Compile Include="GamePadTriggerInputAction.cs" />
     <Compile Include="HostileController.cs" />
+    <Compile Include="InputAction.cs" />
+    <Compile Include="KeyInputAction.cs" />
+    <Compile Include="MouseButtonInputAction.cs" />
     <Compile Include="NonPlayerCreature.cs" />
     <Compile Include="Part.cs" />
     <Compile Include="PhysicsObject.cs" />
