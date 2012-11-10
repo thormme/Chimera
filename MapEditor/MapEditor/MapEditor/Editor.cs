@@ -36,8 +36,6 @@ namespace MapEditor
 
         public Editor()
         {
-            
-            string blah = DirectoryManager.GetRoot();
 
             graphics = new GraphicsDeviceManager(this);
             mInput = new InputManager(Services, Window.Handle);
@@ -112,7 +110,6 @@ namespace MapEditor
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            mCamera.MoveForward(1);
             mMapEntity.Update(gameTime);
             GraphicsManager.Update(mCamera);
             
