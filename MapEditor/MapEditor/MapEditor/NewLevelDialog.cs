@@ -91,7 +91,7 @@ namespace MapEditor
         {
             try
             {
-                mMapEditor.DummyLevel = new DummyLevel(Convert.ToInt32(mHeightInput.Text.ToString()), Convert.ToInt32(mWidthInput.Text.ToString()));
+                mMapEditor.DummyLevel = new DummyLevel(Convert.ToInt32(mHeightInput.Text.ToString()), Convert.ToInt32(mWidthInput.Text.ToString()), mMapEditor.DummyLevel.Graphics);
             }
             catch (SystemException)
             {

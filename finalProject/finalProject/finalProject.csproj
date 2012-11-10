@@ -135,9 +135,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Physics\Actor.cs" />
+    <Compile Include="Physics\IGameObject.cs" />
+    <Compile Include="Physics\PhysicsObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

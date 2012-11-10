@@ -73,6 +73,31 @@ namespace GraphicsLibrary
             Draw(worldTransforms);
         }
 
+        /// <summary>
+        /// Draws the IRenderable at worldPositions facing worldRotation using default scale.
+        /// </summary>
+        /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="worldRotation">Rotation matrix of the object.</param>
+        public void Render(Vector3 worldPosition, Matrix worldRotation)
+        {
+            Render(worldPosition, worldPosition, mDefaultWorldScale);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable at worldPositions facing worldRotation, and scaled to worldScale.
+        /// </summary>
+        /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="worldRotation">Rotation matrix of the object.</param>
+        /// <param name="worldScale">Scale along each axis of the object.</param>
+        public void Render(Vector3 worldPosition, Matrix worldRotation, float worldScale)
+        {
+            Matrix worldTransforms = worldRotation;
+            worldTransforms *= Matrix.CreateScale(worldScale);
+            worldTransforms *= Matrix.CreateTranslation(worldPosition);
+
+            Draw(worldTransforms);
+        }
+
         ///////////////////////////// Internal functions /////////////////////////////
 
         abstract protected void Draw(Matrix worldTransform);

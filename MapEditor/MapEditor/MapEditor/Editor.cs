@@ -31,14 +31,12 @@ namespace MapEditor
 
         private Camera mCamera;
         private MapEntity mMapEntity;
-        private InanimateModel mModel;
+        private AnimateModel mModel;
         private DummyLevel mDummyLevel;
 
         public Editor()
         {
             
-            string blah = DirectoryManager.GetRoot();
-
             graphics = new GraphicsDeviceManager(this);
             mInput = new InputManager(Services, Window.Handle);
             mGUI = new GuiManager(Services);
@@ -69,13 +67,17 @@ namespace MapEditor
 
             GraphicsManager.CelShading = true;
 
-            mDummyLevel = new DummyLevel(1000, 1000);
+            mDummyLevel = new DummyLevel(1000, 1000, graphics.GraphicsDevice);
 
             mMapEditorDialog = new MapEditorDialog(mainScreen, mDummyLevel);
             mCamera = new Camera(viewport);
-            mMapEntity = new MapEntity(mCamera);
+            mCamera.Position = new Vector3(0, 40, -100);
+            mCamera.Target = new Vector3(0, 40, 0);
 
-            mModel = new InanimateModel("dude");
+            mMapEntity = new MapEntity(mCamera, viewport);
+
+            mModel = new AnimateModel("dude");
+            mModel.PlayAnimation("Take 001");
 
             mainScreen.Desktop.Children.Add(mMapEditorDialog);
         }
@@ -112,7 +114,7 @@ namespace MapEditor
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            mCamera.MoveForward(1);
+            mModel.Update(gameTime);
             mMapEntity.Update(gameTime);
             GraphicsManager.Update(mCamera);
             

@@ -22,7 +22,10 @@ namespace MapEditor
     {
         private Screen mMainScreen;
         private DummyLevel mDummyLevel;
-        public DummyLevel DummyLevel { get { return mDummyLevel; } set { mDummyLevel = value ; } }
+        public DummyLevel DummyLevel { get { return mDummyLevel; } set { mDummyLevel = value; } }
+
+        private HeightMapEditorDialog mHeightMapEditorDialog;
+        //private ObjectEditorDialog mObjectEditorDialog;
 
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mEditHeightsButton;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mEditObjectsButton;
@@ -36,6 +39,13 @@ namespace MapEditor
         {
             mMainScreen = mainScreen;
             mDummyLevel = dummyLevel;
+
+            mHeightMapEditorDialog = new HeightMapEditorDialog(this);
+            mMainScreen.Desktop.Children.Add(mHeightMapEditorDialog);
+            mHeightMapEditorDialog.Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
+
+            //mObjectEditorDialog = new ObjectEditorDialog(this);
+
             InitializeComponent();
         }
 
@@ -58,11 +68,11 @@ namespace MapEditor
 
             mEditHeightsButton.Text = "Edit Heights";
             mEditHeightsButton.Bounds = new UniRectangle(new UniScalar(0.0f, 20.0f), new UniScalar(0.0f, 40.0f), 120, 24);
-            mEditHeightsButton.Pressed += delegate(object sender, EventArgs arguments) { NewClicked(sender, arguments); };
+            mEditHeightsButton.Pressed += delegate(object sender, EventArgs arguments) { HeightClicked(sender, arguments); };
 
             mEditObjectsButton.Text = "Edit Objects";
             mEditObjectsButton.Bounds = new UniRectangle(new UniScalar(0.0f, 20.0f), new UniScalar(0.0f, 80.0f), 120, 24);
-            mEditObjectsButton.Pressed += delegate(object sender, EventArgs arguments) { NewClicked(sender, arguments); };
+            mEditObjectsButton.Pressed += delegate(object sender, EventArgs arguments) { ObjectClicked(sender, arguments); };
 
             mNewButton.Text = "New";
             mNewButton.Bounds = new UniRectangle(new UniScalar(0.0f, 20.0f), new UniScalar(1.0f, -40.0f), 80, 24);
@@ -89,7 +99,17 @@ namespace MapEditor
 
         #endregion // Not component designer generated code
 
-        public void Update(GameTime gameTime)
+        public bool GetInputs(out int size, out int intensity, out bool set)
+        {
+            return mHeightMapEditorDialog.GetInputs(out size, out intensity, out set);
+        }
+
+        private void HeightClicked(object sender, EventArgs arguments)
+        {
+            mHeightMapEditorDialog.Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 170.0f);
+        }
+
+        private void ObjectClicked(object sender, EventArgs arguments)
         {
             
         }

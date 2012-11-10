@@ -199,6 +199,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HeightMapEditorDialog.cs" />
     <Compile Include="MapEntity.cs" />
     <Compile Include="DummyLevel.cs" />
     <Compile Include="DummyObject.cs" />
@@ -210,7 +211,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Editor.cs" />
     <Compile Include="SaveLevelDialog.cs" />
-    <Compile Include="TerrainHeightMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
