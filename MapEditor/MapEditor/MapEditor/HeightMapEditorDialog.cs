@@ -30,8 +30,9 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.LabelControl mIntensityLabel;
         private Nuclex.UserInterface.Controls.LabelControl mSetLabel;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mSizeInput;
-        private Nuclex.UserInterface.Controls.Desktop.ButtonControl mIntensityInput;
+        private Nuclex.UserInterface.Controls.Desktop.InputControl mIntensityInput;
         private Nuclex.UserInterface.Controls.Desktop.OptionControl mSetOption;
+        private Nuclex.UserInterface.Controls.Desktop.ButtonControl mDoneButton;
 
         public HeightMapEditorDialog(MapEditorDialog mapEditor) :
             base()
@@ -49,38 +50,72 @@ namespace MapEditor
         {
 
             BringToFront();
-            /*
+
             // Declare all components
-            mSaveLevelLabel = new Nuclex.UserInterface.Controls.LabelControl();
-            mNameInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
-            mSaveButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
-            mCancelButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
+            mSizeLabel = new Nuclex.UserInterface.Controls.LabelControl();
+            mIntensityLabel = new Nuclex.UserInterface.Controls.LabelControl();
+            mSetLabel = new Nuclex.UserInterface.Controls.LabelControl();
+            mSizeInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
+            mIntensityInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
+            mSetOption = new Nuclex.UserInterface.Controls.Desktop.OptionControl();
+            mDoneButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
 
             // Position components
-            mSaveLevelLabel.Text = "Level Name:";
-            mSaveLevelLabel.Bounds = new UniRectangle(20.0f, 50.0f, 100.0f, 30.0f);
+            mSizeLabel.Text = "Size:";
+            mSizeLabel.Bounds = new UniRectangle(20.0f, 45.0f, 100.0f, 30.0f);
+            mSizeInput.Bounds = new UniRectangle(120.0f, 40.0f, 140.0f, 30.0f);
 
-            mNameInput.Bounds = new UniRectangle(120.0f, 50.0f, 240.0f, 30.0f);
+            mIntensityLabel.Text = "Intensity:";
+            mIntensityLabel.Bounds = new UniRectangle(20.0f, 85.0f, 100.0f, 30.0f);
+            mIntensityInput.Bounds = new UniRectangle(120.0f, 80.0f, 140.0f, 30.0f);
 
-            mSaveButton.Text = "Save";
-            mSaveButton.Bounds = new UniRectangle(new UniScalar(1.0f, -180.0f), new UniScalar(1.0f, -40.0f), 80, 24);
-            mSaveButton.Pressed += delegate(object sender, EventArgs arguments) { SaveClicked(sender, arguments); };
+            mSetLabel.Text = "Set:";
+            mSetLabel.Bounds = new UniRectangle(20.0f, 125.0f, 100.0f, 30.0f);
+            mSetOption.Bounds = new UniRectangle(120.0f, 120.0f, 30.0f, 30.0f);
 
-            mCancelButton.Text = "Cancel";
-            mCancelButton.Bounds = new UniRectangle(new UniScalar(1.0f, -90.0f), new UniScalar(1.0f, -40.0f), 80, 24);
-            mCancelButton.Pressed += delegate(object sender, EventArgs arguments) { CancelClicked(sender, arguments); };
-
-            Bounds = new UniRectangle(10.0f, 10.0f, 400.0f, 140.0f);
+            mDoneButton.Text = "Done";
+            mDoneButton.Bounds = new UniRectangle(new UniScalar(1.0f, -100.0f), new UniScalar(1.0f, -45.0f), 80, 24);
+            mDoneButton.Pressed += delegate(object sender, EventArgs arguments) { DoneClicked(sender, arguments); };
 
             // Add components to GUI
-            Children.Add(mSaveLevelLabel);
-            Children.Add(mNameInput);
-            Children.Add(mSaveButton);
-            Children.Add(mCancelButton);
-            */
+            Children.Add(mSizeLabel);
+            Children.Add(mSizeInput);
+            Children.Add(mIntensityLabel);
+            Children.Add(mIntensityInput);
+            Children.Add(mSetLabel);
+            Children.Add(mSetOption);
+            Children.Add(mDoneButton);
+
         }
 
         #endregion // Not component designer generated code
+
+        public bool GetInputs(out int size, out int intensity, out bool set)
+        {
+
+            size = 0;
+            intensity = 0;
+            set = false;
+
+            try
+            {
+                size = Convert.ToInt32(mSizeInput.Text);
+                intensity = Convert.ToInt32(mIntensityInput.Text);
+                set = mSetOption.Selected;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+
+            return true;
+
+        }
+
+        private void DoneClicked(object sender, EventArgs arguments)
+        {
+            Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
+        }
 
     }
 }
