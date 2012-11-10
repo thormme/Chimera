@@ -12,17 +12,27 @@ namespace GameConstructLibrary
         GamePadThumbStick mGamePadThumbStick;
         GamePadThumbStickAxis mGamePadThumbStickAxis;
         GamePadDeadZone mGamePadDeadZone;
-        double mDeadZoneMin;
-        double mDeadZoneMax;
+        float mDeadZoneMin;
+        float mDeadZoneMax;
 
+        /// <summary>
+        /// Constructs an InputAction which tracks GamePad thumb sticks.
+        /// </summary>
+        /// <param name="playerIndex">The index of the player using this input.</param>
+        /// <param name="buttonAction">What state the button should be in to activate.</param>
+        /// <param name="thumbStick">Which thumb stick to track.</param>
+        /// <param name="thumbStickAxis">The axis of movement to be tracked.</param>
+        /// <param name="deadZoneType">The type of dead zone.</param>
+        /// <param name="deadZoneMin">The minimum Degree which will not be sensed.</param>
+        /// <param name="deadZoneMax">The maximum Degree which will not be sensed.</param>
         public GamePadThumbStickInputAction(
             PlayerIndex playerIndex,
             ButtonAction buttonAction,
             GamePadThumbStick thumbStick,
             GamePadThumbStickAxis thumbStickAxis,
             GamePadDeadZone deadZoneType,
-            double deadZoneMin,
-            double deadZoneMax)
+            float deadZoneMin,
+            float deadZoneMax)
             : base(playerIndex, buttonAction)
         {
             mGamePadThumbStick = thumbStick;
@@ -34,11 +44,11 @@ namespace GameConstructLibrary
 
         protected override bool IsDown()
         {
-            double degree = GetDegree();
-            return (degree > mDeadZoneMin && degree < mDeadZoneMax);
+            float degree = GetDegree();
+            return (degree < mDeadZoneMin || degree > mDeadZoneMax);
         }
 
-        protected override double GetDegree()
+        protected override float GetDegree()
         {
             GamePadState gamePad = Microsoft.Xna.Framework.Input.GamePad.GetState(mPlayerIndex, mGamePadDeadZone);
             GamePadThumbSticks sticks = gamePad.ThumbSticks;

@@ -11,6 +11,12 @@ namespace GameConstructLibrary
     {
         MouseButton mButton;
 
+        /// <summary>
+        /// Constructs an InputAction which tracks mouse buttons.
+        /// </summary>
+        /// <param name="playerIndex">The index of the player using this input.</param>
+        /// <param name="buttonAction">What state the button should be in to activate.</param>
+        /// <param name="button">The button to track</param>
         public MouseButtonInputAction(PlayerIndex playerIndex, ButtonAction buttonAction, MouseButton button)
             : base(playerIndex, buttonAction)
         {
