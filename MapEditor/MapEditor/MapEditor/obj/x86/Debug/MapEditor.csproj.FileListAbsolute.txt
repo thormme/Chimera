@@ -51,7 +51,6 @@ C:\Users\Michael\Documents\Visual Studio 2010\Projects\MapEditor\MapEditor\MapEd
 C:\Users\Michael\Documents\Visual Studio 2010\Projects\MapEditor\MapEditor\MapEditor\bin\x86\Debug\Content\models\pants_0.xnb
 C:\Users\Michael\Documents\Visual Studio 2010\Projects\MapEditor\MapEditor\MapEditor\bin\x86\Debug\Content\models\upBodyC_0.xnb
 C:\Users\Michael\Documents\GitHub\eecs494FinalProject\MapEditor\MapEditor\MapEditor\bin\x86\Debug\Content\shaders\ConfigurableShader.xnb
-C:\Users\Michael\Documents\GitHub\eecs494FinalProject\MapEditor\MapEditor\MapEditor\bin\x86\Debug\Content\shaders\TerrainShader.xnb
 C:\Users\Michael\Documents\GitHub\eecs494FinalProject\MapEditor\MapEditor\MapEditor\bin\x86\Debug\Content\models\dude.xnb
 C:\Users\Michael\Documents\GitHub\eecs494FinalProject\MapEditor\MapEditor\MapEditor\bin\x86\Debug\Content\levels\maps\test_level.xnb
 C:\Users\Michael\Documents\GitHub\eecs494FinalProject\MapEditor\MapEditor\MapEditor\bin\x86\Debug\Content\levels\maps\test_level_texture_high.xnb

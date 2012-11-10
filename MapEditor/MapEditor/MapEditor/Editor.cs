@@ -71,6 +71,9 @@ namespace MapEditor
 
             mMapEditorDialog = new MapEditorDialog(mainScreen, mDummyLevel);
             mCamera = new Camera(viewport);
+            mCamera.Position = new Vector3(0, 40, -100);
+            mCamera.Target = new Vector3(0, 40, 0);
+
             mMapEntity = new MapEntity(mCamera);
 
             mModel = new InanimateModel("dude");
