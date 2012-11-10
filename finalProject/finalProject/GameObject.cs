@@ -7,36 +7,26 @@ using GraphicsLibrary;
 
 namespace finalProject
 {
-    abstract class GameObject
+    interface GameObject
     {
-        public GameObject(Renderable renderable)
-        {
-            // TODO: Complete member initialization
-            this.mRenderable = renderable;
-        }
-
-        private Renderable mRenderable;
         public Vector3 Position
         {
-            virtual get;
-            virtual set;
+            get;
+            set;
         }
 
         public Matrix Orientation
         {
-            virtual get;
-            virtual set;
+            get;
+            set;
         }
 
         public float Scale
         {
-            virtual get;
-            virtual set;
+            get;
+            set;
         }
 
-        public virtual void Render()
-        {
-            mRenderable.render();
-        }
+        public void Render();
     }
 }

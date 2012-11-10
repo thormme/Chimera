@@ -9,7 +9,7 @@ using GraphicsLibrary;
 
 namespace finalProject
 {
-    class PhysicsObject : GameObject
+    public class PhysicsObject : GameObject
     {
         public PhysicsObject(Renderable renderable, Entity physicsEntity) : base(renderable)
         {
