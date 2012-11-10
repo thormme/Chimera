@@ -127,7 +127,7 @@ namespace GameConstructLibrary
         /// <param name="distance">Number of units to move forward.</param>
         public void MoveForward(float distance)
         {
-            mPosition += distance * (mTarget - mPosition);
+            mPosition += distance * Forward;
         }
 
         /// <summary>
