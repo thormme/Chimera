@@ -183,16 +183,16 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\GitHub\eecs494FinalProject\finalProject\finalProjectContent\finalProjectContent.contentproj">
+    <ProjectReference Include="..\..\..\finalProject\finalProjectContent\finalProjectContent.contentproj">
       <Project>{DDBC472F-F07E-420A-9AD7-31C03422F337}</Project>
       <Name>finalProjectContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\GitHub\eecs494FinalProject\GameConstructLibrary\GameConstructLibrary.csproj">
+    <ProjectReference Include="..\..\..\GameConstructLibrary\GameConstructLibrary.csproj">
       <Project>{EBF58AE6-887D-480A-B693-4DCB2C02CB8D}</Project>
       <Name>GameConstructLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\GitHub\eecs494FinalProject\GraphicsLibrary\GraphicsLibrary.csproj">
+    <ProjectReference Include="..\..\..\GraphicsLibrary\GraphicsLibrary.csproj">
       <Project>{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}</Project>
       <Name>GraphicsLibrary</Name>
     </ProjectReference>
