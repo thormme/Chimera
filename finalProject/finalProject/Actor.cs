@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using GraphicsLibrary;
 using BEPUphysics.Entities;
+using BEPUphysics.Collidables.MobileCollidables;
+using Microsoft.Xna.Framework;
 
 namespace finalProject
 {
-    public class Actor : PhysicsObject
+    abstract public class Actor : PhysicsObject
     {
-        public Actor(Renderable renderable, Entity physicsEntity) : base(renderable, physicsEntity)
-        {
+        public Actor(Renderable renderable, EntityCollidable collisionInformation)
+            : base(renderable, collisionInformation)
+        {}
 
-        }
-
-        public abstract virtual void Update(double timeStep);
+        abstract public void Update(GameTime time);
     }
 }

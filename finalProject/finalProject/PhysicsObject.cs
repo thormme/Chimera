@@ -6,51 +6,72 @@ using Microsoft.Xna.Framework;
 using BEPUphysics.Entities;
 using BEPUphysics.MathExtensions;
 using GraphicsLibrary;
+using BEPUphysics.Collidables.MobileCollidables;
 
 namespace finalProject
 {
-    public class PhysicsObject : GameObject
+    public class PhysicsObject : Entity, GameObject
     {
-        public PhysicsObject(Renderable renderable, Entity physicsEntity) : base(renderable)
+        public PhysicsObject(Renderable renderable, EntityCollidable collisionInformation)
+            : base(collisionInformation)
         {
-            mPhysicsEntity = physicsEntity;
+            mRenderable = renderable;
         }
 
-        protected Entity mPhysicsEntity;
+        private Renderable mRenderable;
 
-        public override Vector3 Position
-        {
-            virtual get
-            {
-                return mPhysicsEntity.Position;
-            }
-            virtual set 
-            {
-                mPhysicsEntity.Position = value;
-            }
-        }
-
-        public override Matrix Orientation
+        public Matrix Orientation
         {
             virtual get
             {
                 return new Matrix(
-                    mPhysicsEntity.OrientationMatrix.M11, mPhysicsEntity.OrientationMatrix.M12, mPhysicsEntity.OrientationMatrix.M13, 1.0f,
-                    mPhysicsEntity.OrientationMatrix.M21, mPhysicsEntity.OrientationMatrix.M22, mPhysicsEntity.OrientationMatrix.M23, 1.0f,
-                    mPhysicsEntity.OrientationMatrix.M31, mPhysicsEntity.OrientationMatrix.M32, mPhysicsEntity.OrientationMatrix.M33, 1.0f,
-                    1.0f, 1.0f, 1.0f, 1.0f);
-
+                    OrientationMatrix.M11, OrientationMatrix.M12, OrientationMatrix.M13, 1.0f,
+                    OrientationMatrix.M21, OrientationMatrix.M22, OrientationMatrix.M23, 1.0f,
+                    OrientationMatrix.M31, OrientationMatrix.M32, OrientationMatrix.M33, 1.0f,
+                    1.0f, 1.0f, 1.0f, 1.0f
+                    );
             }
             virtual set
             {
-                mPhysicsEntity.OrientationMatrix = new Matrix3X3(
+                OrientationMatrix = new Matrix3X3(
                     value.M11, value.M12, value.M13,
                     value.M21, value.M22, value.M23,
-                    value.M31, value.M32, value.M33);
+                    value.M31, value.M32, value.M33
+                    );
             }
         }
 
-        /*public override float Scale
+        public Vector3 Forward
+        {
+            virtual get
+            {
+                return Orientation.Forward;
+            }
+
+            virtual set
+            {
+                Matrix m = Orientation;
+                m.Forward = value;
+                Orientation = m;
+            }
+        }
+
+        public Vector3 Right
+        {
+            virtual get
+            {
+                return Orientation.Right;
+            }
+
+            virtual set
+            {
+                Matrix m = Orientation;
+                m.Right = value;
+                Orientation = m;
+            }
+        }
+
+        /*public float Scale
         {
             virtual get
             {
@@ -63,45 +84,9 @@ namespace finalProject
             }
         }*/
 
-        public Vector3 Velocity
+        void Render()
         {
-            get
-            {
-                return mPhysicsEntity.LinearVelocity;
-            }
-            set
-            {
-                mPhysicsEntity.LinearVelocity = value;
-            }
-        }
-
-        public Vector3 LinearMomentum
-        {
-            get
-            {
-                return mPhysicsEntity.LinearMomentum;
-            }
-            set
-            {
-                mPhysicsEntity.LinearMomentum = value;
-            }
-        }
-
-        public Vector3 AngularMomentum
-        {
-            get
-            {
-                return mPhysicsEntity.AngularMomentum;
-            }
-            set
-            {
-                mPhysicsEntity.AngularMomentum = value;
-            }
-        }
-
-        public void applyImpulse(ref Vector3 location, ref Vector3 impulse)
-        {
-            mPhysicsEntity.ApplyImpulse(location, impulse);
+            mRenderable.Render(Position);
         }
     }
 }

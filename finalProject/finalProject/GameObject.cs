@@ -7,26 +7,26 @@ using GraphicsLibrary;
 
 namespace finalProject
 {
-    interface GameObject
+    public interface GameObject
     {
-        public Vector3 Position
+        Vector3 Position
         {
             get;
             set;
         }
 
-        public Matrix Orientation
+        Matrix Orientation
         {
             get;
             set;
         }
 
-        public float Scale
-        {
-            get;
-            set;
-        }
+        //float Scale
+        //{
+        //    get;
+        //    set;
+        //}
 
-        public void Render();
+        void Render();
     }
 }
