@@ -24,7 +24,6 @@ struct CelVSOutput
 
 struct OutlineVSOutput
 {
-	float2 TexCoord   : TEXCOORD0;
 	float4 PositionPS : SV_Position;
 };
 
@@ -34,4 +33,12 @@ struct PhongVSOutput
 	float4 Specular    : COLOR1;
 	float2 TexCoord    : TEXCOORD0;
 	float4 PositionPS  : SV_Position;
+};
+
+struct TerrainVSInput
+{
+	float4 Position : SV_Position;
+	float3 Normal   : NORMAL;
+	float4 Color    : COLOR0;
+	float2 TexCoord : TEXCOORD0;
 };

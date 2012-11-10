@@ -58,3 +58,30 @@ Technique Phong
 		PixelShader  = compile ps_2_0 PhongPS();
 	}
 }
+
+Technique TerrainCelShade
+{
+	Pass
+	{
+		VertexShader = compile vs_2_0 TerrainCelShadeVS();
+		PixelShader  = compile ps_2_0 CelShadePS();
+	}
+}
+
+Technique TerrainOutline
+{
+	Pass
+	{
+		VertexShader = compile vs_2_0 TerrainOutlineVS();
+		PixelShader  = compile ps_2_0 OutlinePS();
+	}
+}
+
+Technique TerrainPhong
+{
+	Pass
+	{
+		VertexShader = compile vs_2_0 TerrainPhongVS();
+		PixelShader  = compile ps_2_0 PhongPS();
+	}
+}

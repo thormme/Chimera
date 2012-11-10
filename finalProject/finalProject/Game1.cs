@@ -21,6 +21,9 @@ namespace finalProject
         private AnimateModel dude = null;
         private Terrain testLevel = null;
 
+        private Vector3 dudePosition = new Vector3(0.0f, 0.0f, 0.0f);
+        private Vector3 dudeOrientation = new Vector3(0.0f, 0.0f, 1.0f);
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -42,6 +45,8 @@ namespace finalProject
             // TODO: Add your initialization logic here
             GraphicsManager.CelShading = true;
 
+            camera = new Camera(graphics.GraphicsDevice.Viewport);
+            
             base.Initialize();
         }
 
@@ -56,6 +61,8 @@ namespace finalProject
 
             // TODO: use this.Content to load your game content here
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice);
+            dude = new AnimateModel("dude");
+            dude.PlayAnimation("Take 001");
         }
 
         /// <summary>
@@ -83,13 +90,6 @@ namespace finalProject
             // TODO: Add your update logic here
             mSpace.Update();
 
-            if (dude == null)
-            {
-                camera = new Camera(graphics.GraphicsDevice.Viewport);
-                dude = new AnimateModel("dude");
-                dude.PlayAnimation("Take 001");
-            }
-
             if (dude.GetType() == typeof(AnimateModel))
             {
                 dude.Update(gameTime);
@@ -115,7 +115,7 @@ namespace finalProject
 
             // TODO: Add your drawing code here
             testLevel.Render(new Vector3(0.0f, 0.0f, 0.0f));
-            dude.Render(new Vector3(0.0f, 0.0f, 0.0f));
+            dude.Render(dudePosition, dudeOrientation);
 
             base.Draw(gameTime);
         }
@@ -124,45 +124,84 @@ namespace finalProject
         {
             float time = (float)gameTime.ElapsedGameTime.Milliseconds;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            {
-                camera.RotatePitch(time * 0.1f);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                camera.RotatePitch(time * -0.1f);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                camera.RotateYaw(time * -0.1f);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                camera.RotateYaw(time * 0.1f);
-            }
-
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                camera.MoveForward(time * 0.1f);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                camera.MoveRight(time * -0.1f);
+                dudePosition += time * 0.1f * dudeOrientation;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                camera.MoveForward(time * -0.1f);
+                dudePosition += time * -0.1f * dudeOrientation;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                Matrix rotate = Matrix.CreateRotationY(MathHelper.ToRadians(time * 0.1f));
+                dudeOrientation = Vector3.Transform(dudeOrientation, rotate);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                camera.MoveRight(time * 0.1f);
+                Matrix rotate = Matrix.CreateRotationY(MathHelper.ToRadians(time * -0.1f));
+                dudeOrientation = Vector3.Transform(dudeOrientation, rotate);
             }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            {
+                Vector3 right = Vector3.Cross(Vector3.Up, dudeOrientation);
+                right.Normalize();
+                dudePosition += time * 0.1f * right;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.E))
+            {
+                Vector3 right = Vector3.Cross(Vector3.Up, dudeOrientation);
+                right.Normalize();
+                dudePosition += time * -0.1f * right;
+            }
+
+            bool reset = true;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                camera.RotatePitch(-0.1f * time);
+                reset = false;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                camera.RotatePitch(0.1f * time);
+                reset = false;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                camera.RotateYaw(0.1f * time);
+                reset = false;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                camera.RotateYaw(-0.1f * time);
+                reset = false;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                dudePosition = new Vector3(0.0f, 0.0f, 0.0f);
+                dudeOrientation = new Vector3(0.0f, 0.0f, 1.0f);
+            }
+
+            if (reset == true)
+            {
+                camera.ResetPitch();
+                camera.ResetYaw();
+            }
+
+            camera.Target = dudePosition + new Vector3(0.0f, 75.0f, 0.0f);
+            Vector3 direction = dudeOrientation;
+            direction.Normalize();
+            camera.Position = camera.Target - 250.0f * direction;
         }
     }
 }
