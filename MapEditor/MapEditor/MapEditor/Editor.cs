@@ -31,7 +31,7 @@ namespace MapEditor
 
         private Camera mCamera;
         private MapEntity mMapEntity;
-        private InanimateModel mModel;
+        private AnimateModel mModel;
         private DummyLevel mDummyLevel;
 
         public Editor()
@@ -74,9 +74,10 @@ namespace MapEditor
             mCamera.Position = new Vector3(0, 40, -100);
             mCamera.Target = new Vector3(0, 40, 0);
 
-            mMapEntity = new MapEntity(mCamera);
+            mMapEntity = new MapEntity(mCamera, viewport);
 
-            mModel = new InanimateModel("dude");
+            mModel = new AnimateModel("dude");
+            mModel.PlayAnimation("Take 001");
 
             mainScreen.Desktop.Children.Add(mMapEditorDialog);
         }
@@ -113,6 +114,7 @@ namespace MapEditor
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            mModel.Update(gameTime);
             mMapEntity.Update(gameTime);
             GraphicsManager.Update(mCamera);
             
