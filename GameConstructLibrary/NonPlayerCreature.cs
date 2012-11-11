@@ -21,6 +21,7 @@ namespace GameConstructLibrary
 
         NonPlayerCreature(
             float sensitivityRadius,
+            Controller controller,
             Renderable renderable,
             EntityShape shape,
             float visionAngle,
@@ -28,7 +29,7 @@ namespace GameConstructLibrary
             float sneak,
             Part part
             )
-            : base(renderable, shape, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity))
+            : base(renderable, shape, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
         {
             mSneak = sneak;
             mController = new HostileController(this);
