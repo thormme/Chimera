@@ -26,12 +26,14 @@ namespace GameConstructLibrary
             }
         }
 
-        public Creature(Renderable renderable, EntityShape shape, RadialSensor radialSensor)
+        public Creature(Renderable renderable, EntityShape shape, RadialSensor radialSensor, Controller controller)
             : base(renderable, shape)
         {
             mSensor = radialSensor;
             DistanceJoint joint = new DistanceJoint(this, radialSensor, new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f));
             // TODO: pass joint into space
+            mController = controller;
+            controller.SetCreature(this);
             throw new NotImplementedException("I have yet to pass joint into Space.");
         }
 
@@ -49,7 +51,10 @@ namespace GameConstructLibrary
 
         public virtual void UsePart(int part, Vector3 direction)
         {
-            mParts[part].Use(direction);
+            if (part < mParts.Count())
+            {
+                mParts[part].Use(direction);
+            }
         }
 
         public virtual void Jump()

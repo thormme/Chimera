@@ -16,7 +16,9 @@ namespace GameConstructLibrary
         private int mDurdleMoveTimer;
         private int mDurdleWaitTimer;
 
-        public Controller(Creature creature)
+        public Controller() {}
+
+        public void SetCreature(Creature creature)
         {
             mCreature = creature;
         }
@@ -36,7 +38,7 @@ namespace GameConstructLibrary
                 newDirection.Z = Rand.rand.Next();
                 newDirection = Vector3.Normalize(newDirection);
             }
-            throw new NotImplementedException("Controller.Durdle not yet implemented.");
+            throw new NotImplementedException("Controller.Durdle not fully implemented.");
         }
     }
 }
