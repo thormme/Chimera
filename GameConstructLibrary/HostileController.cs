@@ -8,7 +8,7 @@ namespace GameConstructLibrary
 {
     class HostileController : Controller
     {
-        public HostileController(Creature creature) : base(creature) {}
+        public HostileController(Creature creature) {}
 
         public override void Update(GameTime time, List<Creature> collidingCreatures)
         {
