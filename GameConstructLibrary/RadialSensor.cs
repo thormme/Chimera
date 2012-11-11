@@ -9,6 +9,9 @@ using BEPUphysics.CollisionShapes.ConvexShapes;
 
 namespace GameConstructLibrary
 {
+    /// <summary>
+    /// A radial sensor used to identify PhysicsObjects near a point, like on a creature.
+    /// </summary>
     public class RadialSensor : PhysicsObject
     {
         protected List<Creature> mCollidingCreatures;
@@ -17,10 +20,24 @@ namespace GameConstructLibrary
         protected List<PhysicsObject> mCollidingProps;
         public List<PhysicsObject> CollidingProps { get { return mCollidingProps; } }
 
+        /// <summary>
+        /// Constructs the RadialSensor as a sphere.
+        /// </summary>
+        /// <param name="radius">
+        /// The radius of the RadialSensor's sphere.
+        /// </param>
         public RadialSensor(float radius)
             : base(null, new SphereShape(radius))
-        {}
+        {
+            throw new NotImplementedException("I still need to set NoSolver.");
+        }
 
+        /// <summary>
+        /// Stores the list of PhysicsObjects, and also a list of Creatures.
+        /// </summary>
+        /// <param name="objects">
+        /// The list of colliding PhysicsObjects.
+        /// </param>
         public virtual void Collide(List<PhysicsObject> objects)
         {
             mCollidingCreatures.Clear();

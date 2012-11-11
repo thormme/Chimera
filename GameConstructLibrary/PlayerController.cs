@@ -45,6 +45,7 @@ namespace GameConstructLibrary
             mJump = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Space);
             mAdd = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.LeftShift);
         }
+
         ~PlayerController()
         {
             mMoveUp.Destroy();
@@ -62,6 +63,15 @@ namespace GameConstructLibrary
             mAdd.Destroy();
         }
 
+        /// <summary>
+        /// Passes the player input to the creature.
+        /// </summary>
+        /// <param name="time">
+        /// The game time.
+        /// </param>
+        /// <param name="collidingCreatures">
+        /// The list of creatures from the creature's radial sensor.
+        /// </param>
         public override void Update(GameTime time, List<Creature> collidingCreatures)
         {
             Vector2 moveDirection = new Vector2(0.0f, 0.0f);

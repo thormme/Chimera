@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 
 namespace GameConstructLibrary
 {
+    /// <summary>
+    /// An AI for creatures that will use its part on creatures it notices.
+    /// </summary>
     class HostileController : Controller
     {
         public HostileController(Creature creature) {}

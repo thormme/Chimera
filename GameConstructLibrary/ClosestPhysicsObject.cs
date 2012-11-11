@@ -6,10 +6,18 @@ using Microsoft.Xna.Framework;
 
 namespace GameConstructLibrary
 {
+    /// <summary>
+    /// Comparator used to sort objects by distance from a position.
+    /// </summary>
     class ClosestPhysicsObject : IComparer<PhysicsObject>
     {
         private Vector3 mPos;
 
+        /// <summary>
+        /// </summary>
+        /// <param name="pos">
+        /// The position to determine distance from.
+        /// </param>
         public ClosestPhysicsObject(Vector3 pos)
         {
             mPos = pos;

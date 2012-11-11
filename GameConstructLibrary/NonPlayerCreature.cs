@@ -8,6 +8,9 @@ using BEPUphysics.CollisionShapes;
 
 namespace GameConstructLibrary
 {
+    /// <summary>
+    /// Abstract class used for making NPCs.
+    /// </summary>
     abstract class NonPlayerCreature : Creature
     {
         private float mSneak;

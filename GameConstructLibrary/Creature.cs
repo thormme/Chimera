@@ -6,9 +6,13 @@ using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using BEPUphysics.CollisionShapes;
 using BEPUphysics.Constraints.TwoEntity.Joints;
+using BEPUphysics.Constraints.SingleEntity;
 
 namespace GameConstructLibrary
 {
+    /// <summary>
+    /// Abstract class for a creature. It is controlled by its controller.
+    /// </summary>
     abstract public class Creature : Actor
     {
         protected static float JumpVelocity = 50.0f;
@@ -30,11 +34,11 @@ namespace GameConstructLibrary
             : base(renderable, shape)
         {
             mSensor = radialSensor;
-            DistanceJoint joint = new DistanceJoint(this, radialSensor, new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f));
-            // TODO: pass joint into space
             mController = controller;
             controller.SetCreature(this);
-            throw new NotImplementedException("I have yet to pass joint into Space.");
+            MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
+            // Add this shit to world
+            throw new NotImplementedException("I haven't added that shit to the world.");
         }
 
         //abstract protected bool OnGround
@@ -47,8 +51,20 @@ namespace GameConstructLibrary
             get;
         }
 
+        /// <summary>
+        /// Called when the creature is damaged while it has no parts.
+        /// </summary>
         abstract protected void OnDeath();
 
+        /// <summary>
+        /// Uses the specified part.
+        /// </summary>
+        /// <param name="part">
+        /// The index into the list of parts.
+        /// </param>
+        /// <param name="direction">
+        /// The direction in which to use the part.
+        /// </param>
         public virtual void UsePart(int part, Vector3 direction)
         {
             if (part < mParts.Count())
@@ -65,6 +81,12 @@ namespace GameConstructLibrary
             }
         }
 
+        /// <summary>
+        /// Moves the creature in a direction corresponding to its facing direction.
+        /// </summary>
+        /// <param name="direction">
+        /// The direction to move relative to the facing direction.
+        /// </param>
         public virtual void Move(Vector2 direction)
         {
             Vector3 forward = Vector3.Multiply(Forward, direction.Y);
@@ -73,6 +95,12 @@ namespace GameConstructLibrary
             ApplyLinearImpulse(ref temp);
         }
 
+        /// <summary>
+        /// Damages the creature by removing parts.
+        /// </summary>
+        /// <param name="damage">
+        /// The amount of damage dealt.
+        /// </param>
         public virtual void Damage(int damage)
         {
             while (damage-- > 0)
@@ -87,9 +115,17 @@ namespace GameConstructLibrary
             }
         }
 
+        /// <summary>
+        /// Called every frame. 
+        /// </summary>
+        /// <param name="time">
+        /// The game time.
+        /// </param>
         public override void Update(GameTime time)
         {
             mController.Update(time, mSensor.CollidingCreatures);
+            // Need to set position of sensor
+            throw new NotImplementedException("Need to set position of sensor");
 
             foreach (Part p in mParts)
             {
