@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GraphicsLibrary
 {
-    class TerrainDescription
+    public class TerrainDescription
     {
         private TerrainHeightMap mTerrain;
         public TerrainHeightMap Terrain

@@ -9,10 +9,14 @@ namespace finalProject
 {
     // TODO: Add terrain
     // TODO: Add ability to add/remove objects during game.
+    /// <summary>
+    /// Manages the game world. Contains all loaded GameObjects and level chunks.
+    /// </summary>
     class World
     {
         List<IGameObject> mGameObjects;
         List<Actor> mActors;
+        //List<Terrain> mTerrains;
 
         public Space mSpace;
 
