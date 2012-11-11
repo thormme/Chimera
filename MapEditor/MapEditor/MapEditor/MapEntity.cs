@@ -5,6 +5,7 @@ using System.Text;
 using GameConstructLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using GraphicsLibrary;
 
 namespace MapEditor
 {

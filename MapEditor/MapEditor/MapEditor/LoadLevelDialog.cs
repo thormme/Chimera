@@ -14,6 +14,7 @@ using Nuclex.UserInterface.Controls;
 using Nuclex.UserInterface.Controls.Desktop;
 using System.IO;
 using GameConstructLibrary;
+using GraphicsLibrary;
 
 namespace MapEditor
 {

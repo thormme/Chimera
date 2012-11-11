@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using GraphicsLibrary;
 
 namespace GameConstructLibrary
 {
-    class SensitiveSensor : RadialSensor
+    public class SensitiveSensor : RadialSensor
     {
         private double mVisionAngle;
         private float mListeningSensitivity;
 
         public SensitiveSensor(
+            float radius,
             double visionAngle,
             float listeningSensitivity
-            )
+            ) : base(radius)
         {
             mVisionAngle = Math.Cos(visionAngle);
             mListeningSensitivity = listeningSensitivity;
         }
-        
-        public override void Collide(List<MyPhysicsObject> objects)
+
+        public override void Collide(List<PhysicsObject> objects)
         {
             base.Collide(objects);
 

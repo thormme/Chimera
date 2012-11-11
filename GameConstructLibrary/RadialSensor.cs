@@ -3,24 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using GraphicsLibrary;
+using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.CollisionShapes.ConvexShapes;
 
 namespace GameConstructLibrary
 {
-    public class RadialSensor : MyPhysicsObject
+    public class RadialSensor : PhysicsObject
     {
         protected List<Creature> mCollidingCreatures;
         public List<Creature>  CollidingCreatures { get { return mCollidingCreatures; } }
 
-        protected List<MyPhysicsObject> mCollidingProps;
-        public List<MyPhysicsObject> CollidingProps { get { return mCollidingProps; } }
+        protected List<PhysicsObject> mCollidingProps;
+        public List<PhysicsObject> CollidingProps { get { return mCollidingProps; } }
 
-        public virtual void Collide(List<MyPhysicsObject> objects)
+        public RadialSensor(float radius)
+            : base(null, new SphereShape(radius))
+        {}
+
+        public virtual void Collide(List<PhysicsObject> objects)
         {
             mCollidingCreatures.Clear();
             mCollidingProps.Clear();
 
-            mCollidingProps = new List<MyPhysicsObject>(objects);
-            foreach (MyPhysicsObject cur in objects)
+            mCollidingProps = new List<PhysicsObject>(objects);
+            foreach (PhysicsObject cur in objects)
             {
                 if (cur as Creature != null)
                 {

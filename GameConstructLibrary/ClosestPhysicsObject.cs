@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace GameConstructLibrary
 {
-    class ClosestPhysicsObject : IComparer<MyPhysicsObject>
+    class ClosestPhysicsObject : IComparer<PhysicsObject>
     {
         private Vector3 mPos;
 
@@ -15,7 +15,7 @@ namespace GameConstructLibrary
             mPos = pos;
         }
 
-        public int Compare(MyPhysicsObject x, MyPhysicsObject y)
+        public int Compare(PhysicsObject x, PhysicsObject y)
         {
             float xDist = Vector3.Subtract(x.Position, mPos).Length();
             float yDist = Vector3.Subtract(y.Position, mPos).Length();

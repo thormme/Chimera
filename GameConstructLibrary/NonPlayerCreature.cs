@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using GraphicsLibrary;
+using BEPUphysics.CollisionShapes;
 
 namespace GameConstructLibrary
 {
@@ -11,17 +13,23 @@ namespace GameConstructLibrary
         private float mSneak;
         public override float Sneak
         {
-            get { return mSneak; }
+            get
+            {
+                return mSneak;
+            }
         }
 
         NonPlayerCreature(
+            float sensitivityRadius,
+            Renderable renderable,
+            EntityShape shape,
             float visionAngle,
             float listeningSensitivity,
             float sneak,
             Part part
             )
+            : base(renderable, shape, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity))
         {
-            mSensor = new SensitiveSensor(visionAngle, listeningSensitivity);
             mSneak = sneak;
             mController = new HostileController(this);
             mParts.Add(part);
