@@ -13,7 +13,7 @@ namespace GameConstructLibrary
     /// <summary>
     /// Physical and visual representation of a terrain heightmap.
     /// </summary>
-    public class TerrainPhysics : Terrain
+    public class TerrainPhysics : Terrain, IGameObject
     {
         private TerrainRenderable mTerrainRenderable;
 
@@ -24,12 +24,16 @@ namespace GameConstructLibrary
         /// <param name="scale">The amount to scale the terrain</param>
         /// <param name="orientation">The orientation of the terrain.</param>
         /// <param name="translation">The position of the terrain.</param>
-        TerrainPhysics(String terrainName, float scale, Quaternion orientation, Vector3 translation)
+        public TerrainPhysics(String terrainName, float scale, Quaternion orientation, Vector3 translation)
             : base(
                 GraphicsManager.LookupTerrain(terrainName).Terrain.GetHeights(), 
                 new AffineTransform(new Vector3(scale), orientation, translation)
             )
         {
+            Position = translation;
+            XNAOrientationMatrix = Matrix.CreateFromQuaternion(orientation);
+            Scale = scale;
+
             mTerrainRenderable = new TerrainRenderable(terrainName);
         }
 
@@ -39,6 +43,24 @@ namespace GameConstructLibrary
         public void Render()
         {
             mTerrainRenderable.Render(WorldTransform.Matrix);
+        }
+
+        public Vector3 Position
+        {
+            get;
+            private set;
+        }
+
+        public Matrix XNAOrientationMatrix
+        {
+            get;
+            private set;
+        }
+
+        public float Scale
+        {
+            get;
+            private set;
         }
     }
 }

@@ -13,12 +13,14 @@ namespace GameConstructLibrary
     /// <summary>
     /// Base class for all game objects which will be affected by the physics simulation.
     /// </summary>
-    public class PhysicsObject : Entity, IGameObject
+    public class PhysicsObject : Entity, IMobileObject
     {
         public PhysicsObject(Renderable renderable, EntityShape shape)
             : base(shape)
         {
             mRenderable = renderable;
+            Scale = 1.0f;
+            BecomeDynamic(1.0f);
         }
 
         private Renderable mRenderable;
@@ -86,7 +88,7 @@ namespace GameConstructLibrary
         {
             if (mRenderable != null)
             {
-                mRenderable.Render(Position, XNAOrientationMatrix, Scale);
+                mRenderable.Render(WorldTransform);
             }
         }
     }
