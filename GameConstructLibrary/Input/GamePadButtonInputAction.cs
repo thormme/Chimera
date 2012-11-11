@@ -9,7 +9,6 @@ namespace GameConstructLibrary
 {
     public class GamePadButtonInputAction : InputAction
     {
-        ButtonAction mButtonAction;
         Buttons mButton;
 
         /// <summary>

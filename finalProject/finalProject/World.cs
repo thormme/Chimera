@@ -16,12 +16,9 @@ namespace finalProject
     {
         List<IGameObject> mGameObjects;
         List<Actor> mActors;
-        List<TerrainPhysics> mTerrain;
 
         List<IGameObject> mUncommittedGameObjectAdditions;
         List<IGameObject> mUncommittedGameObjectRemovals;
-        List<TerrainPhysics> mUncommittedTerrainAdditions;
-        List<TerrainPhysics> mUncommittedTerrainRemovals;
 
         public Space mSpace;
 
@@ -29,13 +26,10 @@ namespace finalProject
         {
             mGameObjects = new List<IGameObject>();
             mActors = new List<Actor>();
-            mTerrain = new List<TerrainPhysics>();
             mSpace = new Space();
 
             mUncommittedGameObjectAdditions = new List<IGameObject>();
             mUncommittedGameObjectRemovals = new List<IGameObject>();
-            mUncommittedTerrainAdditions = new List<TerrainPhysics>();
-            mUncommittedTerrainRemovals = new List<TerrainPhysics>();
 
             mSpace.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
         }
@@ -49,9 +43,9 @@ namespace finalProject
                 {
                     mActors.Add(gameObject as Actor);
                 }
-                if (gameObject is PhysicsObject)
+                if (gameObject is ISpaceObject)
                 {
-                    mSpace.Add(gameObject as PhysicsObject);
+                    mSpace.Add(gameObject as ISpaceObject);
                 }
             }
 
@@ -62,28 +56,14 @@ namespace finalProject
                 {
                     mActors.Remove(gameObject as Actor);
                 }
-                if (gameObject is PhysicsObject)
+                if (gameObject is ISpaceObject)
                 {
-                    mSpace.Remove(gameObject as PhysicsObject);
+                    mSpace.Remove(gameObject as ISpaceObject);
                 }
-            }
-
-            foreach (TerrainPhysics terrain in mUncommittedTerrainRemovals)
-            {
-                mTerrain.Add(terrain);
-                mSpace.Add(terrain);
-            }
-
-            foreach (TerrainPhysics terrain in mUncommittedTerrainRemovals)
-            {
-                mTerrain.Remove(terrain);
-                mSpace.Remove(terrain);
             }
 
             mUncommittedGameObjectAdditions.Clear();
             mUncommittedGameObjectRemovals.Clear();
-            mUncommittedTerrainAdditions.Clear();
-            mUncommittedTerrainRemovals.Clear();
         }
 
         public void Add(IGameObject gameObject)
@@ -94,16 +74,6 @@ namespace finalProject
         public void Remove(IGameObject gameObject)
         {
             mUncommittedGameObjectRemovals.Add(gameObject);
-        }
-
-        public void Add(TerrainPhysics terrain)
-        {
-            mUncommittedTerrainAdditions.Add(terrain);
-        }
-
-        public void Remove(TerrainPhysics terrain)
-        {
-            mUncommittedTerrainRemovals.Add(terrain);
         }
 
         public void Update(GameTime gameTime)
@@ -120,10 +90,6 @@ namespace finalProject
 
         public void Render()
         {
-            foreach (TerrainPhysics terrain in mTerrain)
-            {
-                terrain.Render();
-            }
             foreach (IGameObject gameObject in mGameObjects)
             {
                 gameObject.Render();
