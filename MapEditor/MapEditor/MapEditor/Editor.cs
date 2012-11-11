@@ -129,6 +129,8 @@ namespace MapEditor
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
             mModel.Render(new Vector3(0, 0, 0));
             mDummyLevel.Render();
 
