@@ -12,6 +12,7 @@ using Nuclex.Input;
 using Nuclex.UserInterface;
 using GameConstructLibrary;
 using GraphicsLibrary;
+using BEPUphysics;
 
 namespace MapEditor
 {
@@ -24,13 +25,14 @@ namespace MapEditor
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        private Space mSpace;
+
         private InputManager mInput;
         private GuiManager mGUI;
 
         private MapEditorDialog mMapEditorDialog;
 
         private Camera mCamera;
-        private MapEntity mMapEntity;
         private AnimateModel mModel;
         private DummyLevel mDummyLevel;
 
@@ -38,6 +40,9 @@ namespace MapEditor
         {
             
             graphics = new GraphicsDeviceManager(this);
+
+            mSpace = new Space();
+
             mInput = new InputManager(Services, Window.Handle);
             mGUI = new GuiManager(Services);
 
@@ -67,14 +72,12 @@ namespace MapEditor
 
             GraphicsManager.CelShading = true;
 
-            mDummyLevel = new DummyLevel(1000, 1000, graphics.GraphicsDevice);
-
             mMapEditorDialog = new MapEditorDialog(mainScreen, mDummyLevel);
             mCamera = new Camera(viewport);
             mCamera.Position = new Vector3(0, 40, -100);
             mCamera.Target = new Vector3(0, 40, 0);
 
-            mMapEntity = new MapEntity(mCamera, viewport);
+            mDummyLevel = new DummyLevel(1000, 1000, new MapEntity(mCamera, viewport, mSpace), graphics.GraphicsDevice);
 
             mModel = new AnimateModel("dude");
             mModel.PlayAnimation("Take 001");
@@ -114,8 +117,9 @@ namespace MapEditor
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            mSpace.Update(gameTime.ElapsedGameTime.Milliseconds);
+            mDummyLevel.Update(gameTime);
             mModel.Update(gameTime);
-            mMapEntity.Update(gameTime);
             GraphicsManager.Update(mCamera);
             
             base.Update(gameTime);

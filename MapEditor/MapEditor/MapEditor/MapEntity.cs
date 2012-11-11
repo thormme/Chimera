@@ -6,10 +6,12 @@ using GameConstructLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using BEPUphysics;
+using BEPUphysics.CollisionShapes;
 
 namespace MapEditor
 {
-    class MapEntity
+    public class MapEntity
     {
         
         private const float speed = 0.5f;
@@ -32,6 +34,7 @@ namespace MapEditor
         private MouseButtonInputAction mRightReleased;
 
         private Viewport mView;
+        private Space mSpace;
         private bool mPicking;
 
         private Camera mCamera;
@@ -39,7 +42,7 @@ namespace MapEditor
         private Vector2 mMovement;
         private Vector3 mOrientation;
 
-        public MapEntity(Camera camera, Viewport view)
+        public MapEntity(Camera camera, Viewport view, Space space)
         {
 
             mForward = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.W);
@@ -58,6 +61,7 @@ namespace MapEditor
             mRightReleased = new MouseButtonInputAction(0, InputAction.ButtonAction.Released, MouseButtonInputAction.MouseButton.Right);
 
             mView = view;
+            mSpace = space;
             mPicking = false;
 
             mCamera = camera;
@@ -126,8 +130,12 @@ namespace MapEditor
                 Vector3 farWorld = mView.Unproject(farScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
                 Vector3 projectionDirection = (farWorld - nearWorld);
                 projectionDirection.Normalize();
-                Console.WriteLine(projectionDirection.X + ", " + projectionDirection.Y + ", " + projectionDirection.Z);
 
+                Console.WriteLine(projectionDirection.X + ", " + projectionDirection.Y + ", " + projectionDirection.Z);
+                Ray ray = new Ray(mCamera.Position, projectionDirection);
+                RayCastResult result;
+
+                mSpace.RayCast(ray, out result);
             }
         }
 
