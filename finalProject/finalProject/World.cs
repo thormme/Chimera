@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using BEPUphysics;
 using Microsoft.Xna.Framework;
+using GameConstructLibrary;
 
 namespace finalProject
 {
