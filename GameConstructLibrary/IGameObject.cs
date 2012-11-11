@@ -7,6 +7,9 @@ using GraphicsLibrary;
 
 namespace GameConstructLibrary
 {
+    /// <summary>
+    /// Interface for all movable game objects.
+    /// </summary>
     public interface IGameObject
     {
         Vector3 Position
@@ -21,11 +24,11 @@ namespace GameConstructLibrary
             set;
         }
 
-        //float Scale
-        //{
-        //    get;
-        //    set;
-        //}
+        float Scale
+        {
+            get;
+            set;
+        }
 
         void Render();
     }

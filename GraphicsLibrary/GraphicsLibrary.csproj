@@ -142,9 +142,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkinnedEffect.cs" />
     <Compile Include="SkinningData.cs" />
-    <Compile Include="Terrain.cs" />
     <Compile Include="TerrainDescription.cs" />
     <Compile Include="TerrainHeightMap.cs" />
+    <Compile Include="TerrainRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

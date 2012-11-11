@@ -9,6 +9,9 @@ using BEPUphysics.CollisionShapes;
 
 namespace GameConstructLibrary
 {
+    /// <summary>
+    /// A type of physical object which has autonomy.
+    /// </summary>
     abstract public class Actor : PhysicsObject
     {
         public Actor(Renderable renderable, EntityShape shape)

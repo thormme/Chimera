@@ -98,6 +98,15 @@ namespace GraphicsLibrary
             Draw(worldTransforms);
         }
 
+        /// <summary>
+        /// Draws the IRenderable using the given world transform.
+        /// </summary>
+        /// <param name="worldTransform">Position of the object's center of mass in world coordinates.</param>
+        public void Render(Matrix worldTransform)
+        {
+            Draw(worldTransform);
+        }
+
         ///////////////////////////// Internal functions /////////////////////////////
 
         abstract protected void Draw(Matrix worldTransform);
