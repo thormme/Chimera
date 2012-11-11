@@ -5,6 +5,9 @@ using System.Text;
 
 namespace GameConstructLibrary
 {
+    /// <summary>
+    /// Gets a Random instance. This is used so we don't reseed a ton of times.
+    /// </summary>
     static public class Rand
     {
         static public Random rand = new Random();

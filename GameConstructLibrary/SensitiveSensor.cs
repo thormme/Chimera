@@ -7,11 +7,20 @@ using GraphicsLibrary;
 
 namespace GameConstructLibrary
 {
+    /// <summary>
+    /// Checks listening sensitivity and vision to find which creatures in the radius the sensor actually notices
+    /// </summary>
     public class SensitiveSensor : RadialSensor
     {
         private double mVisionAngle;
         private float mListeningSensitivity;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="radius"></param>
+        /// <param name="visionAngle"></param>
+        /// <param name="listeningSensitivity"></param>
         public SensitiveSensor(
             float radius,
             double visionAngle,
@@ -22,6 +31,12 @@ namespace GameConstructLibrary
             mListeningSensitivity = listeningSensitivity;
         }
 
+        /// <summary>
+        /// Prunes the list of colliding creatures to remove those that were not noticed through vision or hearing.
+        /// </summary>
+        /// <param name="objects">
+        /// A list of objects colliding with the radial sensor.
+        /// </param>
         public override void Collide(List<PhysicsObject> objects)
         {
             base.Collide(objects);
