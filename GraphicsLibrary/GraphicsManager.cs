@@ -1,9 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameConstructLibrary;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using GameConstructLibrary;
 
 namespace GraphicsLibrary
 {
@@ -150,16 +152,33 @@ namespace GraphicsLibrary
         }
 
         /// <summary>
+        /// Retrieves terrain from container.  Throws KeyNotFoundException if modelName does not exist in container.
+        /// </summary>
+        static public TerrainDescription LookupTerrain(string terrainName)
+        {
+            TerrainDescription result;
+            if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
+            {
+                return result;
+            }
+            throw new KeyNotFoundException("Unable to find model key: " + terrainName);
+        }
+
+        /// <summary>
         /// Renders Terrain.
         /// </summary>
         static public void RenderTerrain(string terrainName, Matrix worldTransforms)
         {
-            TerrainDescription heightmap;
-            if (!mUniqueTerrainLibrary.TryGetValue(terrainName, out heightmap))
-            {
-                throw new KeyNotFoundException("Unable to find terrain key: " + terrainName);
-            }
+            TerrainDescription heightmap = LookupTerrain(terrainName);
 
+            RenderTerrain(heightmap, worldTransforms);
+        }
+
+        /// <summary>
+        /// Renders Terrain.
+        /// </summary>
+        static public void RenderTerrain(TerrainDescription heightmap, Matrix worldTransforms)
+        {
             terrainShader.Texture = heightmap.TextureHigh;
 
             terrainShader.View = mView;
@@ -179,11 +198,11 @@ namespace GraphicsLibrary
             terrainShader.CurrentTechnique = terrainShader.Techniques["TerrainOutline"];
             terrainShader.CurrentTechnique.Passes[0].Apply();
             device.DrawIndexedPrimitives(
-                PrimitiveType.TriangleList, 
-                0, 
-                0, 
-                heightmap.Terrain.NumVertices, 
-                0, 
+                PrimitiveType.TriangleList,
+                0,
+                0,
+                heightmap.Terrain.NumVertices,
+                0,
                 heightmap.Terrain.NumIndices / 3);
 
             terrainShader.CurrentTechnique = terrainShader.Techniques["TerrainCelShade"];
