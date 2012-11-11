@@ -10,6 +10,9 @@ using BEPUphysics.CollisionShapes;
 
 namespace GameConstructLibrary
 {
+    /// <summary>
+    /// Base class for all game objects which will be affected by the physics simulation.
+    /// </summary>
     public class PhysicsObject : Entity, IGameObject
     {
         public PhysicsObject(Renderable renderable, EntityShape shape)
@@ -69,24 +72,21 @@ namespace GameConstructLibrary
             }
         }
 
-        /*public float Scale
+        /// <summary>
+        /// Scales the model.
+        /// // TODO: Investigate scaling the physics object
+        /// </summary>
+        public float Scale
         {
-            virtual get
-            {
-                return mPhysicsEntity.;
-
-            }
-            virtual set
-            {
-                mPhysicsEntity.Position = value;
-            }
-        }*/
+            get;
+            set;
+        }
 
         public virtual void Render()
         {
             if (mRenderable != null)
             {
-                mRenderable.Render(Position, XNAOrientationMatrix);
+                mRenderable.Render(Position, XNAOrientationMatrix, Scale);
             }
         }
     }

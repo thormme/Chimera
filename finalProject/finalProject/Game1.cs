@@ -21,7 +21,7 @@ namespace finalProject
 
         private Camera camera;
         private AnimateModel dude = null;
-        private Terrain testLevel = null;
+        private TerrainRenderable testLevel = null;
 
         private Vector3 dudePosition = new Vector3(0.0f, 0.0f, 0.0f);
         private Vector3 dudeOrientation = new Vector3(0.0f, 0.0f, 1.0f);
@@ -108,7 +108,7 @@ namespace finalProject
 
             if (testLevel == null)
             {
-                testLevel = new Terrain("test_level");
+                testLevel = new TerrainRenderable("test_level");
             }
 
             GraphicsManager.Update(camera);

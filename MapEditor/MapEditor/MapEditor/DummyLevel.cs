@@ -21,7 +21,7 @@ namespace MapEditor
     {
         
         private TerrainHeightMap mHeightMap;
-        private Terrain mTerrain;
+        private TerrainRenderable mTerrain;
         private List<DummyObject> mDummies;
         private LevelManager mLevelManager;
 
@@ -75,7 +75,7 @@ namespace MapEditor
             Console.WriteLine(file);
             // Load the height map
             mHeightMap = new TerrainHeightMap(file);
-            mTerrain = new Terrain(file);
+            mTerrain = new TerrainRenderable(file);
 
            // Load the rest of the level
             mDummies = mLevelManager.Load(file);
