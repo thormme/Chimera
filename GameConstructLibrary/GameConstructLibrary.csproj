@@ -132,28 +132,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
-    <Compile Include="ClosestPhysicsObject.cs" />
-    <Compile Include="Controller.cs" />
-    <Compile Include="Creature.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="IMobileObject.cs" />
     <Compile Include="Input\GamePadButtonInputAction.cs" />
     <Compile Include="Input\GamePadThumbStickInputAction.cs" />
     <Compile Include="Input\GamePadTriggerInputAction.cs" />
-    <Compile Include="HostileController.cs" />
     <Compile Include="Input\InputAction.cs" />
     <Compile Include="Input\KeyInputAction.cs" />
     <Compile Include="Input\MouseButtonInputAction.cs" />
     <Compile Include="Input\MouseMovementInputAction.cs" />
-    <Compile Include="NonPlayerCreature.cs" />
-    <Compile Include="Part.cs" />
     <Compile Include="PhysicsObject.cs" />
-    <Compile Include="PlayerController.cs" />
-    <Compile Include="PlayerCreature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RadialSensor.cs" />
-    <Compile Include="Rand.cs" />
-    <Compile Include="SensitiveSensor.cs" />
     <Compile Include="TerrainPhysics.cs" />
   </ItemGroup>
   <ItemGroup>
