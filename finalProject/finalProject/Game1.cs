@@ -19,7 +19,7 @@ namespace finalProject
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        public World mWorld;
+        static public World World;
 
         private Camera camera;
         private IMobileObject dude = null;
@@ -32,7 +32,7 @@ namespace finalProject
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            mWorld = new World();
+            World = new World();
 
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
         }
@@ -75,13 +75,13 @@ namespace finalProject
 
 
             dude = new PhysicsObject(dudeModel, new CapsuleShape(3.0f, 1.0f));
-            mWorld.Add(dude);
+            World.Add(dude);
 
-            mWorld.Add(mp = new PhysicsObject(dudeModel, new BoxShape(200.0f, 20.0f, 200.0f)));
+            World.Add(mp = new PhysicsObject(dudeModel, new BoxShape(200.0f, 20.0f, 200.0f)));
             mp.BecomeKinematic();
             mp.Position = new Vector3(0.0f, -70.0f, 0.0f);
 
-            mWorld.Add(new TerrainPhysics("test_level", 1.0f, new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
+            World.Add(new TerrainPhysics("test_level", 1.0f, new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace finalProject
             UpdateCamera(gameTime);
 
             // TODO: Add your update logic here
-            mWorld.Update(gameTime);
+            World.Update(gameTime);
             dudeModel.Update(gameTime);
 
             GraphicsManager.Update(camera);
@@ -125,7 +125,7 @@ namespace finalProject
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            mWorld.Render();
+            World.Render();
 
             base.Draw(gameTime);
         }
