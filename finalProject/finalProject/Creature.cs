@@ -37,9 +37,10 @@ namespace finalProject
             mSensor = radialSensor;
             mController = controller;
             controller.SetCreature(this);
+            Game1.World.Add(this);
             MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
-            // Add this shit to world
-            throw new NotImplementedException("I haven't added that shit to the world.");
+            // What do I do with this joint?
+            throw new NotImplementedException("Creature does not know what to do with the joint.");
         }
 
         //abstract protected bool OnGround

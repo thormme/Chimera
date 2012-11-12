@@ -22,16 +22,13 @@ namespace finalProject
             : base(renderable, shape)
         {
             mCreature = creature;
+            Game1.World.Add(this);
         }
 
-        /// <summary>
-        /// </summary>
-        /// <returns>
-        /// Returns true is this part is attached to a creature.
-        /// </returns>
-        virtual public bool IsAttached()
+        virtual public bool Attached
         {
-            return mAttached;
+            get;
+            set;
         }
 
         /// <summary>
