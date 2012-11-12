@@ -131,7 +131,7 @@ namespace MapEditor
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsManager.RenderToBackBuffer();
 
             mModel.Render(new Vector3(0, 0, 0));
             mDummyLevel.Render();

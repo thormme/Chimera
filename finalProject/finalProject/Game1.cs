@@ -122,11 +122,19 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsManager.RenderToShadowMap();
 
-            // TODO: Add your drawing code here
             testLevel.Render(new Vector3(0.0f, 0.0f, 0.0f));
             dude.Render(dudePosition, dudeOrientation);
+
+            GraphicsManager.RenderToBackBuffer();
+
+            testLevel.Render(new Vector3(0.0f, 0.0f, 0.0f));
+            dude.Render(dudePosition, dudeOrientation);
+
+            spriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+            spriteBatch.Draw(GraphicsManager.ShadowMap, new Rectangle(0, 0, 128, 128), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
