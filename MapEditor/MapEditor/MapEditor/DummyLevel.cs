@@ -26,7 +26,7 @@ namespace MapEditor
         private GraphicsDevice mGraphics;
         public GraphicsDevice Graphics { get { return mGraphics; } set { mGraphics = value; } }
         private TerrainHeightMap mHeightMap;
-        private Terrain mTerrain;
+        private TerrainRenderable mTerrain;
         private TerrainShape mTerrainShape;
         private List<DummyObject> mDummies;
         private LevelManager mLevelManager;
@@ -79,7 +79,7 @@ namespace MapEditor
         {
             // Load the height map
             mHeightMap = new TerrainHeightMap(file, mGraphics);
-            mTerrain = new Terrain(file);
+            mTerrain = new TerrainRenderable(file);
             mTerrainShape = new TerrainShape(mHeightMap.GetHeights());
 
            // Load the rest of the level

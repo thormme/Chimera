@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using System.Reflection;
 using System.Xml.Serialization;
 using GameConstructLibrary;
+using GraphicsLibrary;
 
 namespace MapEditor
 {

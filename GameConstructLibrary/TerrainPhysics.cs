@@ -26,7 +26,7 @@ namespace GameConstructLibrary
         /// <param name="translation">The position of the terrain.</param>
         public TerrainPhysics(String terrainName, float scale, Quaternion orientation, Vector3 translation)
             : base(
-                GraphicsManager.LookupTerrain(terrainName).Terrain.GetHeights(), 
+                GraphicsManager.LookupTerrainHeightMap(terrainName).GetHeights(), 
                 new AffineTransform(new Vector3(scale), orientation, translation)
             )
         {

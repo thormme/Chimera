@@ -126,6 +126,12 @@ namespace finalProject
 
             // TODO: Add your drawing code here
             World.Render();
+            dude.Render();
+
+            GraphicsManager.RenderToBackBuffer();
+
+            World.Render();
+            dude.Render();
 
             base.Draw(gameTime);
         }
