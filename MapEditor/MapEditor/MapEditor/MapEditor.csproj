@@ -94,6 +94,9 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BEPUphysics">
+      <HintPath>..\..\..\finalProject\finalProject\libraries\bepu\x86\Release\BEPUphysics.dll</HintPath>
+    </Reference>
     <Reference Include="LzmaSharp">
       <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\LzmaSharp.dll</HintPath>
     </Reference>
@@ -199,6 +202,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HeightMapEditorDialog.cs" />
     <Compile Include="MapEntity.cs" />
     <Compile Include="DummyLevel.cs" />
     <Compile Include="DummyObject.cs" />
@@ -210,7 +214,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Editor.cs" />
     <Compile Include="SaveLevelDialog.cs" />
-    <Compile Include="TerrainHeightMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

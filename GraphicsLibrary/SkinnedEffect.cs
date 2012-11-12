@@ -33,6 +33,8 @@ namespace GraphicsLibrary
             All = -1
         }
 
+        public bool CastingShadow = false;
+
         public const int MaxBones = 72;
 
         #region Effect Parameters
@@ -561,26 +563,29 @@ namespace GraphicsLibrary
         /// </summary>
         protected override void OnApply()
         {
-            // Recompute the world+view+projection matrix or fog vector?
-            dirtyFlags = SetWorldViewProjAndFog(dirtyFlags, ref world, ref view, ref projection, ref worldView, fogEnabled, fogStart, fogEnd, worldViewProjParam, fogVectorParam);
-
-            // Recompute the world inverse transpose and eye position?
-            dirtyFlags = SetLightingMatrices(dirtyFlags, ref world, ref view, worldParam, worldInverseTransposeParam, eyePositionParam);
-
-            // Recompute the diffuse/emissive/alpha material color parameters?
-            if ((dirtyFlags & EffectDirtyFlags.MaterialColor) != 0)
+            if (!CastingShadow)
             {
-                SetMaterialColor(true, alpha, ref diffuseColor, ref emissiveColor, ref ambientLightColor, diffuseColorParam, emissiveColorParam);
+                // Recompute the world+view+projection matrix or fog vector?
+                dirtyFlags = SetWorldViewProjAndFog(dirtyFlags, ref world, ref view, ref projection, ref worldView, fogEnabled, fogStart, fogEnd, worldViewProjParam, fogVectorParam);
 
-                dirtyFlags &= ~EffectDirtyFlags.MaterialColor;
-            }
+                // Recompute the world inverse transpose and eye position?
+                dirtyFlags = SetLightingMatrices(dirtyFlags, ref world, ref view, worldParam, worldInverseTransposeParam, eyePositionParam);
 
-            // Check if we can use the only-bother-with-the-first-light shader optimization.
-            bool newOneLight = !light1.Enabled && !light2.Enabled;
+                // Recompute the diffuse/emissive/alpha material color parameters?
+                if ((dirtyFlags & EffectDirtyFlags.MaterialColor) != 0)
+                {
+                    SetMaterialColor(true, alpha, ref diffuseColor, ref emissiveColor, ref ambientLightColor, diffuseColorParam, emissiveColorParam);
 
-            if (oneLight != newOneLight)
-            {
-                oneLight = newOneLight;
+                    dirtyFlags &= ~EffectDirtyFlags.MaterialColor;
+                }
+
+                // Check if we can use the only-bother-with-the-first-light shader optimization.
+                bool newOneLight = !light1.Enabled && !light2.Enabled;
+
+                if (oneLight != newOneLight)
+                {
+                    oneLight = newOneLight;
+                }
             }
         }
         #endregion

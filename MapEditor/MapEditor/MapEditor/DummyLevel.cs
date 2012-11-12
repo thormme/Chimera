@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.IO;
 using GraphicsLibrary;
+using GameConstructLibrary;
+using BEPUphysics.CollisionShapes;
 
 
 namespace MapEditor
@@ -19,34 +21,37 @@ namespace MapEditor
     /// </summary>
     public class DummyLevel
     {
-        
+        private MapEntity mMapEntity;
+        public MapEntity Entity { get { return mMapEntity; } set { mMapEntity = value; } }
+        private GraphicsDevice mGraphics;
+        public GraphicsDevice Graphics { get { return mGraphics; } set { mGraphics = value; } }
         private TerrainHeightMap mHeightMap;
-        private TerrainRenderable mTerrain;
+        private Terrain mTerrain;
+        private TerrainShape mTerrainShape;
         private List<DummyObject> mDummies;
         private LevelManager mLevelManager;
 
-        public DummyLevel(int width, int height)
+        public DummyLevel(int width, int height, MapEntity mapEntity, GraphicsDevice graphics)
         {
 
-            /*
-            mTerrain = new Terrain("test_level");
-            mHeightMap = new TerrainHeightMap(width, height);
-            mDummies = new List<DummyObject>();
-             */
             mLevelManager = new LevelManager();
-            
+            mMapEntity = mapEntity;
+            mGraphics = graphics;
 
             Load("default");
+            
+            DummyObject root = new DummyObject();
+            root.Type = "Root";
+            root.Position = new Vector3(0, 0, 0);
+            root.Orientation = new Vector3(0, 0, 0);
+            root.Scale = new Vector3(0, 0, 0);
+            Add(root);
 
-            /*
-            DummyObject trial = new DummyObject();
-            trial.Type = "Lion";
-            trial.Position = new Vector3(0, 0, 0);
-            trial.Orientation = new Vector3(0, 0, 0);
-            trial.Scale = new Vector3(0, 0, 0);
-            Add(trial);
-             */
+        }
 
+        public void Update(GameTime gameTime)
+        {
+            mMapEntity.Update(gameTime);
         }
 
         public void Add(DummyObject obj)
@@ -72,10 +77,10 @@ namespace MapEditor
 
         public void Load(string file)
         {
-            Console.WriteLine(file);
             // Load the height map
-            mHeightMap = new TerrainHeightMap(file);
-            mTerrain = new TerrainRenderable(file);
+            mHeightMap = new TerrainHeightMap(file, mGraphics);
+            mTerrain = new Terrain(file);
+            mTerrainShape = new TerrainShape(mHeightMap.GetHeights());
 
            // Load the rest of the level
             mDummies = mLevelManager.Load(file);

@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace GraphicsLibrary
+namespace GameConstructLibrary
 {
     public class TerrainHeightMap
     {
@@ -84,6 +84,7 @@ namespace GraphicsLibrary
         public TerrainHeightMap(string file, GraphicsDevice device)
         {
             mDevice = device;
+            Console.WriteLine(file);
             map = new Bitmap(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
             LoadData();
         }
@@ -225,7 +226,7 @@ namespace GraphicsLibrary
             // Redefine bitmap for permissions purposes
             Bitmap newMap = new Bitmap(map);
             map.Dispose();
-            newMap.Save(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file);
+            newMap.Save(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
 
             // Reassign map
             map = new Bitmap(newMap);

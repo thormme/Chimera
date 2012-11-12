@@ -1,3 +1,26 @@
+float4x4 lightWorld;
+float4x4 lightViewProjection;
+
+ShadowVSOutput ShadowCastVS(VSInput vin)
+{
+	ShadowVSOutput output;
+
+	output.PositionPS = mul(vin.Position, mul(lightWorld, lightViewProjection));
+	output.Depth = output.PositionPS.zw;
+
+	return output;
+}
+
+ShadowVSOutput TerrainShadowCastVS(TerrainVSInput vin)
+{
+	ShadowVSOutput output;
+
+	output.PositionPS = mul(vin.Position, mul(lightWorld, lightViewProjection));
+	output.Depth = output.PositionPS.z / output.PositionPS.w;
+
+	return output;
+}
+
 CelVSOutput CelShadeVS(VSInput vin)
 {
 	CelVSOutput output;
@@ -6,20 +29,20 @@ CelVSOutput CelShadeVS(VSInput vin)
     float3 eyeVector = normalize(EyePosition - pos_ws.xyz);
     float3 worldNormal = normalize(mul(vin.Normal, WorldInverseTranspose));
 
-    ColorPair lightResult = ComputeLights(eyeVector, worldNormal, 3);
+    ColorPair lightResult = ComputeLights(eyeVector, worldNormal);
     
     output.PositionPS = mul(vin.Position, WorldViewProj);
     output.Diffuse = float4(lightResult.Diffuse, DiffuseColor.a);
 	output.Specular = float4(lightResult.Specular, ComputeFogFactor(vin.Position));
 
-	output.LightAmount = dot(worldNormal, DirLight0Direction);
+	output.LightAmount = dot(worldNormal, xDirLightDirection);
 
 	output.TexCoord = vin.TexCoord;
 
 	return output;
 }
 
-float outlineThickness = 0.5f;
+float outlineThickness = 0.25f;
 
 OutlineVSOutput OutlineVS(VSInput vin)
 {
@@ -47,7 +70,7 @@ PhongVSOutput PhongVS(VSInput vin)
     float3 eyeVector = normalize(EyePosition - pos_ws.xyz);
     float3 worldNormal = normalize(mul(vin.Normal, WorldInverseTranspose));
 
-    ColorPair lightResult = ComputeLights(eyeVector, worldNormal, 1);
+    ColorPair lightResult = ComputeLights(eyeVector, worldNormal);
     
     output.PositionPS = mul(vin.Position, WorldViewProj);
     output.Diffuse = float4(lightResult.Diffuse, DiffuseColor.a);
@@ -56,6 +79,12 @@ PhongVSOutput PhongVS(VSInput vin)
     output.TexCoord = vin.TexCoord;
 
 	return output;
+}
+
+ShadowVSOutput SkinnedShadowCastVS(VSInput vin)
+{
+	Skin(vin);
+	return ShadowCastVS(vin);
 }
 
 CelVSOutput SkinnedCelShadeVS(VSInput vin)
@@ -84,13 +113,13 @@ CelVSOutput TerrainCelShadeVS(TerrainVSInput vin)
     float3 eyeVector = normalize(EyePosition - pos_ws.xyz);
     float3 worldNormal = normalize(mul(vin.Normal, WorldInverseTranspose));
 
-    ColorPair lightResult = ComputeLights(eyeVector, worldNormal, 3);
+    ColorPair lightResult = ComputeLights(eyeVector, worldNormal);
     
     output.PositionPS = mul(vin.Position, WorldViewProj);
     output.Diffuse = float4(lightResult.Diffuse, DiffuseColor.a);
 	output.Specular = float4(lightResult.Specular, ComputeFogFactor(vin.Position));
 
-	output.LightAmount = dot(worldNormal, DirLight0Direction);
+	output.LightAmount = dot(worldNormal, xDirLightDirection);
 
 	output.TexCoord = vin.TexCoord;
 
@@ -123,7 +152,7 @@ PhongVSOutput TerrainPhongVS(TerrainVSInput vin)
     float3 eyeVector = normalize(EyePosition - pos_ws.xyz);
     float3 worldNormal = normalize(mul(vin.Normal, WorldInverseTranspose));
 
-    ColorPair lightResult = ComputeLights(eyeVector, worldNormal, 1);
+    ColorPair lightResult = ComputeLights(eyeVector, worldNormal);
     
     output.PositionPS = mul(vin.Position, WorldViewProj);
     output.Diffuse = float4(lightResult.Diffuse, DiffuseColor.a);

@@ -5,6 +5,24 @@
 #include "VertexShaders.fxh"
 #include "PixelShaders.fxh"
 
+Technique SkinnedShadowCast
+{
+	Pass
+	{
+		VertexShader = compile vs_2_0 SkinnedShadowCastVS();
+		PixelShader  = compile ps_2_0 ShadowCastPS();
+	}
+}
+
+Technique ShadowCast
+{
+	Pass
+	{
+		VertexShader = compile vs_2_0 ShadowCastVS();
+		PixelShader  = compile ps_2_0 ShadowCastPS();
+	}
+}
+
 Technique SkinnedCelShade
 {
 	Pass
@@ -56,6 +74,15 @@ Technique Phong
 	{
 		VertexShader = compile vs_2_0 PhongVS();
 		PixelShader  = compile ps_2_0 PhongPS();
+	}
+}
+
+Technique TerrainShadowCast
+{
+	Pass
+	{
+		VertexShader = compile vs_2_0 TerrainShadowCastVS();
+		PixelShader  = compile ps_2_0 ShadowCastPS();
 	}
 }
 

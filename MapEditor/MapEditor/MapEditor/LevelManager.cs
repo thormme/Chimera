@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using System.Reflection;
 using System.Xml.Serialization;
 using GameConstructLibrary;
-using GraphicsLibrary;
 
 namespace MapEditor
 {
@@ -29,6 +28,7 @@ namespace MapEditor
 
         public void Save(string file, List<DummyObject> objects)
         {
+            Console.WriteLine(objects.Count());
             writer = new StreamWriter(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/" + file);
             foreach (DummyObject obj in objects)
             {
