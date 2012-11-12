@@ -13,6 +13,12 @@ struct VSInput
 	float4 Weights  : BLENDWEIGHT0;
 };
 
+struct ShadowVSOutput
+{
+	float2 Depth      : TEXCOORD0;
+	float4 PositionPS : SV_Position;
+};
+
 struct CelVSOutput
 {
 	float4 Diffuse     : COLOR0;

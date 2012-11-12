@@ -8,6 +8,11 @@ sampler TexSampler = sampler_state
 	AddressV  = Wrap;
 };
 
+float4 ShadowCastPS(ShadowVSOutput pin) : SV_Target0
+{
+	return float4(pin.Depth.x / pin.Depth.y, 0.0f, 0.0f, 1.0f);
+}
+
 float discretePallete = 0.1f;
 
 float4 CelShadePS(CelVSOutput pin) : SV_Target0
