@@ -19,7 +19,7 @@ namespace GameConstructLibrary
             : base(shape)
         {
             mRenderable = renderable;
-            Scale = 1.0f;
+            Scale = new Vector3(1.0f);
             BecomeDynamic(1.0f);
         }
 
@@ -78,7 +78,7 @@ namespace GameConstructLibrary
         /// Scales the model.
         /// // TODO: Investigate scaling the physics object
         /// </summary>
-        public float Scale
+        public Vector3 Scale
         {
             get;
             set;

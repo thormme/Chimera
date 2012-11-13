@@ -24,15 +24,15 @@ namespace GameConstructLibrary
         /// <param name="scale">The amount to scale the terrain</param>
         /// <param name="orientation">The orientation of the terrain.</param>
         /// <param name="translation">The position of the terrain.</param>
-        public TerrainPhysics(String terrainName, float scale, Quaternion orientation, Vector3 translation)
+        public TerrainPhysics(String terrainName, Vector3 scale, Quaternion orientation, Vector3 translation)
             : base(
                 GraphicsManager.LookupTerrainHeightMap(terrainName).GetHeights(), 
-                new AffineTransform(new Vector3(scale*1000.0f, 1.0f, 1000.0f), orientation, translation)
+                new AffineTransform(scale, orientation, translation)
             )
         {
             Position = translation;
             XNAOrientationMatrix = Matrix.CreateFromQuaternion(orientation);
-            Scale = scale/100.0f;
+            Scale = scale;
 
             mTerrainRenderable = new TerrainRenderable(terrainName);
         }
@@ -57,7 +57,7 @@ namespace GameConstructLibrary
             private set;
         }
 
-        public float Scale
+        public Vector3 Scale
         {
             get;
             private set;

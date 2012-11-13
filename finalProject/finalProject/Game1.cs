@@ -9,6 +9,9 @@ using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysicsDrawer;
 using BEPUphysicsDrawer.Models;
+using System;
+using BEPUphysics.MathExtensions;
+using BEPUphysics.Collidables;
 
 namespace finalProject
 {
@@ -84,18 +87,45 @@ namespace finalProject
             dude.Position = new Vector3(dude.Position.X, 0.0f, dude.Position.Z);
             (dude as PhysicsObject).BecomeKinematic();
 
-            Capsule cap = new Capsule(new Vector3(0, 30, 0), 100f, 30f, 1.0f);
+            Capsule cap = new Capsule(new Vector3(0, 50, 0), 100f, 30f, 1.0f);
             World.mSpace.Add(cap);
             mModelDrawer.Add(cap);
 
             //World.Add(mp = new PhysicsObject(dudeModel, new BoxShape(200.0f, 20.0f, 200.0f)));
             //mp.BecomeKinematic();
             //mp.Position = new Vector3(0.0f, -90.0f, 0.0f);
+            int xLength = 180;
+            int zLength = 180;
 
-            TerrainPhysics terr = new TerrainPhysics("test_level", 10000.0f , new Quaternion(), new Vector3(0.0f, 0.0f, 0.0f));
+            float xSpacing = 8f;
+            float zSpacing = 8f;
+            var heights = GraphicsManager.LookupTerrainHeightMap("test_level").GetHeights();
+            //Create the terrain.
+            var terrain = new Terrain(heights, new AffineTransform(
+                    new Vector3(xSpacing, 1, zSpacing),
+                    new Quaternion(),
+                    new Vector3(-xLength * xSpacing / 2, 100, -zLength * zSpacing / 2)));
+
+            //terrain.Thickness = 5; //Uncomment this and shoot some things at the bottom of the terrain! They'll be sucked up through the ground.
+
+            //World.mSpace.Add(terrain);
+
+
+
+
+            //mModelDrawer.Add(terrain);
+
+
+
+            TerrainPhysics terr = new TerrainPhysics("test_level", 
+                    new Vector3(xSpacing, 1, zSpacing),
+                    new Quaternion(),
+                    new Vector3(-xLength * xSpacing / 2, -100, -zLength * zSpacing / 2));
             terr.Thickness = 5;
-            World.Add(terr);
-            mModelDrawer.Add(terr);
+            World.mSpace.Add(terr);
+            World.mSpace.Add(new Terrain(terr.Shape, terr.WorldTransform));
+            
+            mModelDrawer.Add(new Terrain(terr.Shape, terr.WorldTransform));
         }
 
         /// <summary>
