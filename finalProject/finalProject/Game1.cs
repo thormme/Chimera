@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes.ConvexShapes;
+using BEPUphysicsDrawer;
+using BEPUphysicsDrawer.Models;
 
 namespace finalProject
 {
@@ -20,6 +22,7 @@ namespace finalProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         static public World World;
+        ModelDrawer mModelDrawer;
 
         private Camera camera;
         private IMobileObject dude = null;
@@ -64,6 +67,7 @@ namespace finalProject
         /// </summary>
         protected override void LoadContent()
         {
+            mModelDrawer = new InstancedModelDrawer(this);
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -73,15 +77,25 @@ namespace finalProject
             dudeModel = new AnimateModel("dude");
             dudeModel.PlayAnimation("Take 001");
 
+            //World.Add(new PhysicsObject(new InanimateModel("dude"), new BoxShape(1.0f, 1.0f, 1.0f)));
 
-            dude = new PhysicsObject(dudeModel, new CapsuleShape(3.0f, 1.0f));
+            dude = new PhysicsObject(dudeModel, new CapsuleShape(100.0f, 100.0f));
             World.Add(dude);
+            dude.Position = new Vector3(dude.Position.X, 0.0f, dude.Position.Z);
+            (dude as PhysicsObject).BecomeKinematic();
 
-            World.Add(mp = new PhysicsObject(dudeModel, new BoxShape(200.0f, 20.0f, 200.0f)));
-            mp.BecomeKinematic();
-            mp.Position = new Vector3(0.0f, -70.0f, 0.0f);
+            Capsule cap = new Capsule(new Vector3(0, 30, 0), 100f, 30f, 1.0f);
+            World.mSpace.Add(cap);
+            mModelDrawer.Add(cap);
 
-            World.Add(new TerrainPhysics("test_level", 1.0f, new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
+            //World.Add(mp = new PhysicsObject(dudeModel, new BoxShape(200.0f, 20.0f, 200.0f)));
+            //mp.BecomeKinematic();
+            //mp.Position = new Vector3(0.0f, -90.0f, 0.0f);
+
+            TerrainPhysics terr = new TerrainPhysics("test_level", 10000.0f , new Quaternion(), new Vector3(0.0f, 0.0f, 0.0f));
+            terr.Thickness = 5;
+            World.Add(terr);
+            mModelDrawer.Add(terr);
         }
 
         /// <summary>
@@ -112,6 +126,7 @@ namespace finalProject
             dudeModel.Update(gameTime);
 
             GraphicsManager.Update(camera);
+            mModelDrawer.Update();
 
             base.Update(gameTime);
         }
@@ -122,7 +137,7 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsManager.RenderToShadowMap();
+            /*GraphicsManager.RenderToShadowMap();
 
             // TODO: Add your drawing code here
             World.Render();
@@ -131,7 +146,9 @@ namespace finalProject
             GraphicsManager.RenderToBackBuffer();
 
             World.Render();
-            dude.Render();
+            dude.Render();*/
+
+            mModelDrawer.Draw(camera.ViewTransform, camera.ProjectionTransform);
 
             base.Draw(gameTime);
         }
@@ -220,7 +237,7 @@ namespace finalProject
 
             bool reset = true;
 
-            /*if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
                 if (dudeControlToggle == true)
                 {
@@ -270,7 +287,7 @@ namespace finalProject
                     camera.PanYaw(-0.1f * time);
                     reset = false;
                 }
-            }*/
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {

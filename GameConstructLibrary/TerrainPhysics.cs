@@ -27,12 +27,12 @@ namespace GameConstructLibrary
         public TerrainPhysics(String terrainName, float scale, Quaternion orientation, Vector3 translation)
             : base(
                 GraphicsManager.LookupTerrainHeightMap(terrainName).GetHeights(), 
-                new AffineTransform(new Vector3(scale), orientation, translation)
+                new AffineTransform(new Vector3(scale*1000.0f, 1.0f, 1000.0f), orientation, translation)
             )
         {
             Position = translation;
             XNAOrientationMatrix = Matrix.CreateFromQuaternion(orientation);
-            Scale = scale;
+            Scale = scale/100.0f;
 
             mTerrainRenderable = new TerrainRenderable(terrainName);
         }
@@ -42,7 +42,7 @@ namespace GameConstructLibrary
         /// </summary>
         public void Render()
         {
-            mTerrainRenderable.Render(WorldTransform.Matrix);
+            mTerrainRenderable.Render(Position, XNAOrientationMatrix, Scale);
         }
 
         public Vector3 Position

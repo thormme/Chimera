@@ -341,14 +341,29 @@ namespace GraphicsLibrary
         /// </summary>
         static private void CastShadowMesh(ModelMesh mesh, string techniqueName, Matrix[] boneTransforms, Matrix worldTransforms)
         {
-            foreach (SkinnedEffect effect in mesh.Effects)
+            foreach (Effect effect in mesh.Effects)
             {
-                effect.CurrentTechnique = effect.Techniques[techniqueName];
+                EffectTechnique technique = effect.Techniques[techniqueName];
 
-                effect.SetBoneTransforms(boneTransforms);
+                if (technique != null)
+                {
+                    effect.CurrentTechnique = technique;
+                }
 
-                effect.Parameters["lightViewProjection"].SetValue(mLightTransform);
-                effect.Parameters["lightWorld"].SetValue(worldTransforms);
+                if (effect is SkinnedEffect)
+                {
+                    (effect as SkinnedEffect).SetBoneTransforms(boneTransforms);
+                }
+                EffectParameter parameter = effect.Parameters["lightViewProjection"];
+                if (parameter != null)
+                {
+                    parameter.SetValue(mLightTransform);
+                }
+                parameter = effect.Parameters["lightWorld"];
+                if (parameter != null)
+                {
+                    parameter.SetValue(worldTransforms);
+                }
             }
 
             mesh.Draw();
@@ -359,23 +374,43 @@ namespace GraphicsLibrary
         /// </summary>
         static private void DrawMesh(ModelMesh mesh, string techniqueName, Matrix[] boneTransforms, Matrix worldTransforms)
         {
-            foreach (SkinnedEffect effect in mesh.Effects)
+            foreach (Effect effect in mesh.Effects)
             {
-                effect.CurrentTechnique = effect.Techniques[techniqueName];
-                
-                effect.SetBoneTransforms(boneTransforms);
+                EffectTechnique technique = effect.Techniques[techniqueName];
 
-                effect.View = mView;
-                effect.Projection = mProjection;
+                if (technique != null)
+                {
+                    effect.CurrentTechnique = technique;
+                }
 
-                effect.Parameters["xDirLightDirection"].SetValue(mDirLight.Direction);
-                effect.Parameters["xDirLightDiffuseColor"].SetValue(mDirLight.DiffuseColor);
-                effect.Parameters["xDirLightSpecularColor"].SetValue(mDirLight.SpecularColor);
+                EffectParameter parameter = effect.Parameters["xDirLightDirection"];
+                if (parameter != null)
+                {
+                    parameter.SetValue(mDirLight.Direction);
+                }
+                parameter = effect.Parameters["xDirLightDiffuseColor"];
+                if (parameter != null)
+                {
+                    parameter.SetValue(mDirLight.DiffuseColor);
+                }
+                parameter = effect.Parameters["xDirLightSpecularColor"];
+                if (parameter != null)
+                {
+                    parameter.SetValue(mDirLight.SpecularColor);
+                }
 
-                effect.SpecularColor = new Vector3(0.25f);
-                effect.SpecularPower = 16;
+                if (effect is SkinnedEffect)
+                {
+                    (effect as SkinnedEffect).SetBoneTransforms(boneTransforms);
 
-                effect.World = worldTransforms;
+                    (effect as SkinnedEffect).View = mView;
+                    (effect as SkinnedEffect).Projection = mProjection;
+
+                    (effect as SkinnedEffect).SpecularColor = new Vector3(0.25f);
+                    (effect as SkinnedEffect).SpecularPower = 16;
+
+                    (effect as SkinnedEffect).World = worldTransforms;
+                }
             }
             mesh.Draw();
         }
