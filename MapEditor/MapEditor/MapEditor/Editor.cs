@@ -81,7 +81,6 @@ namespace MapEditor
             mMapEditorDialog = new MapEditorDialog(mainScreen, mDummyLevel);
             mDummyLevel.MapEditor = mMapEditorDialog;
 
-
             mModel = new AnimateModel("dude");
             mModel.PlayAnimation("Take 001");
 
