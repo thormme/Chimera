@@ -12,9 +12,13 @@ using Microsoft.Xna.Framework.Media;
 using Nuclex.UserInterface;
 using Nuclex.UserInterface.Controls;
 using Nuclex.UserInterface.Controls.Desktop;
+using GameConstructLibrary;
 
 namespace MapEditor
 {
+
+    public enum States { None, Height, Object };
+
     /// <summary>
     /// Creates a map editor menu
     /// </summary>
@@ -24,8 +28,11 @@ namespace MapEditor
         private DummyLevel mDummyLevel;
         public DummyLevel DummyLevel { get { return mDummyLevel; } set { mDummyLevel = value; } }
 
+        public States State { get { return mState; } set { mState = value; } }
+        private States mState;
+
         private HeightMapEditorDialog mHeightMapEditorDialog;
-        //private ObjectEditorDialog mObjectEditorDialog;
+        private ObjectEditorDialog mObjectEditorDialog;
 
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mEditHeightsButton;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mEditObjectsButton;
@@ -42,9 +49,9 @@ namespace MapEditor
 
             mHeightMapEditorDialog = new HeightMapEditorDialog(this);
             mMainScreen.Desktop.Children.Add(mHeightMapEditorDialog);
-            mHeightMapEditorDialog.Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
 
-            //mObjectEditorDialog = new ObjectEditorDialog(this);
+            mObjectEditorDialog = new ObjectEditorDialog(this);
+            mMainScreen.Desktop.Children.Add(mObjectEditorDialog);
 
             InitializeComponent();
         }
@@ -86,7 +93,7 @@ namespace MapEditor
             mLoadButton.Bounds = new UniRectangle(new UniScalar(0.0f, 200.0f), new UniScalar(1.0f, -40.0f), 80, 24);
             mLoadButton.Pressed += delegate(object sender, EventArgs arguments) { LoadClicked(sender, arguments); };
 
-            Bounds = new UniRectangle(10.0f, 10.0f, 300.0f, 160.0f);
+            Done();
 
             // Add components to GUI
             Children.Add(mEditHeightsButton);
@@ -99,19 +106,55 @@ namespace MapEditor
 
         #endregion // Not component designer generated code
 
+        public void Done()
+        {
+            Bounds = new UniRectangle(10.0f, 10.0f, 300.0f, 160.0f);
+            mHeightMapEditorDialog.Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
+            mObjectEditorDialog.Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
+            mState = States.None;
+        }
+
         public bool GetInputs(out int size, out int intensity, out bool set)
         {
             return mHeightMapEditorDialog.GetInputs(out size, out intensity, out set);
         }
 
+        public void Disable()
+        {
+            Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
+            mHeightMapEditorDialog.Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
+            mObjectEditorDialog.Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
+            mMainScreen.FocusedControl = this;
+        }
+
+        public void Enable()
+        {
+            if (mState == States.None)
+            {
+                Bounds = new UniRectangle(10.0f, 10.0f, 300.0f, 160.0f);
+            }
+            else if (mState == States.Height)
+            {
+                mHeightMapEditorDialog.HeightsEnable();
+            }
+            else if (mState == States.Object)
+            {
+                mObjectEditorDialog.ObjectsEnable();
+            }
+        }
+
         private void HeightClicked(object sender, EventArgs arguments)
         {
-            mHeightMapEditorDialog.Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 170.0f);
+            mState = States.Height;
+            Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
+            mHeightMapEditorDialog.HeightsEnable();
         }
 
         private void ObjectClicked(object sender, EventArgs arguments)
         {
-            
+            mState = States.Object;
+            Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
+            mObjectEditorDialog.ObjectsEnable();
         }
 
         private void NewClicked(object sender, EventArgs arguments)

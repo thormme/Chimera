@@ -39,7 +39,8 @@ namespace GameConstructLibrary
             set { this.mDevice = value; }
         }
 
-        Bitmap map;
+        private Bitmap mMap;
+        private Vector2 mSize;
 
         const int vertexSpacing = 1;
         VertexPositionColorNormal[] vertices;
@@ -75,8 +76,9 @@ namespace GameConstructLibrary
         public TerrainHeightMap(int width, int height, GraphicsDevice device)
         {
             mDevice = device;
-            map = new Bitmap(width, height);
-            LoadData();
+            mMap = new Bitmap(width, height);
+            mSize = new Vector2(mMap.Width, mMap.Height);
+            LoadData(true);
         }
 
         /// <summary>
@@ -85,46 +87,52 @@ namespace GameConstructLibrary
         public TerrainHeightMap(string file, GraphicsDevice device)
         {
             mDevice = device;
-            Console.WriteLine(file);
-            map = new Bitmap(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
-            LoadData();
+            mMap = new Bitmap(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
+            mSize = new Vector2(mMap.Width, mMap.Height);
+            LoadData(false);
         }
 
-        public void LoadData()
+        public void LoadData(bool resized)
         {
-            MakeVertices();
+            MakeVertices(resized);
             MakeIndices();
-
             CalculateNormals();
-
             MakeBuffer();
         }
 
-        private void MakeVertices()
+        private void MakeVertices(bool resized)
         {
-            vertices = new VertexPositionColorNormal[map.Width * map.Height];
-            for (int x = 0; x < map.Width; x++)
+            vertices = new VertexPositionColorNormal[(int)mSize.X * (int)mSize.Y];
+            for (int x = 0; x < (int)mSize.X; x++)
             {
-                for (int z = 0; z < map.Height; z++)
+                for (int z = 0; z < (int)mSize.Y; z++)
                 {
-                    vertices[x + z * map.Width].Position = new Vector3(x - map.Width / 2, map.GetPixel(x, z).R, z - map.Height / 2);
-                    vertices[x + z * map.Width].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                    if (resized)
+                    {
+                        vertices[x + z * (int)mSize.X].Position = new Vector3(x - (int)mSize.X / 2, 0, z - (int)mSize.Y / 2);
+                        vertices[x + z * (int)mSize.X].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                    }
+                    else
+                    {
+                        vertices[x + z * (int)mSize.X].Position = new Vector3(x - (int)mSize.X / 2, mMap.GetPixel(x, z).R, z - (int)mSize.Y / 2);
+                        vertices[x + z * (int)mSize.X].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                    }
                 }
             }
         }
 
         private void MakeIndices()
         {
-            indices = new int[(map.Width - 1) * (map.Height - 1) * 6];
+            indices = new int[((int)mSize.X - 1) * ((int)mSize.Y - 1) * 6];
             int counter = 0;
-            for (int z = 0; z < map.Height - 1; z++)
+            for (int z = 0; z < (int)mSize.Y - 1; z++)
             {
-                for (int x = 0; x < map.Width - 1; x++)
+                for (int x = 0; x < (int)mSize.X - 1; x++)
                 {
-                    int lowerLeft = x + z * map.Width;
-                    int lowerRight = (x + 1) + z * map.Width;
-                    int topLeft = x + (z + 1) * map.Width;
-                    int topRight = (x + 1) + (z + 1) * map.Width;
+                    int lowerLeft = x + z * (int)mSize.X;
+                    int lowerRight = (x + 1) + z * (int)mSize.X;
+                    int topLeft = x + (z + 1) * (int)mSize.X;
+                    int topRight = (x + 1) + (z + 1) * (int)mSize.X;
 
                     // Make first triangle
                     indices[counter++] = topLeft;
@@ -178,59 +186,80 @@ namespace GameConstructLibrary
 
         public void ModifyVertices(Vector3 position, int size, int intensity, bool setHeight)
         {
+
             Vector3 vertexPosition = position / vertexSpacing;
             for (int x = (int)(vertexPosition.X - size); x < (int)(vertexPosition.X + size); x++)
             {
                 for (int z = (int)(vertexPosition.Z - size); z < (int)(vertexPosition.Z + size); z++)
                 {
-                    int currentPixel = x + z * map.Width;
-                    if (currentPixel >= 0 && currentPixel <= map.Width * map.Height)
+                    int currentPixel = x + z * (int)mSize.X;
+                    if (currentPixel >= 0 && currentPixel <= (int)mSize.X * (int)mSize.Y)
                     {
-                        if (setHeight)
+                        try
                         {
-                            vertices[currentPixel].Position.Y = intensity;
+                            if (setHeight)
+                            {
+                                vertices[currentPixel].Position.Y = intensity;
+                            }
+                            else
+                            {
+                                vertices[currentPixel].Position.Y += intensity;
+                            }
                         }
-                        else
+                        catch (SystemException)
                         {
-                            vertices[currentPixel].Position.Y += intensity;
+
                         }
                     }
                 }
             }
+            CalculateNormals();
+            MakeBuffer();
         }
 
         public Single[,] GetHeights()
         {
-            Single[,] heights = new Single[map.Width, map.Height];
-            for (int x = 0; x < map.Width; x++)
+            Single[,] heights = new Single[(int)mSize.X, (int)mSize.Y];
+            for (int x = 0; x < (int)mSize.X; x++)
             {
-                for (int z = 0; z < map.Height; z++)
+                for (int z = 0; z < (int)mSize.Y; z++)
                 {
-                    heights[x, z] = (Single)(vertices[x + z * map.Width].Position.Y);
+                    heights[x, z] = (Single)(vertices[x + z * (int)mSize.X].Position.Y);
                 }
             }
 
             return heights;
         }
 
+        public void Resize(int width, int height)
+        {
+
+            mSize.X = width;
+            mSize.Y = height;
+            LoadData(true);
+        }
+
         public void Save(string file)
         {
-            // Update map with modifications
-            for (int x = 0; x < map.Width; x++)
+
+            mMap = new Bitmap(mMap, new Size((int)mSize.X, (int)mSize.Y));
+
+            // Update mMap with modifications
+            for (int x = 0; x < (int)mSize.X; x++)
             {
-                for (int z = 0; z < map.Height; z++)
+                for (int z = 0; z < (int)mSize.Y; z++)
                 {
-                    map.SetPixel(x, z, System.Drawing.Color.FromArgb((int)(vertices[x + z * map.Width].Position.Y), 0, 0));
+                    mMap.SetPixel(x, z, System.Drawing.Color.FromArgb((int)(vertices[x + z * (int)mSize.X].Position.Y), 0, 0));
                 }
             }
 
             // Redefine bitmap for permissions purposes
-            Bitmap newMap = new Bitmap(map);
-            map.Dispose();
+            Bitmap newMap = new Bitmap(mMap);
+            mMap.Dispose();
             newMap.Save(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
 
-            // Reassign map
-            map = new Bitmap(newMap);
+            // Reassign mMap
+            mMap = new Bitmap(newMap);
             newMap.Dispose();
         }
     }
