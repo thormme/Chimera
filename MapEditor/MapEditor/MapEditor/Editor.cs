@@ -72,12 +72,14 @@ namespace MapEditor
 
             GraphicsManager.CelShading = true;
 
-            mMapEditorDialog = new MapEditorDialog(mainScreen, mDummyLevel);
+            
             mCamera = new Camera(viewport);
             mCamera.Position = new Vector3(0, 40, -100);
             mCamera.Target = new Vector3(0, 40, 0);
 
-            mDummyLevel = new DummyLevel(1000, 1000, new MapEntity(mCamera, viewport, mSpace), graphics.GraphicsDevice);
+            mDummyLevel = new DummyLevel(new MapEntity(mCamera, viewport, mSpace), graphics.GraphicsDevice);
+            mMapEditorDialog = new MapEditorDialog(mainScreen, mDummyLevel);
+            mDummyLevel.MapEditor = mMapEditorDialog;
 
             mModel = new AnimateModel("dude");
             mModel.PlayAnimation("Take 001");

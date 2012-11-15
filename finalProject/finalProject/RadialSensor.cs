@@ -29,7 +29,7 @@ namespace finalProject
         /// The radius of the RadialSensor's sphere.
         /// </param>
         public RadialSensor(float radius)
-            : base(null, new SphereShape(radius))
+            : base(null, new Sphere(new Vector3(0), radius))
         {
             this.CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;
             Game1.World.Add(this);

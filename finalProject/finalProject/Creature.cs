@@ -8,6 +8,7 @@ using BEPUphysics.CollisionShapes;
 using BEPUphysics.Constraints.TwoEntity.Joints;
 using BEPUphysics.Constraints.SingleEntity;
 using GameConstructLibrary;
+using BEPUphysics.Entities;
 
 namespace finalProject
 {
@@ -39,8 +40,8 @@ namespace finalProject
             }
         }
 
-        public Creature(Vector3 position, Renderable renderable, EntityShape shape, RadialSensor radialSensor, Controller controller)
-            : base(renderable, shape)
+        public Creature(Vector3 position, Renderable renderable, Entity entity, RadialSensor radialSensor, Controller controller)
+            : base(renderable, entity)
         {
             Position = position;
             Forward = new Vector3(1.0f, 0.0f, 0.0f);
@@ -94,7 +95,7 @@ namespace finalProject
         {
             if (OnGround)
             {
-                LinearVelocity = Vector3.Add(JumpVector, LinearVelocity);
+                Entity.LinearVelocity = Vector3.Add(JumpVector, Entity.LinearVelocity);
             }
         }
 

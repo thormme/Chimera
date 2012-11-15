@@ -13,14 +13,13 @@ namespace GameConstructLibrary
     /// <summary>
     /// Base class for all game objects which will be affected by the physics simulation.
     /// </summary>
-    public class PhysicsObject : Entity, IMobileObject
+    public class PhysicsObject : IMobileObject, IEntityOwner
     {
-        public PhysicsObject(Renderable renderable, EntityShape shape)
-            : base(shape)
+        public PhysicsObject(Renderable renderable, Entity entity)
         {
             mRenderable = renderable;
             Scale = 1.0f;
-            BecomeDynamic(1.0f);
+            Entity = entity;
         }
 
         private Renderable mRenderable;
@@ -30,15 +29,15 @@ namespace GameConstructLibrary
             get
             {
                 return new Matrix(
-                    OrientationMatrix.M11, OrientationMatrix.M12, OrientationMatrix.M13, 1.0f,
-                    OrientationMatrix.M21, OrientationMatrix.M22, OrientationMatrix.M23, 1.0f,
-                    OrientationMatrix.M31, OrientationMatrix.M32, OrientationMatrix.M33, 1.0f,
+                    Entity.OrientationMatrix.M11, Entity.OrientationMatrix.M12, Entity.OrientationMatrix.M13, 1.0f,
+                    Entity.OrientationMatrix.M21, Entity.OrientationMatrix.M22, Entity.OrientationMatrix.M23, 1.0f,
+                    Entity.OrientationMatrix.M31, Entity.OrientationMatrix.M32, Entity.OrientationMatrix.M33, 1.0f,
                     1.0f, 1.0f, 1.0f, 1.0f
                     );
             }
             set
             {
-                OrientationMatrix = new Matrix3X3(
+                Entity.OrientationMatrix = new Matrix3X3(
                     value.M11, value.M12, value.M13,
                     value.M21, value.M22, value.M23,
                     value.M31, value.M32, value.M33
@@ -50,7 +49,7 @@ namespace GameConstructLibrary
         {
             get
             {
-                return OrientationMatrix.Forward;
+                return Entity.OrientationMatrix.Forward;
             }
             set
             {
@@ -64,7 +63,7 @@ namespace GameConstructLibrary
         {
             get
             {
-                return OrientationMatrix.Right;
+                return Entity.OrientationMatrix.Right;
             }
             set
             {
@@ -84,11 +83,26 @@ namespace GameConstructLibrary
             set;
         }
 
+        public Entity Entity
+        {
+            get;
+            protected set;
+        }
+
         public virtual void Render()
         {
-            if (mRenderable != null)
+            mRenderable.Render(Entity.WorldTransform);
+        }
+
+        public Vector3 Position
+        {
+            get
             {
-                mRenderable.Render(WorldTransform);
+                return Entity.Position;
+            }
+            set
+            {
+                Entity.Position = value;
             }
         }
     }

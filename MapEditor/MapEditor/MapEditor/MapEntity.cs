@@ -18,12 +18,12 @@ namespace MapEditor
         private const float speed = 0.5f;
         private const float sensitivity = 1.0f;
 
-        private InputAction mForward;
-        private InputAction mBackward;
-        private InputAction mLeft;
-        private InputAction mRight;
-        private InputAction mRollLeft;
-        private InputAction mRollRight;
+        private KeyInputAction mForward;
+        private KeyInputAction mBackward;
+        private KeyInputAction mLeft;
+        private KeyInputAction mRight;
+        private KeyInputAction mDown;
+        private KeyInputAction mUp;
 
         private MouseState mMouse;
         private Vector2 mMouseClick;
@@ -34,13 +34,15 @@ namespace MapEditor
         private MouseButtonInputAction mLeftReleased;
         private MouseButtonInputAction mRightReleased;
 
+        private DummyLevel mLevel;
+        public DummyLevel Level { get { return mLevel; } set { mLevel = value; } }
         private Viewport mView;
         private Space mSpace;
         private bool mPicking;
 
         private Camera mCamera;
         private Vector3 mPosition;
-        private Vector2 mMovement;
+        private Vector3 mMovement;
         private Vector3 mOrientation;
 
         public MapEntity(Camera camera, Viewport view, Space space)
@@ -50,8 +52,8 @@ namespace MapEditor
             mBackward = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.S);
             mLeft = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.A);
             mRight = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.D);
-            mRollLeft = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Q);
-            mRollRight = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.E);
+            mDown = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Q);
+            mUp = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.E);
 
             mMouseClick = new Vector2(0.0f, 0.0f);
             mLeftClick = new MouseButtonInputAction(0, InputAction.ButtonAction.Pressed, MouseButtonInputAction.MouseButton.Left);
@@ -67,7 +69,7 @@ namespace MapEditor
 
             mCamera = camera;
             mPosition = new Vector3(0.0f, 0.0f, 0.0f);
-            mMovement = new Vector2(0.0f, 0.0f);
+            mMovement = new Vector3(0.0f, 0.0f, 0.0f);
             mOrientation = new Vector3(0.0f, 0.0f, 0.0f);
 
         }
@@ -81,16 +83,17 @@ namespace MapEditor
             UpdateOrientation();
             UpdatePicking();
 
+            //mCamera.MoveUp(speed * mMovement.Z * gameTime.ElapsedGameTime.Milliseconds);
             mCamera.MoveForward(speed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds);
             mCamera.MoveRight(speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds);
             mCamera.RotatePitch(sensitivity * mOrientation.Y * gameTime.ElapsedGameTime.Milliseconds);
             mCamera.RotateYaw(sensitivity * mOrientation.X * gameTime.ElapsedGameTime.Milliseconds);
 
-
         }
 
         private void UpdatePosition()
         {
+            mMovement.Z = (float)(mUp.Degree - mDown.Degree);
             mMovement.Y = (float)(mForward.Degree - mBackward.Degree);
             mMovement.X = -(float)(mRight.Degree - mLeft.Degree);
         }
@@ -105,7 +108,6 @@ namespace MapEditor
 
             if (mRightHold.Active == true)
             {
-                mOrientation.Z = MathHelper.ToRadians((float)(mRollRight.Degree - mRollLeft.Degree) * sensitivity); // roll
                 mOrientation.Y = MathHelper.ToRadians((mMouse.Y - mMouseClick.Y) * sensitivity); // pitch
                 mOrientation.X = -MathHelper.ToRadians((mMouse.X - mMouseClick.X) * sensitivity); // yaw
                 mMouseClick.Y = mMouse.Y;
@@ -137,6 +139,8 @@ namespace MapEditor
                 RayCastResult result;
 
                 mSpace.RayCast(ray, out result);
+                mLevel.Click(new Vector3(50, 0, 50));
+
             }
         }
 

@@ -19,7 +19,7 @@ namespace MapEditor
     /// <summary>
     /// Creates a map editor menu
     /// </summary>
-    public class HeightMapEditorDialog : WindowControl
+    public class ObjectEditorDialog : WindowControl
     {
         private MapEditorDialog mMapEditor;
         private Nuclex.UserInterface.Controls.LabelControl mSizeLabel;
@@ -30,7 +30,7 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.Desktop.OptionControl mSetOption;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mDoneButton;
 
-        public HeightMapEditorDialog(MapEditorDialog mapEditor) :
+        public ObjectEditorDialog(MapEditorDialog mapEditor) :
             base()
         {
             mMapEditor = mapEditor;
@@ -108,7 +108,7 @@ namespace MapEditor
 
         }
 
-        public void HeightsEnable()
+        public void ObjectsEnable()
         {
             Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 170.0f);
         }

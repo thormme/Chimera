@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using BEPUphysics.CollisionShapes;
+using BEPUphysics.Entities;
 
 namespace finalProject
 {
@@ -27,13 +28,13 @@ namespace finalProject
             float sensitivityRadius,
             Controller controller,
             Renderable renderable,
-            EntityShape shape,
+            Entity entity,
             float visionAngle,
             float listeningSensitivity,
             float sneak,
             Part part
             )
-            : base(position, renderable, shape, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
+            : base(position, renderable, entity, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
         {
             mSneak = sneak;
             mController = new HostileController(this);

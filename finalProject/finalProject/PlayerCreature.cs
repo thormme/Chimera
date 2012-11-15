@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using GameConstructLibrary;
+using BEPUphysics.Entities.Prefabs;
 using GraphicsLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
