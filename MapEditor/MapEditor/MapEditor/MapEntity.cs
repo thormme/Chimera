@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using BEPUphysics;
 using BEPUphysics.CollisionShapes;
+using BEPUphysics.Collidables;
 
 namespace MapEditor
 {
@@ -17,6 +18,9 @@ namespace MapEditor
         
         private const float speed = 0.5f;
         private const float sensitivity = 1.0f;
+        private const float length = 2000.0f;
+
+        private MapEditor mMapEditor;
 
         private KeyInputAction mForward;
         private KeyInputAction mBackward;
@@ -34,20 +38,29 @@ namespace MapEditor
         private MouseButtonInputAction mLeftReleased;
         private MouseButtonInputAction mRightReleased;
 
-        private DummyLevel mLevel;
-        public DummyLevel Level { get { return mLevel; } set { mLevel = value; } }
-        private Viewport mView;
-        private Space mSpace;
-        private bool mPicking;
+        private DummyMap mDummyMap;
+        public DummyMap DummyMap { get { return mDummyMap; } set { mDummyMap = value; } }
+        private Viewport mViewport;
+        private Terrain mTerrain;
 
         private Camera mCamera;
         private Vector3 mPosition;
         private Vector3 mMovement;
         private Vector3 mOrientation;
 
-        public MapEntity(Camera camera, Viewport view, Space space)
+        public MapEntity(MapEditor mapEditor, Camera camera, Viewport viewport)
         {
 
+            mMapEditor = mapEditor;
+            mCamera = camera;
+            mViewport = viewport;
+
+            Initialize();
+
+        }
+
+        private void Initialize()
+        {
             mForward = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.W);
             mBackward = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.S);
             mLeft = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.A);
@@ -63,15 +76,9 @@ namespace MapEditor
             mLeftReleased = new MouseButtonInputAction(0, InputAction.ButtonAction.Released, MouseButtonInputAction.MouseButton.Left);
             mRightReleased = new MouseButtonInputAction(0, InputAction.ButtonAction.Released, MouseButtonInputAction.MouseButton.Right);
 
-            mView = view;
-            mSpace = space;
-            mPicking = false;
-
-            mCamera = camera;
             mPosition = new Vector3(0.0f, 0.0f, 0.0f);
             mMovement = new Vector3(0.0f, 0.0f, 0.0f);
             mOrientation = new Vector3(0.0f, 0.0f, 0.0f);
-
         }
 
         public void Update(GameTime gameTime)
@@ -123,23 +130,21 @@ namespace MapEditor
 
         private void UpdatePicking()
         {
-            if (mLeftClick.Active == true)
+            if (mLeftHold.Active == true)
             {
-                mPicking = true;
 
                 Vector3 nearScreen = new Vector3(mMouse.X, mMouse.Y, 0.0f);
                 Vector3 farScreen = new Vector3(mMouse.X, mMouse.Y, 1.0f);
-                Vector3 nearWorld = mView.Unproject(nearScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
-                Vector3 farWorld = mView.Unproject(farScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
+                Vector3 nearWorld = mViewport.Unproject(nearScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
+                Vector3 farWorld = mViewport.Unproject(farScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
                 Vector3 projectionDirection = (farWorld - nearWorld);
                 projectionDirection.Normalize();
 
-                Console.WriteLine(projectionDirection.X + ", " + projectionDirection.Y + ", " + projectionDirection.Z);
+                //Console.WriteLine(projectionDirection.X + ", " + projectionDirection.Y + ", " + projectionDirection.Z);
                 Ray ray = new Ray(mCamera.Position, projectionDirection);
-                RayCastResult result;
-
-                mSpace.RayCast(ray, out result);
-                mLevel.Click(new Vector3(50, 0, 50));
+                RayHit result;
+                mMapEditor.DummyMap.TerrainPhysics.StaticCollidable.RayCast(ray, length, out result);
+                mMapEditor.DummyMap.Action(result.Location);
 
             }
         }

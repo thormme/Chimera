@@ -25,28 +25,22 @@ namespace MapEditor
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private Space mSpace;
-
         private InputManager mInput;
         private GuiManager mGUI;
 
-        private MapEditorDialog mMapEditorDialog;
+        private MapEditor mMapEditor;
 
         private Camera mCamera;
         private AnimateModel mModel;
-        private DummyLevel mDummyLevel;
 
         public Editor()
         {
-            
-            graphics = new GraphicsDeviceManager(this);
 
-            mSpace = new Space();
+            Content.RootDirectory = "Content";
+            graphics = new GraphicsDeviceManager(this);
 
             mInput = new InputManager(Services, Window.Handle);
             mGUI = new GuiManager(Services);
-
-            Content.RootDirectory = "Content";
 
             Components.Add(mInput);
             Components.Add(mGUI);
@@ -65,26 +59,23 @@ namespace MapEditor
         {
 
             base.Initialize();
-            
+
+            GraphicsManager.CelShading = true;
+
             Viewport viewport = GraphicsDevice.Viewport;
             Screen mainScreen = new Screen(viewport.Width, viewport.Height);
             mGUI.Screen = mainScreen;
 
-            GraphicsManager.CelShading = true;
-
-            
             mCamera = new Camera(viewport);
             mCamera.Position = new Vector3(0, 40, -100);
             mCamera.Target = new Vector3(0, 40, 0);
 
-            mDummyLevel = new DummyLevel(new MapEntity(mCamera, viewport, mSpace), graphics.GraphicsDevice);
-            mMapEditorDialog = new MapEditorDialog(mainScreen, mDummyLevel);
-            mDummyLevel.MapEditor = mMapEditorDialog;
+            mMapEditor = new MapEditor(mainScreen, mCamera, viewport);
 
             mModel = new AnimateModel("dude");
             mModel.PlayAnimation("Take 001");
 
-            mainScreen.Desktop.Children.Add(mMapEditorDialog);
+            
         }
 
         /// <summary>
@@ -96,7 +87,6 @@ namespace MapEditor
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             GraphicsManager.LoadContent(Content, graphics.GraphicsDevice);
-
         }
 
         /// <summary>
@@ -119,10 +109,12 @@ namespace MapEditor
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            mSpace.Update(gameTime.ElapsedGameTime.Milliseconds);
-            mDummyLevel.Update(gameTime);
-            mModel.Update(gameTime);
             GraphicsManager.Update(mCamera);
+
+            mMapEditor.Update(gameTime);
+            mModel.Update(gameTime);
+
+            
             
             base.Update(gameTime);
         }
@@ -135,8 +127,8 @@ namespace MapEditor
         {
             GraphicsManager.RenderToBackBuffer();
 
-            mModel.Render(new Vector3(0, 0, 0));
-            mDummyLevel.Render();
+            mModel.Render(new Vector3(0, 100, 0));
+            mMapEditor.Render(); ;
 
             base.Draw(gameTime);
         }

@@ -21,7 +21,7 @@ namespace MapEditor
     /// </summary>
     public class ObjectEditorDialog : WindowControl
     {
-        private MapEditorDialog mMapEditor;
+        private MapEditor mMapEditor;
         private Nuclex.UserInterface.Controls.LabelControl mSizeLabel;
         private Nuclex.UserInterface.Controls.LabelControl mIntensityLabel;
         private Nuclex.UserInterface.Controls.LabelControl mSetLabel;
@@ -30,7 +30,7 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.Desktop.OptionControl mSetOption;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mDoneButton;
 
-        public ObjectEditorDialog(MapEditorDialog mapEditor) :
+        public ObjectEditorDialog(MapEditor mapEditor) :
             base()
         {
             mMapEditor = mapEditor;
@@ -116,7 +116,7 @@ namespace MapEditor
         private void DoneClicked(object sender, EventArgs arguments)
         {
             Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
-            mMapEditor.Done();
+            mMapEditor.MapEditorDialog.Done();
         }
 
     }

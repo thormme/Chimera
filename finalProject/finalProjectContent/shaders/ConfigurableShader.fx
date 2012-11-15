@@ -14,15 +14,6 @@ Technique SkinnedShadowCast
 	}
 }
 
-Technique ShadowCast
-{
-	Pass
-	{
-		VertexShader = compile vs_2_0 ShadowCastVS();
-		PixelShader  = compile ps_2_0 ShadowCastPS();
-	}
-}
-
 Technique SkinnedCelShade
 {
 	Pass
@@ -50,6 +41,15 @@ Technique SkinnedPhong
 	}
 }
 
+Technique ShadowCast
+{
+	Pass
+	{
+		VertexShader = compile vs_2_0 ShadowCastVS();
+		PixelShader  = compile ps_2_0 ShadowCastPS();
+	}
+}
+
 Technique CelShade
 {
 	Pass
@@ -73,42 +73,6 @@ Technique Phong
 	Pass
 	{
 		VertexShader = compile vs_2_0 PhongVS();
-		PixelShader  = compile ps_2_0 PhongPS();
-	}
-}
-
-Technique TerrainShadowCast
-{
-	Pass
-	{
-		VertexShader = compile vs_2_0 TerrainShadowCastVS();
-		PixelShader  = compile ps_2_0 ShadowCastPS();
-	}
-}
-
-Technique TerrainCelShade
-{
-	Pass
-	{
-		VertexShader = compile vs_2_0 TerrainCelShadeVS();
-		PixelShader  = compile ps_2_0 CelShadePS();
-	}
-}
-
-Technique TerrainOutline
-{
-	Pass
-	{
-		VertexShader = compile vs_2_0 TerrainOutlineVS();
-		PixelShader  = compile ps_2_0 OutlinePS();
-	}
-}
-
-Technique TerrainPhong
-{
-	Pass
-	{
-		VertexShader = compile vs_2_0 TerrainPhongVS();
 		PixelShader  = compile ps_2_0 PhongPS();
 	}
 }

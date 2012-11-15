@@ -30,6 +30,7 @@ namespace GraphicsLibrary
             Fog = 16,
             FogEnable = 32,
             AlphaTest = 64,
+            LightWorldViewProj = 128,
             All = -1
         }
 
@@ -50,6 +51,7 @@ namespace GraphicsLibrary
         EffectParameter worldParam;
         EffectParameter worldInverseTransposeParam;
         EffectParameter worldViewProjParam;
+        EffectParameter lightWorldViewProjParam;
         EffectParameter bonesParam;
 
         #endregion
@@ -64,7 +66,11 @@ namespace GraphicsLibrary
         Matrix view = Matrix.Identity;
         Matrix projection = Matrix.Identity;
 
+        Matrix lightView = Matrix.Identity;
+        Matrix lightProjection = Matrix.Identity;
+
         Matrix worldView;
+        Matrix lightWorldView;
 
         Vector3 diffuseColor = Vector3.One;
         Vector3 emissiveColor = Vector3.Zero;
@@ -98,7 +104,7 @@ namespace GraphicsLibrary
             set
             {
                 world = value;
-                dirtyFlags |= EffectDirtyFlags.World | EffectDirtyFlags.WorldViewProj | EffectDirtyFlags.Fog;
+                dirtyFlags |= EffectDirtyFlags.World | EffectDirtyFlags.WorldViewProj | EffectDirtyFlags.LightWorldViewProj | EffectDirtyFlags.Fog;
             }
         }
 
@@ -117,6 +123,19 @@ namespace GraphicsLibrary
             }
         }
 
+        /// <summary>
+        /// Gets or sets the light view matrix.
+        /// </summary>
+        public Matrix LightView
+        {
+            get { return lightView; }
+
+            set
+            {
+                lightView = value;
+                dirtyFlags |= EffectDirtyFlags.LightWorldViewProj;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the projection matrix.
@@ -132,6 +151,19 @@ namespace GraphicsLibrary
             }
         }
 
+        /// <summary>
+        /// Gets or sets the light projection matrix.
+        /// </summary>
+        public Matrix LightProjection
+        {
+            get { return lightProjection; }
+
+            set
+            {
+                lightProjection = value;
+                dirtyFlags |= EffectDirtyFlags.LightWorldViewProj;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the material diffuse color (range 0 to 1).
@@ -427,6 +459,9 @@ namespace GraphicsLibrary
             view = cloneSource.view;
             projection = cloneSource.projection;
 
+            lightView = cloneSource.lightView;
+            lightProjection = cloneSource.lightProjection;
+
             diffuseColor = cloneSource.diffuseColor;
             emissiveColor = cloneSource.emissiveColor;
             ambientLightColor = cloneSource.ambientLightColor;
@@ -509,6 +544,7 @@ namespace GraphicsLibrary
             worldParam = Parameters["World"];
             worldInverseTransposeParam = Parameters["WorldInverseTranspose"];
             worldViewProjParam = Parameters["WorldViewProj"];
+            lightWorldViewProjParam = Parameters["LightWorldViewProj"];
             bonesParam = Parameters["Bones"];
 
             light0 = new DirectionalLight(Parameters["DirLight0Direction"],
@@ -540,6 +576,7 @@ namespace GraphicsLibrary
             worldParam = Parameters["World"];
             worldInverseTransposeParam = Parameters["WorldInverseTranspose"];
             worldViewProjParam = Parameters["WorldViewProj"];
+            lightWorldViewProjParam = Parameters["LightWorldViewProj"];
             bonesParam = Parameters["Bones"];
 
             light0 = new DirectionalLight(Parameters["DirLight0Direction"],
@@ -566,7 +603,7 @@ namespace GraphicsLibrary
             if (!CastingShadow)
             {
                 // Recompute the world+view+projection matrix or fog vector?
-                dirtyFlags = SetWorldViewProjAndFog(dirtyFlags, ref world, ref view, ref projection, ref worldView, fogEnabled, fogStart, fogEnd, worldViewProjParam, fogVectorParam);
+                dirtyFlags = SetWorldViewProjAndFog(dirtyFlags, ref world, ref view, ref lightView, ref projection, ref lightProjection, ref worldView, ref lightWorldView, fogEnabled, fogStart, fogEnd, worldViewProjParam, lightWorldViewProjParam, fogVectorParam);
 
                 // Recompute the world inverse transpose and eye position?
                 dirtyFlags = SetLightingMatrices(dirtyFlags, ref world, ref view, worldParam, worldInverseTransposeParam, eyePositionParam);
@@ -621,12 +658,12 @@ namespace GraphicsLibrary
         /// fog vector based on the current effect parameter settings.
         /// </summary>
         public virtual EffectDirtyFlags SetWorldViewProjAndFog(EffectDirtyFlags dirtyFlags,
-                                                                ref Matrix world, ref Matrix view, ref Matrix projection, ref Matrix worldView,
-                                                                bool fogEnabled, float fogStart, float fogEnd,
-                                                                EffectParameter worldViewProjParam, EffectParameter fogVectorParam)
+                                                                ref Matrix world, ref Matrix view, ref Matrix lightView, ref Matrix projection, ref Matrix lightProjection,
+                                                                ref Matrix worldView, ref Matrix lightWorldView, bool fogEnabled, float fogStart, float fogEnd,
+                                                                EffectParameter worldViewProjParam, EffectParameter lightWorldViewProjParam, EffectParameter fogVectorParam)
         {
             // Recompute the world+view+projection matrix?
-            if ((dirtyFlags & EffectDirtyFlags.WorldViewProj) != 0)
+            if ((dirtyFlags & (EffectDirtyFlags.WorldViewProj | EffectDirtyFlags.LightWorldViewProj)) != 0)
             {
                 Matrix worldViewProj;
 
@@ -636,6 +673,15 @@ namespace GraphicsLibrary
                 worldViewProjParam.SetValue(worldViewProj);
 
                 dirtyFlags &= ~EffectDirtyFlags.WorldViewProj;
+
+                Matrix lightWorldViewProj;
+
+                Matrix.Multiply(ref world, ref lightView, out lightWorldView);
+                Matrix.Multiply(ref lightWorldView, ref lightProjection, out lightWorldViewProj);
+
+                lightWorldViewProjParam.SetValue(lightWorldViewProj);
+
+                dirtyFlags &= ~EffectDirtyFlags.LightWorldViewProj;
             }
 
             if (fogEnabled)
