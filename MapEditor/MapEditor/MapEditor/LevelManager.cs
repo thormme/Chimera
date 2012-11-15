@@ -48,6 +48,11 @@ namespace MapEditor
 
             objects = (List<DummyObject>)deserializer.Deserialize(reader);
 
+            foreach (DummyObject obj in objects)
+            {
+                Console.WriteLine(obj.Type);
+            }
+
             reader.Close();
             return objects;
         }

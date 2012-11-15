@@ -20,46 +20,33 @@ namespace MapEditor
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class DummyLevel
+    public class DummyMap
     {
 
-        private KeyInputAction mTab;
-        private bool mEditMode;
+        private const int scale = 1;
 
-        private MapEditorDialog mMapEditorDialog;
-        public MapEditorDialog MapEditor { get { return mMapEditorDialog; } set { mMapEditorDialog = value; } }
-        private MapEntity mMapEntity;
-        public MapEntity Entity { get { return mMapEntity; } set { mMapEntity = value; } }
-        private GraphicsDevice mGraphics;
-        public GraphicsDevice Graphics { get { return mGraphics; } set { mGraphics = value; } }
+        private MapEditor mMapEditor;
+        public MapEditor MapEditor { get { return mMapEditor; } set { mMapEditor = value; } }
+
         private TerrainHeightMap mHeightMap;
-        private TerrainRenderable mTerrain;
+        private TerrainPhysics mTerrainPhysics;
+        public TerrainPhysics TerrainPhysics { get { return mTerrainPhysics; } set { mTerrainPhysics = value; } }
+
         private List<DummyObject> mDummies;
         private LevelManager mLevelManager;
 
-        // Used at start
-        public DummyLevel(MapEntity mapEntity, GraphicsDevice graphics)
+        // Used to create new map
+        public DummyMap(MapEditor mapEditor, int width, int height)
         {
 
-            mLevelManager = new LevelManager();
-            mMapEntity = mapEntity;
-            mGraphics = graphics;
+            mMapEditor = mapEditor;
 
-            mTab = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.Tab);
-
-            mMapEntity.Level = this;
-
-            Load("default");
-
-        }
-
-        // Used to create new
-        public DummyLevel(int width, int height, MapEntity mapEntity, GraphicsDevice graphics)
-        {
+            mHeightMap = GraphicsManager.LookupTerrainHeightMap("default");
+            mTerrainPhysics = new TerrainPhysics("default", scale, new Quaternion(), new Vector3(0, 0, 0));
 
             mLevelManager = new LevelManager();
-            mMapEntity = mapEntity;
-            mGraphics = graphics;
+            mDummies = new List<DummyObject>();
+            
 
             mHeightMap = GraphicsManager.LookupTerrainHeightMap("default");
             mHeightMap.Resize(width, height);
@@ -73,26 +60,6 @@ namespace MapEditor
 
         }
 
-        public void Update(GameTime gameTime)
-        {
-            
-            mMapEntity.Update(gameTime);
-
-            if (mTab.Active)
-            {
-                mEditMode = !mEditMode;
-                if (mEditMode)
-                {
-                    mMapEditorDialog.Disable();
-                }
-                else
-                {
-                    mMapEditorDialog.Enable();
-                }
-            }
-
-        }
-
         public void Add(DummyObject obj)
         {
             mDummies.Add(obj);
@@ -103,25 +70,26 @@ namespace MapEditor
             mDummies.Remove(obj);
         }
 
-        public void Click(Vector3 position)
+        public void Action(Vector3 position)
         {
-            if (mEditMode)
+            if (mMapEditor.EditMode)
             {
-                if (mMapEditorDialog.State == States.None)
+                if (mMapEditor.State == States.None)
                 {
-                    mHeightMap.Resize(200, 200);
+                    
                 }
-                else if (mMapEditorDialog.State == States.Height)
+                else if (mMapEditor.State == States.Height)
                 {
                     int size;
                     int intensity;
+                    bool feather;
                     bool set;
-                    if (mMapEditorDialog.GetInputs(out size, out intensity, out set))
+                    if (mMapEditor.MapEditorDialog.GetInputs(out size, out intensity, out feather, out set))
                     {
-                        mHeightMap.ModifyVertices(position, size, intensity, set);
+                        mHeightMap.ModifyVertices(position, size, intensity, feather, set);
                     }
                 }
-                else if (mMapEditorDialog.State == States.Object)
+                else if (mMapEditor.State == States.Object)
                 {
 
                 }
@@ -144,7 +112,7 @@ namespace MapEditor
 
             // Load the height map
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(file);
-            mTerrain = new TerrainRenderable(file);
+            mTerrainPhysics = new TerrainPhysics(file, scale, new Quaternion(), new Vector3(0, 0, 0));
 
            // Load the rest of the level
             mDummies = mLevelManager.Load(file);
@@ -153,7 +121,7 @@ namespace MapEditor
 
         public void Render()
         {
-            mTerrain.Render(new Vector3(0, 0, 0));
+            mTerrainPhysics.Render();
         }
 
     }
