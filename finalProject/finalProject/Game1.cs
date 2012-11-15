@@ -314,8 +314,8 @@ namespace finalProject
             }
             else
             {
-                camera.Position = new Vector3(0, 50, 50);
-                camera.Target = camera.Position + new Vector3(0, 0, -1);
+                mCamera.Position = new Vector3(0, 50, 50);
+                mCamera.Target = mCamera.Position + new Vector3(0, 0, -1);
             }
         }
     }
