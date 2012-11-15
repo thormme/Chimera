@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using GameConstructLibrary;
+using GraphicsLibrary;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace finalProject
 {
@@ -23,16 +26,30 @@ namespace finalProject
             }
         }
 
-        PlayerCreature()
-            : base(null, new SphereShape(mPlayerRadius), new RadialSensor(100.0f), new PlayerController())
+        public override bool Incapacitated
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public PlayerCreature(Viewport viewPort, Vector3 position)
+            : base(position, new InanimateModel("dude"), /*new SphereShape(mPlayerRadius)*/new BoxShape(50.0f, 50.0f, 50.0f), new RadialSensor(10.0f), new PlayerController(viewPort))
         {}
 
-        /// <summary>
-        /// Called when the creature is damage while it has no parts.
-        /// </summary>
-        protected override void OnDeath()
+        public override void Damage(int damage)
         {
-            // TODO: respawn
+            while (damage-- > 0)
+            {
+                if (mParts.Count() == 0)
+                {
+                    // die?
+                    return;
+                }
+
+                mParts.Remove(mParts[Rand.rand.Next(mParts.Count())]);
+            }
         }
         
         /// <summary>
@@ -40,11 +57,11 @@ namespace finalProject
         /// </summary>
         public void AddPart()
         {
-            foreach (PhysicsObject obj in mSensor.CollidingProps)
+            foreach (Creature cur in mSensor.CollidingCreatures)
             {
-                if (obj as Part != null)
+                if (cur.Incapacitated)
                 {
-                    mParts.Add(obj as Part);
+                    mParts.Add(cur.Parts[0]);
                     return;
                 }
             }

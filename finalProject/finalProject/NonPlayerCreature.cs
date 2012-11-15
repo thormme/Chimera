@@ -23,6 +23,7 @@ namespace finalProject
         }
 
         NonPlayerCreature(
+            Vector3 position,
             float sensitivityRadius,
             Controller controller,
             Renderable renderable,
@@ -32,7 +33,7 @@ namespace finalProject
             float sneak,
             Part part
             )
-            : base(renderable, shape, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
+            : base(position, renderable, shape, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
         {
             mSneak = sneak;
             mController = new HostileController(this);

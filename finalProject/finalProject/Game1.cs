@@ -19,13 +19,15 @@ namespace finalProject
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        static public World World;
+        static public World World = new World();
 
         private Camera camera;
         private IMobileObject dude = null;
         private AnimateModel dudeModel = null;
 
         private bool dudeControlToggle = false;
+
+        private PlayerCreature mPlayer;
 
         public Game1()
         {
@@ -53,7 +55,8 @@ namespace finalProject
             // TODO: Add your initialization logic here
             GraphicsManager.CelShading = true;
 
-            camera = new Camera(graphics.GraphicsDevice.Viewport);
+            //camera = new Camera(graphics.GraphicsDevice.Viewport);
+            mPlayer = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 0.0f, 0.0f));
             
             base.Initialize();
         }
@@ -70,14 +73,14 @@ namespace finalProject
             // TODO: use this.Content to load your game content here
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice);
 
-            dudeModel = new AnimateModel("dude");
-            dudeModel.PlayAnimation("Take 001");
+            //dudeModel = new AnimateModel("cube");
+            //dudeModel.PlayAnimation("Take 001");
 
 
-            dude = new PhysicsObject(dudeModel, new CapsuleShape(3.0f, 1.0f));
-            World.Add(dude);
+            //dude = new PhysicsObject(dudeModel, new CapsuleShape(3.0f, 1.0f));
+            //World.Add(dude);
 
-            World.Add(mp = new PhysicsObject(dudeModel, new BoxShape(200.0f, 20.0f, 200.0f)));
+            World.Add(mp = new PhysicsObject(dudeModel, new BoxShape(20000.0f, 20.0f, 20000.0f)));
             mp.BecomeKinematic();
             mp.Position = new Vector3(0.0f, -70.0f, 0.0f);
 
@@ -105,13 +108,13 @@ namespace finalProject
                 this.Exit();
 
             InputAction.Update();
-            UpdateCamera(gameTime);
+            //UpdateCamera(gameTime);
 
             // TODO: Add your update logic here
             World.Update(gameTime);
-            dudeModel.Update(gameTime);
+            //dudeModel.Update(gameTime);
 
-            GraphicsManager.Update(camera);
+            //GraphicsManager.Update(camera);
 
             base.Update(gameTime);
         }
@@ -126,12 +129,12 @@ namespace finalProject
 
             // TODO: Add your drawing code here
             World.Render();
-            dude.Render();
+            //dude.Render();
 
             GraphicsManager.RenderToBackBuffer();
 
             World.Render();
-            dude.Render();
+            //dude.Render();
 
             base.Draw(gameTime);
         }

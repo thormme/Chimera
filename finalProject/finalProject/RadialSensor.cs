@@ -7,6 +7,7 @@ using GraphicsLibrary;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using GameConstructLibrary;
+using BEPUphysics.CollisionRuleManagement;
 
 namespace finalProject
 {
@@ -30,7 +31,8 @@ namespace finalProject
         public RadialSensor(float radius)
             : base(null, new SphereShape(radius))
         {
-            throw new NotImplementedException("I still need to set NoSolver.");
+            this.CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;
+            Game1.World.Add(this);
         }
 
         /// <summary>
@@ -41,6 +43,7 @@ namespace finalProject
         /// </param>
         public virtual void Collide(List<PhysicsObject> objects)
         {
+            System.Console.WriteLine("COLLIDED BRO");
             mCollidingCreatures.Clear();
             mCollidingProps.Clear();
 

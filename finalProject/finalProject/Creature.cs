@@ -20,7 +20,15 @@ namespace finalProject
         protected Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
 
         protected RadialSensor mSensor;
+
         protected List<Part> mParts;
+        public List<Part> Parts
+        {
+            get
+            {
+                return mParts;
+            }
+        }
 
         protected Controller mController;
         public Controller CreatureController
@@ -31,32 +39,39 @@ namespace finalProject
             }
         }
 
-        public Creature(Renderable renderable, EntityShape shape, RadialSensor radialSensor, Controller controller)
+        public Creature(Vector3 position, Renderable renderable, EntityShape shape, RadialSensor radialSensor, Controller controller)
             : base(renderable, shape)
         {
+            Position = position;
+            Forward = new Vector3(1.0f, 0.0f, 0.0f);
             mSensor = radialSensor;
             mController = controller;
             controller.SetCreature(this);
+            mParts = new List<Part>();
             Game1.World.Add(this);
-            MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
+            //MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
             // What do I do with this joint?
-            throw new NotImplementedException("Creature does not know what to do with the joint.");
+            //throw new NotImplementedException("Creature does not know what to do with the joint.");
         }
 
-        //abstract protected bool OnGround
-        //{
-        //    get;
-        //}
+        protected bool OnGround
+        {
+            get
+            {
+                // TODO: check if it is actually on the ground
+                return true;
+            }
+        }
 
-        abstract public float Sneak
+        public abstract float Sneak
         {
             get;
         }
 
-        /// <summary>
-        /// Called when the creature is damaged while it has no parts.
-        /// </summary>
-        abstract protected void OnDeath();
+        public abstract bool Incapacitated
+        {
+            get;
+        }
 
         /// <summary>
         /// Uses the specified part.
@@ -77,7 +92,7 @@ namespace finalProject
 
         public virtual void Jump()
         {
-            //if (OnGround)
+            if (OnGround)
             {
                 LinearVelocity = Vector3.Add(JumpVector, LinearVelocity);
             }
@@ -92,8 +107,8 @@ namespace finalProject
         public virtual void Move(Vector2 direction)
         {
             Vector3 forward = Vector3.Multiply(Forward, direction.Y);
-            Vector3 left = Vector3.Multiply(Right, direction.X);
-            Vector3 temp = Vector3.Add(forward, left);
+            Vector3 right = Vector3.Multiply(Right, direction.X);
+            Vector3 temp = Vector3.Add(forward, right);
             ApplyLinearImpulse(ref temp);
         }
 
@@ -103,19 +118,7 @@ namespace finalProject
         /// <param name="damage">
         /// The amount of damage dealt.
         /// </param>
-        public virtual void Damage(int damage)
-        {
-            while (damage-- > 0)
-            {
-                if (mParts.Count() == 0)
-                {
-                    OnDeath();
-                    return;
-                }
-
-                mParts.Remove(mParts[Rand.rand.Next(mParts.Count())]);
-            }
-        }
+        public abstract void Damage(int damage);
 
         /// <summary>
         /// Called every frame. 
@@ -126,8 +129,11 @@ namespace finalProject
         public override void Update(GameTime time)
         {
             mController.Update(time, mSensor.CollidingCreatures);
-            // Need to set position of sensor
-            throw new NotImplementedException("Need to set position of sensor");
+            mSensor.Position = Position;
+            if (mRenderable is AnimateModel)
+            {
+                (mRenderable as AnimateModel).Update(time);
+            }
 
             foreach (Part p in mParts)
             {

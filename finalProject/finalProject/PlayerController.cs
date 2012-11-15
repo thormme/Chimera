@@ -5,13 +5,15 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using GameConstructLibrary;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace finalProject
 {
     public class PlayerController : Controller
     {
-        #region
-        private const float mCameraRotation = MathHelper.PiOver2;
+        #region private members
+        private const float mCameraRotation = 90.0f;
+        private const float mDistFromCreature = 200.0f;
 
         private Camera mCamera;
 
@@ -30,8 +32,9 @@ namespace finalProject
         private KeyInputAction mAdd;
         #endregion
 
-        public PlayerController() 
+        public PlayerController(Viewport viewPort) 
         {
+            mCamera = new Camera(viewPort);
             mMoveUp = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.W);
             mMoveDown = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.S);
             mMoveLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.A);
@@ -76,30 +79,32 @@ namespace finalProject
         public override void Update(GameTime time, List<Creature> collidingCreatures)
         {
             Vector2 moveDirection = new Vector2(0.0f, 0.0f);
-            float rotation = mCameraRotation * time.ElapsedGameTime.Milliseconds / 1000;
+            float rotation = mCameraRotation * (float)time.ElapsedGameTime.Milliseconds / 1000.0f;
 
-            #region
+            #region adjust camera angle
             if (mCameraUp.Active)
             {
                 mCamera.RotatePitch(rotation);
+                mCreature.Forward = mCamera.Forward;
             }
             if (mCameraDown.Active)
             {
                 mCamera.RotatePitch(-rotation);
+                mCreature.Forward = mCamera.Forward;
             }
             if (mCameraRight.Active)
             {
                 mCamera.RotateYaw(rotation);
+                mCreature.Forward = mCamera.Forward;
             }
             if (mCameraLeft.Active)
             {
                 mCamera.RotateYaw(-rotation);
+                mCreature.Forward = mCamera.Forward;
             }
             #endregion
 
-            mCreature.Forward = mCamera.Target;
-
-            #region
+            #region adjust creature position
             if (mMoveUp.Active)
             {
                 moveDirection.Y += 1.0f;
@@ -119,19 +124,26 @@ namespace finalProject
             #endregion
 
             mCreature.Move(moveDirection);
+            //Vector3 temp = Vector3.Multiply(Vector3.Normalize(mCamera.Forward), mDistFromCreature);
+            //mCamera.Position = Vector3.Subtract(mCreature.Position, temp);
+            mCamera.Target = mCreature.Position + new Vector3(0.0f, 75.0f, 0.0f);
+            Vector3 direction = mCreature.XNAOrientationMatrix.Forward;
+            direction.Normalize();
+            mCamera.Position = mCamera.Target - 250.0f * direction;
+            GraphicsManager.Update(mCamera);
 
-            #region
+            #region use/add parts, jump
             if (mPart1.Active)
             {
-                mCreature.UsePart(1, mCamera.Target);
+                mCreature.UsePart(1, mCamera.Forward);
             }
             if (mPart2.Active)
             {
-                mCreature.UsePart(2, mCamera.Target);
+                mCreature.UsePart(2, mCamera.Forward);
             }
             if (mPart3.Active)
             {
-                mCreature.UsePart(3, mCamera.Target);
+                mCreature.UsePart(3, mCamera.Forward);
             }
 
             if (mJump.Active)
