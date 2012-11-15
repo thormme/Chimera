@@ -292,6 +292,11 @@ namespace finalProject
                 direction.Normalize();
                 camera.Position = camera.Target - 250.0f * direction;
             }
+            else
+            {
+                camera.Position = new Vector3(0, 50, 50);
+                camera.Target = camera.Position + new Vector3(0, 0, -1);
+            }
         }
     }
 }

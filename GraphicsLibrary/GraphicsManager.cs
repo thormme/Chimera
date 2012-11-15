@@ -17,6 +17,8 @@ namespace GraphicsLibrary
         static private Matrix mView;
         static private Matrix mProjection;
 
+        static private BoundingFrustum mCameraFrustum = new BoundingFrustum(Matrix.Identity);
+
         static private Matrix mLightView;
         static private Matrix mLightProjection;
         static private Matrix mLightTransform;
@@ -24,8 +26,10 @@ namespace GraphicsLibrary
         static private Effect mConfigurableShader;
         static private SkinnedEffect mTerrainShader;
 
-        static private DirectionalLight mDirLight;
-          
+        static private Vector3 mLightDirection;
+        static private Vector3 mLightDiffuseColor;
+        static private Vector3 mLightSpecularColor;
+
         static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string,Model>();
         static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
 
@@ -35,7 +39,6 @@ namespace GraphicsLibrary
         static public RenderTarget2D ShadowMap
         {
             get { return mShadowMap; }
-            set { mShadowMap = value; }
         }
 
         static private int mShadowMapLength = 2048;
@@ -71,18 +74,11 @@ namespace GraphicsLibrary
             mTerrainShader = new SkinnedEffect(mConfigurableShader);
             
             // Load shadow map.
-            mShadowMap = new RenderTarget2D(device, mShadowMapLength, mShadowMapLength, true, device.PresentationParameters.BackBufferFormat, DepthFormat.Depth24Stencil8);
+            mShadowMap = new RenderTarget2D(device, mShadowMapLength, mShadowMapLength, false, SurfaceFormat.Single, DepthFormat.Depth24);
 
-            mDirLight = new DirectionalLight(
-                mConfigurableShader.Parameters["DirLightDirection"],
-                mConfigurableShader.Parameters["DirLightDiffuseColor"],
-                mConfigurableShader.Parameters["DirLightSpecularColor"],
-                null);
-
-            mDirLight.Direction = new Vector3(-0.5265408f, -0.5735765f, -0.6275069f);
-            mDirLight.DiffuseColor = new Vector3(1, 0.9607844f, 0.8078432f);
-            mDirLight.SpecularColor = new Vector3(1, 0.9607844f, 0.8078432f);
-            mDirLight.Enabled = true;
+            mLightDiffuseColor = new Vector3(1, 0.9607844f, 0.8078432f);
+            mLightSpecularColor = new Vector3(1, 0.9607844f, 0.8078432f);
+            mLightDirection = new Vector3(-0.3333333f, 0.6666667f, 0.6666667f);
 
             // Load models.
             DirectoryInfo dir = new DirectoryInfo(mBASE_DIRECTORY + "models/");
@@ -165,8 +161,11 @@ namespace GraphicsLibrary
         static public void Update(Camera camera)
         {
             mView = camera.ViewTransform;
-            mProjection = camera.ProjectionTransform;
             
+            mProjection = camera.ProjectionTransform;
+
+            mCameraFrustum.Matrix = mView * mProjection;
+
             BuildLightTransform();
         }
 
@@ -175,9 +174,10 @@ namespace GraphicsLibrary
         /// </summary>
         static public void RenderToShadowMap()
         {
+            mDevice.BlendState = BlendState.Opaque;
+            mDevice.DepthStencilState = DepthStencilState.Default;
             mDevice.SetRenderTarget(mShadowMap);
             mDevice.Clear(Color.White);
-            mDevice.DepthStencilState = DepthStencilState.Default;
             mCastingShadow = true;
         }
 
@@ -186,10 +186,18 @@ namespace GraphicsLibrary
         /// </summary>
         static public void RenderToBackBuffer()
         {
+            mDevice.BlendState = BlendState.Opaque;
+            mDevice.DepthStencilState = DepthStencilState.Default;
             mDevice.SetRenderTarget(null);
             mDevice.Clear(Color.CornflowerBlue);
-            mDevice.DepthStencilState = DepthStencilState.Default;
+            mDevice.SamplerStates[1] = SamplerState.PointClamp;
             mCastingShadow = false;
+        }
+
+        static public void FinishRendering()
+        {
+            mDevice.Textures[0] = null;
+            mDevice.SamplerStates[0] = SamplerState.LinearWrap;
         }
 
         /// <summary>
@@ -259,9 +267,9 @@ namespace GraphicsLibrary
             {
                 if (CelShading)
                 {
-                    DrawTerrain(heightmap, "TerrainOutline", worldTransforms);
+                    DrawTerrain(heightmap, "Outline", worldTransforms);
                 }
-                DrawTerrain(heightmap, (CelShading) ? "TerrainCelShade" : "TerrainPhong", worldTransforms);
+                DrawTerrain(heightmap, (CelShading) ? "CelShade" : "Phong", worldTransforms);
             }
         }
 
@@ -343,12 +351,14 @@ namespace GraphicsLibrary
         {
             foreach (SkinnedEffect effect in mesh.Effects)
             {
+                effect.LightView = mLightView;
+                effect.LightProjection = mLightProjection;
+
                 effect.CurrentTechnique = effect.Techniques[techniqueName];
 
                 effect.SetBoneTransforms(boneTransforms);
 
-                effect.Parameters["lightViewProjection"].SetValue(mLightTransform);
-                effect.Parameters["lightWorld"].SetValue(worldTransforms);
+                effect.World = worldTransforms;
             }
 
             mesh.Draw();
@@ -362,15 +372,20 @@ namespace GraphicsLibrary
             foreach (SkinnedEffect effect in mesh.Effects)
             {
                 effect.CurrentTechnique = effect.Techniques[techniqueName];
-                
+
+                effect.Parameters["ShadowMap"].SetValue(mShadowMap);
+
                 effect.SetBoneTransforms(boneTransforms);
 
                 effect.View = mView;
                 effect.Projection = mProjection;
 
-                effect.Parameters["xDirLightDirection"].SetValue(mDirLight.Direction);
-                effect.Parameters["xDirLightDiffuseColor"].SetValue(mDirLight.DiffuseColor);
-                effect.Parameters["xDirLightSpecularColor"].SetValue(mDirLight.SpecularColor);
+                effect.LightView = mLightView;
+                effect.LightProjection = mLightProjection;
+
+                effect.Parameters["xDirLightDirection"].SetValue(mLightDirection);
+                effect.Parameters["xDirLightDiffuseColor"].SetValue(mLightDiffuseColor);
+                effect.Parameters["xDirLightSpecularColor"].SetValue(mLightSpecularColor);
 
                 effect.SpecularColor = new Vector3(0.25f);
                 effect.SpecularPower = 16;
@@ -385,10 +400,12 @@ namespace GraphicsLibrary
         /// </summary>
         static private void CastShadowTerrain(TerrainDescription heightMap, Matrix worldTransforms)
         {
-            mTerrainShader.Parameters["lightWorld"].SetValue(worldTransforms);
-            mTerrainShader.Parameters["lightViewProjection"].SetValue(mLightTransform);
+            mTerrainShader.World = worldTransforms;
 
-            mTerrainShader.CurrentTechnique = mTerrainShader.Techniques["TerrainShadowCast"];
+            mTerrainShader.LightView = mLightView;
+            mTerrainShader.LightProjection = mLightProjection;
+
+            mTerrainShader.CurrentTechnique = mTerrainShader.Techniques["ShadowCast"];
             mTerrainShader.CurrentTechnique.Passes[0].Apply();
 
             mDevice.DrawIndexedPrimitives(
@@ -407,12 +424,17 @@ namespace GraphicsLibrary
         {
             mTerrainShader.Texture = heightMap.TextureHigh;
 
+            mTerrainShader.Parameters["ShadowMap"].SetValue(mShadowMap);
+
             mTerrainShader.View = mView;
             mTerrainShader.Projection = mProjection;
 
-            mTerrainShader.Parameters["xDirLightDirection"].SetValue(mDirLight.Direction);
-            mTerrainShader.Parameters["xDirLightDiffuseColor"].SetValue(mDirLight.DiffuseColor);
-            mTerrainShader.Parameters["xDirLightSpecularColor"].SetValue(mDirLight.SpecularColor);
+            mTerrainShader.LightView = mLightView;
+            mTerrainShader.LightProjection = mLightProjection;
+
+            mTerrainShader.Parameters["xDirLightDirection"].SetValue(mLightDirection);
+            mTerrainShader.Parameters["xDirLightDiffuseColor"].SetValue(mLightDiffuseColor);
+            mTerrainShader.Parameters["xDirLightSpecularColor"].SetValue(mLightSpecularColor);
 
             mTerrainShader.SpecularColor = new Vector3(0.25f);
             mTerrainShader.SpecularPower = 16;
@@ -437,28 +459,32 @@ namespace GraphicsLibrary
         /// <returns></returns>
         static private void BuildLightTransform()
         {
-            BoundingFrustum frustum = new BoundingFrustum(mView);
+            Matrix lightRotation = Matrix.CreateLookAt(Vector3.Zero, -mLightDirection, Vector3.Up);
 
             // Get the corners of the frustum
-            Vector3[] frustumCornersWorld = frustum.GetCorners();
+            Vector3[] frustumCorners = mCameraFrustum.GetCorners();
 
-            Vector3 centroid = Vector3.Zero;
-            foreach (Vector3 frustumCorner in frustumCornersWorld)
+            // Transform corners of frustum in to light space.
+            for (int i = 0; i < frustumCorners.Length; ++i )
             {
-                centroid += frustumCorner;
+                frustumCorners[i] = Vector3.Transform(frustumCorners[i], lightRotation);
             }
 
-            centroid /= (float)frustumCornersWorld.Length;
+            BoundingBox lightBox = BoundingBox.CreateFromPoints(frustumCorners);
 
-            float distance = Math.Abs(frustum.Near.D) + Math.Abs(frustum.Far.D);
-            mLightView = Matrix.CreateLookAt(centroid - (mDirLight.Direction * distance), centroid, Vector3.Up);
+            Vector3 boxSize = lightBox.Max - lightBox.Min;
+            Vector3 halfBoxSize = boxSize * 0.5f;
 
-            Vector3[] frustumCornersLight = new Vector3[frustumCornersWorld.Length];
-            Vector3.Transform(frustumCornersWorld, ref mLightView, frustumCornersLight);
+            Vector3 lightPosition = lightBox.Min + halfBoxSize;
+            lightPosition.Z = lightBox.Min.Z;
 
-            BoundingBox box = BoundingBox.CreateFromPoints(frustumCornersLight);
-            mLightProjection = Matrix.CreateOrthographicOffCenter(
-                box.Min.X, box.Max.X, box.Min.Y, box.Max.Y, -box.Max.Z, -box.Min.Z);
+            lightPosition = Vector3.Transform(lightPosition, Matrix.Invert(lightRotation));
+
+            mLightView = Matrix.CreateLookAt(lightPosition, lightPosition - mLightDirection, Vector3.Up);
+            //mView = mLightView;
+
+            mLightProjection = Matrix.CreateOrthographic(boxSize.X, boxSize.Y, -boxSize.Z, boxSize.Z);
+            //mProjection = mLightProjection;
 
             mLightTransform = mLightView * mProjection;
         }
