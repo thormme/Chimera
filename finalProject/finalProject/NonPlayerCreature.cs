@@ -12,7 +12,7 @@ namespace finalProject
     /// <summary>
     /// Abstract class used for making NPCs.
     /// </summary>
-    abstract class NonPlayerCreature : Creature
+    public abstract class NonPlayerCreature : Creature
     {
         private float mSneak;
         public override float Sneak
@@ -23,7 +23,7 @@ namespace finalProject
             }
         }
 
-        NonPlayerCreature(
+        public NonPlayerCreature(
             Vector3 position,
             float sensitivityRadius,
             Controller controller,
@@ -37,7 +37,7 @@ namespace finalProject
             : base(position, renderable, entity, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
         {
             mSneak = sneak;
-            mController = new HostileController(this);
+            mController = controller;
             mParts.Add(part);
         }
     }

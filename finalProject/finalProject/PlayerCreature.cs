@@ -9,6 +9,7 @@ using GraphicsLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using BEPUphysics.EntityStateManagement;
+using BEPUphysics.Entities;
 
 namespace finalProject
 {
@@ -45,7 +46,7 @@ namespace finalProject
         }
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, new InanimateModel("cube"), new Box(new Vector3(0), 1.0f, 1.0f, 1.0f), new RadialSensor(10.0f), new PlayerController(viewPort))
+            : base(position, new InanimateModel("cube"), new Box(new Vector3(0), 1.0f, 1.0f, 1.0f, 1.0f), new RadialSensor(2.0f), new PlayerController(viewPort))
         {}
 
         public override void Damage(int damage)
@@ -63,7 +64,7 @@ namespace finalProject
         }
         
         /// <summary>
-        /// Adds a part to the PlayerCreature. The part chosen is the closest part within the radial sensor.
+        /// Adds a part to the PlayerCreature. The part chosen is from the closest incapacitated animal within the radial sensor.
         /// </summary>
         public void AddPart()
         {
@@ -71,7 +72,7 @@ namespace finalProject
             {
                 if (cur.Incapacitated)
                 {
-                    mParts.Add(cur.Parts[0]);
+                    AddPart(cur.Parts[0]);
                     return;
                 }
             }

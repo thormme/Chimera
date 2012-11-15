@@ -132,7 +132,7 @@ namespace finalProject
             mCamera.Target = mCreature.Position + new Vector3(0.0f, 0.0f, 0.0f);
             Vector3 direction = mCreature.XNAOrientationMatrix.Forward;
             direction.Normalize();
-            mCamera.Position = mCamera.Target - 250.0f * direction;
+            mCamera.Position = mCamera.Target - 10.0f * direction;
             GraphicsManager.Update(mCamera);
 
             #region use/add parts, jump

@@ -8,7 +8,7 @@ namespace GameConstructLibrary
 {
     public interface IEntityOwner
     {
-        Entity PhysicsEntity
+        Entity Entity
         {
             get;
         }

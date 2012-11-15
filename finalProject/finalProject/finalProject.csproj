@@ -138,9 +138,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AIController.cs" />
     <Compile Include="ClosestPhysicsObject.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Creature.cs" />
+    <Compile Include="DummyCreature.cs" />
+    <Compile Include="DummyPart.cs" />
     <Compile Include="HostileController.cs" />
     <Compile Include="NonPlayerCreature.cs" />
     <Compile Include="Part.cs" />

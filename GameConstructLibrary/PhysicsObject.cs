@@ -19,8 +19,8 @@ namespace GameConstructLibrary
         {
             mRenderable = renderable;
             Scale = new Vector3(1.0f);
-            PhysicsEntity = entity;
-            PhysicsEntity.Tag = this;
+            Entity = entity;
+            Entity.Tag = this;
         }
 
         protected Renderable mRenderable;
@@ -30,15 +30,15 @@ namespace GameConstructLibrary
             get
             {
                 return new Matrix(
-                    PhysicsEntity.OrientationMatrix.M11, PhysicsEntity.OrientationMatrix.M12, PhysicsEntity.OrientationMatrix.M13, 1.0f,
-                    PhysicsEntity.OrientationMatrix.M21, PhysicsEntity.OrientationMatrix.M22, PhysicsEntity.OrientationMatrix.M23, 1.0f,
-                    PhysicsEntity.OrientationMatrix.M31, PhysicsEntity.OrientationMatrix.M32, PhysicsEntity.OrientationMatrix.M33, 1.0f,
+                    Entity.OrientationMatrix.M11, Entity.OrientationMatrix.M12, Entity.OrientationMatrix.M13, 1.0f,
+                    Entity.OrientationMatrix.M21, Entity.OrientationMatrix.M22, Entity.OrientationMatrix.M23, 1.0f,
+                    Entity.OrientationMatrix.M31, Entity.OrientationMatrix.M32, Entity.OrientationMatrix.M33, 1.0f,
                     1.0f, 1.0f, 1.0f, 1.0f
                     );
             }
             set
             {
-                PhysicsEntity.OrientationMatrix = new Matrix3X3(
+                Entity.OrientationMatrix = new Matrix3X3(
                     value.M11, value.M12, value.M13,
                     value.M21, value.M22, value.M23,
                     value.M31, value.M32, value.M33
@@ -74,6 +74,20 @@ namespace GameConstructLibrary
             }
         }
 
+        public Vector3 Up
+        {
+            get
+            {
+                return XNAOrientationMatrix.Up;
+            }
+            set
+            {
+                Matrix temp = XNAOrientationMatrix;
+                temp.Up = value;
+                XNAOrientationMatrix = temp;
+            }
+        }
+
         /// <summary>
         /// Scales the model.
         /// // TODO: Investigate scaling the physics object
@@ -84,7 +98,7 @@ namespace GameConstructLibrary
             set;
         }
 
-        public Entity PhysicsEntity
+        public Entity Entity
         {
             get;
             protected set;
@@ -92,18 +106,19 @@ namespace GameConstructLibrary
 
         public virtual void Render()
         {
-            mRenderable.Render(PhysicsEntity.WorldTransform);
+            //mRenderable.Render(PhysicsEntity.WorldTransform);
+            mRenderable.Render(Entity.Position, XNAOrientationMatrix, Scale);
         }
 
         public Vector3 Position
         {
             get
             {
-                return PhysicsEntity.Position;
+                return Entity.Position;
             }
             set
             {
-                PhysicsEntity.Position = value;
+                Entity.Position = value;
             }
         }
     }

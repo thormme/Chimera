@@ -32,7 +32,7 @@ namespace finalProject
         public RadialSensor(float radius)
             : base(null, new Sphere(new Vector3(0), radius))
         {
-            this.PhysicsEntity.CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;
+            this.Entity.CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;
         }
 
         /// <summary>

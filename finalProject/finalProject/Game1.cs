@@ -34,13 +34,12 @@ namespace finalProject
         private bool dudeControlToggle = false;
 
         private PlayerCreature mPlayer;
+        private DummyCreature mDummy;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            World = new World();
 
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
             debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
@@ -66,6 +65,7 @@ namespace finalProject
 
             //mCamera = new Camera(graphics.GraphicsDevice.Viewport);
             mPlayer = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 0.0f, 0.0f));
+            mDummy = new DummyCreature(new Vector3(10.0f, 0.0f, 0.0f));
             
             base.Initialize();
         }
@@ -83,7 +83,7 @@ namespace finalProject
             // TODO: use this.Content to load your game content here
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice);
 
-            dudeModel = new InanimateModel("sphere");
+            dudeModel = new InanimateModel("cube");
             //dudeModel.PlayAnimation("Take 001");
 
 
@@ -91,8 +91,9 @@ namespace finalProject
             //World.Add(dude);
 
             World.Add(mPlayer);
+            World.Add(mDummy);
             World.Add(mp = new PhysicsObject(dudeModel, new Box(new Vector3(0), 2000.0f, 20.0f, 2000.0f)));
-            mp.PhysicsEntity.BecomeKinematic();
+            mp.Entity.BecomeKinematic();
             mp.Position = new Vector3(0.0f, -70.0f, 0.0f);
 
             //World.Add(new TerrainPhysics("test_level", new Vector3(1.0f), new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
@@ -131,6 +132,7 @@ namespace finalProject
             //dudeModel.Update(gameTime);
 
             //GraphicsManager.Update(camera);
+            DebugModelDrawer.Update();
 
             base.Update(gameTime);
         }

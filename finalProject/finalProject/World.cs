@@ -46,8 +46,8 @@ namespace finalProject
                 }
                 if (gameObject is IEntityOwner)
                 {
-                    mSpace.Add((gameObject as IEntityOwner).PhysicsEntity);
-                    Game1.DebugModelDrawer.Add((gameObject as IEntityOwner).PhysicsEntity);
+                    mSpace.Add((gameObject as IEntityOwner).Entity);
+                    Game1.DebugModelDrawer.Add((gameObject as IEntityOwner).Entity);
                 }
                 else if (gameObject is IStaticCollidableOwner)
                 {
@@ -65,8 +65,8 @@ namespace finalProject
                 }
                 if (gameObject is IEntityOwner)
                 {
-                    mSpace.Add((gameObject as IEntityOwner).PhysicsEntity);
-                    Game1.DebugModelDrawer.Add((gameObject as IEntityOwner).PhysicsEntity);
+                    mSpace.Add((gameObject as IEntityOwner).Entity);
+                    Game1.DebugModelDrawer.Add((gameObject as IEntityOwner).Entity);
                 }
                 else if (gameObject is IStaticCollidableOwner)
                 {
