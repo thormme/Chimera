@@ -13,7 +13,7 @@ namespace GameConstructLibrary
     /// <summary>
     /// Physical and visual representation of a terrain heightmap.
     /// </summary>
-    public class TerrainPhysics : Terrain, IGameObject
+    public class TerrainPhysics : IGameObject, IStaticCollidableOwner
     {
         private TerrainRenderable mTerrainRenderable;
 
@@ -25,11 +25,14 @@ namespace GameConstructLibrary
         /// <param name="orientation">The orientation of the terrain.</param>
         /// <param name="translation">The position of the terrain.</param>
         public TerrainPhysics(String terrainName, float scale, Quaternion orientation, Vector3 translation)
-            : base(
-                GraphicsManager.LookupTerrainHeightMap(terrainName).GetHeights(), 
-                new AffineTransform(new Vector3(scale), orientation, translation)
-            )
         {
+            StaticCollidable = new Terrain(
+                GraphicsManager.LookupTerrainHeightMap(terrainName).GetHeights(),
+                new AffineTransform(new Vector3(scale), orientation, translation)
+            );
+
+            StaticCollidable.Tag = this;
+
             Position = translation;
             XNAOrientationMatrix = Matrix.CreateFromQuaternion(orientation);
             Scale = scale;
@@ -42,7 +45,7 @@ namespace GameConstructLibrary
         /// </summary>
         public void Render()
         {
-            mTerrainRenderable.Render(WorldTransform.Matrix);
+            mTerrainRenderable.Render((StaticCollidable as Terrain).WorldTransform.Matrix);
         }
 
         public Vector3 Position
@@ -61,6 +64,12 @@ namespace GameConstructLibrary
         {
             get;
             private set;
+        }
+
+        public StaticCollidable StaticCollidable
+        {
+            get;
+            protected set;
         }
     }
 }

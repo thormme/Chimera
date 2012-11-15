@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using GameConstructLibrary;
+using BEPUphysics.Entities.Prefabs;
+using Microsoft.Xna.Framework;
 
 namespace finalProject
 {
@@ -24,7 +26,7 @@ namespace finalProject
         }
 
         PlayerCreature()
-            : base(null, new SphereShape(mPlayerRadius), new RadialSensor(100.0f), new PlayerController())
+            : base(null, new Sphere(new Vector3(0), mPlayerRadius), new RadialSensor(100.0f), new PlayerController())
         {}
 
         /// <summary>

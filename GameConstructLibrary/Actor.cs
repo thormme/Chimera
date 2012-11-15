@@ -14,8 +14,8 @@ namespace GameConstructLibrary
     /// </summary>
     abstract public class Actor : PhysicsObject
     {
-        public Actor(Renderable renderable, EntityShape shape)
-            : base(renderable, shape)
+        public Actor(Renderable renderable, Entity entity)
+            : base(renderable, entity)
         {}
 
         abstract public void Update(GameTime time);

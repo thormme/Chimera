@@ -74,12 +74,11 @@ namespace finalProject
             dudeModel.PlayAnimation("Take 001");
 
 
-            dude = new PhysicsObject(dudeModel, new CapsuleShape(3.0f, 1.0f));
+            dude = new PhysicsObject(dudeModel, new Capsule(new Vector3(0), 3.0f, 1.0f, 1.0f));
             World.Add(dude);
 
-            World.Add(mp = new PhysicsObject(dudeModel, new BoxShape(200.0f, 20.0f, 200.0f)));
-            mp.BecomeKinematic();
-            mp.Position = new Vector3(0.0f, -70.0f, 0.0f);
+            World.Add(mp = new PhysicsObject(dudeModel, new Box(new Vector3(0.0f, -70.0f, 0.0f), 200.0f, 20.0f, 200.0f)));
+            mp.Entity.BecomeKinematic();
 
             World.Add(new TerrainPhysics("test_level", 1.0f, new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
         }

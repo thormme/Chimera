@@ -132,6 +132,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
+    <Compile Include="IStaticCollidableOwner.cs" />
+    <Compile Include="IEntityOwner.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="IMobileObject.cs" />
     <Compile Include="Input\GamePadButtonInputAction.cs" />
