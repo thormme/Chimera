@@ -24,11 +24,12 @@ namespace GameConstructLibrary
         /// <param name="scale">The amount to scale the terrain</param>
         /// <param name="orientation">The orientation of the terrain.</param>
         /// <param name="translation">The position of the terrain.</param>
-        public TerrainPhysics(String terrainName, float scale, Quaternion orientation, Vector3 translation)
+        public TerrainPhysics(String terrainName, Vector3 scale, Quaternion orientation, Vector3 translation)
         {
+            float[,] heights = GraphicsManager.LookupTerrainHeightMap(terrainName).GetHeights();
             StaticCollidable = new Terrain(
-                GraphicsManager.LookupTerrainHeightMap(terrainName).GetHeights(),
-                new AffineTransform(new Vector3(scale), orientation, translation)
+                heights,
+                new AffineTransform(scale, orientation, translation - new Vector3(scale.X * .5f * heights.GetLength(0), 0f, scale.Z * .5f * heights.GetLength(1)))
             );
 
             StaticCollidable.Tag = this;
@@ -45,7 +46,7 @@ namespace GameConstructLibrary
         /// </summary>
         public void Render()
         {
-            mTerrainRenderable.Render((StaticCollidable as Terrain).WorldTransform.Matrix);
+            mTerrainRenderable.Render(Position, XNAOrientationMatrix, Scale);
         }
 
         public Vector3 Position
@@ -60,7 +61,7 @@ namespace GameConstructLibrary
             private set;
         }
 
-        public float Scale
+        public Vector3 Scale
         {
             get;
             private set;

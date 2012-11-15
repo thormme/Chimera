@@ -22,7 +22,7 @@ namespace GameConstructLibrary
             get;
         }
 
-        float Scale
+        Vector3 Scale
         {
             get;
         }

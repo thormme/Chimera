@@ -78,7 +78,7 @@ namespace GameConstructLibrary
         /// Scales the model.
         /// // TODO: Investigate scaling the physics object
         /// </summary>
-        public float Scale
+        public Vector3 Scale
         {
             get;
             set;

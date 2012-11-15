@@ -8,7 +8,7 @@ namespace GraphicsLibrary
         ///////////////////////////// Internal Constants /////////////////////////////
 
         private Vector3 mDefaultWorldView  = new Vector3(0.0f, 0.0f, -1.0f);
-        private float mDefaultWorldScale = 1.0f;
+        private Vector3 mDefaultWorldScale = new Vector3(1.0f);
 
         ///////////////////////////////// Interface //////////////////////////////////
 
@@ -37,7 +37,7 @@ namespace GraphicsLibrary
         /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
         /// <param name="worldViewDirection">View vector of object in world coordinates.  Used to calculate rotation.</param>
         /// <param name="worldScale">Scale along each axis of the object.</param>
-        public void Render(Vector3 worldPosition, Vector3 worldViewDirection, float worldScale)
+        public void Render(Vector3 worldPosition, Vector3 worldViewDirection, Vector3 worldScale)
         {
             Vector3 worldViewXZ = new Vector3(worldViewDirection.X, 0.0f, worldViewDirection.Z);
             worldViewXZ.Normalize();
@@ -89,7 +89,7 @@ namespace GraphicsLibrary
         /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
         /// <param name="worldRotation">Rotation matrix of the object.</param>
         /// <param name="worldScale">Scale along each axis of the object.</param>
-        public void Render(Vector3 worldPosition, Matrix worldRotation, float worldScale)
+        public void Render(Vector3 worldPosition, Matrix worldRotation, Vector3 worldScale)
         {
             Matrix worldTransforms = worldRotation;
             worldTransforms *= Matrix.CreateScale(worldScale);
