@@ -8,6 +8,7 @@ using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using GameConstructLibrary;
 using BEPUphysics.CollisionRuleManagement;
+using BEPUphysics.Entities.Prefabs;
 
 namespace finalProject
 {
@@ -31,8 +32,7 @@ namespace finalProject
         public RadialSensor(float radius)
             : base(null, new Sphere(new Vector3(0), radius))
         {
-            this.CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;
-            Game1.World.Add(this);
+            this.PhysicsEntity.CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;
         }
 
         /// <summary>

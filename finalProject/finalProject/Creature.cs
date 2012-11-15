@@ -9,6 +9,7 @@ using BEPUphysics.Constraints.TwoEntity.Joints;
 using BEPUphysics.Constraints.SingleEntity;
 using GameConstructLibrary;
 using BEPUphysics.Entities;
+using BEPUphysics.Collidables.MobileCollidables;
 
 namespace finalProject
 {
@@ -17,7 +18,8 @@ namespace finalProject
     /// </summary>
     abstract public class Creature : Actor
     {
-        protected static float JumpVelocity = 50.0f;
+        protected const float MoveSpeed = 50.0f;
+        protected const float JumpVelocity = 50.0f;
         protected Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
 
         protected RadialSensor mSensor;
@@ -40,16 +42,33 @@ namespace finalProject
             }
         }
 
+        private CompoundCollidable GetCompoundCollidable(Entity entity, RadialSensor radialSensor)
+        {
+            List<CompoundChildData> list = new List<CompoundChildData>();
+            CompoundChildData data1 = new CompoundChildData();
+            CompoundChildData data2 = new CompoundChildData();
+            data1.Entry = new CompoundShapeEntry(entity.CollisionInformation.Shape);
+            data1.Tag = this;
+            data2.Entry = new CompoundShapeEntry(radialSensor.PhysicsEntity.CollisionInformation.Shape);
+            data2.Tag = radialSensor;
+
+            list.Add(data1);
+            list.Add(data2);
+
+            return new CompoundCollidable(list);
+        }
+
         public Creature(Vector3 position, Renderable renderable, Entity entity, RadialSensor radialSensor, Controller controller)
             : base(renderable, entity)
         {
-            Position = position;
+            PhysicsEntity = new MorphableEntity(GetCompoundCollidable(entity, radialSensor));
+            PhysicsEntity.Tag = this;
+            PhysicsEntity.Position = position;
             Forward = new Vector3(1.0f, 0.0f, 0.0f);
             mSensor = radialSensor;
             mController = controller;
             controller.SetCreature(this);
             mParts = new List<Part>();
-            Game1.World.Add(this);
             //MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
             // What do I do with this joint?
             //throw new NotImplementedException("Creature does not know what to do with the joint.");
@@ -95,7 +114,7 @@ namespace finalProject
         {
             if (OnGround)
             {
-                Entity.LinearVelocity = Vector3.Add(JumpVector, Entity.LinearVelocity);
+                PhysicsEntity.LinearVelocity += Vector3.Add(JumpVector, PhysicsEntity.LinearVelocity);
             }
         }
 
@@ -107,10 +126,12 @@ namespace finalProject
         /// </param>
         public virtual void Move(Vector2 direction)
         {
-            Vector3 forward = Vector3.Multiply(Forward, direction.Y);
-            Vector3 right = Vector3.Multiply(Right, direction.X);
+            System.Console.WriteLine("direction = x:" + direction.X + " y:" + direction.Y);
+            Vector3 forward = Vector3.Multiply(Forward, direction.Y * MoveSpeed);
+            Vector3 right = Vector3.Multiply(Right, direction.X * MoveSpeed);
             Vector3 temp = Vector3.Add(forward, right);
-            ApplyLinearImpulse(ref temp);
+            System.Console.WriteLine("temp = x:" + temp.X + " y:" + temp.Y + " z:" + temp.Z);
+            PhysicsEntity.ApplyLinearImpulse(ref temp);
         }
 
         /// <summary>

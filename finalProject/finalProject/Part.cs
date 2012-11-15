@@ -16,17 +16,13 @@ namespace finalProject
     /// </summary>
     abstract public class Part : PhysicsObject
     {
-        private Creature mCreature;
-        private bool mAttached;
-
-        public Part(Creature creature, Renderable renderable, Entity entity)
+        public Part(Renderable renderable, Entity entity)
             : base(renderable, entity)
         {
-            mCreature = creature;
             Game1.World.Add(this);
         }
 
-        virtual public bool Attached
+        public Entity CreatureEntity
         {
             get;
             set;

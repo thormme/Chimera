@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes.ConvexShapes;
+using BEPUphysics.EntityStateManagement;
 
 namespace finalProject
 {
@@ -55,8 +56,8 @@ namespace finalProject
             // TODO: Add your initialization logic here
             GraphicsManager.CelShading = true;
 
-            //camera = new Camera(graphics.GraphicsDevice.Viewport);
-            mPlayer = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 0.0f, 0.0f));
+            camera = new Camera(graphics.GraphicsDevice.Viewport);
+            //mPlayer = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 0.0f, 0.0f));
             
             base.Initialize();
         }
@@ -73,15 +74,16 @@ namespace finalProject
             // TODO: use this.Content to load your game content here
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice);
 
-            //dudeModel = new AnimateModel("cube");
+            dudeModel = new AnimateModel("dude");
             //dudeModel.PlayAnimation("Take 001");
 
 
             //dude = new PhysicsObject(dudeModel, new CapsuleShape(3.0f, 1.0f));
             //World.Add(dude);
 
-            World.Add(mp = new PhysicsObject(dudeModel, new BoxShape(20000.0f, 20.0f, 20000.0f)));
-            mp.BecomeKinematic();
+            //World.Add(mPlayer);
+            World.Add(mp = new PhysicsObject(dudeModel, new Box(new Vector3(0), 2000.0f, 20.0f, 2000.0f)));
+            mp.PhysicsEntity.BecomeKinematic();
             mp.Position = new Vector3(0.0f, -70.0f, 0.0f);
 
             World.Add(new TerrainPhysics("test_level", 1.0f, new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
@@ -112,9 +114,9 @@ namespace finalProject
 
             // TODO: Add your update logic here
             World.Update(gameTime);
-            //dudeModel.Update(gameTime);
+            dudeModel.Update(gameTime);
 
-            //GraphicsManager.Update(camera);
+            GraphicsManager.Update(camera);
 
             base.Update(gameTime);
         }

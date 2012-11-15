@@ -8,6 +8,7 @@ using BEPUphysics.Entities.Prefabs;
 using GraphicsLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using BEPUphysics.EntityStateManagement;
 
 namespace finalProject
 {
@@ -36,7 +37,7 @@ namespace finalProject
         }
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, new InanimateModel("dude"), /*new SphereShape(mPlayerRadius)*/new BoxShape(50.0f, 50.0f, 50.0f), new RadialSensor(10.0f), new PlayerController(viewPort))
+            : base(position, new InanimateModel("dude"), new Box(new Vector3(0), 50.0f, 50.0f, 50.0f), new RadialSensor(10.0f), new PlayerController(viewPort))
         {}
 
         public override void Damage(int damage)

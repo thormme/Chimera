@@ -19,25 +19,26 @@ namespace GameConstructLibrary
         {
             mRenderable = renderable;
             Scale = 1.0f;
-            Entity = entity;
+            PhysicsEntity = entity;
+            PhysicsEntity.Tag = this;
         }
 
-        private Renderable mRenderable;
+        protected Renderable mRenderable;
 
         public Matrix XNAOrientationMatrix
         {
             get
             {
                 return new Matrix(
-                    Entity.OrientationMatrix.M11, Entity.OrientationMatrix.M12, Entity.OrientationMatrix.M13, 1.0f,
-                    Entity.OrientationMatrix.M21, Entity.OrientationMatrix.M22, Entity.OrientationMatrix.M23, 1.0f,
-                    Entity.OrientationMatrix.M31, Entity.OrientationMatrix.M32, Entity.OrientationMatrix.M33, 1.0f,
+                    PhysicsEntity.OrientationMatrix.M11, PhysicsEntity.OrientationMatrix.M12, PhysicsEntity.OrientationMatrix.M13, 1.0f,
+                    PhysicsEntity.OrientationMatrix.M21, PhysicsEntity.OrientationMatrix.M22, PhysicsEntity.OrientationMatrix.M23, 1.0f,
+                    PhysicsEntity.OrientationMatrix.M31, PhysicsEntity.OrientationMatrix.M32, PhysicsEntity.OrientationMatrix.M33, 1.0f,
                     1.0f, 1.0f, 1.0f, 1.0f
                     );
             }
             set
             {
-                Entity.OrientationMatrix = new Matrix3X3(
+                PhysicsEntity.OrientationMatrix = new Matrix3X3(
                     value.M11, value.M12, value.M13,
                     value.M21, value.M22, value.M23,
                     value.M31, value.M32, value.M33
@@ -49,7 +50,7 @@ namespace GameConstructLibrary
         {
             get
             {
-                return Entity.OrientationMatrix.Forward;
+                return XNAOrientationMatrix.Forward;
             }
             set
             {
@@ -63,7 +64,7 @@ namespace GameConstructLibrary
         {
             get
             {
-                return Entity.OrientationMatrix.Right;
+                return XNAOrientationMatrix.Right;
             }
             set
             {
@@ -83,7 +84,7 @@ namespace GameConstructLibrary
             set;
         }
 
-        public Entity Entity
+        public Entity PhysicsEntity
         {
             get;
             protected set;
@@ -91,18 +92,18 @@ namespace GameConstructLibrary
 
         public virtual void Render()
         {
-            mRenderable.Render(Entity.WorldTransform);
+            mRenderable.Render(PhysicsEntity.WorldTransform);
         }
 
         public Vector3 Position
         {
             get
             {
-                return Entity.Position;
+                return PhysicsEntity.Position;
             }
             set
             {
-                Entity.Position = value;
+                PhysicsEntity.Position = value;
             }
         }
     }
