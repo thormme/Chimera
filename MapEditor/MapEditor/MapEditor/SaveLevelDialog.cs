@@ -20,21 +20,21 @@ namespace MapEditor
     /// </summary>
     public class SaveLevelDialog : WindowControl
     {
-        private MapEditorDialog mMapEditor;
+        private MapEditor mMapEditor;
         private Nuclex.UserInterface.Controls.LabelControl mSaveLevelLabel;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mNameInput;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mSaveButton;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mCancelButton;
         
 
-        public SaveLevelDialog(MapEditorDialog mapEditor) :
+        public SaveLevelDialog(MapEditor mapEditor) :
             base()
         {
             mMapEditor = mapEditor;
             InitializeComponent();
         }
 
-        #region NOT Component Designer generated code
+        #region Not component designer generated code
 
         /// <summary>
         /// Adds items to dialog
@@ -51,7 +51,7 @@ namespace MapEditor
             mCancelButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
 
             // Position components
-            mSaveLevelLabel.Text = "Level Name:";
+            mSaveLevelLabel.Text = "Map Name:";
             mSaveLevelLabel.Bounds = new UniRectangle(20.0f, 50.0f, 100.0f, 30.0f);
 
             mNameInput.Bounds = new UniRectangle(120.0f, 50.0f, 240.0f, 30.0f);
@@ -78,7 +78,7 @@ namespace MapEditor
 
         private void SaveClicked(object sender, EventArgs arguments)
         {
-            mMapEditor.DummyLevel.Save(mNameInput.Text.ToString());
+            mMapEditor.DummyMap.Save(mNameInput.Text.ToString());
             Close();
         }
 

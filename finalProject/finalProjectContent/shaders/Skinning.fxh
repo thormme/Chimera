@@ -5,7 +5,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-void Skin(inout VSInput vin)
+void Skin(inout SkinnedVSInput vin)
 {
 	int boneCount = 4;
     float4x3 skinning = 0;

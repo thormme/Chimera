@@ -20,7 +20,7 @@ namespace MapEditor
     /// </summary>
     public class NewLevelDialog : WindowControl
     {
-        private MapEditorDialog mMapEditor;
+        private MapEditor mMapEditor;
         private Nuclex.UserInterface.Controls.LabelControl mNewLevelLabel;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mHeightInput;
         private Nuclex.UserInterface.Controls.LabelControl mDimensionX;
@@ -29,7 +29,7 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mCancelButton;
 
 
-        public NewLevelDialog(MapEditorDialog mapEditor) :
+        public NewLevelDialog(MapEditor mapEditor) :
             base()
         {
             mMapEditor = mapEditor;
@@ -91,7 +91,7 @@ namespace MapEditor
         {
             try
             {
-                mMapEditor.DummyLevel = new DummyLevel(Convert.ToInt32(mHeightInput.Text.ToString()), Convert.ToInt32(mWidthInput.Text.ToString()), mMapEditor.DummyLevel.Entity, mMapEditor.DummyLevel.Graphics);
+                mMapEditor.DummyMap = new DummyMap(mMapEditor, Convert.ToInt32(mHeightInput.Text.ToString()), Convert.ToInt32(mWidthInput.Text.ToString()));
             }
             catch (SystemException)
             {
