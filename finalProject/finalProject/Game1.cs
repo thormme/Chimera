@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes.ConvexShapes;
+using BEPUphysicsDrawer.Models;
 
 namespace finalProject
 {
@@ -16,12 +17,16 @@ namespace finalProject
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         private InputAction forward;
+        private InputAction debug;
+
+        private bool debugMode;
 
         GraphicsDeviceManager graphics;
+        public static ModelDrawer DebugModelDrawer;
         SpriteBatch spriteBatch;
         static public World World;
 
-        private Camera camera;
+        private Camera mCamera;
         private IMobileObject dude = null;
         private AnimateModel dudeModel = null;
 
@@ -35,6 +40,9 @@ namespace finalProject
             World = new World();
 
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
+            debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
+
+            debugMode = false;
         }
 
         ~Game1()
@@ -53,7 +61,7 @@ namespace finalProject
             // TODO: Add your initialization logic here
             GraphicsManager.CelShading = true;
 
-            camera = new Camera(graphics.GraphicsDevice.Viewport);
+            mCamera = new Camera(graphics.GraphicsDevice.Viewport);
             
             base.Initialize();
         }
@@ -64,6 +72,7 @@ namespace finalProject
         /// </summary>
         protected override void LoadContent()
         {
+            DebugModelDrawer = new InstancedModelDrawer(this);
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -80,7 +89,7 @@ namespace finalProject
             World.Add(mp = new PhysicsObject(dudeModel, new Box(new Vector3(0.0f, -70.0f, 0.0f), 200.0f, 20.0f, 200.0f)));
             mp.Entity.BecomeKinematic();
 
-            World.Add(new TerrainPhysics("test_level", 1.0f, new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
+            World.Add(new TerrainPhysics("test_level", new Vector3(1.0f), new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
         }
 
         /// <summary>
@@ -99,6 +108,11 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if (debug.Active)
+            {
+                debugMode = !debugMode;
+            }
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -110,7 +124,8 @@ namespace finalProject
             World.Update(gameTime);
             dudeModel.Update(gameTime);
 
-            GraphicsManager.Update(camera);
+            GraphicsManager.Update(mCamera);
+            DebugModelDrawer.Update();
 
             base.Update(gameTime);
         }
@@ -132,6 +147,11 @@ namespace finalProject
             World.Render();
             dude.Render();
 
+            if (debugMode)
+            {
+                DebugModelDrawer.Draw(mCamera.ViewTransform, mCamera.ProjectionTransform);
+            }
+
             base.Draw(gameTime);
         }
 
@@ -142,7 +162,7 @@ namespace finalProject
             
             if (dudeControlToggle == true)
             {
-                camera.MoveForward(forward.Degree * 0.1f * time);
+                mCamera.MoveForward(forward.Degree * 0.1f * time);
             }
             else
             {
@@ -153,7 +173,7 @@ namespace finalProject
             {
                 if (dudeControlToggle == true)
                 {
-                    camera.MoveForward(-0.1f * time);
+                    mCamera.MoveForward(-0.1f * time);
                 }
                 else
                 {
@@ -165,7 +185,7 @@ namespace finalProject
             {
                 if (dudeControlToggle == true)
                 {
-                    camera.MoveRight(0.1f * time);
+                    mCamera.MoveRight(0.1f * time);
                 }
                 else
                 {
@@ -180,7 +200,7 @@ namespace finalProject
             {
                 if (dudeControlToggle == true)
                 {
-                    camera.MoveRight(-0.1f * time);
+                    mCamera.MoveRight(-0.1f * time);
                 }
                 else
                 {
@@ -281,16 +301,16 @@ namespace finalProject
 
             if (reset == true)
             {
-                camera.ResetPitch();
-                camera.ResetYaw();
+                mCamera.ResetPitch();
+                mCamera.ResetYaw();
             }
 
             if (dudeControlToggle == false)
             {
-                camera.Target = dude.Position + new Vector3(0.0f, 75.0f, 0.0f);
+                mCamera.Target = dude.Position + new Vector3(0.0f, 75.0f, 0.0f);
                 Vector3 direction = dude.XNAOrientationMatrix.Forward;
                 direction.Normalize();
-                camera.Position = camera.Target - 250.0f * direction;
+                mCamera.Position = mCamera.Target - 250.0f * direction;
             }
         }
     }
