@@ -17,7 +17,7 @@ namespace finalProject
     /// </summary>
     class PlayerCreature : Creature
     {
-        private const float mPlayerRadius = 50.0f;
+        private const float mPlayerRadius = 1.0f;
 
         private const float mSneak = 10.0f;
         public override float Sneak
@@ -37,7 +37,7 @@ namespace finalProject
         }
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, new InanimateModel("dude"), new Box(new Vector3(0), 50.0f, 50.0f, 50.0f), new RadialSensor(10.0f), new PlayerController(viewPort))
+            : base(position, new InanimateModel("cube"), new Box(new Vector3(0), 1.0f, 1.0f, 1.0f), new RadialSensor(10.0f), new PlayerController(viewPort))
         {}
 
         public override void Damage(int damage)

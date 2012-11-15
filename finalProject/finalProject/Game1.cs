@@ -24,7 +24,7 @@ namespace finalProject
 
         private Camera camera;
         private IMobileObject dude = null;
-        private AnimateModel dudeModel = null;
+        private InanimateModel dudeModel = null;
 
         private bool dudeControlToggle = false;
 
@@ -56,8 +56,8 @@ namespace finalProject
             // TODO: Add your initialization logic here
             GraphicsManager.CelShading = true;
 
-            camera = new Camera(graphics.GraphicsDevice.Viewport);
-            //mPlayer = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 0.0f, 0.0f));
+            //camera = new Camera(graphics.GraphicsDevice.Viewport);
+            mPlayer = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 0.0f, 0.0f));
             
             base.Initialize();
         }
@@ -74,14 +74,14 @@ namespace finalProject
             // TODO: use this.Content to load your game content here
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice);
 
-            dudeModel = new AnimateModel("dude");
+            dudeModel = new InanimateModel("sphere");
             //dudeModel.PlayAnimation("Take 001");
 
 
             //dude = new PhysicsObject(dudeModel, new CapsuleShape(3.0f, 1.0f));
             //World.Add(dude);
 
-            //World.Add(mPlayer);
+            World.Add(mPlayer);
             World.Add(mp = new PhysicsObject(dudeModel, new Box(new Vector3(0), 2000.0f, 20.0f, 2000.0f)));
             mp.PhysicsEntity.BecomeKinematic();
             mp.Position = new Vector3(0.0f, -70.0f, 0.0f);
@@ -114,9 +114,9 @@ namespace finalProject
 
             // TODO: Add your update logic here
             World.Update(gameTime);
-            dudeModel.Update(gameTime);
+            //dudeModel.Update(gameTime);
 
-            GraphicsManager.Update(camera);
+            //GraphicsManager.Update(camera);
 
             base.Update(gameTime);
         }

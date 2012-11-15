@@ -79,7 +79,8 @@ namespace finalProject
         public override void Update(GameTime time, List<Creature> collidingCreatures)
         {
             Vector2 moveDirection = new Vector2(0.0f, 0.0f);
-            float rotation = mCameraRotation * (float)time.ElapsedGameTime.Milliseconds / 1000.0f;
+            float time_step = (float)time.ElapsedGameTime.Milliseconds / 1000.0f;
+            float rotation = mCameraRotation * time_step;
 
             #region adjust camera angle
             if (mCameraUp.Active)
@@ -123,13 +124,15 @@ namespace finalProject
             }
             #endregion
 
+            moveDirection.X *= time_step;
+            moveDirection.Y *= time_step;
             mCreature.Move(moveDirection);
             //Vector3 temp = Vector3.Multiply(Vector3.Normalize(mCamera.Forward), mDistFromCreature);
             //mCamera.Position = Vector3.Subtract(mCreature.Position, temp);
-            mCamera.Target = mCreature.Position + new Vector3(0.0f, 75.0f, 0.0f);
+            mCamera.Target = mCreature.Position + new Vector3(0.0f, 0.0f, 0.0f);
             Vector3 direction = mCreature.XNAOrientationMatrix.Forward;
             direction.Normalize();
-            mCamera.Position = mCamera.Target - 250.0f * direction;
+            mCamera.Position = mCamera.Target - 10.0f * direction;
             GraphicsManager.Update(mCamera);
 
             #region use/add parts, jump

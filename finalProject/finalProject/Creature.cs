@@ -18,8 +18,8 @@ namespace finalProject
     /// </summary>
     abstract public class Creature : Actor
     {
-        protected const float MoveSpeed = 50.0f;
-        protected const float JumpVelocity = 50.0f;
+        protected const float MoveSpeed = 1.0f;
+        protected const float JumpVelocity = 2.0f;
         protected Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
 
         protected RadialSensor mSensor;
@@ -131,7 +131,8 @@ namespace finalProject
             Vector3 right = Vector3.Multiply(Right, direction.X * MoveSpeed);
             Vector3 temp = Vector3.Add(forward, right);
             System.Console.WriteLine("temp = x:" + temp.X + " y:" + temp.Y + " z:" + temp.Z);
-            PhysicsEntity.ApplyLinearImpulse(ref temp);
+            PhysicsEntity.LinearVelocity += temp;
+            //PhysicsEntity.ApplyLinearImpulse(ref temp);
         }
 
         /// <summary>
