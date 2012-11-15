@@ -90,7 +90,7 @@ namespace MapEditor
             UpdateOrientation();
             UpdatePicking();
 
-            mCamera.MoveUp(speed * mMovement.Z * gameTime.ElapsedGameTime.Milliseconds);
+            //mCamera.MoveUp(speed * mMovement.Z * gameTime.ElapsedGameTime.Milliseconds);
             mCamera.MoveForward(speed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds);
             mCamera.MoveRight(speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds);
             mCamera.RotatePitch(sensitivity * mOrientation.Y * gameTime.ElapsedGameTime.Milliseconds);
@@ -143,7 +143,7 @@ namespace MapEditor
                 //Console.WriteLine(projectionDirection.X + ", " + projectionDirection.Y + ", " + projectionDirection.Z);
                 Ray ray = new Ray(mCamera.Position, projectionDirection);
                 RayHit result;
-                mMapEditor.DummyMap.TerrainPhysics.RayCast(ray, length, out result);
+                mMapEditor.DummyMap.TerrainPhysics.StaticCollidable.RayCast(ray, length, out result);
                 mMapEditor.DummyMap.Action(result.Location);
 
             }

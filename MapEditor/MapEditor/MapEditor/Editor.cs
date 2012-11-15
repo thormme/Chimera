@@ -127,7 +127,7 @@ namespace MapEditor
         {
             GraphicsManager.RenderToBackBuffer();
 
-            mModel.Render(new Vector3(0, 0, 0));
+            mModel.Render(new Vector3(0, 100, 0));
             mMapEditor.Render(); ;
 
             base.Draw(gameTime);
