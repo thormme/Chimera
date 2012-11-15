@@ -130,10 +130,10 @@ namespace finalProject
         {
             mController.Update(time, mSensor.CollidingCreatures);
             mSensor.Position = Position;
-            if (mRenderable is AnimateModel)
-            {
-                (mRenderable as AnimateModel).Update(time);
-            }
+            //if (mRenderable is AnimateModel)
+            //{
+            //    (mRenderable as AnimateModel).Update(time);
+            //}
 
             foreach (Part p in mParts)
             {
