@@ -10,6 +10,7 @@
 #define SKINNED_EFFECT_MAX_BONES   72
 
 DECLARE_TEXTURE(Texture, 0);
+DECLARE_TEXTURE(ShadowMap, 1);
 
 BEGIN_CONSTANTS
 
@@ -31,6 +32,7 @@ BEGIN_CONSTANTS
 MATRIX_CONSTANTS
 
     float4x4 WorldViewProj                      _vs(c15)          _cb(c0);
+	float4x4 LightWorldViewProj;
 
 END_CONSTANTS
 

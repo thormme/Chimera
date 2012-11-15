@@ -21,7 +21,7 @@ namespace GameConstructLibrary
             this.mYaw   = 0.0f;
 
             this.mAspectRatio = (float)viewport.Width / (float)viewport.Height;
-            this.mProjectionTransform = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(40.0f), this.mAspectRatio, 1.0f, 10000.0f);
+            this.mProjectionTransform = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, this.mAspectRatio, 1.0f, 1000.0f);
         }
 
         private Vector3 mPosition;

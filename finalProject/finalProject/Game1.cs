@@ -21,6 +21,7 @@ namespace finalProject
 
         private Camera camera;
         private AnimateModel dude = null;
+        private InanimateModel sphere = null;
         private Terrain testLevel = null;
 
         private Vector3 dudePosition = new Vector3(0.0f, 0.0f, 0.0f);
@@ -73,6 +74,8 @@ namespace finalProject
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice);
             dude = new AnimateModel("dude");
             dude.PlayAnimation("Take 001");
+
+            sphere = new InanimateModel("sphere");
         }
 
         /// <summary>
@@ -124,12 +127,14 @@ namespace finalProject
         {
             GraphicsManager.RenderToShadowMap();
 
-            testLevel.Render(new Vector3(0.0f, 0.0f, 0.0f));
+            testLevel.Render(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f));
+            sphere.Render(new Vector3(0.0f, 0.0f, 0.0f));
             dude.Render(dudePosition, dudeOrientation);
 
             GraphicsManager.RenderToBackBuffer();
 
-            testLevel.Render(new Vector3(0.0f, 0.0f, 0.0f));
+            testLevel.Render(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f));
+            sphere.Render(new Vector3(0.0f, 0.0f, 0.0f));
             dude.Render(dudePosition, dudeOrientation);
 
             spriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
@@ -289,6 +294,11 @@ namespace finalProject
                 Vector3 direction = dudeOrientation;
                 direction.Normalize();
                 camera.Position = camera.Target - 250.0f * direction;
+            }
+            else
+            {
+                camera.Position = new Vector3(0, 50, 50);
+                camera.Target = camera.Position + new Vector3(0, 0, -1);
             }
         }
     }

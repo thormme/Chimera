@@ -36,11 +36,9 @@ Global
 		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.Debug|x86.Build.0 = Debug|x86
 		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.MapEditor Debug|Any CPU.ActiveCfg = MapEditor|x86
 		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.MapEditor Debug|Mixed Platforms.ActiveCfg = MapEditor|x86
-		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.MapEditor Debug|Mixed Platforms.Build.0 = MapEditor|x86
 		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.MapEditor Debug|x86.ActiveCfg = MapEditor|x86
 		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.MapEditor Release|Any CPU.ActiveCfg = MapEditor Release|x86
 		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.MapEditor Release|Mixed Platforms.ActiveCfg = MapEditor Release|x86
-		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.MapEditor Release|Mixed Platforms.Build.0 = MapEditor Release|x86
 		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.MapEditor Release|x86.ActiveCfg = MapEditor Release|x86
 		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.Release|Any CPU.ActiveCfg = Release|x86
 		{099FF29B-954A-4208-A12C-A2121DDFB7E9}.Release|Mixed Platforms.ActiveCfg = Release|x86
@@ -119,7 +117,6 @@ Global
 		{EBF58AE6-887D-480A-B693-4DCB2C02CB8D}.Release|x86.Build.0 = Release|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug|x86.ActiveCfg = Debug|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.MapEditor Debug|Any CPU.ActiveCfg = MapEditor|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.MapEditor Debug|Mixed Platforms.ActiveCfg = MapEditor|x86
@@ -133,7 +130,6 @@ Global
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.MapEditor Release|x86.Build.0 = MapEditor Release|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release|Any CPU.ActiveCfg = Release|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release|Mixed Platforms.Build.0 = Release|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
