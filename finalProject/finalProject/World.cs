@@ -43,9 +43,13 @@ namespace finalProject
                 {
                     mActors.Add(gameObject as Actor);
                 }
-                if (gameObject is ISpaceObject)
+                if (gameObject is IEntityOwner)
                 {
-                    mSpace.Add(gameObject as ISpaceObject);
+                    mSpace.Add((gameObject as IEntityOwner).Entity);
+                }
+                else if (gameObject is IStaticCollidableOwner)
+                {
+                    mSpace.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
                 }
             }
 
@@ -56,9 +60,13 @@ namespace finalProject
                 {
                     mActors.Remove(gameObject as Actor);
                 }
-                if (gameObject is ISpaceObject)
+                if (gameObject is IEntityOwner)
                 {
-                    mSpace.Remove(gameObject as ISpaceObject);
+                    mSpace.Add((gameObject as IEntityOwner).Entity);
+                }
+                else if (gameObject is IStaticCollidableOwner)
+                {
+                    mSpace.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
                 }
             }
 

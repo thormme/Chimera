@@ -7,6 +7,7 @@ using GraphicsLibrary;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.CollisionShapes;
 using GameConstructLibrary;
+using BEPUphysics.Entities;
 
 namespace finalProject
 {
@@ -18,8 +19,8 @@ namespace finalProject
         private Creature mCreature;
         private bool mAttached;
 
-        public Part(Creature creature, Renderable renderable, EntityShape shape)
-            : base(renderable, shape)
+        public Part(Creature creature, Renderable renderable, Entity entity)
+            : base(renderable, entity)
         {
             mCreature = creature;
             Game1.World.Add(this);

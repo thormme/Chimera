@@ -8,6 +8,7 @@ using BEPUphysics.CollisionShapes;
 using BEPUphysics.Constraints.TwoEntity.Joints;
 using BEPUphysics.Constraints.SingleEntity;
 using GameConstructLibrary;
+using BEPUphysics.Entities;
 
 namespace finalProject
 {
@@ -31,14 +32,14 @@ namespace finalProject
             }
         }
 
-        public Creature(Renderable renderable, EntityShape shape, RadialSensor radialSensor, Controller controller)
-            : base(renderable, shape)
+        public Creature(Renderable renderable, Entity entity, RadialSensor radialSensor, Controller controller)
+            : base(renderable, entity)
         {
             mSensor = radialSensor;
             mController = controller;
             controller.SetCreature(this);
             Game1.World.Add(this);
-            MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
+            MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(Entity, 0.0f);
             // What do I do with this joint?
             throw new NotImplementedException("Creature does not know what to do with the joint.");
         }
@@ -79,7 +80,7 @@ namespace finalProject
         {
             //if (OnGround)
             {
-                LinearVelocity = Vector3.Add(JumpVector, LinearVelocity);
+                Entity.LinearVelocity = Vector3.Add(JumpVector, Entity.LinearVelocity);
             }
         }
 
@@ -94,7 +95,7 @@ namespace finalProject
             Vector3 forward = Vector3.Multiply(Forward, direction.Y);
             Vector3 left = Vector3.Multiply(Right, direction.X);
             Vector3 temp = Vector3.Add(forward, left);
-            ApplyLinearImpulse(ref temp);
+            Entity.ApplyLinearImpulse(ref temp);
         }
 
         /// <summary>

@@ -7,6 +7,7 @@ using GraphicsLibrary;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using GameConstructLibrary;
+using BEPUphysics.Entities.Prefabs;
 
 namespace finalProject
 {
@@ -28,7 +29,7 @@ namespace finalProject
         /// The radius of the RadialSensor's sphere.
         /// </param>
         public RadialSensor(float radius)
-            : base(null, new SphereShape(radius))
+            : base(null, new Sphere(new Vector3(0), radius))
         {
             throw new NotImplementedException("I still need to set NoSolver.");
         }
