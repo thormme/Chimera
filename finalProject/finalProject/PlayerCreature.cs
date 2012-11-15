@@ -19,6 +19,14 @@ namespace finalProject
     {
         private const float mPlayerRadius = 1.0f;
 
+        public Camera PlayerCamera
+        {
+            get
+            {
+                return (mController as PlayerController).mCamera;
+            }
+        }
+
         private const float mSneak = 10.0f;
         public override float Sneak
         {

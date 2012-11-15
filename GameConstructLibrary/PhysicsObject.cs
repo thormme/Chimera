@@ -18,7 +18,7 @@ namespace GameConstructLibrary
         public PhysicsObject(Renderable renderable, Entity entity)
         {
             mRenderable = renderable;
-            Scale = 1.0f;
+            Scale = new Vector3(1.0f);
             PhysicsEntity = entity;
             PhysicsEntity.Tag = this;
         }

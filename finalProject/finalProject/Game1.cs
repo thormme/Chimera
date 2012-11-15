@@ -95,7 +95,7 @@ namespace finalProject
             mp.PhysicsEntity.BecomeKinematic();
             mp.Position = new Vector3(0.0f, -70.0f, 0.0f);
 
-            World.Add(new TerrainPhysics("test_level", new Vector3(1.0f), new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
+            //World.Add(new TerrainPhysics("test_level", new Vector3(1.0f), new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
         }
 
         /// <summary>
@@ -154,7 +154,8 @@ namespace finalProject
 
             if (debugMode)
             {
-                DebugModelDrawer.Draw(mCamera.ViewTransform, mCamera.ProjectionTransform);
+                //DebugModelDrawer.Draw(mCamera.ViewTransform, mCamera.ProjectionTransform);
+                DebugModelDrawer.Draw(mPlayer.PlayerCamera.ViewTransform, mPlayer.PlayerCamera.ProjectionTransform);
             }
 
             base.Draw(gameTime);
