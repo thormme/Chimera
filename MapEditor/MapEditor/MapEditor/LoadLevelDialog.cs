@@ -23,13 +23,13 @@ namespace MapEditor
     /// </summary>
     public class LoadLevelDialog : WindowControl
     {
-        private MapEditorDialog mMapEditor;
+        private MapEditor mMapEditor;
         private Nuclex.UserInterface.Controls.LabelControl mLoadLevelLabel;
         private Nuclex.UserInterface.Controls.Desktop.ListControl mLevelList;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mLoadButton;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mCancelButton;
 
-        public LoadLevelDialog(MapEditorDialog mapEditor) :
+        public LoadLevelDialog(MapEditor mapEditor) :
             base()
         {
             mMapEditor = mapEditor;
@@ -37,7 +37,7 @@ namespace MapEditor
             PopulateList();
         }
 
-        #region Not component Designer generated code
+        #region Not component designer generated code
 
         /// <summary>
         /// Adds items to dialog
@@ -99,7 +99,7 @@ namespace MapEditor
         private void LoadClicked(object sender, EventArgs arguments)
         {
             string selected = mLevelList.Items.ElementAt<string>(mLevelList.SelectedItems[0]);
-            mMapEditor.DummyLevel.Load(selected);
+            mMapEditor.DummyMap.Load(selected);
             Close();
         }
 

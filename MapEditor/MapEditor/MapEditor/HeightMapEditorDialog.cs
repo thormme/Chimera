@@ -21,16 +21,18 @@ namespace MapEditor
     /// </summary>
     public class HeightMapEditorDialog : WindowControl
     {
-        private MapEditorDialog mMapEditor;
+        private MapEditor mMapEditor;
         private Nuclex.UserInterface.Controls.LabelControl mSizeLabel;
         private Nuclex.UserInterface.Controls.LabelControl mIntensityLabel;
+        private Nuclex.UserInterface.Controls.LabelControl mFeatherLabel;
         private Nuclex.UserInterface.Controls.LabelControl mSetLabel;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mSizeInput;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mIntensityInput;
+        private Nuclex.UserInterface.Controls.Desktop.OptionControl mFeatherOption;
         private Nuclex.UserInterface.Controls.Desktop.OptionControl mSetOption;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mDoneButton;
 
-        public HeightMapEditorDialog(MapEditorDialog mapEditor) :
+        public HeightMapEditorDialog(MapEditor mapEditor) :
             base()
         {
             mMapEditor = mapEditor;
@@ -50,24 +52,32 @@ namespace MapEditor
             // Declare all components
             mSizeLabel = new Nuclex.UserInterface.Controls.LabelControl();
             mIntensityLabel = new Nuclex.UserInterface.Controls.LabelControl();
+            mFeatherLabel = new Nuclex.UserInterface.Controls.LabelControl();
             mSetLabel = new Nuclex.UserInterface.Controls.LabelControl();
             mSizeInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
             mIntensityInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
+            mFeatherOption = new Nuclex.UserInterface.Controls.Desktop.OptionControl();
             mSetOption = new Nuclex.UserInterface.Controls.Desktop.OptionControl();
             mDoneButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
 
             // Position components
             mSizeLabel.Text = "Size:";
             mSizeLabel.Bounds = new UniRectangle(20.0f, 45.0f, 100.0f, 30.0f);
+            mSizeInput.Text = "0";
             mSizeInput.Bounds = new UniRectangle(120.0f, 40.0f, 140.0f, 30.0f);
 
             mIntensityLabel.Text = "Intensity:";
             mIntensityLabel.Bounds = new UniRectangle(20.0f, 85.0f, 100.0f, 30.0f);
+            mIntensityInput.Text = "0";
             mIntensityInput.Bounds = new UniRectangle(120.0f, 80.0f, 140.0f, 30.0f);
 
+            mFeatherLabel.Text = "Feather:";
+            mFeatherLabel.Bounds = new UniRectangle(20.0f, 125.0f, 100.0f, 30.0f);
+            mFeatherOption.Bounds = new UniRectangle(120.0f, 120.0f, 30.0f, 30.0f);
+
             mSetLabel.Text = "Set:";
-            mSetLabel.Bounds = new UniRectangle(20.0f, 125.0f, 100.0f, 30.0f);
-            mSetOption.Bounds = new UniRectangle(120.0f, 120.0f, 30.0f, 30.0f);
+            mSetLabel.Bounds = new UniRectangle(20.0f, 165.0f, 100.0f, 30.0f);
+            mSetOption.Bounds = new UniRectangle(120.0f, 160.0f, 30.0f, 30.0f);
 
             mDoneButton.Text = "Done";
             mDoneButton.Bounds = new UniRectangle(new UniScalar(1.0f, -100.0f), new UniScalar(1.0f, -45.0f), 80, 24);
@@ -78,6 +88,8 @@ namespace MapEditor
             Children.Add(mSizeInput);
             Children.Add(mIntensityLabel);
             Children.Add(mIntensityInput);
+            Children.Add(mFeatherLabel);
+            Children.Add(mFeatherOption);
             Children.Add(mSetLabel);
             Children.Add(mSetOption);
             Children.Add(mDoneButton);
@@ -86,17 +98,19 @@ namespace MapEditor
 
         #endregion // Not component designer generated code
 
-        public bool GetInputs(out int size, out int intensity, out bool set)
+        public bool GetInputs(out int size, out int intensity, out bool feather, out bool set)
         {
 
             size = 0;
             intensity = 0;
+            feather = false;
             set = false;
 
             try
             {
                 size = Convert.ToInt32(mSizeInput.Text);
                 intensity = Convert.ToInt32(mIntensityInput.Text);
+                feather = mFeatherOption.Selected;
                 set = mSetOption.Selected;
             }
             catch (FormatException)
@@ -110,13 +124,13 @@ namespace MapEditor
 
         public void HeightsEnable()
         {
-            Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 170.0f);
+            Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 210.0f);
         }
 
         private void DoneClicked(object sender, EventArgs arguments)
         {
             Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
-            mMapEditor.Done();
+            mMapEditor.MapEditorDialog.Done();
         }
 
     }

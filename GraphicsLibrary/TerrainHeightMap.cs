@@ -109,7 +109,7 @@ namespace GameConstructLibrary
                 {
                     if (resized)
                     {
-                        vertices[x + z * (int)mSize.X].Position = new Vector3(x - (int)mSize.X / 2, 0, z - (int)mSize.Y / 2);
+                        vertices[x + z * (int)mSize.X].Position = new Vector3(x - (int)mSize.X / 2, 100, z - (int)mSize.Y / 2);
                         vertices[x + z * (int)mSize.X].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                     }
                     else
@@ -184,33 +184,46 @@ namespace GameConstructLibrary
             mIndexBuffer.SetData(indices);
         }
 
-        public void ModifyVertices(Vector3 position, int size, int intensity, bool setHeight)
+        public void ModifyVertices(Vector3 position, int size, int intensity, bool feather, bool setHeight)
         {
 
-            Vector3 vertexPosition = position / vertexSpacing;
-            for (int x = (int)(vertexPosition.X - size); x < (int)(vertexPosition.X + size); x++)
+            VertexPositionColorNormal[,] vertex = new VertexPositionColorNormal[(int)mSize.X, (int)mSize.Y];
+            for (int x = 0; x < (int)mSize.X; x++)
             {
-                for (int z = (int)(vertexPosition.Z - size); z < (int)(vertexPosition.Z + size); z++)
+                for (int z = 0; z < (int)mSize.Y; z++)
                 {
-                    int currentPixel = x + z * (int)mSize.X;
-                    if (currentPixel >= 0 && currentPixel <= (int)mSize.X * (int)mSize.Y)
+                    vertex[x, z] = vertices[x + z * (int)mSize.X];
+                    int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
+                    if (distance < size)
                     {
-                        try
+                        if (setHeight)
                         {
-                            if (setHeight)
+                            vertex[x, z].Position.Y = intensity;
+                        }
+                        else
+                        {
+                            float intensityModifier;
+                            if (feather)
                             {
-                                vertices[currentPixel].Position.Y = intensity;
+                                intensityModifier = (float)Math.Log(size - distance) / size;
                             }
                             else
                             {
-                                vertices[currentPixel].Position.Y += intensity;
+                                intensityModifier = 1.0f;
                             }
-                        }
-                        catch (SystemException)
-                        {
-
+                            vertex[x, z].Position.Y += intensity * intensityModifier;
                         }
                     }
+                    if (vertex[x, z].Position.Y > 255) vertex[x, z].Position.Y = 255;
+                    else if (vertex[x, z].Position.Y < 0) vertex[x, z].Position.Y = 0;
+                }
+            }
+
+            for (int x = 0; x < (int)mSize.X; x++)
+            {
+                for (int z = 0; z < (int)mSize.Y; z++)
+                {
+                    vertices[x + z * (int)mSize.X] = vertex[x, z];
                 }
             }
             CalculateNormals();
