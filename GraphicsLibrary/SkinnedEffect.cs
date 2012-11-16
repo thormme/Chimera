@@ -511,6 +511,38 @@ namespace GraphicsLibrary
         }
 
         /// <summary>
+        /// Creates a new SkinnedEffect by cloning parameter settings from an existing Basic Effect instance.
+        /// </summary>
+        public void CopyFromBasicEffect(Microsoft.Xna.Framework.Graphics.BasicEffect cloneSource)
+        {
+            CacheEffectParametersFromBasicEffect(cloneSource);
+
+            fogEnabled = cloneSource.FogEnabled;
+
+            world = cloneSource.World;
+            view = cloneSource.View;
+            projection = cloneSource.Projection;
+
+            diffuseColor = cloneSource.DiffuseColor;
+            emissiveColor = cloneSource.EmissiveColor;
+            ambientLightColor = cloneSource.AmbientLightColor;
+
+            alpha = cloneSource.Alpha;
+
+            fogStart = cloneSource.FogStart;
+            fogEnd = cloneSource.FogEnd;
+
+            Texture = cloneSource.Texture;
+            SpecularColor = cloneSource.SpecularColor;
+            SpecularPower = cloneSource.SpecularPower;
+            FogColor = cloneSource.FogColor;
+
+            eyePositionParam.SetValue(cloneSource.Parameters["EyePosition"].GetValueVector3());
+            fogVectorParam.SetValue(cloneSource.Parameters["FogVector"].GetValueVector4());
+            worldInverseTransposeParam.SetValue(cloneSource.Parameters["WorldInverseTranspose"].GetValueMatrix());
+        }
+
+        /// <summary>
         /// Creates a clone of the current SkinnedEffect instance.
         /// </summary>
         public override Effect Clone()
@@ -593,6 +625,22 @@ namespace GraphicsLibrary
                                           Parameters["DirLight2DiffuseColor"],
                                           Parameters["DirLight2SpecularColor"],
                                           (cloneSource != null) ? cloneSource.DirectionalLight2 : null);
+        }
+
+        void CacheEffectParametersFromBasicEffect(Microsoft.Xna.Framework.Graphics.BasicEffect cloneSource)
+        {
+            textureParam = Parameters["Texture"];
+            diffuseColorParam = Parameters["DiffuseColor"];
+            emissiveColorParam = Parameters["EmissiveColor"];
+            specularColorParam = Parameters["SpecularColor"];
+            specularPowerParam = Parameters["SpecularPower"];
+            eyePositionParam = Parameters["EyePosition"];
+            fogColorParam = Parameters["FogColor"];
+            fogVectorParam = Parameters["FogVector"];
+            worldParam = Parameters["World"];
+            worldInverseTransposeParam = Parameters["WorldInverseTranspose"];
+            worldViewProjParam = Parameters["WorldViewProj"];
+            lightWorldViewProjParam = Parameters["LightWorldViewProj"];
         }
 
         /// <summary>

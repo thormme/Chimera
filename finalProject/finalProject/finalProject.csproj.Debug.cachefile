@@ -1,7 +1,11 @@
 Content\models\sphere.xnb
 Content\models\dude.xnb
+Content\models\box.xnb
 Content\shaders\ConfigurableShader.xnb
 Content\shaders\PostProcessing.xnb
+Content\levels\maps\default_texture_high.xnb
+Content\levels\maps\default_texture_low.xnb
+Content\levels\maps\default_texture_medium.xnb
 Content\levels\maps\test_level.xnb
 Content\levels\maps\test_level_texture_high.xnb
 Content\levels\maps\test_level_texture_low.xnb
@@ -11,3 +15,4 @@ Content\models\head_0.xnb
 Content\models\jacket_0.xnb
 Content\models\pants_0.xnb
 Content\models\upBodyC_0.xnb
+Content\models\purple_block_0.xnb
