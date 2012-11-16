@@ -42,7 +42,7 @@ namespace MapEditor
             mMapEditor = mapEditor;
 
             mHeightMap = GraphicsManager.LookupTerrainHeightMap("default");
-            mTerrainPhysics = new TerrainPhysics("default", scale, new Quaternion(), new Vector3(0, 0, 0));
+            mTerrainPhysics = new TerrainPhysics("default", new Vector3(scale), new Quaternion(), new Vector3(0, 0, 0));
 
             mLevelManager = new LevelManager();
             mDummies = new List<DummyObject>();
@@ -112,7 +112,7 @@ namespace MapEditor
 
             // Load the height map
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(file);
-            mTerrainPhysics = new TerrainPhysics(file, scale, new Quaternion(), new Vector3(0, 0, 0));
+            mTerrainPhysics = new TerrainPhysics(file, new Vector3(scale), new Quaternion(), new Vector3(0, 0, 0));
 
            // Load the rest of the level
             mDummies = mLevelManager.Load(file);

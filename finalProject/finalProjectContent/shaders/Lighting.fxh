@@ -8,6 +8,7 @@
 float3 xDirLightDirection;
 float3 xDirLightDiffuseColor;
 float3 xDirLightSpecularColor;
+float3 xDirLightAmbientColor;
 
 ColorPair ComputeLights(float3 eyeVector, float3 worldNormal)
 {
@@ -23,7 +24,7 @@ ColorPair ComputeLights(float3 eyeVector, float3 worldNormal)
 
     ColorPair result;
     
-    result.Diffuse  = mul(diffuse,  xDirLightDiffuseColor)  * DiffuseColor.rgb + EmissiveColor;
+    result.Diffuse  = mul(diffuse,  xDirLightDiffuseColor) * DiffuseColor.rgb + EmissiveColor;
     result.Specular = mul(specular, xDirLightSpecularColor) * SpecularColor;
 
     return result;

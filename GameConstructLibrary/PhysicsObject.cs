@@ -18,8 +18,9 @@ namespace GameConstructLibrary
         public PhysicsObject(Renderable renderable, Entity entity)
         {
             mRenderable = renderable;
-            Scale = 1.0f;
+            Scale = new Vector3(1.0f);
             Entity = entity;
+            Entity.Tag = this;
         }
 
         private Renderable mRenderable;
@@ -77,7 +78,7 @@ namespace GameConstructLibrary
         /// Scales the model.
         /// // TODO: Investigate scaling the physics object
         /// </summary>
-        public float Scale
+        public Vector3 Scale
         {
             get;
             set;

@@ -524,7 +524,7 @@ namespace GraphicsLibrary
         /// </summary>
         public void EnableDefaultLighting()
         {
-            AmbientLightColor = EnableDefaultLighting(light0, light1, light2);
+            AmbientLightColor = new Vector3(0.05333332f, 0.09882354f, 0.1819608f);
         }
 
 

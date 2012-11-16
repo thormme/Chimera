@@ -18,7 +18,7 @@ Technique SkinnedCelShade
 {
 	Pass
 	{
-		VertexShader = compile vs_2_0 SkinnedCelShadeVS();
+		VertexShader = compile vs_2_0 SkinnedVS();
 		PixelShader  = compile ps_2_0 CelShadePS();
 	}
 }
@@ -36,8 +36,17 @@ Technique SkinnedPhong
 {
 	Pass
 	{
-		VertexShader = compile vs_2_0 SkinnedPhongVS();
+		VertexShader = compile vs_2_0 SkinnedVS();
 		PixelShader  = compile ps_2_0 PhongPS();
+	}
+}
+
+Technique SkinnedNormalDepthShade
+{
+	Pass
+	{
+		VertexShader = compile vs_2_0 SkinnedNormalDepthVS();
+		PixelShader  = compile ps_2_0 NormalDepthPS();
 	}
 }
 
@@ -54,7 +63,7 @@ Technique CelShade
 {
 	Pass
 	{
-		VertexShader = compile vs_2_0 CelShadeVS();
+		VertexShader = compile vs_2_0 VS();
 		PixelShader  = compile ps_2_0 CelShadePS();
 	}
 }
@@ -72,7 +81,25 @@ Technique Phong
 {
 	Pass
 	{
-		VertexShader = compile vs_2_0 PhongVS();
+		VertexShader = compile vs_2_0 VS();
 		PixelShader  = compile ps_2_0 PhongPS();
+	}
+}
+
+Technique TerrainCelShade
+{
+	Pass
+	{
+		VertexShader = compile vs_2_0 VS();
+		PixelShader  = compile ps_2_0 TerrainCelShadePS();
+	}
+}
+
+Technique NormalDepthShade
+{
+	Pass
+	{
+		VertexShader = compile vs_2_0 NormalDepthVS();
+		PixelShader  = compile ps_2_0 NormalDepthPS();
 	}
 }

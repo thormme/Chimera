@@ -6,6 +6,7 @@ using BEPUphysics;
 using Microsoft.Xna.Framework;
 using GameConstructLibrary;
 using GraphicsLibrary;
+using BEPUphysicsDrawer.Models;
 
 namespace finalProject
 {
@@ -46,10 +47,12 @@ namespace finalProject
                 if (gameObject is IEntityOwner)
                 {
                     mSpace.Add((gameObject as IEntityOwner).Entity);
+                    Game1.DebugModelDrawer.Add((gameObject as IEntityOwner).Entity);
                 }
                 else if (gameObject is IStaticCollidableOwner)
                 {
                     mSpace.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
+                    Game1.DebugModelDrawer.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
                 }
             }
 
@@ -63,10 +66,12 @@ namespace finalProject
                 if (gameObject is IEntityOwner)
                 {
                     mSpace.Add((gameObject as IEntityOwner).Entity);
+                    Game1.DebugModelDrawer.Add((gameObject as IEntityOwner).Entity);
                 }
                 else if (gameObject is IStaticCollidableOwner)
                 {
                     mSpace.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
+                    Game1.DebugModelDrawer.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
                 }
             }
 
