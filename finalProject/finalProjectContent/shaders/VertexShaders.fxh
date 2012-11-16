@@ -10,9 +10,24 @@ ShadowVSOutput ShadowCastVS(float4 Position: POSITION)
 	return output;
 }
 
-CelVSOutput CelShadeVS(VSInput vin)
+NormalDepthVSOutput NormalDepthVS(VSInput vin)
 {
-	CelVSOutput output;
+	NormalDepthVSOutput output;
+
+	output.PositionPS = mul(vin.Position, WorldViewProj);
+
+	float3 worldNormal = normalize(mul(vin.Normal, WorldInverseTranspose));
+
+	// Output color holds the normalized normal vector in rgb and the normalized depth in alpha.
+	output.Color.rgb = (worldNormal + 1) / 2;
+	output.Color.a   = output.PositionPS.z / output.PositionPS.w;
+
+	return output;
+}
+
+VSOutput VS(VSInput vin)
+{
+	VSOutput output;
 
 	float4 pos_ws = mul(vin.Position, World);
     float3 eyeVector = normalize(EyePosition - pos_ws.xyz);
@@ -52,40 +67,20 @@ OutlineVSOutput OutlineVS(VSInput vin)
 	return output;
 }
 
-PhongVSOutput PhongVS(VSInput vin)
-{
-	PhongVSOutput output;
-
-	float4 pos_ws = mul(vin.Position, World);
-    float3 eyeVector = normalize(EyePosition - pos_ws.xyz);
-    float3 worldNormal = normalize(mul(vin.Normal, WorldInverseTranspose));
-
-    ColorPair lightResult = ComputeLights(eyeVector, worldNormal);
-    
-    output.PositionPS = mul(vin.Position, WorldViewProj);
-    output.Diffuse = float4(lightResult.Diffuse, DiffuseColor.a);
-    output.Specular = float4(lightResult.Specular, ComputeFogFactor(vin.Position));
-    
-	output.ShadowPosition = mul(vin.Position, LightWorldViewProj);
-    output.TexCoord = vin.TexCoord;
-
-	return output;
-}
-
 ShadowVSOutput SkinnedShadowCastVS(SkinnedVSInput svin)
 {
 	Skin(svin);
 	return ShadowCastVS(svin.Position);
 }
 
-CelVSOutput SkinnedCelShadeVS(SkinnedVSInput svin)
+VSOutput SkinnedVS(SkinnedVSInput svin)
 {
 	Skin(svin);
 	VSInput vin;
 	vin.Position = svin.Position;
 	vin.Normal   = svin.Normal;
 	vin.TexCoord = svin.TexCoord;
-	return CelShadeVS(vin);
+	return VS(vin);
 }
 
 OutlineVSOutput SkinnedOutlineVS(SkinnedVSInput svin)
@@ -98,12 +93,12 @@ OutlineVSOutput SkinnedOutlineVS(SkinnedVSInput svin)
 	return OutlineVS(vin);
 }
 
-PhongVSOutput SkinnedPhongVS(SkinnedVSInput svin)
+NormalDepthVSOutput SkinnedNormalDepthVS(SkinnedVSInput svin)
 {
 	Skin(svin);
 	VSInput vin;
 	vin.Position = svin.Position;
 	vin.Normal   = svin.Normal;
 	vin.TexCoord = svin.TexCoord;
-	return PhongVS(vin);
+	return NormalDepthVS(vin);
 }
