@@ -21,7 +21,6 @@ namespace GameConstructLibrary
             root.ElementName = "object";
             root.IsNullable = true;
 
-            Console.WriteLine(objects.Count());
             StreamWriter writer = new StreamWriter(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/" + file);
 
             XmlSerializer serializer = new XmlSerializer(typeof(List<DummyObject>), root);
