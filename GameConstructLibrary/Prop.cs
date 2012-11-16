@@ -34,7 +34,6 @@ namespace GameConstructLibrary
             Position = translation;
             XNAOrientationMatrix = Matrix.CreateFromQuaternion(orientation);
             Scale = scale;
-            Console.WriteLine(this.GetType().Assembly.FullName.ToString());
         }
         
         /// <summary>
