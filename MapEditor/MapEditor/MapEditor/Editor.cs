@@ -60,7 +60,8 @@ namespace MapEditor
 
             base.Initialize();
 
-            GraphicsManager.CelShading = true;
+            GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
+            GraphicsManager.CastingShadows = true;
 
             Viewport viewport = GraphicsDevice.Viewport;
             Screen mainScreen = new Screen(viewport.Width, viewport.Height);
@@ -86,7 +87,7 @@ namespace MapEditor
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            GraphicsManager.LoadContent(Content, graphics.GraphicsDevice);
+            GraphicsManager.LoadContent(Content, graphics.GraphicsDevice, this.spriteBatch);
         }
 
         /// <summary>
@@ -125,10 +126,12 @@ namespace MapEditor
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsManager.RenderToBackBuffer();
+            GraphicsManager.BeginRendering();
 
             mModel.Render(new Vector3(0, 100, 0));
             mMapEditor.Render(); ;
+
+            GraphicsManager.FinishRendering();
 
             base.Draw(gameTime);
         }

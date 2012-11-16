@@ -7,8 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes.ConvexShapes;
-using BEPUphysics.EntityStateManagement;
 using BEPUphysicsDrawer.Models;
+using System;
 
 namespace finalProject
 {
@@ -25,26 +25,26 @@ namespace finalProject
         GraphicsDeviceManager graphics;
         public static ModelDrawer DebugModelDrawer;
         SpriteBatch spriteBatch;
-        static public World World = new World();
+        static public World World;
 
         private Camera mCamera;
         private IMobileObject dude = null;
-        private InanimateModel dudeModel = null;
+        private AnimateModel dudeModel = null;
+        private InanimateModel boxModel = null;
 
         private bool dudeControlToggle = false;
-
-        private PlayerCreature mPlayer;
-        private DummyCreature mDummy;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+            World = new World();
+
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
             debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
 
-            debugMode = true;
+            debugMode = false;
         }
 
         ~Game1()
@@ -61,11 +61,11 @@ namespace finalProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            GraphicsManager.CelShading = true;
+            GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
+            GraphicsManager.CastingShadows = true;
+            GraphicsManager.DebugVisualization = false;
 
-            //mCamera = new Camera(graphics.GraphicsDevice.Viewport);
-            mPlayer = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 0.0f, 0.0f));
-            mDummy = new DummyCreature(new Vector3(10.0f, 0.0f, 0.0f));
+            mCamera = new Camera(graphics.GraphicsDevice.Viewport);
             
             base.Initialize();
         }
@@ -76,28 +76,31 @@ namespace finalProject
         /// </summary>
         protected override void LoadContent()
         {
+            var moo = typeof(Prop);
+            Console.WriteLine(moo);
             DebugModelDrawer = new InstancedModelDrawer(this);
-            DebugModelDrawer.IsWireframe = true;
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice);
+            GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice, this.spriteBatch);
+            CollisionMeshManager.LoadContent(this.Content);
 
-            dudeModel = new InanimateModel("cube");
-            //dudeModel.PlayAnimation("Take 001");
+            dudeModel = new AnimateModel("dude");
+            dudeModel.PlayAnimation("Take 001");
 
+            World.Add(new Prop("sphere", new Vector3(0, -50, 0), new Quaternion(), new Vector3(1)));
+            boxModel = new InanimateModel("box");
 
-            //dude = new PhysicsObject(dudeModel, new CapsuleShape(3.0f, 1.0f));
-            //World.Add(dude);
+            dude = new PhysicsObject(dudeModel, new Capsule(new Vector3(0), 3.0f, 1.0f, 1.0f));
+            World.Add(dude);
 
-            World.Add(mPlayer);
-            World.Add(mDummy);
-            World.Add(mp = new PhysicsObject(dudeModel, new Box(new Vector3(0), 2000.0f, 20.0f, 2000.0f)));
+            World.Add(mp = new PhysicsObject(dudeModel, new Box(new Vector3(0.0f, -70.0f, 0.0f), 200.0f, 20.0f, 200.0f)));
             mp.Entity.BecomeKinematic();
-            mp.Position = new Vector3(0.0f, -70.0f, 0.0f);
 
-            //World.Add(new TerrainPhysics("test_level", new Vector3(1.0f), new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
+            World.Add(new TerrainPhysics("test_level", new Vector3(0.0f, -100.0f, 0.0f), new Quaternion(), new Vector3(1.0f)));
+
+            //World.AddLevelFromFile("trial", new Vector3(-100, 0, 0), new Quaternion(), new Vector3(1));
         }
 
         /// <summary>
@@ -126,13 +129,13 @@ namespace finalProject
                 this.Exit();
 
             InputAction.Update();
-            //UpdateCamera(gameTime);
+            UpdateCamera(gameTime);
 
             // TODO: Add your update logic here
             World.Update(gameTime);
-            //dudeModel.Update(gameTime);
+            dudeModel.Update(gameTime);
 
-            //GraphicsManager.Update(camera);
+            GraphicsManager.Update(mCamera);
             DebugModelDrawer.Update();
 
             base.Update(gameTime);
@@ -144,21 +147,17 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsManager.RenderToShadowMap();
-
-            // TODO: Add your drawing code here
-            World.Render();
-            //dude.Render();
-
-            GraphicsManager.RenderToBackBuffer();
+            GraphicsManager.BeginRendering();
 
             World.Render();
-            //dude.Render();
+            dude.Render();
+            boxModel.Render(new Vector3(0.0f, 20.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector3(50.0f, 50.0f, 50.0f));
+
+            GraphicsManager.FinishRendering();
 
             if (debugMode)
             {
-                //DebugModelDrawer.Draw(mCamera.ViewTransform, mCamera.ProjectionTransform);
-                DebugModelDrawer.Draw(mPlayer.PlayerCamera.ViewTransform, mPlayer.PlayerCamera.ProjectionTransform);
+                DebugModelDrawer.Draw(mCamera.ViewTransform, mCamera.ProjectionTransform);
             }
 
             base.Draw(gameTime);

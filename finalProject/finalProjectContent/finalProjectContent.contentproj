@@ -60,7 +60,7 @@
     <Compile Include="models\sphere.FBX">
       <Name>sphere</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="shaders\ConfigurableShader.fx">
       <Name>ConfigurableShader</Name>
@@ -104,10 +104,21 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="levels\maps\level0.bmp">
-      <Name>level0</Name>
+    <Compile Include="levels\maps\default_texture_high.tga">
+      <Name>default_texture_high</Name>
       <Importer>TextureImporter</Importer>
-    </Content>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\maps\default_texture_low.tga">
+      <Name>default_texture_low</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\maps\default_texture_medium.tga">
+      <Name>default_texture_medium</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="levels\maps\test_level.bmp">
@@ -134,10 +145,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\cube.FBX">
-      <Name>cube</Name>
+    <Compile Include="shaders\PostProcessing.fx">
+      <Name>PostProcessing</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\box.FBX">
+      <Name>box</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
+      <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
