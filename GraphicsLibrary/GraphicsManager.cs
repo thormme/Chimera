@@ -157,6 +157,17 @@ namespace GraphicsLibrary
 
                             part.Effect = newEffect;
                         }
+                        else
+                        {
+                            Microsoft.Xna.Framework.Graphics.BasicEffect basicEffect = part.Effect as Microsoft.Xna.Framework.Graphics.BasicEffect;
+                            if (basicEffect != null)
+                            {
+                                SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
+                                newEffect.CopyFromBasicEffect(basicEffect);
+
+                                part.Effect = newEffect;
+                            }
+                        }
                     }
                 }
 

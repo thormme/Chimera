@@ -30,6 +30,7 @@ namespace finalProject
         private Camera mCamera;
         private IMobileObject dude = null;
         private AnimateModel dudeModel = null;
+        private InanimateModel boxModel = null;
 
         private bool dudeControlToggle = false;
 
@@ -89,6 +90,8 @@ namespace finalProject
             dudeModel.PlayAnimation("Take 001");
 
             World.Add(new Prop("sphere", new Vector3(0, -50, 0), new Quaternion(), new Vector3(1)));
+            boxModel = new InanimateModel("box");
+
             dude = new PhysicsObject(dudeModel, new Capsule(new Vector3(0), 3.0f, 1.0f, 1.0f));
             World.Add(dude);
 
@@ -148,6 +151,7 @@ namespace finalProject
 
             World.Render();
             dude.Render();
+            boxModel.Render(new Vector3(0.0f, 20.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector3(50.0f, 50.0f, 50.0f));
 
             GraphicsManager.FinishRendering();
 
