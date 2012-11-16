@@ -32,15 +32,9 @@ namespace finalProject
             mListeningSensitivity = listeningSensitivity;
         }
 
-        /// <summary>
-        /// Prunes the list of colliding creatures to remove those that were not noticed through vision or hearing.
-        /// </summary>
-        /// <param name="objects">
-        /// A list of objects colliding with the radial sensor.
-        /// </param>
-        public override void Collide(List<PhysicsObject> objects)
+        public override void Update(GameTime time)
         {
-            base.Collide(objects);
+            base.Update(time);
 
             Vector3 normalFacing = Vector3.Normalize(Forward);
 

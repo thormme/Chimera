@@ -8,6 +8,8 @@ using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.CollisionShapes;
 using GameConstructLibrary;
 using BEPUphysics.Entities;
+using BEPUphysics.Collidables;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject
 {
@@ -16,21 +18,15 @@ namespace finalProject
     /// </summary>
     abstract public class Part : PhysicsObject
     {
-        private Creature mCreature;
-        private bool mAttached;
-
-        public Part(Creature creature, Renderable renderable, Entity entity)
-            : base(renderable, entity)
+        public Creature Creature
         {
-            mCreature = creature;
-            Game1.World.Add(this);
-        }
-
-        virtual public bool Attached
-        {
-            get;
+            protected get;
             set;
         }
+
+        public Part(Renderable renderable, Entity entity)
+            : base(renderable, entity)
+        {}
 
         /// <summary>
         /// Called by creature every frame. Used for passive effects.

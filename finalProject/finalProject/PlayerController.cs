@@ -5,15 +5,18 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using GameConstructLibrary;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace finalProject
 {
     public class PlayerController : Controller
     {
-        #region
-        private const float mCameraRotation = MathHelper.PiOver2;
+        #region private members
+        private const float mCameraRotation = 90.0f;
+        private const float mDistFromCreature = 200.0f;
 
-        private Camera mCamera;
+        public Camera mCamera;
 
         private KeyInputAction mMoveUp;
         private KeyInputAction mMoveDown;
@@ -28,23 +31,30 @@ namespace finalProject
         private KeyInputAction mPart3;
         private KeyInputAction mJump;
         private KeyInputAction mAdd;
+        private KeyInputAction mCheat;
+
+        private Vector3 target;
         #endregion
 
-        public PlayerController() 
+        public PlayerController(Viewport viewPort) 
         {
-            mMoveUp = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.W);
-            mMoveDown = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.S);
-            mMoveLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.A);
-            mMoveRight = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.D);
-            mCameraUp = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Up);
-            mCameraDown = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Down);
-            mCameraLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Left);
-            mCameraRight = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Right);
-            mPart1 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.D1);
-            mPart2 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.D2);
-            mPart3 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.D3);
-            mJump = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Space);
-            mAdd = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.LeftShift);
+            //mCamera = new Camera(viewPort);
+            mMoveUp = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
+            mMoveDown = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.S);
+            mMoveLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.A);
+            mMoveRight = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.D);
+            mCameraUp = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Up);
+            mCameraDown = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Down);
+            mCameraLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Left);
+            mCameraRight = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Right);
+            mPart1 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D1);
+            mPart2 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D2);
+            mPart3 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D3);
+            mJump = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Space);
+            mAdd = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.LeftShift);
+            mCheat = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Enter);
+
+            target = new Vector3(0.0f, -70.0f, 0.0f);
         }
 
         ~PlayerController()
@@ -76,30 +86,37 @@ namespace finalProject
         public override void Update(GameTime time, List<Creature> collidingCreatures)
         {
             Vector2 moveDirection = new Vector2(0.0f, 0.0f);
-            float rotation = mCameraRotation * time.ElapsedGameTime.Milliseconds / 1000;
+            float time_step = (float)time.ElapsedGameTime.Milliseconds / 1000.0f;
+            float rotation = mCameraRotation * time_step;
 
-            #region
-            if (mCameraUp.Active)
-            {
-                mCamera.RotatePitch(rotation);
-            }
-            if (mCameraDown.Active)
-            {
-                mCamera.RotatePitch(-rotation);
-            }
-            if (mCameraRight.Active)
-            {
-                mCamera.RotateYaw(rotation);
-            }
-            if (mCameraLeft.Active)
-            {
-                mCamera.RotateYaw(-rotation);
-            }
+            #region adjust camera angle
+            //if (mCameraUp.Active)
+            //{
+            //    //mCamera.RotatePitch(rotation);
+            //    //mCreature.Forward = mCamera.Forward;
+            //    target += mCamera.Up;
+            //}
+            //if (mCameraDown.Active)
+            //{
+            //    //mCamera.RotatePitch(-rotation);
+            //    //mCreature.Forward = mCamera.Forward;
+            //    target -= mCamera.Up;
+            //}
+            //if (mCameraRight.Active)
+            //{
+            //    //mCamera.RotateYaw(rotation);
+            //    //mCreature.Forward = mCamera.Forward;
+            //    target += mCamera.Right;
+            //}
+            //if (mCameraLeft.Active)
+            //{
+            //    //mCamera.RotateYaw(-rotation);
+            //    //mCreature.Forward = mCamera.Forward;
+            //    target -= mCamera.Right;
+            //}
             #endregion
 
-            mCreature.Forward = mCamera.Target;
-
-            #region
+            #region adjust creature position
             if (mMoveUp.Active)
             {
                 moveDirection.Y += 1.0f;
@@ -118,20 +135,36 @@ namespace finalProject
             }
             #endregion
 
-            mCreature.Move(moveDirection);
+            if (mCheat.Active)
+            {
+                mCreature.Entity.Position = new Vector3(0.0f);
+                //mCreature.Entity.LinearVelocity = new Vector3(0.0f);
+            }
 
-            #region
+            moveDirection.X *= time_step;
+            moveDirection.Y *= time_step;
+            mCreature.Move(moveDirection);
+            //Vector3 temp = Vector3.Multiply(Vector3.Normalize(mCamera.Forward), mDistFromCreature);
+            //mCamera.Position = Vector3.Subtract(mCreature.Position, temp);
+            //mCamera.Position = new Vector3(0.0f, 100.0f, 1.0f);
+            //mCamera.Target = target;// mCreature.Position;
+            //Vector3 direction = mCreature.XNAOrientationMatrix.Forward;
+            //direction.Normalize();
+            //mCamera.Position = mCamera.Target - 10.0f * direction + new Vector3(0.0f, 10.0f, 0.0f);
+            GraphicsManager.Update(mCamera);
+
+            #region use/add parts, jump
             if (mPart1.Active)
             {
-                mCreature.UsePart(1, mCamera.Target);
+                mCreature.UsePart(1, mCamera.Forward);
             }
             if (mPart2.Active)
             {
-                mCreature.UsePart(2, mCamera.Target);
+                mCreature.UsePart(2, mCamera.Forward);
             }
             if (mPart3.Active)
             {
-                mCreature.UsePart(3, mCamera.Target);
+                mCreature.UsePart(3, mCamera.Forward);
             }
 
             if (mJump.Active)
@@ -142,7 +175,7 @@ namespace finalProject
             {
                 if (mCreature as PlayerCreature != null)
                 {
-                    (mCreature as PlayerCreature).AddPart();
+                    (mCreature as PlayerCreature).FindAndAddPart();
                 }
             }
             #endregion

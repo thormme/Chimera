@@ -5,7 +5,14 @@ using System.Text;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using GameConstructLibrary;
 using BEPUphysics.Entities.Prefabs;
+using GraphicsLibrary;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using BEPUphysics.EntityStateManagement;
+using BEPUphysics.Entities;
+using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.Collidables;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject
 {
@@ -14,7 +21,15 @@ namespace finalProject
     /// </summary>
     class PlayerCreature : Creature
     {
-        private const float mPlayerRadius = 50.0f;
+        private const float mPlayerRadius = 1.0f;
+
+        public Camera PlayerCamera
+        {
+            get
+            {
+                return (mController as PlayerController).mCamera;
+            }
+        }
 
         private const float mSneak = 10.0f;
         public override float Sneak
@@ -25,28 +40,42 @@ namespace finalProject
             }
         }
 
-        PlayerCreature()
-            : base(null, new Sphere(new Vector3(0), mPlayerRadius), new RadialSensor(100.0f), new PlayerController())
-        {}
-
-        /// <summary>
-        /// Called when the creature is damage while it has no parts.
-        /// </summary>
-        protected override void OnDeath()
+        public override bool Incapacitated
         {
-            // TODO: respawn
+            get
+            {
+                return false;
+            }
+        }
+
+        public PlayerCreature(Viewport viewPort, Vector3 position)
+            : base(position, new InanimateModel("box"), new Box(new Vector3(0), 10.0f, 10.0f, 10.0f, 1.0f), new RadialSensor(20.0f), new PlayerController(viewPort))
+        { Scale = new Vector3(10.0f); }
+
+        public override void Damage(int damage)
+        {
+            while (damage-- > 0)
+            {
+                if (mParts.Count() == 0)
+                {
+                    // die?
+                    return;
+                }
+
+                mParts.Remove(mParts[Rand.rand.Next(mParts.Count())]);
+            }
         }
         
         /// <summary>
-        /// Adds a part to the PlayerCreature. The part chosen is the closest part within the radial sensor.
+        /// Adds a part to the PlayerCreature. The part chosen is from the closest incapacitated animal within the radial sensor.
         /// </summary>
-        public void AddPart()
+        public void FindAndAddPart()
         {
-            foreach (PhysicsObject obj in mSensor.CollidingProps)
+            foreach (Creature cur in mSensor.CollidingCreatures)
             {
-                if (obj as Part != null)
+                if (cur.Incapacitated)
                 {
-                    mParts.Add(obj as Part);
+                    AddPart(cur.Parts[0]);
                     return;
                 }
             }
