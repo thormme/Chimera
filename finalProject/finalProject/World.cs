@@ -111,7 +111,7 @@ namespace finalProject
 
         public void AddLevelFromFile(String mapName)
         {
-            //LevelMan
+            List<DummyObject> objects = LevelManager.Load(mapName);
         }
     }
 }
