@@ -13,7 +13,6 @@ using Nuclex.UserInterface;
 using GameConstructLibrary;
 using GraphicsLibrary;
 using BEPUphysics;
-using BEPUphysicsDrawer.Models;
 
 namespace MapEditor
 {
@@ -61,15 +60,16 @@ namespace MapEditor
 
             base.Initialize();
 
-            GraphicsManager.CelShading = true;
+            GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
+            GraphicsManager.CastingShadows = true;
 
             Viewport viewport = GraphicsDevice.Viewport;
             Screen mainScreen = new Screen(viewport.Width, viewport.Height);
             mGUI.Screen = mainScreen;
 
             mCamera = new Camera(viewport);
-            mCamera.Position = new Vector3(0, 100, -100);
-            mCamera.Target = new Vector3(0, 100, 0);
+            mCamera.Position = new Vector3(0, 40, -100);
+            mCamera.Target = new Vector3(0, 40, 0);
 
             mMapEditor = new MapEditor(mainScreen, mCamera, viewport);
 
@@ -87,7 +87,7 @@ namespace MapEditor
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            GraphicsManager.LoadContent(Content, graphics.GraphicsDevice);
+            GraphicsManager.LoadContent(Content, graphics.GraphicsDevice, this.spriteBatch);
         }
 
         /// <summary>
@@ -114,6 +114,8 @@ namespace MapEditor
 
             mMapEditor.Update(gameTime);
             mModel.Update(gameTime);
+
+            
             
             base.Update(gameTime);
         }
@@ -124,14 +126,12 @@ namespace MapEditor
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            
-            GraphicsManager.RenderToShadowMap();
-            mModel.Render(new Vector3(0, 100, 0), new Vector3(0, 0, 1), new Vector3(0.1f, 0.1f, 0.1f));
-            mMapEditor.Render();
+            GraphicsManager.BeginRendering();
 
-            GraphicsManager.RenderToBackBuffer();
-            mModel.Render(new Vector3(0, 100, 0), new Vector3(0, 0, 1), new Vector3(0.1f, 0.1f, 0.1f));
-            mMapEditor.Render();
+            mModel.Render(new Vector3(0, 100, 0));
+            mMapEditor.Render(); ;
+
+            GraphicsManager.FinishRendering();
 
             base.Draw(gameTime);
         }

@@ -59,7 +59,9 @@ namespace finalProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            GraphicsManager.CelShading = true;
+            GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
+            GraphicsManager.CastingShadows = true;
+            GraphicsManager.DebugVisualization = false;
 
             mCamera = new Camera(graphics.GraphicsDevice.Viewport);
             
@@ -77,7 +79,7 @@ namespace finalProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice);
+            GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice, this.spriteBatch);
 
             dudeModel = new AnimateModel("dude");
             dudeModel.PlayAnimation("Take 001");
@@ -136,16 +138,12 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsManager.RenderToShadowMap();
-
-            // TODO: Add your drawing code here
-            World.Render();
-            dude.Render();
-
-            GraphicsManager.RenderToBackBuffer();
+            GraphicsManager.BeginRendering();
 
             World.Render();
             dude.Render();
+
+            GraphicsManager.FinishRendering();
 
             if (debugMode)
             {

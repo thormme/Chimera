@@ -26,7 +26,13 @@ struct ShadowVSOutput
 	float4 PositionPS : SV_Position;
 };
 
-struct CelVSOutput
+struct NormalDepthVSOutput
+{
+	float4 PositionPS : SV_Position;
+	float4 Color      : COLOR0;
+};
+
+struct VSOutput
 {
 	float4 Diffuse        : COLOR0;
 	float4 Specular       : COLOR1;
@@ -41,11 +47,3 @@ struct OutlineVSOutput
 	float4 PositionPS : SV_Position;
 };
 
-struct PhongVSOutput
-{
-	float4 Diffuse        : COLOR0;
-	float4 Specular       : COLOR1;
-	float2 TexCoord       : TEXCOORD0;
-	float4 ShadowPosition : TEXCOORD1;
-	float4 PositionPS     : SV_Position;
-};
