@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysicsDrawer.Models;
+using System;
 
 namespace finalProject
 {
@@ -74,6 +75,8 @@ namespace finalProject
         /// </summary>
         protected override void LoadContent()
         {
+            var moo = typeof(Prop);
+            Console.WriteLine(moo);
             DebugModelDrawer = new InstancedModelDrawer(this);
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -93,6 +96,8 @@ namespace finalProject
             mp.Entity.BecomeKinematic();
 
             World.Add(new TerrainPhysics("test_level", new Vector3(0.0f, -100.0f, 0.0f), new Quaternion(), new Vector3(1.0f)));
+
+            World.AddLevelFromFile("trial", new Vector3(-100, 0, 0), new Quaternion(), new Vector3(1));
         }
 
         /// <summary>
