@@ -17,6 +17,13 @@ namespace GameConstructLibrary
     {
         private Renderable mRenderable;
 
+        /// <summary>
+        /// Construct a new immovable Prop.
+        /// </summary>
+        /// <param name="modelName">Name of the model.</param>
+        /// <param name="translation">The position.</param>
+        /// <param name="orientation">The orientation.</param>
+        /// <param name="scale">The amount to scale by.</param>
         public Prop(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale)
         {
             mRenderable = new InanimateModel(modelName);
@@ -27,6 +34,20 @@ namespace GameConstructLibrary
             Position = translation;
             XNAOrientationMatrix = Matrix.CreateFromQuaternion(orientation);
             Scale = scale;
+            Console.WriteLine(this.GetType().Assembly.FullName.ToString());
+        }
+        
+        /// <summary>
+        /// Constructor for use by the World level loading.
+        /// </summary>
+        /// <param name="modelName">Name of the model.</param>
+        /// <param name="translation">The position.</param>
+        /// <param name="orientation">The orientation.</param>
+        /// <param name="scale">The amount to scale by.</param>
+        /// <param name="extraParameters">Extra parameters.</param>
+        public Prop(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, object[] extraParameters)
+            : this(modelName, translation, orientation, scale)
+        {
         }
 
         public Vector3 Position
