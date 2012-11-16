@@ -140,6 +140,7 @@
     <Compile Include="GraphicsManager.cs" />
     <Compile Include="KeyFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderableDefinition.cs" />
     <Compile Include="SkinnedEffect.cs" />
     <Compile Include="SkinningData.cs" />
     <Compile Include="TerrainDescription.cs" />

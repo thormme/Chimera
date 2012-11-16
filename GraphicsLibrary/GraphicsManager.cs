@@ -24,25 +24,33 @@ namespace GraphicsLibrary
         static private Matrix mLightTransform;
 
         static private Effect mConfigurableShader;
+        static private Effect mPostProcessShader;
         static private SkinnedEffect mTerrainShader;
 
         static private Vector3 mLightDirection;
         static private Vector3 mLightDiffuseColor;
         static private Vector3 mLightSpecularColor;
+        static private Vector3 mLightAmbientColor;
 
         static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string,Model>();
         static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
 
         static private GraphicsDevice mDevice;
+        static private SpriteBatch mSpriteBatch;
+
+        static private Queue<RenderableDefinition> mRenderQueue;
 
         static private RenderTarget2D mShadowMap;
-        static public RenderTarget2D ShadowMap
-        {
-            get { return mShadowMap; }
-        }
+        static private RenderTarget2D mSceneBuffer;
+        static private RenderTarget2D mNormalDepthBuffer;
+        static private RenderTarget2D mOutlineBuffer;
+        static private RenderTarget2D mCompositeBuffer;
 
+        static private bool mCanRender = false;
+
+        static private int mEdgeWidth = 1;
+        static private int mEdgeIntensity = 1;
         static private int mShadowMapLength = 2048;
-        static private bool mCastingShadow = false;
 
         static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
 
@@ -52,10 +60,40 @@ namespace GraphicsLibrary
 
         #region Puplic Properties
 
+        public enum CelShaded { All, Models, Terrain, None };
+
+        static private CelShaded mCelShading = CelShaded.All;
+
         /// <summary>
         /// Sets the render state to Cel Shading or Phong shading.
         /// </summary>
-        static public bool CelShading { get; set; }
+        static public CelShaded CelShading
+        {
+            get { return mCelShading; }
+            set { mCelShading = value; } 
+        }
+
+        static private bool mCastingShadows = true;
+
+        /// <summary>
+        /// Renders scene with or without shadows.
+        /// </summary>
+        static public bool CastingShadows
+        {
+            get { return mCastingShadows; }
+            set { mCastingShadows = value; }
+        }
+
+        static private bool mDebugVisualization = false;
+
+        /// <summary>
+        /// Renders scene in debug mode.
+        /// </summary>
+        static public bool DebugVisualization
+        {
+            get { return mDebugVisualization; }
+            set { mDebugVisualization = value; }
+        }
 
         #endregion
 
@@ -65,19 +103,33 @@ namespace GraphicsLibrary
         /// Loads all models from content/models/ and shader file in to memory.
         /// </summary>
         /// <param name="content">Global game content manager.</param>
-        static public void LoadContent(ContentManager content, GraphicsDevice device)
+        static public void LoadContent(ContentManager content, GraphicsDevice device, SpriteBatch spriteBatch)
         {
             mDevice = device;
+            var pp = device.PresentationParameters;
+
+            mSpriteBatch = spriteBatch;
+
+            mRenderQueue = new Queue<RenderableDefinition>();
+
+            //CelShading = CelShaded.All;
+            //CastingShadows = true;
 
             // Load shaders.
             mConfigurableShader = content.Load<Effect>("shaders/ConfigurableShader");
+            mPostProcessShader = content.Load<Effect>("shaders/PostProcessing");
             mTerrainShader = new SkinnedEffect(mConfigurableShader);
             
-            // Load shadow map.
+            // Create buffers.
             mShadowMap = new RenderTarget2D(device, mShadowMapLength, mShadowMapLength, false, SurfaceFormat.Single, DepthFormat.Depth24);
+            mSceneBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mNormalDepthBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mOutlineBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mCompositeBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
             mLightDiffuseColor = new Vector3(1, 0.9607844f, 0.8078432f);
             mLightSpecularColor = new Vector3(1, 0.9607844f, 0.8078432f);
+            mLightAmbientColor = new Vector3(0.05333332f, 0.09882354f, 0.1819608f);
             mLightDirection = new Vector3(-0.3333333f, 0.6666667f, 0.6666667f);
 
             // Load models.
@@ -170,34 +222,102 @@ namespace GraphicsLibrary
         }
 
         /// <summary>
-        /// Sets graphics state to render to shadow map.
+        /// All Renderables drawn between BeginRendering and FinishRendering will be drawn to the screen following FinishRendering.
         /// </summary>
-        static public void RenderToShadowMap()
+        static public void BeginRendering()
         {
-            mDevice.BlendState = BlendState.Opaque;
-            mDevice.DepthStencilState = DepthStencilState.Default;
-            mDevice.SetRenderTarget(mShadowMap);
-            mDevice.Clear(Color.White);
-            mCastingShadow = true;
+            mRenderQueue.Clear();
+            mCanRender = true;
         }
-
+        
         /// <summary>
-        /// Sets graphics state to render to screen.
+        /// Renders to the screen all Renderables drawn between BeginRendering and FinishRendering.
         /// </summary>
-        static public void RenderToBackBuffer()
-        {
-            mDevice.BlendState = BlendState.Opaque;
-            mDevice.DepthStencilState = DepthStencilState.Default;
-            mDevice.SetRenderTarget(null);
-            mDevice.Clear(Color.CornflowerBlue);
-            mDevice.SamplerStates[1] = SamplerState.PointClamp;
-            mCastingShadow = false;
-        }
-
         static public void FinishRendering()
         {
-            mDevice.Textures[0] = null;
-            mDevice.SamplerStates[0] = SamplerState.LinearWrap;
+            mDevice.BlendState = BlendState.Opaque;
+            mDevice.DepthStencilState = DepthStencilState.Default;
+            mDevice.SamplerStates[1] = SamplerState.PointClamp;
+
+            if (CastingShadows)
+            {
+                // Draw Shadow Map.
+                mDevice.SetRenderTarget(mShadowMap);
+                mDevice.Clear(Color.White);
+
+                foreach (RenderableDefinition renderable in mRenderQueue)
+                {
+                    DrawRenderableDefinition(renderable, true, false);
+                }
+            }
+
+            if (CelShading != CelShaded.None)
+            {
+                // Draw Normal Depth Map.
+                mDevice.SetRenderTarget(mNormalDepthBuffer);
+                mDevice.Clear(Color.Black);
+
+                foreach (RenderableDefinition renderable in mRenderQueue)
+                {
+                    DrawRenderableDefinition(renderable, false, true);
+                }
+
+                // Draw Scene to Texture.
+                mDevice.SetRenderTarget(mSceneBuffer);
+                mDevice.Clear(Color.CornflowerBlue);
+
+                foreach (RenderableDefinition renderable in mRenderQueue)
+                {
+                    DrawRenderableDefinition(renderable, false, false);
+                }
+
+                // Draw Outline to outline texture.
+                mDevice.SetRenderTarget(mOutlineBuffer);
+                mDevice.Clear(Color.White);
+
+                ApplyPostProcessing();
+
+                mDevice.SetRenderTarget(null);
+                mDevice.Clear(Color.CornflowerBlue);
+
+                if (DebugVisualization)
+                {
+                    mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+                    mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
+                    mSpriteBatch.End();
+
+                    mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+                    mSpriteBatch.Draw(mNormalDepthBuffer, new Rectangle(mSceneBuffer.Width / 2, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
+                    mSpriteBatch.End();
+
+                    mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+                    mSpriteBatch.Draw(mOutlineBuffer, new Rectangle(0, mSceneBuffer.Height / 2, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
+                    mSpriteBatch.End();
+
+                    mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+                    mSpriteBatch.Draw(mCompositeBuffer, new Rectangle(mSceneBuffer.Width / 2, mSceneBuffer.Height / 2, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
+                    mSpriteBatch.End();
+                }
+                else
+                {
+                    mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+                    mSpriteBatch.Draw(mCompositeBuffer, new Rectangle(0, 0, mSceneBuffer.Width, mSceneBuffer.Height), Color.White);
+                    mSpriteBatch.End();
+                }
+            }
+            else
+            {
+                // Draw Scene to Screen with no post-processing.
+                mDevice.SetRenderTarget(null);
+                mDevice.Clear(Color.CornflowerBlue);
+
+                foreach (RenderableDefinition renderable in mRenderQueue)
+                {
+                    DrawRenderableDefinition(renderable, false, false);
+                }
+            }
+            
+            mCanRender = false;
         }
 
         /// <summary>
@@ -232,7 +352,14 @@ namespace GraphicsLibrary
         /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
         static public void RenderSkinnedModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms)
         {
-            DrawModel(modelName, boneTransforms, worldTransforms, true);
+            if (mCanRender)
+            {
+                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, true, worldTransforms, boneTransforms));
+            }
+            else
+            {
+                throw new Exception("Unable to render animate model " + modelName + " before calling BeginRendering() or after FinishRendering().\n");
+            }
         }
 
         /// <summary>
@@ -242,9 +369,16 @@ namespace GraphicsLibrary
         /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
         static public void RenderUnskinnedModel(string modelName, Matrix worldTransforms)
         {
-            Matrix[] emptyTransforms = new Matrix[1];
-            emptyTransforms[0] = Matrix.Identity;
-            DrawModel(modelName,emptyTransforms, worldTransforms, false);
+            if (mCanRender)
+            {
+                Matrix[] emptyTransforms = new Matrix[1];
+                emptyTransforms[0] = Matrix.Identity;
+                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, false, worldTransforms, emptyTransforms));
+            }
+            else
+            {
+                throw new Exception("Unable to render inanimate model " + modelName + " before calling BeginRendering() or after FinishRendering().\n");
+            }
         }
 
         /// <summary>
@@ -254,22 +388,13 @@ namespace GraphicsLibrary
         /// <param name="worldTransforms">Position, orientation, and scale of terrain in world space.</param>
         static public void RenderTerrain(string terrainName, Matrix worldTransforms)
         {
-            TerrainDescription heightmap = LookupTerrain(terrainName);
-
-            mDevice.Indices = heightmap.Terrain.IndexBuffer;
-            mDevice.SetVertexBuffer(heightmap.Terrain.VertexBuffer);
-
-            if (mCastingShadow)
+            if (mCanRender)
             {
-                CastShadowTerrain(heightmap, worldTransforms);
+                mRenderQueue.Enqueue(new RenderableDefinition(terrainName, false, false, worldTransforms, null));
             }
             else
             {
-                if (CelShading)
-                {
-                    DrawTerrain(heightmap, "Outline", worldTransforms);
-                }
-                DrawTerrain(heightmap, (CelShading) ? "CelShade" : "Phong", worldTransforms);
+                throw new Exception("Unable to render terrain " + terrainName + " before calling BeginRendering() or after FinishRendering().\n");
             }
         }
 
@@ -318,29 +443,74 @@ namespace GraphicsLibrary
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="renderable"></param>
+        static private void DrawRenderableDefinition(RenderableDefinition renderable, bool isShadow, bool isOutline)
+        {
+            if (!renderable.IsModel)
+            {
+                // Render Terrain.
+                DrawTerrain(renderable.Name, renderable.WorldTransform, isShadow, isOutline);
+            }
+            else
+            {
+                // Render Inanimate or Animate Model.
+                DrawModel(renderable.Name, renderable.BoneTransforms, renderable.WorldTransform, renderable.IsSkinned, isShadow, isOutline);
+            }
+        }
+
+        /// <summary>
         /// Draws all meshes within model to current rendertarget.  Applies rigged model transforms if necesarry.
         /// </summary>
-        static private void DrawModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, bool isSkinned)
+        static private void DrawModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, bool isSkinned, bool isShadow, bool isOutline)
         {
             Model model = LookupModel(modelName);
 
             foreach (ModelMesh mesh in model.Meshes)
             {
-                if (mCastingShadow)
+                if (isShadow)
                 {
                     CastShadowMesh(mesh, (isSkinned) ? "SkinnedShadowCast" : "ShadowCast", boneTransforms, worldTransforms);
                 }
                 else
                 {
-                    // Draw outline.
-                    if (CelShading)
+                    string techniqueName;
+                    if (isOutline)
                     {
-                        DrawMesh(mesh, (isSkinned) ? "SkinnedOutline" : "Outline", boneTransforms, worldTransforms);
+                        techniqueName = (isSkinned) ? "SkinnedNormalDepthShade" : "NormalDepthShade";
                     }
-                    DrawMesh(mesh, (isSkinned) ? ((CelShading) ? "SkinnedCelShade" : "SkinnedPhong") : ((CelShading) ? "CelShade" : "Phong"), boneTransforms, worldTransforms);
+                    else if (CelShading == CelShaded.Models || CelShading == CelShaded.All)
+                    {
+                        techniqueName = (isSkinned) ? "SkinnedCelShade" : "CelShade";
+                    }
+                    else
+                    {
+                        techniqueName = (isSkinned) ? "SkinnedPhong" : "Phong";
+                    }
+                    DrawMesh(mesh, techniqueName, boneTransforms, worldTransforms);
                 }
+            }
+        }
 
         /// <summary>
+        /// Draws current Terrain to render target using appropriate effects.
+        /// </summary>
+        static private void DrawTerrain(string terrainName, Matrix worldTransforms, bool isShadow, bool isOutline)
+        {
+            TerrainDescription heightmap = LookupTerrain(terrainName);
+
+            mDevice.Indices = heightmap.Terrain.IndexBuffer;
+            mDevice.SetVertexBuffer(heightmap.Terrain.VertexBuffer);
+
+            if (isShadow)
+            {
+                CastShadowTerrain(heightmap, worldTransforms);
+            }
+            else
+            {
+                string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "TerrainCelShade" : "Phong");
+                DrawTerrainHeightMap(heightmap, techniqueName, worldTransforms);
             }
         }
 
@@ -373,7 +543,10 @@ namespace GraphicsLibrary
             {
                 effect.CurrentTechnique = effect.Techniques[techniqueName];
 
-                effect.Parameters["ShadowMap"].SetValue(mShadowMap);
+                if (CastingShadows)
+                {
+                    effect.Parameters["ShadowMap"].SetValue(mShadowMap);
+                }
 
                 effect.SetBoneTransforms(boneTransforms);
 
@@ -386,6 +559,7 @@ namespace GraphicsLibrary
                 effect.Parameters["xDirLightDirection"].SetValue(mLightDirection);
                 effect.Parameters["xDirLightDiffuseColor"].SetValue(mLightDiffuseColor);
                 effect.Parameters["xDirLightSpecularColor"].SetValue(mLightSpecularColor);
+                effect.Parameters["xDirLightAmbientColor"].SetValue(mLightAmbientColor);
 
                 effect.SpecularColor = new Vector3(0.25f);
                 effect.SpecularPower = 16;
@@ -420,11 +594,14 @@ namespace GraphicsLibrary
         /// <summary>
         /// Sets effect for current terrain and renders to screen.
         /// </summary>
-        static private void DrawTerrain(TerrainDescription heightMap, string techniqueName, Matrix worldTransforms)
+        static private void DrawTerrainHeightMap(TerrainDescription heightMap, string techniqueName, Matrix worldTransforms)
         {
             mTerrainShader.Texture = heightMap.TextureHigh;
 
-            mTerrainShader.Parameters["ShadowMap"].SetValue(mShadowMap);
+            if (CastingShadows)
+            {
+                mTerrainShader.Parameters["ShadowMap"].SetValue(mShadowMap);
+            }
 
             mTerrainShader.View = mView;
             mTerrainShader.Projection = mProjection;
@@ -435,6 +612,7 @@ namespace GraphicsLibrary
             mTerrainShader.Parameters["xDirLightDirection"].SetValue(mLightDirection);
             mTerrainShader.Parameters["xDirLightDiffuseColor"].SetValue(mLightDiffuseColor);
             mTerrainShader.Parameters["xDirLightSpecularColor"].SetValue(mLightSpecularColor);
+            mTerrainShader.Parameters["xDirLightAmbientColor"].SetValue(mLightAmbientColor);
 
             mTerrainShader.SpecularColor = new Vector3(0.25f);
             mTerrainShader.SpecularPower = 16;
@@ -451,6 +629,36 @@ namespace GraphicsLibrary
                 heightMap.Terrain.NumVertices,
                 0,
                 heightMap.Terrain.NumIndices / 3);
+        }
+
+        /// <summary>
+        /// Updates scene buffer with outline.
+        /// </summary>
+        static private void ApplyPostProcessing()
+        {
+            mPostProcessShader.Parameters["EdgeWidth"].SetValue(mEdgeWidth);
+            mPostProcessShader.Parameters["EdgeIntensity"].SetValue(mEdgeIntensity);
+            mPostProcessShader.Parameters["ScreenResolution"].SetValue(new Vector2(mSceneBuffer.Width, mSceneBuffer.Height));
+            mPostProcessShader.Parameters["NormalDepthTexture"].SetValue(mNormalDepthBuffer);
+            mPostProcessShader.Parameters["SceneTexture"].SetValue(mSceneBuffer);
+
+            mPostProcessShader.CurrentTechnique = mPostProcessShader.Techniques["EdgeDetect"];
+
+            mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, mPostProcessShader);
+            mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width, mSceneBuffer.Height), Color.White);
+            mSpriteBatch.End();
+
+            mDevice.SetRenderTarget(mCompositeBuffer);
+            mDevice.Clear(Color.CornflowerBlue);
+
+            mPostProcessShader.Parameters["OutlineTexture"].SetValue(mOutlineBuffer);
+            mPostProcessShader.Parameters["SceneTexture"].SetValue(mSceneBuffer);
+
+            mPostProcessShader.CurrentTechnique = mPostProcessShader.Techniques["Composite"];
+
+            mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, mPostProcessShader);
+            mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width, mSceneBuffer.Height), Color.White);
+            mSpriteBatch.End();
         }
 
         /// <summary>

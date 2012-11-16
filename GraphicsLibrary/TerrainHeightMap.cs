@@ -184,21 +184,71 @@ namespace GameConstructLibrary
             mIndexBuffer.SetData(indices);
         }
 
-        public void ModifyVertices(Vector3 position, int size, int intensity, bool feather, bool setHeight)
+        public void ModifyVertices(Vector3 position, int size, int intensity, bool feather, bool setHeight, bool smooth)
         {
-
-            VertexPositionColorNormal[,] vertex = new VertexPositionColorNormal[(int)mSize.X, (int)mSize.Y];
-            for (int x = 0; x < (int)mSize.X; x++)
+            
+            position.X += mSize.X / 2;
+            position.Z += mSize.Y / 2;
+            
+            // Calculate the average height for smoothing
+            int average = 0;
+            if (smooth)
             {
-                for (int z = 0; z < (int)mSize.Y; z++)
+                int sum = 0;
+                for (int x = (int)position.X - (int)size / 2; x < (int)position.X + (int)size / 2; x++)
                 {
-                    vertex[x, z] = vertices[x + z * (int)mSize.X];
+                    for (int z = (int)position.Z - (int)size / 2; z < (int)position.Z + (int)size / 2; z++)
+                    {
+                        int xIndex = x - ((int)position.X - (int)size / 2);
+                        int zIndex = z - ((int)position.Z - (int)size / 2);
+
+                        if (xIndex < 0 || xIndex >= size || zIndex < 0 || zIndex >= size ||
+                            x + z * (int)mSize.X < 0 || x + z * (int)mSize.X >= mSize.X * mSize.Y) break;
+
+                        sum += (int)vertices[x + z * (int)mSize.X].Position.Y;
+                    }
+                }
+                average = Convert.ToInt32(sum / Math.Pow(size, 2));
+            }
+
+            // Build smaller grid for modifying heights
+            VertexPositionColorNormal[,] vertex = new VertexPositionColorNormal[size, size];
+            for (int x = (int)position.X - (int)size / 2; x < (int)position.X + (int)size / 2; x++)
+            {
+                for (int z = (int)position.Z - (int)size / 2; z < (int)position.Z + (int)size / 2; z++)
+                {
+                    int xIndex = x - ((int)position.X - (int)size / 2);
+                    int zIndex = z - ((int)position.Z - (int)size / 2);
+
+                    if (xIndex < 0 || xIndex >= size || zIndex < 0 || zIndex >= size || 
+                        x + z * (int)mSize.X < 0 || x + z * (int)mSize.X >= mSize.X * mSize.Y) break;
+
+                    vertex[xIndex, zIndex] = vertices[x + z * (int)mSize.X];
                     int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
                     if (distance < size)
                     {
-                        if (setHeight)
+                        if (smooth)
                         {
-                            vertex[x, z].Position.Y = intensity;
+                            int amount = (int)vertex[xIndex, zIndex].Position.Y;
+                            if (amount > average)
+                            {
+                                if (amount - intensity < average)
+                                    amount = average;
+                                else
+                                    amount -= intensity;
+                            }
+                            else if (amount < average)
+                            {
+                                if (amount + intensity > average)
+                                    amount = average;
+                                else
+                                    amount += intensity;
+                            }
+                            vertex[xIndex, zIndex].Position.Y = amount;
+                        }
+                        else if (setHeight)
+                        {
+                            vertex[xIndex, zIndex].Position.Y = intensity;
                         }
                         else
                         {
@@ -211,25 +261,33 @@ namespace GameConstructLibrary
                             {
                                 intensityModifier = 1.0f;
                             }
-                            vertex[x, z].Position.Y += intensity * intensityModifier;
+                            vertex[xIndex, zIndex].Position.Y += intensity * intensityModifier;
                         }
                     }
-                    if (vertex[x, z].Position.Y > 255) vertex[x, z].Position.Y = 255;
-                    else if (vertex[x, z].Position.Y < 0) vertex[x, z].Position.Y = 0;
+                    if (vertex[xIndex, zIndex].Position.Y > 255) vertex[xIndex, zIndex].Position.Y = 255;
+                    else if (vertex[xIndex, zIndex].Position.Y < 0) vertex[xIndex, zIndex].Position.Y = 0;
                 }
             }
-
-            for (int x = 0; x < (int)mSize.X; x++)
+            
+            // Update vertices with changes
+            for (int x = (int)position.X - (int)size / 2; x < (int)position.X + (int)size / 2; x++)
             {
-                for (int z = 0; z < (int)mSize.Y; z++)
+                for (int z = (int)position.Z - (int)size / 2; z < (int)position.Z + (int)size / 2; z++)
                 {
-                    vertices[x + z * (int)mSize.X] = vertex[x, z];
+                    int xIndex = x - ((int)position.X - (int)size / 2);
+                    int zIndex = z - ((int)position.Z - (int)size / 2);
+                    if (xIndex < 0 || xIndex >= size || zIndex < 0 || zIndex >= size ||
+                        x + z * (int)mSize.X < 0 || x + z * (int)mSize.X >= mSize.X * mSize.Y) break;
+                    vertices[x + z * (int)mSize.X] = vertex[xIndex, zIndex];
                 }
             }
+            
             CalculateNormals();
             MakeBuffer();
+
         }
 
+        // Used for creating a collision entity
         public Single[,] GetHeights()
         {
             Single[,] heights = new Single[(int)mSize.X, (int)mSize.Y];
@@ -271,7 +329,7 @@ namespace GameConstructLibrary
             mMap.Dispose();
             newMap.Save(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
 
-            // Reassign mMap
+            // Reassign map
             mMap = new Bitmap(newMap);
             newMap.Dispose();
         }
