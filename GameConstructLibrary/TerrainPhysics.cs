@@ -21,10 +21,10 @@ namespace GameConstructLibrary
         /// Constuct a TerrainPhysics entity.
         /// </summary>
         /// <param name="terrainName">The name of the terrain.</param>
-        /// <param name="scale">The amount to scale the terrain</param>
-        /// <param name="orientation">The orientation of the terrain.</param>
         /// <param name="translation">The position of the terrain.</param>
-        public TerrainPhysics(String terrainName, Vector3 scale, Quaternion orientation, Vector3 translation)
+        /// <param name="orientation">The orientation of the terrain.</param>
+        /// <param name="scale">The amount to scale the terrain</param>
+        public TerrainPhysics(String terrainName, Vector3 translation, Quaternion orientation, Vector3 scale)
         {
             float[,] heights = GraphicsManager.LookupTerrainHeightMap(terrainName).GetHeights();
             StaticCollidable = new Terrain(

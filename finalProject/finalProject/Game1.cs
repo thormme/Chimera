@@ -78,18 +78,19 @@ namespace finalProject
 
             // TODO: use this.Content to load your game content here
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice);
+            CollisionMeshManager.LoadContent(this.Content);
 
             dudeModel = new AnimateModel("dude");
             dudeModel.PlayAnimation("Take 001");
 
-
+            World.Add(new Prop("sphere", new Vector3(0, -50, 0), new Quaternion(), new Vector3(1)));
             dude = new PhysicsObject(dudeModel, new Capsule(new Vector3(0), 3.0f, 1.0f, 1.0f));
             World.Add(dude);
 
             World.Add(mp = new PhysicsObject(dudeModel, new Box(new Vector3(0.0f, -70.0f, 0.0f), 200.0f, 20.0f, 200.0f)));
             mp.Entity.BecomeKinematic();
 
-            World.Add(new TerrainPhysics("test_level", new Vector3(1.0f), new Quaternion(), new Vector3(0.0f, -100.0f, 0.0f)));
+            World.Add(new TerrainPhysics("test_level", new Vector3(0.0f, -100.0f, 0.0f), new Quaternion(), new Vector3(1.0f)));
         }
 
         /// <summary>
