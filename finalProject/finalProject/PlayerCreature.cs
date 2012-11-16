@@ -49,7 +49,7 @@ namespace finalProject
         }
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, new InanimateModel("cube"), new Box(new Vector3(0), 10.0f, 10.0f, 10.0f, 1.0f), new RadialSensor(20.0f), new PlayerController(viewPort))
+            : base(position, new InanimateModel("box"), new Box(new Vector3(0), 10.0f, 10.0f, 10.0f, 1.0f), new RadialSensor(20.0f), new PlayerController(viewPort))
         { Scale = new Vector3(10.0f); }
 
         public override void Damage(int damage)

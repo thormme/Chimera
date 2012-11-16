@@ -115,10 +115,10 @@ namespace GameConstructLibrary
 
         public virtual void Render()
         {
-            //mRenderable.Render(PhysicsEntity.WorldTransform);
             if (mRenderable != null)
             {
-                mRenderable.Render(Entity.Position, XNAOrientationMatrix, Scale);
+                mRenderable.Render(Entity.WorldTransform);
+                //mRenderable.Render(Entity.Position, XNAOrientationMatrix, Scale);
             }
         }
 
@@ -136,34 +136,11 @@ namespace GameConstructLibrary
 
         public virtual void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
         {
-            //System.Console.Write(this + " colliding with ");
-            //if (collisionPair.EntityB.Tag == this)
-            //{
-            //    System.Console.WriteLine(collisionPair.EntityA.Tag);
-            //    mCollidingObjects.Add(collisionPair.EntityA.Tag as IGameObject);
-            //}
-            //else if (collisionPair.EntityA.Tag == this)
-            //{
-            //    System.Console.WriteLine(collisionPair.EntityB.Tag);
-            //    mCollidingObjects.Add(collisionPair.EntityB.Tag as IGameObject);
-            //}
-            //else
-            //{
-            //    System.Console.WriteLine("nothing.");
-            //}
             mCollidingObjects.Add(other.Tag as IGameObject);
         }
 
         public void CollisionEnded(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
         {
-            //if (collisionPair.EntityB.Tag == this)
-            //{
-            //    mCollidingObjects.Remove(collisionPair.EntityA.Tag as IGameObject);
-            //}
-            //else if (collisionPair.EntityA.Tag == this)
-            //{
-            //    mCollidingObjects.Remove(collisionPair.EntityB.Tag as IGameObject);
-            //}
             mCollidingObjects.Remove(other.Tag as IGameObject);
         }
     }

@@ -106,7 +106,7 @@ namespace finalProject
         {
             foreach (IGameObject gameObject in mGameObjects)
             {
-                //gameObject.Render();
+                gameObject.Render();
             }
         }
 

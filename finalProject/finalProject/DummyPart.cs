@@ -11,7 +11,7 @@ namespace finalProject
     class DummyPart : Part
     {
         public DummyPart(Vector3 position)
-            : base(new InanimateModel("cube"), new Box(new Vector3(0.0f), 025.0f, 025.0f, 025.0f, 1.0f))
+            : base(new InanimateModel("box"), new Box(new Vector3(0.0f), 025.0f, 025.0f, 025.0f, 1.0f))
         {
             Position = position;
             Scale = new Vector3(025.0f, 025.0f, 025.0f);
