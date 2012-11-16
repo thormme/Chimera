@@ -108,5 +108,10 @@ namespace finalProject
                 gameObject.Render();
             }
         }
+
+        public void AddLevelFromFile(String mapName)
+        {
+            //LevelMan
+        }
     }
 }
