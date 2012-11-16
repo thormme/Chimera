@@ -10,6 +10,8 @@ using BEPUphysics.Constraints.SingleEntity;
 using GameConstructLibrary;
 using BEPUphysics.Entities;
 using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.Collidables;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject
 {
@@ -18,9 +20,10 @@ namespace finalProject
     /// </summary>
     abstract public class Creature : Actor
     {
-        protected const float MoveSpeed = 10.0f;
+        protected const float MoveSpeed = 50.0f;
         protected const float JumpVelocity = 10.0f;
         protected Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
+        //protected Entity mEntity;
 
         protected RadialSensor mSensor;
 
@@ -42,42 +45,58 @@ namespace finalProject
             }
         }
 
-        private CompoundCollidable GetCompoundCollidable(PhysicsObject physicsObject)
+        //protected void RemakeEntity()
+        //{
+        //    List<CompoundChildData> list = new List<CompoundChildData>();
+        //    CompoundChildData data = new CompoundChildData();
+        //    data.Entry = new CompoundShapeEntry(mEntity.CollisionInformation.Shape);
+        //    data.Tag = this;
+
+        //    list.Add(data);
+
+        //    foreach (Part part in mParts)
+        //    {
+        //        data = new CompoundChildData();
+        //        data.Entry = new CompoundShapeEntry(part.Entity.CollisionInformation.Shape);
+        //        data.Tag = part;
+
+        //        list.Add(data);
+        //    }
+
+        //    (Entity as MorphableEntity).SetCollisionInformation(new CompoundCollidable(list));
+        //    Entity.Tag = this;
+        //}
+
+        public void AddPart(Part part)
         {
-            List<CompoundChildData> list = new List<CompoundChildData>();
-            CompoundChildData data1 = new CompoundChildData();
-            CompoundChildData data2 = new CompoundChildData();
-            data1.Entry = new CompoundShapeEntry(Entity.CollisionInformation.Shape);
-            data1.Tag = this;
-            data2.Entry = new CompoundShapeEntry(physicsObject.Entity.CollisionInformation.Shape);
-            data2.Tag = physicsObject;
-
-            list.Add(data1);
-            list.Add(data2);
-
-            return new CompoundCollidable(list);
-        }
-
-        protected void AddPart(Part part)
-        {
-            (Entity as MorphableEntity).SetCollisionInformation(GetCompoundCollidable(part));
             mParts.Add(part);
+            part.Creature = this;
+            //RemakeEntity();
         }
 
         public Creature(Vector3 position, Renderable renderable, Entity entity, RadialSensor radialSensor, Controller controller)
             : base(renderable, entity)
+            //: base(renderable, new MorphableEntity(entity.CollisionInformation, 1.0f))
         {
-            Entity = new MorphableEntity(GetCompoundCollidable(radialSensor));
-            Entity.Tag = this;
-            Entity.Position = position;
-            Forward = new Vector3(1.0f, 0.0f, 0.0f);
+            //mEntity = entity;
             mSensor = radialSensor;
+            Forward = new Vector3(1.0f, 0.0f, 0.0f);
             mController = controller;
             controller.SetCreature(this);
             mParts = new List<Part>();
+            Entity.Position = position;
+            //Game1.World.Add(mSensor);
+            Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
             //MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
             // What do I do with this joint?
             //throw new NotImplementedException("Creature does not know what to do with the joint.");
+        }
+
+        public abstract void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair);
+
+        protected virtual void OnDeath()
+        {
+            //Game1.World.Remove(mSensor);
         }
 
         protected bool OnGround
@@ -132,11 +151,11 @@ namespace finalProject
         /// </param>
         public virtual void Move(Vector2 direction)
         {
-            System.Console.WriteLine("direction = x:" + direction.X + " y:" + direction.Y);
-            Vector3 forward = Vector3.Multiply(Forward, direction.Y * MoveSpeed);
-            Vector3 right = Vector3.Multiply(Right, direction.X * MoveSpeed);
-            Vector3 temp = Vector3.Add(forward, right);
-            System.Console.WriteLine("temp = x:" + temp.X + " y:" + temp.Y + " z:" + temp.Z);
+            //System.Console.WriteLine("direction = x:" + direction.X + " y:" + direction.Y);
+            Vector3 forward = new Vector3(0.0f, 0.0f, -1.0f) * (direction.Y * MoveSpeed);
+            Vector3 right = new Vector3(1.0f, 0.0f, 0.0f) * (direction.X * MoveSpeed);
+            Vector3 temp = forward + right;
+            //System.Console.WriteLine("temp = x:" + temp.X + " y:" + temp.Y + " z:" + temp.Z);
             Entity.LinearVelocity += temp;
             //PhysicsEntity.ApplyLinearImpulse(ref temp);
         }

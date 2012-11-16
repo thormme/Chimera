@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using BEPUphysics.CollisionShapes;
 using BEPUphysics.Entities;
+using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.Collidables;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject
 {
@@ -38,7 +41,14 @@ namespace finalProject
         {
             mSneak = sneak;
             mController = controller;
-            mParts.Add(part);
+            Game1.World.Add(part);
+            AddPart(part);
+            //RemakeEntity();
+        }
+
+        public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
+        {
+            System.Console.WriteLine("NonPlayerCreature");
         }
     }
 }

@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using BEPUphysics.EntityStateManagement;
 using BEPUphysics.Entities;
+using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.Collidables;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject
 {
@@ -46,8 +49,8 @@ namespace finalProject
         }
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, new InanimateModel("cube"), new Box(new Vector3(0), 1.0f, 1.0f, 1.0f, 1.0f), new RadialSensor(2.0f), new PlayerController(viewPort))
-        {}
+            : base(position, new InanimateModel("cube"), new Box(new Vector3(0), 25.0f, 25.0f, 25.0f, 25.0f), new RadialSensor(20.0f), new PlayerController(viewPort))
+        { Scale = new Vector3(25.0f); }
 
         public override void Damage(int damage)
         {
@@ -76,6 +79,11 @@ namespace finalProject
                     return;
                 }
             }
+        }
+
+        public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
+        {
+            System.Console.WriteLine("PlayerCreature");
         }
     }
 }

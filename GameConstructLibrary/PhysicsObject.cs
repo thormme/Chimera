@@ -107,7 +107,10 @@ namespace GameConstructLibrary
         public virtual void Render()
         {
             //mRenderable.Render(PhysicsEntity.WorldTransform);
-            mRenderable.Render(Entity.Position, XNAOrientationMatrix, Scale);
+            if (mRenderable != null)
+            {
+                mRenderable.Render(Entity.Position, XNAOrientationMatrix, Scale);
+            }
         }
 
         public Vector3 Position

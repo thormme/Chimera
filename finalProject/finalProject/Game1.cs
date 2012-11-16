@@ -44,7 +44,7 @@ namespace finalProject
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
             debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
 
-            debugMode = false;
+            debugMode = true;
         }
 
         ~Game1()
@@ -77,6 +77,7 @@ namespace finalProject
         protected override void LoadContent()
         {
             DebugModelDrawer = new InstancedModelDrawer(this);
+            DebugModelDrawer.IsWireframe = true;
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 

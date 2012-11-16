@@ -20,8 +20,8 @@ namespace finalProject
         }
 
         public DummyCreature(Vector3 position)
-            : base(position, 2.0f, new AIController(), new InanimateModel("cube"), new Box(new Vector3(0), 1.0f, 1.0f, 1.0f, 1.0f), MathHelper.PiOver4, 10.0f, 10.0f, new DummyPart())
-        {}
+            : base(position, 20.0f, new AIController(), new InanimateModel("cube"), new Box(new Vector3(0), 25.0f, 25.0f, 25.0f, 1.0f), MathHelper.PiOver4, 10.0f, 10.0f, new DummyPart(position + new Vector3(25.0f, 0.0f, 0.0f)))
+        { Scale = new Vector3(25.0f); }
 
         public override void Damage(int damage)
         {

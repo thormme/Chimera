@@ -10,10 +10,11 @@ namespace finalProject
 {
     class DummyPart : Part
     {
-        public DummyPart()
-            : base(new InanimateModel("cube"), new Box(new Vector3(0.0f), 0.25f, 0.25f, 0.25f))
+        public DummyPart(Vector3 position)
+            : base(new InanimateModel("cube"), new Box(new Vector3(0.0f), 025.0f, 025.0f, 025.0f, 1.0f))
         {
-            Scale = new Vector3(0.25f, 0.25f, 0.25f);
+            Position = position;
+            Scale = new Vector3(025.0f, 025.0f, 025.0f);
         }
         public override void Update(GameTime time) { }
 

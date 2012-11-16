@@ -8,6 +8,8 @@ using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.CollisionShapes;
 using GameConstructLibrary;
 using BEPUphysics.Entities;
+using BEPUphysics.Collidables;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject
 {
@@ -16,16 +18,16 @@ namespace finalProject
     /// </summary>
     abstract public class Part : PhysicsObject
     {
+        public Creature Creature
+        {
+            protected get;
+            set;
+        }
+
         public Part(Renderable renderable, Entity entity)
             : base(renderable, entity)
         {
-            Game1.World.Add(this);
-        }
-
-        public Entity CreatureEntity
-        {
-            get;
-            set;
+            entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
         }
 
         /// <summary>
@@ -44,5 +46,11 @@ namespace finalProject
         /// The direction the ability will be used in.
         /// </param>
         abstract public void Use(Vector3 direction);
+
+        public virtual void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
+        {
+            System.Console.WriteLine("Part");
+            Creature.InitialCollisionDetected(sender, other, collisionPair);
+        }
     }
 }
