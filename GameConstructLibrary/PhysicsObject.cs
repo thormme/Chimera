@@ -7,6 +7,9 @@ using BEPUphysics.Entities;
 using BEPUphysics.MathExtensions;
 using GraphicsLibrary;
 using BEPUphysics.CollisionShapes;
+using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.Collidables;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace GameConstructLibrary
 {
@@ -15,15 +18,21 @@ namespace GameConstructLibrary
     /// </summary>
     public class PhysicsObject : IMobileObject, IEntityOwner
     {
+        protected List<IGameObject> mCollidingObjects;
+
         public PhysicsObject(Renderable renderable, Entity entity)
         {
             mRenderable = renderable;
             Scale = new Vector3(1.0f);
             Entity = entity;
             Entity.Tag = this;
+            Entity.CollisionInformation.Tag = this;
+            mCollidingObjects = new List<IGameObject>();
+            Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
+            Entity.CollisionInformation.Events.CollisionEnded += CollisionEnded;
         }
 
-        private Renderable mRenderable;
+        protected Renderable mRenderable;
 
         public Matrix XNAOrientationMatrix
         {
@@ -50,7 +59,7 @@ namespace GameConstructLibrary
         {
             get
             {
-                return Entity.OrientationMatrix.Forward;
+                return XNAOrientationMatrix.Forward;
             }
             set
             {
@@ -64,12 +73,26 @@ namespace GameConstructLibrary
         {
             get
             {
-                return Entity.OrientationMatrix.Right;
+                return XNAOrientationMatrix.Right;
             }
             set
             {
                 Matrix temp = XNAOrientationMatrix;
                 temp.Right = value;
+                XNAOrientationMatrix = temp;
+            }
+        }
+
+        public Vector3 Up
+        {
+            get
+            {
+                return XNAOrientationMatrix.Up;
+            }
+            set
+            {
+                Matrix temp = XNAOrientationMatrix;
+                temp.Up = value;
                 XNAOrientationMatrix = temp;
             }
         }
@@ -92,7 +115,11 @@ namespace GameConstructLibrary
 
         public virtual void Render()
         {
-            mRenderable.Render(Entity.WorldTransform);
+            if (mRenderable != null)
+            {
+                mRenderable.Render(Entity.WorldTransform);
+                //mRenderable.Render(Entity.Position, XNAOrientationMatrix, Scale);
+            }
         }
 
         public Vector3 Position
@@ -105,6 +132,16 @@ namespace GameConstructLibrary
             {
                 Entity.Position = value;
             }
+        }
+
+        public virtual void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
+        {
+            mCollidingObjects.Add(other.Tag as IGameObject);
+        }
+
+        public void CollisionEnded(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
+        {
+            mCollidingObjects.Remove(other.Tag as IGameObject);
         }
     }
 }

@@ -9,6 +9,9 @@ using BEPUphysics.Constraints.TwoEntity.Joints;
 using BEPUphysics.Constraints.SingleEntity;
 using GameConstructLibrary;
 using BEPUphysics.Entities;
+using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.Collidables;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject
 {
@@ -17,11 +20,20 @@ namespace finalProject
     /// </summary>
     abstract public class Creature : Actor
     {
-        protected static float JumpVelocity = 50.0f;
+        protected const float MoveSpeed = 50.0f;
+        protected const float JumpVelocity = 10.0f;
         protected Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
 
         protected RadialSensor mSensor;
+
         protected List<Part> mParts;
+        public List<Part> Parts
+        {
+            get
+            {
+                return mParts;
+            }
+        }
 
         protected Controller mController;
         public Controller CreatureController
@@ -32,32 +44,56 @@ namespace finalProject
             }
         }
 
-        public Creature(Renderable renderable, Entity entity, RadialSensor radialSensor, Controller controller)
+        public void AddPart(Part part)
+        {
+            mParts.Add(part);
+            part.Creature = this;
+            // STAPLE HERE
+        }
+
+        public Creature(Vector3 position, Renderable renderable, Entity entity, RadialSensor radialSensor, Controller controller)
             : base(renderable, entity)
         {
             mSensor = radialSensor;
+            Forward = new Vector3(1.0f, 0.0f, 0.0f);
             mController = controller;
             controller.SetCreature(this);
-            Game1.World.Add(this);
-            MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(Entity, 0.0f);
+            mParts = new List<Part>();
+            Entity.Position = position;
+            Game1.World.Add(mSensor);
+            Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
+            //MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
             // What do I do with this joint?
-            throw new NotImplementedException("Creature does not know what to do with the joint.");
+            //throw new NotImplementedException("Creature does not know what to do with the joint.");
         }
 
-        //abstract protected bool OnGround
-        //{
-        //    get;
-        //}
+        protected virtual void OnDeath()
+        {
+            Game1.World.Remove(mSensor);
+            foreach (Part cur in mParts)
+            {
+                Game1.World.Remove(cur);
+            }
+        }
 
-        abstract public float Sneak
+        protected bool OnGround
+        {
+            get
+            {
+                // TODO: check if it is actually on the ground
+                return true;
+            }
+        }
+
+        public abstract float Sneak
         {
             get;
         }
 
-        /// <summary>
-        /// Called when the creature is damaged while it has no parts.
-        /// </summary>
-        abstract protected void OnDeath();
+        public abstract bool Incapacitated
+        {
+            get;
+        }
 
         /// <summary>
         /// Uses the specified part.
@@ -78,9 +114,9 @@ namespace finalProject
 
         public virtual void Jump()
         {
-            //if (OnGround)
+            if (OnGround)
             {
-                Entity.LinearVelocity = Vector3.Add(JumpVector, Entity.LinearVelocity);
+                Entity.LinearVelocity += Vector3.Add(JumpVector, Entity.LinearVelocity);
             }
         }
 
@@ -92,10 +128,13 @@ namespace finalProject
         /// </param>
         public virtual void Move(Vector2 direction)
         {
-            Vector3 forward = Vector3.Multiply(Forward, direction.Y);
-            Vector3 left = Vector3.Multiply(Right, direction.X);
-            Vector3 temp = Vector3.Add(forward, left);
-            Entity.ApplyLinearImpulse(ref temp);
+            //System.Console.WriteLine("direction = x:" + direction.X + " y:" + direction.Y);
+            Vector3 forward = new Vector3(0.0f, 0.0f, -1.0f) * (direction.Y * MoveSpeed);
+            Vector3 right = new Vector3(1.0f, 0.0f, 0.0f) * (direction.X * MoveSpeed);
+            Vector3 temp = forward + right;
+            //System.Console.WriteLine("temp = x:" + temp.X + " y:" + temp.Y + " z:" + temp.Z);
+            Entity.LinearVelocity += temp;
+            //PhysicsEntity.ApplyLinearImpulse(ref temp);
         }
 
         /// <summary>
@@ -104,19 +143,7 @@ namespace finalProject
         /// <param name="damage">
         /// The amount of damage dealt.
         /// </param>
-        public virtual void Damage(int damage)
-        {
-            while (damage-- > 0)
-            {
-                if (mParts.Count() == 0)
-                {
-                    OnDeath();
-                    return;
-                }
-
-                mParts.Remove(mParts[Rand.rand.Next(mParts.Count())]);
-            }
-        }
+        public abstract void Damage(int damage);
 
         /// <summary>
         /// Called every frame. 
@@ -126,9 +153,14 @@ namespace finalProject
         /// </param>
         public override void Update(GameTime time)
         {
+            Up = new Vector3(0.0f, 1.0f, 0.0f);
+            mSensor.Update(time);
             mController.Update(time, mSensor.CollidingCreatures);
-            // Need to set position of sensor
-            throw new NotImplementedException("Need to set position of sensor");
+            mSensor.Position = Position;
+            //if (mRenderable is AnimateModel)
+            //{
+            //    (mRenderable as AnimateModel).Update(time);
+            //}
 
             foreach (Part p in mParts)
             {

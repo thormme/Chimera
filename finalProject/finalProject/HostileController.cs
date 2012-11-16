@@ -9,7 +9,7 @@ namespace finalProject
     /// <summary>
     /// An AI for creatures that will use its part on creatures it notices.
     /// </summary>
-    class HostileController : Controller
+    class HostileController : AIController
     {
         public HostileController(Creature creature) {}
 
