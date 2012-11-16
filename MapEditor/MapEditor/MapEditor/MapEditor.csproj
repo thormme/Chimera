@@ -97,6 +97,9 @@
     <Reference Include="BEPUphysics">
       <HintPath>..\..\..\finalProject\finalProject\libraries\bepu\x86\Release\BEPUphysics.dll</HintPath>
     </Reference>
+    <Reference Include="BEPUphysicsDrawer">
+      <HintPath>..\..\..\finalProject\finalProject\libraries\bepu\x86\Release\BEPUphysicsDrawer.dll</HintPath>
+    </Reference>
     <Reference Include="LzmaSharp">
       <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\LzmaSharp.dll</HintPath>
     </Reference>

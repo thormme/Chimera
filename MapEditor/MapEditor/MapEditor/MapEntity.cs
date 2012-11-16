@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BEPUphysics;
 using BEPUphysics.CollisionShapes;
 using BEPUphysics.Collidables;
+using BEPUphysics.CollisionShapes.ConvexShapes;
 
 namespace MapEditor
 {
@@ -31,8 +32,8 @@ namespace MapEditor
 
         private MouseState mMouse;
         private Vector2 mMouseClick;
-        private MouseButtonInputAction mLeftClick;
-        private MouseButtonInputAction mRightClick;
+        private MouseButtonInputAction mLeftPressed;
+        private MouseButtonInputAction mRightPressed;
         private MouseButtonInputAction mLeftHold;
         private MouseButtonInputAction mRightHold;
         private MouseButtonInputAction mLeftReleased;
@@ -41,12 +42,14 @@ namespace MapEditor
         private DummyMap mDummyMap;
         public DummyMap DummyMap { get { return mDummyMap; } set { mDummyMap = value; } }
         private Viewport mViewport;
-        private Terrain mTerrain;
 
         private Camera mCamera;
-        private Vector3 mPosition;
         private Vector3 mMovement;
         private Vector3 mOrientation;
+
+        private InanimateModel mModel;
+        private Vector3 mPosition;
+        private float mSize;
 
         public MapEntity(MapEditor mapEditor, Camera camera, Viewport viewport)
         {
@@ -69,16 +72,20 @@ namespace MapEditor
             mUp = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.E);
 
             mMouseClick = new Vector2(0.0f, 0.0f);
-            mLeftClick = new MouseButtonInputAction(0, InputAction.ButtonAction.Pressed, MouseButtonInputAction.MouseButton.Left);
-            mRightClick = new MouseButtonInputAction(0, InputAction.ButtonAction.Pressed, MouseButtonInputAction.MouseButton.Right);
+            mLeftPressed = new MouseButtonInputAction(0, InputAction.ButtonAction.Pressed, MouseButtonInputAction.MouseButton.Left);
+            mRightPressed = new MouseButtonInputAction(0, InputAction.ButtonAction.Pressed, MouseButtonInputAction.MouseButton.Right);
             mLeftHold = new MouseButtonInputAction(0, InputAction.ButtonAction.Down, MouseButtonInputAction.MouseButton.Left);
             mRightHold = new MouseButtonInputAction(0, InputAction.ButtonAction.Down, MouseButtonInputAction.MouseButton.Right);
             mLeftReleased = new MouseButtonInputAction(0, InputAction.ButtonAction.Released, MouseButtonInputAction.MouseButton.Left);
             mRightReleased = new MouseButtonInputAction(0, InputAction.ButtonAction.Released, MouseButtonInputAction.MouseButton.Right);
 
-            mPosition = new Vector3(0.0f, 0.0f, 0.0f);
             mMovement = new Vector3(0.0f, 0.0f, 0.0f);
             mOrientation = new Vector3(0.0f, 0.0f, 0.0f);
+
+            mModel = new InanimateModel("sphere");
+            mPosition = new Vector3(0);
+            mSize = 1;
+
         }
 
         public void Update(GameTime gameTime)
@@ -107,7 +114,7 @@ namespace MapEditor
 
         private void UpdateOrientation()
         {
-            if (mRightClick.Active == true)
+            if (mRightPressed.Active == true)
             {
                 mMouseClick.Y = mMouse.Y;
                 mMouseClick.X = mMouse.X;
@@ -130,23 +137,55 @@ namespace MapEditor
 
         private void UpdatePicking()
         {
-            if (mLeftHold.Active == true)
+            Vector3 nearScreen = new Vector3(mMouse.X, mMouse.Y, 0.0f);
+            Vector3 farScreen = new Vector3(mMouse.X, mMouse.Y, 1.0f);
+            Vector3 nearWorld = mViewport.Unproject(nearScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
+            Vector3 farWorld = mViewport.Unproject(farScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
+            Vector3 projectionDirection = (farWorld - nearWorld);
+            projectionDirection.Normalize();
+            Ray ray = new Ray(mCamera.Position, projectionDirection);
+            RayHit result;
+            if (mMapEditor.DummyMap.TerrainPhysics.StaticCollidable.RayCast(ray, length, out result))
             {
+                mPosition = result.Location;
+                if (mMapEditor.State == States.Height)
+                {
+                    mModel = new InanimateModel("sphere");
+                    if (mLeftHold.Active)
+                    {
+                        mMapEditor.DummyMap.Action(result.Location);
+                    }
+                }
+                else if (mMapEditor.State == States.Object)
+                {
+                    string dummyObjectType;
+                    string dummyObjectModel;
+                    string[] dummyObjectParameters;
+                    
+                    if (mMapEditor.MapEditorDialog.GetObjectEditorInput(out dummyObjectType, out dummyObjectModel, out dummyObjectParameters)){
+                        mModel = new InanimateModel(dummyObjectModel);
+                    }
 
-                Vector3 nearScreen = new Vector3(mMouse.X, mMouse.Y, 0.0f);
-                Vector3 farScreen = new Vector3(mMouse.X, mMouse.Y, 1.0f);
-                Vector3 nearWorld = mViewport.Unproject(nearScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
-                Vector3 farWorld = mViewport.Unproject(farScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
-                Vector3 projectionDirection = (farWorld - nearWorld);
-                projectionDirection.Normalize();
-
-                //Console.WriteLine(projectionDirection.X + ", " + projectionDirection.Y + ", " + projectionDirection.Z);
-                Ray ray = new Ray(mCamera.Position, projectionDirection);
-                RayHit result;
-                mMapEditor.DummyMap.TerrainPhysics.StaticCollidable.RayCast(ray, length, out result);
-                mMapEditor.DummyMap.Action(result.Location);
-
+                    if (mLeftPressed.Active)
+                    {
+                        mMapEditor.DummyMap.Action(result.Location);
+                    }
+                }
             }
+
+            int dummySize;
+            int dummyIntensity;
+            bool dummyFeather;
+            bool dummySet;
+            mMapEditor.MapEditorDialog.GetHeightEditorInput(out dummySize, out dummyIntensity, out dummyFeather, out dummySet);
+            mSize = dummySize * 0.01f;
+
+        }
+
+        public void Render()
+        {
+            if (mMapEditor.State != States.None)
+                mModel.Render(mPosition, new Vector3(0, 0, 1), new Vector3(mSize));
         }
 
     }

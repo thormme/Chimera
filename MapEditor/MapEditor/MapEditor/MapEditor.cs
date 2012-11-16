@@ -36,7 +36,7 @@ namespace MapEditor
 
         public MapEditor(Screen mainScreen, Camera camera, Viewport viewport)
         {
-            
+
             // Create map editor dialog and add to GUIs
             mMapEditorDialog = new MapEditorDialog(this, mainScreen);
             mainScreen.Desktop.Children.Add(mMapEditorDialog);
@@ -76,13 +76,15 @@ namespace MapEditor
             }
             
             mMapEntity.Update(gameTime);
-
+            mDummyMap.Update();
+            
         }
 
         public void Render()
         {
 
             mDummyMap.Render();
+            mMapEntity.Render();
 
         }
 

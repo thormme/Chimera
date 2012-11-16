@@ -111,9 +111,14 @@ namespace MapEditor
             mMapEditor.State = States.None;
         }
 
-        public bool GetInputs(out int size, out int intensity, out bool feather, out bool set)
+        public bool GetHeightEditorInput(out int size, out int intensity, out bool feather, out bool set)
         {
-            return mHeightMapEditorDialog.GetInputs(out size, out intensity, out feather, out set);
+            return mHeightMapEditorDialog.GetHeightEditorInput(out size, out intensity, out feather, out set);
+        }
+
+        public bool GetObjectEditorInput(out string objectType, out string objectModel, out string[] parameterModel)
+        {
+            return mObjectEditorDialog.GetObjectEditorInput(out objectType, out objectModel, out parameterModel);
         }
 
         public void Disable()

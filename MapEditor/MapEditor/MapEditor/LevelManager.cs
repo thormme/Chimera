@@ -31,11 +31,9 @@ namespace MapEditor
         {
             Console.WriteLine(objects.Count());
             writer = new StreamWriter(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/" + file);
-            foreach (DummyObject obj in objects)
-            {
-                XmlSerializer serializer = new XmlSerializer(obj.GetType(), root);
-                serializer.Serialize(writer, obj);
-            }
+
+            XmlSerializer serializer = new XmlSerializer(typeof(List<DummyObject>), root);
+            serializer.Serialize(writer, objects);
             writer.Close();
         }
 
@@ -47,11 +45,6 @@ namespace MapEditor
             XmlSerializer deserializer = new XmlSerializer(typeof(List<DummyObject>), root);
 
             objects = (List<DummyObject>)deserializer.Deserialize(reader);
-
-            foreach (DummyObject obj in objects)
-            {
-                Console.WriteLine(obj.Type);
-            }
 
             reader.Close();
             return objects;

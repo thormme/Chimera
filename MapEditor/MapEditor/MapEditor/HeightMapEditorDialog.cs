@@ -98,7 +98,7 @@ namespace MapEditor
 
         #endregion // Not component designer generated code
 
-        public bool GetInputs(out int size, out int intensity, out bool feather, out bool set)
+        public bool GetHeightEditorInput(out int size, out int intensity, out bool feather, out bool set)
         {
 
             size = 0;

@@ -13,6 +13,7 @@ using Nuclex.UserInterface;
 using GameConstructLibrary;
 using GraphicsLibrary;
 using BEPUphysics;
+using BEPUphysicsDrawer.Models;
 
 namespace MapEditor
 {
@@ -67,8 +68,8 @@ namespace MapEditor
             mGUI.Screen = mainScreen;
 
             mCamera = new Camera(viewport);
-            mCamera.Position = new Vector3(0, 40, -100);
-            mCamera.Target = new Vector3(0, 40, 0);
+            mCamera.Position = new Vector3(0, 100, -100);
+            mCamera.Target = new Vector3(0, 100, 0);
 
             mMapEditor = new MapEditor(mainScreen, mCamera, viewport);
 
@@ -113,8 +114,6 @@ namespace MapEditor
 
             mMapEditor.Update(gameTime);
             mModel.Update(gameTime);
-
-            
             
             base.Update(gameTime);
         }
@@ -125,10 +124,14 @@ namespace MapEditor
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsManager.RenderToBackBuffer();
+            
+            GraphicsManager.RenderToShadowMap();
+            mModel.Render(new Vector3(0, 100, 0), new Vector3(0, 0, 1), new Vector3(0.1f, 0.1f, 0.1f));
+            mMapEditor.Render();
 
-            mModel.Render(new Vector3(0, 100, 0));
-            mMapEditor.Render(); ;
+            GraphicsManager.RenderToBackBuffer();
+            mModel.Render(new Vector3(0, 100, 0), new Vector3(0, 0, 1), new Vector3(0.1f, 0.1f, 0.1f));
+            mMapEditor.Render();
 
             base.Draw(gameTime);
         }
