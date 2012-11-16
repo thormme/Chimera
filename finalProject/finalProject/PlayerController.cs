@@ -38,7 +38,7 @@ namespace finalProject
 
         public PlayerController(Viewport viewPort) 
         {
-            mCamera = new Camera(viewPort);
+            //mCamera = new Camera(viewPort);
             mMoveUp = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
             mMoveDown = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.S);
             mMoveLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.A);
@@ -90,30 +90,30 @@ namespace finalProject
             float rotation = mCameraRotation * time_step;
 
             #region adjust camera angle
-            if (mCameraUp.Active)
-            {
-                //mCamera.RotatePitch(rotation);
-                //mCreature.Forward = mCamera.Forward;
-                target += mCamera.Up;
-            }
-            if (mCameraDown.Active)
-            {
-                //mCamera.RotatePitch(-rotation);
-                //mCreature.Forward = mCamera.Forward;
-                target -= mCamera.Up;
-            }
-            if (mCameraRight.Active)
-            {
-                //mCamera.RotateYaw(rotation);
-                //mCreature.Forward = mCamera.Forward;
-                target += mCamera.Right;
-            }
-            if (mCameraLeft.Active)
-            {
-                //mCamera.RotateYaw(-rotation);
-                //mCreature.Forward = mCamera.Forward;
-                target -= mCamera.Right;
-            }
+            //if (mCameraUp.Active)
+            //{
+            //    //mCamera.RotatePitch(rotation);
+            //    //mCreature.Forward = mCamera.Forward;
+            //    target += mCamera.Up;
+            //}
+            //if (mCameraDown.Active)
+            //{
+            //    //mCamera.RotatePitch(-rotation);
+            //    //mCreature.Forward = mCamera.Forward;
+            //    target -= mCamera.Up;
+            //}
+            //if (mCameraRight.Active)
+            //{
+            //    //mCamera.RotateYaw(rotation);
+            //    //mCreature.Forward = mCamera.Forward;
+            //    target += mCamera.Right;
+            //}
+            //if (mCameraLeft.Active)
+            //{
+            //    //mCamera.RotateYaw(-rotation);
+            //    //mCreature.Forward = mCamera.Forward;
+            //    target -= mCamera.Right;
+            //}
             #endregion
 
             #region adjust creature position
@@ -146,8 +146,8 @@ namespace finalProject
             mCreature.Move(moveDirection);
             //Vector3 temp = Vector3.Multiply(Vector3.Normalize(mCamera.Forward), mDistFromCreature);
             //mCamera.Position = Vector3.Subtract(mCreature.Position, temp);
-            mCamera.Position = new Vector3(0.0f, 100.0f, 1.0f);
-            mCamera.Target = target;// mCreature.Position;
+            //mCamera.Position = new Vector3(0.0f, 100.0f, 1.0f);
+            //mCamera.Target = target;// mCreature.Position;
             //Vector3 direction = mCreature.XNAOrientationMatrix.Forward;
             //direction.Normalize();
             //mCamera.Position = mCamera.Target - 10.0f * direction + new Vector3(0.0f, 10.0f, 0.0f);
@@ -175,7 +175,7 @@ namespace finalProject
             {
                 if (mCreature as PlayerCreature != null)
                 {
-                    (mCreature as PlayerCreature).AddPart();
+                    (mCreature as PlayerCreature).FindAndAddPart();
                 }
             }
             #endregion

@@ -49,8 +49,8 @@ namespace finalProject
         }
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, new InanimateModel("cube"), new Box(new Vector3(0), 25.0f, 25.0f, 25.0f, 25.0f), new RadialSensor(20.0f), new PlayerController(viewPort))
-        { Scale = new Vector3(25.0f); }
+            : base(position, new InanimateModel("cube"), new Box(new Vector3(0), 10.0f, 10.0f, 10.0f, 1.0f), new RadialSensor(20.0f), new PlayerController(viewPort))
+        { Scale = new Vector3(10.0f); }
 
         public override void Damage(int damage)
         {
@@ -69,7 +69,7 @@ namespace finalProject
         /// <summary>
         /// Adds a part to the PlayerCreature. The part chosen is from the closest incapacitated animal within the radial sensor.
         /// </summary>
-        public void AddPart()
+        public void FindAndAddPart()
         {
             foreach (Creature cur in mSensor.CollidingCreatures)
             {
@@ -79,11 +79,6 @@ namespace finalProject
                     return;
                 }
             }
-        }
-
-        public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
-        {
-            System.Console.WriteLine("PlayerCreature");
         }
     }
 }

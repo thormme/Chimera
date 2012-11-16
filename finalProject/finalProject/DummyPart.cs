@@ -18,6 +18,9 @@ namespace finalProject
         }
         public override void Update(GameTime time) { }
 
-        public override void Use(Vector3 direction) { }
+        public override void Use(Vector3 direction)
+        {
+            Creature.Jump();
+        }
     }
 }

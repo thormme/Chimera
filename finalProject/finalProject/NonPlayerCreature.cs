@@ -9,6 +9,7 @@ using BEPUphysics.Entities;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Collidables;
 using BEPUphysics.NarrowPhaseSystems.Pairs;
+using GameConstructLibrary;
 
 namespace finalProject
 {
@@ -23,6 +24,15 @@ namespace finalProject
             get
             {
                 return mSneak;
+            }
+        }
+
+        private bool mIncapacitated;
+        public override bool Incapacitated
+        {
+            get
+            {
+                return mIncapacitated;
             }
         }
 
@@ -43,12 +53,24 @@ namespace finalProject
             mController = controller;
             Game1.World.Add(part);
             AddPart(part);
-            //RemakeEntity();
         }
 
-        public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
+        public override void Damage(int damage)
         {
-            System.Console.WriteLine("NonPlayerCreature");
+            mIncapacitated = true;
+        }
+
+        public override void Update(GameTime time)
+        {
+            base.Update(time);
+
+            foreach (IGameObject i in mCollidingObjects)
+            {
+                if (i is Creature)
+                {
+                    Damage(1);
+                }
+            }
         }
     }
 }

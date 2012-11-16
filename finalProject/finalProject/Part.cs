@@ -26,9 +26,7 @@ namespace finalProject
 
         public Part(Renderable renderable, Entity entity)
             : base(renderable, entity)
-        {
-            entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
-        }
+        {}
 
         /// <summary>
         /// Called by creature every frame. Used for passive effects.
@@ -46,11 +44,5 @@ namespace finalProject
         /// The direction the ability will be used in.
         /// </param>
         abstract public void Use(Vector3 direction);
-
-        public virtual void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
-        {
-            System.Console.WriteLine("Part");
-            Creature.InitialCollisionDetected(sender, other, collisionPair);
-        }
     }
 }

@@ -23,7 +23,6 @@ namespace finalProject
         protected const float MoveSpeed = 50.0f;
         protected const float JumpVelocity = 10.0f;
         protected Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
-        //protected Entity mEntity;
 
         protected RadialSensor mSensor;
 
@@ -45,58 +44,36 @@ namespace finalProject
             }
         }
 
-        //protected void RemakeEntity()
-        //{
-        //    List<CompoundChildData> list = new List<CompoundChildData>();
-        //    CompoundChildData data = new CompoundChildData();
-        //    data.Entry = new CompoundShapeEntry(mEntity.CollisionInformation.Shape);
-        //    data.Tag = this;
-
-        //    list.Add(data);
-
-        //    foreach (Part part in mParts)
-        //    {
-        //        data = new CompoundChildData();
-        //        data.Entry = new CompoundShapeEntry(part.Entity.CollisionInformation.Shape);
-        //        data.Tag = part;
-
-        //        list.Add(data);
-        //    }
-
-        //    (Entity as MorphableEntity).SetCollisionInformation(new CompoundCollidable(list));
-        //    Entity.Tag = this;
-        //}
-
         public void AddPart(Part part)
         {
             mParts.Add(part);
             part.Creature = this;
-            //RemakeEntity();
+            // STAPLE HERE
         }
 
         public Creature(Vector3 position, Renderable renderable, Entity entity, RadialSensor radialSensor, Controller controller)
             : base(renderable, entity)
-            //: base(renderable, new MorphableEntity(entity.CollisionInformation, 1.0f))
         {
-            //mEntity = entity;
             mSensor = radialSensor;
             Forward = new Vector3(1.0f, 0.0f, 0.0f);
             mController = controller;
             controller.SetCreature(this);
             mParts = new List<Part>();
             Entity.Position = position;
-            //Game1.World.Add(mSensor);
+            Game1.World.Add(mSensor);
             Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
             //MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
             // What do I do with this joint?
             //throw new NotImplementedException("Creature does not know what to do with the joint.");
         }
 
-        public abstract void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair);
-
         protected virtual void OnDeath()
         {
-            //Game1.World.Remove(mSensor);
+            Game1.World.Remove(mSensor);
+            foreach (Part cur in mParts)
+            {
+                Game1.World.Remove(cur);
+            }
         }
 
         protected bool OnGround
@@ -177,6 +154,7 @@ namespace finalProject
         public override void Update(GameTime time)
         {
             Up = new Vector3(0.0f, 1.0f, 0.0f);
+            mSensor.Update(time);
             mController.Update(time, mSensor.CollidingCreatures);
             mSensor.Position = Position;
             //if (mRenderable is AnimateModel)
