@@ -1,171 +1,399 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GraphicsLibrary
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Camera
     {
-        private float mAspectRatio;
-        private float mPitch;
-        private float mYaw;
+        #region Target Properties
 
-        public Camera(Viewport viewport)
+        /// <summary>
+        /// Position in world space of player.
+        /// </summary>
+        public Vector3 TargetPosition
         {
-            this.mPosition = new Vector3(0.0f, 0.0f, 0.0f);
-            this.mTarget   = new Vector3(0.0f, 0.0f, 1.0f);
-
-            this.mForward = mTarget - mPosition;
-            this.mUp = new Vector3(0.0f, 1.0f, 0.0f);
-
-            this.mPitch = 0.0f;
-            this.mYaw   = 0.0f;
-
-            this.mAspectRatio = (float)viewport.Width / (float)viewport.Height;
-            this.mProjectionTransform = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, this.mAspectRatio, 1.0f, 1000.0f);
-        }
-
-        private Vector3 mPosition;
-        public Vector3 Position
-        {
-            get { return this.mPosition; }
+            get
+            {
+                return mTargetPosition;
+            }
             set
             {
-                this.mPosition = value;
-                this.mForward = mTarget - mPosition;
-                this.mForward.Normalize();
+                mTargetPosition = value;
             }
         }
+        private Vector3 mTargetPosition;
 
-        private Vector3 mTarget;
-        public Vector3 Target
+        /// <summary>
+        /// Forward vector in world space of player.
+        /// </summary>
+        public Vector3 TargetDirection
         {
-            get { return this.mTarget; }
+            get
+            {
+                return mTargetDirection;
+            }
             set
-            { 
-                this.mTarget = value;
-                this.mForward = mTarget - mPosition;
-                this.mForward.Normalize();
+            {
+                mTargetDirection = value;
             }
         }
+        private Vector3 mTargetDirection;
 
-        private Vector3 mForward;
+        /// <summary>
+        /// Up vector in world space of player.
+        /// </summary>
+        public Vector3 Up
+        {
+            get
+            {
+                return mUp;
+            }
+            set
+            {
+                mUp = value;
+            }
+        }
+        private Vector3 mUp;
+
+        #endregion
+
+        #region Desired Camera Properties
+
+        /// <summary>
+        /// Desired position of camera in target's local space.
+        /// </summary>
+        public Vector3 DesiredPositionLocal
+        {
+            get
+            {
+                return mDesiredPositionLocal;
+            }
+            set
+            {
+                mDesiredPositionLocal = value;
+            }
+        }
+        private Vector3 mDesiredPositionLocal = new Vector3(0.0f, 2.0f, 3.0f);
+
+        /// <summary>
+        /// Desired position of camera in world space.
+        /// </summary>
+        public Vector3 DesiredPosition
+        {
+            get
+            {
+                UpdatePositions();
+                return mDesiredPosition;
+            }
+        }
+        private Vector3 mDesiredPosition;
+
+        /// <summary>
+        /// Position of where the camera is looking in target's local space.
+        /// </summary>
+        public Vector3 LookAtLocal
+        {
+            get
+            {
+                return mLookAtLocal;
+            }
+            set
+            {
+                mLookAtLocal = value;
+            }
+        }
+        private Vector3 mLookAtLocal = new Vector3(0.0f, 1.0f, 0.0f);
+
+        /// <summary>
+        /// Position of where the camera is looking in world space.
+        /// </summary>
+        public Vector3 LookAt
+        {
+            get
+            {
+                UpdatePositions();
+                return mLookAt;
+            }
+        }
+        private Vector3 mLookAt;
+
+        #endregion
+
+        #region Camera Properties
+
+        /// <summary>
+        /// Position of camera in world space.
+        /// </summary>
+        public Vector3 Position
+        {
+            get
+            {
+                return mPosition;
+            }
+        }
+        private Vector3 mPosition;
+
+        /// <summary>
+        /// Velocity of camera in world space.
+        /// </summary>
+        public Vector3 Velocity
+        {
+            get
+            {
+                return mVelocity;
+            }
+        }
+        private Vector3 mVelocity;
+
+        /// <summary>
+        /// Direction camera is facing in world space.
+        /// </summary>
         public Vector3 Forward
         {
-            get { return mForward; }
+            get
+            {
+                return mForward;
+            }
         }
+        private Vector3 mForward;
 
+        /// <summary>
+        /// Direction perpendicular to forward and up in world space.
+        /// </summary>
         public Vector3 Right
         {
             get
             {
-                Vector3 right = Vector3.Cross(mUp, Forward);
-                right.Normalize();
-                return right;
+                return mRight;
             }
         }
+        private Vector3 mRight;
 
-        private Vector3 mUp;
-        public Vector3 Up
+        /// <summary>
+        /// Minimum number of degrees camera can be from the up vector.
+        /// </summary>
+        public float MinPitchAngle
         {
-            get { return this.mUp; }
+            get
+            {
+                return mMinPitchAngle;
+            }
         }
+        private float mMinPitchAngle = (float)Math.Cos(MathHelper.ToRadians(-10.0f));
 
-        private Matrix  mViewTransform;
+        #endregion
+
+        #region Camera Physics Properties
+
+        /// <summary>
+        /// The stiffer the camera spring the closer the camera stays to the target.
+        /// </summary>
+        public float Stiffness
+        {
+            get
+            {
+                return mStiffness;
+            }
+            set
+            {
+                mStiffness = value;
+            }
+        }
+        private float mStiffness = 1800.0f;
+
+        /// <summary>
+        /// Large enough values keep spring from oscillating infinitely.
+        /// </summary>
+        public float Damping
+        {
+            get
+            {
+                return mDamping;
+            }
+            set
+            {
+                mDamping = value;
+            }
+        }
+        private float mDamping = 600.0f;
+
+        /// <summary>
+        /// Mass of the camera's body, the heavier the camera the stiffer the spring must be.
+        /// </summary>
+        public float Mass
+        {
+            get
+            {
+                return mMass;
+            }
+            set
+            {
+                mMass = value;
+            }
+        }
+        private float mMass = 50.0f;
+
+        #endregion
+
+        #region View Properties
+
+        /// <summary>
+        /// Transformation of vector in to camera space.
+        /// </summary>
         public Matrix ViewTransform
         {
             get
             {
-                mViewTransform = Matrix.CreateFromAxisAngle(Right, (MathHelper.ToRadians(mPitch))) * 
-                    Matrix.CreateFromAxisAngle(mUp, (MathHelper.ToRadians(mYaw))) * 
-                    Matrix.CreateLookAt(this.mPosition, this.mTarget, mUp);
-                return this.mViewTransform;
+                return mViewTransform;
             }
         }
+        private Matrix mViewTransform;
 
-        private Matrix  mProjectionTransform;
+        #endregion
+
+        #region Perspective Properties
+
+        private bool mDirtyProjection = true;
+
+        /// <summary>
+        /// Orthographic projection in to view frustum.
+        /// </summary>
         public Matrix ProjectionTransform
         {
-            get { return this.mProjectionTransform; }
+            get
+            {
+                if (mDirtyProjection)
+                {
+                    mProjectionTransform = Matrix.CreatePerspectiveFieldOfView(mFieldOfView, mAspectRatio, mNearPlaneDistance, mFarPlaneDistance);
+                    mDirtyProjection = false;
+                }
+                return mProjectionTransform;
+            }
+        }
+        private Matrix mProjectionTransform;
+
+        /// <summary>
+        /// Screen aspect ratio.
+        /// </summary>
+        public float AspectRatio
+        {
+            get
+            {
+                return mAspectRatio;
+            }
+        }
+        private float mAspectRatio;
+
+        /// <summary>
+        /// Vertical field of view in degrees.
+        /// </summary>
+        public float FieldOfView
+        {
+            get
+            {
+                return mFieldOfView;
+            }
+            set
+            {
+                mFieldOfView = value;
+                mDirtyProjection = true;
+            }
+        }
+        private float mFieldOfView = MathHelper.PiOver4;
+
+        /// <summary>
+        /// Distance of near plane in front of camera.
+        /// </summary>
+        public float NearPlaneDistance
+        {
+            get
+            {
+                return mNearPlaneDistance;
+            }
+            set
+            {
+                mNearPlaneDistance = value;
+                mDirtyProjection = true;
+            }
+        }
+        private float mNearPlaneDistance = 1.0f;
+
+        /// <summary>
+        /// Distance of far plane in front of camera.
+        /// </summary>
+        public float FarPlaneDistance
+        {
+            get
+            {
+                return mFarPlaneDistance;
+            }
+            set
+            {
+                mFarPlaneDistance = value;
+                mDirtyProjection = true;
+            }
+        }
+        private float mFarPlaneDistance = 1000.0f;
+
+        #endregion
+
+        #region Public Methods
+
+        public Camera(Viewport viewport)
+        {
+            this.mAspectRatio = (float)viewport.Width / (float)viewport.Height;
         }
 
         /// <summary>
-        /// Rotates the camera vertically without updating the forward or up vector.
+        /// Move camera based on physics simulation.
         /// </summary>
-        /// <param name="theta">Change in radians to rotate</param>
-        public void PanPitch(float theta)
+        /// <param name="gameTime"></param>
+        public void Update(GameTime gameTime)
         {
-            mPitch = (mPitch + theta) % 360.0f;
-            mUp = Vector3.Transform(
-                new Vector3(0.0f, 1.0f, 0.0f), 
-                Matrix.CreateFromAxisAngle(Right, MathHelper.ToRadians(mPitch)));
+            UpdatePositions();
+
+            float timeElapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // Calculate Spring Force.
+            Vector3 strech = mPosition - mDesiredPosition;
+            Vector3 force  = -mStiffness * strech - mDamping * mVelocity;
+
+            // Apply Acceleration.
+            Vector3 acceleration = force / mMass;
+            mVelocity += acceleration * timeElapsed;
+
+            // Apply Velocity.
+            mPosition += mVelocity * timeElapsed;
+
+            // Calculate basis vectors.
+            mForward = Vector3.Normalize(mLookAt - mPosition);
+            mRight = Vector3.Normalize(Vector3.Cross(mUp, mForward));
+
+            mViewTransform = Matrix.CreateLookAt(mPosition, mLookAt, mUp);
         }
+
+        #endregion
+
+        #region Private Methods
 
         /// <summary>
-        /// Pans the camera horizontally without updating the forward or right vector.
+        /// Projects local space positions in to world space.
         /// </summary>
-        /// <param name="theta">Change in radians to rotate</param>
-        public void PanYaw(float theta)
+        private void UpdatePositions()
         {
-            mYaw = (mYaw + theta) % 360.0f;
+            Matrix projection = Matrix.Identity;
+            projection.Forward = mTargetDirection;
+            projection.Up = mUp;
+            projection.Right = Vector3.Cross(mUp, mTargetDirection);
+
+            mDesiredPosition = mTargetPosition + Vector3.TransformNormal(mDesiredPositionLocal, projection);
+            mLookAt = mTargetPosition + Vector3.TransformNormal(mLookAtLocal, projection);
         }
 
-        /// <summary>
-        /// Rotates camera, updating forward vector and up vector.
-        /// </summary>
-        /// <param name="theta">Amount of rotation in degrees.</param>
-        public void RotatePitch(float theta)
-        {
-            Matrix rotate = Matrix.CreateFromAxisAngle(Right, MathHelper.ToRadians(theta));
-            this.mForward = Vector3.Transform(this.mForward, rotate);
-            this.mForward.Normalize();
-            this.mTarget = mPosition + mForward;
-            this.mUp = Vector3.Cross(mForward, Right);
-            this.mPitch = 0.0f;
-        }
-
-        public void RotateYaw(float theta)
-        {
-            Matrix rotate = Matrix.CreateFromAxisAngle(mUp, MathHelper.ToRadians(theta));
-            this.mForward = Vector3.Transform(this.mForward, rotate);
-            this.mForward.Normalize();
-            this.mTarget = mPosition + mForward;
-            this.mYaw = 0.0f;
-        }
-
-        /// <summary>
-        /// Resets Pitch to original orientation.
-        /// </summary>
-        public void ResetPitch()
-        {
-            mPitch = 0.0f;
-            mUp = new Vector3(0.0f, 1.0f, 0.0f);
-        }
-
-        // Resets Yaw to original orientation.
-        public void ResetYaw()
-        {
-            mYaw = 0.0f;
-            mUp = new Vector3(0.0f, 1.0f, 0.0f);
-        }
-
-        /// <summary>
-        /// Move camera forward facing same direction.
-        /// </summary>
-        /// <param name="distance">Number of units to move forward.</param>
-        public void MoveForward(float distance)
-        {
-            mPosition += distance * mForward;
-            mTarget += distance * mForward;
-        }
-
-        /// <summary>
-        /// Move camera to the right facing the same direction.
-        /// </summary>
-        /// <param name="distance">Number of units to move right.</param>
-        public void MoveRight(float distance)
-        {
-            mPosition += distance * Right;
-            mTarget += distance * Right;
-        }
+        #endregion
     }
 }

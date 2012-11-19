@@ -117,8 +117,7 @@ namespace GameConstructLibrary
         {
             if (mRenderable != null)
             {
-                mRenderable.Render(Entity.WorldTransform);
-                //mRenderable.Render(Entity.Position, XNAOrientationMatrix, Scale);
+                mRenderable.Render(Entity.Position, XNAOrientationMatrix.Forward, Scale);
             }
         }
 

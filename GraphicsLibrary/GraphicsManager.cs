@@ -50,7 +50,7 @@ namespace GraphicsLibrary
 
         static private int mEdgeWidth = 1;
         static private int mEdgeIntensity = 1;
-        static private int mShadowMapLength = 2048;
+        static private int mShadowMapLength = 4096;
 
         static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
 
@@ -84,8 +84,6 @@ namespace GraphicsLibrary
             set { mCastingShadows = value; }
         }
 
-        static private bool mDebugVisualization = false;
-
         /// <summary>
         /// Renders scene in debug mode.
         /// </summary>
@@ -94,6 +92,7 @@ namespace GraphicsLibrary
             get { return mDebugVisualization; }
             set { mDebugVisualization = value; }
         }
+        static private bool mDebugVisualization = false;
 
         #endregion
 
@@ -227,7 +226,12 @@ namespace GraphicsLibrary
             
             mProjection = camera.ProjectionTransform;
 
-            mCameraFrustum.Matrix = mView * mProjection;
+            float oldFarPlane = camera.FarPlaneDistance;
+            camera.FarPlaneDistance = 100.0f;
+
+            mCameraFrustum.Matrix = mView * camera.ProjectionTransform;
+
+            camera.FarPlaneDistance = oldFarPlane;
 
             BuildLightTransform();
         }
@@ -294,7 +298,7 @@ namespace GraphicsLibrary
                 if (DebugVisualization)
                 {
                     mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
-                    mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
+                    mSpriteBatch.Draw(mShadowMap, new Rectangle(0, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
                     mSpriteBatch.End();
 
                     mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);

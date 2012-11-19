@@ -60,12 +60,14 @@ namespace AnimateModelProcessor
             List<Matrix> bindPose = new List<Matrix>();
             List<Matrix> inverseBindPose = new List<Matrix>();
             List<int> skeletonHierarchy = new List<int>();
+            Dictionary<string, int> boneIndices = new Dictionary<string, int>();
 
             foreach (BoneContent bone in bones)
             {
                 bindPose.Add(bone.Transform);
                 inverseBindPose.Add(Matrix.Invert(bone.AbsoluteTransform));
                 skeletonHierarchy.Add(bones.IndexOf(bone.Parent as BoneContent));
+                boneIndices.Add(bone.Name, boneIndices.Count);
             }
 
             // Convert animation data to our runtime format.
@@ -77,7 +79,8 @@ namespace AnimateModelProcessor
 
             // Store our custom animation data in the Tag property of the model.
             model.Tag = new SkinningData(animationClips, bindPose,
-                                         inverseBindPose, skeletonHierarchy);
+                                         inverseBindPose, skeletonHierarchy,
+                                         boneIndices);
 
             return model;
         }
