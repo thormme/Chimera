@@ -30,6 +30,17 @@ namespace GraphicsLibrary
             }
         }
 
+        /// <summary>
+        /// Contains state of bones at current frame of animation.
+        /// </summary>
+        public AnimationPlayer AnimationPlayer
+        {
+            get
+            {
+                return mAnimationPlayer;
+            }
+        }
+
         #endregion
 
         #region Public Methods

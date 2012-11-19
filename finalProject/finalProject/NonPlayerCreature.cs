@@ -47,7 +47,7 @@ namespace finalProject
             float sneak,
             Part part
             )
-            : base(position, renderable, entity, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
+            : base(renderable, entity, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
         {
             mSneak = sneak;
             mController = controller;

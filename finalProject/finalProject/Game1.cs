@@ -19,6 +19,8 @@ namespace finalProject
     {
         private InputAction forward;
         private InputAction debug;
+        private KeyInputAction debugGraphics;
+        private KeyInputAction celShading;
 
         private bool debugMode;
 
@@ -27,12 +29,7 @@ namespace finalProject
         SpriteBatch spriteBatch;
         static public World World;
 
-        private Camera mCamera;
-        private IMobileObject dude = null;
-        private AnimateModel dudeModel = null;
-        private InanimateModel boxModel = null;
-
-        private bool dudeControlToggle = false;
+        PlayerCreature player;
 
         public Game1()
         {
@@ -43,6 +40,8 @@ namespace finalProject
 
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
             debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
+            debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F1);
+            celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F2);
 
             debugMode = false;
         }
@@ -60,47 +59,30 @@ namespace finalProject
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
             GraphicsManager.CastingShadows = true;
             GraphicsManager.DebugVisualization = false;
-
-            mCamera = new Camera(graphics.GraphicsDevice.Viewport);
             
             base.Initialize();
         }
-        PhysicsObject mp;
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
         protected override void LoadContent()
         {
-            var moo = typeof(Prop);
-            Console.WriteLine(moo);
             DebugModelDrawer = new InstancedModelDrawer(this);
-            // Create a new SpriteBatch, which can be used to draw textures.
+            DebugModelDrawer.IsWireframe = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
 
-            dudeModel = new AnimateModel("dude");
-            dudeModel.PlayAnimation("Take 001");
-
-            World.Add(new Prop("sphere", new Vector3(0, -50, 0), new Quaternion(), new Vector3(1)));
-            boxModel = new InanimateModel("box");
-
-            dude = new PhysicsObject(dudeModel, new Capsule(new Vector3(0), 3.0f, 1.0f, 1.0f));
-            World.Add(dude);
-
-            World.Add(mp = new PhysicsObject(dudeModel, new Box(new Vector3(0.0f, -70.0f, 0.0f), 200.0f, 20.0f, 200.0f)));
-            mp.Entity.BecomeKinematic();
-
-            World.Add(new TerrainPhysics("test_level", new Vector3(0.0f, -100.0f, 0.0f), new Quaternion(), new Vector3(1.0f)));
-
-            //World.AddLevelFromFile("trial", new Vector3(-100, 0, 0), new Quaternion(), new Vector3(1));
+            player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 2.0f, 0.0f));
+            World.Add(player);
+            World.mSpace.Add(player.HorizontalMotionConstraint);
+            World.Add(new TerrainPhysics("test_level", new Vector3(0.0f, -60.0f, 0.0f), new Quaternion(), new Vector3(1.0f)));
         }
 
         /// <summary>
@@ -124,18 +106,24 @@ namespace finalProject
                 debugMode = !debugMode;
             }
 
+            if (debugGraphics.Active)
+            {
+                GraphicsManager.DebugVisualization = (GraphicsManager.DebugVisualization) ? false : true;
+            }
+
+            if (celShading.Active)
+            {
+                GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.None : GraphicsManager.CelShaded.All;
+            }
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             InputAction.Update();
-            UpdateCamera(gameTime);
-
-            // TODO: Add your update logic here
             World.Update(gameTime);
-            dudeModel.Update(gameTime);
 
-            GraphicsManager.Update(mCamera);
+            GraphicsManager.Update(player.Camera);
             DebugModelDrawer.Update();
 
             base.Update(gameTime);
@@ -150,181 +138,15 @@ namespace finalProject
             GraphicsManager.BeginRendering();
 
             World.Render();
-            dude.Render();
-            boxModel.Render(new Vector3(0.0f, 20.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector3(50.0f, 50.0f, 50.0f));
-
+           
             GraphicsManager.FinishRendering();
 
             if (debugMode)
             {
-                DebugModelDrawer.Draw(mCamera.ViewTransform, mCamera.ProjectionTransform);
+                DebugModelDrawer.Draw(player.Camera.ViewTransform, player.Camera.ProjectionTransform);
             }
 
             base.Draw(gameTime);
-        }
-
-        private void UpdateCamera(GameTime gameTime)
-        {
-            float time = (float)gameTime.ElapsedGameTime.Milliseconds;
-
-            
-            if (dudeControlToggle == true)
-            {
-                mCamera.MoveForward(forward.Degree * 0.1f * time);
-            }
-            else
-            {
-                dude.Position += forward.Degree * time * 0.1f * dude.XNAOrientationMatrix.Forward;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-                if (dudeControlToggle == true)
-                {
-                    mCamera.MoveForward(-0.1f * time);
-                }
-                else
-                {
-                    dude.Position += time * -0.1f * dude.XNAOrientationMatrix.Forward;
-                }
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                if (dudeControlToggle == true)
-                {
-                    mCamera.MoveRight(0.1f * time);
-                }
-                else
-                {
-                    Matrix rotate = Matrix.CreateRotationY(MathHelper.ToRadians(time * 0.1f));
-                    Matrix newMatrix = dude.XNAOrientationMatrix;
-                    newMatrix.Forward = Vector3.Transform(dude.XNAOrientationMatrix.Forward, rotate);
-                    dude.XNAOrientationMatrix = newMatrix;
-                }
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                if (dudeControlToggle == true)
-                {
-                    mCamera.MoveRight(-0.1f * time);
-                }
-                else
-                {
-                    Matrix rotate = Matrix.CreateRotationY(MathHelper.ToRadians(time * -0.1f));
-                    Matrix newMatrix = dude.XNAOrientationMatrix;
-                    newMatrix.Forward = Vector3.Transform(dude.XNAOrientationMatrix.Forward, rotate);
-                    dude.XNAOrientationMatrix = newMatrix;
-                }
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Q))
-            {
-                Vector3 right = Vector3.Cross(Vector3.Up, dude.XNAOrientationMatrix.Forward);
-                right.Normalize();
-                dude.Position += time * 0.1f * right;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.E))
-            {
-                Vector3 right = Vector3.Cross(Vector3.Up, dude.XNAOrientationMatrix.Forward);
-                right.Normalize();
-                dude.Position += time * -0.1f * right;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Z))
-            {
-                if (dudeControlToggle == false)
-                {
-                    dudeControlToggle = true;
-                }
-                else
-                {
-                    dudeControlToggle = false;
-                }
-            }
-
-            bool reset = true;
-
-            /*if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            {
-                if (dudeControlToggle == true)
-                {
-                    camera.RotatePitch(-0.1f * time);
-                }
-                else
-                {
-                    camera.PanPitch(-0.1f * time);
-                    reset = false;
-                }
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                if (dudeControlToggle == true)
-                {
-                    camera.RotatePitch(0.1f * time);
-                }
-                else
-                {
-                    camera.PanPitch(0.1f * time);
-                    reset = false;
-                }
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                if (dudeControlToggle == true)
-                {
-                    camera.RotateYaw(0.1f * time);
-                }
-                else
-                {
-                    camera.PanYaw(0.1f * time);
-                    reset = false;
-                }
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                if (dudeControlToggle == true)
-                {
-                    camera.RotateYaw(-0.1f * time);
-                }
-                else
-                {
-                    camera.PanYaw(-0.1f * time);
-                    reset = false;
-                }
-            }*/
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
-                dude.Position = new Vector3(0.0f, 0.0f, 0.0f);
-                Matrix newMatrix = dude.XNAOrientationMatrix;
-                newMatrix.Forward = new Vector3(0.0f, 0.0f, 1.0f);
-                dude.XNAOrientationMatrix = newMatrix;
-            }
-
-            if (reset == true)
-            {
-                mCamera.ResetPitch();
-                mCamera.ResetYaw();
-            }
-
-            if (dudeControlToggle == false)
-            {
-                mCamera.Target = dude.Position + new Vector3(0.0f, 75.0f, 0.0f);
-                Vector3 direction = dude.XNAOrientationMatrix.Forward;
-                direction.Normalize();
-                mCamera.Position = mCamera.Target - 250.0f * direction;
-            }
-            else
-            {
-                mCamera.Position = new Vector3(0, 50, 50);
-                mCamera.Target = mCamera.Position + new Vector3(0, 0, -1);
-            }
         }
     }
 }
