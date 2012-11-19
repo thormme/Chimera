@@ -20,5 +20,16 @@ namespace MapEditor
         {
 
         }
+
+        public DummyObject(DummyObject copy)
+        {
+            Type = copy.Type;
+            Model = copy.Model;
+            Parameters = copy.Parameters;
+            Position = new Vector3(copy.Position.X, copy.Position.Y, copy.Position.Z);
+            Orientation = new Vector3(copy.Orientation.X, copy.Orientation.Y, copy.Orientation.Z);
+            Scale = new Vector3(copy.Scale.X, copy.Scale.Y, copy.Scale.Z);
+        }
+
     }
 }

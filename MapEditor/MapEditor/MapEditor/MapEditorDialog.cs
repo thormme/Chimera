@@ -116,9 +116,9 @@ namespace MapEditor
             return mHeightMapEditorDialog.GetHeightEditorInput(out size, out intensity, out feather, out set);
         }
 
-        public bool GetObjectEditorInput(out string objectType, out string objectModel, out string[] parameterModel)
+        public bool GetObjectEditorInput(out string objectType, out string objectModel, out Vector3 objectScale, out Vector3 objectOrientation, out string[] parameterModel)
         {
-            return mObjectEditorDialog.GetObjectEditorInput(out objectType, out objectModel, out parameterModel);
+            return mObjectEditorDialog.GetObjectEditorInput(out objectType, out objectModel, out objectScale, out objectOrientation, out parameterModel);
         }
 
         public void Disable()

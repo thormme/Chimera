@@ -45,10 +45,13 @@ namespace MapEditor
 
         private Camera mCamera;
         private Vector3 mMovement;
-        private Vector3 mOrientation;
+        private Vector3 mDirection;
 
         private InanimateModel mModel;
         private Vector3 mPosition;
+        private Vector3 mScale;
+        private Vector3 mOrientation;
+
         private float mSize;
 
         public MapEntity(MapEditor mapEditor, Camera camera, Viewport viewport)
@@ -80,7 +83,7 @@ namespace MapEditor
             mRightReleased = new MouseButtonInputAction(0, InputAction.ButtonAction.Released, MouseButtonInputAction.MouseButton.Right);
 
             mMovement = new Vector3(0.0f, 0.0f, 0.0f);
-            mOrientation = new Vector3(0.0f, 0.0f, 0.0f);
+            mDirection = new Vector3(0.0f, 0.0f, 0.0f);
 
             mModel = new InanimateModel("sphere");
             mPosition = new Vector3(0);
@@ -100,8 +103,8 @@ namespace MapEditor
             //mCamera.MoveUp(speed * mMovement.Z * gameTime.ElapsedGameTime.Milliseconds);
             mCamera.MoveForward(speed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds);
             mCamera.MoveRight(speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds);
-            mCamera.RotatePitch(sensitivity * mOrientation.Y * gameTime.ElapsedGameTime.Milliseconds);
-            mCamera.RotateYaw(sensitivity * mOrientation.X * gameTime.ElapsedGameTime.Milliseconds);
+            mCamera.RotatePitch(sensitivity * mDirection.Y * gameTime.ElapsedGameTime.Milliseconds);
+            mCamera.RotateYaw(sensitivity * mDirection.X * gameTime.ElapsedGameTime.Milliseconds);
 
         }
 
@@ -122,16 +125,16 @@ namespace MapEditor
 
             if (mRightHold.Active == true)
             {
-                mOrientation.Y = MathHelper.ToRadians((mMouse.Y - mMouseClick.Y) * sensitivity); // pitch
-                mOrientation.X = -MathHelper.ToRadians((mMouse.X - mMouseClick.X) * sensitivity); // yaw
+                mDirection.Y = MathHelper.ToRadians((mMouse.Y - mMouseClick.Y) * sensitivity); // pitch
+                mDirection.X = -MathHelper.ToRadians((mMouse.X - mMouseClick.X) * sensitivity); // yaw
                 mMouseClick.Y = mMouse.Y;
                 mMouseClick.X = mMouse.X;
             }
 
             if (mRightReleased.Active == true)
             {
-                mOrientation.Y = 0;
-                mOrientation.X = 0;
+                mDirection.Y = 0;
+                mDirection.X = 0;
             }
         }
 
@@ -147,23 +150,37 @@ namespace MapEditor
             RayHit result;
             if (mMapEditor.DummyMap.TerrainPhysics.StaticCollidable.RayCast(ray, length, out result))
             {
+
                 mPosition = result.Location;
                 if (mMapEditor.State == States.Height)
                 {
                     mModel = new InanimateModel("sphere");
+
+                    int dummySize;
+                    int dummyIntensity;
+                    bool dummyFeather;
+                    bool dummySet;
+                    mMapEditor.MapEditorDialog.GetHeightEditorInput(out dummySize, out dummyIntensity, out dummyFeather, out dummySet);
+                    mSize = dummySize;
+
                     if (mLeftHold.Active)
                     {
                         mMapEditor.DummyMap.Action(result.Location);
                     }
+
                 }
                 else if (mMapEditor.State == States.Object)
                 {
                     string dummyObjectType;
                     string dummyObjectModel;
+                    Vector3 dummyObjectScale;
+                    Vector3 dummyObjectOrientation;
                     string[] dummyObjectParameters;
                     
-                    if (mMapEditor.MapEditorDialog.GetObjectEditorInput(out dummyObjectType, out dummyObjectModel, out dummyObjectParameters)){
+                    if (mMapEditor.MapEditorDialog.GetObjectEditorInput(out dummyObjectType, out dummyObjectModel, out dummyObjectScale, out dummyObjectOrientation, out dummyObjectParameters)){
                         mModel = new InanimateModel(dummyObjectModel);
+                        mScale = dummyObjectScale;
+                        mOrientation = dummyObjectOrientation;
                     }
 
                     if (mLeftPressed.Active)
@@ -172,20 +189,14 @@ namespace MapEditor
                     }
                 }
             }
-
-            int dummySize;
-            int dummyIntensity;
-            bool dummyFeather;
-            bool dummySet;
-            mMapEditor.MapEditorDialog.GetHeightEditorInput(out dummySize, out dummyIntensity, out dummyFeather, out dummySet);
-            mSize = dummySize * 0.01f;
-
         }
 
         public void Render()
         {
-            if (mMapEditor.State != States.None)
+            if (mMapEditor.State == States.Height)
                 mModel.Render(mPosition, new Vector3(0, 0, 1), new Vector3(mSize));
+            else if (mMapEditor.State == States.Object)
+                mModel.Render(mPosition, mOrientation, mScale);
         }
 
     }

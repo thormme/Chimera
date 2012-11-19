@@ -14,8 +14,18 @@ using GraphicsLibrary;
 
 namespace GameConstructLibrary
 {
+
     public class TerrainHeightMap
     {
+
+        private const int scale = 2;
+
+        private Bitmap mMap;
+        private int mWidth;
+        private int mHeight;
+
+        private GraphicsDevice mDevice;
+
         public struct VertexPositionColorNormal
         {
             public Vector3 Position;
@@ -32,18 +42,8 @@ namespace GameConstructLibrary
             );
         }
 
-        private GraphicsDevice mDevice;
-        public GraphicsDevice Device
-        {
-            get { return this.mDevice; }
-            set { this.mDevice = value; }
-        }
-
-        private Bitmap mMap;
-        private Vector2 mSize;
-
-        const int vertexSpacing = 1;
-        VertexPositionColorNormal[] vertices;
+        VertexPositionColorNormal[] vertices1D;
+        VertexPositionColorNormal[,] vertices2D;
         int[] indices;
 
         private VertexBuffer mVertexBuffer;
@@ -62,7 +62,7 @@ namespace GameConstructLibrary
 
         public int NumVertices
         {
-            get { return this.vertices.Length; }
+            get { return this.vertices1D.Length; }
         }
 
         public int NumIndices
@@ -70,26 +70,27 @@ namespace GameConstructLibrary
             get { return this.indices.Length; }
         }
 
-        /// <summary>
-        /// Used to create a height map
-        /// </summary>
         public TerrainHeightMap(int width, int height, GraphicsDevice device)
         {
             mDevice = device;
             mMap = new Bitmap(width, height);
-            mSize = new Vector2(mMap.Width, mMap.Height);
+            mWidth = mMap.Width;
+            mHeight = mMap.Height;
             LoadData(true);
         }
 
-        /// <summary>
-        /// Used to load a height map
-        /// </summary>
         public TerrainHeightMap(string file, GraphicsDevice device)
         {
             mDevice = device;
             mMap = new Bitmap(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
-            mSize = new Vector2(mMap.Width, mMap.Height);
+            mWidth = mMap.Width;
+            mHeight = mMap.Height;
             LoadData(false);
+        }
+
+        public TerrainHeightMap(TerrainHeightMap copy)
+        {
+            FixHeightMap(copy);
         }
 
         public void LoadData(bool resized)
@@ -102,20 +103,24 @@ namespace GameConstructLibrary
 
         private void MakeVertices(bool resized)
         {
-            vertices = new VertexPositionColorNormal[(int)mSize.X * (int)mSize.Y];
-            for (int x = 0; x < (int)mSize.X; x++)
+            vertices1D = new VertexPositionColorNormal[mWidth * mHeight];
+            vertices2D = new VertexPositionColorNormal[mWidth, mHeight];
+            for (int z = 0; z < mHeight; z++)
             {
-                for (int z = 0; z < (int)mSize.Y; z++)
+                for (int x = 0; x < mWidth; x++)
                 {
-                    if (resized)
+
+                    if (resized) // If resized rebuild map
                     {
-                        vertices[x + z * (int)mSize.X].Position = new Vector3(x - (int)mSize.X / 2, 100, z - (int)mSize.Y / 2);
-                        vertices[x + z * (int)mSize.X].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, 100, z - mHeight / 2);
+                        vertices1D[x + z * mWidth].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices2D[x, z] = vertices1D[x + z * mWidth];
                     }
-                    else
+                    else // Otherwise create vertices
                     {
-                        vertices[x + z * (int)mSize.X].Position = new Vector3(x - (int)mSize.X / 2, mMap.GetPixel(x, z).R, z - (int)mSize.Y / 2);
-                        vertices[x + z * (int)mSize.X].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, mMap.GetPixel(x, z).R, z - mHeight / 2);
+                        vertices1D[x + z * mWidth].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices2D[x, z] = vertices1D[x + z * mWidth];
                     }
                 }
             }
@@ -123,16 +128,16 @@ namespace GameConstructLibrary
 
         private void MakeIndices()
         {
-            indices = new int[((int)mSize.X - 1) * ((int)mSize.Y - 1) * 6];
+            indices = new int[(mWidth - 1) * (mHeight - 1) * 6];
             int counter = 0;
-            for (int z = 0; z < (int)mSize.Y - 1; z++)
+            for (int z = 0; z < mHeight - 1; z++)
             {
-                for (int x = 0; x < (int)mSize.X - 1; x++)
+                for (int x = 0; x < mWidth - 1; x++)
                 {
-                    int lowerLeft = x + z * (int)mSize.X;
-                    int lowerRight = (x + 1) + z * (int)mSize.X;
-                    int topLeft = x + (z + 1) * (int)mSize.X;
-                    int topRight = (x + 1) + (z + 1) * (int)mSize.X;
+                    int lowerLeft = x + z * mWidth;
+                    int lowerRight = (x + 1) + z * mWidth;
+                    int topLeft = x + (z + 1) * mWidth;
+                    int topRight = (x + 1) + (z + 1) * mWidth;
 
                     // Make first triangle
                     indices[counter++] = topLeft;
@@ -149,9 +154,9 @@ namespace GameConstructLibrary
 
         private void CalculateNormals()
         {
-            for (int i = 0; i < vertices.Length; ++i)
+            for (int i = 0; i < vertices1D.Length; ++i)
             {
-                vertices[i].Normal = new Vector3(0.0f, 0.0f, 0.0f);
+                vertices1D[i].Normal = new Vector3(0.0f, 0.0f, 0.0f);
             }
 
             for (int i = 0; i < indices.Length / 3; ++i)
@@ -160,76 +165,100 @@ namespace GameConstructLibrary
                 int index1 = indices[i * 3 + 1];
                 int index2 = indices[i * 3 + 2];
 
-                Vector3 edge0  = vertices[index0].Position - vertices[index2].Position;
-                Vector3 edge1  = vertices[index0].Position - vertices[index1].Position;
+                Vector3 edge0 = vertices1D[index0].Position - vertices1D[index2].Position;
+                Vector3 edge1 = vertices1D[index0].Position - vertices1D[index1].Position;
                 Vector3 normal = Vector3.Cross(edge0, edge1);
 
-                vertices[index0].Normal += normal;
-                vertices[index1].Normal += normal;
-                vertices[index2].Normal += normal;
+                vertices1D[index0].Normal += normal;
+                vertices1D[index1].Normal += normal;
+                vertices1D[index2].Normal += normal;
             }
 
-            for (int i = 0; i < vertices.Length; ++i)
+            for (int i = 0; i < vertices1D.Length; ++i)
             {
-                vertices[i].Normal.Normalize();
+                vertices1D[i].Normal.Normalize();
             }
         }
 
         private void MakeBuffer()
         {
-            mVertexBuffer = new VertexBuffer(mDevice, VertexPositionColorNormal.VertexDeclaration, vertices.Length, BufferUsage.WriteOnly);
-            mVertexBuffer.SetData(vertices);
+            mVertexBuffer = new VertexBuffer(mDevice, VertexPositionColorNormal.VertexDeclaration, vertices1D.Length, BufferUsage.WriteOnly);
+            mVertexBuffer.SetData(vertices1D);
 
             mIndexBuffer = new IndexBuffer(mDevice, typeof(int), indices.Length, BufferUsage.WriteOnly);
             mIndexBuffer.SetData(indices);
         }
 
+        public void FixHeightMap(TerrainHeightMap copy)
+        {
+            mDevice = copy.mDevice;
+            mMap = copy.mMap.Clone() as Bitmap;
+            mWidth = copy.mWidth;
+            mHeight = copy.mHeight;
+            vertices1D = new VertexPositionColorNormal[mWidth * mHeight];
+            vertices2D = new VertexPositionColorNormal[mWidth, mHeight];
+            indices = new int[mWidth * mHeight * 6];
+            for (int z = 0; z < mHeight; z++)
+            {
+                for (int x = 0; x < mWidth; x++)
+                {
+                    vertices1D[x + z * mWidth] = copy.vertices1D[x + z * mWidth];
+                    vertices2D[x, z] = copy.vertices2D[x, z];
+                }
+            }
+
+            for (int count = 0; count < copy.indices.Length; count++)
+            {
+                indices[count] = copy.indices[count];
+            }
+            
+            CalculateNormals();
+            MakeBuffer();
+        }
+
         public void ModifyVertices(Vector3 position, int size, int intensity, bool feather, bool setHeight, bool smooth)
         {
-            
-            position.X += mSize.X / 2;
-            position.Z += mSize.Y / 2;
-            
+
+            // Adjust for the rendered location of the terrain
+            position /= scale;
+            position.X += mWidth / 2;
+            position.Z += mHeight / 2;
+
             // Calculate the average height for smoothing
-            int average = 0;
+            float average = 0.0f;
             if (smooth)
             {
-                int sum = 0;
-                for (int x = (int)position.X - (int)size / 2; x < (int)position.X + (int)size / 2; x++)
+                float sum = 0.0f;
+                int num = 0;
+                for (int z = (int)position.Z - size; z < (int)position.Z + size; z++)
                 {
-                    for (int z = (int)position.Z - (int)size / 2; z < (int)position.Z + (int)size / 2; z++)
+                    for (int x = (int)position.X - size; x < (int)position.X + size; x++)
                     {
-                        int xIndex = x - ((int)position.X - (int)size / 2);
-                        int zIndex = z - ((int)position.Z - (int)size / 2);
-
-                        if (xIndex < 0 || xIndex >= size || zIndex < 0 || zIndex >= size ||
-                            x + z * (int)mSize.X < 0 || x + z * (int)mSize.X >= mSize.X * mSize.Y) break;
-
-                        sum += (int)vertices[x + z * (int)mSize.X].Position.Y;
+                        if (x < 0 || x >= mWidth || z < 0 || z >= mHeight) break;
+                        int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
+                        if (distance < size)
+                        {
+                            num++;
+                            sum += vertices2D[x, z].Position.Y;
+                        }
                     }
                 }
-                average = Convert.ToInt32(sum / Math.Pow(size, 2));
+                average = (float)(sum / num);
             }
 
             // Build smaller grid for modifying heights
-            VertexPositionColorNormal[,] vertex = new VertexPositionColorNormal[size, size];
-            for (int x = (int)position.X - (int)size / 2; x < (int)position.X + (int)size / 2; x++)
+            for (int z = (int)position.Z - size; z < (int)position.Z + size; z++)
             {
-                for (int z = (int)position.Z - (int)size / 2; z < (int)position.Z + (int)size / 2; z++)
+                for (int x = (int)position.X - size; x < (int)position.X + size; x++)
                 {
-                    int xIndex = x - ((int)position.X - (int)size / 2);
-                    int zIndex = z - ((int)position.Z - (int)size / 2);
-
-                    if (xIndex < 0 || xIndex >= size || zIndex < 0 || zIndex >= size || 
-                        x + z * (int)mSize.X < 0 || x + z * (int)mSize.X >= mSize.X * mSize.Y) break;
-
-                    vertex[xIndex, zIndex] = vertices[x + z * (int)mSize.X];
+                    if (x < 0 || x >= mWidth || z < 0 || z >= mHeight) break;
                     int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
                     if (distance < size)
                     {
+
                         if (smooth)
                         {
-                            int amount = (int)vertex[xIndex, zIndex].Position.Y;
+                            float amount = vertices2D[x, z].Position.Y;
                             if (amount > average)
                             {
                                 if (amount - intensity < average)
@@ -244,11 +273,11 @@ namespace GameConstructLibrary
                                 else
                                     amount += intensity;
                             }
-                            vertex[xIndex, zIndex].Position.Y = amount;
+                            vertices2D[x, z].Position.Y = amount;
                         }
                         else if (setHeight)
                         {
-                            vertex[xIndex, zIndex].Position.Y = intensity;
+                            vertices2D[x, z].Position.Y = intensity;
                         }
                         else
                         {
@@ -261,27 +290,15 @@ namespace GameConstructLibrary
                             {
                                 intensityModifier = 1.0f;
                             }
-                            vertex[xIndex, zIndex].Position.Y += intensity * intensityModifier;
+                            vertices2D[x, z].Position.Y += intensity * intensityModifier;
                         }
                     }
-                    if (vertex[xIndex, zIndex].Position.Y > 255) vertex[xIndex, zIndex].Position.Y = 255;
-                    else if (vertex[xIndex, zIndex].Position.Y < 0) vertex[xIndex, zIndex].Position.Y = 0;
+                    if (vertices2D[x, z].Position.Y > 255) vertices2D[x, z].Position.Y = 255;
+                    else if (vertices2D[x, z].Position.Y < 0) vertices2D[x, z].Position.Y = 0;
+                    vertices1D[x + z * mWidth] = vertices2D[x, z];
                 }
             }
-            
-            // Update vertices with changes
-            for (int x = (int)position.X - (int)size / 2; x < (int)position.X + (int)size / 2; x++)
-            {
-                for (int z = (int)position.Z - (int)size / 2; z < (int)position.Z + (int)size / 2; z++)
-                {
-                    int xIndex = x - ((int)position.X - (int)size / 2);
-                    int zIndex = z - ((int)position.Z - (int)size / 2);
-                    if (xIndex < 0 || xIndex >= size || zIndex < 0 || zIndex >= size ||
-                        x + z * (int)mSize.X < 0 || x + z * (int)mSize.X >= mSize.X * mSize.Y) break;
-                    vertices[x + z * (int)mSize.X] = vertex[xIndex, zIndex];
-                }
-            }
-            
+
             CalculateNormals();
             MakeBuffer();
 
@@ -290,12 +307,12 @@ namespace GameConstructLibrary
         // Used for creating a collision entity
         public Single[,] GetHeights()
         {
-            Single[,] heights = new Single[(int)mSize.X, (int)mSize.Y];
-            for (int x = 0; x < (int)mSize.X; x++)
+            Single[,] heights = new Single[mWidth, mHeight];
+            for (int z = 0; z < mHeight; z++)
             {
-                for (int z = 0; z < (int)mSize.Y; z++)
+                for (int x = 0; x < mWidth; x++)
                 {
-                    heights[x, z] = (Single)(vertices[x + z * (int)mSize.X].Position.Y);
+                    heights[x, z] = (Single)(vertices2D[x, z].Position.Y);
                 }
             }
 
@@ -304,23 +321,22 @@ namespace GameConstructLibrary
 
         public void Resize(int width, int height)
         {
-
-            mSize.X = width;
-            mSize.Y = height;
+            mWidth = width;
+            mHeight = height;
             LoadData(true);
         }
 
         public void Save(string file)
         {
 
-            mMap = new Bitmap(mMap, new Size((int)mSize.X, (int)mSize.Y));
+            mMap = new Bitmap(mMap, new Size(mWidth, mHeight));
 
             // Update mMap with modifications
-            for (int x = 0; x < (int)mSize.X; x++)
+            for (int z = 0; z < mHeight; z++)
             {
-                for (int z = 0; z < (int)mSize.Y; z++)
+                for (int x = 0; x < mWidth; x++)
                 {
-                    mMap.SetPixel(x, z, System.Drawing.Color.FromArgb((int)(vertices[x + z * (int)mSize.X].Position.Y), 0, 0));
+                    mMap.SetPixel(x, z, System.Drawing.Color.FromArgb((int)(vertices2D[x, z].Position.Y), 0, 0));
                 }
             }
 
