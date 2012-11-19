@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using GameConstructLibrary;
 using GraphicsLibrary;
 using BEPUphysicsDrawer.Models;
+using System.Reflection;
 
 namespace finalProject
 {
@@ -107,6 +108,38 @@ namespace finalProject
             {
                 gameObject.Render();
             }
+        }
+
+        public void AddLevelFromFile(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)
+        {
+            List<DummyObject> objects = LevelManager.Load(mapName);
+            foreach (DummyObject dummy in objects)
+            {
+                if (dummy.Type == "Root")
+                {
+                    continue;
+                }
+                Type type = Type.GetType(dummy.Type);
+
+                if (type != null)
+                {
+                    Quaternion objectOrientation = Quaternion.CreateFromRotationMatrix(Matrix.CreateLookAt(new Vector3(), dummy.Orientation, new Vector3(0, 1, 0)));
+                    object[] parameters = new object[5];
+                    parameters[0] = dummy.Model;
+                    parameters[1] = (dummy.Position * scale) + position;
+                    parameters[2] = objectOrientation * orientation;
+                    parameters[3] = dummy.Scale * scale;
+                    parameters[4] = dummy.Parameters;
+                    object obj = Activator.CreateInstance(type, parameters);
+
+                    if (obj is IGameObject)
+                    {
+                        Add(obj as IGameObject);
+                    }
+                }
+            }
+
+            Add(new TerrainPhysics(mapName, position, orientation, scale));
         }
     }
 }

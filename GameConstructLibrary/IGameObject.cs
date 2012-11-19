@@ -12,21 +12,33 @@ namespace GameConstructLibrary
     /// </summary>
     public interface IGameObject
     {
+        /// <summary>
+        /// The position of the object.
+        /// </summary>
         Vector3 Position
         {
             get;
         }
 
+        /// <summary>
+        /// The orientation of the object, given in XNA Matrix format.
+        /// </summary>
         Matrix XNAOrientationMatrix
         {
             get;
         }
 
+        /// <summary>
+        /// The scale of the object.
+        /// </summary>
         Vector3 Scale
         {
             get;
         }
 
+        /// <summary>
+        /// Render the object to the screen.
+        /// </summary>
         void Render();
     }
 }

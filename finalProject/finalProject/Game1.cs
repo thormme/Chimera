@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysicsDrawer.Models;
+using System;
 
 namespace finalProject
 {
@@ -29,6 +30,7 @@ namespace finalProject
         private Camera mCamera;
         private IMobileObject dude = null;
         private AnimateModel dudeModel = null;
+        private InanimateModel boxModel = null;
 
         private bool dudeControlToggle = false;
 
@@ -74,6 +76,8 @@ namespace finalProject
         /// </summary>
         protected override void LoadContent()
         {
+            var moo = typeof(Prop);
+            Console.WriteLine(moo);
             DebugModelDrawer = new InstancedModelDrawer(this);
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -86,6 +90,8 @@ namespace finalProject
             dudeModel.PlayAnimation("Take 001");
 
             World.Add(new Prop("sphere", new Vector3(0, -50, 0), new Quaternion(), new Vector3(1)));
+            boxModel = new InanimateModel("box");
+
             dude = new PhysicsObject(dudeModel, new Capsule(new Vector3(0), 3.0f, 1.0f, 1.0f));
             World.Add(dude);
 
@@ -93,6 +99,8 @@ namespace finalProject
             mp.Entity.BecomeKinematic();
 
             World.Add(new TerrainPhysics("test_level", new Vector3(0.0f, -100.0f, 0.0f), new Quaternion(), new Vector3(1.0f)));
+
+            //World.AddLevelFromFile("trial", new Vector3(-100, 0, 0), new Quaternion(), new Vector3(1));
         }
 
         /// <summary>
@@ -143,6 +151,7 @@ namespace finalProject
 
             World.Render();
             dude.Render();
+            boxModel.Render(new Vector3(0.0f, 20.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector3(50.0f, 50.0f, 50.0f));
 
             GraphicsManager.FinishRendering();
 

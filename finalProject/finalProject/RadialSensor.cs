@@ -7,6 +7,7 @@ using GraphicsLibrary;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using GameConstructLibrary;
+using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.Entities.Prefabs;
 
 namespace finalProject
@@ -17,10 +18,13 @@ namespace finalProject
     public class RadialSensor : PhysicsObject
     {
         protected List<Creature> mCollidingCreatures;
-        public List<Creature>  CollidingCreatures { get { return mCollidingCreatures; } }
-
-        protected List<PhysicsObject> mCollidingProps;
-        public List<PhysicsObject> CollidingProps { get { return mCollidingProps; } }
+        public List<Creature>  CollidingCreatures
+        {
+            get
+            {
+                return mCollidingCreatures;
+            }
+        }
 
         /// <summary>
         /// Constructs the RadialSensor as a sphere.
@@ -31,7 +35,8 @@ namespace finalProject
         public RadialSensor(float radius)
             : base(null, new Sphere(new Vector3(0), radius))
         {
-            throw new NotImplementedException("I still need to set NoSolver.");
+            this.Entity.CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;
+            mCollidingCreatures = new List<Creature>();
         }
 
         /// <summary>
@@ -40,19 +45,19 @@ namespace finalProject
         /// <param name="objects">
         /// The list of colliding PhysicsObjects.
         /// </param>
-        public virtual void Collide(List<PhysicsObject> objects)
+        public virtual void Update(GameTime time)
         {
             mCollidingCreatures.Clear();
-            mCollidingProps.Clear();
 
-            mCollidingProps = new List<PhysicsObject>(objects);
-            foreach (PhysicsObject cur in objects)
+            foreach (IGameObject i in mCollidingObjects)
             {
-                if (cur as Creature != null)
+                if (i as Creature != null)
                 {
-                    mCollidingCreatures.Add(cur as Creature);
+                    mCollidingCreatures.Add(i as Creature);
+                    //System.Console.WriteLine(i);
                 }
             }
+            //System.Console.WriteLine("done");
 
             mCollidingCreatures.Sort(new ClosestPhysicsObject(Position));
         }

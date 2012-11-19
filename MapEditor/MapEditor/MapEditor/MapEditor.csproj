@@ -210,8 +210,6 @@
     <Compile Include="MapEditor.cs" />
     <Compile Include="MapEntity.cs" />
     <Compile Include="DummyMap.cs" />
-    <Compile Include="DummyObject.cs" />
-    <Compile Include="LevelManager.cs" />
     <Compile Include="LoadLevelDialog.cs" />
     <Compile Include="MapEditorDialog.cs" />
     <Compile Include="NewLevelDialog.cs" />

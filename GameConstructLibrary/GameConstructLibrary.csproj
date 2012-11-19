@@ -133,6 +133,7 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="CollisionMeshManager.cs" />
+    <Compile Include="DummyObject.cs" />
     <Compile Include="IStaticCollidableOwner.cs" />
     <Compile Include="IEntityOwner.cs" />
     <Compile Include="IGameObject.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Input\KeyInputAction.cs" />
     <Compile Include="Input\MouseButtonInputAction.cs" />
     <Compile Include="Input\MouseMovementInputAction.cs" />
+    <Compile Include="LevelManager.cs" />
     <Compile Include="PhysicsObject.cs" />
     <Compile Include="PhysicsProp.cs" />
     <Compile Include="Prop.cs" />

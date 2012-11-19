@@ -6,15 +6,15 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using System.Reflection;
 using System.Xml.Serialization;
-using GameConstructLibrary;
 using GraphicsLibrary;
 
-namespace MapEditor
+namespace GameConstructLibrary
 {
-
+    /// <summary>
+    /// Saves and Loads object data for a level.
+    /// </summary>
     public static class LevelManager
     {
-
         public static void Save(string file, List<DummyObject> objects)
         {
             XmlRootAttribute root = new XmlRootAttribute();
@@ -22,6 +22,7 @@ namespace MapEditor
             root.IsNullable = true;
 
             StreamWriter writer = new StreamWriter(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/" + file);
+
             XmlSerializer serializer = new XmlSerializer(typeof(List<DummyObject>), root);
             serializer.Serialize(writer, objects);
             writer.Close();
@@ -34,9 +35,12 @@ namespace MapEditor
             root.IsNullable = true;
 
             List<DummyObject> objects = new List<DummyObject>();
+
             StreamReader reader = new StreamReader(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/" + file);
             XmlSerializer deserializer = new XmlSerializer(typeof(List<DummyObject>), root);
+
             objects = (List<DummyObject>)deserializer.Deserialize(reader);
+
             reader.Close();
             return objects;
         }
