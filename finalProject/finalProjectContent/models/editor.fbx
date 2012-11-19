@@ -2354,7 +2354,7 @@ Objects:  {
 		}
 		UseMipMap: 0
 		Filename: "editor.png"
-		RelativeFilename: "C:\Users\Michael\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\editor.png"
+		RelativeFilename: "editor.png"
 	}
 	Texture: "Texture::editor_png", "TextureVideoClip" {
 		Type: "TextureVideoClip"
