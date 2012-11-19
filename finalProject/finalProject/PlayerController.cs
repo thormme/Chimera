@@ -13,8 +13,9 @@ namespace finalProject
     public class PlayerController : Controller
     {
         #region private members
-        private const float mCameraRotation = 90.0f;
-        private const float mDistFromCreature = 200.0f;
+        //private const float mCameraRotation = 90.0f;
+        private const float mDistFromCreature = 10.0f;
+        private const float mDistFromCreatureSquared = mDistFromCreature * mDistFromCreature;
 
         public Camera mCamera;
 
@@ -38,7 +39,7 @@ namespace finalProject
 
         public PlayerController(Viewport viewPort) 
         {
-            //mCamera = new Camera(viewPort);
+            mCamera = new Camera(viewPort);
             mMoveUp = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
             mMoveDown = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.S);
             mMoveLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.A);
@@ -72,6 +73,8 @@ namespace finalProject
             mPart3.Destroy();
             mJump.Destroy();
             mAdd.Destroy();
+
+            mCheat.Destroy();
         }
 
         /// <summary>
@@ -87,7 +90,7 @@ namespace finalProject
         {
             Vector2 moveDirection = new Vector2(0.0f, 0.0f);
             float time_step = (float)time.ElapsedGameTime.Milliseconds / 1000.0f;
-            float rotation = mCameraRotation * time_step;
+            //float rotation = mCameraRotation * time_step;
 
             #region adjust camera angle
             //if (mCameraUp.Active)
@@ -117,33 +120,52 @@ namespace finalProject
             #endregion
 
             #region adjust creature position
+            bool moved = false;
             if (mMoveUp.Active)
             {
                 moveDirection.Y += 1.0f;
+                moved = true;
             }
             if (mMoveDown.Active)
             {
                 moveDirection.Y -= 1.0f;
+                moved = true;
             }
             if (mMoveRight.Active)
             {
-                moveDirection.X += 1.0f;
+                moveDirection.X -= 1.0f;
+                moved = true;
             }
             if (mMoveLeft.Active)
             {
-                moveDirection.X -= 1.0f;
+                moveDirection.X += 1.0f;
+                moved = true;
+            }
+            if (moved)
+            {
+                Vector3 moveVector = moveDirection.Y * mCamera.Forward + moveDirection.X * mCamera.Right;
+                moveVector.Y = 0.0f;
+                mCreature.Forward = Vector3.Normalize(moveVector);
+                mCreature.Move(1.0f);
             }
             #endregion
 
             if (mCheat.Active)
             {
                 mCreature.Entity.Position = new Vector3(0.0f);
-                //mCreature.Entity.LinearVelocity = new Vector3(0.0f);
+                mCreature.Entity.LinearVelocity = new Vector3(0.0f);
             }
 
             moveDirection.X *= time_step;
             moveDirection.Y *= time_step;
-            mCreature.Move(moveDirection);
+            //mCreature.Move(moveDirection);
+            mCamera.Target = mCreature.Position;
+            Vector3 diffVector = mCreature.Position - mCamera.Position;
+            float diff = diffVector.Length() - mDistFromCreature;
+            //if (diff > 0)
+            {
+                mCamera.Position += Vector3.Normalize(diffVector) * diff;
+            }
             //Vector3 temp = Vector3.Multiply(Vector3.Normalize(mCamera.Forward), mDistFromCreature);
             //mCamera.Position = Vector3.Subtract(mCreature.Position, temp);
             //mCamera.Position = new Vector3(0.0f, 100.0f, 1.0f);

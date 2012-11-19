@@ -20,9 +20,41 @@ namespace finalProject
     /// </summary>
     abstract public class Creature : Actor
     {
-        protected const float MoveSpeed = 50.0f;
-        protected const float JumpVelocity = 10.0f;
-        protected Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
+        //protected const float MoveAcceleration = 50.0f;
+        protected const float DefaultJumpVelocity = 10.0f;
+        protected const float DefaultMaxVelocity = 5.0f;
+
+        protected virtual float JumpVelocity
+        {
+            get
+            {
+                return DefaultJumpVelocity;
+            }
+        }
+
+        protected virtual float MaxVelocity
+        {
+            get
+            {
+                return DefaultMaxVelocity;
+            }
+        }
+
+        protected float MaxVelocitySquared
+        {
+            get
+            {
+                return MaxVelocity * MaxVelocity;
+            }
+        }
+
+        protected Vector3 JumpVector
+        {
+            get
+            {
+                return new Vector3(0.0f, JumpVelocity, 0.0f);
+            }
+        }
 
         protected RadialSensor mSensor;
 
@@ -61,7 +93,7 @@ namespace finalProject
             mParts = new List<Part>();
             Entity.Position = position;
             Game1.World.Add(mSensor);
-            Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
+            //Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
             //MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
             // What do I do with this joint?
             //throw new NotImplementedException("Creature does not know what to do with the joint.");
@@ -126,15 +158,17 @@ namespace finalProject
         /// <param name="direction">
         /// The direction to move relative to the facing direction.
         /// </param>
-        public virtual void Move(Vector2 direction)
+        public virtual void Move(float magnitude)
         {
-            //System.Console.WriteLine("direction = x:" + direction.X + " y:" + direction.Y);
-            Vector3 forward = new Vector3(0.0f, 0.0f, -1.0f) * (direction.Y * MoveSpeed);
-            Vector3 right = new Vector3(1.0f, 0.0f, 0.0f) * (direction.X * MoveSpeed);
-            Vector3 temp = forward + right;
-            //System.Console.WriteLine("temp = x:" + temp.X + " y:" + temp.Y + " z:" + temp.Z);
-            Entity.LinearVelocity += temp;
-            //PhysicsEntity.ApplyLinearImpulse(ref temp);
+            Entity.LinearVelocity += Vector3.Normalize(Forward) * magnitude * MaxVelocity;
+            Vector3 horizVelocity = new Vector3(Entity.LinearVelocity.X, 0.0f, Entity.LinearVelocity.Z);
+            if (horizVelocity.LengthSquared() > MaxVelocitySquared)
+            {
+                horizVelocity.Normalize();
+                horizVelocity *= MaxVelocity;
+                horizVelocity.Y = Entity.LinearVelocity.Y;
+                Entity.LinearVelocity = horizVelocity;
+            }
         }
 
         /// <summary>

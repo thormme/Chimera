@@ -11,5 +11,11 @@ namespace finalProject
     static public class Rand
     {
         static public Random rand = new Random();
+        static public float NextFloat(float max)
+        {
+            float ret = ((float)rand.Next() / (float)int.MaxValue) * max;
+            //Console.WriteLine(max + " " + ret);
+            return ret;
+        }
     }
 }
