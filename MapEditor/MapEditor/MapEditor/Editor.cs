@@ -29,15 +29,16 @@ namespace MapEditor
         private GuiManager mGUI;
 
         private MapEditor mMapEditor;
-
         private Camera mCamera;
-        private AnimateModel mModel;
 
         public Editor()
         {
 
             Content.RootDirectory = "Content";
             graphics = new GraphicsDeviceManager(this);
+            
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 640;
 
             mInput = new InputManager(Services, Window.Handle);
             mGUI = new GuiManager(Services);
@@ -64,18 +65,15 @@ namespace MapEditor
             GraphicsManager.CastingShadows = true;
 
             Viewport viewport = GraphicsDevice.Viewport;
+
             Screen mainScreen = new Screen(viewport.Width, viewport.Height);
             mGUI.Screen = mainScreen;
 
             mCamera = new Camera(viewport);
-            mCamera.Position = new Vector3(0, 40, -100);
-            mCamera.Target = new Vector3(0, 40, 0);
+            mCamera.Position = new Vector3(0, 140, -100);
+            mCamera.Target = new Vector3(0, 100, 0);
 
             mMapEditor = new MapEditor(mainScreen, mCamera, viewport);
-
-            mModel = new AnimateModel("dude");
-            mModel.PlayAnimation("Take 001");
-
             
         }
 
@@ -113,9 +111,6 @@ namespace MapEditor
             GraphicsManager.Update(mCamera);
 
             mMapEditor.Update(gameTime);
-            mModel.Update(gameTime);
-
-            
             
             base.Update(gameTime);
         }
@@ -127,8 +122,6 @@ namespace MapEditor
         protected override void Draw(GameTime gameTime)
         {
             GraphicsManager.BeginRendering();
-
-            mModel.Render(new Vector3(0, 100, 0));
             mMapEditor.Render(); ;
 
             GraphicsManager.FinishRendering();

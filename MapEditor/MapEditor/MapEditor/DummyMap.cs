@@ -164,21 +164,11 @@ namespace MapEditor
                 }
                 else if (mMapEditor.State == States.Object)
                 {
-                    string objectType;
-                    string objectModel;
-                    Vector3 objectScale;
-                    Vector3 objectOrientation;
-                    string[] objectParameters;
-                    if (mMapEditor.MapEditorDialog.GetObjectEditorInput(out objectType, out objectModel, out objectScale, out objectOrientation, out objectParameters))
+                    DummyObject temp = new DummyObject();
+                    if (mMapEditor.MapEditorDialog.GetObjectEditorInput(out temp))
                     {
-                        DummyObject temp = new DummyObject();
-                        temp.Type = objectType;
-                        temp.Model = objectModel;
-                        temp.Parameters = objectParameters;
                         temp.Position = position;
-                        temp.Orientation = objectOrientation;
-                        temp.Scale = objectScale;
-                        Add(temp);
+                        Add(new DummyObject(temp));
                     }
                 }
             }

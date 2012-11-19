@@ -214,6 +214,7 @@
     <Compile Include="MapEditorDialog.cs" />
     <Compile Include="NewLevelDialog.cs" />
     <Compile Include="ObjectEditorDialog.cs" />
+    <Compile Include="ParametersDialog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SaveLevelDialog.cs" />

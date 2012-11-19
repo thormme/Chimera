@@ -15,6 +15,7 @@ using Nuclex.UserInterface.Controls;
 using Nuclex.UserInterface.Controls.Desktop;
 using GraphicsLibrary;
 using System.IO;
+using GameConstructLibrary;
 
 namespace MapEditor
 {
@@ -25,6 +26,12 @@ namespace MapEditor
     {
 
         private MapEditor mMapEditor;
+        private Screen mMainScreen;
+
+        private ParametersDialog mParametersDialog;
+
+        private Dictionary<string, DummyObject> mTypes;
+
         private Nuclex.UserInterface.Controls.LabelControl mObjectLabel;
         private Nuclex.UserInterface.Controls.Desktop.ListControl mObjectList;
         private Nuclex.UserInterface.Controls.LabelControl mScaleLabel;
@@ -37,10 +44,12 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.Desktop.InputControl mOrientationZInput;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mDoneButton;
 
-        public ObjectEditorDialog(MapEditor mapEditor) :
+        public ObjectEditorDialog(MapEditor mapEditor, Screen mainScreen) :
             base()
         {
             mMapEditor = mapEditor;
+            mMainScreen = mainScreen;
+            mTypes = new Dictionary<string, DummyObject>();
             InitializeComponent();
             PopulateList();
         }
@@ -80,12 +89,12 @@ namespace MapEditor
             mObjectList.SelectionMode = Nuclex.UserInterface.Controls.Desktop.ListSelectionMode.Single;
 
             mScaleLabel.Text = "Scale:";
-            mScaleLabel.Bounds = new UniRectangle(20.0f, 280.0f, 50.0f, 30.0f);
-            mScaleXInput.Bounds = new UniRectangle(70.0f, 280.0f, 30.0f, 30.0f);
+            mScaleLabel.Bounds = new UniRectangle(62.0f, 280.0f, 50.0f, 30.0f);
+            mScaleXInput.Bounds = new UniRectangle(110.0f, 280.0f, 30.0f, 30.0f);
             mScaleXInput.Text = "1";
-            mScaleYInput.Bounds = new UniRectangle(110.0f, 280.0f, 30.0f, 30.0f);
+            mScaleYInput.Bounds = new UniRectangle(150.0f, 280.0f, 30.0f, 30.0f);
             mScaleYInput.Text = "1";
-            mScaleZInput.Bounds = new UniRectangle(150.0f, 280.0f, 30.0f, 30.0f);
+            mScaleZInput.Bounds = new UniRectangle(190.0f, 280.0f, 30.0f, 30.0f);
             mScaleZInput.Text = "1";
 
             mOrientationLabel.Text = "Orientation:";
@@ -126,44 +135,67 @@ namespace MapEditor
             foreach (FileInfo obj in objects)
             {
                 mObjectList.Items.Add(obj.Name);
+
+                DummyObject temp = new DummyObject();
+
+                try
+                {
+
+                    string[] data = System.IO.File.ReadAllLines(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/objects/" + obj.Name);
+
+                    temp.Type = data[0];
+                    temp.Model = data[1];
+                    temp.Scale = new Vector3(Convert.ToSingle(mScaleXInput.Text), Convert.ToSingle(mScaleYInput.Text), Convert.ToSingle(mScaleZInput.Text));
+                    temp.Orientation = new Vector3(Convert.ToSingle(mOrientationXInput.Text), Convert.ToSingle(mOrientationYInput.Text), Convert.ToSingle(mOrientationZInput.Text));
+                    List<string> parameters = new List<string>();
+                    if (data.Length - 2 > 0)
+                    {
+                        for (int count = 0; count < data.Length - 2; count++)
+                        {
+                            parameters.Add(data[count + 2]);
+                        }
+                    }
+                    temp.Parameters = parameters.ToArray();
+
+                }
+                catch (SystemException)
+                {
+                    
+                }
+
+                mTypes.Add(obj.Name, temp);
+
             }
 
         }
 
-        public bool GetObjectEditorInput(out string objectType, out string objectModel, out Vector3 objectScale, out Vector3 objectOrientation, out string[] objectParameters)
+        public bool GetObjectEditorInput(out DummyObject temp)
         {
 
-            objectType = "Root";
-            objectModel = "sphere";
-            objectScale = new Vector3(1.0f, 1.0f, 1.0f);
-            objectOrientation = new Vector3(0.0f, 0.0f, 1.0f);
-            
-            objectParameters = new string[0];
+            temp = new DummyObject();
 
             try
             {
-
                 string selected = mObjectList.Items.ElementAt<string>(mObjectList.SelectedItems[0]);
-                string[] data = System.IO.File.ReadAllLines(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/objects/" + selected);
-
-                objectType = data[0];
-                objectModel = data[1];
-                objectScale = new Vector3(Convert.ToSingle(mScaleXInput.Text), Convert.ToSingle(mScaleYInput.Text), Convert.ToSingle(mScaleZInput.Text));
-                objectOrientation = new Vector3(Convert.ToSingle(mOrientationXInput.Text), Convert.ToSingle(mOrientationYInput.Text), Convert.ToSingle(mOrientationZInput.Text));
-                List<string> parameters = new List<string>();
-                if (data.Length - 2 > 0)
-                {
-                    for (int count = 0; count < data.Length - 2; count++)
-                    {
-                        parameters.Add(data[count + 2]);
-                    }
-                }
-                objectParameters = parameters.ToArray();
+                mTypes.TryGetValue(selected, out temp);
             }
             catch (SystemException)
             {
                 return false;
             }
+
+            try
+            {
+                temp.Scale = new Vector3(Convert.ToSingle(mScaleXInput.Text), Convert.ToSingle(mScaleYInput.Text), Convert.ToSingle(mScaleZInput.Text));
+                temp.Orientation = new Vector3(Convert.ToSingle(mOrientationXInput.Text), Convert.ToSingle(mOrientationYInput.Text), Convert.ToSingle(mOrientationZInput.Text));
+                mParametersDialog.GetParameters();
+            }
+            catch (SystemException)
+            {
+                return false;
+            }
+
+            
 
             return true;
 
@@ -180,5 +212,26 @@ namespace MapEditor
             mMapEditor.MapEditorDialog.Done();
         }
 
+        public void EnableParameters()
+        {
+            try
+            {
+                DummyObject temp = new DummyObject();
+                string selected = mObjectList.Items.ElementAt<string>(mObjectList.SelectedItems[0]);
+                mTypes.TryGetValue(selected, out temp);
+                DisableParameters();
+                mParametersDialog = new ParametersDialog(new List<string>(temp.Parameters));
+                mMainScreen.Desktop.Children.Add(mParametersDialog);
+            }
+            catch (SystemException)
+            {
+
+            }
+        }
+
+        public void DisableParameters()
+        {
+            mMainScreen.Desktop.Children.Remove(mParametersDialog);
+        }
     }
 }

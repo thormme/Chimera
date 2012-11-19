@@ -80,17 +80,20 @@ namespace MapEditor
                 mEditMode = !mEditMode;
                 if (mEditMode)
                 {
+                    MapEditorDialog.EnableParameters();
                     MapEditorDialog.Disable();
                 }
                 else
                 {
+                    MapEditorDialog.DisableParameters();
                     MapEditorDialog.Enable();
                 }
             }
 
             if (mZ.Active) Undo();
             else if (mX.Active) Redo();
-            
+
+
             mMapEntity.Update(gameTime);
             mDummyMap.Update();
         }

@@ -85,7 +85,7 @@ namespace MapEditor
             mMovement = new Vector3(0.0f, 0.0f, 0.0f);
             mDirection = new Vector3(0.0f, 0.0f, 0.0f);
 
-            mModel = new InanimateModel("sphere");
+            mModel = new InanimateModel("editor");
             mPosition = new Vector3(0);
             mSize = 1;
 
@@ -154,7 +154,7 @@ namespace MapEditor
                 mPosition = result.Location;
                 if (mMapEditor.State == States.Height)
                 {
-                    mModel = new InanimateModel("sphere");
+                    mModel = new InanimateModel("editor");
 
                     int dummySize;
                     int dummyIntensity;
@@ -171,21 +171,20 @@ namespace MapEditor
                 }
                 else if (mMapEditor.State == States.Object)
                 {
-                    string dummyObjectType;
-                    string dummyObjectModel;
-                    Vector3 dummyObjectScale;
-                    Vector3 dummyObjectOrientation;
-                    string[] dummyObjectParameters;
-                    
-                    if (mMapEditor.MapEditorDialog.GetObjectEditorInput(out dummyObjectType, out dummyObjectModel, out dummyObjectScale, out dummyObjectOrientation, out dummyObjectParameters)){
-                        mModel = new InanimateModel(dummyObjectModel);
-                        mScale = dummyObjectScale;
-                        mOrientation = dummyObjectOrientation;
-                    }
 
-                    if (mLeftPressed.Active)
+                    DummyObject temp = new DummyObject();
+                    if (mMapEditor.MapEditorDialog.GetObjectEditorInput(out temp))
                     {
-                        mMapEditor.DummyMap.Action(result.Location);
+
+                        mModel = new InanimateModel(temp.Model);
+                        mScale = temp.Scale;
+                        mOrientation = temp.Orientation;
+
+                        if (mLeftPressed.Active)
+                        {
+                            mMapEditor.DummyMap.Action(result.Location);
+                        }
+
                     }
                 }
             }
@@ -194,7 +193,7 @@ namespace MapEditor
         public void Render()
         {
             if (mMapEditor.State == States.Height)
-                mModel.Render(mPosition, new Vector3(0, 0, 1), new Vector3(mSize));
+                mModel.Render(mPosition, new Vector3(0, 0, 1), new Vector3(mSize * 2));
             else if (mMapEditor.State == States.Object)
                 mModel.Render(mPosition, mOrientation, mScale);
         }
