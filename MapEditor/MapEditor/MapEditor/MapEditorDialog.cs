@@ -47,7 +47,7 @@ namespace MapEditor
             mHeightMapEditorDialog = new HeightMapEditorDialog(mMapEditor);
             mMainScreen.Desktop.Children.Add(mHeightMapEditorDialog);
 
-            mObjectEditorDialog = new ObjectEditorDialog(mMapEditor);
+            mObjectEditorDialog = new ObjectEditorDialog(mMapEditor, mainScreen);
             mMainScreen.Desktop.Children.Add(mObjectEditorDialog);
 
             InitializeComponent();
@@ -116,9 +116,9 @@ namespace MapEditor
             return mHeightMapEditorDialog.GetHeightEditorInput(out size, out intensity, out feather, out set);
         }
 
-        public bool GetObjectEditorInput(out string objectType, out string objectModel, out string[] parameterModel)
+        public bool GetObjectEditorInput(out DummyObject temp)
         {
-            return mObjectEditorDialog.GetObjectEditorInput(out objectType, out objectModel, out parameterModel);
+            return mObjectEditorDialog.GetObjectEditorInput(out temp);
         }
 
         public void Disable()
@@ -143,6 +143,16 @@ namespace MapEditor
             {
                 mObjectEditorDialog.ObjectsEnable();
             }
+        }
+
+        public void DisableParameters()
+        {
+            mObjectEditorDialog.DisableParameters();
+        }
+
+        public void EnableParameters()
+        {
+            if (mMapEditor.State == States.Object) mObjectEditorDialog.EnableParameters();
         }
 
         private void HeightClicked(object sender, EventArgs arguments)

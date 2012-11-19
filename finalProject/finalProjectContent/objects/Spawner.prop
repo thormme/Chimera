@@ -1,0 +1,4 @@
+Spawner
+sphere
+string creature
+float timer

@@ -24,10 +24,11 @@ namespace MapEditor
     public class DummyMap
     {
 
-        private const int scale = 1;
+        private const int scale = 2;
         private const float length = 2000.0f;
 
         private string mName;
+        public string Name { get { return mName; } set { mName = value; } }
 
         private MapEditor mMapEditor;
         public MapEditor MapEditor { get { return mMapEditor; } set { mMapEditor = value; } }
@@ -37,10 +38,10 @@ namespace MapEditor
         public TerrainPhysics TerrainPhysics { get { return mTerrainPhysics; } set { mTerrainPhysics = value; } }
 
         private List<DummyObject> mDummies;
-        private LevelManager mLevelManager;
 
         private KeyInputAction mAlt;
         private KeyInputAction mShift;
+        private MouseButtonInputAction mLeftPressed;
 
         private bool mInverseMode;
         private bool mSmoothMode;
@@ -54,9 +55,8 @@ namespace MapEditor
             mMapEditor = mapEditor;
 
             mHeightMap = GraphicsManager.LookupTerrainHeightMap("default");
-            mTerrainPhysics = new TerrainPhysics("default", new Vector3(0, 0, 0), new Quaternion(), scale);
+            mTerrainPhysics = new TerrainPhysics("default", new Vector3(0, 0, 0), new Quaternion(), new Vector3(scale, 1, scale));
 
-            mLevelManager = new LevelManager();
             mDummies = new List<DummyObject>();
 
             mHeightMap = GraphicsManager.LookupTerrainHeightMap("default");
@@ -64,16 +64,32 @@ namespace MapEditor
 
             mAlt = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.LeftAlt);
             mShift = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.LeftShift);
+            mLeftPressed = new MouseButtonInputAction(0, InputAction.ButtonAction.Pressed, InputAction.MouseButton.Left);
 
-            DummyObject root = new DummyObject();
-            root.Type = "Root";
-            root.Model = "sphere";
-            root.Parameters = new string[0];
-            root.Position = new Vector3(0, 0, 0);
-            root.Orientation = new Vector3(0, 0, 0);
-            root.Scale = new Vector3(0, 0, 0);
-            Add(root);
+        }
 
+        public DummyMap(DummyMap copy)
+        {
+            mName = copy.mName;
+            mMapEditor = copy.mMapEditor;
+            mHeightMap = new TerrainHeightMap(copy.mHeightMap);
+            mTerrainPhysics = new TerrainPhysics(mName, new Vector3(0, 0, 0), new Quaternion(), new Vector3(scale, 1, scale));
+            mDummies = new List<DummyObject>();
+            foreach (DummyObject obj in copy.mDummies)
+            {
+                mDummies.Add(new DummyObject(obj));
+            }
+            mAlt = copy.mAlt;
+            mShift = copy.mShift;
+            mLeftPressed = copy.mLeftPressed;
+            mInverseMode = copy.mInverseMode;
+            mSmoothMode = copy.mSmoothMode;
+        }
+
+        public void LinkHeightMap()
+        {
+            GraphicsManager.LookupTerrainHeightMap(mName).FixHeightMap(mHeightMap);
+            mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
         }
 
         public void Update()
@@ -121,6 +137,9 @@ namespace MapEditor
         {
             if (mMapEditor.EditMode)
             {
+
+                if (mLeftPressed.Active) mMapEditor.AddState(this);
+
                 if (mMapEditor.State == States.None)
                 {
                     
@@ -140,25 +159,16 @@ namespace MapEditor
                         mHeightMap.ModifyVertices(position, size, intensity, feather, set, mSmoothMode);
                     }
 
-                    mTerrainPhysics = new TerrainPhysics(mName, new Vector3(scale), new Quaternion(), new Vector3(0, 0, 0));
+                    mTerrainPhysics = new TerrainPhysics(mName, new Vector3(0, 0, 0), new Quaternion(), new Vector3(scale, 1, scale));
 
                 }
                 else if (mMapEditor.State == States.Object)
                 {
-                    Console.WriteLine("here");
-                    string objectType;
-                    string objectModel;
-                    string[] objectParameters;
-                    if (mMapEditor.MapEditorDialog.GetObjectEditorInput(out objectType, out objectModel, out objectParameters))
+                    DummyObject temp = new DummyObject();
+                    if (mMapEditor.MapEditorDialog.GetObjectEditorInput(out temp))
                     {
-                        DummyObject temp = new DummyObject();
-                        temp.Type = objectType;
-                        temp.Model = objectModel;
-                        temp.Parameters = objectParameters;
                         temp.Position = position;
-                        temp.Orientation = new Vector3(0, 0, 1);
-                        temp.Scale = new Vector3(0.1f, 0.1f, 0.1f);
-                        Add(temp);
+                        Add(new DummyObject(temp));
                     }
                 }
             }
@@ -170,8 +180,12 @@ namespace MapEditor
             // Save the height map
             mHeightMap.Save(file);
 
+            foreach (DummyObject obj in mDummies) obj.Position /= scale;
+
             // Save the rest of the level
-            mLevelManager.Save(file, mDummies);
+            LevelManager.Save(file, mDummies);
+
+            foreach (DummyObject obj in mDummies) obj.Position *= scale;
 
         }
 
@@ -182,10 +196,12 @@ namespace MapEditor
 
             // Load the height map
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(file);
-            mTerrainPhysics = new TerrainPhysics(file, new Vector3(0, 0, 0), new Quaternion(), scale);
+            mTerrainPhysics = new TerrainPhysics(file, new Vector3(0, 0, 0), new Quaternion(), new Vector3(scale, 1, scale));
 
            // Load the rest of the level
-            mDummies = mLevelManager.Load(file);
+            mDummies = LevelManager.Load(file);
+
+            foreach (DummyObject obj in mDummies) obj.Position *= scale;
 
         }
 
