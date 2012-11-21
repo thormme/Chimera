@@ -12,7 +12,7 @@ namespace GameConstructLibrary
     /// <summary>
     /// A type of physical object which has autonomy.
     /// </summary>
-    abstract public class Actor : PhysicsObject
+    abstract public class Actor : PhysicsObject, IActor
     {
         public Actor(Renderable renderable, Entity entity)
             : base(renderable, entity)

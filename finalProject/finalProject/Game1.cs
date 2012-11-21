@@ -21,6 +21,7 @@ namespace finalProject
         private InputAction debug;
         private KeyInputAction debugGraphics;
         private KeyInputAction celShading;
+        private KeyInputAction mouseLock;
 
         private bool debugMode;
 
@@ -42,6 +43,7 @@ namespace finalProject
             debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
             debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F1);
             celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F2);
+            mouseLock = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Tab);
 
             debugMode = false;
         }
@@ -79,10 +81,11 @@ namespace finalProject
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
 
-            player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 2.0f, 0.0f));
+            player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 100.0f, 0.0f));
             World.Add(player);
             World.mSpace.Add(player.HorizontalMotionConstraint);
-            World.Add(new TerrainPhysics("test_level", new Vector3(0.0f, -60.0f, 0.0f), new Quaternion(), new Vector3(1.0f)));
+            World.AddLevelFromFile("trial", new Vector3(), new Quaternion(), new Vector3(10, .25f, 10));
+            //World.Add(new TerrainPhysics("default", new Vector3(0.0f, -60.0f, 0.0f), new Quaternion(), new Vector3(1.0f)));
         }
 
         /// <summary>
@@ -114,6 +117,11 @@ namespace finalProject
             if (celShading.Active)
             {
                 GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.None : GraphicsManager.CelShaded.All;
+            }
+
+            if (mouseLock.Active)
+            {
+                InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
             }
 
             // Allows the game to exit

@@ -24,6 +24,8 @@ namespace finalProject
             set;
         }
 
+        //public abstract List<string> GetPreferredJointNames();
+
         public Part(Renderable renderable, Entity entity)
             : base(renderable, entity)
         {}

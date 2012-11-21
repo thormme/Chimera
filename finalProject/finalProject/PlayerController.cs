@@ -25,19 +25,23 @@ namespace finalProject
 
         public Camera mCamera;
 
-        private GamePadThumbStickInputAction mMoveForward;
-        private GamePadThumbStickInputAction mMoveRight;
+        private InputAction mMoveForward;
+        private InputAction mMoveRight;
+        private InputAction mMoveBackward;
+        private InputAction mMoveLeft;
 
-        private GamePadThumbStickInputAction mLookForward;
-        private GamePadThumbStickInputAction mLookRight;
+        private InputAction mLookForward;
+        private InputAction mLookBackward;
+        private InputAction mLookRight;
+        private InputAction mLookLeft;
 
-        private GamePadButtonInputAction mPressPart1;
-        private GamePadButtonInputAction mPressPart2;
-        private GamePadButtonInputAction mPressPart3;
-        private GamePadButtonInputAction mPressJump;
+        private InputAction mPressPart1;
+        private InputAction mPressPart2;
+        private InputAction mPressPart3;
+        private InputAction mPressJump;
 
-        private KeyInputAction mAdd;
-        private KeyInputAction mCheat;
+        private InputAction mAdd;
+        private InputAction mCheat;
 
         #endregion
 
@@ -53,16 +57,18 @@ namespace finalProject
             mCamera.DesiredPositionLocal = new Vector3(0.0f, 4.0f, 10.0f);
             mCamera.LookAtLocal = new Vector3(0.0f, 1.50f, 0.0f);
 
-            mMoveForward = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.Y, GamePadDeadZone.Circular, -0.2f, 0.2f);
-            mMoveRight = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.X, GamePadDeadZone.Circular, -0.2f, 0.2f);
+            mMoveForward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
+            mMoveBackward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.S);
+            mMoveRight = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.D);
+            mMoveLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.A);
 
             mLookForward = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Right, InputAction.GamePadThumbStickAxis.Y, GamePadDeadZone.Circular, -0.2f, 0.2f);
             mLookRight = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Right, InputAction.GamePadThumbStickAxis.X, GamePadDeadZone.Circular, -0.2f, 0.2f);
 
-            mPressPart1 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.X);
-            mPressPart2 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.Y);
-            mPressPart3 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.B);
-            mPressJump = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.A);
+            mPressPart1 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D1);
+            mPressPart2 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D2);
+            mPressPart3 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D3);
+            mPressJump = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Space);
 
             mAdd = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.LeftShift);
             mCheat = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Enter);
@@ -72,6 +78,8 @@ namespace finalProject
         {
             mMoveForward.Destroy();
             mMoveRight.Destroy();
+            mMoveBackward.Destroy();
+            mMoveLeft.Destroy();
 
             mLookForward.Destroy();
             mLookRight.Destroy();
@@ -131,9 +139,9 @@ namespace finalProject
             }
 
             Vector2 walkDirection = Vector2.Zero;
-            if (mMoveForward.Active || mMoveRight.Active)
+            if (mMoveForward.Active || mMoveRight.Active || mMoveLeft.Active || mMoveBackward.Active)
             {
-                walkDirection = Vector2.Normalize(new Vector2(mMoveRight.Degree, -mMoveForward.Degree));
+                walkDirection = Vector2.Normalize(new Vector2(mMoveRight.Degree - mMoveLeft.Degree, mMoveBackward.Degree - mMoveForward.Degree));
 
                 Vector3 groundForward = mCamera.Forward - Vector3.Dot(mCamera.Forward, mCreature.Up) * mCreature.Up;
                 Vector2 groundForwardProjected = new Vector2(groundForward.X, groundForward.Z);
