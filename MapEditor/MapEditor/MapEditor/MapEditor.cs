@@ -43,7 +43,7 @@ namespace MapEditor
         public States State { get { return mState; } set { mState = value; } }
         private States mState;
 
-        public MapEditor(Screen mainScreen, Camera camera, Viewport viewport)
+        public MapEditor(Screen mainScreen, FPSCamera camera, Viewport viewport)
         {
 
             // Create map editor dialog and add to GUIs

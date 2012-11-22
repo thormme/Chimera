@@ -29,7 +29,7 @@ namespace MapEditor
         private GuiManager mGUI;
 
         private MapEditor mMapEditor;
-        private Camera mCamera;
+        private FPSCamera mCamera;
 
         public Editor()
         {
@@ -69,9 +69,10 @@ namespace MapEditor
             Screen mainScreen = new Screen(viewport.Width, viewport.Height);
             mGUI.Screen = mainScreen;
 
-            mCamera = new Camera(viewport);
+            mCamera = new FPSCamera(viewport);
             mCamera.Position = new Vector3(0, 140, -100);
             mCamera.Target = new Vector3(0, 100, 0);
+            mCamera.Up = Vector3.Up;
 
             mMapEditor = new MapEditor(mainScreen, mCamera, viewport);
             

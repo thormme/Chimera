@@ -11,8 +11,6 @@ using BEPUphysics.MathExtensions;
 using BEPUphysics;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Input;
-using BEPUphysics.Collidables;
-using BEPUphysics.Entities.Prefabs;
 
 namespace GameConstructLibrary
 {
@@ -21,7 +19,8 @@ namespace GameConstructLibrary
     /// </summary>
     public class HorizontalMotionConstraint : EntitySolverUpdateable
     {
-        Entity body;
+        CharacterController character;
+
 
         SupportData supportData;
         /// <summary>
@@ -67,12 +66,12 @@ namespace GameConstructLibrary
                 float lengthSquared = value.LengthSquared();
                 if (lengthSquared > Toolbox.Epsilon)
                 {
-                    body.ActivityInformation.Activate();
+                    character.Body.ActivityInformation.Activate();
                     Vector2.Divide(ref value, (float)Math.Sqrt(lengthSquared), out movementDirection);
                 }
                 else
                 {
-                    body.ActivityInformation.Activate();
+                    character.Body.ActivityInformation.Activate();
                     movementDirection = new Vector2();
                 }
             }
@@ -258,9 +257,9 @@ namespace GameConstructLibrary
         /// Constructs a new horizontal motion constraint.
         /// </summary>
         /// <param name="characterController">Character to be governed by this constraint.</param>
-        public HorizontalMotionConstraint(Entity body)
+        public HorizontalMotionConstraint(CharacterController characterController)
         {
-            this.body = body;
+            this.character = characterController;
             CollectInvolvedEntities();
         }
 
@@ -270,7 +269,7 @@ namespace GameConstructLibrary
             var entityCollidable = supportData.SupportObject as EntityCollidable;
             if (entityCollidable != null)
                 outputInvolvedEntities.Add(entityCollidable.Entity);
-            outputInvolvedEntities.Add(body);
+            outputInvolvedEntities.Add(character.Body);
 
         }
 
@@ -287,10 +286,10 @@ namespace GameConstructLibrary
                 if (supportData.HasTraction)
                 {
                     MovementMode = MovementMode.Traction;
-                    //if (character.StanceManager.CurrentStance == Stance.Standing)
+                    if (character.StanceManager.CurrentStance == Stance.Standing)
                         maxSpeed = speed;
-                    //else
-                        //maxSpeed = crouchingSpeed;
+                    else
+                        maxSpeed = crouchingSpeed;
                     maxForce = maximumForce;
                 }
                 else
@@ -315,7 +314,7 @@ namespace GameConstructLibrary
 
 
             //Compute the jacobians.  This is basically a PointOnLineJoint with motorized degrees of freedom.
-            Vector3 downDirection = body.OrientationMatrix.Down;
+            Vector3 downDirection = character.Body.OrientationMatrix.Down;
 
             if (MovementMode != MovementMode.Floating)
             {
@@ -433,7 +432,7 @@ namespace GameConstructLibrary
                 float inverseMass;
                 Vector3 intermediate;
 
-                inverseMass = body.InverseMass;
+                inverseMass = character.Body.InverseMass;
                 m11 = inverseMass;
                 m22 = inverseMass;
 
@@ -464,7 +463,7 @@ namespace GameConstructLibrary
             else
             {
                 //If we're not standing on a dynamic entity, then the mass matrix is defined entirely by the character.
-                Matrix2X2.CreateScale(body.Mass, out massMatrix);
+                Matrix2X2.CreateScale(character.Body.Mass, out massMatrix);
             }
 
             //If we're trying to stand still on an object that's moving, use a position correction term to keep the character
@@ -483,30 +482,30 @@ namespace GameConstructLibrary
             if (!isTryingToMove && supportData.HasTraction && supportEntity != null)
             {
                 //Compute the time it usually takes for the character to slow down while it has traction.
-                var tractionDecelerationTime = speed / (maximumForce * body.InverseMass);
+                var tractionDecelerationTime = speed / (maximumForce * character.Body.InverseMass);
 
                 if (timeSinceTransition >= 0 && timeSinceTransition < tractionDecelerationTime)
                     timeSinceTransition += dt;
                 if (timeSinceTransition >= tractionDecelerationTime)
                 {
-                    //Vector3.Multiply(ref downDirection, body.Height * .5f, out positionLocalOffset);
-                    positionLocalOffset = (positionLocalOffset + body.Position) - supportEntity.Position;
+                    Vector3.Multiply(ref downDirection, character.Body.Height * .5f, out positionLocalOffset);
+                    positionLocalOffset = (positionLocalOffset + character.Body.Position) - supportEntity.Position;
                     positionLocalOffset = Matrix3X3.TransformTranspose(positionLocalOffset, supportEntity.OrientationMatrix);
                     timeSinceTransition = -1; //Negative 1 means that the offset has been computed.
                 }
                 if (timeSinceTransition < 0)
                 {
-                    Vector3 targetPosition = Vector3.Zero;
-                    //Vector3.Multiply(ref downDirection, body.Height * .5f, out targetPosition);
-                    targetPosition += body.Position;
+                    Vector3 targetPosition;
+                    Vector3.Multiply(ref downDirection, character.Body.Height * .5f, out targetPosition);
+                    targetPosition += character.Body.Position;
                     Vector3 worldSupportLocation = Matrix3X3.Transform(positionLocalOffset, supportEntity.OrientationMatrix) + supportEntity.Position;
                     Vector3 error;
                     Vector3.Subtract(ref targetPosition, ref worldSupportLocation, out error);
                     //If the error is too large, then recompute the offset.  We don't want the character rubber banding around.
                     if (error.LengthSquared() > .15f * .15f)
                     {
-                        //Vector3.Multiply(ref downDirection, body.Height * .5f, out positionLocalOffset);
-                        positionLocalOffset = (positionLocalOffset + body.Position) - supportEntity.Position;
+                        Vector3.Multiply(ref downDirection, character.Body.Height * .5f, out positionLocalOffset);
+                        positionLocalOffset = (positionLocalOffset + character.Body.Position) - supportEntity.Position;
                         positionLocalOffset = Matrix3X3.TransformTranspose(positionLocalOffset, supportEntity.OrientationMatrix);
                         positionCorrectionBias = new Vector2();
                     }
@@ -543,8 +542,8 @@ namespace GameConstructLibrary
         {
             //Warm start the constraint using the previous impulses and the new jacobians!
 #if !WINDOWS
-        Vector3 impulse = new Vector3();
-        Vector3 torque= new Vector3();
+            Vector3 impulse = new Vector3();
+            Vector3 torque= new Vector3();
 #else
             Vector3 impulse;
             Vector3 torque;
@@ -555,7 +554,7 @@ namespace GameConstructLibrary
             impulse.Y = linearJacobianA1.Y * x + linearJacobianA2.Y * y;
             impulse.Z = linearJacobianA1.Z * x + linearJacobianA2.Z * y;
 
-            body.ApplyLinearImpulse(ref impulse);
+            character.Body.ApplyLinearImpulse(ref impulse);
 
             if (supportEntity != null && supportEntity.IsDynamic)
             {
@@ -617,8 +616,8 @@ namespace GameConstructLibrary
             //Use the jacobians to put the impulse into world space.
 
 #if !WINDOWS
-        Vector3 impulse = new Vector3();
-        Vector3 torque= new Vector3();
+            Vector3 impulse = new Vector3();
+            Vector3 torque= new Vector3();
 #else
             Vector3 impulse;
             Vector3 torque;
@@ -629,7 +628,7 @@ namespace GameConstructLibrary
             impulse.Y = linearJacobianA1.Y * x + linearJacobianA2.Y * y;
             impulse.Z = linearJacobianA1.Z * x + linearJacobianA2.Z * y;
 
-            body.ApplyLinearImpulse(ref impulse);
+            character.Body.ApplyLinearImpulse(ref impulse);
 
             if (supportEntity != null && supportEntity.IsDynamic)
             {
@@ -663,12 +662,12 @@ namespace GameConstructLibrary
                 //The relative velocity's x component is in the movement direction.
                 //y is the perpendicular direction.
 #if !WINDOWS
-            Vector2 relativeVelocity = new Vector2();
+                Vector2 relativeVelocity = new Vector2();
 #else
                 Vector2 relativeVelocity;
 #endif
 
-                Vector3 bodyVelocity = body.LinearVelocity;
+                Vector3 bodyVelocity = character.Body.LinearVelocity;
                 Vector3.Dot(ref linearJacobianA1, ref bodyVelocity, out relativeVelocity.X);
                 Vector3.Dot(ref linearJacobianA2, ref bodyVelocity, out relativeVelocity.Y);
 
@@ -700,47 +699,21 @@ namespace GameConstructLibrary
         {
             get
             {
-                Vector3 bodyVelocity = body.LinearVelocity;
+                Vector3 bodyVelocity = character.Body.LinearVelocity;
                 if (supportEntity != null)
                     return bodyVelocity - Toolbox.GetVelocityOfPoint(supportData.Position, supportEntity);
                 else
                     return bodyVelocity;
             }
         }
-    }
 
+
+
+    }
     public enum MovementMode
     {
         Traction,
         Sliding,
         Floating
-    }
-
-    /// <summary>
-    /// Contact which acts as a support for the character controller.
-    /// </summary>
-    public struct SupportData
-    {
-        /// <summary>
-        /// Position of the support.
-        /// </summary>
-        public Vector3 Position;
-        /// <summary>
-        /// Normal of the support.
-        /// </summary>
-        public Vector3 Normal;
-        /// <summary>
-        /// Whether or not the contact was found to have traction.
-        /// </summary>
-        public bool HasTraction;
-        /// <summary>
-        /// Depth of the supporting location.
-        /// Can be negative in the case of raycast supports.
-        /// </summary>
-        public float Depth;
-        /// <summary>
-        /// The object which the character is standing on.
-        /// </summary>
-        public Collidable SupportObject;
     }
 }

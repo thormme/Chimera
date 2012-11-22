@@ -11,6 +11,8 @@ using GameConstructLibrary;
 using BEPUphysics.Entities;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Collidables;
+using BEPUphysics.Entities.Prefabs;
+using System;
 
 #endregion
 
@@ -44,7 +46,7 @@ namespace finalProject
             }
         }
 
-        public HorizontalMotionConstraint HorizontalMotionConstraint
+        public CharacterController CharacterController
         {
             get;
             private set;
@@ -99,12 +101,13 @@ namespace finalProject
         {
             mSensor = radialSensor;
             Forward = new Vector3(0.0f, 0.0f, 1.0f);
+            mParts = new List<Part>();
+            //Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
+
+            CharacterController = new CharacterController(entity, 1.0f);
+
             mController = controller;
             controller.SetCreature(this);
-            mParts = new List<Part>();
-            Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
-
-            HorizontalMotionConstraint = new HorizontalMotionConstraint(Entity);
             //MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
             // What do I do with this joint?
             //throw new NotImplementedException("Creature does not know what to do with the joint.");
@@ -136,10 +139,7 @@ namespace finalProject
 
         public virtual void Jump()
         {
-            if (OnGround)
-            {
-                Entity.LinearVelocity += Vector3.Add(JumpVector, Entity.LinearVelocity);
-            }
+            CharacterController.Jump();
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace finalProject
         /// <param name="direction">The direction to move relative to the facing direction.</param>
         public virtual void Move(Vector2 direction)
         {
-            HorizontalMotionConstraint.MovementDirection = direction;
+            CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
             if (direction != Vector2.Zero)
             {
                 Forward = new Vector3(direction.X, 0.0f, direction.Y);
@@ -169,12 +169,23 @@ namespace finalProject
         {
             float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
-            Up = new Vector3(0.0f, 1.0f, 0.0f);
+            //Up = new Vector3(0.0f, 1.0f, 0.0f);
             mSensor.Update(gameTime);
             mController.Update(gameTime, mSensor.CollidingCreatures);
             mSensor.Position = Position;
 
-            HorizontalMotionConstraint.Update(elapsedTime);
+            List<BEPUphysics.RayCastResult> results = new List<BEPUphysics.RayCastResult>();
+            Game1.World.mSpace.RayCast(new Ray(Position, -1.0f * Up), 4.0f, results);
+
+            BEPUphysics.RayCastResult result = new BEPUphysics.RayCastResult();
+            foreach (BEPUphysics.RayCastResult collider in results)
+            {
+                if (collider.HitObject as Collidable != CharacterController.Body.CollisionInformation)
+                {
+                    result = collider;
+                    break;
+                }
+            }
 
             foreach (Part p in mParts)
             {

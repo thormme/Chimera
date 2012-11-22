@@ -30,6 +30,7 @@ namespace finalProject
         static public World World;
 
         PlayerCreature player;
+        TerrainPhysics terrain;
 
         public Game1()
         {
@@ -79,10 +80,12 @@ namespace finalProject
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
 
-            player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 2.0f, 0.0f));
+            terrain = new TerrainPhysics("default", new Vector3(0.0f, 0.0f, 0.0f), new Quaternion(), new Vector3(2.5f));
+            World.Add(terrain);
+
+            player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f));
             World.Add(player);
-            World.mSpace.Add(player.HorizontalMotionConstraint);
-            World.Add(new TerrainPhysics("test_level", new Vector3(0.0f, -60.0f, 0.0f), new Quaternion(), new Vector3(1.0f)));
+            World.mSpace.Add(player.CharacterController);
         }
 
         /// <summary>

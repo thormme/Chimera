@@ -51,6 +51,7 @@ namespace GraphicsLibrary
         static private int mEdgeWidth = 1;
         static private int mEdgeIntensity = 1;
         static private int mShadowMapLength = 4096;
+        static private int mShadowFarClip = 128;
 
         static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
 
@@ -220,18 +221,18 @@ namespace GraphicsLibrary
         /// Updates Projection and View matrices to current view space.
         /// </summary>
         /// <param name="camera">View space camera.</param>
-        static public void Update(Camera camera)
+        static public void Update(ICamera camera)
         {
-            mView = camera.ViewTransform;
+            mView = camera.GetViewTransform();
             
-            mProjection = camera.ProjectionTransform;
+            mProjection = camera.GetProjectionTransform();
 
-            float oldFarPlane = camera.FarPlaneDistance;
-            camera.FarPlaneDistance = 100.0f;
+            float oldFarPlane = camera.GetFarPlaneDistance();
+            camera.SetFarPlaneDistance(mShadowFarClip);
 
-            mCameraFrustum.Matrix = mView * camera.ProjectionTransform;
+            mCameraFrustum.Matrix = mView * camera.GetProjectionTransform();
 
-            camera.FarPlaneDistance = oldFarPlane;
+            camera.SetFarPlaneDistance(oldFarPlane);
 
             BuildLightTransform();
         }

@@ -132,9 +132,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
+    <Compile Include="CharacterController.cs" />
     <Compile Include="CollisionMeshManager.cs" />
     <Compile Include="DummyObject.cs" />
     <Compile Include="HorizontalMotionConstraint.cs" />
+    <Compile Include="ICharacterTag.cs" />
     <Compile Include="IStaticCollidableOwner.cs" />
     <Compile Include="IEntityOwner.cs" />
     <Compile Include="IGameObject.cs" />
@@ -151,7 +153,12 @@
     <Compile Include="PhysicsProp.cs" />
     <Compile Include="Prop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryManager.cs" />
+    <Compile Include="StanceManager.cs" />
+    <Compile Include="StepManager.cs" />
+    <Compile Include="SupportFinder.cs" />
     <Compile Include="TerrainPhysics.cs" />
+    <Compile Include="VerticalMotionConstraint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphicsLibrary\GraphicsLibrary.csproj">

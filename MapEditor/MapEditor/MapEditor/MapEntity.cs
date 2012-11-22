@@ -43,7 +43,7 @@ namespace MapEditor
         public DummyMap DummyMap { get { return mDummyMap; } set { mDummyMap = value; } }
         private Viewport mViewport;
 
-        private Camera mCamera;
+        private FPSCamera mCamera;
         private Vector3 mMovement;
         private Vector3 mDirection;
 
@@ -54,7 +54,7 @@ namespace MapEditor
 
         private float mSize;
 
-        public MapEntity(MapEditor mapEditor, Camera camera, Viewport viewport)
+        public MapEntity(MapEditor mapEditor, FPSCamera camera, Viewport viewport)
         {
 
             mMapEditor = mapEditor;
@@ -100,12 +100,9 @@ namespace MapEditor
             UpdateOrientation();
             UpdatePicking();
 
-            //mCamera.MoveUp(speed * mMovement.Z * gameTime.ElapsedGameTime.Milliseconds);
-            mCamera.MoveForward(speed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds);
-            mCamera.MoveRight(speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds);
-            mCamera.RotatePitch(sensitivity * mDirection.Y * gameTime.ElapsedGameTime.Milliseconds);
-            mCamera.RotateYaw(sensitivity * mDirection.X * gameTime.ElapsedGameTime.Milliseconds);
-
+            mCamera.Move(speed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds, speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds, 0.0f);
+            mCamera.RotateAroundSelf(MathHelper.ToRadians(sensitivity * mDirection.X * gameTime.ElapsedGameTime.Milliseconds), 
+                                     MathHelper.ToRadians(sensitivity * mDirection.Y * gameTime.ElapsedGameTime.Milliseconds), 0.0f);
         }
 
         private void UpdatePosition()

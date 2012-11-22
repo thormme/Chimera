@@ -12,6 +12,7 @@ using BEPUphysics.EntityStateManagement;
 using BEPUphysics.Entities;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Collidables;
+using FinalProject;
 
 #endregion
 
@@ -31,14 +32,27 @@ namespace finalProject
 
         #region Public Properties
 
-        public Camera Camera
+        public ChaseCamera Camera
         {
             get
             {
                 return (mController as PlayerController).mCamera;
             }
         }
-        
+
+        public Stance Stance
+        {
+            get
+            {
+                return mStance;
+            }
+            set
+            {
+                mStance = value;
+            }
+        }
+        private Stance mStance = Stance.Standing;
+
         public override float Sneak
         {
             get
@@ -60,10 +74,10 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(new AnimateModel("dude"), new Cylinder(position, 4.0f, 1.0f, 10.0f), new RadialSensor(4.0f), new PlayerController(viewPort))
+            : base(new AnimateModel("dude"), new Cylinder(position, 2.0f, 0.25f, 10.0f), new RadialSensor(4.0f), new PlayerController(viewPort))
         {
             (mRenderable as AnimateModel).PlayAnimation("Take 001");
-            Scale = new Vector3(0.05f); 
+            Scale = new Vector3(0.025f); 
         }
 
         /// <summary>
@@ -105,14 +119,26 @@ namespace finalProject
         /// <param name="gameTime">Time elapsed since last frame.</param>
         public override void Update(GameTime gameTime)
         {
-            (mRenderable as AnimateModel).Update(gameTime);
+            AnimateModel model = mRenderable as AnimateModel;
+
+            if (mStance == Stance.Standing)
+            {
+                model.Update(new GameTime());
+            }
+            else if (mStance == Stance.Walking)
+            {
+                model.Update(gameTime);
+            }
+
             base.Update(gameTime);
         }
 
         public override void Render()
         {
-            mRenderable.Render(Entity.Position + new Vector3(0.0f, -2.0f, 0.0f), XNAOrientationMatrix.Forward, Scale);
+            mRenderable.Render(CharacterController.Body.Position + new Vector3(0.0f, -1.0f, 0.0f), XNAOrientationMatrix.Forward, Scale);
         }
         #endregion
     }
+
+    public enum Stance { Standing, Walking };
 }
