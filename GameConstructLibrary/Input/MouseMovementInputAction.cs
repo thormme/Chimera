@@ -49,8 +49,16 @@ namespace GameConstructLibrary
         {
             base.StepInputAction();
             MouseState mouse = Microsoft.Xna.Framework.Input.Mouse.GetState();
-            previousX = mouse.X;
-            previousY = mouse.Y;
+            if (IsMouseLocked)
+            {
+                previousX = (int) mMouseLockedPosition.X;
+                previousY = (int) mMouseLockedPosition.Y;
+            }
+            else
+            {
+                previousX = mouse.X;
+                previousY = mouse.Y;
+            }
         }
 
         protected override bool IsDown()

@@ -14,8 +14,6 @@ namespace GameConstructLibrary
 {
     public class PhysicsProp : PhysicsObject
     {
-        private Renderable mRenderable;
-
         private static Entity CreateEntity(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, float mass)
         {
             Vector3[] vertices;

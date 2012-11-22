@@ -21,6 +21,7 @@ namespace finalProject
         private InputAction debug;
         private KeyInputAction debugGraphics;
         private KeyInputAction celShading;
+        private KeyInputAction mouseLock;
 
         private bool debugMode;
 
@@ -43,6 +44,7 @@ namespace finalProject
             debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
             debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F1);
             celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F2);
+            mouseLock = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Tab);
 
             debugMode = false;
         }
@@ -117,6 +119,11 @@ namespace finalProject
             if (celShading.Active)
             {
                 GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.None : GraphicsManager.CelShaded.All;
+            }
+
+            if (mouseLock.Active)
+            {
+                InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
             }
 
             // Allows the game to exit

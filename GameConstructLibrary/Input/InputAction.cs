@@ -14,6 +14,10 @@ namespace GameConstructLibrary
     public class InputAction
     {
         private static List<InputAction> mInputActionList = new List<InputAction>();
+        
+        protected static Vector2 mMouseLockedPosition = new Vector2(200, 200);
+
+        public static bool IsMouseLocked = false;
 
         public enum ButtonAction { Pressed, Released, Down};
         public enum GamePadThumbStick { Left, Right };
@@ -137,6 +141,10 @@ namespace GameConstructLibrary
             foreach (InputAction inputAction in mInputActionList)
             {
                 inputAction.StepInputAction();
+            }
+            if (IsMouseLocked)
+            {
+                Mouse.SetPosition((int)mMouseLockedPosition.X, (int)mMouseLockedPosition.Y);
             }
         }
     }

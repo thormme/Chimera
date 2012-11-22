@@ -109,8 +109,21 @@ namespace finalProject
             mMoveForward.Destroy();
             mMoveRight.Destroy();
 
+            mMoveForwardKey.Destroy();
+            mMoveBackwardKey.Destroy();
+            mMoveRightKey.Destroy();
+            mMoveLeftKey.Destroy();
+
             mLookForward.Destroy();
             mLookRight.Destroy();
+
+            mLookForwardMouse.Destroy();
+            mLookRightMouse.Destroy();
+
+            mLookForwardKey.Destroy();
+            mLookBackwardKey.Destroy();
+            mLookRightKey.Destroy();
+            mLookLeftKey.Destroy();
 
             mPressPart1.Destroy();
             mPressPart2.Destroy();

@@ -136,6 +136,7 @@
     <Compile Include="CollisionMeshManager.cs" />
     <Compile Include="DummyObject.cs" />
     <Compile Include="HorizontalMotionConstraint.cs" />
+    <Compile Include="IActor.cs" />
     <Compile Include="ICharacterTag.cs" />
     <Compile Include="IStaticCollidableOwner.cs" />
     <Compile Include="IEntityOwner.cs" />
