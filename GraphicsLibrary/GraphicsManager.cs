@@ -50,7 +50,8 @@ namespace GraphicsLibrary
 
         static private int mEdgeWidth = 1;
         static private int mEdgeIntensity = 1;
-        static private int mShadowMapLength = 2048;
+        static private int mShadowMapLength = 4096;
+        static private int mShadowFarClip = 128;
 
         static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
 
@@ -84,8 +85,6 @@ namespace GraphicsLibrary
             set { mCastingShadows = value; }
         }
 
-        static private bool mDebugVisualization = false;
-
         /// <summary>
         /// Renders scene in debug mode.
         /// </summary>
@@ -94,6 +93,7 @@ namespace GraphicsLibrary
             get { return mDebugVisualization; }
             set { mDebugVisualization = value; }
         }
+        static private bool mDebugVisualization = false;
 
         #endregion
 
@@ -221,13 +221,18 @@ namespace GraphicsLibrary
         /// Updates Projection and View matrices to current view space.
         /// </summary>
         /// <param name="camera">View space camera.</param>
-        static public void Update(Camera camera)
+        static public void Update(ICamera camera)
         {
-            mView = camera.ViewTransform;
+            mView = camera.GetViewTransform();
             
-            mProjection = camera.ProjectionTransform;
+            mProjection = camera.GetProjectionTransform();
 
-            mCameraFrustum.Matrix = mView * mProjection;
+            float oldFarPlane = camera.GetFarPlaneDistance();
+            camera.SetFarPlaneDistance(mShadowFarClip);
+
+            mCameraFrustum.Matrix = mView * camera.GetProjectionTransform();
+
+            camera.SetFarPlaneDistance(oldFarPlane);
 
             BuildLightTransform();
         }
@@ -294,7 +299,7 @@ namespace GraphicsLibrary
                 if (DebugVisualization)
                 {
                     mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
-                    mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
+                    mSpriteBatch.Draw(mShadowMap, new Rectangle(0, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
                     mSpriteBatch.End();
 
                     mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
