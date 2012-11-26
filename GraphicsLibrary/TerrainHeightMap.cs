@@ -52,7 +52,7 @@ namespace GameConstructLibrary
             get { return this.mVertexBuffer; }
             set { this.mVertexBuffer = value; }
         }
-
+        
         private IndexBuffer mIndexBuffer;
         public IndexBuffer IndexBuffer
         {
@@ -112,7 +112,7 @@ namespace GameConstructLibrary
 
                     if (resized) // If resized rebuild map
                     {
-                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, 100, z - mHeight / 2);
+                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, 0.0f, z - mHeight / 2);
                         vertices1D[x + z * mWidth].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                         vertices2D[x, z] = vertices1D[x + z * mWidth];
                     }
@@ -216,7 +216,7 @@ namespace GameConstructLibrary
             MakeBuffer();
         }
 
-        public void ModifyVertices(Vector3 position, int size, int intensity, bool feather, bool setHeight, bool smooth)
+        public void ModifyVertices(Vector3 position, int size, int intensity, bool feather, bool set, bool inverse, bool smooth, bool flatten)
         {
 
             // Adjust for the rendered location of the terrain
@@ -224,84 +224,132 @@ namespace GameConstructLibrary
             position.X += mWidth / 2;
             position.Z += mHeight / 2;
 
-            // Calculate the average height for smoothing
-            float average = 0.0f;
-            if (smooth)
+            // Correct for inverse
+            if (inverse)
             {
-                float sum = 0.0f;
-                int num = 0;
-                for (int z = (int)position.Z - size; z < (int)position.Z + size; z++)
+                intensity = -intensity;
+            }
+
+            if (smooth) SmoothVertices(position, size);
+            else if (flatten) FlattenVertices(position, size);
+            else
+            {
+
+                // Build smaller grid for modifying heights
+                for (int z = (int)position.Z - size; z <= (int)position.Z + size; z++)
                 {
-                    for (int x = (int)position.X - size; x < (int)position.X + size; x++)
+                    for (int x = (int)position.X - size; x <= (int)position.X + size; x++)
                     {
-                        if (x < 0 || x >= mWidth || z < 0 || z >= mHeight) break;
+                        if (x < 0 || x >= mWidth || z < 0 || z >= mHeight) continue;
                         int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
                         if (distance < size)
                         {
-                            num++;
-                            sum += vertices2D[x, z].Position.Y;
-                        }
-                    }
-                }
-                average = (float)(sum / num);
-            }
 
-            // Build smaller grid for modifying heights
-            for (int z = (int)position.Z - size; z < (int)position.Z + size; z++)
-            {
-                for (int x = (int)position.X - size; x < (int)position.X + size; x++)
-                {
-                    if (x < 0 || x >= mWidth || z < 0 || z >= mHeight) break;
-                    int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
-                    if (distance < size)
-                    {
-
-                        if (smooth)
-                        {
-                            float amount = vertices2D[x, z].Position.Y;
-                            if (amount > average)
-                            {
-                                if (amount - intensity < average)
-                                    amount = average;
-                                else
-                                    amount -= intensity;
-                            }
-                            else if (amount < average)
-                            {
-                                if (amount + intensity > average)
-                                    amount = average;
-                                else
-                                    amount += intensity;
-                            }
-                            vertices2D[x, z].Position.Y = amount;
-                        }
-                        else if (setHeight)
-                        {
-                            vertices2D[x, z].Position.Y = intensity;
-                        }
-                        else
-                        {
-                            float intensityModifier;
-                            if (feather)
-                            {
-                                intensityModifier = (float)Math.Log(size - distance) / size;
-                            }
+                            if (set) vertices2D[x, z].Position.Y = intensity;
                             else
                             {
-                                intensityModifier = 1.0f;
+                                float intensityModifier;
+
+                                if (feather) intensityModifier = (float)Math.Log(size - distance) / size;
+                                else intensityModifier = 1.0f;
+
+                                vertices2D[x, z].Position.Y += intensity * intensityModifier;
                             }
-                            vertices2D[x, z].Position.Y += intensity * intensityModifier;
                         }
+
+                        if (vertices2D[x, z].Position.Y > 255) vertices2D[x, z].Position.Y = 255;
+                        else if (vertices2D[x, z].Position.Y < 0) vertices2D[x, z].Position.Y = 0;
+
+                        vertices1D[x + z * mWidth] = vertices2D[x, z];
+
                     }
-                    if (vertices2D[x, z].Position.Y > 255) vertices2D[x, z].Position.Y = 255;
-                    else if (vertices2D[x, z].Position.Y < 0) vertices2D[x, z].Position.Y = 0;
-                    vertices1D[x + z * mWidth] = vertices2D[x, z];
                 }
             }
 
             CalculateNormals();
             MakeBuffer();
 
+        }
+
+        private void SmoothVertices(Vector3 position, int size)
+        {
+
+            // Build additional grid if smoothing
+            VertexPositionColorNormal[,] original = new VertexPositionColorNormal[size * 2 + 1, size * 2 + 1];
+            for (int z = (int)position.Z - size; z <= (int)position.Z + size; z++)
+            {
+                for (int x = (int)position.X - size; x <= (int)position.X + size; x++)
+                {
+                    if (x < 0 || x >= mWidth || z < 0 || z >= mHeight) continue;
+                    original[x - (int)position.X + size, z - (int)position.Z + size] = vertices2D[x, z];
+                }
+            }
+
+            for (int z = (int)position.Z - size; z < (int)position.Z + size; z++)
+            {
+                for (int x = (int)position.X - size; x < (int)position.X + size; x++)
+                {
+                    if (x < 0 || x >= mWidth || z < 0 || z >= mHeight) continue;
+                    int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
+                    if (distance < size)
+                    {
+
+                        float sum = 0.0f;
+                        int num = 0;
+
+                        for (int zCoord = (z - 1) - (int)position.Z + size; zCoord <= (z + 1) - (int)position.Z + size; zCoord++)
+                        {
+                            for (int xCoord = (x - 1) - (int)position.X + size; xCoord <= (x + 1) - (int)position.X + size; xCoord++)
+                            {
+                                if (zCoord < 0 || zCoord >= size * 2 ||
+                                    xCoord < 0 || xCoord >= size * 2 ||
+                                    (zCoord == z && xCoord == x)) continue;
+                                sum += original[xCoord, zCoord].Position.Y;
+                                num++;
+                            }
+                        }
+
+                        vertices2D[x, z].Position.Y = (vertices2D[x, z].Position.Y + (sum / num)) / 2;
+                        vertices1D[x + z * mWidth] = vertices2D[x, z];
+                    }
+                }
+            }
+        }
+
+        private void FlattenVertices(Vector3 position, int size)
+        {
+            // Calculate the average height for flattening
+            float average = 0.0f;
+            float sum = 0.0f;
+            int num = 0;
+            for (int z = (int)position.Z - size; z <= (int)position.Z + size; z++)
+            {
+                for (int x = (int)position.X - size; x <= (int)position.X + size; x++)
+                {
+                    if (x < 0 || x >= mWidth || z < 0 || z >= mHeight) continue;
+                    int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
+                    if (distance < size)
+                    {
+                        num++;
+                        sum += vertices2D[x, z].Position.Y;
+                    }
+                }
+            }
+            average = (float)(sum / num);
+
+            for (int z = (int)position.Z - size; z <= (int)position.Z + size; z++)
+            {
+                for (int x = (int)position.X - size; x <= (int)position.X + size; x++)
+                {
+                    if (x < 0 || x >= mWidth || z < 0 || z >= mHeight) continue;
+                    int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
+                    if (distance < size)
+                    {
+                        vertices2D[x, z].Position.Y = average;
+                        vertices1D[x + z * mWidth] = vertices2D[x, z];
+                    }
+                }
+            }
         }
 
         // Used for creating a collision entity

@@ -18,23 +18,22 @@ namespace MapEditor
     /// <summary>
     /// Creates a map editor menu
     /// </summary>
-    public class SaveLevelDialog : WindowControl
+    public class SaveMapDialog : Dialog
     {
-        private MapEditor mMapEditor;
+
         private Nuclex.UserInterface.Controls.LabelControl mSaveLevelLabel;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mNameInput;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mSaveButton;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mCancelButton;
         
 
-        public SaveLevelDialog(MapEditor mapEditor) :
+        public SaveMapDialog() :
             base()
         {
-            mMapEditor = mapEditor;
             InitializeComponent();
         }
 
-        #region Not component designer generated code
+        #region Component Layout
 
         /// <summary>
         /// Adds items to dialog
@@ -65,6 +64,7 @@ namespace MapEditor
             mCancelButton.Pressed += delegate(object sender, EventArgs arguments) { CancelClicked(sender, arguments); };
 
             Bounds = new UniRectangle(10.0f, 10.0f, 400.0f, 140.0f);
+            mBounds = Bounds;
 
             // Add components to GUI
             Children.Add(mSaveLevelLabel);
@@ -74,17 +74,17 @@ namespace MapEditor
 
         }
 
-        #endregion // Not component designer generated code
+        #endregion
 
         private void SaveClicked(object sender, EventArgs arguments)
         {
-            mMapEditor.DummyMap.Save(mNameInput.Text.ToString());
-            Close();
+            GameMapEditor.Map.Save(mNameInput.Text.ToString());
+            GameMapEditor.ToggleState(States.None);
         }
 
         private void CancelClicked(object sender, EventArgs arguments)
         {
-            Close();
+            GameMapEditor.ToggleState(States.None);
         }
 
     }

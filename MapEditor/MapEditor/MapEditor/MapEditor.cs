@@ -12,145 +12,161 @@ using Microsoft.Xna.Framework.Graphics;
 namespace MapEditor
 {
 
-    public enum States { None, Height, Object };
-
     public class MapEditor
     {
 
-        private const int numUndos = 10;
-
-        private MapEditorDialog mMapEditorDialog;
-        public MapEditorDialog MapEditorDialog { get { return mMapEditorDialog; } set { mMapEditorDialog = value; } }
-
-        private DummyMap mDummyMap;
-        public DummyMap DummyMap { get { return mDummyMap; } set { mDummyMap = value; } }
-
+        private const int NumStates = 10;
         private int mCurrentState;
         private int mUndoLimit;
         private int mRedoLimit;
         private DummyMap[] mUndoStates;
 
-        private MapEntity mMapEntity;
-        public MapEntity MapEntity { get { return mMapEntity; } set { mMapEntity = value; } }
+        private KeyInputAction mToggleEditMode;
+        private KeyInputAction mUndoRedo;
+        private KeyInputAction mDelete;
+        private KeyInputAction mIncrease;
+        private KeyInputAction mDecrease;
+        private KeyInputAction mAlt;
+        private KeyInputAction mCtrl;
+        private KeyInputAction mShift;
+        private KeyInputAction mToggleReminder;
 
-        private KeyInputAction mTab;
-        private KeyInputAction mZ;
-        private KeyInputAction mX;
+        private KeyInputAction mLeft;
+        private KeyInputAction mRight;
+        private KeyInputAction mUp;
+        private KeyInputAction mDown;
 
-        private bool mEditMode;
-        public bool EditMode { get { return mEditMode; } set { mEditMode = value; } }
+        private MouseButtonInputAction mLeftPressed;
+        private MouseButtonInputAction mLeftHold;
+        private MouseButtonInputAction mLeftReleased;
 
-        public States State { get { return mState; } set { mState = value; } }
-        private States mState;
-
-        public MapEditor(Screen mainScreen, Camera camera, Viewport viewport)
-        {
-
-            // Create map editor dialog and add to GUIs
-            mMapEditorDialog = new MapEditorDialog(this, mainScreen);
-            mainScreen.Desktop.Children.Add(mMapEditorDialog);
-
-            // Create a new level based around the default map
-            mDummyMap = new DummyMap(this, 100, 100);
-
-            // Create a new entity to navigate and modify the map
-            mMapEntity = new MapEntity(this, camera, viewport);
-
-            Initialize();
-
-        }
-
-        private void Initialize()
+        public MapEditor()
         {
 
             mCurrentState = 0;
             mUndoLimit = 0;
             mUndoStates = new DummyMap[10];
 
-            mTab = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.Tab);
-            mZ = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.Z);
-            mX = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.X);
-            mEditMode = false;
+            mToggleEditMode = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.Tab);
+            mUndoRedo = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.Z);
+            mDelete = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.Delete);
+            mIncrease = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.OemPlus);
+            mDecrease = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.OemMinus);
+            mAlt = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.LeftAlt);
+            mCtrl = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.LeftControl);
+            mShift = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.LeftShift);
+            mToggleReminder = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.OemTilde);
+
+            mLeft = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Left);
+            mRight = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Right);
+            mUp = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Up);
+            mDown = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Down);
+
+            mLeftPressed = new MouseButtonInputAction(0, InputAction.ButtonAction.Pressed, MouseButtonInputAction.MouseButton.Left);
+            mLeftHold = new MouseButtonInputAction(0, InputAction.ButtonAction.Down, MouseButtonInputAction.MouseButton.Left);
+            mLeftReleased = new MouseButtonInputAction(0, InputAction.ButtonAction.Released, MouseButtonInputAction.MouseButton.Left);
+
         }
 
         public void Update(GameTime gameTime)
         {
-            if (mTab.Active)
+
+            if (mToggleEditMode.Active) GameMapEditor.ToggleEditMode();
+
+            if (mDelete.Active) GameMapEditor.Delete();
+
+            if (!mCtrl.Active && !mShift.Active)
             {
-                mEditMode = !mEditMode;
-                if (mEditMode)
-                {
-                    MapEditorDialog.EnableParameters();
-                    MapEditorDialog.Disable();
-                }
-                else
-                {
-                    MapEditorDialog.DisableParameters();
-                    MapEditorDialog.Enable();
-                }
+
+                Vector3 movement = new Vector3(0.0f, 0.0f, 0.0f);
+
+                if (mIncrease.Active) movement.Y = 1.0f;
+                else if (mDecrease.Active) movement.Y = -1.0f;
+
+                if (mRight.Active) movement.X = -1.0f;
+                else if (mLeft.Active) movement.X = 1.0f;
+
+                if (mUp.Active) movement.Z = 1.0f;
+                else if (mDown.Active) movement.Z = -1.0f;
+
+                GameMapEditor.Move(movement);
+
             }
 
-            if (mZ.Active) Undo();
-            else if (mX.Active) Redo();
+            if (mCtrl.Active)
+            {
+                if (mIncrease.Active) GameMapEditor.Scale(true);
+                else if (mDecrease.Active) GameMapEditor.Scale(false);
+            }
+            
+            if (mShift.Active)
+            {
+                if (mIncrease.Active) GameMapEditor.Rotate(true);
+                else if (mDecrease.Active) GameMapEditor.Rotate(false);
+            }
 
+            if (mUndoRedo.Active && mCtrl.Active && mShift.Active) Redo();
+            else if (mUndoRedo.Active && mCtrl.Active) Undo();
 
-            mMapEntity.Update(gameTime);
-            mDummyMap.Update();
-        }
+            if (mToggleReminder.Active) GameMapEditor.ToggleReminder();
 
-        public void Render()
-        {
-            mDummyMap.Render();
-            mMapEntity.Render();
+            if (mLeftPressed.Active) GameMapEditor.Pressed();
+            else if (mLeftHold.Active) GameMapEditor.Hold();
+            else if (mLeftReleased.Active) GameMapEditor.Released();
+
         }
 
         public void AddState(DummyMap state)
         {
 
             if (mCurrentState == mUndoLimit) mUndoLimit = mCurrentState + 1;
-            if (mUndoLimit >= numUndos) mUndoLimit = 0;
-            
+            if (mUndoLimit >= NumStates) mUndoLimit = 0;
+
             mUndoStates[mCurrentState] = new DummyMap(state);
             mCurrentState++;
             mRedoLimit = mCurrentState;
-            
-            if (mCurrentState >= numUndos) mCurrentState = 0;
-            
+
+            if (mCurrentState >= NumStates) mCurrentState = 0;
+
         }
 
         public void Undo()
         {
-            
+
             int originalState = mCurrentState;
             mCurrentState--;
-            if (mCurrentState < 0) mCurrentState = numUndos - 1;
+            if (mCurrentState < 0) mCurrentState = NumStates - 1;
             if (mUndoStates[mCurrentState] == null || mCurrentState == mUndoLimit)
             {
                 mCurrentState = originalState;
                 return;
             }
 
-            mUndoStates[originalState] = new DummyMap(mDummyMap);
+            mUndoStates[originalState] = new DummyMap(GameMapEditor.Map);
 
-            mDummyMap = mUndoStates[mCurrentState];
-            mDummyMap.LinkHeightMap();
+            GameMapEditor.Map = mUndoStates[mCurrentState];
+            GameMapEditor.Map.LinkHeightMap();
+
         }
 
         public void Redo()
         {
+
             int originalState = mCurrentState;
             mCurrentState++;
-            if (mCurrentState >= numUndos) mCurrentState = 0;
+            if (mCurrentState >= NumStates) mCurrentState = 0;
             if (mUndoStates[mCurrentState] == null || mCurrentState == mRedoLimit + 1)
             {
                 mCurrentState = originalState;
                 return;
             }
 
-            mUndoStates[originalState] = new DummyMap(mDummyMap);
+            mUndoStates[originalState] = new DummyMap(GameMapEditor.Map);
 
-            mDummyMap = mUndoStates[mCurrentState];
-            mDummyMap.LinkHeightMap();
+            GameMapEditor.Map = mUndoStates[mCurrentState];
+            GameMapEditor.Map.LinkHeightMap();
+
         }
+
     }
 }

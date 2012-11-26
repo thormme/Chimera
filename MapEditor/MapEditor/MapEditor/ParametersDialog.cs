@@ -22,11 +22,12 @@ namespace MapEditor
     /// <summary>
     /// Creates a map editor menu
     /// </summary>
-    public class ParametersDialog : WindowControl
+    public class ParametersDialog : Dialog
     {
 
         private List<string> mParameters;
 
+        private Nuclex.UserInterface.Controls.LabelControl mEditModeLabel;
         private List<Nuclex.UserInterface.Controls.LabelControl> mParameterLabel;
         private List<Nuclex.UserInterface.Controls.Desktop.InputControl> mParameterInput;
 
@@ -37,7 +38,7 @@ namespace MapEditor
             InitializeComponent();
         }
 
-        #region Not component designer generated code
+        #region Component Layout
 
         /// <summary>
         /// Adds items to dialog
@@ -45,13 +46,17 @@ namespace MapEditor
         private void InitializeComponent()
         {
 
-            BringToFront();
+            mEditModeLabel = new Nuclex.UserInterface.Controls.LabelControl();
+            mEditModeLabel.Text = "Edit Mode";
+            mEditModeLabel.Bounds = new UniRectangle(20.0f, 40.0f, 100.0f, 30.0f);
+
+            Children.Add(mEditModeLabel);
 
             // Declare all components
             mParameterLabel = new List<Nuclex.UserInterface.Controls.LabelControl>();
             mParameterInput = new List<Nuclex.UserInterface.Controls.Desktop.InputControl>();
 
-            float location = 40.0f;
+            float location = 90.0f;
 
             foreach (string parameter in mParameters)
             {
@@ -70,10 +75,11 @@ namespace MapEditor
             }
 
             Bounds = new UniRectangle(10.0f, 10.0f, 420.0f, location);
+            mBounds = Bounds;
 
         }
 
-        #endregion // Not component designer generated code
+        #endregion
 
         public List<string> GetParameters()
         {

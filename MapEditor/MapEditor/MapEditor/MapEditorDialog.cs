@@ -20,16 +20,11 @@ namespace MapEditor
     /// <summary>
     /// Creates a map editor menu
     /// </summary>
-    public class MapEditorDialog : WindowControl
+    public class MapEditorDialog : Dialog
     {
 
         private MapEditor mMapEditor;
         public MapEditor MapEditor { get { return mMapEditor; } set { mMapEditor = value; } }
-
-        private Screen mMainScreen;
-
-        private HeightMapEditorDialog mHeightMapEditorDialog;
-        private ObjectEditorDialog mObjectEditorDialog;
 
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mEditHeightsButton;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mEditObjectsButton;
@@ -38,22 +33,13 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mLoadButton;
 
         // Creates a new level that is 100x100 by default
-        public MapEditorDialog(MapEditor mapEditor, Screen mainScreen) :
+        public MapEditorDialog() :
             base()
         {
-            mMainScreen = mainScreen;
-            mMapEditor = mapEditor;
-
-            mHeightMapEditorDialog = new HeightMapEditorDialog(mMapEditor);
-            mMainScreen.Desktop.Children.Add(mHeightMapEditorDialog);
-
-            mObjectEditorDialog = new ObjectEditorDialog(mMapEditor, mainScreen);
-            mMainScreen.Desktop.Children.Add(mObjectEditorDialog);
-
             InitializeComponent();
         }
 
-        #region Not component designer generated code
+        #region Component Layout
 
         /// <summary>
         /// Adds items to dialog
@@ -90,7 +76,8 @@ namespace MapEditor
             mLoadButton.Bounds = new UniRectangle(new UniScalar(0.0f, 200.0f), new UniScalar(1.0f, -40.0f), 80, 24);
             mLoadButton.Pressed += delegate(object sender, EventArgs arguments) { LoadClicked(sender, arguments); };
 
-            Done();
+            Bounds = new UniRectangle(10.0f, 10.0f, 300.0f, 160.0f);
+            mBounds = Bounds;
 
             // Add components to GUI
             Children.Add(mEditHeightsButton);
@@ -101,87 +88,31 @@ namespace MapEditor
 
         }
 
-        #endregion // Not component designer generated code
-
-        public void Done()
-        {
-            Bounds = new UniRectangle(10.0f, 10.0f, 300.0f, 160.0f);
-            mHeightMapEditorDialog.Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
-            mObjectEditorDialog.Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
-            mMapEditor.State = States.None;
-        }
-
-        public bool GetHeightEditorInput(out int size, out int intensity, out bool feather, out bool set)
-        {
-            return mHeightMapEditorDialog.GetHeightEditorInput(out size, out intensity, out feather, out set);
-        }
-
-        public bool GetObjectEditorInput(out DummyObject temp)
-        {
-            return mObjectEditorDialog.GetObjectEditorInput(out temp);
-        }
-
-        public void Disable()
-        {
-            Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
-            mHeightMapEditorDialog.Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
-            mObjectEditorDialog.Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
-            mMainScreen.FocusedControl = this;
-        }
-
-        public void Enable()
-        {
-            if (mMapEditor.State == States.None)
-            {
-                Bounds = new UniRectangle(10.0f, 10.0f, 300.0f, 160.0f);
-            }
-            else if (mMapEditor.State == States.Height)
-            {
-                mHeightMapEditorDialog.HeightsEnable();
-            }
-            else if (mMapEditor.State == States.Object)
-            {
-                mObjectEditorDialog.ObjectsEnable();
-            }
-        }
-
-        public void DisableParameters()
-        {
-            mObjectEditorDialog.DisableParameters();
-        }
-
-        public void EnableParameters()
-        {
-            if (mMapEditor.State == States.Object) mObjectEditorDialog.EnableParameters();
-        }
+        #endregion
 
         private void HeightClicked(object sender, EventArgs arguments)
         {
-            mMapEditor.State = States.Height;
-            Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
-            mHeightMapEditorDialog.HeightsEnable();
+            GameMapEditor.ToggleState(States.Height);
         }
 
         private void ObjectClicked(object sender, EventArgs arguments)
         {
-            mMapEditor.State = States.Object;
-            Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
-            mObjectEditorDialog.ObjectsEnable();
+            GameMapEditor.ToggleState(States.Object);
         }
 
         private void NewClicked(object sender, EventArgs arguments)
         {
-            mMainScreen.Desktop.Children.Add(new NewLevelDialog(mMapEditor));
+            GameMapEditor.ToggleState(States.New);
         }
 
         private void SaveClicked(object sender, EventArgs arguments)
         {
-            mMainScreen.Desktop.Children.Add(new SaveLevelDialog(mMapEditor));
+            GameMapEditor.ToggleState(States.Save);
         }
 
         private void LoadClicked(object sender, EventArgs arguments)
         {
-            mMainScreen.Desktop.Children.Add(new LoadLevelDialog(mMapEditor));
+            GameMapEditor.ToggleState(States.Load);
         }
 
     }
