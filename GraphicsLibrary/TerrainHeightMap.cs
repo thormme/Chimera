@@ -18,7 +18,7 @@ namespace GameConstructLibrary
     public class TerrainHeightMap
     {
 
-        private const int scale = 2;
+        private Vector3 scale = new Vector3(2.0f, 0.25f, 2.0f);
 
         private Bitmap mMap;
         private int mWidth;
@@ -220,7 +220,8 @@ namespace GameConstructLibrary
         {
 
             // Adjust for the rendered location of the terrain
-            position /= scale;
+            position.X /= scale.X;
+            position.Z /= scale.Z;
             position.X += mWidth / 2;
             position.Z += mHeight / 2;
 

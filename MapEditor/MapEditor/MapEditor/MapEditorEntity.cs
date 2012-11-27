@@ -18,7 +18,7 @@ namespace MapEditor
     {
         
         private const float speed = 0.1f;
-        private const float sensitivity = 1.0f;
+        private const float sensitivity = 0.1f;
         private const float length = 2000.0f;
 
         private KeyInputAction mForward;
@@ -77,10 +77,11 @@ namespace MapEditor
             UpdateOrientation();
             UpdatePicking();
 
-            GameMapEditor.Camera.MoveForward(speed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds);
-            GameMapEditor.Camera.MoveRight(speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds);
-            GameMapEditor.Camera.RotatePitch(sensitivity * mDirection.Y * gameTime.ElapsedGameTime.Milliseconds);
-            GameMapEditor.Camera.RotateYaw(sensitivity * mDirection.X * gameTime.ElapsedGameTime.Milliseconds);
+            GameMapEditor.Camera.Move(speed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds, speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds, 0.0f);
+            GameMapEditor.Camera.RotateAroundSelf(sensitivity * mDirection.X * gameTime.ElapsedGameTime.Milliseconds, sensitivity * mDirection.Y * gameTime.ElapsedGameTime.Milliseconds, 0.0f);
+            //GameMapEditor.Camera.MoveRight(speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds);
+            //GameMapEditor.Camera.RotatePitch(sensitivity * mDirection.Y * gameTime.ElapsedGameTime.Milliseconds);
+            //GameMapEditor.Camera.RotateYaw(sensitivity * mDirection.X * gameTime.ElapsedGameTime.Milliseconds);
 
         }
 
