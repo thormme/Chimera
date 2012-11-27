@@ -24,6 +24,8 @@ namespace finalProject
         private const float MaxDurdleSpeed = 1.0f;
 
         private Creature mTargetCreature;
+        private Vector3 mTargetPosition;
+        private bool mFollowPosition;
         private float mMagnitude;
 
         private StateTimer<DurdleState> mDurdleTimer;
@@ -61,10 +63,22 @@ namespace finalProject
                 return;
             }
 
+            if (mCreature.Incapacitated)
+            {
+                return;
+            }
+
             mDurdleTimer.Update(time);
             if (mTargetCreature != null)
             {
                 MoveTo(mTargetCreature.Position, mMagnitude);
+                mCreature.UsePart(0, mTargetCreature.Position - mCreature.Position);
+            }
+
+            if (mFollowPosition)
+            {
+                MoveTo(mTargetPosition, mMagnitude);
+                mCreature.UsePart(0, mTargetPosition - mCreature.Position);
             }
 
             if (mDurdleTimer.NewState() == DurdleState.Move)
