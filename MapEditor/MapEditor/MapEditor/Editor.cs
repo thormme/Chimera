@@ -22,29 +22,27 @@ namespace MapEditor
     /// </summary>
     public class Editor : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-
-        private InputManager mInput;
-        private GuiManager mGUI;
-
-        private MapEditor mMapEditor;
+        GraphicsDeviceManager mGraphics;
+        SpriteBatch mSpriteBatch;
 
         private Camera mCamera;
-        private AnimateModel mModel;
+        private Dialog mReminder;
 
         public Editor()
         {
 
             Content.RootDirectory = "Content";
-            graphics = new GraphicsDeviceManager(this);
+            mGraphics = new GraphicsDeviceManager(this);
+            
+            mGraphics.PreferredBackBufferWidth = 1024;
+            mGraphics.PreferredBackBufferHeight = 640;
 
-            mInput = new InputManager(Services, Window.Handle);
-            mGUI = new GuiManager(Services);
+            GameMapEditor.Input = new InputManager(Services, Window.Handle);
+            GameMapEditor.GUI = new GuiManager(Services); ;
 
-            Components.Add(mInput);
-            Components.Add(mGUI);
-            mGUI.DrawOrder = 1000;
+            Components.Add(GameMapEditor.Input);
+            Components.Add(GameMapEditor.GUI);
+            GameMapEditor.GUI.DrawOrder = 1000;
             IsMouseVisible = true;
 
         }
@@ -63,18 +61,19 @@ namespace MapEditor
             GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
             GraphicsManager.CastingShadows = true;
 
-            Viewport viewport = GraphicsDevice.Viewport;
-            Screen mainScreen = new Screen(viewport.Width, viewport.Height);
-            mGUI.Screen = mainScreen;
+            GameMapEditor.Viewport = GraphicsDevice.Viewport;
 
-            mCamera = new Camera(viewport);
-            mCamera.Position = new Vector3(0, 40, -100);
-            mCamera.Target = new Vector3(0, 40, 0);
+            GameMapEditor.Screen = new Screen(GameMapEditor.Viewport.Width, GameMapEditor.Viewport.Height);
+            GameMapEditor.GUI.Screen = GameMapEditor.Screen;
 
-            mMapEditor = new MapEditor(mainScreen, mCamera, viewport);
+            mCamera = new Camera(GameMapEditor.Viewport);
+            mCamera.Position = new Vector3(0, 140, -100);
+            mCamera.Target = new Vector3(0, 100, 0);
 
-            mModel = new AnimateModel("dude");
-            mModel.PlayAnimation("Take 001");
+            GameMapEditor.Camera = mCamera;
+
+            GameMapEditor.Initialize();
+
 
             
         }
@@ -86,8 +85,8 @@ namespace MapEditor
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            GraphicsManager.LoadContent(Content, graphics.GraphicsDevice, this.spriteBatch);
+            mSpriteBatch = new SpriteBatch(GraphicsDevice);
+            GraphicsManager.LoadContent(Content, mGraphics.GraphicsDevice, mSpriteBatch);
         }
 
         /// <summary>
@@ -106,18 +105,16 @@ namespace MapEditor
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             GraphicsManager.Update(mCamera);
 
-            mMapEditor.Update(gameTime);
-            mModel.Update(gameTime);
-
+            GameMapEditor.Update(gameTime);
             
-            
-            base.Update(gameTime);
         }
 
         /// <summary>
@@ -127,11 +124,10 @@ namespace MapEditor
         protected override void Draw(GameTime gameTime)
         {
             GraphicsManager.BeginRendering();
-
-            mModel.Render(new Vector3(0, 100, 0));
-            mMapEditor.Render(); ;
-
+            GameMapEditor.Render();
             GraphicsManager.FinishRendering();
+
+            GameMapEditor.RenderBox(mGraphics.GraphicsDevice, mSpriteBatch);
 
             base.Draw(gameTime);
         }

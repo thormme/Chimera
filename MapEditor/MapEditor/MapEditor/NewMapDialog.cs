@@ -18,9 +18,9 @@ namespace MapEditor
     /// <summary>
     /// Creates a map editor menu
     /// </summary>
-    public class NewLevelDialog : WindowControl
+    public class NewMapDialog : Dialog
     {
-        private MapEditor mMapEditor;
+
         private Nuclex.UserInterface.Controls.LabelControl mNewLevelLabel;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mHeightInput;
         private Nuclex.UserInterface.Controls.LabelControl mDimensionX;
@@ -29,14 +29,13 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mCancelButton;
 
 
-        public NewLevelDialog(MapEditor mapEditor) :
+        public NewMapDialog() :
             base()
         {
-            mMapEditor = mapEditor;
             InitializeComponent(); 
         }
 
-        #region Not component designer generated code
+        #region Component Layout
 
         /// <summary>
         /// Adds items to dialog
@@ -74,6 +73,7 @@ namespace MapEditor
             mCancelButton.Pressed += delegate(object sender, EventArgs arguments) { CancelClicked(sender, arguments); };
 
             Bounds = new UniRectangle(10.0f, 10.0f, 400.0f, 140.0f);
+            mBounds = Bounds;
 
             // Add components to GUI
             Children.Add(mNewLevelLabel);
@@ -85,24 +85,24 @@ namespace MapEditor
 
         }
 
-        #endregion // Not component designer generated code
+        #endregion
 
         private void CreateClicked(object sender, EventArgs arguments)
         {
             try
             {
-                mMapEditor.DummyMap = new DummyMap(mMapEditor, Convert.ToInt32(mHeightInput.Text.ToString()), Convert.ToInt32(mWidthInput.Text.ToString()));
+                GameMapEditor.Map = new DummyMap(Convert.ToInt32(mHeightInput.Text.ToString()), Convert.ToInt32(mWidthInput.Text.ToString()));
             }
             catch (SystemException)
             {
                 // Error in input
             }
-            Close();
+            GameMapEditor.ToggleState(States.None);
         }
 
         private void CancelClicked(object sender, EventArgs arguments)
         {
-            Close();
+            GameMapEditor.ToggleState(States.None);
         }
 
     }

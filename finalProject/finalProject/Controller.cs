@@ -1,8 +1,9 @@
-﻿using System;
+﻿#region Using Statements
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
+
+#endregion
 
 namespace finalProject
 {
@@ -17,18 +18,23 @@ namespace finalProject
     /// </summary>
     abstract public class Controller
     {
+        #region Fields
+        
         private ControllerBehavior DefaultBehavior = ControllerBehavior.Passive;
+
         protected Creature mCreature;
+
+        #endregion
+
+        #region Public Methods
 
         public Controller() {}
 
         /// <summary>
         /// Sets the creature this controller will control.
         /// </summary>
-        /// <param name="creature">
-        /// The creature to control.
-        /// </param>
-        public void SetCreature(Creature creature)
+        /// <param name="creature">The creature to control.</param>
+        public virtual void SetCreature(Creature creature)
         {
             mCreature = creature;
         }
@@ -36,13 +42,9 @@ namespace finalProject
         /// <summary>
         /// Called every frame. Defines the behavior of the creature based on the nearby creatures.
         /// </summary>
-        /// <param name="time">
-        /// The game time.
-        /// </param>
-        /// <param name="collidingCreatures">
-        /// The nearby creatures, in order of distance from the creature.
-        /// </param>
-        public abstract void Update(GameTime time, List<Creature> collidingCreatures);
+        /// <param name="time">The game time.</param>
+        /// <param name="collidingCreatures">The nearby creatures, in order of distance from the creature.</param>
+        abstract public void Update(GameTime time, List<Creature> collidingCreatures);
 
         public virtual ControllerBehavior Behavior
         {
@@ -51,5 +53,7 @@ namespace finalProject
                 return DefaultBehavior;
             }
         }
+        
+        #endregion
     }
 }

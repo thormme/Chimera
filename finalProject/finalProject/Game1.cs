@@ -17,7 +17,11 @@ namespace finalProject
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        private InputAction forward;
         private InputAction debug;
+        private KeyInputAction debugGraphics;
+        private KeyInputAction celShading;
+        private KeyInputAction mouseLock;
 
         private bool debugMode;
 
@@ -26,10 +30,8 @@ namespace finalProject
         SpriteBatch spriteBatch;
         static public World World;
 
-        private InanimateModel boxModel = null;
-
-        private PlayerCreature mPlayer;
-        private DummyCreature mDummy;
+        PlayerCreature player;
+        TerrainPhysics terrain;
 
         public Game1()
         {
@@ -38,13 +40,18 @@ namespace finalProject
 
             World = new World();
 
+            forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
             debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
+            debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F1);
+            celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F2);
+            mouseLock = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Tab);
 
-            debugMode = true;
+            debugMode = false;
         }
 
         ~Game1()
         {
+            forward.Destroy();
         }
 
         /// <summary>
@@ -55,14 +62,13 @@ namespace finalProject
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
             GraphicsManager.CastingShadows = true;
             GraphicsManager.DebugVisualization = false;
-    
+            
             base.Initialize();
         }
-        PhysicsObject mp;
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -71,25 +77,17 @@ namespace finalProject
         {
             DebugModelDrawer = new InstancedModelDrawer(this);
             DebugModelDrawer.IsWireframe = true;
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
 
-            mPlayer = new PlayerCreature(GraphicsDevice.Viewport, new Vector3(0.0f));
-            mDummy = new DummyCreature(new Vector3(15.0f, 0.0f, 15.0f));
-            boxModel = new InanimateModel("box");
+            terrain = new TerrainPhysics("default", new Vector3(0.0f, 0.0f, 0.0f), new Quaternion(), new Vector3(2.5f));
+            World.Add(terrain);
 
-            World.Add(mPlayer);
-            World.Add(mDummy);
-            World.Add(mp = new PhysicsObject(boxModel, new Box(new Vector3(0.0f, -70.0f, 0.0f), 200.0f, 20.0f, 200.0f)));
-            mp.Entity.BecomeKinematic();
-
-            //World.Add(new TerrainPhysics("test_level", new Vector3(0.0f, -100.0f, 0.0f), new Quaternion(), new Vector3(1.0f)));
-
-            //World.AddLevelFromFile("trial", new Vector3(-100, 0, 0), new Quaternion(), new Vector3(1));
+            player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f));
+            World.Add(player);
+            World.mSpace.Add(player.CharacterController);
         }
 
         /// <summary>
@@ -113,15 +111,29 @@ namespace finalProject
                 debugMode = !debugMode;
             }
 
+            if (debugGraphics.Active)
+            {
+                GraphicsManager.DebugVisualization = (GraphicsManager.DebugVisualization) ? false : true;
+            }
+
+            if (celShading.Active)
+            {
+                GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.None : GraphicsManager.CelShaded.All;
+            }
+
+            if (mouseLock.Active)
+            {
+                InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
+            }
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             InputAction.Update();
-
-            // TODO: Add your update logic here
             World.Update(gameTime);
 
+            GraphicsManager.Update(player.Camera);
             DebugModelDrawer.Update();
 
             base.Update(gameTime);
@@ -136,13 +148,12 @@ namespace finalProject
             GraphicsManager.BeginRendering();
 
             World.Render();
-            //boxModel.Render(new Vector3(0.0f, 20.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector3(50.0f, 50.0f, 50.0f));
-
+           
             GraphicsManager.FinishRendering();
 
             if (debugMode)
             {
-                DebugModelDrawer.Draw((mPlayer.CreatureController as PlayerController).mCamera.ViewTransform, (mPlayer.CreatureController as PlayerController).mCamera.ProjectionTransform);
+                DebugModelDrawer.Draw(player.Camera.ViewTransform, player.Camera.ProjectionTransform);
             }
 
             base.Draw(gameTime);

@@ -1,206 +1,315 @@
-﻿using System;
+﻿#region Using Statements
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using GameConstructLibrary;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using BEPUphysics.Entities.Prefabs;
+using FinalProject;
+
+#endregion
 
 namespace finalProject
 {
+    /// <summary>
+    /// Parses player input and controls PlayerCreature.
+    /// </summary>
     public class PlayerController : Controller
     {
-        #region private members
-        //private const float mCameraRotation = 90.0f;
-        private const float mDistFromCreature = 10.0f;
-        private const float mDistFromCreatureSquared = mDistFromCreature * mDistFromCreature;
+        #region Fields
 
-        public Camera mCamera;
+        private const float rotationRate = MathHelper.PiOver2; // Number of radians per second the camera can turn.
 
-        private KeyInputAction mMoveUp;
-        private KeyInputAction mMoveDown;
-        private KeyInputAction mMoveLeft;
-        private KeyInputAction mMoveRight;
-        private KeyInputAction mCameraUp;
-        private KeyInputAction mCameraDown;
-        private KeyInputAction mCameraLeft;
-        private KeyInputAction mCameraRight;
-        private KeyInputAction mPart1;
-        private KeyInputAction mPart2;
-        private KeyInputAction mPart3;
-        private KeyInputAction mJump;
+        public ChaseCamera mCamera;
+
+        private GamePadThumbStickInputAction mMoveForward;
+        private GamePadThumbStickInputAction mMoveRight;
+
+        private KeyInputAction mMoveForwardKey;
+        private KeyInputAction mMoveBackwardKey;
+        private KeyInputAction mMoveRightKey;
+        private KeyInputAction mMoveLeftKey;
+
+        private GamePadThumbStickInputAction mLookForward;
+        private GamePadThumbStickInputAction mLookRight;
+
+        private KeyInputAction mLookForwardKey;
+        private KeyInputAction mLookBackwardKey;
+        private KeyInputAction mLookRightKey;
+        private KeyInputAction mLookLeftKey;
+
+        private MouseMovementInputAction mLookForwardMouse;
+        private MouseMovementInputAction mLookRightMouse;
+
+        private GamePadButtonInputAction mPressPart1;
+        private GamePadButtonInputAction mPressPart2;
+        private GamePadButtonInputAction mPressPart3;
+        private GamePadButtonInputAction mPressJump;
+
         private KeyInputAction mAdd;
         private KeyInputAction mCheat;
 
-        private Vector3 target;
+        private KeyInputAction mPressIncStiffness;
+        private KeyInputAction mPressDecStiffness;
+
+        private KeyInputAction mPressIncDamping;
+        private KeyInputAction mPressDecDamping;
+
         #endregion
+
+        #region Public Methods
 
         public PlayerController(Viewport viewPort) 
         {
-            mCamera = new Camera(viewPort);
-            mMoveUp = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
-            mMoveDown = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.S);
-            mMoveLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.A);
-            mMoveRight = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.D);
-            mCameraUp = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Up);
-            mCameraDown = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Down);
-            mCameraLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Left);
-            mCameraRight = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Right);
-            mPart1 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D1);
-            mPart2 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D2);
-            mPart3 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D3);
-            mJump = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Space);
+            mCamera = new ChaseCamera(viewPort);
+            mCamera.DesiredPositionLocal = new Vector3(0.0f, 2.0f, 5.0f);
+            mCamera.LookAtLocal = new Vector3(0.0f, 0.75f, 0.0f);
+            mCamera.TargetDirection = Vector3.Forward;
+            mCamera.MaxRopeLengthSquared = mCamera.DesiredPositionLocal.LengthSquared();
+            mCamera.MinRopeLengthSquared = mCamera.MaxRopeLengthSquared * 0.75f;
+
+            mMoveForward  = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.Y, GamePadDeadZone.Circular, -0.2f, 0.2f);
+            mMoveRight    = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.X, GamePadDeadZone.Circular, -0.2f, 0.2f);
+            
+            mLookForward  = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Right, InputAction.GamePadThumbStickAxis.Y, GamePadDeadZone.Circular, -0.2f, 0.2f);
+            mLookRight    = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Right, InputAction.GamePadThumbStickAxis.X, GamePadDeadZone.Circular, -0.2f, 0.2f);
+            
+            mMoveForwardKey  = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
+            mMoveBackwardKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.S);
+            mMoveRightKey    = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.D);
+            mMoveLeftKey     = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.A);
+
+            mLookForwardMouse  = new MouseMovementInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.MouseAxis.Y, 4.0f, 0.5f, 1.0f);
+            mLookRightMouse    = new MouseMovementInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.MouseAxis.X, 4.0f, 0.5f, 1.0f);
+
+            mLookForwardKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Up);
+            mLookBackwardKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Down);
+            mLookRightKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Right);
+            mLookLeftKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Left);
+
+            mPressPart1 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.X);
+            mPressPart2 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.Y);
+            mPressPart3 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.B);
+            mPressJump = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.A);
+
             mAdd = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.LeftShift);
             mCheat = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Enter);
 
-            target = new Vector3(0.0f, -70.0f, 0.0f);
+            mPressDecDamping = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D9);
+            mPressIncDamping = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D0);
+            mPressDecStiffness = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemPlus);
+            mPressIncStiffness = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemMinus);
         }
 
         ~PlayerController()
         {
-            mMoveUp.Destroy();
-            mMoveDown.Destroy();
-            mMoveLeft.Destroy();
+            mMoveForward.Destroy();
             mMoveRight.Destroy();
-            mCameraUp.Destroy();
-            mCameraDown.Destroy();
-            mCameraLeft.Destroy();
-            mCameraRight.Destroy();
-            mPart1.Destroy();
-            mPart2.Destroy();
-            mPart3.Destroy();
-            mJump.Destroy();
-            mAdd.Destroy();
 
+            mMoveForwardKey.Destroy();
+            mMoveBackwardKey.Destroy();
+            mMoveRightKey.Destroy();
+            mMoveLeftKey.Destroy();
+
+            mLookForward.Destroy();
+            mLookRight.Destroy();
+
+            mLookForwardMouse.Destroy();
+            mLookRightMouse.Destroy();
+
+            mLookForwardKey.Destroy();
+            mLookBackwardKey.Destroy();
+            mLookRightKey.Destroy();
+            mLookLeftKey.Destroy();
+
+            mPressPart1.Destroy();
+            mPressPart2.Destroy();
+            mPressPart3.Destroy();
+            mPressJump.Destroy();
+
+            mAdd.Destroy();
             mCheat.Destroy();
         }
 
         /// <summary>
         /// Passes the player input to the creature.
         /// </summary>
-        /// <param name="time">
-        /// The game time.
-        /// </param>
-        /// <param name="collidingCreatures">
-        /// The list of creatures from the creature's radial sensor.
-        /// </param>
-        public override void Update(GameTime time, List<Creature> collidingCreatures)
+        /// <param name="gameTime">The game time.</param>
+        /// <param name="collidingCreatures">The list of creatures from the creature's radial sensor.</param>
+        public override void Update(GameTime gameTime, List<Creature> collidingCreatures)
         {
-            Vector2 moveDirection = new Vector2(0.0f, 0.0f);
-            float time_step = (float)time.ElapsedGameTime.Milliseconds / 1000.0f;
-            //float rotation = mCameraRotation * time_step;
+            MoveCreature(gameTime);
+            PerformActions();
+            UpdateCamera(gameTime);
+        }
 
-            #region adjust camera angle
-            //if (mCameraUp.Active)
-            //{
-            //    //mCamera.RotatePitch(rotation);
-            //    //mCreature.Forward = mCamera.Forward;
-            //    target += mCamera.Up;
-            //}
-            //if (mCameraDown.Active)
-            //{
-            //    //mCamera.RotatePitch(-rotation);
-            //    //mCreature.Forward = mCamera.Forward;
-            //    target -= mCamera.Up;
-            //}
-            //if (mCameraRight.Active)
-            //{
-            //    //mCamera.RotateYaw(rotation);
-            //    //mCreature.Forward = mCamera.Forward;
-            //    target += mCamera.Right;
-            //}
-            //if (mCameraLeft.Active)
-            //{
-            //    //mCamera.RotateYaw(-rotation);
-            //    //mCreature.Forward = mCamera.Forward;
-            //    target -= mCamera.Right;
-            //}
-            #endregion
+        /// <summary>
+        /// Assign creature to camera.
+        /// </summary>
+        /// <param name="creature"></param>
+        public override void SetCreature(Creature creature)
+        {
+            base.SetCreature(creature);
+            mCamera.TargetBody = mCreature;
+        }
+        #endregion
 
-            #region adjust creature position
-            bool moved = false;
-            if (mMoveUp.Active)
-            {
-                moveDirection.Y += 1.0f;
-                moved = true;
-            }
-            if (mMoveDown.Active)
-            {
-                moveDirection.Y -= 1.0f;
-                moved = true;
-            }
-            if (mMoveRight.Active)
-            {
-                moveDirection.X -= 1.0f;
-                moved = true;
-            }
-            if (mMoveLeft.Active)
-            {
-                moveDirection.X += 1.0f;
-                moved = true;
-            }
-            if (moved)
-            {
-                Vector3 moveVector = moveDirection.Y * mCamera.Forward + moveDirection.X * mCamera.Right;
-                moveVector.Y = 0.0f;
-                mCreature.Forward = Vector3.Normalize(moveVector);
-                mCreature.Move(1.0f);
-            }
-            #endregion
+        #region Helper Methods
 
-            if (mCheat.Active)
+        /// <summary>
+        /// Move creature in direction player requests.
+        /// </summary>
+        private void MoveCreature(GameTime gameTime)
+        {
+            float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+
+            // Parse movement input.
+            bool moveForwardActive  = mMoveForward.Active;
+            float moveForwardDegree = mMoveForward.Degree;
+            if (moveForwardActive == false)
             {
-                mCreature.Entity.Position = new Vector3(0.0f);
-                mCreature.Entity.LinearVelocity = new Vector3(0.0f);
+                moveForwardActive = mMoveForwardKey.Active || mMoveBackwardKey.Active;
+                moveForwardDegree = mMoveForwardKey.Degree - mMoveBackwardKey.Degree;
             }
 
-            moveDirection.X *= time_step;
-            moveDirection.Y *= time_step;
-            //mCreature.Move(moveDirection);
-            mCamera.Target = mCreature.Position;
-            Vector3 diffVector = mCreature.Position - mCamera.Position;
-            float diff = diffVector.Length() - mDistFromCreature;
-            //if (diff > 0)
+            bool moveRightActive  = mMoveRight.Active;
+            float moveRightDegree = mMoveRight.Degree;
+            if (moveRightActive == false)
             {
-                mCamera.Position += Vector3.Normalize(diffVector) * diff;
-            }
-            //Vector3 temp = Vector3.Multiply(Vector3.Normalize(mCamera.Forward), mDistFromCreature);
-            //mCamera.Position = Vector3.Subtract(mCreature.Position, temp);
-            //mCamera.Position = new Vector3(0.0f, 100.0f, 1.0f);
-            //mCamera.Target = target;// mCreature.Position;
-            //Vector3 direction = mCreature.XNAOrientationMatrix.Forward;
-            //direction.Normalize();
-            //mCamera.Position = mCamera.Target - 10.0f * direction + new Vector3(0.0f, 10.0f, 0.0f);
-            GraphicsManager.Update(mCamera);
-
-            #region use/add parts, jump
-            if (mPart1.Active)
-            {
-                mCreature.UsePart(1, mCamera.Forward);
-            }
-            if (mPart2.Active)
-            {
-                mCreature.UsePart(2, mCamera.Forward);
-            }
-            if (mPart3.Active)
-            {
-                mCreature.UsePart(3, mCamera.Forward);
+                moveRightActive = mMoveRightKey.Active || mMoveLeftKey.Active;
+                moveRightDegree = mMoveRightKey.Degree - mMoveLeftKey.Degree;
             }
 
-            if (mJump.Active)
+            // Moving player.
+            Vector2 walkDirection = Vector2.Zero;
+            if (moveForwardActive || moveRightActive)
+            {
+                (mCreature as PlayerCreature).Stance = Stance.Walking;
+
+                Vector3 forward = mCamera.Forward;
+                forward.Y = 0.0f;
+                forward.Normalize();
+
+                Vector3 right = mCamera.Right;
+
+                walkDirection += moveForwardDegree * new Vector2(forward.X, forward.Z);
+                walkDirection -= moveRightDegree * new Vector2(right.X, right.Z);
+            }
+            else
+            {
+                (mCreature as PlayerCreature).Stance = Stance.Standing;
+            }
+
+            // Parse look input.
+            bool lookForwardActive = mLookForward.Active;
+            float lookForwardDegree = mLookForward.Degree;
+            if (lookForwardActive == false)
+            {
+                lookForwardActive = mLookForwardKey.Active || mLookBackwardKey.Active;
+                lookForwardDegree = mLookForwardKey.Degree - mLookBackwardKey.Degree;
+            }
+
+            bool lookRightActive = mLookRight.Active;
+            float lookRightDegree = mLookRight.Degree;
+            if (lookRightActive == false)
+            {
+                lookRightActive = mLookRightKey.Active || mLookLeftKey.Active;
+                lookRightDegree = mLookRightKey.Degree - mLookLeftKey.Degree;
+            }
+
+            // Rotating camera.
+            if (lookForwardActive || lookRightActive)
+            {
+                mCamera.RotateAroundTarget(elapsedTime * rotationRate * lookRightDegree, elapsedTime * rotationRate * lookForwardDegree, 0.0f);
+            }
+
+            if (mCamera.TrackTarget)
+            {
+                float ropeLength = mCamera.Rope.LengthSquared();
+                if (ropeLength > mCamera.MaxRopeLengthSquared && walkDirection != Vector2.Zero)
+                {
+                    Vector3 walkDirection3D = new Vector3(walkDirection.X, 0.0f, walkDirection.Y);
+                    float theta = Vector3.Dot(walkDirection3D, mCamera.Forward);
+                    if (theta < 0.9f)
+                    {
+                        float direction = (Vector3.Cross(walkDirection3D, mCamera.Forward).Y < 0) ? -1.0f : 1.0f;
+                        mCamera.RotateAroundTarget(elapsedTime * rotationRate * direction, 0.0f, 0.0f);
+                    }
+                }
+                else if (ropeLength < mCamera.MinRopeLengthSquared && walkDirection != Vector2.Zero)
+                {
+                    Vector3 walkDirection3D = new Vector3(walkDirection.X, 0.0f, walkDirection.Y);
+                    float theta = Vector3.Dot(walkDirection3D, mCamera.Forward);
+                    if (theta > -0.9f)
+                    {
+                        float direction = (Vector3.Cross(walkDirection3D, mCamera.Forward).Y < 0) ? -1.0f : 1.0f;
+                        mCamera.RotateAroundTarget(elapsedTime * 4.0f * rotationRate * direction, 0.0f, 0.0f);
+                    }
+                }
+            }
+
+            if (mCreature.CharacterController.supportData.SupportObject == null)
+            {
+                // In the air.
+                (mCreature as PlayerCreature).Stance = Stance.Standing;
+            }
+
+            mCreature.Move(walkDirection);
+        }
+
+        /// <summary>
+        /// If player has requested action perform it.
+        /// </summary>
+        private void PerformActions()
+        {
+            if (mPressJump.Active)
             {
                 mCreature.Jump();
             }
-            if (mAdd.Active)
+
+            if (mPressIncStiffness.Active)
             {
-                if (mCreature as PlayerCreature != null)
-                {
-                    (mCreature as PlayerCreature).FindAndAddPart();
-                }
+                mCamera.Stiffness += 100;
+                Console.WriteLine("CAMERA STIFFNESS: " + mCamera.Stiffness);
+                Console.WriteLine("CAMERA DAMPING: " + mCamera.Damping);
             }
-            #endregion
+
+            if (mPressDecStiffness.Active)
+            {
+                mCamera.Stiffness -= 100;
+                Console.WriteLine("CAMERA STIFFNESS: " + mCamera.Stiffness);
+                Console.WriteLine("CAMERA DAMPING: " + mCamera.Damping);
+            }
+
+            if (mPressIncDamping.Active)
+            {
+                mCamera.Damping += 100;
+                Console.WriteLine("CAMERA STIFFNESS: " + mCamera.Stiffness);
+                Console.WriteLine("CAMERA DAMPING: " + mCamera.Damping);
+            }
+
+            if (mPressDecDamping.Active)
+            {
+                mCamera.Damping -= 100;
+                Console.WriteLine("CAMERA STIFFNESS: " + mCamera.Stiffness);
+                Console.WriteLine("CAMERA DAMPING: " + mCamera.Damping);
+            }
         }
+
+        /// <summary>
+        /// Update camera to follow new creature configuration.
+        /// </summary>
+        private void UpdateCamera(GameTime gameTime)
+        {
+            mCamera.TargetPosition = mCreature.Position;
+            mCamera.Up = Vector3.Up;
+
+            mCamera.Update(gameTime);
+        }
+
+        #endregion
     }
 }

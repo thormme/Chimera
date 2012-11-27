@@ -19,9 +19,9 @@ namespace MapEditor
     /// <summary>
     /// Creates a map editor menu
     /// </summary>
-    public class HeightMapEditorDialog : WindowControl
+    public class HeightEditorDialog : Dialog
     {
-        private MapEditor mMapEditor;
+
         private Nuclex.UserInterface.Controls.LabelControl mSizeLabel;
         private Nuclex.UserInterface.Controls.LabelControl mIntensityLabel;
         private Nuclex.UserInterface.Controls.LabelControl mFeatherLabel;
@@ -32,14 +32,13 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.Desktop.OptionControl mSetOption;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mDoneButton;
 
-        public HeightMapEditorDialog(MapEditor mapEditor) :
+        public HeightEditorDialog() :
             base()
         {
-            mMapEditor = mapEditor;
             InitializeComponent();
         }
 
-        #region Not component designer generated code
+        #region Component Layout
 
         /// <summary>
         /// Adds items to dialog
@@ -83,6 +82,9 @@ namespace MapEditor
             mDoneButton.Bounds = new UniRectangle(new UniScalar(1.0f, -100.0f), new UniScalar(1.0f, -45.0f), 80, 24);
             mDoneButton.Pressed += delegate(object sender, EventArgs arguments) { DoneClicked(sender, arguments); };
 
+            Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 210.0f);
+            mBounds = Bounds;
+
             // Add components to GUI
             Children.Add(mSizeLabel);
             Children.Add(mSizeInput);
@@ -98,7 +100,45 @@ namespace MapEditor
 
         #endregion // Not component designer generated code
 
-        public bool GetHeightEditorInput(out int size, out int intensity, out bool feather, out bool set)
+        public Single GetScale()
+        {
+            Single scale = 0.0f;
+            try
+            {
+                scale = Convert.ToSingle(mSizeInput.Text);
+            }
+            catch (SystemException)
+            {
+                // Invalid Input
+            }
+            return scale;
+        }
+
+        public Single GetIntensity()
+        {
+            Single intensity = 0.0f;
+            try
+            {
+                intensity = Convert.ToSingle(mSizeInput.Text);
+            }
+            catch (SystemException)
+            {
+                // Invalid Input
+            }
+            return intensity;
+        }
+
+        public Boolean GetFeather()
+        {
+            return mFeatherOption.Selected;
+        }
+
+        public Boolean GetSet()
+        {
+            return mSetOption.Selected;
+        }
+
+        public bool GetHeight(out int size, out int intensity, out bool feather, out bool set)
         {
 
             size = 0;
@@ -122,15 +162,9 @@ namespace MapEditor
 
         }
 
-        public void HeightsEnable()
-        {
-            Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 210.0f);
-        }
-
         private void DoneClicked(object sender, EventArgs arguments)
         {
-            Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
-            mMapEditor.MapEditorDialog.Done();
+            GameMapEditor.ToggleState(States.None);
         }
 
     }

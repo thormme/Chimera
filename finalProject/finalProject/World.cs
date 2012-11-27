@@ -17,7 +17,7 @@ namespace finalProject
     public class World
     {
         List<IGameObject> mGameObjects;
-        List<Actor> mActors;
+        List<IActor> mActors;
 
         List<IGameObject> mUncommittedGameObjectAdditions;
         List<IGameObject> mUncommittedGameObjectRemovals;
@@ -27,7 +27,7 @@ namespace finalProject
         public World()
         {
             mGameObjects = new List<IGameObject>();
-            mActors = new List<Actor>();
+            mActors = new List<IActor>();
             mSpace = new Space();
 
             mUncommittedGameObjectAdditions = new List<IGameObject>();
@@ -41,9 +41,9 @@ namespace finalProject
             foreach (IGameObject gameObject in mUncommittedGameObjectAdditions)
             {
                 mGameObjects.Add(gameObject);
-                if (gameObject is Actor)
+                if (gameObject is IActor)
                 {
-                    mActors.Add(gameObject as Actor);
+                    mActors.Add(gameObject as IActor);
                 }
                 if (gameObject is IEntityOwner)
                 {
@@ -60,9 +60,9 @@ namespace finalProject
             foreach (IGameObject gameObject in mUncommittedGameObjectRemovals)
             {
                 mGameObjects.Remove(gameObject);
-                if (gameObject is Actor)
+                if (gameObject is IActor)
                 {
-                    mActors.Remove(gameObject as Actor);
+                    mActors.Remove(gameObject as IActor);
                 }
                 if (gameObject is IEntityOwner)
                 {
@@ -94,7 +94,7 @@ namespace finalProject
         {
             mSpace.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            foreach (Actor actor in mActors)
+            foreach (IActor actor in mActors)
             {
                 actor.Update(gameTime);
             }
