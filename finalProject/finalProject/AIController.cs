@@ -92,7 +92,7 @@ namespace finalProject
                 //newDirection *= (float)Math.Sqrt(1 - mCreature.Forward.Y * mCreature.Forward.Y);
                 //newDirection.Y = mCreature.Forward.Y;
                 mCreature.Forward = newDirection;
-                mCreature.Move(Rand.NextFloat(MaxDurdleSpeed));
+                mCreature.Move(new Vector2(0.0f, Rand.NextFloat(MaxDurdleSpeed)));
 
                 mDurdleTimer.ResetNewState();
             }
@@ -100,14 +100,14 @@ namespace finalProject
             {
                 mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleWaitTime));
                 mDurdleTimer.ResetNewState();
-                mCreature.Move(0.0f);
+                mCreature.Move(new Vector2(0.0f));
             }
         }
 
         private void MoveTo(Vector3 position, float magnitude)
         {
             mCreature.Forward = Vector3.Normalize((position - mCreature.Position) * magnitude);
-            mCreature.Move(Math.Abs(magnitude));
+            mCreature.Move(new Vector2(0.0f, Math.Abs(magnitude)));
         }
 
         public virtual void Stop()
@@ -116,7 +116,7 @@ namespace finalProject
             mDurdleTimer.ResetNewState();
             if (mCreature != null)
             {
-                mCreature.Move(0.0f);
+                mCreature.Move(new Vector2(0.0f));
             }
             mTargetCreature = null;
             mMagnitude = 0.0f;

@@ -37,7 +37,6 @@ namespace finalProject
         }
 
         public NonPlayerCreature(
-            Vector3 position,
             float sensitivityRadius,
             Controller controller,
             Renderable renderable,

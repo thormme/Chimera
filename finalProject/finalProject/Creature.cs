@@ -25,8 +25,6 @@ namespace finalProject
     {
         #region Fields
 
-        protected RadialSensor mSensor;
-        
         protected List<Part> mParts;
         protected Controller mController;
         protected RadialSensor mSensor;
@@ -101,7 +99,6 @@ namespace finalProject
             mController = controller;
             controller.SetCreature(this);
             mParts = new List<Part>();
-            Entity.Position = position;
             Game1.World.Add(mSensor);
             //Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
             //MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
