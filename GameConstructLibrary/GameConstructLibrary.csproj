@@ -81,6 +81,9 @@
     <Reference Include="BEPUphysics">
       <HintPath>..\finalProject\finalProject\libraries\bepu\x86\Release\BEPUphysics.dll</HintPath>
     </Reference>
+    <Reference Include="BEPUphysicsDrawer">
+      <HintPath>..\finalProject\finalProject\libraries\bepu\x86\Release\BEPUphysicsDrawer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -160,6 +163,7 @@
     <Compile Include="SupportFinder.cs" />
     <Compile Include="TerrainPhysics.cs" />
     <Compile Include="VerticalMotionConstraint.cs" />
+    <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphicsLibrary\GraphicsLibrary.csproj">

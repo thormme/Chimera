@@ -133,6 +133,12 @@ namespace GameConstructLibrary
             }
         }
 
+        public virtual World World
+        {
+            get;
+            set;
+        }
+
         public virtual void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
         {
             mCollidingObjects.Add(other.Tag as IGameObject);

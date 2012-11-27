@@ -77,7 +77,7 @@ namespace finalProject
             : base(new AnimateModel("dude"), new Cylinder(position, 2.0f, 0.25f, 10.0f), new RadialSensor(4.0f), new PlayerController(viewPort))
         {
             (mRenderable as AnimateModel).PlayAnimation("Take 001");
-            Scale = new Vector3(0.025f); 
+            Scale = new Vector3(0.025f);
         }
 
         /// <summary>

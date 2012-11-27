@@ -26,9 +26,9 @@ namespace finalProject
         private bool debugMode;
 
         GraphicsDeviceManager graphics;
-        public static ModelDrawer DebugModelDrawer;
+        private ModelDrawer DebugModelDrawer;
         SpriteBatch spriteBatch;
-        static public World World;
+        private World World;
 
         PlayerCreature player;
         TerrainPhysics terrain;
@@ -37,8 +37,6 @@ namespace finalProject
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            World = new World();
 
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
             debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
@@ -79,15 +77,16 @@ namespace finalProject
             DebugModelDrawer.IsWireframe = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            World = new World(DebugModelDrawer);
+
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
 
             terrain = new TerrainPhysics("default", new Vector3(0.0f, 0.0f, 0.0f), new Quaternion(), new Vector3(2.5f));
             World.Add(terrain);
 
-            player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f));
+            player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 120.0f, 0.0f));
             World.Add(player);
-            World.mSpace.Add(player.CharacterController);
         }
 
         /// <summary>

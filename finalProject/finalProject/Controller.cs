@@ -7,12 +7,20 @@ using Microsoft.Xna.Framework;
 
 namespace finalProject
 {
+    public enum ControllerBehavior
+    {
+        Passive,
+        Hostile
+    }
+
     /// <summary>
     /// Abstract class used to define the behavior of a creature.
     /// </summary>
     abstract public class Controller
     {
         #region Fields
+        
+        private ControllerBehavior DefaultBehavior = ControllerBehavior.Passive;
 
         protected Creature mCreature;
 
@@ -38,6 +46,14 @@ namespace finalProject
         /// <param name="collidingCreatures">The nearby creatures, in order of distance from the creature.</param>
         abstract public void Update(GameTime time, List<Creature> collidingCreatures);
 
+        public virtual ControllerBehavior Behavior
+        {
+            get
+            {
+                return DefaultBehavior;
+            }
+        }
+        
         #endregion
     }
 }
