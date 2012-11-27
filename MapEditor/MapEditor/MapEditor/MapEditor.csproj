@@ -206,7 +206,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Editor.cs" />
-    <Compile Include="FPSCamera.cs" />
+    <Compile Include="FPSCamera.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="HeightMapEditorDialog.cs" />
     <Compile Include="MapEditor.cs" />
     <Compile Include="MapEntity.cs" />
