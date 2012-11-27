@@ -109,7 +109,7 @@ namespace finalProject
             {
                 if (World != null)
                 {
-                    World.Remove(mSensor);
+                    //World.Remove(mSensor);
                     World.Space.Remove(CharacterController);
 
                     foreach (Part cur in mParts)
@@ -122,7 +122,7 @@ namespace finalProject
 
                 if (value != null)
                 {
-                    value.Add(mSensor);
+                    //value.Add(mSensor);
                     value.Space.Add(CharacterController);
 
                     foreach (Part part in mParts)
