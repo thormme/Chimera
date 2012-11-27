@@ -24,7 +24,7 @@ namespace MapEditor
     public class DummyMap
     {
 
-        private const int scale = 2;
+        private Vector3 scale = new Vector3(2.0f, 0.25f, 2.0f);
         private const float length = 2000.0f;
         private const float moveSpeed = 0.1f;
         private const float scaleSpeed = 1.05f;
@@ -54,7 +54,7 @@ namespace MapEditor
             mName = "default";
 
             mHeightMap = GraphicsManager.LookupTerrainHeightMap("default");
-            mTerrainPhysics = new TerrainPhysics("default", new Vector3(0, 0, 0), new Quaternion(), new Vector3(scale, 1, scale));
+            mTerrainPhysics = new TerrainPhysics("default", new Vector3(0, 0, 0), new Quaternion(), scale);
 
             mDummies = new List<DummyObject>();
 
@@ -72,7 +72,7 @@ namespace MapEditor
         {
             mName = copy.mName;
             mHeightMap = new TerrainHeightMap(copy.mHeightMap);
-            mTerrainPhysics = new TerrainPhysics(mName, new Vector3(0, 0, 0), new Quaternion(), new Vector3(scale, 1, scale));
+            mTerrainPhysics = new TerrainPhysics(mName, new Vector3(0, 0, 0), new Quaternion(), scale);
             mDummies = new List<DummyObject>();
             foreach (DummyObject obj in copy.mDummies)
             {
@@ -105,7 +105,7 @@ namespace MapEditor
                 mHeightMap.ModifyVertices(position, size, intensity, feather, set, mInverseMode, mSmoothMode, mFlattenMode);
             }
 
-            mTerrainPhysics = new TerrainPhysics(mName, new Vector3(0, 0, 0), new Quaternion(), new Vector3(scale, 1, scale));
+            mTerrainPhysics = new TerrainPhysics(mName, new Vector3(0, 0, 0), new Quaternion(), scale);
         }
 
         private void Add(DummyObject obj)
@@ -217,7 +217,7 @@ namespace MapEditor
 
             // Load the height map
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(file);
-            mTerrainPhysics = new TerrainPhysics(file, new Vector3(0, 0, 0), new Quaternion(), new Vector3(scale, 1, scale));
+            mTerrainPhysics = new TerrainPhysics(file, new Vector3(0, 0, 0), new Quaternion(), scale);
 
            // Load the rest of the level
             mDummies = LevelManager.Load(file);
@@ -240,9 +240,9 @@ namespace MapEditor
             foreach (DummyObject obj in mDummies)
             {
                 // Adjust each to the new height based on terrain modifications
-                Ray ray = new Ray(new Vector3(obj.Position.X, 1000.0f * scale, obj.Position.Z), new Vector3(0, -1, 0));
+                Ray ray = new Ray(new Vector3(obj.Position.X, 1000.0f, obj.Position.Z), new Vector3(0, -1, 0));
                 RayHit result;
-                mTerrainPhysics.StaticCollidable.RayCast(ray, length * scale, out result);
+                mTerrainPhysics.StaticCollidable.RayCast(ray, length, out result);
                 obj.Position = new Vector3 (result.Location.X, result.Location.Y + obj.Height, result.Location.Z);
             }
 

@@ -25,7 +25,7 @@ namespace MapEditor
         GraphicsDeviceManager mGraphics;
         SpriteBatch mSpriteBatch;
 
-        private Camera mCamera;
+        private FPSCamera mCamera;
         private Dialog mReminder;
 
         public Editor()
@@ -66,7 +66,7 @@ namespace MapEditor
             GameMapEditor.Screen = new Screen(GameMapEditor.Viewport.Width, GameMapEditor.Viewport.Height);
             GameMapEditor.GUI.Screen = GameMapEditor.Screen;
 
-            mCamera = new Camera(GameMapEditor.Viewport);
+            mCamera = new FPSCamera(GameMapEditor.Viewport);
             mCamera.Position = new Vector3(0, 140, -100);
             mCamera.Target = new Vector3(0, 100, 0);
 

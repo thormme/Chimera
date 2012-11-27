@@ -24,7 +24,7 @@ namespace MapEditor
 
         public static Screen Screen;
         public static Viewport Viewport;
-        public static Camera Camera;
+        public static FPSCamera Camera;
 
         public static States CurrentState;
         public static Boolean EditMode;
