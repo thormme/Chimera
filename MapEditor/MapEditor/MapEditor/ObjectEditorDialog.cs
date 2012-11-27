@@ -22,11 +22,8 @@ namespace MapEditor
     /// <summary>
     /// Creates a map editor menu
     /// </summary>
-    public class ObjectEditorDialog : WindowControl
+    public class ObjectEditorDialog : Dialog
     {
-
-        private MapEditor mMapEditor;
-        private Screen mMainScreen;
 
         private ParametersDialog mParametersDialog;
 
@@ -42,27 +39,25 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.Desktop.InputControl mOrientationXInput;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mOrientationYInput;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mOrientationZInput;
+        private Nuclex.UserInterface.Controls.LabelControl mHeightLabel;
+        private Nuclex.UserInterface.Controls.Desktop.InputControl mHeightInput;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mDoneButton;
 
-        public ObjectEditorDialog(MapEditor mapEditor, Screen mainScreen) :
+        public ObjectEditorDialog() :
             base()
         {
-            mMapEditor = mapEditor;
-            mMainScreen = mainScreen;
             mTypes = new Dictionary<string, DummyObject>();
             InitializeComponent();
             PopulateList();
         }
 
-        #region Not component designer generated code
+        #region Component Layout
 
         /// <summary>
         /// Adds items to dialog
         /// </summary>
         private void InitializeComponent()
         {
-
-            BringToFront();
 
             // Declare all components
             mObjectLabel = new Nuclex.UserInterface.Controls.LabelControl();
@@ -75,6 +70,8 @@ namespace MapEditor
             mOrientationXInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
             mOrientationYInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
             mOrientationZInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
+            mHeightLabel = new Nuclex.UserInterface.Controls.LabelControl();
+            mHeightInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
             mDoneButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
 
             // Position components
@@ -106,9 +103,17 @@ namespace MapEditor
             mOrientationZInput.Bounds = new UniRectangle(190.0f, 320.0f, 30.0f, 30.0f);
             mOrientationZInput.Text = "1";
 
+            mHeightLabel.Text = "Height:";
+            mHeightLabel.Bounds = new UniRectangle(52.0f, 360.0f, 54.0f, 30.0f);
+            mHeightInput.Bounds = new UniRectangle(110.0f, 360.0f, 110.0f, 30.0f);
+            mHeightInput.Text = "0";
+
             mDoneButton.Text = "Done";
             mDoneButton.Bounds = new UniRectangle(new UniScalar(1.0f, -90.0f), new UniScalar(1.0f, -40.0f), 80, 24);
             mDoneButton.Pressed += delegate(object sender, EventArgs arguments) { DoneClicked(sender, arguments); };
+
+            Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 460.0f);
+            mBounds = Bounds;
 
             // Add components to GUI
             Children.Add(mObjectLabel);
@@ -121,6 +126,8 @@ namespace MapEditor
             Children.Add(mOrientationXInput);
             Children.Add(mOrientationYInput);
             Children.Add(mOrientationZInput);
+            Children.Add(mHeightLabel);
+            Children.Add(mHeightInput);
             Children.Add(mDoneButton);
 
         }
@@ -145,8 +152,8 @@ namespace MapEditor
 
                     temp.Type = data[0];
                     temp.Model = data[1];
-                    temp.Scale = new Vector3(Convert.ToSingle(mScaleXInput.Text), Convert.ToSingle(mScaleYInput.Text), Convert.ToSingle(mScaleZInput.Text));
-                    temp.Orientation = new Vector3(Convert.ToSingle(mOrientationXInput.Text), Convert.ToSingle(mOrientationYInput.Text), Convert.ToSingle(mOrientationZInput.Text));
+                    temp.Scale = new Vector3(1.0f, 1.0f, 1.0f);
+                    temp.Orientation = new Vector3(0.0f, 0.0f, 1.0f);
                     List<string> parameters = new List<string>();
                     if (data.Length - 2 > 0)
                     {
@@ -169,18 +176,22 @@ namespace MapEditor
 
         }
 
-        public bool GetObjectEditorInput(out DummyObject temp)
+        public bool GetObject(out DummyObject temp)
         {
 
             temp = new DummyObject();
+            
 
             try
             {
                 string selected = mObjectList.Items.ElementAt<string>(mObjectList.SelectedItems[0]);
-                mTypes.TryGetValue(selected, out temp);
+                DummyObject obj = new DummyObject();
+                mTypes.TryGetValue(selected, out obj);
+                temp = new DummyObject(obj);
             }
             catch (SystemException)
             {
+                Console.WriteLine("Object not in dictionary.");
                 return false;
             }
 
@@ -188,30 +199,25 @@ namespace MapEditor
             {
                 temp.Scale = new Vector3(Convert.ToSingle(mScaleXInput.Text), Convert.ToSingle(mScaleYInput.Text), Convert.ToSingle(mScaleZInput.Text));
                 temp.Orientation = new Vector3(Convert.ToSingle(mOrientationXInput.Text), Convert.ToSingle(mOrientationYInput.Text), Convert.ToSingle(mOrientationZInput.Text));
-                mParametersDialog.GetParameters();
+                temp.Height = Convert.ToSingle(mHeightInput.Text);
+                temp.Parameters = (mParametersDialog.GetParameters()).ToArray();
             }
             catch (SystemException)
             {
+                Console.WriteLine("Invalid input.");
                 return false;
             }
-
-            
 
             return true;
 
         }
 
-        public void ObjectsEnable()
-        {
-            Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 420.0f);
-        }
-
         private void DoneClicked(object sender, EventArgs arguments)
         {
-            Bounds = new UniRectangle(-1000.0f, -1000.0f, 0.0f, 0.0f);
-            mMapEditor.MapEditorDialog.Done();
+            GameMapEditor.ToggleState(States.None);
         }
 
+        
         public void EnableParameters()
         {
             try
@@ -221,7 +227,7 @@ namespace MapEditor
                 mTypes.TryGetValue(selected, out temp);
                 DisableParameters();
                 mParametersDialog = new ParametersDialog(new List<string>(temp.Parameters));
-                mMainScreen.Desktop.Children.Add(mParametersDialog);
+                GameMapEditor.Screen.Desktop.Children.Add(mParametersDialog);
             }
             catch (SystemException)
             {
@@ -231,7 +237,7 @@ namespace MapEditor
 
         public void DisableParameters()
         {
-            mMainScreen.Desktop.Children.Remove(mParametersDialog);
+            GameMapEditor.Screen.Desktop.Children.Remove(mParametersDialog);
         }
     }
 }

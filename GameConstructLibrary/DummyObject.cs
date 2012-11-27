@@ -15,6 +15,7 @@ namespace GameConstructLibrary
         public Vector3 Position { get; set; }
         public Vector3 Orientation { get; set; }
         public Vector3 Scale { get; set; }
+        public float Height { get; set; }
 
         public DummyObject()
         {
@@ -29,6 +30,7 @@ namespace GameConstructLibrary
             Position = new Vector3(copy.Position.X, copy.Position.Y, copy.Position.Z);
             Orientation = new Vector3(copy.Orientation.X, copy.Orientation.Y, copy.Orientation.Z);
             Scale = new Vector3(copy.Scale.X, copy.Scale.Y, copy.Scale.Z);
+            Height = copy.Height;
         }
 
     }

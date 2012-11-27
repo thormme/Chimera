@@ -205,22 +205,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dialog.cs" />
     <Compile Include="Editor.cs" />
-    <Compile Include="FPSCamera.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="HeightMapEditorDialog.cs" />
+    <Compile Include="FPSCamera.cs" />
+    <Compile Include="GameMapEditor.cs" />
+    <Compile Include="HeightEditorDialog.cs" />
+    <Compile Include="HotkeyDialog.cs" />
     <Compile Include="MapEditor.cs" />
-    <Compile Include="MapEntity.cs" />
+    <Compile Include="MapEditorEntity.cs" />
     <Compile Include="DummyMap.cs" />
-    <Compile Include="LoadLevelDialog.cs" />
+    <Compile Include="LoadMapDialog.cs" />
     <Compile Include="MapEditorDialog.cs" />
-    <Compile Include="NewLevelDialog.cs" />
+    <Compile Include="NewMapDialog.cs" />
     <Compile Include="ObjectEditorDialog.cs" />
     <Compile Include="ParametersDialog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="SaveLevelDialog.cs" />
+    <Compile Include="SaveMapDialog.cs" />
+    <Compile Include="TerrainRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
