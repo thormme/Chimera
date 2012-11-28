@@ -104,7 +104,7 @@ namespace finalProject
             mParts = new List<Part>();
             //Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
 
-            CharacterController = new CharacterController(entity, 1.0f);
+            CharacterController = new CharacterController(entity, 0.35f);
 
             mController = controller;
             controller.SetCreature(this);

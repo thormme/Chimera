@@ -82,7 +82,7 @@ namespace finalProject
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
 
-            terrain = new TerrainPhysics("default", new Vector3(0.0f, 0.0f, 0.0f), new Quaternion(), new Vector3(2.5f));
+            terrain = new TerrainPhysics("default", new Vector3(0.0f, -200.0f, 0.0f), new Quaternion(), new Vector3(2.5f));
             World.Add(terrain);
 
             player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f));
