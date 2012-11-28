@@ -1,4 +1,5 @@
 Spawner
 sphere
-string creature
-float timer
+string Creature
+float Timer
+int Max Spawned

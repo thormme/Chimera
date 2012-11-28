@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DummyObject>
+    <Type>Spawner</Type>
+    <Model>sphere</Model>
+    <Parameters>
+      <string>string Rhino</string>
+      <string>float 20.0f</string>
+      <string>int 4</string>
+    </Parameters>
+    <Position>
+      <X>13.9798059</X>
+      <Y>62.5817871</Y>
+      <Z>-32.4901733</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>Spawner</Type>
+    <Model>sphere</Model>
+    <Parameters>
+      <string>string Rhino</string>
+      <string>float 20.0f</string>
+      <string>int 4</string>
+    </Parameters>
+    <Position>
+      <X>4.344547</X>
+      <Y>24.1044922</Y>
+      <Z>28.0808487</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>Spawner</Type>
+    <Model>sphere</Model>
+    <Parameters>
+      <string>string Rhino</string>
+      <string>float 20.0f</string>
+      <string>int 4</string>
+    </Parameters>
+    <Position>
+      <X>-9.918277</X>
+      <Y>9.673828</Y>
+      <Z>-4.03163528</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>Spawner</Type>
+    <Model>sphere</Model>
+    <Parameters>
+      <string>string Rhino</string>
+      <string>float 20.0f</string>
+      <string>int 4</string>
+    </Parameters>
+    <Position>
+      <X>41.0245972</X>
+      <Y>59.28662</Y>
+      <Z>-16.3624649</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+</object>
