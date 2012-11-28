@@ -11,6 +11,12 @@ namespace finalProject
     class Spawner : IGameObject, IActor
     {
 
+        public World World
+        {
+            get;
+            set;
+        }
+
         public Microsoft.Xna.Framework.Vector3 Position
         {
             get;
@@ -88,7 +94,7 @@ namespace finalProject
                 
                 Ray rayOut = new Ray(Position, new Vector3((float)Math.Sin(dir), 0.0f, (float)Math.Cos(dir)));
                 RayCastResult resultOut;
-                if (Game1.World.mSpace.RayCast(rayOut, radius, out resultOut)) // If it does put it at the wall then move it away
+                if (World.Space.RayCast(rayOut, radius, out resultOut)) // If it does put it at the wall then move it away
                 {
                     creaturePosition = new Vector3(resultOut.HitData.Location.X - (float)Math.Sin(dir) * 0.1f * radius,
                                                    resultOut.HitData.Location.Y,
@@ -97,8 +103,8 @@ namespace finalProject
                 else // Otherwise put it at the random radius
                 {
                     creaturePosition = new Vector3(Position.X + (float)Math.Sin(dir) * radius,
-                                                    Position.Y,
-                                                    Position.Z + (float)Math.Cos(dir) * radius);
+                                                   Position.Y,
+                                                   Position.Z + (float)Math.Cos(dir) * radius);
                 }
 
                 // Find the height the creature will spawn at
@@ -107,7 +113,7 @@ namespace finalProject
                                                   creaturePosition.Z), 
                                       new Vector3(0.0f, -1.0f, 0.0f));
                 RayCastResult resultDown;
-                if (Game1.World.mSpace.RayCast(rayDown, 2.0f * mSpawnRadius, out resultDown)) creaturePosition.Y = resultDown.HitData.Location.Y;
+                if (World.Space.RayCast(rayDown, 2.0f * mSpawnRadius, out resultDown)) creaturePosition.Y = resultDown.HitData.Location.Y;
                 
                 // Only parameter for a creature is position
                 object parameters = new object();
