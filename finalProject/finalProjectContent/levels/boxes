@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>17.503828</X>
+      <Y>40</Y>
+      <Z>36.67946</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>4.311767</X>
+      <Y>40</Y>
+      <Z>30.71708</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-3.620818</X>
+      <Y>40</Y>
+      <Z>29.59822</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-14.4832735</X>
+      <Y>40</Y>
+      <Z>29.5982285</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-20.03386</X>
+      <Y>40</Y>
+      <Z>31.6673813</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-28.9963779</X>
+      <Y>40</Y>
+      <Z>31.6673737</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-30.6911163</X>
+      <Y>40</Y>
+      <Z>27.9624786</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-25.4598045</X>
+      <Y>40</Y>
+      <Z>24.8357925</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-13.2242651</X>
+      <Y>40</Y>
+      <Z>24.8357849</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>12.3611355</X>
+      <Y>40</Y>
+      <Z>23.8341751</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>20.7974262</X>
+      <Y>40</Y>
+      <Z>25.0046539</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>20.5844669</X>
+      <Y>40</Y>
+      <Z>29.0473862</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>13.4530849</X>
+      <Y>40</Y>
+      <Z>32.8298874</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>7.471135</X>
+      <Y>40</Y>
+      <Z>35.026474</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-2.736498</X>
+      <Y>40</Y>
+      <Z>35.84697</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-8.072669</X>
+      <Y>40</Y>
+      <Z>35.84697</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-12.5650921</X>
+      <Y>40</Y>
+      <Z>34.4188156</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>GameConstructLibrary.Prop, GameConstructLibrary</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-25.8440762</X>
+      <Y>40</Y>
+      <Z>40.8060837</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>5</Height>
+  </DummyObject>
+</object>

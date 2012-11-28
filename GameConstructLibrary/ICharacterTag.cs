@@ -29,7 +29,7 @@ namespace GameConstructLibrary
         /// </summary>
         public static BEPUphysics.Threading.SpinLock ConstraintAccessLocker = new BEPUphysics.Threading.SpinLock();
 
-        Entity body;
+        public Entity body;
 
         /// <summary>
         /// Constructs a new character tag.

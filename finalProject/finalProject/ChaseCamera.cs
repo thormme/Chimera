@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using BEPUphysics.Collidables;
 using GraphicsLibrary;
 using finalProject;
+using GameConstructLibrary;
 
 namespace FinalProject
 {
@@ -70,14 +71,14 @@ namespace FinalProject
         {
             get
             {
-                return mtargetBody;
+                return mTargetBody;
             }
             set
             {
-                mtargetBody = value;
+                mTargetBody = value;
             }
         }
-        private Creature mtargetBody;
+        private Creature mTargetBody;
 
         #endregion
 
@@ -511,11 +512,12 @@ namespace FinalProject
             // Check for intersection with the scene.  Move camera forward if need be.
             List<BEPUphysics.RayCastResult> results = new List<BEPUphysics.RayCastResult>();
             float cameraDistance = fullForward.Length();
-            Game1.World.mSpace.RayCast(new Ray(mLookAt, -fullForward), cameraDistance, results);
+            mTargetBody.World.Space.RayCast(new Ray(mLookAt, -fullForward), cameraDistance, results);
 
             foreach (BEPUphysics.RayCastResult result in results)
             {
-                if (result.HitObject as Collidable != mtargetBody.CharacterController.Body.CollisionInformation)
+                if (result.HitObject as Collidable != mTargetBody.CharacterController.Body.CollisionInformation &&
+                    !(result.HitObject.Tag is RadialSensor))
                 {
                     Vector3 shortenedForward = mLookAt - result.HitData.Location;
                     float distance = shortenedForward.Length();

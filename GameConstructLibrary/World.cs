@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using BEPUphysics;
 using Microsoft.Xna.Framework;
-using GameConstructLibrary;
 using GraphicsLibrary;
 using BEPUphysicsDrawer.Models;
 using System.Reflection;
 
-namespace finalProject
+namespace GameConstructLibrary
 {
     /// <summary>
     /// Manages the game world. Contains all loaded GameObjects and level chunks.
@@ -22,18 +21,21 @@ namespace finalProject
         List<IGameObject> mUncommittedGameObjectAdditions;
         List<IGameObject> mUncommittedGameObjectRemovals;
 
-        public Space mSpace;
+        private ModelDrawer mDebugModelDrawer;
 
-        public World()
+        public Space Space;
+
+        public World(ModelDrawer debugModelDrawer)
         {
+            mDebugModelDrawer = debugModelDrawer;
             mGameObjects = new List<IGameObject>();
             mActors = new List<IActor>();
-            mSpace = new Space();
+            Space = new Space();
 
             mUncommittedGameObjectAdditions = new List<IGameObject>();
             mUncommittedGameObjectRemovals = new List<IGameObject>();
 
-            mSpace.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
+            Space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
         }
 
         private void CommitChanges()
@@ -47,13 +49,13 @@ namespace finalProject
                 }
                 if (gameObject is IEntityOwner)
                 {
-                    mSpace.Add((gameObject as IEntityOwner).Entity);
-                    Game1.DebugModelDrawer.Add((gameObject as IEntityOwner).Entity);
+                    Space.Add((gameObject as IEntityOwner).Entity);
+                    mDebugModelDrawer.Add((gameObject as IEntityOwner).Entity);
                 }
-                else if (gameObject is IStaticCollidableOwner)
+                if (gameObject is IStaticCollidableOwner)
                 {
-                    mSpace.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
-                    Game1.DebugModelDrawer.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
+                    Space.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
+                    mDebugModelDrawer.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
                 }
             }
 
@@ -66,13 +68,13 @@ namespace finalProject
                 }
                 if (gameObject is IEntityOwner)
                 {
-                    mSpace.Add((gameObject as IEntityOwner).Entity);
-                    Game1.DebugModelDrawer.Add((gameObject as IEntityOwner).Entity);
+                    Space.Add((gameObject as IEntityOwner).Entity);
+                    mDebugModelDrawer.Add((gameObject as IEntityOwner).Entity);
                 }
                 else if (gameObject is IStaticCollidableOwner)
                 {
-                    mSpace.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
-                    Game1.DebugModelDrawer.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
+                    Space.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
+                    mDebugModelDrawer.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
                 }
             }
 
@@ -82,17 +84,27 @@ namespace finalProject
 
         public void Add(IGameObject gameObject)
         {
+            if (gameObject == null)
+            {
+                throw new Exception("Null added to World.");
+            }
             mUncommittedGameObjectAdditions.Add(gameObject);
+            gameObject.World = this;
         }
 
         public void Remove(IGameObject gameObject)
         {
+            if (gameObject == null)
+            {
+                throw new Exception("Null removed from World.");
+            }
             mUncommittedGameObjectRemovals.Add(gameObject);
+            gameObject.World = null;
         }
 
         public void Update(GameTime gameTime)
         {
-            mSpace.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            Space.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             foreach (IActor actor in mActors)
             {

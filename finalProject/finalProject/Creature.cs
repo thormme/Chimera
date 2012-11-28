@@ -25,14 +25,9 @@ namespace finalProject
     {
         #region Fields
 
-        protected const float MoveSpeed = 50.0f;
-        protected const float JumpVelocity = 10.0f;
-        protected Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
-
-        protected RadialSensor mSensor;
-        
         protected List<Part> mParts;
         protected Controller mController;
+        protected RadialSensor mSensor;
         
         #endregion
 
@@ -76,11 +71,6 @@ namespace finalProject
 
         protected virtual void OnDeath()
         {
-            Game1.World.Remove(mSensor);
-            foreach (Part cur in mParts)
-            {
-                Game1.World.Remove(cur);
-            }
         }
 
         protected bool OnGround
@@ -96,21 +86,51 @@ namespace finalProject
 
         #region Public Methods
 
-        public Creature(Renderable renderable, Entity entity, RadialSensor radialSensor, Controller controller)
-            : base(renderable, entity)
+        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, RadialSensor radialSensor, Controller controller)
+            : base(renderable, new Cylinder(position, height, radius, mass))
         {
             mSensor = radialSensor;
             Forward = new Vector3(0.0f, 0.0f, 1.0f);
             mParts = new List<Part>();
-            //Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
-
-            CharacterController = new CharacterController(entity, 0.35f);
+            
+            CharacterController = new CharacterController(Entity, 1.0f);
 
             mController = controller;
             controller.SetCreature(this);
-            //MaximumAngularSpeedConstraint constraint = new MaximumAngularSpeedConstraint(this, 0.0f);
-            // What do I do with this joint?
-            //throw new NotImplementedException("Creature does not know what to do with the joint.");
+        }
+
+        public override World World
+        {
+            get
+            {
+                return base.World;
+            }
+            set
+            {
+                if (World != null)
+                {
+                    World.Remove(mSensor);
+                    World.Space.Remove(CharacterController);
+
+                    foreach (Part cur in mParts)
+                    {
+                        World.Remove(cur);
+                    }
+                }
+
+                base.World = value;
+
+                if (value != null)
+                {
+                    value.Add(mSensor);
+                    value.Space.Add(CharacterController);
+
+                    foreach (Part part in mParts)
+                    {
+                        World.Add(part);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -139,7 +159,10 @@ namespace finalProject
 
         public virtual void Jump()
         {
-            CharacterController.Jump();
+            if (!Incapacitated)
+            {
+                CharacterController.Jump();
+            }
         }
 
         /// <summary>
@@ -148,15 +171,18 @@ namespace finalProject
         /// <param name="direction">The direction to move relative to the facing direction.</param>
         public virtual void Move(Vector2 direction)
         {
-            CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
-            if (direction != Vector2.Zero)
+            if (!Incapacitated)
             {
-                Forward = new Vector3(direction.X, 0.0f, direction.Y);
+                CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
+                if (direction != Vector2.Zero)
+                {
+                    Forward = new Vector3(direction.X, 0.0f, direction.Y);
+                }
             }
         }
 
         /// <summary>
-        /// Damages the creature by removing parts.
+        /// Damages the creature.
         /// </summary>
         /// <param name="damage">The amount of damage dealt.</param>
         public abstract void Damage(int damage);
@@ -167,15 +193,19 @@ namespace finalProject
         /// <param name="gameTime">The game time.</param>
         public override void Update(GameTime gameTime)
         {
+            if (Incapacitated)
+            {
+                return;
+            }
+
             float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
-            //Up = new Vector3(0.0f, 1.0f, 0.0f);
             mSensor.Update(gameTime);
             mController.Update(gameTime, mSensor.CollidingCreatures);
             mSensor.Position = Position;
 
             List<BEPUphysics.RayCastResult> results = new List<BEPUphysics.RayCastResult>();
-            Game1.World.mSpace.RayCast(new Ray(Position, -1.0f * Up), 4.0f, results);
+            World.Space.RayCast(new Ray(Position, -1.0f * Up), 4.0f, results);
 
             BEPUphysics.RayCastResult result = new BEPUphysics.RayCastResult();
             foreach (BEPUphysics.RayCastResult collider in results)

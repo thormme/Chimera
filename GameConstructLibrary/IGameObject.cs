@@ -21,6 +21,14 @@ namespace GameConstructLibrary
         }
 
         /// <summary>
+        /// The world within which the object is contained.
+        /// </summary>
+        World World
+        {
+            set;
+        }
+
+        /// <summary>
         /// The orientation of the object, given in XNA Matrix format.
         /// </summary>
         Matrix XNAOrientationMatrix

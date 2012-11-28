@@ -18,7 +18,7 @@ namespace finalProject
     /// </summary>
     public abstract class NonPlayerCreature : Creature
     {
-        private float mSneak;
+        protected float mSneak;
         public override float Sneak
         {
             get
@@ -27,7 +27,7 @@ namespace finalProject
             }
         }
 
-        private bool mIncapacitated;
+        protected bool mIncapacitated;
         public override bool Incapacitated
         {
             get
@@ -38,39 +38,25 @@ namespace finalProject
 
         public NonPlayerCreature(
             Vector3 position,
+            float height,
+            float radius,
+            float mass,
             float sensitivityRadius,
             Controller controller,
             Renderable renderable,
-            Entity entity,
             float visionAngle,
             float listeningSensitivity,
             float sneak,
             Part part
             )
-            : base(renderable, entity, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
+            : base(position, height, radius, mass, renderable, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
         {
             mSneak = sneak;
             mController = controller;
-            Game1.World.Add(part);
             AddPart(part);
         }
 
         public override void Damage(int damage)
-        {
-            mIncapacitated = true;
-        }
-
-        public override void Update(GameTime time)
-        {
-            base.Update(time);
-
-            foreach (IGameObject i in mCollidingObjects)
-            {
-                if (i is Creature)
-                {
-                    Damage(1);
-                }
-            }
-        }
+        {}
     }
 }
