@@ -15,13 +15,27 @@ namespace finalProject
         {
             base.Update(time, collidingCreatures);
 
-            if (collidingCreatures.Count() <= 1)
+            mTarget = null;
+
+            // if there are no foreign creatures colliding with the radial sensor, durdle.
+            bool foreignCreatures = false;
+            foreach (Creature i in collidingCreatures)
             {
+                if (i != mCreature)
+                {
+                    foreignCreatures = true;
+                    System.Console.WriteLine("found player");
+                    break;
+                }
+            }
+
+            if (!foreignCreatures)
+            {
+                System.Console.WriteLine("Durdling.");
                 Durdle();
                 return;
             }
 
-            mTarget = null;
             foreach (Creature cur in collidingCreatures)
             {
                 if (cur != mCreature)

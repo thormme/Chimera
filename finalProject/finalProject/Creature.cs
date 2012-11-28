@@ -86,14 +86,14 @@ namespace finalProject
 
         #region Public Methods
 
-        public Creature(Renderable renderable, Entity entity, RadialSensor radialSensor, Controller controller)
-            : base(renderable, entity)
+        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, RadialSensor radialSensor, Controller controller)
+            : base(renderable, new Cylinder(position, height, radius, mass))
         {
             mSensor = radialSensor;
             Forward = new Vector3(0.0f, 0.0f, 1.0f);
             mParts = new List<Part>();
             
-            CharacterController = new CharacterController(entity, 1.0f);
+            CharacterController = new CharacterController(Entity, 1.0f);
 
             mController = controller;
             controller.SetCreature(this);
@@ -109,7 +109,7 @@ namespace finalProject
             {
                 if (World != null)
                 {
-                    //World.Remove(mSensor);
+                    World.Remove(mSensor);
                     World.Space.Remove(CharacterController);
 
                     foreach (Part cur in mParts)
@@ -122,7 +122,7 @@ namespace finalProject
 
                 if (value != null)
                 {
-                    //value.Add(mSensor);
+                    value.Add(mSensor);
                     value.Space.Add(CharacterController);
 
                     foreach (Part part in mParts)
@@ -159,7 +159,10 @@ namespace finalProject
 
         public virtual void Jump()
         {
-            CharacterController.Jump();
+            if (!Incapacitated)
+            {
+                CharacterController.Jump();
+            }
         }
 
         /// <summary>
@@ -168,10 +171,13 @@ namespace finalProject
         /// <param name="direction">The direction to move relative to the facing direction.</param>
         public virtual void Move(Vector2 direction)
         {
-            CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
-            if (direction != Vector2.Zero)
+            if (!Incapacitated)
             {
-                Forward = new Vector3(direction.X, 0.0f, direction.Y);
+                CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
+                if (direction != Vector2.Zero)
+                {
+                    Forward = new Vector3(direction.X, 0.0f, direction.Y);
+                }
             }
         }
 
@@ -187,6 +193,11 @@ namespace finalProject
         /// <param name="gameTime">The game time.</param>
         public override void Update(GameTime gameTime)
         {
+            if (Incapacitated)
+            {
+                return;
+            }
+
             float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             mSensor.Update(gameTime);

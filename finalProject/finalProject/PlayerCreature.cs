@@ -13,6 +13,7 @@ using BEPUphysics.Entities;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Collidables;
 using FinalProject;
+using System;
 
 #endregion
 
@@ -74,7 +75,7 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(new AnimateModel("dude"), new Cylinder(position, 2.0f, 0.25f, 10.0f), new RadialSensor(4.0f), new PlayerController(viewPort))
+            : base(position, 2.0f, 0.25f, 10.0f, new AnimateModel("dude"), new RadialSensor(4.0f), new PlayerController(viewPort))
         {
             (mRenderable as AnimateModel).PlayAnimation("Take 001");
             Scale = new Vector3(0.025f);
