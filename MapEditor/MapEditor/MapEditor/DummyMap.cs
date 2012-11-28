@@ -124,7 +124,7 @@ namespace MapEditor
             DummyObject tempObject = new DummyObject();
             if (tempDialog.GetObject(out tempObject))
             {
-                tempObject.Position = new Vector3(position.X, position.Y + tempObject.Height, position.Z);
+                tempObject.Position = position;
                 Add(new DummyObject(tempObject));
             }
         }
@@ -195,7 +195,7 @@ namespace MapEditor
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X / scale.X, (obj.Position.Y + obj.Height) / scale.Y, obj.Position.Z / scale.Z);
+                obj.Position = new Vector3(obj.Position.X, obj.Position.Y + obj.Height, obj.Position.Z);
             }
 
             // Save the rest of the level
@@ -203,7 +203,7 @@ namespace MapEditor
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X * scale.X, (obj.Position.Y - obj.Height) * scale.Y, obj.Position.Z * scale.Z);
+                obj.Position = new Vector3(obj.Position.X, obj.Position.Y - obj.Height, obj.Position.Z);
             }
 
         }
@@ -222,7 +222,7 @@ namespace MapEditor
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X * scale.X, (obj.Position.Y - obj.Height) * scale.Y, obj.Position.Z * scale.Z);
+                obj.Position = new Vector3(obj.Position.X, obj.Position.Y - obj.Height, obj.Position.Z);
             }
 
         }
@@ -240,7 +240,7 @@ namespace MapEditor
                 Ray ray = new Ray(new Vector3(obj.Position.X, 1000.0f, obj.Position.Z), new Vector3(0, -1, 0));
                 RayHit result;
                 mTerrainPhysics.StaticCollidable.RayCast(ray, length, out result);
-                obj.Position = new Vector3 (result.Location.X, result.Location.Y + obj.Height, result.Location.Z);
+                obj.Position = result.Location;
             }
 
         }
@@ -251,7 +251,7 @@ namespace MapEditor
             foreach (DummyObject obj in mDummies)
             {
                 InanimateModel model = new InanimateModel(obj.Model);
-                model.Render(obj.Position, obj.Orientation, obj.Scale);
+                model.Render(new Vector3(obj.Position.X, obj.Position.Y + obj.Height * scale.Y, obj.Position.Z), obj.Orientation, obj.Scale);
             }
         }
 

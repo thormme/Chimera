@@ -57,6 +57,7 @@ namespace finalProject
         private void Initialize()
         {
             mSpawnTime = 0.0f;
+            mCreatures = new List<Creature>();
         }
 
         public void Update(Microsoft.Xna.Framework.GameTime time)
@@ -70,11 +71,12 @@ namespace finalProject
 
         private void CheckDead()
         {
-
+            List<Creature> temp = new List<Creature>();
             foreach (Creature creature in mCreatures)
             {
-                if (creature.Incapacitated) mCreatures.Remove(creature);
+                if (!creature.Incapacitated) temp.Add(creature);
             }
+            mCreatures = temp;
 
         }
 
@@ -83,7 +85,6 @@ namespace finalProject
 
             if (mSpawnWait <= mSpawnTime && mCreatures.Count < mMaxSpawned)
             {
-
                 mSpawnTime = 0.0f;
 
                 float radius = ((float)Rand.rand.Next() / Int32.MaxValue) * mSpawnRadius; // Randomize a distance from center of spawner
@@ -115,12 +116,14 @@ namespace finalProject
                 RayCastResult resultDown;
                 if (World.Space.RayCast(rayDown, 2.0f * mSpawnRadius, out resultDown)) creaturePosition.Y = resultDown.HitData.Location.Y;
                 
+
                 // Only parameter for a creature is position
                 object parameters = new object();
                 parameters = resultDown.HitData.Location;
                 object obj = Activator.CreateInstance(mCreatureType, parameters);
 
                 mCreatures.Add(obj as Creature);
+                World.Add(obj as Creature);
 
             }
         }
