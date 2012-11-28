@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DummyObject>
+    <Type>finalProject.Spawner, finalProject</Type>
+    <Model>box</Model>
+    <Parameters>
+      <string>DummyCreature</string>
+      <string>30</string>
+      <string>10</string>
+      <string>1</string>
+    </Parameters>
+    <Position>
+      <X>46.33239</X>
+      <Y>19.1665649</Y>
+      <Z>-48.4514465</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+</object>
