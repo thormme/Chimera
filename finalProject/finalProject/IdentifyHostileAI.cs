@@ -24,14 +24,12 @@ namespace finalProject
                 if (i != mCreature)
                 {
                     foreignCreatures = true;
-                    System.Console.WriteLine("found player");
                     break;
                 }
             }
 
             if (!foreignCreatures)
             {
-                System.Console.WriteLine("Durdling.");
                 Durdle();
                 return;
             }

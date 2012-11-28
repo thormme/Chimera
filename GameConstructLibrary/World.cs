@@ -104,7 +104,14 @@ namespace GameConstructLibrary
 
         public void Update(GameTime gameTime)
         {
-            Space.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            try
+            {
+                Space.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            }
+            catch (SystemException)
+            {
+                // Don't update
+            }
 
             foreach (IActor actor in mActors)
             {
