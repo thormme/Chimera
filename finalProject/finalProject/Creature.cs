@@ -23,11 +23,47 @@ namespace finalProject
     /// </summary>
     abstract public class Creature : Actor
     {
-        #region Fields
+        /// <summary>
+        /// Bone names which may be available for attaching parts.
+        /// </summary>
+        public enum PartBone
+        {
+            ArmLeft1Cap, ArmLeft2Cap, ArmLeft3Cap,
+            ArmRight1Cap, ArmRight2Cap, ArmRight3Cap,
 
-        protected List<Part> mParts;
-        protected Controller mController;
+            LegFrontLeft1Cap, LegFrontLeft2Cap, LegFrontLeft3Cap,
+            LegFrontRight1Cap, LegFrontRight2Cap, LegFrontRight3Cap,
+            LegRearLeft1Cap, LegRearLeft2Cap, LegRearLeft3Cap,
+            LegRearRight1Cap, LegRearRight2Cap, LegRearRight3Cap,
+
+            HeadLeftCap, HeadCenterCap, HeadRightCap,
+
+            Spine1Cap, Spine2Cap, Spine3Cap
+        }
+
+        #region Fields
+        public class PartAttachment
+        {
+            public Part Part;
+            public List<PartBone> Bones;
+
+            public PartAttachment(Part part, List<PartBone> bones)
+            {
+                Part = part;
+                Bones = bones;
+            }
+        }
+
+        protected const float MoveSpeed = 50.0f;
+        protected const float JumpVelocity = 10.0f;
+        protected Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
+
         protected RadialSensor mSensor;
+
+        protected List<PartAttachment> mPartAttachments;
+        protected List<PartBone> mUnusedPartBones;
+
+        protected Controller mController;
         
         #endregion
 
@@ -47,11 +83,11 @@ namespace finalProject
             private set;
         }
 
-        public List<Part> Parts
+        public List<PartAttachment> PartAttachments
         {
             get
             {
-                return mParts;
+                return mPartAttachments;
             }
         }
 
@@ -71,6 +107,8 @@ namespace finalProject
 
         protected virtual void OnDeath()
         {
+            World.Remove(mSensor);
+            mPartAttachments.Clear();
         }
 
         protected bool OnGround
@@ -91,8 +129,10 @@ namespace finalProject
         {
             mSensor = radialSensor;
             Forward = new Vector3(0.0f, 0.0f, 1.0f);
-            mParts = new List<Part>();
-            
+            mPartAttachments = new List<PartAttachment>();
+            mUnusedPartBones = GetUsablePartBones();
+            //Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
+
             CharacterController = new CharacterController(Entity, 1.0f);
 
             mController = controller;
@@ -111,11 +151,6 @@ namespace finalProject
                 {
                     World.Remove(mSensor);
                     World.Space.Remove(CharacterController);
-
-                    foreach (Part cur in mParts)
-                    {
-                        World.Remove(cur);
-                    }
                 }
 
                 base.World = value;
@@ -124,24 +159,127 @@ namespace finalProject
                 {
                     value.Add(mSensor);
                     value.Space.Add(CharacterController);
-
-                    foreach (Part part in mParts)
-                    {
-                        World.Add(part);
-                    }
                 }
             }
         }
 
+        protected virtual Matrix GetRenderTransform()
+        {
+            return Entity.WorldTransform * Matrix.CreateScale(Scale);
+        }
+
+        public override void Render()
+        {
+            if (mRenderable != null)
+            {
+                mRenderable.Render(GetRenderTransform());
+            }
+            RenderParts();
+        }
+
+        protected void RenderParts()
+        {
+            foreach (PartAttachment partAttachment in mPartAttachments)
+            {
+                foreach (PartBone partBone in partAttachment.Bones)
+                {
+                    int boneIndex = (mRenderable as AnimateModel).SkinningData.BoneIndices[partBone.ToString()];
+                    Matrix worldTransform = (mRenderable as AnimateModel).AnimationPlayer.GetWorldTransforms()[boneIndex] * GetRenderTransform();
+                    partAttachment.Part.Render(worldTransform);
+                }
+            }
+        }
+
+        protected abstract List<PartBone> GetUsablePartBones();
+
         /// <summary>
-        /// Attached part to the creature at specified bone.
+        /// Gets a list of bones to be used to connect a part.
         /// </summary>
-        /// <param name="part"></param>
+        /// <param name="part">The part to fetch bones for.</param>
+        /// <returns>List of bones for use by the part.</returns>
+        private List<PartBone> GetPartBonesForPart(Part part)
+        {
+            List<PartBone> partBones = new List<PartBone>();
+            // Look for the preferred bones first.
+            foreach (PartBone preferredBone in part.PreferredBones)
+            {
+                if (partBones.Count < part.LimbCount)
+                {
+                    if (mUnusedPartBones.Contains(preferredBone) && !partBones.Contains(preferredBone))
+                    {
+                        partBones.Add(preferredBone);
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // If too few preferred bones were available choose any free bone.
+            foreach (PartBone unusedBone in mUnusedPartBones)
+            {
+                if (partBones.Count < part.LimbCount)
+                {
+                    if (!partBones.Contains(unusedBone))
+                    {
+                        partBones.Add(unusedBone);
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return partBones;
+        }
+
+        /// <summary>
+        /// Attach part to the creature.
+        /// </summary>
+        /// <param name="part">The part to attach.</param>
         public void AddPart(Part part)
         {
-            mParts.Add(part);
+            List<PartBone> usedBones = GetPartBonesForPart(part);
+            foreach (PartBone partBone in usedBones)
+            {
+                mUnusedPartBones.Remove(partBone);
+            }
+
+            PartAttachment attachment = new PartAttachment(part, usedBones);
+
+            mPartAttachments.Add(attachment);
             part.Creature = this;
-            // STAPLE HERE
+        }
+
+        /// <summary>
+        /// Remove attached part from the creature.
+        /// </summary>
+        /// <param name="part"></param>
+        public void RemovePart(Part part)
+        {
+            PartAttachment partAttachment = null;
+            foreach (PartAttachment attachment in mPartAttachments)
+            {
+                if (part == attachment.Part)
+                {
+                    partAttachment = attachment;
+                    break;
+                }
+            }
+
+            if (partAttachment == null)
+            {
+                throw new Exception("Could not remove part as it is not owned by the creature");
+            }
+
+            foreach (PartBone partBone in partAttachment.Bones)
+            {
+                mUnusedPartBones.Add(partBone);
+            }
+
+            mPartAttachments.Remove(partAttachment);
+            partAttachment.Part.Creature = null;
         }
 
         /// <summary>
@@ -151,9 +289,9 @@ namespace finalProject
         /// <param name="direction">The direction in which to use the part.</param>
         public virtual void UsePart(int part, Vector3 direction)
         {
-            if (part < mParts.Count())
+            if (part < mPartAttachments.Count())
             {
-                mParts[part].Use(direction);
+                mPartAttachments[part].Part.Use(direction);
             }
         }
 
@@ -217,9 +355,9 @@ namespace finalProject
                 }
             }
 
-            foreach (Part p in mParts)
+            foreach (PartAttachment p in mPartAttachments)
             {
-                p.Update(gameTime);
+                p.Part.Update(gameTime);
             }
         }
 
