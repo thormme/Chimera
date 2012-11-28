@@ -18,9 +18,8 @@ namespace finalProject
             : base(
             new InanimateModel("sphere"),
             new Creature.PartBone[] { 
-                Creature.PartBone.ArmLeft1, 
-                Creature.PartBone.LegFrontLeft1, 
-                Creature.PartBone.L_Index1 
+                Creature.PartBone.ArmLeft1Cap, 
+                Creature.PartBone.LegFrontLeft1Cap
             }, 
             1,
             new Vector3(),

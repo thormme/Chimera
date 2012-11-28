@@ -28,19 +28,17 @@ namespace finalProject
         /// </summary>
         public enum PartBone
         {
-            ArmLeft1, ArmLeft2, ArmLeft3,
-            ArmRight1, ArmRight2, ArmRight3,
+            ArmLeft1Cap, ArmLeft2Cap, ArmLeft3Cap,
+            ArmRight1Cap, ArmRight2Cap, ArmRight3Cap,
 
-            LegFrontLeft1, LegFrontLeft2, LegFrontLeft3,
-            LegFrontRight1, LegFrontRight2, LegFrontRight3,
-            LegRearLeft1, LegRearLeft2, LegRearLeft3,
-            LegRearRight1, LegRearRight2, LegRearRight3,
+            LegFrontLeft1Cap, LegFrontLeft2Cap, LegFrontLeft3Cap,
+            LegFrontRight1Cap, LegFrontRight2Cap, LegFrontRight3Cap,
+            LegRearLeft1Cap, LegRearLeft2Cap, LegRearLeft3Cap,
+            LegRearRight1Cap, LegRearRight2Cap, LegRearRight3Cap,
 
-            HeadLeft, HeadCenter, HeadRight,
+            HeadLeftCap, HeadCenterCap, HeadRightCap,
 
-            Spine1, Spine2, Spine3,
-
-            L_Index1
+            Spine1Cap, Spine2Cap, Spine3Cap
         }
 
         #region Fields
@@ -66,7 +64,6 @@ namespace finalProject
         protected List<PartBone> mUnusedPartBones;
 
         protected Controller mController;
-        protected RadialSensor mSensor;
         
         #endregion
 
@@ -110,7 +107,7 @@ namespace finalProject
 
         protected virtual void OnDeath()
         {
-            Game1.World.Remove(mSensor);
+            World.Remove(mSensor);
             mPartAttachments.Clear();
         }
 
@@ -136,7 +133,7 @@ namespace finalProject
             mUnusedPartBones = GetUsablePartBones();
             //Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
 
-            CharacterController = new CharacterController(entity, 1.0f);
+            CharacterController = new CharacterController(Entity, 1.0f);
 
             mController = controller;
             controller.SetCreature(this);
@@ -154,11 +151,6 @@ namespace finalProject
                 {
                     World.Remove(mSensor);
                     World.Space.Remove(CharacterController);
-
-                    foreach (Part cur in mParts)
-                    {
-                        World.Remove(cur);
-                    }
                 }
 
                 base.World = value;
@@ -167,11 +159,6 @@ namespace finalProject
                 {
                     value.Add(mSensor);
                     value.Space.Add(CharacterController);
-
-                    foreach (Part part in mParts)
-                    {
-                        World.Add(part);
-                    }
                 }
             }
         }

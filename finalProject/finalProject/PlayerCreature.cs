@@ -156,38 +156,37 @@ namespace finalProject
 
         protected override Matrix GetRenderTransform()
         {
-            return Matrix.CreateScale(Scale) * Matrix.CreateYawPitchRoll(MathHelper.PiOver2, 0, 0) * Entity.WorldTransform * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
+            return Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(MathHelper.Pi, 0, 0) * Entity.WorldTransform * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
         }
         #endregion
 
         protected override List<Creature.PartBone> GetUsablePartBones()
         {
             List<Creature.PartBone> bones = new List<PartBone>();
-            /*bones.Add(PartBone.ArmLeft1);
-            bones.Add(PartBone.ArmLeft2);
-            bones.Add(PartBone.ArmLeft3);
-            bones.Add(PartBone.ArmRight1);
-            bones.Add(PartBone.ArmRight2);
-            bones.Add(PartBone.ArmRight3);
-            bones.Add(PartBone.HeadCenter);
-            bones.Add(PartBone.HeadLeft);
-            bones.Add(PartBone.HeadRight);
-            bones.Add(PartBone.LegFrontLeft1);
-            bones.Add(PartBone.LegFrontLeft2);
-            bones.Add(PartBone.LegFrontLeft3);
-            bones.Add(PartBone.LegFrontRight1);
-            bones.Add(PartBone.LegFrontRight2);
-            bones.Add(PartBone.LegFrontRight3);
-            bones.Add(PartBone.LegRearLeft1);
-            bones.Add(PartBone.LegRearLeft2);
-            bones.Add(PartBone.LegRearLeft3);
-            bones.Add(PartBone.LegRearRight1);
-            bones.Add(PartBone.LegRearRight2);
-            bones.Add(PartBone.LegRearRight3);
-            bones.Add(PartBone.Spine1);
-            bones.Add(PartBone.Spine2);
-            bones.Add(PartBone.Spine3);*/
-            bones.Add(PartBone.L_Index1);
+            bones.Add(PartBone.ArmLeft1Cap);
+            bones.Add(PartBone.ArmLeft2Cap);
+            bones.Add(PartBone.ArmLeft3Cap);
+            bones.Add(PartBone.ArmRight1Cap);
+            bones.Add(PartBone.ArmRight2Cap);
+            bones.Add(PartBone.ArmRight3Cap);
+            bones.Add(PartBone.HeadCenterCap);
+            bones.Add(PartBone.HeadLeftCap);
+            bones.Add(PartBone.HeadRightCap);
+            bones.Add(PartBone.LegFrontLeft1Cap);
+            bones.Add(PartBone.LegFrontLeft2Cap);
+            bones.Add(PartBone.LegFrontLeft3Cap);
+            bones.Add(PartBone.LegFrontRight1Cap);
+            bones.Add(PartBone.LegFrontRight2Cap);
+            bones.Add(PartBone.LegFrontRight3Cap);
+            bones.Add(PartBone.LegRearLeft1Cap);
+            bones.Add(PartBone.LegRearLeft2Cap);
+            bones.Add(PartBone.LegRearLeft3Cap);
+            bones.Add(PartBone.LegRearRight1Cap);
+            bones.Add(PartBone.LegRearRight2Cap);
+            bones.Add(PartBone.LegRearRight3Cap);
+            bones.Add(PartBone.Spine1Cap);
+            bones.Add(PartBone.Spine2Cap);
+            bones.Add(PartBone.Spine3Cap);
 
             return bones;
         }

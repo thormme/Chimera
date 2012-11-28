@@ -166,30 +166,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\trial.bmp">
-      <Name>trial</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\trial_texture_high.tga">
-      <Name>trial_texture_high</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\maps\trial_texture_low.tga">
-      <Name>trial_texture_low</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\trial_texture_medium.tga">
-      <Name>trial_texture_medium</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="models\playerBean_jump.FBX">
       <Name>playerBean_jump</Name>
       <Importer>FbxImporter</Importer>

@@ -15,7 +15,7 @@ namespace finalProject
     public class DummyCreature : NonPlayerCreature
     {
         public DummyCreature(Vector3 position)
-            : base(position, 2.0f, 0.25f, 10.0f, 10.0f, new HostileAI(), new InanimateModel("box"), MathHelper.PiOver4, 10.0f, 10.0f, new DummyPart(position + new Vector3(15.0f, 0.0f, 15.0f)))
+            : base(position, 2.0f, 0.25f, 10.0f, 10.0f, new HostileAI(), new InanimateModel("box"), MathHelper.PiOver4, 10.0f, 10.0f, new DummyPart())
         {
             Entity.Position = position;
             mIncapacitated = false;
@@ -42,7 +42,7 @@ namespace finalProject
         protected override List<Creature.PartBone> GetUsablePartBones()
         {
             List<Creature.PartBone> bones = new List<PartBone>();
-            bones.Add(PartBone.LegFrontLeft1);
+            bones.Add(PartBone.LegFrontLeft1Cap);
 
             return bones;
         }
