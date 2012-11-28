@@ -159,7 +159,10 @@ namespace finalProject
 
         public virtual void Jump()
         {
-            CharacterController.Jump();
+            if (!Incapacitated)
+            {
+                CharacterController.Jump();
+            }
         }
 
         /// <summary>
@@ -168,10 +171,13 @@ namespace finalProject
         /// <param name="direction">The direction to move relative to the facing direction.</param>
         public virtual void Move(Vector2 direction)
         {
-            CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
-            if (direction != Vector2.Zero)
+            if (!Incapacitated)
             {
-                Forward = new Vector3(direction.X, 0.0f, direction.Y);
+                CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
+                if (direction != Vector2.Zero)
+                {
+                    Forward = new Vector3(direction.X, 0.0f, direction.Y);
+                }
             }
         }
 
@@ -187,6 +193,11 @@ namespace finalProject
         /// <param name="gameTime">The game time.</param>
         public override void Update(GameTime gameTime)
         {
+            if (Incapacitated)
+            {
+                return;
+            }
+
             float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             mSensor.Update(gameTime);

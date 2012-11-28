@@ -141,12 +141,27 @@ namespace GameConstructLibrary
 
         public virtual void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
         {
-            mCollidingObjects.Add(other.Tag as IGameObject);
+            if (other.Tag is CharacterSynchronizer)
+            {
+                CharacterSynchronizer synchronizer = (other.Tag as CharacterSynchronizer);
+                mCollidingObjects.Add(synchronizer.body.Tag as IGameObject);
+            }
+            else
+            {
+                mCollidingObjects.Add(other.Tag as IGameObject);
+            }
         }
 
         public void CollisionEnded(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
         {
-            mCollidingObjects.Remove(other.Tag as IGameObject);
+            if (other.Tag is CharacterSynchronizer)
+            {
+                mCollidingObjects.Remove((other.Tag as CharacterSynchronizer).body.Tag as IGameObject);
+            }
+            else
+            {
+                mCollidingObjects.Remove(other.Tag as IGameObject);
+            }
         }
     }
 }

@@ -5,6 +5,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using BEPUphysics.Entities.Prefabs;
+using GameConstructLibrary;
+using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.Collidables;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject
 {
@@ -28,7 +32,21 @@ namespace finalProject
 
         public override void Damage(int damage)
         {
+            Move(Vector2.Zero);
             mIncapacitated = true;
+        }
+
+        public override void Update(GameTime time)
+        {
+            base.Update(time);
+
+            foreach (IGameObject i in mCollidingObjects)
+            {
+                if (i is Creature)
+                {
+                    Damage(1);
+                }
+            }
         }
     }
 }

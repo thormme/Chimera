@@ -26,7 +26,7 @@ namespace finalProject
         private Creature mTargetCreature;
         private Vector3 mTargetPosition;
         private bool mFollowPosition;
-        private float mMagnitude;
+        private float mSpeed;
 
         private StateTimer<DurdleState> mDurdleTimer;
 
@@ -58,41 +58,29 @@ namespace finalProject
                 active = true;
             }
 
-            if (!active)
-            {
-                return;
-            }
-
-            if (mCreature.Incapacitated)
-            {
-                return;
-            }
+            //if (!active)
+            //{
+            //    return;
+            //}
 
             mDurdleTimer.Update(time);
             if (mTargetCreature != null)
             {
-                MoveTo(mTargetCreature.Position, mMagnitude);
+                MoveTo(mTargetCreature.Position, mSpeed);
                 mCreature.UsePart(0, mTargetCreature.Position - mCreature.Position);
             }
-
-            if (mFollowPosition)
+            else if (mFollowPosition)
             {
-                MoveTo(mTargetPosition, mMagnitude);
+                MoveTo(mTargetPosition, mSpeed);
                 mCreature.UsePart(0, mTargetPosition - mCreature.Position);
             }
-
-            if (mDurdleTimer.NewState() == DurdleState.Move)
+            else if (mDurdleTimer.NewState() == DurdleState.Move)
             {
                 // TODO: For some reason this seems to go into one quadrant.
                 mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleMoveTime));
 
                 Vector3 newDirection = new Vector3(Rand.NextFloat(2.0f) - 1.0f, 0.0f, Rand.NextFloat(2.0f) - 1.0f);
-                newDirection.Normalize();
-                Console.WriteLine(newDirection.X + " " + newDirection.Z);
-                //newDirection *= (float)Math.Sqrt(1 - mCreature.Forward.Y * mCreature.Forward.Y);
-                //newDirection.Y = mCreature.Forward.Y;
-                mCreature.Forward = newDirection;
-                mCreature.Move(new Vector2(0.0f, Rand.NextFloat(MaxDurdleSpeed)));
+                MoveCreature(newDirection, Rand.NextFloat(MaxDurdleSpeed));
 
                 mDurdleTimer.ResetNewState();
             }
@@ -104,10 +92,17 @@ namespace finalProject
             }
         }
 
-        private void MoveTo(Vector3 position, float magnitude)
+        private void MoveTo(Vector3 position, float speed)
         {
-            mCreature.Forward = Vector3.Normalize((position - mCreature.Position) * magnitude);
-            mCreature.Move(new Vector2(0.0f, Math.Abs(magnitude)));
+            Vector3 direction = position - mCreature.Position;
+            MoveCreature(direction, speed);
+        }
+
+        private void MoveCreature(Vector3 direction, float speed)
+        {
+            Vector2 dir = new Vector2(direction.X, direction.Z);
+            dir.Normalize();
+            mCreature.Move(dir * speed);
         }
 
         public virtual void Stop()
@@ -116,15 +111,18 @@ namespace finalProject
             mDurdleTimer.ResetNewState();
             if (mCreature != null)
             {
-                mCreature.Move(new Vector2(0.0f));
+                mCreature.Move(Vector2.Zero);
             }
             mTargetCreature = null;
-            mMagnitude = 0.0f;
+            mFollowPosition = false;
+            mSpeed = 0.0f;
         }
 
         public virtual void Follow(Vector3 position)
         {
             Stop();
+            mFollowPosition = true;
+            mTargetPosition = position;
             MoveTo(position, 1.0f);
         }
 
@@ -132,16 +130,16 @@ namespace finalProject
         {
             Stop();
             mTargetCreature = creature;
-            mMagnitude = 1.0f;
-            MoveTo(mTargetCreature.Position, mMagnitude);
+            mSpeed = 1.0f;
+            MoveTo(mTargetCreature.Position, mSpeed);
         }
 
         public virtual void Run(Creature creature)
         {
             Stop();
             mTargetCreature = creature;
-            mMagnitude = -1.0f;
-            MoveTo(mTargetCreature.Position, mMagnitude);
+            mSpeed = -1.0f;
+            MoveTo(mTargetCreature.Position, mSpeed);
         }
     }
 }

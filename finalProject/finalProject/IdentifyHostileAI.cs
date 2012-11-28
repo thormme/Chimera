@@ -17,7 +17,7 @@ namespace finalProject
 
             if (collidingCreatures.Count() <= 1)
             {
-                //Durdle();
+                Durdle();
                 return;
             }
 

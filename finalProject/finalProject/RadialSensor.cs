@@ -54,10 +54,10 @@ namespace finalProject
                 if (i as Creature != null)
                 {
                     mCollidingCreatures.Add(i as Creature);
-                    System.Console.WriteLine(i);
+                    //System.Console.WriteLine(i);
                 }
             }
-            System.Console.WriteLine("done");
+            //System.Console.WriteLine("done");
 
             mCollidingCreatures.Sort(new ClosestPhysicsObject(Position));
         }
