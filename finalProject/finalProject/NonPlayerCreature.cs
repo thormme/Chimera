@@ -51,7 +51,6 @@ namespace finalProject
         {
             mSneak = sneak;
             mController = controller;
-            Game1.World.Add(part);
             AddPart(part);
         }
 

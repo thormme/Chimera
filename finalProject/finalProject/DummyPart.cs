@@ -10,11 +10,20 @@ namespace finalProject
 {
     class DummyPart : Part
     {
-        public DummyPart(Vector3 position)
-            : base(new InanimateModel("box"), new Box(new Vector3(0.0f), 025.0f, 025.0f, 025.0f, 1.0f))
+        public DummyPart()
+            : base(
+            new InanimateModel("sphere"),
+            new Creature.PartBone[] { 
+                Creature.PartBone.ArmLeft1, 
+                Creature.PartBone.LegFrontLeft1, 
+                Creature.PartBone.L_Index1 
+            }, 
+            1,
+            new Vector3(),
+            Matrix.CreateFromQuaternion(new Quaternion()),
+            new Vector3(1.0f)
+            )
         {
-            Position = position;
-            Scale = new Vector3(025.0f, 025.0f, 025.0f);
         }
         public override void Update(GameTime time) { }
 

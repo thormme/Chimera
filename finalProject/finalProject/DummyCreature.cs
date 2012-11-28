@@ -20,7 +20,7 @@ namespace finalProject
         }
 
         public DummyCreature(Vector3 position)
-            : base(position, 20.0f, new AIController(), new InanimateModel("box"), new Box(new Vector3(0), 10.0f, 10.0f, 10.0f, 1.0f), MathHelper.PiOver4, 10.0f, 10.0f, new DummyPart(position + new Vector3(25.0f, 0.0f, 0.0f)))
+            : base(position, 20.0f, new AIController(), new InanimateModel("box"), new Box(new Vector3(0), 10.0f, 10.0f, 10.0f, 1.0f), MathHelper.PiOver4, 10.0f, 10.0f, new DummyPart())
         { Scale = new Vector3(10.0f); }
 
         public override void Damage(int damage)
@@ -31,6 +31,14 @@ namespace finalProject
         public void Update(GameTime time)
         {
             base.Update(time);
+        }
+
+        protected override List<Creature.PartBone> GetUsablePartBones()
+        {
+            List<Creature.PartBone> bones = new List<PartBone>();
+            bones.Add(PartBone.LegFrontLeft1);
+
+            return bones;
         }
     }
 }

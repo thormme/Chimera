@@ -88,13 +88,13 @@ namespace finalProject
         {
             while (damage-- > 0)
             {
-                if (mParts.Count() == 0)
+                if (mPartAttachments.Count() == 0)
                 {
                     // die?
                     return;
                 }
 
-                mParts.Remove(mParts[Rand.rand.Next(mParts.Count())]);
+                mPartAttachments.Remove(mPartAttachments[Rand.rand.Next(mPartAttachments.Count())]);
             }
         }
         
@@ -105,9 +105,10 @@ namespace finalProject
         {
             foreach (Creature cur in mSensor.CollidingCreatures)
             {
-                if (cur.Incapacitated)
+                if (cur.Incapacitated && cur.PartAttachments.Count > 0)
                 {
-                    AddPart(cur.Parts[0]);
+                    cur.RemovePart(cur.PartAttachments[0].Part);
+                    AddPart(cur.PartAttachments[0].Part);
                     return;
                 }
             }
@@ -133,11 +134,43 @@ namespace finalProject
             base.Update(gameTime);
         }
 
-        public override void Render()
+        protected override Matrix GetRenderTransform()
         {
-            mRenderable.Render(CharacterController.Body.Position + new Vector3(0.0f, -1.0f, 0.0f), XNAOrientationMatrix.Forward, Scale);
+            return Matrix.CreateScale(Scale) * Entity.WorldTransform * Matrix.CreateTranslation(new Vector3(0, -1, 0));
         }
         #endregion
+
+        protected override List<Creature.PartBone> GetUsablePartBones()
+        {
+            List<Creature.PartBone> bones = new List<PartBone>();
+            /*bones.Add(PartBone.ArmLeft1);
+            bones.Add(PartBone.ArmLeft2);
+            bones.Add(PartBone.ArmLeft3);
+            bones.Add(PartBone.ArmRight1);
+            bones.Add(PartBone.ArmRight2);
+            bones.Add(PartBone.ArmRight3);
+            bones.Add(PartBone.HeadCenter);
+            bones.Add(PartBone.HeadLeft);
+            bones.Add(PartBone.HeadRight);
+            bones.Add(PartBone.LegFrontLeft1);
+            bones.Add(PartBone.LegFrontLeft2);
+            bones.Add(PartBone.LegFrontLeft3);
+            bones.Add(PartBone.LegFrontRight1);
+            bones.Add(PartBone.LegFrontRight2);
+            bones.Add(PartBone.LegFrontRight3);
+            bones.Add(PartBone.LegRearLeft1);
+            bones.Add(PartBone.LegRearLeft2);
+            bones.Add(PartBone.LegRearLeft3);
+            bones.Add(PartBone.LegRearRight1);
+            bones.Add(PartBone.LegRearRight2);
+            bones.Add(PartBone.LegRearRight3);
+            bones.Add(PartBone.Spine1);
+            bones.Add(PartBone.Spine2);
+            bones.Add(PartBone.Spine3);*/
+            bones.Add(PartBone.L_Index1);
+
+            return bones;
+        }
     }
 
     public enum Stance { Standing, Walking };
