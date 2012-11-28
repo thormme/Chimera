@@ -5,32 +5,38 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using BEPUphysics.Entities.Prefabs;
+using GameConstructLibrary;
+using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.Collidables;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject
 {
     public class DummyCreature : NonPlayerCreature
     {
-        private bool mIncapacitated;
-        public override bool Incapacitated
-        {
-            get
-            {
-                return mIncapacitated;
-            }
-        }
-
         public DummyCreature(Vector3 position)
-            : base(position, 20.0f, new AIController(), new InanimateModel("box"), new Box(new Vector3(0), 10.0f, 10.0f, 10.0f, 1.0f), MathHelper.PiOver4, 10.0f, 10.0f, new DummyPart())
-        { Scale = new Vector3(10.0f); }
-
+            : base(position, 2.0f, 0.25f, 10.0f, 10.0f, new HostileAI(), new InanimateModel("box"), MathHelper.PiOver4, 10.0f, 10.0f, new DummyPart(position + new Vector3(15.0f, 0.0f, 15.0f)))
+        {
+            Entity.Position = position;
+            mIncapacitated = false;
+        }
         public override void Damage(int damage)
         {
+            Move(Vector2.Zero);
             mIncapacitated = true;
         }
 
-        public void Update(GameTime time)
+        public override void Update(GameTime time)
         {
             base.Update(time);
+
+            foreach (IGameObject i in mCollidingObjects)
+            {
+                if (i is Creature)
+                {
+                    Damage(1);
+                }
+            }
         }
 
         protected override List<Creature.PartBone> GetUsablePartBones()

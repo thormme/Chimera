@@ -207,6 +207,7 @@
   <ItemGroup>
     <Compile Include="Dialog.cs" />
     <Compile Include="Editor.cs" />
+    <Compile Include="FPSCamera.cs" />
     <Compile Include="GameMapEditor.cs" />
     <Compile Include="HeightEditorDialog.cs" />
     <Compile Include="HotkeyDialog.cs" />

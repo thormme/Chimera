@@ -7,8 +7,9 @@ using BEPUphysics.Collidables;
 using GraphicsLibrary;
 using Microsoft.Xna.Framework.Graphics;
 using BEPUphysics.MathExtensions;
+using GameConstructLibrary;
 
-namespace GameConstructLibrary
+namespace finalProject
 {
     /// <summary>
     /// An immovable prop with a model and mesh based collision.
@@ -53,6 +54,12 @@ namespace GameConstructLibrary
         {
             get;
             private set;
+        }
+
+        public World World
+        {
+            protected get;
+            set;
         }
 
         public Matrix XNAOrientationMatrix

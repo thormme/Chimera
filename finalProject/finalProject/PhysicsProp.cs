@@ -9,8 +9,9 @@ using BEPUphysics.MathExtensions;
 using BEPUphysics.Entities;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.CollisionShapes;
+using GameConstructLibrary;
 
-namespace GameConstructLibrary
+namespace finalProject
 {
     public class PhysicsProp : PhysicsObject
     {

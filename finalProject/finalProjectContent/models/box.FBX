@@ -30,14 +30,14 @@ FBXHeaderExtension:  {
 			Comment: ""
 		}
 		Properties70:  {
-			P: "DocumentUrl", "KString", "Url", "", "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\box.FBX"
-			P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\box.FBX"
+			P: "DocumentUrl", "KString", "Url", "", "box.FBX"
+			P: "SrcDocumentUrl", "KString", "Url", "", "box.FBX"
 			P: "Original", "Compound", "", ""
 			P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "Original|ApplicationName", "KString", "", "", "3ds Max"
 			P: "Original|ApplicationVersion", "KString", "", "", "2013"
 			P: "Original|DateTime_GMT", "DateTime", "", "", "16/11/2012 19:08:45.040"
-			P: "Original|FileName", "KString", "", "", "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\box.FBX"
+			P: "Original|FileName", "KString", "", "", "box.FBX"
 			P: "LastSaved", "Compound", "", ""
 			P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "LastSaved|ApplicationName", "KString", "", "", "3ds Max"
@@ -407,10 +407,10 @@ Objects:  {
 	Video: 1039997584, "Video::Map #1", "Clip" {
 		Type: "Clip"
 		Properties70:  {
-			P: "Path", "KString", "XRefUrl", "", "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\purple_block.bmp"
+			P: "Path", "KString", "XRefUrl", "", "purple_block.bmp"
 		}
 		UseMipMap: 0
-		Filename: "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\purple_block.bmp"
+		Filename: "purple_block.bmp"
 		RelativeFilename: "purple_block.bmp"
 	}
 	Texture: 1061233968, "Texture::Map #1", "" {
@@ -422,7 +422,7 @@ Objects:  {
 			P: "UseMaterial", "bool", "", "",1
 		}
 		Media: "Video::Map #1"
-		FileName: "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\purple_block.bmp"
+		FileName: "purple_block.bmp"
 		RelativeFilename: "purple_block.bmp"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1

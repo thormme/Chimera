@@ -13,6 +13,7 @@ using BEPUphysics.Entities;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Collidables;
 using FinalProject;
+using System;
 
 #endregion
 
@@ -27,6 +28,10 @@ namespace finalProject
 
         private const float mPlayerRadius = 1.0f;
         private const float mSneak = 10.0f;
+
+        private AnimateModel mStandingModel;
+        private AnimateModel mWalkingModel;
+        private AnimateModel mJumpingModel;
 
         #endregion
 
@@ -74,10 +79,19 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(new AnimateModel("dude"), new Cylinder(position, 2.0f, 0.25f, 10.0f), new RadialSensor(4.0f), new PlayerController(viewPort))
+            : base(position, 1.8f, 1.2f, 10.0f, new AnimateModel("playerBean_stand"), new RadialSensor(4.0f), new PlayerController(viewPort))
         {
             (mRenderable as AnimateModel).PlayAnimation("Take 001");
-            Scale = new Vector3(0.025f); 
+            Scale = new Vector3(0.004f);
+
+            mStandingModel = new AnimateModel("playerBean_stand");
+            mStandingModel.PlayAnimation("Take 001");
+
+            mWalkingModel = new AnimateModel("playerBean_walk");
+            mWalkingModel.PlayAnimation("Take 001");
+
+            mJumpingModel = new AnimateModel("playerBean_jump");
+            mJumpingModel.PlayAnimation("Take 001");
         }
 
         /// <summary>
@@ -124,19 +138,25 @@ namespace finalProject
 
             if (mStance == Stance.Standing)
             {
-                model.Update(new GameTime());
+                mRenderable = mStandingModel;
             }
             else if (mStance == Stance.Walking)
             {
-                model.Update(gameTime);
+                mRenderable = mWalkingModel;
             }
+            else if (mStance == Stance.Jumping)
+            {
+                mRenderable = mJumpingModel;
+            }
+
+            model.Update(gameTime);
 
             base.Update(gameTime);
         }
 
         protected override Matrix GetRenderTransform()
         {
-            return Matrix.CreateScale(Scale) * Entity.WorldTransform * Matrix.CreateTranslation(new Vector3(0, -1, 0));
+            return Matrix.CreateScale(Scale) * Matrix.CreateYawPitchRoll(MathHelper.PiOver2, 0, 0) * Entity.WorldTransform * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
         }
         #endregion
 
@@ -173,5 +193,5 @@ namespace finalProject
         }
     }
 
-    public enum Stance { Standing, Walking };
+    public enum Stance { Standing, Walking, Jumping };
 }

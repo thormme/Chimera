@@ -86,7 +86,7 @@ namespace MapEditor
             List<string> parameters = new List<string>();
             for (int count = 0; count < mParameters.Count(); count++)
             {
-                string parameter = mParameters[count].Split(' ')[0] + " " + mParameterInput[count].Text;
+                string parameter = mParameterInput[count].Text;
                 Console.WriteLine(parameter);
                 parameters.Add(parameter);
             }
