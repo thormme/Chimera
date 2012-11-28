@@ -31,6 +31,7 @@ namespace finalProject
         private World World;
 
         PlayerCreature player;
+        DummyCreature dummyCreature;
         TerrainPhysics terrain;
 
         public Game1()
@@ -87,6 +88,9 @@ namespace finalProject
 
             player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 120.0f, 0.0f));
             World.Add(player);
+
+            dummyCreature = new DummyCreature(new Vector3(10.0f, 1.0f, 10.0f));
+            World.Add(dummyCreature);
         }
 
         /// <summary>

@@ -37,20 +37,22 @@ namespace finalProject
         }
 
         public NonPlayerCreature(
+            Vector3 position,
+            float height,
+            float radius,
+            float mass,
             float sensitivityRadius,
             Controller controller,
             Renderable renderable,
-            Entity entity,
             float visionAngle,
             float listeningSensitivity,
             float sneak,
             Part part
             )
-            : base(renderable, entity, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
+            : base(position, height, radius, mass, renderable, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
         {
             mSneak = sneak;
             mController = controller;
-            World.Add(part);
             AddPart(part);
         }
 
