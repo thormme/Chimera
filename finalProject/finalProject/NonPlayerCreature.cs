@@ -18,7 +18,7 @@ namespace finalProject
     /// </summary>
     public abstract class NonPlayerCreature : Creature
     {
-        private float mSneak;
+        protected float mSneak;
         public override float Sneak
         {
             get
@@ -27,7 +27,7 @@ namespace finalProject
             }
         }
 
-        private bool mIncapacitated;
+        protected bool mIncapacitated;
         public override bool Incapacitated
         {
             get
@@ -57,21 +57,6 @@ namespace finalProject
         }
 
         public override void Damage(int damage)
-        {
-            mIncapacitated = true;
-        }
-
-        public override void Update(GameTime time)
-        {
-            base.Update(time);
-
-            foreach (IGameObject i in mCollidingObjects)
-            {
-                if (i is Creature)
-                {
-                    Damage(1);
-                }
-            }
-        }
+        {}
     }
 }

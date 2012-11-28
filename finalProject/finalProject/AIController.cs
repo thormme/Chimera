@@ -23,6 +23,8 @@ namespace finalProject
         private const int MaxDurdleWaitTime = 1;
         private const float MaxDurdleSpeed = 1.0f;
 
+        private const float RunSpeed = 0.025f;
+
         private Creature mTargetCreature;
         private Vector3 mTargetPosition;
         private bool mFollowPosition;
@@ -123,14 +125,14 @@ namespace finalProject
             Stop();
             mFollowPosition = true;
             mTargetPosition = position;
-            MoveTo(position, 1.0f);
+            MoveTo(position, RunSpeed);
         }
 
         public virtual void Follow(Creature creature)
         {
             Stop();
             mTargetCreature = creature;
-            mSpeed = 1.0f;
+            mSpeed = RunSpeed;
             MoveTo(mTargetCreature.Position, mSpeed);
         }
 
@@ -138,7 +140,7 @@ namespace finalProject
         {
             Stop();
             mTargetCreature = creature;
-            mSpeed = -1.0f;
+            mSpeed = -RunSpeed;
             MoveTo(mTargetCreature.Position, mSpeed);
         }
     }
