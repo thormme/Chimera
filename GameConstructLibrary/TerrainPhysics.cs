@@ -55,6 +55,12 @@ namespace GameConstructLibrary
             private set;
         }
 
+        public World World
+        {
+            protected get;
+            set;
+        }
+
         public Matrix XNAOrientationMatrix
         {
             get;

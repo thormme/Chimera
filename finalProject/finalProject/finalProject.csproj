@@ -139,16 +139,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AIController.cs" />
-    <Compile Include="Camera.cs" />
+    <Compile Include="ChaseCamera.cs" />
     <Compile Include="Spawner.cs" />
     <Compile Include="ClosestPhysicsObject.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Creature.cs" />
+    <Compile Include="DummyController.cs" />
     <Compile Include="DummyCreature.cs" />
     <Compile Include="DummyPart.cs" />
-    <Compile Include="HostileController.cs" />
+    <Compile Include="HostileAI.cs" />
+    <Compile Include="IdentifyHostileAI.cs" />
     <Compile Include="NonPlayerCreature.cs" />
     <Compile Include="Part.cs" />
+    <Compile Include="PassiveAI.cs" />
     <Compile Include="PlayerController.cs" />
     <Compile Include="PlayerCreature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -157,7 +160,7 @@
     <Compile Include="RadialSensor.cs" />
     <Compile Include="Rand.cs" />
     <Compile Include="SensitiveSensor.cs" />
-    <Compile Include="World.cs" />
+    <Compile Include="StateTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

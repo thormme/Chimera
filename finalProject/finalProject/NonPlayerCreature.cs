@@ -37,7 +37,6 @@ namespace finalProject
         }
 
         public NonPlayerCreature(
-            Vector3 position,
             float sensitivityRadius,
             Controller controller,
             Renderable renderable,
@@ -51,7 +50,7 @@ namespace finalProject
         {
             mSneak = sneak;
             mController = controller;
-            Game1.World.Add(part);
+            World.Add(part);
             AddPart(part);
         }
 
