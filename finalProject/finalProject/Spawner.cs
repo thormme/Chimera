@@ -36,9 +36,9 @@ namespace finalProject
         }
 
         private Type mCreatureType;
+        private float mSpawnRadius;
         private float mSpawnTime;
         private float mSpawnWait;
-        private float mSpawnRadius;
         private List<Creature> mCreatures;
         private int mMaxSpawned;
 
@@ -47,16 +47,16 @@ namespace finalProject
             Position = translation;
             XNAOrientationMatrix = Matrix.Identity;
             Scale = scale;
-            mCreatureType = Type.GetType("finalProject." + parameters[0] + ",finalProject");
-            mSpawnWait = Convert.ToSingle(parameters[1]);
-            mMaxSpawned = Convert.ToInt32(parameters[2]);
+            mCreatureType = Type.GetType("finalProject." + parameters[0] + ", finalProject");
+            mSpawnRadius = Convert.ToSingle(parameters[1]);
+            mSpawnWait = Convert.ToSingle(parameters[2]);
+            mMaxSpawned = Convert.ToInt32(parameters[3]);
             Initialize();
         }
 
         private void Initialize()
         {
             mSpawnTime = 0.0f;
-            mSpawnRadius = Scale.Y;
         }
 
         public void Update(Microsoft.Xna.Framework.GameTime time)
