@@ -136,6 +136,7 @@ namespace finalProject
                     {
                         Add(obj as IGameObject);
                     }
+
                 }
             }
 

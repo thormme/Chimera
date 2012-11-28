@@ -140,6 +140,7 @@
   <ItemGroup>
     <Compile Include="AIController.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Spawner.cs" />
     <Compile Include="ClosestPhysicsObject.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Creature.cs" />
