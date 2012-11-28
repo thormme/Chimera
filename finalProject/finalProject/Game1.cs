@@ -83,14 +83,16 @@ namespace finalProject
             GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
 
-            terrain = new TerrainPhysics("default", new Vector3(0.0f, 0.0f, 0.0f), new Quaternion(), new Vector3(2.5f));
-            World.Add(terrain);
+            //terrain = new TerrainPhysics("default", new Vector3(0.0f, 0.0f, 0.0f), new Quaternion(), new Vector3(2.5f));
+            //World.Add(terrain);
 
             player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 120.0f, 0.0f));
             World.Add(player);
 
-            dummyCreature = new DummyCreature(new Vector3(10.0f, 1.0f, 10.0f));
-            World.Add(dummyCreature);
+            //dummyCreature = new DummyCreature(new Vector3(10.0f, 1.0f, 10.0f));
+            //World.Add(dummyCreature);
+
+            World.AddLevelFromFile("boxes", Vector3.Zero, new Quaternion(), new Vector3(2.0f, 0.25f, 2.0f));
         }
 
         /// <summary>

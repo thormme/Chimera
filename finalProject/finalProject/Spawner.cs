@@ -47,7 +47,7 @@ namespace finalProject
             Position = translation;
             XNAOrientationMatrix = Matrix.Identity;
             Scale = scale;
-            mCreatureType = Type.GetType(parameters[0]);
+            mCreatureType = Type.GetType("finalProject." + parameters[0] + ",finalProject");
             mSpawnWait = Convert.ToSingle(parameters[1]);
             mMaxSpawned = Convert.ToInt32(parameters[2]);
             Initialize();
