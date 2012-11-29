@@ -31,7 +31,8 @@ namespace finalProject
         {
             if (mCoolDownTimer < 0.0f)
             {
-                Creature.Entity.LinearVelocity = Vector3.Normalize(direction) * JumpSpeed;
+                //Creature.Entity.LinearVelocity = Vector3.Normalize(direction) * JumpSpeed;
+                //Creature.Move(JumpSpeed * Vector2.Normalize(new Vector2(direction.X, direction.Z)));
                 Creature.Jump();
                 mCoolDownTimer = CoolDownTime;
             }

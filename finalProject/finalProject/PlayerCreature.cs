@@ -27,7 +27,8 @@ namespace finalProject
         #region Fields
 
         private const float mPlayerRadius = 1.0f;
-        private const float mSneak = 10.0f;
+        private const float mSneak = 11.0f;
+        private const int mIntimidation = 5;
 
         #endregion
 
@@ -67,6 +68,14 @@ namespace finalProject
             get
             {
                 return false;
+            }
+        }
+
+        public override int Intimidation
+        {
+            get
+            {
+                return mIntimidation;
             }
         }
 

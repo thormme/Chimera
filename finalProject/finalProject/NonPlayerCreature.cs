@@ -36,6 +36,15 @@ namespace finalProject
             }
         }
 
+        protected int mIntimidation;
+        public override int Intimidation
+        {
+            get
+            {
+                return mIntimidation;
+            }
+        }
+
         public NonPlayerCreature(
             Vector3 position,
             float height,
@@ -47,12 +56,15 @@ namespace finalProject
             float visionAngle,
             float listeningSensitivity,
             float sneak,
+            int intimidation,
             Part part
             )
             : base(position, height, radius, mass, renderable, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
         {
             mSneak = sneak;
+            mIntimidation = intimidation;
             mController = controller;
+            mIncapacitated = false;
             AddPart(part);
         }
 
