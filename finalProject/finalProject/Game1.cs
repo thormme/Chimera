@@ -38,6 +38,10 @@ namespace finalProject
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            
+            //graphics.ToggleFullScreen();
+            //graphics.PreferredBackBufferWidth = 1024;
+            //graphics.PreferredBackBufferHeight = 640;
 
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
             debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
@@ -93,7 +97,7 @@ namespace finalProject
             //dummyCreature = new DummyCreature(new Vector3(10.0f, 1.0f, 10.0f));
             //World.Add(dummyCreature);
 
-            World.AddLevelFromFile("test_level", Vector3.Zero, new Quaternion(), new Vector3(2.0f, 0.25f, 2.0f));
+            World.AddLevelFromFile("test", Vector3.Zero, new Quaternion(), new Vector3(2.0f, 0.25f, 2.0f));
         }
 
         /// <summary>

@@ -19,9 +19,10 @@ namespace finalProject
             new InanimateModel("sphere"),
             new Creature.PartBone[] { 
                 Creature.PartBone.ArmLeft1Cap, 
-                Creature.PartBone.LegFrontLeft1Cap
+                Creature.PartBone.ArmLeft2Cap,
+                Creature.PartBone.Spine1Cap
             }, 
-            1,
+            3,
             new Vector3(),
             Matrix.CreateFromQuaternion(new Quaternion()),
             new Vector3(0.25f, 0.25f, 0.25f)

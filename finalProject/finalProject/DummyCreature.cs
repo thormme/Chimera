@@ -18,7 +18,7 @@ namespace finalProject
             : base(position, 2.0f, 0.25f, 10.0f, 10.0f, new HostileAI(), new InanimateModel("box"), MathHelper.PiOver4, 10.0f, 10.0f, new DummyPart())
         {
             Entity.Position = position;
-            mIncapacitated = false;
+            //mIncapacitated = false;
         }
         public override void Damage(int damage)
         {
@@ -42,7 +42,7 @@ namespace finalProject
         protected override List<Creature.PartBone> GetUsablePartBones()
         {
             List<Creature.PartBone> bones = new List<PartBone>();
-            bones.Add(PartBone.LegFrontLeft1Cap);
+            //bones.Add(PartBone.LegFrontLeft1Cap);
 
             return bones;
         }
