@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
+using GameConstructLibrary;
 
 namespace finalProject.Creatures
 {
@@ -15,10 +16,22 @@ namespace finalProject.Creatures
 
         }
 
+        public override void Damage(int damage)
+        {
+            base.Damage(damage);
+        }
+
+        public override void Update(GameTime time)
+        {
+            base.Update(time);
+        }
 
         protected override List<Creature.PartBone> GetUsablePartBones()
         {
-            throw new NotImplementedException();
+            List<Creature.PartBone> bones = new List<PartBone>();
+            bones.Add(PartBone.HeadCenterCap);
+
+            return bones;
         }
     }
 }
