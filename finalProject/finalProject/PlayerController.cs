@@ -49,6 +49,10 @@ namespace finalProject
         private GamePadButtonInputAction mPressPart3;
         private GamePadButtonInputAction mPressJump;
 
+        private KeyInputAction mUse1;
+        private KeyInputAction mUse2;
+        private KeyInputAction mUse3;
+
         private KeyInputAction mJumpKey;
 
         private KeyInputAction mAdd;
@@ -96,6 +100,10 @@ namespace finalProject
             mPressPart2 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.Y);
             mPressPart3 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.B);
             mPressJump = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.A);
+
+            mUse1 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D1);
+            mUse2 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D2);
+            mUse3 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D3); 
 
             mJumpKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Space);
 
@@ -300,6 +308,19 @@ namespace finalProject
                 mCamera.Damping -= 100;
                 Console.WriteLine("CAMERA STIFFNESS: " + mCamera.Stiffness);
                 Console.WriteLine("CAMERA DAMPING: " + mCamera.Damping);
+            }
+
+            if (mUse1.Active)
+            {
+                mCreature.UsePart(0, mCreature.Forward);
+            }
+            if (mUse2.Active)
+            {
+                mCreature.UsePart(1, mCreature.Forward);
+            }
+            if (mUse3.Active)
+            {
+                mCreature.UsePart(2, mCreature.Forward);
             }
         }
 
