@@ -2,9 +2,6 @@ Content\models\sphere.xnb
 Content\models\dude.xnb
 Content\models\box.xnb
 Content\models\editor.xnb
-Content\models\playerBean_jump.xnb
-Content\models\playerBean_stand.xnb
-Content\models\playerBean_walk.xnb
 Content\shaders\ConfigurableShader.xnb
 Content\shaders\PostProcessing.xnb
 Content\levels\maps\default_texture_high.xnb
@@ -14,7 +11,6 @@ Content\levels\maps\test_level.xnb
 Content\levels\maps\test_level_texture_high.xnb
 Content\levels\maps\test_level_texture_low.xnb
 Content\levels\maps\test_level_texture_medium.xnb
-Content\levels\maps\default.xnb
 Content\models\orange_ball_0.xnb
 Content\models\head_0.xnb
 Content\models\jacket_0.xnb
@@ -22,4 +18,8 @@ Content\models\pants_0.xnb
 Content\models\upBodyC_0.xnb
 Content\models\purple_block_0.xnb
 Content\models\editor_0.xnb
+Content\models\playerBean_jump.xnb
+Content\models\playerBean_stand.xnb
+Content\models\playerBean_walk.xnb
+Content\levels\maps\default.xnb
 Content\models\playerBean_texture_0.xnb

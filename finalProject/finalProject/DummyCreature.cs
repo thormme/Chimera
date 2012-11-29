@@ -15,7 +15,7 @@ namespace finalProject
     public class DummyCreature : NonPlayerCreature
     {
         public DummyCreature(Vector3 position)
-            : base(position, 2.0f, 0.25f, 10.0f, 10.0f, new IntimidationAI(), new InanimateModel("box"), MathHelper.PiOver2, 10.0f, 10.0f, 6, new DummyPart(position + new Vector3(15.0f, 0.0f, 15.0f)))
+            : base(position, 2.0f, 0.25f, 10.0f, 10.0f, new IntimidationAI(), new InanimateModel("box"), MathHelper.PiOver2, 10.0f, 10.0f, 6, new DummyPart())
         {
         }
         public override void Damage(int damage)
