@@ -94,6 +94,7 @@ namespace finalProject
         public abstract float Sneak
         {
             get;
+            set;
         }
 
         public abstract bool Incapacitated
@@ -104,6 +105,7 @@ namespace finalProject
         public abstract int Intimidation
         {
             get;
+            set;
         }
 
         #endregion

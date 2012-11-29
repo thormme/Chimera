@@ -27,8 +27,8 @@ namespace finalProject
         #region Fields
 
         private const float mPlayerRadius = 1.0f;
-        private const float mSneak = 11.0f;
-        private const int mIntimidation = 5;
+        private const float DefaultSneak = 11.0f;
+        private const int DefaultIntimidation = 5;
 
         private AnimateModel mStandingModel;
         private AnimateModel mWalkingModel;
@@ -61,10 +61,8 @@ namespace finalProject
 
         public override float Sneak
         {
-            get
-            {
-                return mSneak;
-            }
+            get;
+            set;
         }
 
         public override bool Incapacitated
@@ -77,10 +75,8 @@ namespace finalProject
 
         public override int Intimidation
         {
-            get
-            {
-                return mIntimidation;
-            }
+            get;
+            set;
         }
 
         #endregion
@@ -101,6 +97,9 @@ namespace finalProject
 
             mJumpingModel = new AnimateModel("playerBean_jump");
             mJumpingModel.PlayAnimation("Take 001");
+
+            Intimidation = DefaultIntimidation;
+            Sneak = DefaultSneak;
         }
 
         /// <summary>

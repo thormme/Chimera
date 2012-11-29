@@ -18,15 +18,6 @@ namespace finalProject
     /// </summary>
     public abstract class NonPlayerCreature : Creature
     {
-        protected float mSneak;
-        public override float Sneak
-        {
-            get
-            {
-                return mSneak;
-            }
-        }
-
         protected bool mIncapacitated;
         public override bool Incapacitated
         {
@@ -36,13 +27,16 @@ namespace finalProject
             }
         }
 
-        protected int mIntimidation;
+        public override float Sneak
+        {
+            get;
+            set;
+        }
+
         public override int Intimidation
         {
-            get
-            {
-                return mIntimidation;
-            }
+            get;
+            set;
         }
 
         public NonPlayerCreature(
@@ -62,8 +56,8 @@ namespace finalProject
             : base(position, height, radius, mass, renderable, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
         {
             mIncapacitated = false;
-            mSneak = sneak;
-            mIntimidation = intimidation;
+            Sneak = sneak;
+            Intimidation = intimidation;
             mController = controller;
             mIncapacitated = false;
             AddPart(part);
