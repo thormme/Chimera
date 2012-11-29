@@ -11,7 +11,7 @@ namespace finalProject.Creatures
     class Rhino : NonPlayerCreature
     {
         public Rhino(Vector3 position)
-            : base(position, 2.0f, 1.0f, 30.0f, 20.0f, new HostileAI(), new InanimateModel("Rhino"), MathHelper.PiOver4, 10.0f, 10.0f, new /*RhinoHead*/DummyPart())
+            : base(position, 2.0f, 1.0f, 30.0f, 20.0f, new IntimidationAI(), new InanimateModel("Rhino"), MathHelper.PiOver4, 10.0f, 10.0f, 7, new /*RhinoHead*/DummyPart())
         {
 
         }

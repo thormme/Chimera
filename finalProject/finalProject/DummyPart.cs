@@ -8,14 +8,11 @@ using GraphicsLibrary;
 
 namespace finalProject
 {
-    class DummyPart : Part
+    class DummyPart : CooldownPart
     {
-        private const float JumpSpeed = 4.0f;
-        private const double CoolDownTime = 2.0f;
-        private double mCoolDownTimer;
-    
         public DummyPart()
             : base(
+            2.0f,
             new InanimateModel("sphere"),
             new Creature.PartBone[] { 
                 Creature.PartBone.ArmLeft1Cap, 
@@ -27,23 +24,11 @@ namespace finalProject
             Matrix.CreateFromQuaternion(new Quaternion()),
             new Vector3(0.25f, 0.25f, 0.25f)
             )
-        {
-            mCoolDownTimer = -1.0f;
-        }
+        { }
 
-        public override void Update(GameTime time)
+        public override void UseCooldown(Vector3 direction)
         {
-            mCoolDownTimer -= time.ElapsedGameTime.TotalSeconds;
-        }
-
-        public override void Use(Vector3 direction)
-        {
-            if (mCoolDownTimer < 0.0f)
-            {
-                Creature.Entity.LinearVelocity = Vector3.Normalize(direction) * JumpSpeed;
-                Creature.Jump();
-                mCoolDownTimer = CoolDownTime;
-            }
+            Creature.Jump();
         }
     }
 }

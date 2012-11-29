@@ -19,16 +19,14 @@ namespace finalProject
         KeyInputAction mGo;
         bool active = false;
 
-        private const int MaxDurdleMoveTime = 2;
-        private const int MaxDurdleWaitTime = 1;
+        private const int MaxDurdleMoveTime = 4;
+        private const int MaxDurdleWaitTime = 4;
         private const float MaxDurdleSpeed = 1.0f;
-
-        private const float RunSpeed = 0.025f;
 
         private Creature mTargetCreature;
         private Vector3 mTargetPosition;
         private bool mFollowPosition;
-        private float mSpeed;
+        private float mInversion;
 
         private StateTimer<DurdleState> mDurdleTimer;
 
@@ -68,12 +66,17 @@ namespace finalProject
             mDurdleTimer.Update(time);
             if (mTargetCreature != null)
             {
-                MoveTo(mTargetCreature.Position, mSpeed);
-                mCreature.UsePart(0, mTargetCreature.Position - mCreature.Position);
+                MoveTo(mTargetCreature.Position, mInversion);
+                Vector3 direction = mTargetCreature.Position - mCreature.Position;
+                if (mInversion < 0.0f)
+                {
+                    direction = -direction;
+                }
+                mCreature.UsePart(0, direction);
             }
             else if (mFollowPosition)
             {
-                MoveTo(mTargetPosition, mSpeed);
+                MoveTo(mTargetPosition, mInversion);
                 mCreature.UsePart(0, mTargetPosition - mCreature.Position);
             }
             else if (mDurdleTimer.NewState() == DurdleState.Move)
@@ -94,17 +97,17 @@ namespace finalProject
             }
         }
 
-        private void MoveTo(Vector3 position, float speed)
+        private void MoveTo(Vector3 position, float inversion)
         {
             Vector3 direction = position - mCreature.Position;
-            MoveCreature(direction, speed);
+            MoveCreature(direction, inversion);
         }
 
-        private void MoveCreature(Vector3 direction, float speed)
+        private void MoveCreature(Vector3 direction, float inversion)
         {
-            Vector2 dir = new Vector2(direction.X, direction.Z);
+            Vector2 dir = new Vector2(direction.X, direction.Z) * inversion;
             dir.Normalize();
-            mCreature.Move(dir * speed);
+            mCreature.Move(dir);
         }
 
         public virtual void Stop()
@@ -117,7 +120,6 @@ namespace finalProject
             }
             mTargetCreature = null;
             mFollowPosition = false;
-            mSpeed = 0.0f;
         }
 
         public virtual void Follow(Vector3 position)
@@ -125,23 +127,23 @@ namespace finalProject
             Stop();
             mFollowPosition = true;
             mTargetPosition = position;
-            MoveTo(position, RunSpeed);
+            MoveTo(position, 1.0f);
         }
 
         public virtual void Follow(Creature creature)
         {
             Stop();
             mTargetCreature = creature;
-            mSpeed = RunSpeed;
-            MoveTo(mTargetCreature.Position, mSpeed);
+            mInversion = 1.0f;
+            MoveTo(mTargetCreature.Position, mInversion);
         }
 
         public virtual void Run(Creature creature)
         {
             Stop();
             mTargetCreature = creature;
-            mSpeed = -RunSpeed;
-            MoveTo(mTargetCreature.Position, mSpeed);
+            mInversion = -1.0f;
+            MoveTo(mTargetCreature.Position, mInversion);
         }
     }
 }
