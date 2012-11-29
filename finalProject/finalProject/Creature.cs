@@ -181,11 +181,14 @@ namespace finalProject
         {
             foreach (PartAttachment partAttachment in mPartAttachments)
             {
+                int count = 0;
                 foreach (PartBone partBone in partAttachment.Bones)
                 {
                     int boneIndex = (mRenderable as AnimateModel).SkinningData.BoneIndices[partBone.ToString()];
                     Matrix worldTransform = (mRenderable as AnimateModel).AnimationPlayer.GetWorldTransforms()[boneIndex] * GetRenderTransform();
-                    partAttachment.Part.Render(worldTransform);
+                    partAttachment.Part.SubParts[count].Render(worldTransform);
+
+                    count++;
                 }
             }
         }
@@ -200,34 +203,42 @@ namespace finalProject
         private List<PartBone> GetPartBonesForPart(Part part)
         {
             List<PartBone> partBones = new List<PartBone>();
-            // Look for the preferred bones first.
-            foreach (PartBone preferredBone in part.PreferredBones)
+
+            foreach (Part.SubPart subPart in part.SubParts)
             {
-                if (partBones.Count < part.LimbCount)
+                bool foundBone = false;
+
+                // Look for the preferred bones first.
+                foreach (PartBone preferredBone in subPart.PreferredBones)
                 {
-                    if (mUnusedPartBones.Contains(preferredBone) && !partBones.Contains(preferredBone))
+                    if (!foundBone)
                     {
-                        partBones.Add(preferredBone);
+                        if (mUnusedPartBones.Contains(preferredBone) && !partBones.Contains(preferredBone))
+                        {
+                            partBones.Add(preferredBone);
+                            foundBone = true;
+                        }
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
-                else
+                // If too few preferred bones were available choose any free bone.
+                foreach (PartBone unusedBone in mUnusedPartBones)
                 {
-                    break;
-                }
-            }
-            // If too few preferred bones were available choose any free bone.
-            foreach (PartBone unusedBone in mUnusedPartBones)
-            {
-                if (partBones.Count < part.LimbCount)
-                {
-                    if (!partBones.Contains(unusedBone))
+                    if (!foundBone)
                     {
-                        partBones.Add(unusedBone);
+                        if (!partBones.Contains(unusedBone))
+                        {
+                            partBones.Add(unusedBone);
+                            foundBone = true;
+                        }
                     }
-                }
-                else
-                {
-                    break;
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 

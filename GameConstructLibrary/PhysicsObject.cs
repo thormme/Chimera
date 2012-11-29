@@ -18,7 +18,11 @@ namespace GameConstructLibrary
     /// </summary>
     public class PhysicsObject : IMobileObject, IEntityOwner
     {
-        protected List<IGameObject> mCollidingObjects;
+        public List<IGameObject> CollidingObjects
+        {
+            get;
+            protected set;
+        }
 
         public PhysicsObject(Renderable renderable, Entity entity)
         {
@@ -27,7 +31,7 @@ namespace GameConstructLibrary
             Entity = entity;
             Entity.Tag = this;
             Entity.CollisionInformation.Tag = this;
-            mCollidingObjects = new List<IGameObject>();
+            CollidingObjects = new List<IGameObject>();
             Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
             Entity.CollisionInformation.Events.CollisionEnded += CollisionEnded;
         }
@@ -144,11 +148,11 @@ namespace GameConstructLibrary
             if (other.Tag is CharacterSynchronizer)
             {
                 CharacterSynchronizer synchronizer = (other.Tag as CharacterSynchronizer);
-                mCollidingObjects.Add(synchronizer.body.Tag as IGameObject);
+                CollidingObjects.Add(synchronizer.body.Tag as IGameObject);
             }
             else
             {
-                mCollidingObjects.Add(other.Tag as IGameObject);
+                CollidingObjects.Add(other.Tag as IGameObject);
             }
         }
 
@@ -156,11 +160,11 @@ namespace GameConstructLibrary
         {
             if (other.Tag is CharacterSynchronizer)
             {
-                mCollidingObjects.Remove((other.Tag as CharacterSynchronizer).body.Tag as IGameObject);
+                CollidingObjects.Remove((other.Tag as CharacterSynchronizer).body.Tag as IGameObject);
             }
             else
             {
-                mCollidingObjects.Remove(other.Tag as IGameObject);
+                CollidingObjects.Remove(other.Tag as IGameObject);
             }
         }
     }
