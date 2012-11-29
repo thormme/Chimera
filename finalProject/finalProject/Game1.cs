@@ -9,6 +9,7 @@ using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysicsDrawer.Models;
 using System;
+using finalProject.Creatures;
 
 namespace finalProject
 {
@@ -31,7 +32,7 @@ namespace finalProject
         private World World;
 
         PlayerCreature player;
-        DummyCreature dummyCreature;
+        Creature creature;
         TerrainPhysics terrain;
 
         public Game1()
@@ -90,8 +91,8 @@ namespace finalProject
             World.Add(player);
             player.AddPart(new DummyPart());
 
-            dummyCreature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
-            World.Add(dummyCreature);
+            creature = new Rhino(new Vector3(0.0f, 1.0f, -20.0f));
+            World.Add(creature);
 
             World.AddLevelFromFile("jumptest", Vector3.Zero, new Quaternion(), new Vector3(2.0f, 0.25f, 2.0f));
         }

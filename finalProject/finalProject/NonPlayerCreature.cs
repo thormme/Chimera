@@ -18,6 +18,18 @@ namespace finalProject
     /// </summary>
     public abstract class NonPlayerCreature : Creature
     {
+        protected List<Creature.PartBone> Bones
+        {
+            get;
+            set;
+        }
+
+        protected int Health
+        {
+            get;
+            set;
+        }
+
         protected bool mIncapacitated;
         public override bool Incapacitated
         {
@@ -27,7 +39,7 @@ namespace finalProject
             }
         }
 
-        public override float Sneak
+        public override int Sneak
         {
             get;
             set;
@@ -48,9 +60,10 @@ namespace finalProject
             Controller controller,
             Renderable renderable,
             float visionAngle,
-            float listeningSensitivity,
-            float sneak,
+            int listeningSensitivity,
+            int sneak,
             int intimidation,
+            int startingHealth,
             Part part
             )
             : base(position, height, radius, mass, renderable, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
@@ -60,10 +73,23 @@ namespace finalProject
             Intimidation = intimidation;
             mController = controller;
             mIncapacitated = false;
+            Health = startingHealth;
             AddPart(part);
         }
 
         public override void Damage(int damage)
-        {}
+        {
+            Health -= damage;
+            if (Health < 0)
+            {
+                Health = 0;
+                mIncapacitated = true;
+            }
+        }
+
+        protected override List<PartBone> GetUsablePartBones()
+        {
+            return Bones;
+        }
     }
 }

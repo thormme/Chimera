@@ -91,7 +91,7 @@ namespace finalProject
             }
         }
 
-        public abstract float Sneak
+        public abstract int Sneak
         {
             get;
             set;
@@ -138,7 +138,6 @@ namespace finalProject
             Forward = new Vector3(0.0f, 0.0f, 1.0f);
             mPartAttachments = new List<PartAttachment>();
             mUnusedPartBones = GetUsablePartBones();
-            //Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
 
             CharacterController = new CharacterController(Entity, 1.0f);
 

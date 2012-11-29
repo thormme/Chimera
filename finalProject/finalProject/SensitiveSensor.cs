@@ -14,7 +14,7 @@ namespace finalProject
     public class SensitiveSensor : RadialSensor
     {
         private double mVisionAngle;
-        private float mListeningSensitivity;
+        private int mListeningSensitivity;
 
         private InanimateModel model = null;
 
@@ -27,7 +27,7 @@ namespace finalProject
         public SensitiveSensor(
             float radius,
             double visionAngle,
-            float listeningSensitivity
+            int listeningSensitivity
             ) : base(radius)
         {
             mVisionAngle = Math.Cos(visionAngle);
