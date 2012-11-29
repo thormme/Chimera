@@ -30,6 +30,10 @@ namespace finalProject
         private const float mSneak = 11.0f;
         private const int mIntimidation = 5;
 
+        private AnimateModel mStandingModel;
+        private AnimateModel mWalkingModel;
+        private AnimateModel mJumpingModel;
+
         #endregion
 
         #region Public Properties
@@ -84,10 +88,19 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, 2.0f, 0.25f, 10.0f, new AnimateModel("dude"), new RadialSensor(4.0f), new PlayerController(viewPort))
+            : base(position, 1.8f, 1.2f, 10.0f, new AnimateModel("playerBean_stand"), new RadialSensor(4.0f), new PlayerController(viewPort))
         {
             (mRenderable as AnimateModel).PlayAnimation("Take 001");
-            Scale = new Vector3(0.025f);
+            Scale = new Vector3(0.004f);
+
+            mStandingModel = new AnimateModel("playerBean_stand");
+            mStandingModel.PlayAnimation("Take 001");
+
+            mWalkingModel = new AnimateModel("playerBean_walk");
+            mWalkingModel.PlayAnimation("Take 001");
+
+            mJumpingModel = new AnimateModel("playerBean_jump");
+            mJumpingModel.PlayAnimation("Take 001");
         }
 
         /// <summary>
@@ -98,13 +111,13 @@ namespace finalProject
         {
             while (damage-- > 0)
             {
-                if (mParts.Count() == 0)
+                if (mPartAttachments.Count() == 0)
                 {
                     // die?
                     return;
                 }
 
-                mParts.Remove(mParts[Rand.rand.Next(mParts.Count())]);
+                mPartAttachments.Remove(mPartAttachments[Rand.rand.Next(mPartAttachments.Count())]);
             }
         }
         
@@ -115,9 +128,10 @@ namespace finalProject
         {
             foreach (Creature cur in mSensor.CollidingCreatures)
             {
-                if (cur.Incapacitated)
+                if (cur.Incapacitated && cur.PartAttachments.Count > 0)
                 {
-                    AddPart(cur.Parts[0]);
+                    cur.RemovePart(cur.PartAttachments[0].Part);
+                    AddPart(cur.PartAttachments[0].Part);
                     return;
                 }
             }
@@ -133,22 +147,59 @@ namespace finalProject
 
             if (mStance == Stance.Standing)
             {
-                model.Update(new GameTime());
+                mRenderable = mStandingModel;
             }
             else if (mStance == Stance.Walking)
             {
-                model.Update(gameTime);
+                mRenderable = mWalkingModel;
             }
+            else if (mStance == Stance.Jumping)
+            {
+                mRenderable = mJumpingModel;
+            }
+
+            model.Update(gameTime);
 
             base.Update(gameTime);
         }
 
-        public override void Render()
+        protected override Matrix GetRenderTransform()
         {
-            mRenderable.Render(CharacterController.Body.Position + new Vector3(0.0f, -1.0f, 0.0f), XNAOrientationMatrix.Forward, Scale);
+            return Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(MathHelper.Pi, 0, 0) * Entity.WorldTransform * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
         }
         #endregion
+
+        protected override List<Creature.PartBone> GetUsablePartBones()
+        {
+            List<Creature.PartBone> bones = new List<PartBone>();
+            bones.Add(PartBone.ArmLeft1Cap);
+            bones.Add(PartBone.ArmLeft2Cap);
+            bones.Add(PartBone.ArmLeft3Cap);
+            bones.Add(PartBone.ArmRight1Cap);
+            bones.Add(PartBone.ArmRight2Cap);
+            bones.Add(PartBone.ArmRight3Cap);
+            bones.Add(PartBone.HeadCenterCap);
+            bones.Add(PartBone.HeadLeftCap);
+            bones.Add(PartBone.HeadRightCap);
+            bones.Add(PartBone.LegFrontLeft1Cap);
+            bones.Add(PartBone.LegFrontLeft2Cap);
+            bones.Add(PartBone.LegFrontLeft3Cap);
+            bones.Add(PartBone.LegFrontRight1Cap);
+            bones.Add(PartBone.LegFrontRight2Cap);
+            bones.Add(PartBone.LegFrontRight3Cap);
+            bones.Add(PartBone.LegRearLeft1Cap);
+            bones.Add(PartBone.LegRearLeft2Cap);
+            bones.Add(PartBone.LegRearLeft3Cap);
+            bones.Add(PartBone.LegRearRight1Cap);
+            bones.Add(PartBone.LegRearRight2Cap);
+            bones.Add(PartBone.LegRearRight3Cap);
+            bones.Add(PartBone.Spine1Cap);
+            bones.Add(PartBone.Spine2Cap);
+            bones.Add(PartBone.Spine3Cap);
+
+            return bones;
+        }
     }
 
-    public enum Stance { Standing, Walking };
+    public enum Stance { Standing, Walking, Jumping };
 }

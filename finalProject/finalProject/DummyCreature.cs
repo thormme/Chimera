@@ -18,7 +18,6 @@ namespace finalProject
             : base(position, 2.0f, 0.25f, 10.0f, 10.0f, new IntimidationAI(), new InanimateModel("box"), MathHelper.PiOver2, 10.0f, 10.0f, 6, new DummyPart(position + new Vector3(15.0f, 0.0f, 15.0f)))
         {
         }
-
         public override void Damage(int damage)
         {
             Move(Vector2.Zero);
@@ -36,6 +35,14 @@ namespace finalProject
                     //Damage(1);
                 }
             }
+        }
+
+        protected override List<Creature.PartBone> GetUsablePartBones()
+        {
+            List<Creature.PartBone> bones = new List<PartBone>();
+            //bones.Add(PartBone.LegFrontLeft1Cap);
+
+            return bones;
         }
     }
 }

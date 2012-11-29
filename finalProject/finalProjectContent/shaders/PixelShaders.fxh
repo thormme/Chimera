@@ -17,7 +17,7 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 
 	if (pin.LightAmount <= 0.0f || ComputeShadow(pin.ShadowPosition))
 	{
-		color -= float4(0.35, 0.35, 0.35, 0.0);
+		color *= 0.5f;
 	}
 
 	return color;
@@ -40,7 +40,7 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 
 	if (ComputeShadow(pin.ShadowPosition))
 	{	
-		color -= float4(0.35, 0.35, 0.35, 0.0);
+		color *= 0.5f;
 	}
 	else
 	{

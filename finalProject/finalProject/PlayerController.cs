@@ -49,6 +49,8 @@ namespace finalProject
         private GamePadButtonInputAction mPressPart3;
         private GamePadButtonInputAction mPressJump;
 
+        private KeyInputAction mJumpKey;
+
         private KeyInputAction mAdd;
         private KeyInputAction mCheat;
 
@@ -94,6 +96,8 @@ namespace finalProject
             mPressPart2 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.Y);
             mPressPart3 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.B);
             mPressJump = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.A);
+
+            mJumpKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Space);
 
             mAdd = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.LeftShift);
             mCheat = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Enter);
@@ -254,7 +258,7 @@ namespace finalProject
             if (mCreature.CharacterController.supportData.SupportObject == null)
             {
                 // In the air.
-                (mCreature as PlayerCreature).Stance = Stance.Standing;
+                (mCreature as PlayerCreature).Stance = Stance.Jumping;
             }
 
             mCreature.Move(walkDirection);
@@ -265,7 +269,7 @@ namespace finalProject
         /// </summary>
         private void PerformActions()
         {
-            if (mPressJump.Active)
+            if (mPressJump.Active || mJumpKey.Active)
             {
                 mCreature.Jump();
             }

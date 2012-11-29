@@ -13,12 +13,21 @@ namespace finalProject
         private const float JumpSpeed = 4.0f;
         private const double CoolDownTime = 2.0f;
         private double mCoolDownTimer;
-
-        public DummyPart(Vector3 position)
-            : base(new InanimateModel("box"), new Box(new Vector3(0.0f), 0.25f, 0.25f, 0.25f, 1.0f))
+    
+        public DummyPart()
+            : base(
+            new InanimateModel("sphere"),
+            new Creature.PartBone[] { 
+                Creature.PartBone.ArmLeft1Cap, 
+                Creature.PartBone.ArmLeft2Cap,
+                Creature.PartBone.Spine1Cap
+            }, 
+            3,
+            new Vector3(),
+            Matrix.CreateFromQuaternion(new Quaternion()),
+            new Vector3(0.25f, 0.25f, 0.25f)
+            )
         {
-            Position = position;
-            Scale = new Vector3(0.25f, 0.25f, 0.25f);
             mCoolDownTimer = -1.0f;
         }
 

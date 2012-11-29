@@ -61,6 +61,7 @@ namespace finalProject
             )
             : base(position, height, radius, mass, renderable, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
         {
+            mIncapacitated = false;
             mSneak = sneak;
             mIntimidation = intimidation;
             mController = controller;

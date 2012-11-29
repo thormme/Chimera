@@ -140,6 +140,7 @@
   <ItemGroup>
     <Compile Include="AIController.cs" />
     <Compile Include="ChaseCamera.cs" />
+    <Compile Include="Creatures\Rhino.cs" />
     <Compile Include="PhysicsProp.cs" />
     <Compile Include="Prop.cs" />
     <Compile Include="Spawner.cs" />
@@ -210,6 +211,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Parts\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
