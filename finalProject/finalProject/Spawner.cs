@@ -75,6 +75,7 @@ namespace finalProject
             foreach (Creature creature in mCreatures)
             {
                 if (!creature.Incapacitated) temp.Add(creature);
+                if (temp.Count < mCreatures.Count) mSpawnTime = 0.0f;
             }
             mCreatures = temp;
 
@@ -115,7 +116,7 @@ namespace finalProject
                                       new Vector3(0.0f, -1.0f, 0.0f));
                 RayCastResult resultDown;
                 if (World.Space.RayCast(rayDown, 2.0f * mSpawnRadius, out resultDown)) creaturePosition.Y = resultDown.HitData.Location.Y;
-                
+                else creaturePosition.Y = Position.Y;
 
                 // Only parameter for a creature is position
                 object parameters = new object();
