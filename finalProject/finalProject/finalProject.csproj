@@ -147,6 +147,7 @@
     <Compile Include="DutyCyclePart.cs" />
     <Compile Include="MeteredPart.cs" />
     <Compile Include="Parts\CheetahLegs.cs" />
+    <Compile Include="Parts\LionClaws.cs" />
     <Compile Include="Parts\SpittingCobraHead.cs" />
     <Compile Include="Parts\FlyingSquirrelBack.cs" />
     <Compile Include="Parts\FrilledLizardHead.cs" />

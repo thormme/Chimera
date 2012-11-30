@@ -60,7 +60,7 @@ namespace finalProject
             int startingHealth,
             Part part
             )
-            : base(position, height, radius, mass, renderable, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller)
+            : base(position, height, radius, mass, renderable, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller, 1)
         {
             mIncapacitated = false;
             Sneak = sneak;
@@ -68,7 +68,7 @@ namespace finalProject
             mController = controller;
             mIncapacitated = false;
             Health = startingHealth;
-            AddPart(part);
+            AddPart(part, 0);
         }
 
         public override void Damage(int damage)

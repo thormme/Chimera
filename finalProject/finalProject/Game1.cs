@@ -18,8 +18,10 @@ namespace finalProject
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Game1 : Game
     {
+        public static int NumParts = 10;
+
         private InputAction forward;
         private InputAction debug;
         private KeyInputAction debugGraphics;
@@ -94,12 +96,13 @@ namespace finalProject
 
             player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f));
             World.Add(player);
-            player.AddPart(new KangarooLegs());
-            player.AddPart(new CheetahLegs());
-            player.AddPart(new FrilledLizardHead());
-            player.AddPart(new ParrotWings());
-            player.AddPart(new FlyingSquirrelBack());
-            player.AddPart(new SpittingCobraHead());
+            int i = 0;
+            //player.AddPart(new KangarooLegs(), i++);
+            player.AddPart(new CheetahLegs(), i++);
+            player.AddPart(new FrilledLizardHead(), i++);
+            //player.AddPart(new ParrotWings(), i++);
+            //player.AddPart(new FlyingSquirrelBack(), i++);
+            //player.AddPart(new SpittingCobraHead(), i++);
 
             creature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
             World.Add(creature);
