@@ -105,5 +105,14 @@ namespace finalProject
         /// The direction the ability will be used in.
         /// </param>
         abstract public void Use(Vector3 direction);
+
+        /// <summary>
+        /// Called when the part is finished being used. Used for active effects.
+        /// If the magnitude of the direction vector is greater than the active effect's range, nothing will happen.
+        /// </summary>
+        /// <param name="direction">
+        /// The direction the ability will be used in.
+        /// </param>
+        abstract public void FinishUse(Vector3 direction);
     }
 }

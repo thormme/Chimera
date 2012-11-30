@@ -33,5 +33,9 @@ namespace finalProject
         {
             Creature.Jump();
         }
+
+        public override void FinishUse(Vector3 direction)
+        {
+        }
     }
 }

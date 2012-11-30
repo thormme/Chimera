@@ -142,6 +142,7 @@
     <Compile Include="ChaseCamera.cs" />
     <Compile Include="CooldownPart.cs" />
     <Compile Include="Creatures\Rhino.cs" />
+    <Compile Include="Parts\KangarooLegs.cs" />
     <Compile Include="Parts\RhinoHead.cs" />
     <Compile Include="PhysicsProp.cs" />
     <Compile Include="Prop.cs" />

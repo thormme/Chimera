@@ -325,6 +325,19 @@ namespace finalProject
             }
         }
 
+        /// <summary>
+        /// Finishes using the specified part.
+        /// </summary>
+        /// <param name="part">The index into the list of parts.</param>
+        /// <param name="direction">The direction in which to use the part.</param>
+        public virtual void FinishUsingPart(int part, Vector3 direction)
+        {
+            if (part < mPartAttachments.Count())
+            {
+                mPartAttachments[part].Part.FinishUse(direction);
+            }
+        }
+
         public virtual void Jump()
         {
             if (!Incapacitated)
