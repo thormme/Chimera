@@ -13,6 +13,7 @@ using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Collidables;
 using BEPUphysics.Entities.Prefabs;
 using System;
+using System.IO;
 
 #endregion
 
@@ -131,6 +132,111 @@ namespace finalProject
 
         #endregion
 
+        #region Bone Transform Tweaking
+
+        private const int mNumParts = 24;
+
+        /// <summary>
+        /// Orientation of different part rotations.
+        /// </summary>
+        public Matrix BoneRotations
+        {
+            get
+            {
+                return mPartRotations[mBoneIndex];
+            }
+            set
+            {
+                mPartRotations[mBoneIndex] = value;
+            }
+        }
+        private Matrix[] mPartRotations = new Matrix[mNumParts];
+
+        /// <summary>
+        /// Up Basis Vector for current part rotation.
+        /// </summary>
+        public Vector3 BoneUp
+        {
+            get
+            {
+                return mBoneUp[mBoneIndex];
+            }
+            set
+            {
+                mBoneUp[mBoneIndex] = value;
+            }
+        }
+        private Vector3[] mBoneUp = new Vector3[mNumParts];
+
+        /// <summary>
+        /// Forward Basis Vector for current part rotation.
+        /// </summary>
+        public Vector3 BoneForward
+        {
+            get
+            {
+                return mBoneForward[mBoneIndex];
+            }
+            set
+            {
+                mBoneForward[mBoneIndex] = value;
+            }
+        }
+        private Vector3[] mBoneForward = new Vector3[mNumParts];
+
+        /// <summary>
+        /// Right Basis Vector for current part rotation.
+        /// </summary>
+        public Vector3 BoneRight
+        {
+            get
+            {
+                return mBoneRight[mBoneIndex];
+            }
+            set
+            {
+                mBoneRight[mBoneIndex] = value;
+            }
+        }
+        private Vector3[] mBoneRight = new Vector3[mNumParts];
+
+        public int BoneIndex
+        {
+            get
+            {
+                return mBoneIndex;
+            }
+            set
+            {
+                mBoneIndex = value;
+                if (mBoneIndex < 0)
+                {
+                    mBoneIndex += mNumParts;
+                }
+                mBoneIndex %= mNumParts;
+            }
+        }
+        private int mBoneIndex = 0;
+
+        public void WriteBoneTransforms()
+        {
+            TextWriter tw = new StreamWriter("playerBeanPartOrientations.txt");
+
+            tw.WriteLine(mNumParts);
+            for (int i = 0; i < mNumParts; ++i)
+            {
+                tw.WriteLine(((PartBone)i).ToString());
+                tw.WriteLine(mPartRotations[i].M11.ToString() + " " + mPartRotations[i].M12.ToString() + " " + mPartRotations[i].M13.ToString() + " " + mPartRotations[i].M14.ToString());
+                tw.WriteLine(mPartRotations[i].M21.ToString() + " " + mPartRotations[i].M22.ToString() + " " + mPartRotations[i].M23.ToString() + " " + mPartRotations[i].M24.ToString());
+                tw.WriteLine(mPartRotations[i].M31.ToString() + " " + mPartRotations[i].M32.ToString() + " " + mPartRotations[i].M33.ToString() + " " + mPartRotations[i].M34.ToString());
+                tw.WriteLine(mPartRotations[i].M41.ToString() + " " + mPartRotations[i].M42.ToString() + " " + mPartRotations[i].M43.ToString() + " " + mPartRotations[i].M44.ToString());
+                tw.WriteLine("");
+            }
+            tw.Close();
+        }
+
+        #endregion
+
         #region Protected Properties
 
         protected virtual void OnDeath()
@@ -164,6 +270,14 @@ namespace finalProject
 
             mController = controller;
             controller.SetCreature(this);
+
+            for (int i = 0; i < mNumParts; ++i)
+            {
+                mPartRotations[i] = Matrix.Identity;
+                mBoneUp[i] = Vector3.Up;
+                mBoneForward[i] = Vector3.Forward;
+                mBoneRight[i] = Vector3.Right;
+            }
         }
 
         public override World World
@@ -192,7 +306,7 @@ namespace finalProject
 
         protected virtual Matrix GetRenderTransform()
         {
-            return Entity.WorldTransform * Matrix.CreateScale(Scale);
+            return Matrix.CreateScale(Scale) * Entity.WorldTransform;
         }
 
         public override void Render()
@@ -211,8 +325,7 @@ namespace finalProject
                 int count = 0;
                 foreach (PartBone partBone in partAttachment.Bones)
                 {
-                    int boneIndex = (mRenderable as AnimateModel).SkinningData.BoneIndices[partBone.ToString()];
-                    Matrix worldTransform = (mRenderable as AnimateModel).AnimationPlayer.GetWorldTransforms()[boneIndex] * GetRenderTransform();
+                    Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
                     partAttachment.Part.SubParts[count].Render(worldTransform);
 
                     count++;

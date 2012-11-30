@@ -34,6 +34,7 @@ namespace GraphicsLibrary
 
         static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string,Model>();
         static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
+        static private Dictionary<string, Dictionary<string, Matrix>> mUniqueModelBoneLibrary = new Dictionary<string, Dictionary<string, Matrix>>();
 
         static private GraphicsDevice mDevice;
         static private SpriteBatch mSpriteBatch;
@@ -119,7 +120,7 @@ namespace GraphicsLibrary
             mConfigurableShader = content.Load<Effect>("shaders/ConfigurableShader");
             mPostProcessShader = content.Load<Effect>("shaders/PostProcessing");
             mTerrainShader = new SkinnedEffect(mConfigurableShader);
-            
+
             // Create buffers.
             mShadowMap = new RenderTarget2D(device, mShadowMapLength, mShadowMapLength, false, SurfaceFormat.Single, DepthFormat.Depth24);
             mSceneBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
@@ -139,39 +140,104 @@ namespace GraphicsLibrary
                 throw new DirectoryNotFoundException("Could not find models directory in content.");
             }
 
-            FileInfo[] files = dir.GetFiles("*.fbx");
-            foreach (FileInfo file in files)
+            DirectoryInfo[] subDirs = dir.GetDirectories();
+            foreach (DirectoryInfo subDir in subDirs)
             {
-                string modelName = Path.GetFileNameWithoutExtension(file.Name);
-                Model input = content.Load<Model>("models/" + modelName);
+                string subDirName = subDir.Name;
 
-                foreach (ModelMesh mesh in input.Meshes)
+                FileInfo[] files = subDir.GetFiles("*.fbx");
+                foreach (FileInfo file in files)
                 {
-                    foreach (ModelMeshPart part in mesh.MeshParts)
-                    {
-                        Microsoft.Xna.Framework.Graphics.SkinnedEffect skinnedEffect = part.Effect as Microsoft.Xna.Framework.Graphics.SkinnedEffect;
-                        if (skinnedEffect != null)
-                        {
-                            SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
-                            newEffect.CopyFromSkinnedEffect(skinnedEffect);
+                    string modelName = Path.GetFileNameWithoutExtension(file.Name);
+                    Model input = content.Load<Model>("models/" + subDirName + "/" + modelName);
 
-                            part.Effect = newEffect;
-                        }
-                        else
+                    foreach (ModelMesh mesh in input.Meshes)
+                    {
+                        foreach (ModelMeshPart part in mesh.MeshParts)
                         {
-                            Microsoft.Xna.Framework.Graphics.BasicEffect basicEffect = part.Effect as Microsoft.Xna.Framework.Graphics.BasicEffect;
-                            if (basicEffect != null)
+                            Microsoft.Xna.Framework.Graphics.SkinnedEffect skinnedEffect = part.Effect as Microsoft.Xna.Framework.Graphics.SkinnedEffect;
+                            if (skinnedEffect != null)
                             {
                                 SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
-                                newEffect.CopyFromBasicEffect(basicEffect);
+                                newEffect.CopyFromSkinnedEffect(skinnedEffect);
 
                                 part.Effect = newEffect;
                             }
+                            else
+                            {
+                                Microsoft.Xna.Framework.Graphics.BasicEffect basicEffect = part.Effect as Microsoft.Xna.Framework.Graphics.BasicEffect;
+                                if (basicEffect != null)
+                                {
+                                    SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
+                                    newEffect.CopyFromBasicEffect(basicEffect);
+
+                                    part.Effect = newEffect;
+                                }
+                            }
                         }
                     }
+
+                    AddModel(modelName, input);
                 }
 
-                AddModel(modelName, input);
+                // Parse Bone Orientation Tweak File and store in library.
+                FileInfo[] tweakOrientationFiles = subDir.GetFiles("*.tweak");
+                foreach (FileInfo file in tweakOrientationFiles)
+                {
+                    Dictionary<string, Matrix> tweakLibrary = new Dictionary<string, Matrix>();
+                    TextReader tr = new StreamReader(file.DirectoryName + "\\" + file.Name);
+
+                    int count = int.Parse(tr.ReadLine());
+                    string blank = tr.ReadLine();
+
+                    char[] delimeterChars = {' '};
+
+                    for (int i = 0; i < count; ++i)
+                    {
+                        // Get bone name.
+                        string boneName = tr.ReadLine();
+
+                        // Get first row of matrix.
+                        string[] row1Parts = tr.ReadLine().Split(delimeterChars, 4);
+
+                        float M11 = float.Parse(row1Parts[0]);
+                        float M12 = float.Parse(row1Parts[1]);
+                        float M13 = float.Parse(row1Parts[2]);
+                        float M14 = float.Parse(row1Parts[3]);
+
+                        // Get second row of matrix.
+                        string[] row2Parts = tr.ReadLine().Split(delimeterChars, 4);
+
+                        float M21 = float.Parse(row2Parts[0]);
+                        float M22 = float.Parse(row2Parts[1]);
+                        float M23 = float.Parse(row2Parts[2]);
+                        float M24 = float.Parse(row2Parts[3]);
+
+                        // Get third row of matrix.
+                        string[] row3Parts = tr.ReadLine().Split(delimeterChars, 4);
+
+                        float M31 = float.Parse(row3Parts[0]);
+                        float M32 = float.Parse(row3Parts[1]);
+                        float M33 = float.Parse(row3Parts[2]);
+                        float M34 = float.Parse(row3Parts[3]);
+
+                        // Get fourth row of matrix.
+                        string[] row4Parts = tr.ReadLine().Split(delimeterChars, 4);
+
+                        float M41 = float.Parse(row4Parts[0]);
+                        float M42 = float.Parse(row4Parts[1]);
+                        float M43 = float.Parse(row4Parts[2]);
+                        float M44 = float.Parse(row4Parts[3]);
+
+                        blank = tr.ReadLine();
+
+                        Matrix tweakMatrix = new Matrix(M11, M12, M13, M14, M21, M22, M23, M24, M31, M32, M33, M34, M41, M42, M43, M44);
+                        tweakLibrary.Add(boneName, tweakMatrix);
+                    }
+                    tr.Close();
+
+                    mUniqueModelBoneLibrary.Add(Path.GetFileNameWithoutExtension(file.Name), tweakLibrary);
+                }
             }
 
             // Load terrain.
@@ -181,8 +247,8 @@ namespace GraphicsLibrary
                 throw new DirectoryNotFoundException("Could not find levels/maps directory in content.");
             }
 
-            files = dir.GetFiles("*.bmp");
-            foreach (FileInfo file in files)
+            FileInfo[] terrainFiles = dir.GetFiles("*.bmp");
+            foreach (FileInfo file in terrainFiles)
             {
                 string terrainName = Path.GetFileNameWithoutExtension(file.Name);
                 TerrainHeightMap heightMap = new TerrainHeightMap(terrainName, mDevice);
@@ -358,6 +424,26 @@ namespace GraphicsLibrary
                 return result.Terrain;
             }
             throw new KeyNotFoundException("Unable to find terrain key: " + terrainName);
+        }
+
+        /// <summary>
+        /// Retrieves Tweaked orientation transform matrix for specific bone on an AnimateModel.
+        /// </summary>
+        static public Matrix LookupTweakedBoneOrientation(string modelName, string boneName)
+        {
+            Dictionary<string, Matrix> boneTweakLibrary;
+            if (!mUniqueModelBoneLibrary.TryGetValue(modelName, out boneTweakLibrary))
+            {
+                throw new Exception(modelName + " does not contain any bone orientation tweaks");
+            }
+
+            Matrix localBoneOrientation;
+            if (!boneTweakLibrary.TryGetValue(boneName, out localBoneOrientation))
+            {
+                throw new Exception(modelName + " does not contain bone: " + boneName);
+            }
+
+            return localBoneOrientation;
         }
 
         /// <summary>

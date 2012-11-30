@@ -18,7 +18,10 @@ namespace finalProject
         public DummyCreature(Vector3 position)
             : base(position, 2.0f, 0.25f, 10.0f, 30.0f, new IntimidationAI(), new InanimateModel("box"), MathHelper.PiOver2, 10, 10, 1, 50, new CheetahLegs())
         {
+            //(mRenderable as AnimateModel).PlayAnimation("Take 001");
+            Scale = new Vector3(0.02f);
         }
+
         public override void Damage(int damage)
         {
             Move(Vector2.Zero);

@@ -64,11 +64,19 @@ namespace finalProject
         private KeyInputAction mAdd;
         private KeyInputAction mCheat;
 
-        private KeyInputAction mPressIncStiffness;
-        private KeyInputAction mPressDecStiffness;
+        private KeyInputAction mPressIncBonePitch;
+        private KeyInputAction mPressDecBonePitch;
 
-        private KeyInputAction mPressIncDamping;
-        private KeyInputAction mPressDecDamping;
+        private KeyInputAction mPressIncBoneYaw;
+        private KeyInputAction mPressDecBoneYaw;
+
+        private KeyInputAction mPressIncBoneRoll;
+        private KeyInputAction mPressDecBoneRoll;
+
+        private KeyInputAction mPressIncBoneIndex;
+        private KeyInputAction mPressDecBoneIndex;
+
+        private KeyInputAction mSaveBoneTransforms;
 
         #endregion
 
@@ -122,10 +130,16 @@ namespace finalProject
             mAdd = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.LeftShift);
             mCheat = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Enter);
 
-            mPressDecDamping = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D9);
-            mPressIncDamping = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D0);
-            mPressDecStiffness = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemPlus);
-            mPressIncStiffness = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemMinus);
+            mPressDecBoneYaw = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.T);
+            mPressIncBoneYaw = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Y);
+            mPressDecBonePitch = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.U);
+            mPressIncBonePitch = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.I);
+            mPressIncBoneRoll = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.O);
+            mPressDecBoneRoll = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.P);
+            mPressIncBoneIndex = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemPlus);
+            mPressDecBoneIndex = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemMinus);
+
+            mSaveBoneTransforms = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemQuestion);
         }
 
         ~PlayerController()
@@ -294,34 +308,6 @@ namespace finalProject
                 mCreature.Jump();
             }
 
-            if (mPressIncStiffness.Active)
-            {
-                mCamera.Stiffness += 100;
-                Console.WriteLine("CAMERA STIFFNESS: " + mCamera.Stiffness);
-                Console.WriteLine("CAMERA DAMPING: " + mCamera.Damping);
-            }
-
-            if (mPressDecStiffness.Active)
-            {
-                mCamera.Stiffness -= 100;
-                Console.WriteLine("CAMERA STIFFNESS: " + mCamera.Stiffness);
-                Console.WriteLine("CAMERA DAMPING: " + mCamera.Damping);
-            }
-
-            if (mPressIncDamping.Active)
-            {
-                mCamera.Damping += 100;
-                Console.WriteLine("CAMERA STIFFNESS: " + mCamera.Stiffness);
-                Console.WriteLine("CAMERA DAMPING: " + mCamera.Damping);
-            }
-
-            if (mPressDecDamping.Active)
-            {
-                mCamera.Damping -= 100;
-                Console.WriteLine("CAMERA STIFFNESS: " + mCamera.Stiffness);
-                Console.WriteLine("CAMERA DAMPING: " + mCamera.Damping);
-            }
-
             if (mUse1.Active)
             {
                 mCreature.UsePart(0, mCreature.Forward);
@@ -333,6 +319,65 @@ namespace finalProject
             if (mUse3.Active)
             {
                 mCreature.UsePart(2, mCreature.Forward);
+            }
+
+            if (mSaveBoneTransforms.Active)
+            {
+                mCreature.WriteBoneTransforms();
+            }
+
+            if (mPressIncBoneRoll.Active)
+            {
+                Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneForward, MathHelper.Pi / 50.0f);
+                mCreature.BoneRotations *= rotation;
+                mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
+                mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
+            }
+            else if (mPressDecBoneRoll.Active)
+            {
+                Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneForward, -MathHelper.Pi / 50.0f);
+                mCreature.BoneRotations *= rotation;
+                mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
+                mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
+            }
+
+            if (mPressIncBoneYaw.Active)
+            {
+                Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneUp, MathHelper.Pi / 50.0f);
+                mCreature.BoneRotations *= rotation;
+                mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
+                mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
+            }
+            else if (mPressDecBoneYaw.Active)
+            {
+                Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneUp, -MathHelper.Pi / 50.0f);
+                mCreature.BoneRotations *= rotation;
+                mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
+                mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
+            }
+
+            if (mPressIncBonePitch.Active)
+            {
+                Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneRight, MathHelper.Pi / 50.0f);
+                mCreature.BoneRotations *= rotation;
+                mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
+                mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
+            }
+            else if (mPressDecBonePitch.Active)
+            {
+                Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneRight, -MathHelper.Pi / 50.0f);
+                mCreature.BoneRotations *= rotation;
+                mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
+                mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
+            }
+
+            if (mPressIncBoneIndex.Active)
+            {
+                mCreature.BoneIndex++;
+            }
+            else if (mPressDecBoneIndex.Active)
+            {
+                mCreature.BoneIndex--;
             }
 
 
