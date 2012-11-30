@@ -49,6 +49,14 @@ namespace finalProject
 
             public Renderable Renderable;
 
+            /// <summary>
+            /// Construct a SubPart for the construction of a Part.
+            /// </summary>
+            /// <param name="renderable">Renderable which will be drawn attached to the Creature owning this part.</param>
+            /// <param name="preferredBones">Array of PartBones in order of preference on which the renderable will be drawn.</param>
+            /// <param name="position">Position offset from the bone.</param>
+            /// <param name="orientation">Orientation offset from the bone.</param>
+            /// <param name="scale">Scale offset from the Creature.</param>
             public SubPart(Renderable renderable, Creature.PartBone[] preferredBones, Vector3 position, Matrix orientation, Vector3 scale)
             {
                 Renderable = renderable;

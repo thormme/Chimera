@@ -29,8 +29,8 @@ namespace finalProject
             }
         }
 
-        public CooldownPart(double cooldownLength, Renderable renderable, Creature.PartBone[] preferredBones, int limbCount, Vector3 position, Matrix orientation, Vector3 scale)
-            : base(renderable, preferredBones, limbCount, position, orientation, scale)
+        public CooldownPart(double cooldownLength, SubPart[] subParts)
+            : base(subParts)
         {
             CooldownLength = cooldownLength;
             CooldownTimer = -1.0f;

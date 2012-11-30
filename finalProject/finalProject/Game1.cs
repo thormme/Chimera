@@ -9,8 +9,8 @@ using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysicsDrawer.Models;
 using System;
-using finalProject.Creatures;
 using finalProject.Parts;
+using finalProject.Creatures;
 
 namespace finalProject
 {

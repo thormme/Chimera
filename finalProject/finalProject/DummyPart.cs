@@ -12,6 +12,7 @@ namespace finalProject
     {
         public DummyPart()
             : base(
+                2.0,
                 new Part.SubPart[] {
                     new SubPart(
                         new InanimateModel("sphere"),
