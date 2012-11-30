@@ -16,6 +16,8 @@ namespace finalProject
         private double mVisionAngle;
         private float mListeningSensitivity;
 
+        private InanimateModel model = null;
+
         /// <summary>
         /// 
         /// </summary>
@@ -30,6 +32,8 @@ namespace finalProject
         {
             mVisionAngle = Math.Cos(visionAngle);
             mListeningSensitivity = listeningSensitivity;
+
+            model = new InanimateModel("dude");
         }
 
         public override void Update(GameTime time)
@@ -38,16 +42,18 @@ namespace finalProject
 
             Vector3 normalFacing = Vector3.Normalize(Forward);
 
+            List<Creature> newList = new List<Creature>();
             foreach (Creature cur in mCollidingCreatures)
             {
                 Vector3 curNormal = Vector3.Normalize(Vector3.Subtract(cur.Position, Position));
 
-                if (mListeningSensitivity < cur.Sneak &&
-                    mVisionAngle < Vector3.Dot(normalFacing, curNormal))
+                if (mListeningSensitivity >= cur.Sneak ||
+                    Vector3.Dot(curNormal, normalFacing) > mVisionAngle)
                 {
-                    mCollidingCreatures.Remove(cur);
+                    newList.Add(cur);
                 }
             }
+            mCollidingCreatures = newList;
         }
     }
 }

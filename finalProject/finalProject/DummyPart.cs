@@ -8,12 +8,8 @@ using GraphicsLibrary;
 
 namespace finalProject
 {
-    class DummyPart : Part
+    class DummyPart : CooldownPart
     {
-        private const float JumpSpeed = 4.0f;
-        private const double CoolDownTime = 2.0f;
-        private double mCoolDownTimer;
-    
         public DummyPart()
             : base(
                 new Part.SubPart[] {
@@ -30,23 +26,11 @@ namespace finalProject
                     )
                 }
             )
-        {
-            mCoolDownTimer = -1.0f;
-        }
+        { }
 
-        public override void Update(GameTime time)
+        public override void UseCooldown(Vector3 direction)
         {
-            mCoolDownTimer -= time.ElapsedGameTime.TotalSeconds;
-        }
-
-        public override void Use(Vector3 direction)
-        {
-            if (mCoolDownTimer < 0.0f)
-            {
-                Creature.Entity.LinearVelocity = Vector3.Normalize(direction) * JumpSpeed;
-                Creature.Jump();
-                mCoolDownTimer = CoolDownTime;
-            }
+            Creature.Jump();
         }
     }
 }

@@ -4,21 +4,36 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
+using GameConstructLibrary;
 
 namespace finalProject.Creatures
 {
     class Rhino : NonPlayerCreature
     {
         public Rhino(Vector3 position)
-            : base(position, 2.0f, 1.0f, 30.0f, 20.0f, new HostileAI(), new InanimateModel("Rhino"), MathHelper.PiOver4, 10.0f, 10.0f, new /*RhinoHead*/DummyPart())
+            : base(position,
+                   2.0f,                            // Height
+                   3.0f,                            // Radius
+                   30.0f,                           // Mass
+                   20.0f,                           // Sensitivity Radius
+                   new IntimidationAI(),            // AI
+                   new InanimateModel("rhino"),     // Model
+                   MathHelper.PiOver4,              // Vision Angle
+                   10,                              // Listening Sensitivity
+                   1,                               // Sneak
+                   7,                               // Intimidation
+                   new /*RhinoHead*/DummyPart())    // Part
         {
 
         }
 
-
         protected override List<Creature.PartBone> GetUsablePartBones()
         {
-            throw new NotImplementedException();
+
+            List<Creature.PartBone> bones = new List<PartBone>();
+            bones.Add(PartBone.HeadCenterCap);
+
+            return bones;
         }
     }
 }

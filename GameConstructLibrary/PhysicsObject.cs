@@ -59,7 +59,7 @@ namespace GameConstructLibrary
             }
         }
 
-        public Vector3 Forward
+        public virtual Vector3 Forward
         {
             get
             {

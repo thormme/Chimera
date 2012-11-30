@@ -94,11 +94,18 @@ namespace finalProject
         public abstract float Sneak
         {
             get;
+            set;
         }
 
         public abstract bool Incapacitated
         {
             get;
+        }
+
+        public abstract int Intimidation
+        {
+            get;
+            set;
         }
 
         #endregion
@@ -293,6 +300,19 @@ namespace finalProject
             partAttachment.Part.Creature = null;
         }
 
+        public override Vector3 Forward
+        {
+            get
+            {
+                return base.Forward;
+            }
+            set
+            {
+                base.Forward = value;
+                //mSensor.Forward = Forward;
+            }
+        }
+
         /// <summary>
         /// Uses the specified part.
         /// </summary>
@@ -326,6 +346,7 @@ namespace finalProject
                 if (direction != Vector2.Zero)
                 {
                     Forward = new Vector3(direction.X, 0.0f, direction.Y);
+                    mSensor.Forward = Forward;
                 }
             }
         }
@@ -352,6 +373,7 @@ namespace finalProject
             mSensor.Update(gameTime);
             mController.Update(gameTime, mSensor.CollidingCreatures);
             mSensor.Position = Position;
+            //mSensor.Forward = Forward;// XNAOrientationMatrix = XNAOrientationMatrix;
 
             List<BEPUphysics.RayCastResult> results = new List<BEPUphysics.RayCastResult>();
             World.Space.RayCast(new Ray(Position, -1.0f * Up), 4.0f, results);
