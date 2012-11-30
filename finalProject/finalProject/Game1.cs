@@ -90,6 +90,9 @@ namespace finalProject
 
             player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f));
             World.Add(player);
+            //player.AddPart(new KangarooLegs());
+            player.AddPart(new CheetahLegs());
+            player.AddPart(new FrilledLizardHead());
             player.AddPart(new ParrotWings());
             player.AddPart(new PenguinBack());
 

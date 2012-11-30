@@ -73,6 +73,11 @@ namespace finalProject
 
         public override void Damage(int damage)
         {
+            if (Invulnerable)
+            {
+                return;
+            }
+
             Health -= damage;
             if (Health < 0)
             {

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace finalProject
 {
-    abstract class CooldownPart : Part
+    public abstract class CooldownPart : Part
     {
         protected double CooldownLength
         {
@@ -50,6 +50,6 @@ namespace finalProject
             }
         }
 
-        public abstract void UseCooldown(Vector3 direction);
+        protected abstract void UseCooldown(Vector3 direction);
     }
 }

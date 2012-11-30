@@ -108,6 +108,11 @@ namespace finalProject
         /// <param name="damage">Amount of damage to apply.</param>
         public override void Damage(int damage)
         {
+            if (Invulnerable)
+            {
+                return;
+            }
+
             while (damage-- > 0)
             {
                 if (mPartAttachments.Count() == 0)

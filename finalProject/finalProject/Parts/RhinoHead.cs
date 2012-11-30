@@ -62,7 +62,7 @@ namespace finalProject.Parts
             base.Update(time);
         }
 
-        public override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
+        protected override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
         {
             Vector3 impulse = Creature.Forward * 300f;
             Creature.Entity.ApplyLinearImpulse(ref impulse);
