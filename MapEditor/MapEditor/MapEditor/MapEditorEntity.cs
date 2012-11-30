@@ -17,7 +17,7 @@ namespace MapEditor
     public class MapEditorEntity
     {
 
-        private Vector3 scale = new Vector3(2.0f, 0.25f, 2.0f);
+        private Vector3 scale = new Vector3(8.0f, 0.25f, 8.0f);
 
         private const float speed = 0.1f;
         private const float sensitivity = 0.1f;
@@ -141,7 +141,8 @@ namespace MapEditor
                     HeightEditorDialog tempDialog = GameMapEditor.Dialog as HeightEditorDialog;
                     mModel = new InanimateModel("editor");
                     mPosition = result.Location;
-                    mScale = new Vector3(tempDialog.GetScale());
+                    Vector3 tempScale = new Vector3(tempDialog.GetScale());
+                    mScale = new Vector3(tempScale.X * scale.X, tempScale.Y * scale.Y, tempScale.Z * scale.Z);
                     mOrientation = new Vector3(0.0f, 0.0f, 1.0f);
                 }
                 else if (GameMapEditor.CurrentState == States.Object)

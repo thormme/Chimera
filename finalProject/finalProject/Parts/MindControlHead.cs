@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-using BEPUphysics.Entities.Prefabs;
-using GraphicsLibrary;
 using GameConstructLibrary;
-using BEPUphysics.Entities;
-using BEPUphysics.CollisionShapes.ConvexShapes;
+using GraphicsLibrary;
+using BEPUphysics.Entities.Prefabs;
+using finalProject.Projectiles;
 
 namespace finalProject.Parts
 {
-    class SpittingCobraHead : CooldownPart
+    public class MindControlHead : CooldownPart
     {
+        private MindControlProjectile projectile;
 
-        public SpittingCobraHead()
+        public MindControlHead()
             : base(
                 2.0,
                 new Part.SubPart[] {
@@ -31,25 +31,15 @@ namespace finalProject.Parts
                     )
                 }
             )
-        {
-            //(mRenderable as AnimateModel).PlayAnimation("Take 001");
-        }
+        { }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime time)
+        protected override void UseCooldown(Vector3 direction)
         {
-            //(mRenderable as AnimateModel).Update(time);
-
-            base.Update(time);
-        }
-
-        protected override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
-        {
-            Creature.World.Add(new Projectile(new InanimateModel("box"), new Entity(new BoxShape(0.2f, 0.2f, 0.2f), 1000.0f), Creature, direction, 40000.0f, new Vector3(0.2f, 0.2f, 0.2f)));
+            projectile = new MindControlProjectile(Creature, direction);
+            Creature.World.Add(projectile);
         }
 
         public override void FinishUse(Vector3 direction)
-        {
-
-        }
+        { }
     }
 }

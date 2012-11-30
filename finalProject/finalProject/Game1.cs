@@ -52,6 +52,7 @@ namespace finalProject
 
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, Projectile.ProjectileGroup), CollisionRule.NoBroadPhase);
 
             debugMode = false;
         }
@@ -98,11 +99,9 @@ namespace finalProject
             World.Add(player);
             int i = 0;
             //player.AddPart(new KangarooLegs(), i++);
+            player.AddPart(new MindControlHead(), i++);
             player.AddPart(new CheetahLegs(), i++);
             player.AddPart(new FrilledLizardHead(), i++);
-            //player.AddPart(new ParrotWings(), i++);
-            //player.AddPart(new FlyingSquirrelBack(), i++);
-            //player.AddPart(new SpittingCobraHead(), i++);
 
             creature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
             World.Add(creature);

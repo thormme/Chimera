@@ -63,8 +63,6 @@ namespace finalProject
         protected List<PartAttachment> mPartAttachments;
         protected List<PartBone> mUnusedPartBones;
 
-        protected Controller mController;
-
         protected int mInvulnerableCount = 0;
         protected double mInvulnerableTimer = -1.0f;
         
@@ -72,12 +70,10 @@ namespace finalProject
 
         #region Public Properties
 
-        public Controller CreatureController
+        public Controller Controller
         {
-            get
-            {
-                return mController;
-            }
+            get;
+            set;
         }
 
         public CharacterController CharacterController
@@ -273,7 +269,7 @@ namespace finalProject
 
             CharacterController = new CharacterController(Entity, 1.0f);
 
-            mController = controller;
+            Controller = controller;
             controller.SetCreature(this);
 
             for (int i = 0; i < mNumParts; ++i)
@@ -548,7 +544,7 @@ namespace finalProject
             float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             mSensor.Update(gameTime);
-            mController.Update(gameTime, mSensor.CollidingCreatures);
+            Controller.Update(gameTime, mSensor.CollidingCreatures);
             mSensor.Position = Position;
 
             List<BEPUphysics.RayCastResult> results = new List<BEPUphysics.RayCastResult>();

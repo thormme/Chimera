@@ -146,7 +146,10 @@
     <Compile Include="Creatures\Rhino.cs" />
     <Compile Include="DutyCyclePart.cs" />
     <Compile Include="MeteredPart.cs" />
+    <Compile Include="Parts\BearArms.cs" />
     <Compile Include="Parts\CheetahLegs.cs" />
+    <Compile Include="Parts\MindControlHead.cs" />
+    <Compile Include="Parts\FrogHead.cs" />
     <Compile Include="Parts\SpittingCobraHead.cs" />
     <Compile Include="Parts\FlyingSquirrelBack.cs" />
     <Compile Include="Parts\FrilledLizardHead.cs" />
@@ -156,6 +159,7 @@
     <Compile Include="Parts\RhinoHead.cs" />
     <Compile Include="Parts\TurtleShell.cs" />
     <Compile Include="PhysicsProp.cs" />
+    <Compile Include="Projectiles\MindControlProjectile.cs" />
     <Compile Include="Prop.cs" />
     <Compile Include="Spawner.cs" />
     <Compile Include="ClosestPhysicsObject.cs" />
@@ -226,9 +230,7 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Projectiles\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

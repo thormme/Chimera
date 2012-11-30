@@ -236,7 +236,10 @@ namespace finalProject
             Vector2 walkDirection = Vector2.Zero;
             if (moveForwardActive || moveRightActive)
             {
-                (mCreature as PlayerCreature).Stance = Stance.Walking;
+                if (mCreature is PlayerCreature)
+                {
+                    (mCreature as PlayerCreature).Stance = Stance.Walking;
+                }
 
                 Vector3 forward = mCamera.Forward;
                 forward.Y = 0.0f;
@@ -247,7 +250,7 @@ namespace finalProject
                 walkDirection += moveForwardDegree * new Vector2(forward.X, forward.Z);
                 walkDirection -= moveRightDegree * new Vector2(right.X, right.Z);
             }
-            else
+            else if (mCreature is PlayerCreature)
             {
                 (mCreature as PlayerCreature).Stance = Stance.Standing;
             }
@@ -300,7 +303,7 @@ namespace finalProject
                 }
             }
 
-            if (mCreature.CharacterController.supportData.SupportObject == null)
+            if (mCreature.CharacterController.supportData.SupportObject == null && mCreature is PlayerCreature)
             {
                 // In the air.
                 (mCreature as PlayerCreature).Stance = Stance.Jumping;

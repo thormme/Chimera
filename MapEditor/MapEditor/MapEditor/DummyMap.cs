@@ -24,7 +24,7 @@ namespace MapEditor
     public class DummyMap
     {
 
-        private Vector3 scale = new Vector3(2.0f, 0.25f, 2.0f);
+        private Vector3 scale = new Vector3(8.0f, 0.25f, 8.0f);
         private const float length = 2000.0f;
         private const float moveSpeed = 0.1f;
         private const float scaleSpeed = 1.05f;

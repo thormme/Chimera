@@ -42,7 +42,6 @@ namespace finalProject.Parts
             {
                 Vector3 direction = new Vector3(0.0f, -100.0f, 0.0f);
                 Creature.Entity.ApplyLinearImpulse(ref direction);
-                Console.WriteLine(direction.ToString());
             }
 
         }
@@ -59,7 +58,7 @@ namespace finalProject.Parts
 
         protected override void Reset()
         {
-            throw new NotImplementedException();
+            mHasTraction = true;
         }
     }
 }
