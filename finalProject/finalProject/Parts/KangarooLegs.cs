@@ -143,7 +143,17 @@ namespace finalProject.Parts
 
         protected override void Reset()
         {
-            throw new NotImplementedException();
+            mJumpInUse = false;
+            mPoundInUse = false;
+            mPoundWaiting = false;
+
+            if (mResetJump > 0)
+            {
+                Creature.CharacterController.JumpSpeed /= mJumpMultiplier;
+                Creature.CharacterController.JumpForceFactor /= mJumpMultiplier;
+            }
+
+            mResetJump = -1;
         }
     }
 }
