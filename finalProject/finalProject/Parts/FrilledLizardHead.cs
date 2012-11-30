@@ -10,8 +10,7 @@ namespace finalProject.Parts
     class FrilledLizardHead : MeteredPart
     {
         private const int IntimidationIncrease = 5;
-
-        private int mCreatureIntimidation;
+        private bool mActive = false;
 
         public FrilledLizardHead()
             : base(
@@ -35,24 +34,19 @@ namespace finalProject.Parts
 
         protected override void UseMeter(Vector3 direction)
         {
-            Creature.Intimidation += IntimidationIncrease;
+            if (!mActive)
+            {
+                mActive = true;
+                Creature.Intimidation += IntimidationIncrease;
+            }
         }
 
         protected override void FinishUseMeter()
         {
-            Creature.Intimidation -= IntimidationIncrease;
-        }
-
-        public override Creature Creature
-        {
-            protected get
+            if (mActive)
             {
-                return base.Creature;
-            }
-            set
-            {
-                base.Creature = value;
-                mCreatureIntimidation = value.Intimidation;
+                Creature.Intimidation -= IntimidationIncrease;
+                mActive = false;
             }
         }
     }

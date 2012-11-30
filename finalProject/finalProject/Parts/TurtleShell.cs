@@ -9,6 +9,8 @@ namespace finalProject.Parts
 {
     public class TurtleShell : Part
     {
+        private bool mActive = false;
+
         public TurtleShell()
             : base(
                 new Part.SubPart[] {
@@ -32,12 +34,25 @@ namespace finalProject.Parts
 
         public override void Use(Vector3 direction)
         {
-            Creature.Invulnerable = true;
+            if (!mActive)
+            {
+                mActive = true;
+                Creature.Invulnerable = true;
+            }
         }
 
         public override void FinishUse(Vector3 direction)
         {
-            Creature.Invulnerable = false;
+            if (mActive)
+            {
+                mActive = false;
+                Creature.Invulnerable = false;
+            }
+        }
+
+        protected override void Reset()
+        {
+            FinishUse(Vector3.Zero);
         }
     }
 }

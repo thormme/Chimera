@@ -33,7 +33,7 @@ namespace finalProject
             : base(subParts)
         {
             CooldownLength = cooldownLength;
-            CooldownTimer = -1.0f;
+            Reset();
         }
 
         public override void Update(GameTime time)
@@ -51,5 +51,10 @@ namespace finalProject
         }
 
         protected abstract void UseCooldown(Vector3 direction);
+
+        protected override void Reset()
+        {
+            CooldownTimer = -1.0f;
+        }
     }
 }

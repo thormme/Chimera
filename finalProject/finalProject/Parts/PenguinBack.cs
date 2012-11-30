@@ -56,5 +56,10 @@ namespace finalProject.Parts
         {
             mHasTraction = true;
         }
+
+        protected override void Reset()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

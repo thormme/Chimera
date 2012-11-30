@@ -258,12 +258,17 @@ namespace finalProject
 
         #region Public Methods
 
-        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, RadialSensor radialSensor, Controller controller)
+        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, RadialSensor radialSensor, Controller controller, int numParts)
             : base(renderable, new Cylinder(position, height, radius, mass))
         {
             mSensor = radialSensor;
             Forward = new Vector3(0.0f, 0.0f, 1.0f);
-            mPartAttachments = new List<PartAttachment>();
+            mPartAttachments = new List<PartAttachment>(numParts);
+            for (int i = 0; i < numParts; ++i)
+            {
+                mPartAttachments.Add(null);
+            }
+
             mUnusedPartBones = GetUsablePartBones();
 
             CharacterController = new CharacterController(Entity, 1.0f);
@@ -322,13 +327,16 @@ namespace finalProject
         {
             foreach (PartAttachment partAttachment in mPartAttachments)
             {
-                int count = 0;
-                foreach (PartBone partBone in partAttachment.Bones)
+                if (partAttachment != null)
                 {
-                    Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
-                    partAttachment.Part.SubParts[count].Render(worldTransform);
+                    int count = 0;
+                    foreach (PartBone partBone in partAttachment.Bones)
+                    {
+                        Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        partAttachment.Part.SubParts[count].Render(worldTransform);
 
-                    count++;
+                        count++;
+                    }
                 }
             }
         }
@@ -389,17 +397,22 @@ namespace finalProject
         /// Attach part to the creature.
         /// </summary>
         /// <param name="part">The part to attach.</param>
-        public void AddPart(Part part)
+        /// <param name="slot">The slot in the list to put the part</param>
+        public void AddPart(Part part, int slot)
         {
+            if (slot >= mPartAttachments.Count())
+            {
+                return;
+            }
+
             List<PartBone> usedBones = GetPartBonesForPart(part);
             foreach (PartBone partBone in usedBones)
             {
                 mUnusedPartBones.Remove(partBone);
             }
 
-            PartAttachment attachment = new PartAttachment(part, usedBones);
+            mPartAttachments[slot] = new PartAttachment(part, usedBones);
 
-            mPartAttachments.Add(attachment);
             part.Creature = this;
         }
 
@@ -409,12 +422,15 @@ namespace finalProject
         /// <param name="part"></param>
         public void RemovePart(Part part)
         {
+            int slot = -1;
             PartAttachment partAttachment = null;
-            foreach (PartAttachment attachment in mPartAttachments)
+            for (int i = 0; i < mPartAttachments.Count(); ++i)//PartAttachment attachment in mPartAttachments)
             {
+                PartAttachment attachment = mPartAttachments[i];
                 if (part == attachment.Part)
                 {
                     partAttachment = attachment;
+                    slot = i;
                     break;
                 }
             }
@@ -429,7 +445,7 @@ namespace finalProject
                 mUnusedPartBones.Add(partBone);
             }
 
-            mPartAttachments.Remove(partAttachment);
+            mPartAttachments[slot] = null;
             partAttachment.Part.Creature = null;
         }
 
@@ -453,7 +469,7 @@ namespace finalProject
         /// <param name="direction">The direction in which to use the part.</param>
         public virtual void UsePart(int part, Vector3 direction)
         {
-            if (part < mPartAttachments.Count())
+            if (part < mPartAttachments.Count() && mPartAttachments[part] != null)
             {
                 mPartAttachments[part].Part.Use(direction);
             }
@@ -466,7 +482,7 @@ namespace finalProject
         /// <param name="direction">The direction in which to use the part.</param>
         public virtual void FinishUsingPart(int part, Vector3 direction)
         {
-            if (part < mPartAttachments.Count())
+            if (part < mPartAttachments.Count() && mPartAttachments[part] != null)
             {
                 mPartAttachments[part].Part.FinishUse(direction);
             }
@@ -550,7 +566,10 @@ namespace finalProject
 
             foreach (PartAttachment p in mPartAttachments)
             {
-                p.Part.Update(gameTime);
+                if (p != null)
+                {
+                    p.Part.Update(gameTime);
+                }
             }
         }
 

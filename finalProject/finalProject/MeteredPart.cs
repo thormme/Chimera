@@ -44,6 +44,7 @@ namespace finalProject
         {
             MeterLength = meterLength;
             CooldownLength = cooldownLength;
+            Reset();
         }
 
         public override void Use(Vector3 direction)
@@ -85,7 +86,25 @@ namespace finalProject
             }
         }
 
+        /// <summary>
+        /// Called when the part is used and the meter has not run out.
+        /// </summary>
+        /// <param name="direction">The direction in which to use the part.</param>
         protected abstract void UseMeter(Vector3 direction);
+
+        /// <summary>
+        /// Called when the part is done being used, either when the player released the button
+        /// or the meter ran out.
+        /// CREATURE IS ALLOWED TO BE NULL when this function is called; it is called in Reset()
+        /// which is called in the constructor.
+        /// </summary>
         protected abstract void FinishUseMeter();
+
+        protected override void Reset()
+        {
+            MeterTimer = MeterLength;
+            CooldownTimer = -1.0f;
+            FinishUseMeter();
+        }
     }
 }

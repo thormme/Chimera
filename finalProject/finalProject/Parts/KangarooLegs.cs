@@ -140,5 +140,10 @@ namespace finalProject.Parts
                 Creature.Entity.ApplyLinearImpulse(ref pushForward);
             }
         }
+
+        protected override void Reset()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
