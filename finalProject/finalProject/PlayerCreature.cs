@@ -29,6 +29,7 @@ namespace finalProject
         private const float mPlayerRadius = 1.0f;
         private const int DefaultSneak = 11;
         private const int DefaultIntimidation = 5;
+        private const int DamageThreshold = 30;
 
         #endregion
 
@@ -89,7 +90,7 @@ namespace finalProject
         }
 
         /// <summary>
-        /// Removes parts until no parts are remaining, then kills player.
+        /// Removes parts until no parts are remaining.
         /// </summary>
         /// <param name="damage">Amount of damage to apply.</param>
         public override void Damage(int damage)
@@ -99,11 +100,13 @@ namespace finalProject
                 return;
             }
 
-            while (damage-- > 0)
+            base.Damage(damage);
+
+            while (damage - DamageThreshold > 0)
             {
                 if (mPartAttachments.Count() == 0)
                 {
-                    // die?
+                    // die!
                     return;
                 }
 

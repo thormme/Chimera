@@ -55,9 +55,24 @@ namespace finalProject
         private KeyInputAction mUse1;
         private KeyInputAction mUse2;
         private KeyInputAction mUse3;
+        private KeyInputAction mUse4;
+        private KeyInputAction mUse5;
+        private KeyInputAction mUse6;
+        private KeyInputAction mUse7;
+        private KeyInputAction mUse8;
+        private KeyInputAction mUse9;
+        private KeyInputAction mUse0;
+
         private KeyInputAction mFinishUse1;
         private KeyInputAction mFinishUse2;
         private KeyInputAction mFinishUse3;
+        private KeyInputAction mFinishUse4;
+        private KeyInputAction mFinishUse5;
+        private KeyInputAction mFinishUse6;
+        private KeyInputAction mFinishUse7;
+        private KeyInputAction mFinishUse8;
+        private KeyInputAction mFinishUse9;
+        private KeyInputAction mFinishUse0;
 
         private KeyInputAction mJumpKey;
 
@@ -121,9 +136,23 @@ namespace finalProject
             mUse1 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D1);
             mUse2 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D2);
             mUse3 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D3);
+            mUse4 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D4);
+            mUse5 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D5);
+            mUse6 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D6);
+            mUse7 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D7);
+            mUse8 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D8);
+            mUse9 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D9);
+            mUse0 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D0);
             mFinishUse1 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D1);
             mFinishUse2 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D2);
-            mFinishUse3 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D3); 
+            mFinishUse3 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D3);
+            mFinishUse4 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D4);
+            mFinishUse5 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D5);
+            mFinishUse6 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D6);
+            mFinishUse7 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D7);
+            mFinishUse8 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D8);
+            mFinishUse9 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D9);
+            mFinishUse0 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D0); 
 
             mJumpKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Space);
 
@@ -320,6 +349,34 @@ namespace finalProject
             {
                 mCreature.UsePart(2, mCreature.Forward);
             }
+            if (mUse4.Active)
+            {
+                mCreature.UsePart(3, mCreature.Forward);
+            }
+            if (mUse5.Active)
+            {
+                mCreature.UsePart(4, mCreature.Forward);
+            }
+            if (mUse6.Active)
+            {
+                mCreature.UsePart(5, mCreature.Forward);
+            }
+            if (mUse7.Active)
+            {
+                mCreature.UsePart(6, mCreature.Forward);
+            }
+            if (mUse8.Active)
+            {
+                mCreature.UsePart(7, mCreature.Forward);
+            }
+            if (mUse9.Active)
+            {
+                mCreature.UsePart(8, mCreature.Forward);
+            }
+            if (mUse0.Active)
+            {
+                mCreature.UsePart(9, mCreature.Forward);
+            }
 
             if (mSaveBoneTransforms.Active)
             {
@@ -392,6 +449,34 @@ namespace finalProject
             if (mFinishUse3.Active)
             {
                 mCreature.FinishUsingPart(2, mCreature.Forward);
+            }
+            if (mFinishUse4.Active)
+            {
+                mCreature.FinishUsingPart(3, mCreature.Forward);
+            }
+            if (mFinishUse5.Active)
+            {
+                mCreature.FinishUsingPart(4, mCreature.Forward);
+            }
+            if (mFinishUse6.Active)
+            {
+                mCreature.FinishUsingPart(5, mCreature.Forward);
+            }
+            if (mFinishUse7.Active)
+            {
+                mCreature.FinishUsingPart(6, mCreature.Forward);
+            }
+            if (mFinishUse8.Active)
+            {
+                mCreature.FinishUsingPart(7, mCreature.Forward);
+            }
+            if (mFinishUse9.Active)
+            {
+                mCreature.FinishUsingPart(8, mCreature.Forward);
+            }
+            if (mFinishUse0.Active)
+            {
+                mCreature.FinishUsingPart(9, mCreature.Forward);
             }
         }
 

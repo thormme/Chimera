@@ -78,6 +78,8 @@ namespace finalProject
                 return;
             }
 
+            base.Damage(damage);
+
             Health -= damage;
             if (Health < 0)
             {
