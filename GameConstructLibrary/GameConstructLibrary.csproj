@@ -154,6 +154,7 @@
     <Compile Include="Input\MouseMovementInputAction.cs" />
     <Compile Include="LevelManager.cs" />
     <Compile Include="PhysicsObject.cs" />
+    <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryManager.cs" />
     <Compile Include="Sensor.cs" />

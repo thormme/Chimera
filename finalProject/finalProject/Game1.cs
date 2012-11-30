@@ -98,7 +98,8 @@ namespace finalProject
             player.AddPart(new CheetahLegs());
             player.AddPart(new FrilledLizardHead());
             player.AddPart(new ParrotWings());
-            player.AddPart(new PenguinBack());
+            player.AddPart(new FlyingSquirrelBack());
+            player.AddPart(new SpittingCobraHead());
 
             creature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
             World.Add(creature);

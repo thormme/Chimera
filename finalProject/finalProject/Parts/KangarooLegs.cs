@@ -14,7 +14,7 @@ namespace finalProject.Parts
         const double maxJumpCharge = 3.0;
         const double jumpStrength = 3.0;
         const float forwardJumpForce = 30f;
-        const float poundForce = 80f;
+        const float poundForce = 320f;
         const double poundWaitTime = .5;
         const int poundDamage = 35;
 

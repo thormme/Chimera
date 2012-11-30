@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using BEPUphysicsDrawer.Models;
 using System.Reflection;
+using BEPUphysics.Collidables;
 
 namespace GameConstructLibrary
 {
@@ -68,13 +69,13 @@ namespace GameConstructLibrary
                 }
                 if (gameObject is IEntityOwner)
                 {
-                    Space.Add((gameObject as IEntityOwner).Entity);
-                    mDebugModelDrawer.Add((gameObject as IEntityOwner).Entity);
+                    Space.Remove((gameObject as IEntityOwner).Entity);
+                    mDebugModelDrawer.Remove((gameObject as IEntityOwner).Entity);
                 }
                 else if (gameObject is IStaticCollidableOwner)
                 {
-                    Space.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
-                    mDebugModelDrawer.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
+                    Space.Remove((gameObject as IStaticCollidableOwner).StaticCollidable);
+                    mDebugModelDrawer.Remove((gameObject as IStaticCollidableOwner).StaticCollidable);
                 }
             }
 
@@ -158,7 +159,10 @@ namespace GameConstructLibrary
                 }
             }
 
-            Add(new TerrainPhysics(mapName, position, orientation, scale));
+            TerrainPhysics tf = new TerrainPhysics(mapName, position, orientation, scale);
+            (tf.StaticCollidable as Terrain).Thickness = 5.0f;
+            Add(tf);
+
         }
     }
 }
