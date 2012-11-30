@@ -13,16 +13,17 @@ namespace finalProject
         public DummyPart()
             : base(
             2.0f,
-            new InanimateModel("sphere"),
+            new InanimateModel("kangaroo_leftLeg"),
             new Creature.PartBone[] { 
-                Creature.PartBone.ArmLeft1Cap, 
-                Creature.PartBone.ArmLeft2Cap,
-                Creature.PartBone.Spine1Cap
+                Creature.PartBone.LegFrontLeft2Cap
+                //Creature.PartBone.ArmLeft1Cap, 
+                //Creature.PartBone.ArmLeft2Cap,
+                //Creature.PartBone.Spine1Cap
             }, 
-            3,
+            1,
             new Vector3(),
             Matrix.CreateFromQuaternion(new Quaternion()),
-            new Vector3(0.25f, 0.25f, 0.25f)
+            new Vector3(1.0f, 1.0f, 1.0f)
             )
         { }
 

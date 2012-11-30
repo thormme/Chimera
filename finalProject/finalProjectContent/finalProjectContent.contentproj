@@ -57,22 +57,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\sphere.FBX">
-      <Name>sphere</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
     <Compile Include="shaders\ConfigurableShader.fx">
       <Name>ConfigurableShader</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\dude.fbx">
-      <Name>dude</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -152,37 +140,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\box.FBX">
-      <Name>box</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\editor.fbx">
-      <Name>editor</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\playerBean_jump.FBX">
-      <Name>playerBean_jump</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\playerBean_stand.FBX">
-      <Name>playerBean_stand</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\playerBean_walk.FBX">
-      <Name>playerBean_walk</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="levels\maps\default.bmp">
       <Name>default</Name>
       <Importer>TextureImporter</Importer>
@@ -190,22 +147,81 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\kangaroo.FBX">
+    <Compile Include="models\playerBean\playerBean_jump.FBX">
+      <Name>playerBean_jump</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\playerBean\playerBean_stand.FBX">
+      <Name>playerBean_stand</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\playerBean\playerBean_walk.FBX">
+      <Name>playerBean_walk</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\kangaroo\kangaroo.FBX">
       <Name>kangaroo</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_leftLeg.FBX">
+      <Name>kangaroo_leftLeg</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_rightLeg.FBX">
+      <Name>kangaroo_rightLeg</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\dude\dude_walk.fbx">
+      <Name>dude_walk</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\editor\editor.fbx">
+      <Name>editor</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="models\lizard.FBX">
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\lizard\lizard.FBX">
       <Name>lizard</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="models\parrot.FBX">
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\parrot\parrot.FBX">
       <Name>parrot</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="models\rhino.FBX">
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\primitives\box.FBX">
+      <Name>box</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\primitives\sphere.FBX">
+      <Name>sphere</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\rhino\rhino.FBX">
       <Name>rhino</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
