@@ -56,5 +56,10 @@ namespace finalProject.Parts
         {
             mGliding = false;
         }
+
+        protected override void Reset()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

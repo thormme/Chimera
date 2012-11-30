@@ -27,6 +27,7 @@ namespace finalProject
             : base(cooldownLength, subParts)
         {
             DutyCycle = dutyCycle;
+            Reset();
         }
 
         protected override void UseCooldown(Vector3 direction)
@@ -60,6 +61,13 @@ namespace finalProject
             {
                 EndDuty();
             }
+        }
+
+        protected override void Reset()
+        {
+            base.Reset();
+
+            mDutyTimer = -1.0f;
         }
 
         protected abstract void BeginDuty(Vector3 direction);

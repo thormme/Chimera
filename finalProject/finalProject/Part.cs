@@ -72,6 +72,8 @@ namespace finalProject
             }
         }
 
+        private Creature mCreature;
+
         public SubPart[] SubParts
         {
             get;
@@ -85,8 +87,15 @@ namespace finalProject
 
         public virtual Creature Creature
         {
-            protected get;
-            set;
+            protected get
+            {
+                return mCreature;
+            }
+            set
+            {
+                Reset();
+                mCreature = value;
+            }
         }
 
         /// <summary>
@@ -114,5 +123,10 @@ namespace finalProject
         /// The direction the ability will be used in.
         /// </param>
         abstract public void FinishUse(Vector3 direction);
+
+        /// <summary>
+        /// Called when the Creature is set.
+        /// </summary>
+        abstract protected void Reset();
     }
 }

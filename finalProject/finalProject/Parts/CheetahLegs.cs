@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 
 namespace finalProject.Parts
 {
-
     public class CheetahLegs : MeteredPart
     {
         private const float RunSpeed = 30.0f;
@@ -74,7 +73,10 @@ namespace finalProject.Parts
 
         protected override void FinishUseMeter()
         {
-            Creature.CharacterController.HorizontalMotionConstraint.Speed = mCreatureSpeed;
+            if (Creature != null)
+            {
+                Creature.CharacterController.HorizontalMotionConstraint.Speed = mCreatureSpeed;
+            }
         }
 
         public override Creature Creature

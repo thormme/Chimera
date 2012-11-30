@@ -81,7 +81,7 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, 1.8f, 1.2f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f), new PlayerController(viewPort))
+            : base(position, 1.8f, 1.2f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f), new PlayerController(viewPort), 10)
         {
             Scale = new Vector3(0.004f);
 
@@ -117,14 +117,14 @@ namespace finalProject
         /// <summary>
         /// Adds a part to the PlayerCreature. The part chosen is from the closest incapacitated animal within the radial sensor.
         /// </summary>
-        public void FindAndAddPart()
+        public void FindAndAddPart(int slot)
         {
-            foreach (Creature cur in mSensor.CollidingCreatures)
+            foreach (Creature creature in mSensor.CollidingCreatures)
             {
-                if (cur.Incapacitated && cur.PartAttachments.Count > 0)
+                if (/*creature.Incapacitated && */creature.PartAttachments.Count > 0)
                 {
-                    cur.RemovePart(cur.PartAttachments[0].Part);
-                    AddPart(cur.PartAttachments[0].Part);
+                    creature.RemovePart(creature.PartAttachments[0].Part);
+                    AddPart(creature.PartAttachments[0].Part, slot);
                     return;
                 }
             }
