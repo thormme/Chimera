@@ -97,11 +97,12 @@ namespace finalProject
             player.AddPart(new PenguinBack());
             player.AddPart(new CheetahLegs());
             player.AddPart(new RhinoHead());
+            player.AddPart(new KangarooLegs());
 
             creature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
             World.Add(creature);
 
-            World.AddLevelFromFile("jump", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            World.AddLevelFromFile("test", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
         }
 
         /// <summary>
