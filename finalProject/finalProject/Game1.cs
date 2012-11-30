@@ -47,7 +47,7 @@ namespace finalProject
             celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F2);
             mouseLock = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Tab);
 
-            debugMode = true;
+            debugMode = false;
         }
 
         ~Game1()
@@ -90,12 +90,12 @@ namespace finalProject
 
             player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f));
             World.Add(player);
-            player.AddPart(new RhinoHead());
+            player.AddPart(new KangarooLegs());
 
-            creature = new Rhino(new Vector3(0.0f, 1.0f, -20.0f));
+            creature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
             World.Add(creature);
 
-            World.AddLevelFromFile("jumptest", Vector3.Zero, new Quaternion(), new Vector3(2.0f, 0.25f, 2.0f));
+            World.AddLevelFromFile("test_level", new Vector3(0, -100, 0), new Quaternion(), new Vector3(2.0f, 0.25f, 2.0f));
         }
 
         /// <summary>
