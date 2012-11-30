@@ -149,6 +149,7 @@
     <Compile Include="Parts\BearArms.cs" />
     <Compile Include="Parts\CheetahLegs.cs" />
     <Compile Include="Parts\MindControlHead.cs" />
+    <Compile Include="Parts\FrogHead.cs" />
     <Compile Include="Parts\SpittingCobraHead.cs" />
     <Compile Include="Parts\FlyingSquirrelBack.cs" />
     <Compile Include="Parts\FrilledLizardHead.cs" />

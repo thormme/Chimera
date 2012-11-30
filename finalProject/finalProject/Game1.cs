@@ -101,9 +101,6 @@ namespace finalProject
             player.AddPart(new MindControlHead(), i++);
             player.AddPart(new CheetahLegs(), i++);
             player.AddPart(new FrilledLizardHead(), i++);
-            //player.AddPart(new ParrotWings(), i++);
-            //player.AddPart(new FlyingSquirrelBack(), i++);
-            //player.AddPart(new SpittingCobraHead(), i++);
 
             creature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
             World.Add(creature);

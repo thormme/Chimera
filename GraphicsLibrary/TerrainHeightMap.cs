@@ -18,7 +18,7 @@ namespace GameConstructLibrary
     public class TerrainHeightMap
     {
 
-        private Vector3 scale = new Vector3(2.0f, 0.25f, 2.0f);
+        private Vector3 scale = new Vector3(8.0f, 0.25f, 8.0f);
 
         private Bitmap mMap;
         private int mWidth;
