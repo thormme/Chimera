@@ -10,6 +10,7 @@ using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysicsDrawer.Models;
 using System;
 using finalProject.Creatures;
+using finalProject.Parts;
 
 namespace finalProject
 {
@@ -89,7 +90,7 @@ namespace finalProject
 
             player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f));
             World.Add(player);
-            player.AddPart(new DummyPart());
+            player.AddPart(new RhinoHead());
 
             creature = new Rhino(new Vector3(0.0f, 1.0f, -20.0f));
             World.Add(creature);

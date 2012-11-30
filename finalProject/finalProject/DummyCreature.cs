@@ -28,7 +28,7 @@ namespace finalProject
         {
             base.Update(time);
 
-            foreach (IGameObject i in mCollidingObjects)
+            foreach (IGameObject i in CollidingObjects)
             {
                 if (i is Creature)
                 {

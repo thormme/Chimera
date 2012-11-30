@@ -12,17 +12,19 @@ namespace finalProject
     {
         public DummyPart()
             : base(
-            2.0f,
-            new InanimateModel("sphere"),
-            new Creature.PartBone[] { 
-                Creature.PartBone.ArmLeft1Cap, 
-                Creature.PartBone.ArmLeft2Cap,
-                Creature.PartBone.Spine1Cap
-            }, 
-            3,
-            new Vector3(),
-            Matrix.CreateFromQuaternion(new Quaternion()),
-            new Vector3(0.25f, 0.25f, 0.25f)
+                new Part.SubPart[] {
+                    new SubPart(
+                        new InanimateModel("sphere"),
+                        new Creature.PartBone[] { 
+                            Creature.PartBone.ArmLeft1Cap, 
+                            Creature.PartBone.ArmLeft2Cap,
+                            Creature.PartBone.Spine1Cap
+                        },
+                        new Vector3(),
+                        Matrix.CreateFromQuaternion(new Quaternion()),
+                        new Vector3(0.25f, 0.25f, 0.25f)
+                    )
+                }
             )
         { }
 

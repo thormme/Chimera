@@ -190,6 +190,23 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="levels\maps\test_texture_high.tga">
+      <Name>test_texture_high</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\maps\test_texture_low.tga">
+      <Name>test_texture_low</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\maps\test_texture_medium.tga">
+      <Name>test_texture_medium</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="models\kangaroo.FBX">
       <Name>kangaroo</Name>
       <Importer>FbxImporter</Importer>
