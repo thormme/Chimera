@@ -30,10 +30,6 @@ namespace finalProject
         private const int DefaultSneak = 11;
         private const int DefaultIntimidation = 5;
 
-        private AnimateModel mStandingModel;
-        private AnimateModel mWalkingModel;
-        private AnimateModel mJumpingModel;
-
         #endregion
 
         #region Public Properties
@@ -84,19 +80,9 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, 1.8f, 1.2f, 10.0f, new AnimateModel("playerBean_stand"), new RadialSensor(4.0f), new PlayerController(viewPort))
+            : base(position, 1.8f, 1.2f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f), new PlayerController(viewPort))
         {
-            (mRenderable as AnimateModel).PlayAnimation("Take 001");
             Scale = new Vector3(0.004f);
-
-            mStandingModel = new AnimateModel("playerBean_stand");
-            mStandingModel.PlayAnimation("Take 001");
-
-            mWalkingModel = new AnimateModel("playerBean_walk");
-            mWalkingModel.PlayAnimation("Take 001");
-
-            mJumpingModel = new AnimateModel("playerBean_jump");
-            mJumpingModel.PlayAnimation("Take 001");
 
             Intimidation = DefaultIntimidation;
             Sneak = DefaultSneak;
@@ -108,6 +94,11 @@ namespace finalProject
         /// <param name="damage">Amount of damage to apply.</param>
         public override void Damage(int damage)
         {
+            if (Invulnerable)
+            {
+                return;
+            }
+
             while (damage-- > 0)
             {
                 if (mPartAttachments.Count() == 0)
@@ -146,15 +137,15 @@ namespace finalProject
 
             if (mStance == Stance.Standing)
             {
-                mRenderable = mStandingModel;
+                model.PlayAnimation("stand");
             }
             else if (mStance == Stance.Walking)
             {
-                mRenderable = mWalkingModel;
+                model.PlayAnimation("walk");
             }
             else if (mStance == Stance.Jumping)
             {
-                mRenderable = mJumpingModel;
+                model.PlayAnimation("jump");
             }
 
             model.Update(gameTime);

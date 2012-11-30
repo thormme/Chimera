@@ -91,8 +91,8 @@ namespace GraphicsLibrary
         /// <param name="worldScale">Scale along each axis of the object.</param>
         public void Render(Vector3 worldPosition, Matrix worldRotation, Vector3 worldScale)
         {
-            Matrix worldTransforms = worldRotation;
-            worldTransforms *= Matrix.CreateScale(worldScale);
+            Matrix worldTransforms = Matrix.CreateScale(worldScale);
+            worldTransforms *= worldRotation;
             worldTransforms *= Matrix.CreateTranslation(worldPosition);
 
             Draw(worldTransforms);

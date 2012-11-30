@@ -83,7 +83,7 @@ namespace finalProject
             SubParts = subParts;
         }
 
-        public Creature Creature
+        public virtual Creature Creature
         {
             protected get;
             set;

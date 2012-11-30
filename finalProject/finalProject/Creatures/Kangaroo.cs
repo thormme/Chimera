@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using GameConstructLibrary;
+using finalProject.Parts;
 
 namespace finalProject.Creatures
 {
@@ -24,7 +25,7 @@ namespace finalProject.Creatures
                 3,                               // Sneak
                 5,                               // Intimidation
                 50,								 // Starting Health
-                new /*KangarooLegs*/DummyPart()  // Part
+                new KangarooLegs()               // Part
                 )
         {
         }

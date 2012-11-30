@@ -29,7 +29,7 @@ namespace finalProject
             )
         { }
 
-        public override void UseCooldown(Vector3 direction)
+        protected override void UseCooldown(Vector3 direction)
         {
             Creature.Jump();
         }

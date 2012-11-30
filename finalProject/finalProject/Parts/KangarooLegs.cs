@@ -31,7 +31,7 @@ namespace finalProject.Parts
             : base(
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new InanimateModel("kangaroo_leftLeg"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegFrontLeft3Cap, 
                             Creature.PartBone.LegRearLeft3Cap,
@@ -45,7 +45,7 @@ namespace finalProject.Parts
                         new Vector3(1.0f, 1.0f, 1.0f)
                     ),
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new InanimateModel("kangaroo_rightLeg"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegFrontRight3Cap, 
                             Creature.PartBone.LegRearRight3Cap,
