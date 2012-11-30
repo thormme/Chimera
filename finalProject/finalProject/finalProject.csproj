@@ -145,6 +145,8 @@
     <Compile Include="Creatures\Kangaroo.cs" />
     <Compile Include="Creatures\Rhino.cs" />
     <Compile Include="Parts\KangarooLegs.cs" />
+    <Compile Include="Parts\ParrotWings.cs" />
+    <Compile Include="Parts\PenguinBack.cs" />
     <Compile Include="Parts\RhinoHead.cs" />
     <Compile Include="PhysicsProp.cs" />
     <Compile Include="Prop.cs" />
