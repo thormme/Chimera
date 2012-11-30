@@ -27,13 +27,12 @@ namespace finalProject.Creatures
                 new /*RhinoHead*/DummyPart()    // Part
                 )
         {
-            Bones.Add(PartBone.HeadCenterCap);
         }
 
         protected override List<PartBone> GetUsablePartBones()
         {
             List<PartBone> bones = new List<PartBone>();
-            bones.Add(PartBone.HeadCenterCap);
+            //bones.Add(PartBone.HeadCenterCap);
             return bones;
         }
     }
