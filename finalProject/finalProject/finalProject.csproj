@@ -141,12 +141,16 @@
     <Compile Include="AIController.cs" />
     <Compile Include="ChaseCamera.cs" />
     <Compile Include="CooldownPart.cs" />
+    <Compile Include="Creatures\Cheetah.cs" />
+    <Compile Include="Creatures\Kangaroo.cs" />
     <Compile Include="Creatures\Rhino.cs" />
     <Compile Include="DutyCyclePart.cs" />
     <Compile Include="MeteredPart.cs" />
     <Compile Include="Parts\CheetahLegs.cs" />
     <Compile Include="Parts\FrilledLizardHead.cs" />
     <Compile Include="Parts\KangarooLegs.cs" />
+    <Compile Include="Parts\ParrotWings.cs" />
+    <Compile Include="Parts\PenguinBack.cs" />
     <Compile Include="Parts\RhinoHead.cs" />
     <Compile Include="Parts\TurtleShell.cs" />
     <Compile Include="PhysicsProp.cs" />

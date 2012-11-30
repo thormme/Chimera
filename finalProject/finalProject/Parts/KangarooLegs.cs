@@ -5,21 +5,27 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using BEPUphysics.Entities.Prefabs;
 using GraphicsLibrary;
+using GameConstructLibrary;
 
 namespace finalProject.Parts
 {
     class KangarooLegs : Part
     {
-        bool mInUse;
-        int mResetJump;
-        double mJumpStrengthTimer;
-        float mDefaultJumpSpeed;
-        float mDefaultJumpForceFactor;
-
         const double maxJumpCharge = 3.0;
         const double jumpStrength = 3.0;
         const float forwardJumpForce = 30f;
-        const float poundVelocity = 2f;
+        const float poundForce = 80f;
+        const double poundWaitTime = .5;
+        const int poundDamage = 35;
+
+        bool mJumpInUse = false;
+        bool mPoundInUse = false;
+        bool mPoundWaiting = false;
+        int mResetJump = -1;
+        double mJumpStrengthTimer;
+        double mPoundWaitTimer;
+        float mDefaultJumpSpeed;
+        float mDefaultJumpForceFactor;
 
         public KangarooLegs()
             : base(
@@ -61,18 +67,49 @@ namespace finalProject.Parts
         {
             if (Creature.CharacterController.SupportFinder.HasSupport)
             {
-                mInUse = true;
+                mJumpInUse = true;
                 mJumpStrengthTimer = 1.0;
             }
             else
             {
-                Creature.Entity.LinearMomentum = new Vector3(0, -poundVelocity, 0);
+                mPoundWaiting = true;
+                mPoundWaitTimer = poundWaitTime;
             }
         }
 
         public override void Update(GameTime time)
         {
-            if (mInUse)
+            if (mPoundWaiting)
+            {
+                mPoundWaitTimer -= time.ElapsedGameTime.TotalSeconds;
+                Creature.Entity.LinearMomentum = new Vector3();
+                if (mPoundWaitTimer <= 0.0)
+                {
+                    mPoundWaiting = false;
+                    mPoundInUse = true;
+                    Vector3 poundImpulse = new Vector3(0, -poundForce, 0);
+                    Creature.Entity.ApplyLinearImpulse(ref poundImpulse);
+                }
+            }
+
+            if (mPoundInUse)
+            {
+                foreach (IGameObject gameObject in Creature.CollidingObjects)
+                {
+                    Creature otherCreature = gameObject as Creature;
+                    if (otherCreature != null)
+                    {
+                        otherCreature.Damage(poundDamage);
+                    }
+                }
+
+                if (Creature.CharacterController.SupportFinder.HasTraction)
+                {
+                    mPoundInUse = false;
+                }
+            }
+
+            if (mJumpInUse)
             {
                 Creature.Move(new Vector2());
                 mJumpStrengthTimer += time.ElapsedGameTime.TotalSeconds;
@@ -87,22 +124,25 @@ namespace finalProject.Parts
 
         public override void FinishUse(Vector3 direction)
         {
-            mInUse = false;
-            mResetJump = 2;
-            mJumpStrengthTimer = mJumpStrengthTimer > maxJumpCharge ? maxJumpCharge : mJumpStrengthTimer;
+            if (mJumpInUse)
+            {
+                mJumpInUse = false;
+                mResetJump = 2;
+                mJumpStrengthTimer = mJumpStrengthTimer > maxJumpCharge ? maxJumpCharge : mJumpStrengthTimer;
 
-            float multiplier = (float)((mJumpStrengthTimer / maxJumpCharge) * jumpStrength);
+                float multiplier = (float)((mJumpStrengthTimer / maxJumpCharge) * jumpStrength);
 
-            mDefaultJumpSpeed = Creature.CharacterController.JumpSpeed;
-            mDefaultJumpForceFactor = Creature.CharacterController.JumpForceFactor;
+                mDefaultJumpSpeed = Creature.CharacterController.JumpSpeed;
+                mDefaultJumpForceFactor = Creature.CharacterController.JumpForceFactor;
 
-            Creature.CharacterController.JumpSpeed *= multiplier;
-            Creature.CharacterController.JumpForceFactor *= multiplier;
+                Creature.CharacterController.JumpSpeed *= multiplier;
+                Creature.CharacterController.JumpForceFactor *= multiplier;
 
-            Creature.Jump();
+                Creature.Jump();
 
-            Vector3 pushForward = direction * multiplier * forwardJumpForce;
-            Creature.Entity.ApplyLinearImpulse(ref pushForward);
+                Vector3 pushForward = direction * multiplier * forwardJumpForce;
+                Creature.Entity.ApplyLinearImpulse(ref pushForward);
+            }
         }
     }
 }
