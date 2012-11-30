@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using GameConstructLibrary;
+using BEPUphysics.Entities.Prefabs;
 
 namespace finalProject
 {
@@ -13,10 +14,15 @@ namespace finalProject
     /// </summary>
     public class SensitiveSensor : RadialSensor
     {
+        //protected const float ListeningMultiplier = 2.0f;
         private double mVisionAngle;
         private int mListeningSensitivity;
 
-        private InanimateModel model = null;
+        public List<Creature> IgnoredCreatures
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// 
@@ -32,25 +38,41 @@ namespace finalProject
         {
             mVisionAngle = Math.Cos(visionAngle);
             mListeningSensitivity = listeningSensitivity;
+            IgnoredCreatures = new List<Creature>();
+        }
 
-            model = new InanimateModel("dude");
+        protected bool CanHear(Creature creature)
+        {
+            //float radius = (Entity as Sphere).Radius;
+            //float distance = (creature.Position - Position).Length();
+            //float noise = distance / radius * ListeningMultiplier;
+            return mListeningSensitivity >= creature.Sneak;
+        }
+
+        protected bool CanSee(Creature creature)
+        {
+            Vector3 curNormal = Vector3.Normalize(Vector3.Subtract(creature.Position, Position));
+            Vector3 normalFacing = Vector3.Normalize(Forward);
+
+            return Vector3.Dot(curNormal, normalFacing) > mVisionAngle;
         }
 
         public override void Update(GameTime time)
         {
             base.Update(time);
 
-            Vector3 normalFacing = Vector3.Normalize(Forward);
+            IgnoredCreatures.Clear();
 
             List<Creature> newList = new List<Creature>();
-            foreach (Creature cur in mCollidingCreatures)
+            foreach (Creature creature in mCollidingCreatures)
             {
-                Vector3 curNormal = Vector3.Normalize(Vector3.Subtract(cur.Position, Position));
-
-                if (mListeningSensitivity >= cur.Sneak ||
-                    Vector3.Dot(curNormal, normalFacing) > mVisionAngle)
+                if (CanHear(creature) || CanSee(creature))
                 {
-                    newList.Add(cur);
+                    newList.Add(creature);
+                }
+                else
+                {
+                    IgnoredCreatures.Add(creature);
                 }
             }
             mCollidingCreatures = newList;

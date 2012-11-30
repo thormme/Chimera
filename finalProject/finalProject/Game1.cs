@@ -11,6 +11,7 @@ using BEPUphysicsDrawer.Models;
 using System;
 using finalProject.Parts;
 using finalProject.Creatures;
+using BEPUphysics.CollisionRuleManagement;
 
 namespace finalProject
 {
@@ -46,6 +47,9 @@ namespace finalProject
             debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F1);
             celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F2);
             mouseLock = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Tab);
+
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
 
             debugMode = false;
         }

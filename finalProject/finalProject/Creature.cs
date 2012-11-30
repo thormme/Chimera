@@ -42,6 +42,9 @@ namespace finalProject
         }
 
         #region Fields
+
+        protected const double InvulnerableLength = 1.0f;
+
         public class PartAttachment
         {
             public Part Part;
@@ -54,10 +57,6 @@ namespace finalProject
             }
         }
 
-        protected const float MoveSpeed = 50.0f;
-        protected const float JumpVelocity = 10.0f;
-        protected Vector3 JumpVector = new Vector3(0.0f, JumpVelocity, 0.0f);
-
         protected RadialSensor mSensor;
 
         protected List<PartAttachment> mPartAttachments;
@@ -66,6 +65,7 @@ namespace finalProject
         protected Controller mController;
 
         protected int mInvulnerableCount = 0;
+        protected double mInvulnerableTimer = -1.0f;
         
         #endregion
 
@@ -329,7 +329,7 @@ namespace finalProject
             set
             {
                 base.Forward = value;
-                //mSensor.Forward = Forward;
+                mSensor.Forward = Forward;
             }
         }
 
@@ -379,7 +379,6 @@ namespace finalProject
                 if (direction != Vector2.Zero)
                 {
                     Forward = new Vector3(direction.X, 0.0f, direction.Y);
-                    mSensor.Forward = Forward;
                 }
             }
         }
@@ -388,7 +387,14 @@ namespace finalProject
         /// Damages the creature.
         /// </summary>
         /// <param name="damage">The amount of damage dealt.</param>
-        public abstract void Damage(int damage);
+        public virtual void Damage(int damage)
+        {
+            if (damage > 0 && !Invulnerable)
+            {
+                Invulnerable = true;
+                mInvulnerableTimer = InvulnerableLength;
+            }
+        }
 
         /// <summary>
         /// Called every frame. 
@@ -401,12 +407,20 @@ namespace finalProject
                 return;
             }
 
+            if (mInvulnerableTimer > 0.0f)
+            {
+                mInvulnerableTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (mInvulnerableTimer < 0.0f)
+                {
+                    Invulnerable = false;
+                }
+            }
+
             float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             mSensor.Update(gameTime);
             mController.Update(gameTime, mSensor.CollidingCreatures);
             mSensor.Position = Position;
-            //mSensor.Forward = Forward;// XNAOrientationMatrix = XNAOrientationMatrix;
 
             List<BEPUphysics.RayCastResult> results = new List<BEPUphysics.RayCastResult>();
             World.Space.RayCast(new Ray(Position, -1.0f * Up), 4.0f, results);

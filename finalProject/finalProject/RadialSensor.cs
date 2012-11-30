@@ -15,7 +15,7 @@ namespace finalProject
     /// <summary>
     /// A radial sensor used to identify PhysicsObjects near a point, like on a creature.
     /// </summary>
-    public class RadialSensor : PhysicsObject
+    public class RadialSensor : Sensor
     {
         protected List<Creature> mCollidingCreatures;
         public List<Creature>  CollidingCreatures
@@ -33,9 +33,8 @@ namespace finalProject
         /// The radius of the RadialSensor's sphere.
         /// </param>
         public RadialSensor(float radius)
-            : base(null, new Sphere(new Vector3(0), radius))
+            : base(new Sphere(new Vector3(0), radius))
         {
-            this.Entity.CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;
             mCollidingCreatures = new List<Creature>();
         }
 
