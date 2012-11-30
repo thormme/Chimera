@@ -18,12 +18,6 @@ namespace finalProject
     /// </summary>
     public abstract class NonPlayerCreature : Creature
     {
-        protected List<Creature.PartBone> Bones
-        {
-            get;
-            set;
-        }
-
         protected int Health
         {
             get;
@@ -85,11 +79,6 @@ namespace finalProject
                 Health = 0;
                 mIncapacitated = true;
             }
-        }
-
-        protected override List<PartBone> GetUsablePartBones()
-        {
-            return Bones;
         }
     }
 }

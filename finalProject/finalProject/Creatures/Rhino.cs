@@ -29,5 +29,12 @@ namespace finalProject.Creatures
         {
             Bones.Add(PartBone.HeadCenterCap);
         }
+
+        protected override List<PartBone> GetUsablePartBones()
+        {
+            List<PartBone> bones = new List<PartBone>();
+            bones.Add(PartBone.HeadCenterCap);
+            return bones;
+        }
     }
 }

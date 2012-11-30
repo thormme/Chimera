@@ -27,7 +27,7 @@ namespace finalProject
         #region Fields
 
         private const float mPlayerRadius = 1.0f;
-        private const float DefaultSneak = 11.0f;
+        private const int DefaultSneak = 11;
         private const int DefaultIntimidation = 5;
 
         private AnimateModel mStandingModel;
@@ -59,7 +59,7 @@ namespace finalProject
         }
         private Stance mStance = Stance.Standing;
 
-        public override float Sneak
+        public override int Sneak
         {
             get;
             set;
