@@ -10,6 +10,7 @@ using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysicsDrawer.Models;
 using System;
 using finalProject.Parts;
+using finalProject.Creatures;
 
 namespace finalProject
 {
@@ -32,7 +33,7 @@ namespace finalProject
         private World World;
 
         PlayerCreature player;
-        DummyCreature dummyCreature;
+        Creature dummyCreature;
         TerrainPhysics terrain;
 
         public Game1()
