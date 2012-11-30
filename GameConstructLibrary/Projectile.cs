@@ -47,7 +47,7 @@ namespace GameConstructLibrary
 
         protected virtual void Hit(IGameObject gameObject)
         {
-            //World.Remove(this);
+            World.Remove(this);
         }
 
     }

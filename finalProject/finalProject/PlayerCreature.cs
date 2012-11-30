@@ -39,7 +39,7 @@ namespace finalProject
         {
             get
             {
-                return (mController as PlayerController).mCamera;
+                return (Controller as PlayerController).mCamera;
             }
         }
 

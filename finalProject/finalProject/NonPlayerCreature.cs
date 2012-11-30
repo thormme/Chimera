@@ -65,7 +65,7 @@ namespace finalProject
             mIncapacitated = false;
             Sneak = sneak;
             Intimidation = intimidation;
-            mController = controller;
+            Controller = controller;
             mIncapacitated = false;
             Health = startingHealth;
             AddPart(part, 0);
