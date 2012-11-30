@@ -8,23 +8,23 @@ using GameConstructLibrary;
 
 namespace finalProject.Creatures
 {
-    public class Cheetah : NonPlayerCreature
+    public class Kangaroo : NonPlayerCreature
     {
-        public Cheetah(Vector3 position)
+        public Kangaroo(Vector3 position)
             : base(
                 position,
-                2.0f,                            // Height
+                3.0f,                            // Height
                 2.0f,                            // Radius
-                6.0f,                            // Mass
-                20.0f,                           // Sensitivity Radius
+                10.0f,                           // Mass
+                10.0f,                           // Sensitivity Radius
                 new IntimidationAI(),            // AI
-                new InanimateModel("cheetah"),   // Model
+                new InanimateModel("kangaroo"),  // Model
                 MathHelper.PiOver4,              // Vision Angle
                 10,                              // Listening Sensitivity
-                8,                               // Sneak
-                4,                               // Intimidation
+                3,                               // Sneak
+                5,                               // Intimidation
                 50,								 // Starting Health
-                new /*CheetahLegs*/DummyPart()   // Part
+                new /*KangarooLegs*/DummyPart()  // Part
                 )
         {
         }

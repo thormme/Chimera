@@ -23,8 +23,8 @@ namespace finalProject.Creatures
                 10,                              // Listening Sensitivity
                 1,                               // Sneak
                 7,                               // Intimidation
-                50,								// Starting Health
-                new /*RhinoHead*/DummyPart()    // Part
+                50,								 // Starting Health
+                new /*RhinoHead*/DummyPart()     // Part
                 )
         {
         }
