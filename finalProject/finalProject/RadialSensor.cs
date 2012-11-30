@@ -49,7 +49,7 @@ namespace finalProject
         {
             mCollidingCreatures.Clear();
 
-            foreach (IGameObject i in mCollidingObjects)
+            foreach (IGameObject i in CollidingObjects)
             {
                 if (i as Creature != null)
                 {

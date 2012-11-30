@@ -141,7 +141,18 @@
     <Compile Include="AIController.cs" />
     <Compile Include="ChaseCamera.cs" />
     <Compile Include="CooldownPart.cs" />
+    <Compile Include="Creatures\Cheetah.cs" />
+    <Compile Include="Creatures\Kangaroo.cs" />
     <Compile Include="Creatures\Rhino.cs" />
+    <Compile Include="DutyCyclePart.cs" />
+    <Compile Include="MeteredPart.cs" />
+    <Compile Include="Parts\CheetahLegs.cs" />
+    <Compile Include="Parts\FrilledLizardHead.cs" />
+    <Compile Include="Parts\KangarooLegs.cs" />
+    <Compile Include="Parts\ParrotWings.cs" />
+    <Compile Include="Parts\PenguinBack.cs" />
+    <Compile Include="Parts\RhinoHead.cs" />
+    <Compile Include="Parts\TurtleShell.cs" />
     <Compile Include="PhysicsProp.cs" />
     <Compile Include="Prop.cs" />
     <Compile Include="Spawner.cs" />
@@ -213,9 +224,7 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Parts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

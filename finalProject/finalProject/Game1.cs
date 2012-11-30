@@ -9,6 +9,8 @@ using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysicsDrawer.Models;
 using System;
+using finalProject.Parts;
+using finalProject.Creatures;
 
 namespace finalProject
 {
@@ -31,7 +33,7 @@ namespace finalProject
         private World World;
 
         PlayerCreature player;
-        DummyCreature dummyCreature;
+        Creature creature;
         TerrainPhysics terrain;
 
         public Game1()
@@ -45,7 +47,7 @@ namespace finalProject
             celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F2);
             mouseLock = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Tab);
 
-            debugMode = true;
+            debugMode = false;
         }
 
         ~Game1()
@@ -88,12 +90,16 @@ namespace finalProject
 
             player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f));
             World.Add(player);
-            player.AddPart(new DummyPart());
+            player.AddPart(new KangarooLegs());
+            player.AddPart(new CheetahLegs());
+            player.AddPart(new FrilledLizardHead());
+            player.AddPart(new ParrotWings());
+            player.AddPart(new PenguinBack());
 
-            dummyCreature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
-            World.Add(dummyCreature);
+            creature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
+            World.Add(creature);
 
-            World.AddLevelFromFile("default", Vector3.Zero, new Quaternion(), new Vector3(2.0f, 0.25f, 2.0f));
+            World.AddLevelFromFile("jump", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
         }
 
         /// <summary>

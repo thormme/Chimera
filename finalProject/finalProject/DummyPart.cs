@@ -12,24 +12,30 @@ namespace finalProject
     {
         public DummyPart()
             : base(
-            2.0f,
-            new InanimateModel("kangaroo_leftLeg"),
-            new Creature.PartBone[] { 
-                Creature.PartBone.LegFrontLeft2Cap
-                //Creature.PartBone.ArmLeft1Cap, 
-                //Creature.PartBone.ArmLeft2Cap,
-                //Creature.PartBone.Spine1Cap
-            }, 
-            1,
-            new Vector3(),
-            Matrix.CreateFromQuaternion(new Quaternion()),
-            new Vector3(1.0f, 1.0f, 1.0f)
+                2.0,
+                new Part.SubPart[] {
+                    new SubPart(
+                        new InanimateModel("sphere"),
+                        new Creature.PartBone[] { 
+                            Creature.PartBone.ArmLeft1Cap, 
+                            Creature.PartBone.ArmLeft2Cap,
+                            Creature.PartBone.Spine1Cap
+                        },
+                        new Vector3(),
+                        Matrix.CreateFromQuaternion(new Quaternion()),
+                        new Vector3(0.25f, 0.25f, 0.25f)
+                    )
+                }
             )
         { }
 
-        public override void UseCooldown(Vector3 direction)
+        protected override void UseCooldown(Vector3 direction)
         {
             Creature.Jump();
+        }
+
+        public override void FinishUse(Vector3 direction)
+        {
         }
     }
 }

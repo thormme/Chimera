@@ -15,7 +15,7 @@ namespace finalProject
     public class DummyCreature : NonPlayerCreature
     {
         public DummyCreature(Vector3 position)
-            : base(position, 2.0f, 0.25f, 10.0f, 10.0f, new IntimidationAI(), new InanimateModel("kangaroo"), MathHelper.PiOver2, 10.0f, 10.0f, 6, new DummyPart())
+            : base(position, 2.0f, 0.25f, 10.0f, 10.0f, new IntimidationAI(), new InanimateModel("box"), MathHelper.PiOver2, 10, 10, 1, 50, new DummyPart())
         {
             //(mRenderable as AnimateModel).PlayAnimation("Take 001");
             Scale = new Vector3(0.02f);
@@ -31,9 +31,7 @@ namespace finalProject
         {
             base.Update(time);
 
-            //(mRenderable as AnimateModel).Update(time);
-           
-            foreach (IGameObject i in mCollidingObjects)
+            foreach (IGameObject i in CollidingObjects)
             {
                 if (i is Creature)
                 {

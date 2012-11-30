@@ -47,11 +47,17 @@ namespace finalProject
         private GamePadButtonInputAction mPressPart1;
         private GamePadButtonInputAction mPressPart2;
         private GamePadButtonInputAction mPressPart3;
+        private GamePadButtonInputAction mReleasePart1;
+        private GamePadButtonInputAction mReleasePart2;
+        private GamePadButtonInputAction mReleasePart3;
         private GamePadButtonInputAction mPressJump;
 
         private KeyInputAction mUse1;
         private KeyInputAction mUse2;
         private KeyInputAction mUse3;
+        private KeyInputAction mFinishUse1;
+        private KeyInputAction mFinishUse2;
+        private KeyInputAction mFinishUse3;
 
         private KeyInputAction mJumpKey;
 
@@ -107,11 +113,17 @@ namespace finalProject
             mPressPart1 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.X);
             mPressPart2 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.Y);
             mPressPart3 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.B);
+            mReleasePart1 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Buttons.X);
+            mReleasePart2 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Buttons.Y);
+            mReleasePart3 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Buttons.B);
             mPressJump = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.A);
 
             mUse1 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D1);
             mUse2 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D2);
-            mUse3 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D3); 
+            mUse3 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D3);
+            mFinishUse1 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D1);
+            mFinishUse2 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D2);
+            mFinishUse3 = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D3); 
 
             mJumpKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Space);
 
@@ -366,6 +378,20 @@ namespace finalProject
             else if (mPressDecBoneIndex.Active)
             {
                 mCreature.BoneIndex--;
+            }
+
+
+            if (mFinishUse1.Active)
+            {
+                mCreature.FinishUsingPart(0, mCreature.Forward);
+            }
+            if (mFinishUse2.Active)
+            {
+                mCreature.FinishUsingPart(1, mCreature.Forward);
+            }
+            if (mFinishUse3.Active)
+            {
+                mCreature.FinishUsingPart(2, mCreature.Forward);
             }
         }
 

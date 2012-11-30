@@ -66,6 +66,8 @@ namespace finalProject
         protected List<PartBone> mUnusedPartBones;
 
         protected Controller mController;
+
+        protected int mInvulnerableCount = 0;
         
         #endregion
 
@@ -93,7 +95,7 @@ namespace finalProject
             }
         }
 
-        public abstract float Sneak
+        public abstract int Sneak
         {
             get;
             set;
@@ -108,6 +110,25 @@ namespace finalProject
         {
             get;
             set;
+        }
+
+        public bool Invulnerable
+        {
+            get
+            {
+                return mInvulnerableCount > 0;
+            }
+            set
+            {
+                if (value)
+                {
+                    ++mInvulnerableCount;
+                }
+                else if (Invulnerable)
+                {
+                    --mInvulnerableCount;
+                }
+            }
         }
 
         #endregion
@@ -245,7 +266,6 @@ namespace finalProject
             Forward = new Vector3(0.0f, 0.0f, 1.0f);
             mPartAttachments = new List<PartAttachment>();
             mUnusedPartBones = GetUsablePartBones();
-            //Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
 
             CharacterController = new CharacterController(Entity, 1.0f);
 
@@ -303,10 +323,13 @@ namespace finalProject
         {
             foreach (PartAttachment partAttachment in mPartAttachments)
             {
+                int count = 0;
                 foreach (PartBone partBone in partAttachment.Bones)
                 {
                     Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
-                    partAttachment.Part.Render(worldTransform);
+                    partAttachment.Part.SubParts[count].Render(worldTransform);
+
+                    count++;
                 }
             }
         }
@@ -321,34 +344,42 @@ namespace finalProject
         private List<PartBone> GetPartBonesForPart(Part part)
         {
             List<PartBone> partBones = new List<PartBone>();
-            // Look for the preferred bones first.
-            foreach (PartBone preferredBone in part.PreferredBones)
+
+            foreach (Part.SubPart subPart in part.SubParts)
             {
-                if (partBones.Count < part.LimbCount)
+                bool foundBone = false;
+
+                // Look for the preferred bones first.
+                foreach (PartBone preferredBone in subPart.PreferredBones)
                 {
-                    if (mUnusedPartBones.Contains(preferredBone) && !partBones.Contains(preferredBone))
+                    if (!foundBone)
                     {
-                        partBones.Add(preferredBone);
+                        if (mUnusedPartBones.Contains(preferredBone) && !partBones.Contains(preferredBone))
+                        {
+                            partBones.Add(preferredBone);
+                            foundBone = true;
+                        }
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
-                else
+                // If too few preferred bones were available choose any free bone.
+                foreach (PartBone unusedBone in mUnusedPartBones)
                 {
-                    break;
-                }
-            }
-            // If too few preferred bones were available choose any free bone.
-            foreach (PartBone unusedBone in mUnusedPartBones)
-            {
-                if (partBones.Count < part.LimbCount)
-                {
-                    if (!partBones.Contains(unusedBone))
+                    if (!foundBone)
                     {
-                        partBones.Add(unusedBone);
+                        if (!partBones.Contains(unusedBone))
+                        {
+                            partBones.Add(unusedBone);
+                            foundBone = true;
+                        }
                     }
-                }
-                else
-                {
-                    break;
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 
@@ -426,6 +457,19 @@ namespace finalProject
             if (part < mPartAttachments.Count())
             {
                 mPartAttachments[part].Part.Use(direction);
+            }
+        }
+
+        /// <summary>
+        /// Finishes using the specified part.
+        /// </summary>
+        /// <param name="part">The index into the list of parts.</param>
+        /// <param name="direction">The direction in which to use the part.</param>
+        public virtual void FinishUsingPart(int part, Vector3 direction)
+        {
+            if (part < mPartAttachments.Count())
+            {
+                mPartAttachments[part].Part.FinishUse(direction);
             }
         }
 
