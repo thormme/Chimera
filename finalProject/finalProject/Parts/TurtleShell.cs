@@ -3,23 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-using BEPUphysics.Entities.Prefabs;
 using GraphicsLibrary;
 
-namespace finalProject
+namespace finalProject.Parts
 {
-    class DummyPart : CooldownPart
+    public class TurtleShell : Part
     {
-        public DummyPart()
+        public TurtleShell()
             : base(
-                2.0,
                 new Part.SubPart[] {
                     new SubPart(
                         new InanimateModel("sphere"),
-                        new Creature.PartBone[] { 
-                            Creature.PartBone.ArmLeft1Cap, 
-                            Creature.PartBone.ArmLeft2Cap,
-                            Creature.PartBone.Spine1Cap
+                        new Creature.PartBone[] {
+                            Creature.PartBone.Spine1Cap,
+                            Creature.PartBone.Spine2Cap,
+                            Creature.PartBone.Spine3Cap
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
@@ -29,13 +27,17 @@ namespace finalProject
             )
         { }
 
-        protected override void UseCooldown(Vector3 direction)
+        public override void Update(GameTime time)
+        { }
+
+        public override void Use(Vector3 direction)
         {
-            Creature.Jump();
+            Creature.Invulnerable = true;
         }
 
         public override void FinishUse(Vector3 direction)
         {
+            Creature.Invulnerable = false;
         }
     }
 }

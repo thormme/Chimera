@@ -64,6 +64,8 @@ namespace finalProject
         protected List<PartBone> mUnusedPartBones;
 
         protected Controller mController;
+
+        protected int mInvulnerableCount = 0;
         
         #endregion
 
@@ -106,6 +108,25 @@ namespace finalProject
         {
             get;
             set;
+        }
+
+        public bool Invulnerable
+        {
+            get
+            {
+                return mInvulnerableCount > 0;
+            }
+            set
+            {
+                if (value)
+                {
+                    ++mInvulnerableCount;
+                }
+                else if (Invulnerable)
+                {
+                    --mInvulnerableCount;
+                }
+            }
         }
 
         #endregion

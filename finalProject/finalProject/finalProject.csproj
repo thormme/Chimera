@@ -142,8 +142,13 @@
     <Compile Include="ChaseCamera.cs" />
     <Compile Include="CooldownPart.cs" />
     <Compile Include="Creatures\Rhino.cs" />
+    <Compile Include="DutyCyclePart.cs" />
+    <Compile Include="MeteredPart.cs" />
+    <Compile Include="Parts\CheetahLegs.cs" />
+    <Compile Include="Parts\FrilledLizardHead.cs" />
     <Compile Include="Parts\KangarooLegs.cs" />
     <Compile Include="Parts\RhinoHead.cs" />
+    <Compile Include="Parts\TurtleShell.cs" />
     <Compile Include="PhysicsProp.cs" />
     <Compile Include="Prop.cs" />
     <Compile Include="Spawner.cs" />
