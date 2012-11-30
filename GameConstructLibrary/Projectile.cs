@@ -12,6 +12,8 @@ namespace GameConstructLibrary
     public class Projectile : Actor
     {
 
+        public static CollisionGroup ProjectileGroup = new CollisionGroup();
+
         protected Actor mOwner;
         protected Vector3 mProjectileImpulse;
         protected float mSpeed;
@@ -31,6 +33,8 @@ namespace GameConstructLibrary
             Scale = scale;
 
             CollisionRules.AddRule(Entity, owner.Entity, CollisionRule.NoBroadPhase);
+            Entity.CollisionInformation.CollisionRules.Group = ProjectileGroup;
+
             Entity.PositionUpdateMode = BEPUphysics.PositionUpdating.PositionUpdateMode.Continuous;
             
             Entity.ApplyLinearImpulse(ref mProjectileImpulse);
@@ -41,13 +45,13 @@ namespace GameConstructLibrary
         {
             foreach (IGameObject gameObject in CollidingObjects)
             {
-                Hit(gameObject);
+                 Hit(gameObject);
             }
         }
 
         protected virtual void Hit(IGameObject gameObject)
         {
-            //World.Remove(this);
+            World.Remove(this);
         }
 
     }
