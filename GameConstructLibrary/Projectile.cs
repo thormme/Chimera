@@ -45,7 +45,7 @@ namespace GameConstructLibrary
             }
         }
 
-        protected void Hit(IGameObject gameObject)
+        protected virtual void Hit(IGameObject gameObject)
         {
             //World.Remove(this);
         }

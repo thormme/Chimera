@@ -18,6 +18,9 @@ Content\levels\maps\jump_texture_low.xnb
 Content\levels\maps\jump.xnb
 Content\levels\maps\jump_texture_high.xnb
 Content\levels\maps\jump_texture_medium.xnb
+Content\levels\maps\test_texture_high.xnb
+Content\levels\maps\test_texture_low.xnb
+Content\levels\maps\test_texture_medium.xnb
 Content\levels\maps\test.xnb
 Content\models\playerBean\playerBean_jump.xnb
 Content\models\playerBean\playerBean_stand.xnb
@@ -41,3 +44,4 @@ Content\models\dude\upBodyC_0.xnb
 Content\models\editor\editor_0.xnb
 Content\models\primitives\purple_block_0.xnb
 Content\models\primitives\orange_ball_0.xnb
+Content\workInProgress\models\Rhino\rhino_texture_0.xnb

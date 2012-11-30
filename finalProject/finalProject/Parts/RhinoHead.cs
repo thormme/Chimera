@@ -11,6 +11,11 @@ namespace finalProject.Parts
 {
     class RhinoHead : CooldownPart
     {
+        
+        private const float damageStartTime = 0.2f;
+        private const float damageEndTime = 0.6f;
+
+        private float mAttackTimer;
 
         public RhinoHead()
             : base(
@@ -19,22 +24,13 @@ namespace finalProject.Parts
                     new SubPart(
                         new InanimateModel("sphere"),
                         new Creature.PartBone[] { 
-                            Creature.PartBone.ArmLeft1Cap,
-                            Creature.PartBone.ArmLeft2Cap
+                            Creature.PartBone.HeadCenterCap,
+                            Creature.PartBone.HeadLeftCap,
+                            Creature.PartBone.HeadRightCap
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(0.5f, 0.5f, 0.5f)
-                    ),
-                    new SubPart(
-                        new InanimateModel("box"),
-                        new Creature.PartBone[] { 
-                            Creature.PartBone.ArmLeft1Cap,
-                            Creature.PartBone.ArmLeft2Cap
-                        },
-                        new Vector3(),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(20.5f, 20.5f, 20.5f)
+                        new Vector3(1.0f, 1.0f, 1.0f)
                     )
                 }
             )
@@ -46,7 +42,9 @@ namespace finalProject.Parts
         {
             //(mRenderable as AnimateModel).Update(time);
 
-            if (CooldownTimer > 0.0f)
+            mAttackTimer += (float)time.ElapsedGameTime.TotalSeconds;
+
+            if (mAttackTimer >= damageStartTime && mAttackTimer <= damageEndTime)
             {
                 foreach (IGameObject gameObject in Creature.CollidingObjects)
                 {
