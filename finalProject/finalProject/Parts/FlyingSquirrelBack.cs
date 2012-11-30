@@ -59,7 +59,7 @@ namespace finalProject.Parts
 
         protected override void Reset()
         {
-            throw new NotImplementedException();
+            mGliding = false;
         }
     }
 }

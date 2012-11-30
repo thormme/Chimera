@@ -65,7 +65,6 @@ namespace finalProject.Parts
             {
                 mRopeLimit = new DistanceLimit(Creature.Entity, temp.Entity, Creature.Entity.Position, temp.Entity.Position, 0.0f, (Creature.Entity.Position - temp.Entity.Position).Length());
                 mRopeLimit.Bounciness = 0.8f;
-                Creature.World.mDebugModelDrawer.Add(mRopeLimit);
                 Creature.World.Space.Add(mRopeLimit);
             }
         }
@@ -77,6 +76,11 @@ namespace finalProject.Parts
                 Creature.World.Space.Remove(mRopeLimit);
                 mRopeLimit = null;
             }
+        }
+
+        protected override void Reset()
+        {
+            FinishUse(Vector3.Zero);
         }
     }
 }
