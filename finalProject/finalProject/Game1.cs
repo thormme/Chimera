@@ -96,7 +96,7 @@ namespace finalProject
             creature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
             World.Add(creature);
 
-            World.AddLevelFromFile("jump", new Vector3(0, -100, 0), new Quaternion(), new Vector3(2.0f, 0.25f, 2.0f));
+            World.AddLevelFromFile("jump", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
         }
 
         /// <summary>
