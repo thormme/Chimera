@@ -44,7 +44,7 @@ namespace finalProject.Parts
             base.Update(time);
         }
 
-        public override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
+        protected override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
         {
             if (mProjectile != null) Creature.World.Remove(mProjectile);
             mProjectile = new Projectile(new InanimateModel("box"), new Entity(new BoxShape(0.2f, 0.2f, 0.2f), 1000.0f), Creature, direction, 40000.0f, new Vector3(0.2f, 0.2f, 0.2f));
