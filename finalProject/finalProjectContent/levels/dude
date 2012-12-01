@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>dude_walk</Model>
+    <Parameters />
+    <Position>
+      <X>37.8656273</X>
+      <Y>0</Y>
+      <Z>127.842957</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+</object>

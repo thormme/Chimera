@@ -23,7 +23,7 @@ namespace finalProject.Parts
                         new Creature.PartBone[] { 
                             Creature.PartBone.HeadCenterCap,
                             Creature.PartBone.HeadLeftCap,
-                            Creature.PartBone.HeadRightCap,
+                            Creature.PartBone.HeadRightCap
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),

@@ -159,6 +159,7 @@
     <Compile Include="Parts\RhinoHead.cs" />
     <Compile Include="Parts\TurtleShell.cs" />
     <Compile Include="PhysicsProp.cs" />
+    <Compile Include="Projectiles\FrogTongue.cs" />
     <Compile Include="Projectiles\MindControlProjectile.cs" />
     <Compile Include="Prop.cs" />
     <Compile Include="Spawner.cs" />
