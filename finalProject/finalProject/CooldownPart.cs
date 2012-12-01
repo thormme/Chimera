@@ -52,7 +52,7 @@ namespace finalProject
 
         protected abstract void UseCooldown(Vector3 direction);
 
-        protected override void Reset()
+        public override void Reset()
         {
             CooldownTimer = -1.0f;
         }

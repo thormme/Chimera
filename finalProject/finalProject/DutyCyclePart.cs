@@ -63,7 +63,7 @@ namespace finalProject
             }
         }
 
-        protected override void Reset()
+        public override void Reset()
         {
             base.Reset();
 

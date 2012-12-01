@@ -61,7 +61,7 @@ namespace finalProject.Parts
             }
         }
 
-        protected override void Reset()
+        public override void Reset()
         {
             FinishUse(Vector3.Zero);
         }

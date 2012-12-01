@@ -99,6 +99,12 @@ namespace finalProject
         }
 
         /// <summary>
+        /// Called when the creature is damaged.
+        /// </summary>
+        /// <param name="damage">The amount of damage dealt.</param>
+        public virtual void Damage(int damage) { }
+
+        /// <summary>
         /// Called by creature every frame. Used for passive effects.
         /// </summary>
         /// <param name="time">
@@ -127,6 +133,6 @@ namespace finalProject
         /// <summary>
         /// Called when the Creature is set.
         /// </summary>
-        abstract protected void Reset();
+        abstract public void Reset();
     }
 }
