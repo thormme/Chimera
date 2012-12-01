@@ -126,6 +126,20 @@ namespace finalProject
             }
         }
 
+        private float mSlideSlope;
+        public float SlideSlope
+        {
+            get
+            {
+                return mSlideSlope;
+            }
+            protected set
+            {
+                mSlideSlope = value;
+                CharacterController.SupportFinder.MaximumSlope = value;
+            }
+        }
+
         #endregion
 
         #region Bone Transform Tweaking
@@ -268,6 +282,7 @@ namespace finalProject
             mUnusedPartBones = GetUsablePartBones();
 
             CharacterController = new CharacterController(Entity, 1.0f);
+            SlideSlope = CharacterController.SupportFinder.MaximumSlope;
 
             Controller = controller;
             controller.SetCreature(this);

@@ -99,9 +99,10 @@ namespace finalProject
             World.Add(player);
             int i = 0;
             //player.AddPart(new KangarooLegs(), i++);
-            player.AddPart(new MindControlHead(), i++);
+            player.AddPart(new FrogHead(), i++);
+            player.AddPart(new PenguinBack(), i++);
+            player.AddPart(new PenguinBack(), i++);
             player.AddPart(new CheetahLegs(), i++);
-            player.AddPart(new FrilledLizardHead(), i++);
 
             creature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
             World.Add(creature);

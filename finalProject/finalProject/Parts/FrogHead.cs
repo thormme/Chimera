@@ -9,13 +9,14 @@ using GameConstructLibrary;
 using BEPUphysics;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Constraints.TwoEntity.JointLimits;
+using finalProject.Projectiles;
 
 namespace finalProject.Parts
 {
     class FrogHead : CooldownPart
     {
 
-        DistanceLimit mRopeLimit;
+        private FrogTongue mTongue;
 
         public FrogHead()
             : base(
@@ -40,47 +41,28 @@ namespace finalProject.Parts
 
         public override void Update(Microsoft.Xna.Framework.GameTime time)
         {
-            //(mRenderable as AnimateModel).Update(time);
-            if (mRopeLimit != null)
-            {
-                if (mRopeLimit.MaximumLength >= 1.0f) mRopeLimit.MaximumLength -= 10.0f * (float)time.ElapsedGameTime.TotalSeconds;
-                else
-                {
-                    Creature.World.Space.Remove(mRopeLimit);
-                    mRopeLimit = null;
-                }
-                
-            }
-
             base.Update(time);
         }
 
         protected override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
         {
-            Ray ray = new Ray(Creature.Position, Creature.XNAOrientationMatrix.Forward);
-            RayCastResult result;
-            Creature.World.Space.RayCast(ray, out result);
-            EntityCollidable temp = (result.HitObject as EntityCollidable);
-            if (temp != null)
-            {
-                mRopeLimit = new DistanceLimit(Creature.Entity, temp.Entity, Creature.Entity.Position, temp.Entity.Position, 0.0f, (Creature.Entity.Position - temp.Entity.Position).Length());
-                mRopeLimit.Bounciness = 0.8f;
-                Creature.World.Space.Add(mRopeLimit);
-            }
+            mTongue = new FrogTongue(Creature, direction);
+            Creature.World.Add(mTongue);
         }
 
         public override void FinishUse(Vector3 direction)
         {
-            if (mRopeLimit != null)
+            if (Creature != null && mTongue != null)
             {
-                Creature.World.Space.Remove(mRopeLimit);
-                mRopeLimit = null;
+                Creature.World.Remove(mTongue);
             }
+            mTongue = null;
         }
 
         protected override void Reset()
         {
             FinishUse(Vector3.Zero);
         }
+
     }
 }

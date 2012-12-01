@@ -11,7 +11,7 @@ namespace finalProject.Parts
 {
     class PenguinBack : Part
     {
-
+        private const float speed = 20.0f;
         private bool mHasTraction;
 
         public PenguinBack()
@@ -40,7 +40,7 @@ namespace finalProject.Parts
             
             if (!mHasTraction && Creature.CharacterController.SupportFinder.HasSupport)
             {
-                Vector3 direction = new Vector3(0.0f, -100.0f, 0.0f);
+                Vector3 direction = new Vector3(0.0f, -speed, 0.0f);
                 Creature.Entity.ApplyLinearImpulse(ref direction);
             }
 
@@ -49,16 +49,21 @@ namespace finalProject.Parts
         public override void Use(Microsoft.Xna.Framework.Vector3 direction)
         {
             mHasTraction = false;
+            Creature.CharacterController.SupportFinder.MaximumSlope = 0.0f;
         }
 
         public override void FinishUse(Vector3 direction)
         {
             mHasTraction = true;
+            if (Creature != null)
+            {
+                Creature.CharacterController.SupportFinder.MaximumSlope = Creature.SlideSlope;
+            }
         }
 
         protected override void Reset()
         {
-            mHasTraction = true;
+            FinishUse(Vector3.Zero);
         }
     }
 }
