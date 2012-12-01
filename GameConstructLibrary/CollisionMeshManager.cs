@@ -21,25 +21,27 @@ namespace GameConstructLibrary
         static private Dictionary<string, InstancedMeshShape> mUniqueMeshLibrary = new Dictionary<string, InstancedMeshShape>();
         static private Dictionary<string, Model> mUniqueMeshModelLibrary = new Dictionary<string, Model>();
 
-        static private void LoadMeshIntoDatabase(ContentManager content, String meshName)
+        static private void LoadMeshIntoDatabase(ContentManager content, String directoryName, String meshName)
         {
             Model input;
 
-            FileInfo meshFile = new FileInfo(mMeshDirectory + meshName + ".fbx");
-            FileInfo meshFileUpper = new FileInfo(mMeshDirectory + meshName + ".FBX");
-            FileInfo modelFile = new FileInfo(mModelDirectory + meshName + ".fbx");
-            FileInfo modelFileUpper = new FileInfo(mModelDirectory + meshName + ".FBX");
+            string meshAndDirectoryName = directoryName + "/" + meshName;
+
+            FileInfo meshFile = new FileInfo(mMeshDirectory + meshAndDirectoryName + ".fbx");
+            FileInfo meshFileUpper = new FileInfo(mMeshDirectory + meshAndDirectoryName + ".FBX");
+            FileInfo modelFile = new FileInfo(mModelDirectory + meshAndDirectoryName + ".fbx");
+            FileInfo modelFileUpper = new FileInfo(mModelDirectory + meshAndDirectoryName + ".FBX");
             if (meshFile.Exists || meshFileUpper.Exists)
             {
-                input = content.Load<Model>("models/collision/" + meshName);
+                input = content.Load<Model>("models/collision/" + meshAndDirectoryName);
             }
             else if (modelFile.Exists || modelFileUpper.Exists)
             {
-                input = content.Load<Model>("models/" + meshName);
+                input = content.Load<Model>("models/" + meshAndDirectoryName);
             }
             else
             {
-                throw new FileNotFoundException("Could not find '" + meshName + "' models/collision or models directory in content.");
+                throw new FileNotFoundException("Could not find '" + meshAndDirectoryName + "' models/collision or models directory in content.");
             }
 
             Vector3[] staticTriangleVertices;
@@ -72,11 +74,15 @@ namespace GameConstructLibrary
                 throw new DirectoryNotFoundException("Could not find models/ directory in content.");
             }
 
-            FileInfo[] files = dir.GetFiles("*.fbx");
-            foreach (FileInfo file in files)
+            DirectoryInfo[] subDirs = dir.GetDirectories();
+            foreach (DirectoryInfo subDir in subDirs)
             {
-                string meshName = Path.GetFileNameWithoutExtension(file.Name);
-                LoadMeshIntoDatabase(content, meshName);
+                FileInfo[] files = subDir.GetFiles("*.fbx");
+                foreach (FileInfo file in files)
+                {
+                    string meshName = Path.GetFileNameWithoutExtension(file.Name);
+                    LoadMeshIntoDatabase(content, subDir.Name, meshName);
+                }
             }
         }
 
