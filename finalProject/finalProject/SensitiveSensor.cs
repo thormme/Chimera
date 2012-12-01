@@ -15,14 +15,7 @@ namespace finalProject
     public class SensitiveSensor : RadialSensor
     {
         //protected const float ListeningMultiplier = 2.0f;
-        private double mVisionAngle;
         private int mListeningSensitivity;
-
-        public List<Creature> IgnoredCreatures
-        {
-            get;
-            protected set;
-        }
 
         /// <summary>
         /// 
@@ -32,13 +25,11 @@ namespace finalProject
         /// <param name="listeningSensitivity"></param>
         public SensitiveSensor(
             float radius,
-            double visionAngle,
+            float visionAngle,
             int listeningSensitivity
-            ) : base(radius)
+            ) : base(radius, visionAngle)
         {
-            mVisionAngle = Math.Cos(visionAngle);
             mListeningSensitivity = listeningSensitivity;
-            IgnoredCreatures = new List<Creature>();
         }
 
         protected bool CanHear(Creature creature)
@@ -49,33 +40,20 @@ namespace finalProject
             return mListeningSensitivity >= creature.Sneak;
         }
 
-        protected bool CanSee(Creature creature)
-        {
-            Vector3 curNormal = Vector3.Normalize(Vector3.Subtract(creature.Position, Position));
-            Vector3 normalFacing = Vector3.Normalize(Forward);
-
-            return Vector3.Dot(curNormal, normalFacing) > mVisionAngle;
-        }
-
         public override void Update(GameTime time)
         {
             base.Update(time);
 
-            IgnoredCreatures.Clear();
-
-            List<Creature> newList = new List<Creature>();
-            foreach (Creature creature in mCollidingCreatures)
+            foreach (IGameObject gameObject in CollidingObjects)
             {
-                if (CanHear(creature) || CanSee(creature))
+                Creature creature = gameObject as Creature;
+                if (creature != null && (CanHear(creature) || !CanSee(creature)))
                 {
-                    newList.Add(creature);
-                }
-                else
-                {
-                    IgnoredCreatures.Add(creature);
+                    mCollidingCreatures.Add(creature);
                 }
             }
-            mCollidingCreatures = newList;
+
+            mCollidingCreatures.Sort(new ClosestPhysicsObject(Position));
         }
     }
 }

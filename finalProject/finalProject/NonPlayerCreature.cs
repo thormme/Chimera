@@ -87,5 +87,12 @@ namespace finalProject
                 mIncapacitated = true;
             }
         }
+
+        public override void Render()
+        {
+            base.Render();
+            InanimateModel m = new InanimateModel("dude_walk");
+            m.Render(Position + Forward * 3.0f, -Forward);
+        }
     }
 }

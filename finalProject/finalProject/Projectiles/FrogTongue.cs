@@ -40,7 +40,7 @@ namespace finalProject.Projectiles
                 }
                 else
                 {
-                    mOwner
+                    //mOwner
                     mRopeLimit.MaximumLength -= 20.0f * (float)time.ElapsedGameTime.TotalSeconds;
                 }
             }

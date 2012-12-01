@@ -13,6 +13,7 @@ namespace finalProject.Parts
     public class MindControlHead : CooldownPart
     {
         private MindControlProjectile projectile;
+        private int prevHealth = 0;
 
         public MindControlHead()
             : base(
@@ -20,7 +21,8 @@ namespace finalProject.Parts
                 new Part.SubPart[] {
                     new SubPart(
                         new InanimateModel("sphere"),
-                        new Creature.PartBone[] { 
+                        new Creature.PartBone[]
+                        { 
                             Creature.PartBone.HeadCenterCap,
                             Creature.PartBone.HeadLeftCap,
                             Creature.PartBone.HeadRightCap,
@@ -41,5 +43,15 @@ namespace finalProject.Parts
 
         public override void FinishUse(Vector3 direction)
         { }
+
+        public override void Damage(int damage)
+        {
+            base.Damage(damage);
+
+            if (projectile != null)
+            {
+                projectile.Stop();
+            }
+        }
     }
 }
