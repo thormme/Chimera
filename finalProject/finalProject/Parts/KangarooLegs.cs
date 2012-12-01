@@ -141,7 +141,7 @@ namespace finalProject.Parts
             }
         }
 
-        protected override void Reset()
+        public override void Reset()
         {
             mJumpInUse = false;
             mPoundInUse = false;

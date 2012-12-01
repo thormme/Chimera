@@ -53,6 +53,12 @@ namespace finalProject
                 return DefaultBehavior;
             }
         }
+
+        /// <summary>
+        /// Called when the creature is damaged.
+        /// </summary>
+        /// <param name="damage">The amount of damage dealt.</param>
+        public virtual void Damage(int damage) { }
         
         #endregion
     }

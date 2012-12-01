@@ -13,7 +13,7 @@ namespace finalProject
         {
             base.Update(time, collidingCreatures);
 
-            Durdle();
+            DurdleOrder();
         }
 
         public override ControllerBehavior Behavior

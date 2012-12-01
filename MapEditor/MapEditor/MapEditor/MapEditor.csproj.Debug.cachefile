@@ -16,6 +16,10 @@ Content\levels\maps\test_texture_high.xnb
 Content\levels\maps\test_texture_low.xnb
 Content\levels\maps\test_texture_medium.xnb
 Content\levels\maps\test.xnb
+Content\levels\maps\test_boxes.xnb
+Content\levels\maps\test_boxes_high.xnb
+Content\levels\maps\test_boxes_low.xnb
+Content\levels\maps\test_boxes_medium.xnb
 Content\models\playerBean\playerBean_jump.xnb
 Content\models\playerBean\playerBean_stand.xnb
 Content\models\playerBean\playerBean_walk.xnb

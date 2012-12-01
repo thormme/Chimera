@@ -58,8 +58,6 @@ namespace finalProject
             }
         }
 
-        protected RadialSensor mSensor;
-
         protected List<PartAttachment> mPartAttachments;
         protected List<PartBone> mUnusedPartBones;
 
@@ -71,6 +69,12 @@ namespace finalProject
         #region Public Properties
 
         public Controller Controller
+        {
+            get;
+            set;
+        }
+
+        public RadialSensor Sensor
         {
             get;
             set;
@@ -251,7 +255,7 @@ namespace finalProject
 
         protected virtual void OnDeath()
         {
-            World.Remove(mSensor);
+            World.Remove(Sensor);
             mPartAttachments.Clear();
         }
 
@@ -271,7 +275,7 @@ namespace finalProject
         public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, RadialSensor radialSensor, Controller controller, int numParts)
             : base(renderable, new Cylinder(position, height, radius, mass))
         {
-            mSensor = radialSensor;
+            Sensor = radialSensor;
             Forward = new Vector3(0.0f, 0.0f, 1.0f);
             mPartAttachments = new List<PartAttachment>(numParts);
             for (int i = 0; i < numParts; ++i)
@@ -306,7 +310,7 @@ namespace finalProject
             {
                 if (World != null)
                 {
-                    World.Remove(mSensor);
+                    World.Remove(Sensor);
                     World.Space.Remove(CharacterController);
                 }
 
@@ -314,7 +318,7 @@ namespace finalProject
 
                 if (value != null)
                 {
-                    value.Add(mSensor);
+                    value.Add(Sensor);
                     value.Space.Add(CharacterController);
                 }
             }
@@ -431,13 +435,18 @@ namespace finalProject
         /// Remove attached part from the creature.
         /// </summary>
         /// <param name="part"></param>
-        public void RemovePart(Part part)
+        public virtual void RemovePart(Part part)
         {
             int slot = -1;
             PartAttachment partAttachment = null;
             for (int i = 0; i < mPartAttachments.Count(); ++i)//PartAttachment attachment in mPartAttachments)
             {
                 PartAttachment attachment = mPartAttachments[i];
+                if (attachment == null)
+                {
+                    continue;
+                }
+
                 if (part == attachment.Part)
                 {
                     partAttachment = attachment;
@@ -469,7 +478,7 @@ namespace finalProject
             set
             {
                 base.Forward = value;
-                mSensor.Forward = Forward;
+                Sensor.Forward = Forward;
             }
         }
 
@@ -531,6 +540,14 @@ namespace finalProject
         {
             if (damage > 0 && !Invulnerable)
             {
+                foreach (PartAttachment partAttachment in mPartAttachments)
+                {
+                    if (partAttachment != null)
+                    {
+                        partAttachment.Part.Damage(damage);
+                    }
+                }
+                Controller.Damage(damage);
                 Invulnerable = true;
                 mInvulnerableTimer = InvulnerableLength;
             }
@@ -558,9 +575,10 @@ namespace finalProject
 
             float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
-            mSensor.Update(gameTime);
-            Controller.Update(gameTime, mSensor.CollidingCreatures);
-            mSensor.Position = Position;
+            Sensor.Update(gameTime);
+            Controller.Update(gameTime, Sensor.CollidingCreatures);
+            Sensor.Position = Position;
+            Sensor.Forward = Forward;
 
             List<BEPUphysics.RayCastResult> results = new List<BEPUphysics.RayCastResult>();
             World.Space.RayCast(new Ray(Position, -1.0f * Up), 4.0f, results);

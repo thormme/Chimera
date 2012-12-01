@@ -59,7 +59,7 @@ namespace finalProject.Parts
             mTongue = null;
         }
 
-        protected override void Reset()
+        public override void Reset()
         {
             FinishUse(Vector3.Zero);
         }

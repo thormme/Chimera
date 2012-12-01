@@ -11,13 +11,17 @@ namespace finalProject.Projectiles
 {
     public class MindControlProjectile : Projectile
     {
-        //private Creature mJackedCreature = null;
-        private Controller mJackedController = null;
+        private const double ControlLength = 10.0f;
+
+        private Creature mOriginalCreature = null;
+        private Controller mOriginalController = null;
+
+        private double mControlTimer = -1.0f;
 
         public MindControlProjectile(Actor owner, Vector3 direction)
             : base(
             new InanimateModel("box"),
-            new Box(owner.Position, 1.0f, 1.0f, 1.0f, 1.0f),
+            new Box(owner.Position, 0.25f, 0.25f, 0.25f, 0.25f),
             owner,
             direction,
             40.0f,
@@ -27,15 +31,49 @@ namespace finalProject.Projectiles
 
         protected override void Hit(IGameObject gameObject)
         {
-            base.Hit(gameObject);
+            //base.Hit(gameObject);
 
             Creature creature = gameObject as Creature;
             if (creature != null)
             {
-                Controller ownerController = (mOwner as Creature).Controller;
-                mJackedController = creature.Controller;
+                Creature owner = mOwner as Creature;
+                Controller ownerController = owner.Controller;
+
+                mOriginalController = creature.Controller;
+                mOriginalCreature = creature;
+
+                owner.Move(Vector2.Zero);
                 creature.Controller = ownerController;
                 ownerController.SetCreature(creature);
+                mControlTimer = ControlLength;
+
+                Position = new Vector3(float.MaxValue);
+            }
+            else
+            {
+                base.Hit(gameObject);
+            }
+        }
+
+        public void Stop()
+        {
+            Creature owner = mOwner as Creature;
+            mOriginalCreature.Controller = mOriginalController;
+            owner.Controller.SetCreature(owner);
+            World.Remove(this);
+        }
+
+        public override void Update(GameTime time)
+        {
+            base.Update(time);
+
+            if (mControlTimer >= 0.0f)
+            {
+                mControlTimer -= time.ElapsedGameTime.TotalSeconds;
+                if (mControlTimer < 0.0f)
+                {
+                    Stop();
+                }
             }
         }
     }

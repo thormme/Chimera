@@ -35,7 +35,7 @@ namespace finalProject
                 {
                     if (i.Intimidation > mCreature.Intimidation)
                     {
-                        Run(i);
+                        FleeOrder(i);
                         return;
                     }
                     else if (target == null || i.Intimidation > target.Intimidation)
@@ -47,13 +47,13 @@ namespace finalProject
 
             if (target != null)
             {
-                Follow(target);
+                FollowOrder(target);
                 return;
             }
 
             if (!foreignCreatures)
             {
-                Durdle();
+                DurdleOrder();
                 return;
             }
         }

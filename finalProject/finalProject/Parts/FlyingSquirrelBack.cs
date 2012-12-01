@@ -57,7 +57,7 @@ namespace finalProject.Parts
             mGliding = false;
         }
 
-        protected override void Reset()
+        public override void Reset()
         {
             mGliding = false;
         }

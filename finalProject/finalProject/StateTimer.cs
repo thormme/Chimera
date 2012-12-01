@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace finalProject
 {
-    class StateTimer<T>
+    public class StateTimer<T>
     {
         private double mTimer;
         private T mIdolState;

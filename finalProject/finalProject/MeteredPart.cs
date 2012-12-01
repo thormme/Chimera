@@ -100,7 +100,7 @@ namespace finalProject
         /// </summary>
         protected abstract void FinishUseMeter();
 
-        protected override void Reset()
+        public override void Reset()
         {
             MeterTimer = MeterLength;
             CooldownTimer = -1.0f;

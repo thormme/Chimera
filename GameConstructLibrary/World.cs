@@ -105,11 +105,11 @@ namespace GameConstructLibrary
 
         public void Update(GameTime gameTime)
         {
-            try
+            //try
             {
                 Space.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
             }
-            catch (SystemException)
+            //catch (SystemException)
             {
                 // Don't update
             }
