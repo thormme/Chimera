@@ -24,8 +24,7 @@ namespace finalProject.Parts
         int mResetJump = -1;
         double mJumpStrengthTimer;
         double mPoundWaitTimer;
-        float mDefaultJumpSpeed;
-        float mDefaultJumpForceFactor;
+        float mJumpMultiplier;
 
         public KangarooLegs()
             : base(
@@ -117,8 +116,8 @@ namespace finalProject.Parts
             mResetJump--;
             if (mResetJump == 0)
             {
-                Creature.CharacterController.JumpSpeed = mDefaultJumpSpeed;
-                Creature.CharacterController.JumpForceFactor = mDefaultJumpForceFactor;
+                Creature.CharacterController.JumpSpeed /= mJumpMultiplier;
+                Creature.CharacterController.JumpForceFactor /= mJumpMultiplier;
             }
         }
 
@@ -130,24 +129,31 @@ namespace finalProject.Parts
                 mResetJump = 2;
                 mJumpStrengthTimer = mJumpStrengthTimer > maxJumpCharge ? maxJumpCharge : mJumpStrengthTimer;
 
-                float multiplier = (float)((mJumpStrengthTimer / maxJumpCharge) * jumpStrength);
+                mJumpMultiplier = (float)((mJumpStrengthTimer / maxJumpCharge) * jumpStrength);
 
-                mDefaultJumpSpeed = Creature.CharacterController.JumpSpeed;
-                mDefaultJumpForceFactor = Creature.CharacterController.JumpForceFactor;
-
-                Creature.CharacterController.JumpSpeed *= multiplier;
-                Creature.CharacterController.JumpForceFactor *= multiplier;
+                Creature.CharacterController.JumpSpeed *= mJumpMultiplier;
+                Creature.CharacterController.JumpForceFactor *= mJumpMultiplier;
 
                 Creature.Jump();
 
-                Vector3 pushForward = direction * multiplier * forwardJumpForce;
+                Vector3 pushForward = direction * mJumpMultiplier * forwardJumpForce;
                 Creature.Entity.ApplyLinearImpulse(ref pushForward);
             }
         }
 
         protected override void Reset()
         {
-            throw new NotImplementedException();
+            mJumpInUse = false;
+            mPoundInUse = false;
+            mPoundWaiting = false;
+
+            if (mResetJump > 0)
+            {
+                Creature.CharacterController.JumpSpeed /= mJumpMultiplier;
+                Creature.CharacterController.JumpForceFactor /= mJumpMultiplier;
+            }
+
+            mResetJump = -1;
         }
     }
 }
