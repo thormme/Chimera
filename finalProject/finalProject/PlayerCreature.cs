@@ -121,7 +121,7 @@ namespace finalProject
                 }
                 System.Console.WriteLine("damaged, " + damage);
 
-                mPartAttachments.Remove(validParts[Rand.rand.Next(validParts.Count())]);
+                RemovePart(validParts[Rand.rand.Next(validParts.Count())].Part);
             }
         }
         
@@ -134,8 +134,8 @@ namespace finalProject
             {
                 if (/*creature.Incapacitated && */creature.PartAttachments.Count > 0)
                 {
-                    creature.RemovePart(creature.PartAttachments[0].Part);
                     AddPart(creature.PartAttachments[0].Part, slot);
+                    creature.RemovePart(creature.PartAttachments[0].Part);
                     return;
                 }
             }

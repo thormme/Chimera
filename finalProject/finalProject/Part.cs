@@ -133,6 +133,6 @@ namespace finalProject
         /// <summary>
         /// Called when the Creature is set.
         /// </summary>
-        abstract protected void Reset();
+        abstract public void Reset();
     }
 }

@@ -435,13 +435,18 @@ namespace finalProject
         /// Remove attached part from the creature.
         /// </summary>
         /// <param name="part"></param>
-        public void RemovePart(Part part)
+        public virtual void RemovePart(Part part)
         {
             int slot = -1;
             PartAttachment partAttachment = null;
             for (int i = 0; i < mPartAttachments.Count(); ++i)//PartAttachment attachment in mPartAttachments)
             {
                 PartAttachment attachment = mPartAttachments[i];
+                if (attachment == null)
+                {
+                    continue;
+                }
+
                 if (part == attachment.Part)
                 {
                     partAttachment = attachment;
