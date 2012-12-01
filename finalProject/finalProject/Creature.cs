@@ -574,9 +574,14 @@ namespace finalProject
             }
 
             float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            List<Creature> sensedCreatures = Sensor.CollidingCreatures;
+            if (sensedCreatures.Contains(this))
+            {
+                sensedCreatures.Remove(this);
+            }
 
             Sensor.Update(gameTime);
-            Controller.Update(gameTime, Sensor.CollidingCreatures);
+            Controller.Update(gameTime, sensedCreatures);
             Sensor.Position = Position;
             Sensor.Forward = Forward;
 

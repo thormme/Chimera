@@ -25,7 +25,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.25f, 0.25f, 0.25f)
+                        new Vector3(1.0f)
                     ),
                     new SubPart(
                         new InanimateModel("sphere"),
@@ -36,7 +36,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.25f, 0.25f, 0.25f)
+                        new Vector3(1.0f)
                     )
                 }
             )
