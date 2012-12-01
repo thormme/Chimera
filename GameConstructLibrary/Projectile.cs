@@ -14,6 +14,8 @@ namespace GameConstructLibrary
 
         public static CollisionGroup ProjectileGroup = new CollisionGroup();
 
+        public bool CheckHits { get; set; }
+
         protected Actor mOwner;
         protected Vector3 mProjectileImpulse;
         protected float mSpeed;
@@ -24,8 +26,10 @@ namespace GameConstructLibrary
         {
             direction.Normalize();
 
+            CheckHits = true;
+
             mOwner = owner;
-            mProjectileImpulse = direction * speed;
+            mProjectileImpulse = new Vector3(direction.X * speed, 0.0f, direction.Z * speed);
             mSpeed = speed;
             
             Entity.Position = owner.Position;
@@ -43,9 +47,12 @@ namespace GameConstructLibrary
 
         public override void Update(Microsoft.Xna.Framework.GameTime time)
         {
-            foreach (IGameObject gameObject in CollidingObjects)
+            if (CheckHits)
             {
-                 Hit(gameObject);
+                foreach (IGameObject gameObject in CollidingObjects)
+                {
+                    Hit(gameObject);
+                }
             }
         }
 

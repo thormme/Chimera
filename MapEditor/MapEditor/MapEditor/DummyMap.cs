@@ -195,7 +195,8 @@ namespace MapEditor
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X, obj.Position.Y + obj.Height, obj.Position.Z);
+                obj.Position = new Vector3(obj.Position.X / scale.X, (obj.Position.Y + obj.Height) / scale.Y, obj.Position.Z / scale.Z);
+                obj.Scale = new Vector3(obj.Scale.X / scale.X, obj.Scale.Y / scale.Y, obj.Scale.Z / scale.Z);
             }
 
             // Save the rest of the level
@@ -203,7 +204,8 @@ namespace MapEditor
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X, obj.Position.Y - obj.Height, obj.Position.Z);
+                obj.Position = new Vector3(obj.Position.X * scale.X, (obj.Position.Y - obj.Height) * scale.Y, obj.Position.Z * scale.Z);
+                obj.Scale = new Vector3(obj.Scale.X * scale.X, obj.Scale.Y * scale.Y, obj.Scale.Z * scale.Z);
             }
 
         }
@@ -222,7 +224,8 @@ namespace MapEditor
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X, obj.Position.Y - obj.Height, obj.Position.Z);
+                obj.Position = new Vector3(obj.Position.X * scale.X, (obj.Position.Y - obj.Height) * scale.Y, obj.Position.Z * scale.Z);
+                obj.Scale = new Vector3(obj.Scale.X * scale.X, obj.Scale.Y * scale.Y, obj.Scale.Z * scale.Z);
             }
 
         }

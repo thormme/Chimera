@@ -14,6 +14,7 @@ namespace finalProject.Projectiles
     {
 
         DistanceLimit mRopeLimit;
+        PhysicsObject mAnchor;
 
         public FrogTongue(Actor owner, Vector3 direction)
             : base(
@@ -25,22 +26,32 @@ namespace finalProject.Projectiles
             new Vector3(0.5f)
             )
         {
+            Entity.IsAffectedByGravity = false;
         }
 
         public override void Update(GameTime time)
         {
-            if (mRopeLimit == null)
+            base.Update(time);
+            if (mRopeLimit != null) // You have a connection
             {
-                base.Update(time);
-            }
-            else
-            {
-                if (mRopeLimit.MaximumLength >= 1.0f) mRopeLimit.MaximumLength -= 10.0f * (float)time.ElapsedGameTime.TotalSeconds;
+                if (mAnchor.CollidingObjects.Contains(mOwner.Entity.Tag))
+                {
+                    ReleaseTongue();
+                }
                 else
                 {
-                    mOwner.World.Space.Remove(mRopeLimit);
-                    mRopeLimit = null;
+                    mOwner
+                    mRopeLimit.MaximumLength -= 20.0f * (float)time.ElapsedGameTime.TotalSeconds;
                 }
+            }
+        }
+
+        private void ReleaseTongue()
+        {
+            if (mRopeLimit != null)
+            {
+                mOwner.World.Space.Remove(mRopeLimit);
+                mRopeLimit = null;
             }
         }
 
@@ -49,10 +60,29 @@ namespace finalProject.Projectiles
             PhysicsObject anchor = (gameObject as PhysicsObject);
             if (anchor != null)
             {
+                mAnchor = anchor;
+                CheckHits = false;
                 mRopeLimit = new DistanceLimit(mOwner.Entity, anchor.Entity, mOwner.Entity.Position, anchor.Entity.Position, 0.0f, (mOwner.Entity.Position - anchor.Entity.Position).Length());
                 mRopeLimit.Bounciness = 0.8f;
                 mOwner.World.Space.Add(mRopeLimit);
             }
         }
+
+        public override World World
+        {
+            get
+            {
+                return base.World;
+            }
+            set
+            {
+                base.World = value;
+                if (World == null)
+                {
+                    ReleaseTongue();
+                }
+            }
+        }
+
     }
 }
