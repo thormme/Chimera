@@ -22,7 +22,7 @@ namespace finalProject.Parts
                 2.0,
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new InanimateModel("rhino_head_walk"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.HeadCenterCap,
                             Creature.PartBone.HeadLeftCap,

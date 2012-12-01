@@ -99,12 +99,12 @@ namespace finalProject
             World.Add(player);
             int i = 0;
             //player.AddPart(new KangarooLegs(), i++);
-            player.AddPart(new FrogHead(), i++);
-            player.AddPart(new PenguinBack(), i++);
+            player.AddPart(new RhinoHead(), i++);
+            player.AddPart(new KangarooLegs(), i++);
             player.AddPart(new PenguinBack(), i++);
             player.AddPart(new CheetahLegs(), i++);
 
-            creature = new DummyCreature(new Vector3(0.0f, 1.0f, -20.0f));
+            creature = new Rhino(new Vector3(0.0f, 1.0f, -20.0f));
             World.Add(creature);
 
             World.AddLevelFromFile("test_boxes", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
