@@ -12,6 +12,7 @@ using System;
 using finalProject.Parts;
 using finalProject.Creatures;
 using BEPUphysics.CollisionRuleManagement;
+using BEPUphysics.Entities;
 
 namespace finalProject
 {
@@ -30,18 +31,18 @@ namespace finalProject
 
         private bool debugMode;
 
-        GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager Graphics;
         private ModelDrawer DebugModelDrawer;
         SpriteBatch spriteBatch;
         private World World;
 
-        PlayerCreature player;
+        public static ICamera Camera;
         Creature creature;
         TerrainPhysics terrain;
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
@@ -89,13 +90,18 @@ namespace finalProject
 
             World = new World(DebugModelDrawer);
 
-            GraphicsManager.LoadContent(this.Content, this.graphics.GraphicsDevice, this.spriteBatch);
+            GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
 
             //terrain = new TerrainPhysics("default", new Vector3(0.0f, 0.0f, 0.0f), new Quaternion(), new Vector3(2.5f));
             //World.Add(terrain);
 
-            player = new PlayerCreature(graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f));
+            creature = new Rhino(new Vector3(0.0f, 1.0f, -20.0f));
+            World.Add(creature);
+
+            World.AddLevelFromFile("corner", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+
+            /*player = new PlayerCreature(Graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f), Vector3.Forward);
             World.Add(player);
             int i = 0;
             //player.AddPart(new KangarooLegs(), i++);
@@ -106,10 +112,7 @@ namespace finalProject
             player.AddPart(new RhinoHead(), i++);
             player.AddPart(new RhinoHead(), i++);
 
-            creature = new Rhino(new Vector3(0.0f, 1.0f, -20.0f));
-            World.Add(creature);
-
-            World.AddLevelFromFile("jump", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            Camera = player.Camera;*/
         }
 
         /// <summary>
@@ -146,6 +149,13 @@ namespace finalProject
             if (mouseLock.Active)
             {
                 InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
+                foreach (Entity entity in World.Space.Entities)
+                {
+                    if (entity.Tag is PlayerCreature)
+                    {
+                        (entity.Tag as PlayerCreature).Damage(100);
+                    }
+                }
             }
 
             // Allows the game to exit
@@ -155,7 +165,7 @@ namespace finalProject
             InputAction.Update();
             World.Update(gameTime);
 
-            GraphicsManager.Update(player.Camera);
+            GraphicsManager.Update(Camera);
             DebugModelDrawer.Update();
 
             base.Update(gameTime);
@@ -175,10 +185,12 @@ namespace finalProject
 
             if (debugMode)
             {
-                DebugModelDrawer.Draw(player.Camera.ViewTransform, player.Camera.ProjectionTransform);
+                DebugModelDrawer.Draw(Camera.GetViewTransform(), Camera.GetProjectionTransform());
             }
 
             base.Draw(gameTime);
         }
+
+        internal PlayerCreature player { get; set; }
     }
 }
