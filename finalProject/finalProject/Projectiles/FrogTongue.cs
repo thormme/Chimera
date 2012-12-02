@@ -7,6 +7,8 @@ using GraphicsLibrary;
 using Microsoft.Xna.Framework;
 using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.Constraints.TwoEntity.JointLimits;
+using BEPUphysics.Constraints.TwoEntity.Joints;
+using BEPUphysics.CollisionRuleManagement;
 
 namespace finalProject.Projectiles
 {
@@ -14,7 +16,7 @@ namespace finalProject.Projectiles
     {
 
         DistanceLimit mRopeLimit;
-        PhysicsObject mAnchor;
+        PhysicsObject mAnchorObject;
 
         public FrogTongue(Actor owner, Vector3 direction)
             : base(
@@ -34,7 +36,7 @@ namespace finalProject.Projectiles
             base.Update(time);
             if (mRopeLimit != null) // You have a connection
             {
-                if (mAnchor.CollidingObjects.Contains(mOwner.Entity.Tag))
+                if (!mAnchorObject.CollidingObjects.Contains(mOwner.Entity.Tag))
                 {
                     ReleaseTongue();
                 }
@@ -49,19 +51,21 @@ namespace finalProject.Projectiles
         {
             if (mRopeLimit != null)
             {
+                Unstick();
                 mOwner.World.Space.Remove(mRopeLimit);
                 mRopeLimit = null;
             }
         }
 
         protected override void Hit(IGameObject gameObject)
-        {
+        { 
             PhysicsObject anchor = (gameObject as PhysicsObject);
             if (anchor != null)
             {
-                mAnchor = anchor;
+                mAnchorObject = anchor;
                 CheckHits = false;
-                mRopeLimit = new DistanceLimit(mOwner.Entity, anchor.Entity, mOwner.Entity.Position, anchor.Entity.Position, 0.0f, (mOwner.Entity.Position - anchor.Entity.Position).Length());
+                StickToObject(mAnchorObject);
+                mRopeLimit = new DistanceLimit(mOwner.Entity, mAnchorObject.Entity, mOwner.Entity.Position, mAnchorObject.Entity.Position, 0.0f, (mAnchorObject.Entity.Position - mOwner.Entity.Position).Length());
                 mRopeLimit.Bounciness = 0.8f;
                 mOwner.World.Space.Add(mRopeLimit);
             }

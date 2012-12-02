@@ -81,9 +81,9 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, 1.8f, 1.2f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
+            : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
         {
-            Scale = new Vector3(0.004f);
+            Scale = new Vector3(0.0028f);
 
             Intimidation = DefaultIntimidation;
             Sneak = DefaultSneak;
@@ -132,10 +132,11 @@ namespace finalProject
         {
             foreach (Creature creature in Sensor.CollidingCreatures)
             {
-                if (/*creature.Incapacitated && */creature.PartAttachments.Count > 0 && creature != this)
+                PartAttachment pa = creature.PartAttachments[0];
+                if (pa != null && creature.PartAttachments.Count > 0)
                 {
-                    AddPart(creature.PartAttachments[0].Part, slot);
-                    creature.RemovePart(creature.PartAttachments[0].Part);
+                    creature.RemovePart(pa.Part);
+                    AddPart(pa.Part, slot);
                     return;
                 }
             }
