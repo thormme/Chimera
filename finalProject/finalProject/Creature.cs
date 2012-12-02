@@ -446,6 +446,11 @@ namespace finalProject
             part.Creature = this;
         }
 
+        public float CollideDistance(Creature creature)
+        {
+            return (Position - creature.Position).Length() - creature.CharacterController.BodyRadius - CharacterController.BodyRadius;
+        }
+
         /// <summary>
         /// Remove attached part from the creature.
         /// </summary>

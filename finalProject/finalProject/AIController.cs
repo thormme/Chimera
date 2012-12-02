@@ -172,7 +172,6 @@ namespace finalProject
         {
             ResetAIState();
             State = AIState.Stop;
-            ResetPart();
             StopMoving();
         }
 

@@ -32,7 +32,7 @@ namespace finalProject.AI
             }
 
             float distance = (creature.Position - mCreature.Position).Length();
-            if (distance > creature.CharacterController.BodyRadius + mCreature.CharacterController.BodyRadius)
+            if (distance > (creature.CharacterController.BodyRadius + mCreature.CharacterController.BodyRadius) * 1.1f)
             {
                 return false;
             }
@@ -44,9 +44,9 @@ namespace finalProject.AI
         {
             bool onGround = mCreature.CharacterController.SupportFinder.HasTraction;
 
-            if (!onGround && State == AIState.FollowCreature && WithinStompRange(mTargetCreature))
+            if (!mUsingPart && !onGround && State == AIState.FollowCreature)// && WithinStompRange(mTargetCreature))
             {
-                Vector3 downVector = mTargetCreature.Position - mCreature.Position;// new Vector3(0.0f, -1.0f, 0.0f);
+                Vector3 downVector = new Vector3(0.0f, -1.0f, 0.0f);// mTargetCreature.Position - mCreature.Position;
                 Ray downRay = new Ray(mCreature.Position, downVector);
                 Func<BroadPhaseEntry, bool> filter = (bfe) => (!(bfe.Tag is Sensor) && bfe.Tag != mCreature);
                 RayCastResult result = new RayCastResult();
@@ -58,6 +58,7 @@ namespace finalProject.AI
                         Part part = ChoosePart();
                         part.Use(downVector);
                         part.FinishUse(downVector);
+                        return;
                     }
                 }
                 else if (result.HitObject.Tag == mTargetCreature)
@@ -65,16 +66,15 @@ namespace finalProject.AI
                     Part part = ChoosePart();
                     part.Use(downVector);
                     part.FinishUse(downVector);
+                    return;
                 }
+                System.Console.WriteLine("Ray fail");
             }
-
-            if (mTargetCreature == null)
+            else if (mUsingPart && mTargetCreature == null)
             {
                 FinishUsePart();
-                return;
             }
-
-            if (mUsingPart && onGround)
+            else if (mUsingPart && onGround)
             {
                 Vector3 targetDirection;
                 if (State == AIState.FollowCreature)

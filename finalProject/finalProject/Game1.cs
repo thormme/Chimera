@@ -99,23 +99,28 @@ namespace finalProject
             World.Add(player);
             int i = 0;
             //player.AddPart(new KangarooLegs(), i++);
+            //player.AddPart(new BearArms(), i++);
+            //player.AddPart(new BearArms(), i++);
+            //player.AddPart(new BearArms(), i++);
+            //player.AddPart(new BearArms(), i++);
+            //player.AddPart(new BearArms(), i++);
+            //player.AddPart(new BearArms(), i++);
+            //player.AddPart(new BearArms(), i++);
+            //player.AddPart(new BearArms(), i++);
+            //player.AddPart(new BearArms(), i++);
+            player.AddPart(new CheetahLegs(), i++);
+            player.AddPart(new CheetahLegs(), i++);
+            player.AddPart(new CheetahLegs(), i++);
             player.AddPart(new BearArms(), i++);
-            player.AddPart(new BearArms(), i++);
-            player.AddPart(new BearArms(), i++);
-            player.AddPart(new BearArms(), i++);
-            player.AddPart(new BearArms(), i++);
-            player.AddPart(new BearArms(), i++);
-            player.AddPart(new BearArms(), i++);
-            player.AddPart(new BearArms(), i++);
-            player.AddPart(new BearArms(), i++);
-            player.AddPart(new BearArms(), i++);
-            //player.AddPart(new PenguinBack(), i++);
-            //player.AddPart(new CheetahLegs(), i++);
-            //player.AddPart(new FrogHead(), i++);
-            //player.AddPart(new RhinoHead(), i++);
+            player.AddPart(new PenguinBack(), i++);
+            player.AddPart(new FrogHead(), i++);
+            player.AddPart(new RhinoHead(), i++);
             //player.AddPart(new RhinoHead(), i++);
 
-            creature = new Kangaroo(new Vector3(0.0f, 1.0f, -20.0f));
+            creature = new Bear(new Vector3(0.0f, 1.0f, -20.0f));
+            World.Add(creature);
+
+            creature = new FrilledLizard(new Vector3(20.0f, 1.0f, -20.0f));
             World.Add(creature);
 
             World.AddLevelFromFile("jump", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));

@@ -141,7 +141,7 @@ namespace finalProject.Parts
 
         public override void FinishUse(Vector3 direction)
         {
-            if (mJumpInUse)
+            if (mJumpInUse && mResetJump < -5)
             {
                 mJumpInUse = false;
                 mResetJump = 2;
@@ -154,7 +154,7 @@ namespace finalProject.Parts
 
                 Creature.Jump();
 
-                Vector3 pushForward = direction * mJumpMultiplier * forwardJumpForce;
+                Vector3 pushForward = Creature.Forward * mJumpMultiplier * forwardJumpForce;
                 Creature.Entity.ApplyLinearImpulse(ref pushForward);
                 
                 PlayAnimation("jump", true);
