@@ -5,17 +5,25 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GameConstructLibrary;
 
-enum DurdleState
-{
-    Idol,
-    Move,
-    Wait
-}
-
 namespace finalProject
 {
+    /// <summary>
+    /// Enum used with StateTimer to control durdling.
+    /// </summary>
+    enum DurdleState
+    {
+        Idol,
+        Move,
+        Wait
+    }
+
+    /// <summary>
+    /// Controller used to make AIs for creatures.
+    /// </summary>
     public class AIController : Controller
     {
+        #region Fields
+
         protected const int MaxDurdleMoveTime = 4;
         protected const int MaxDurdleWaitTime = 4;
 
@@ -26,75 +34,14 @@ namespace finalProject
 
         private StateTimer<DurdleState> mDurdleTimer;
 
+        #endregion
+
+        #region Public Methods
+
         public AIController()
         {
             mDurdleTimer = new StateTimer<DurdleState>(DurdleState.Idol);
-            StopOrder();
-        }
-
-        /// <summary>
-        /// Orders the creature to durdle around.
-        /// </summary>
-        public virtual void DurdleOrder()
-        {
-            if (mDurdleTimer.State == DurdleState.Idol)
-            {
-                StopOrder();
-                mDurdleTimer.Loop();
-                mDurdleTimer.Next();
-            }
-        }
-
-        /// <summary>
-        /// Orders the creature to go to the position.
-        /// </summary>
-        /// <param name="position">The position to go to.</param>
-        public virtual void FollowOrder(Vector3 position)
-        {
-            StopOrder();
-            mFollowPosition = true;
-            mTargetPosition = position;
-            MoveTo(position);
-        }
-
-        /// <summary>
-        /// Orders the creature to follow the specified creature.
-        /// </summary>
-        /// <param name="creature">The creature to follow.</param>
-        public virtual void FollowOrder(Creature creature)
-        {
-            StopOrder();
-            mTargetCreature = creature;
-            mFlee = false;
-            MoveTo(mTargetCreature.Position);
-        }
-
-        /// <summary>
-        /// Orders the creature to flee from the specified creature.
-        /// </summary>
-        /// <param name="creature">The creature from which to flee.</param>
-        public virtual void FleeOrder(Creature creature)
-        {
-            StopOrder();
-            mTargetCreature = creature;
-            mFlee = true;
-            MoveFrom(mTargetCreature.Position);
-        }
-
-        /// <summary>
-        /// Orders the creature to stop acting.
-        /// </summary>
-        public virtual void StopOrder()
-        {
-            mDurdleTimer.State = DurdleState.Idol;
-            mDurdleTimer.ResetNewState();
-            if (mCreature != null)
-            {
-                mCreature.Move(Vector2.Zero);
-                ResetPart();
-            }
-            mTargetCreature = null;
-            mFollowPosition = false;
+            ResetAIState();
         }
 
         /// <summary>
@@ -135,13 +82,86 @@ namespace finalProject
             }
         }
 
+        #endregion
+
+        #region Protected Methods
+
+        /// <summary>
+        /// Orders the creature to durdle around.
+        /// </summary>
+        protected virtual void DurdleOrder()
+        {
+            if (mDurdleTimer.State == DurdleState.Idol)
+            {
+                ResetAIState();
+                mDurdleTimer.Loop();
+                mDurdleTimer.Next();
+            }
+        }
+
+        /// <summary>
+        /// Orders the creature to go to the position.
+        /// </summary>
+        /// <param name="position">The position to go to.</param>
+        protected virtual void FollowOrder(Vector3 position)
+        {
+            ResetAIState();
+            mFollowPosition = true;
+            mTargetPosition = position;
+            MoveTo(position);
+        }
+
+        /// <summary>
+        /// Orders the creature to follow the specified creature.
+        /// </summary>
+        /// <param name="creature">The creature to follow.</param>
+        protected virtual void FollowOrder(Creature creature)
+        {
+            ResetAIState();
+            mTargetCreature = creature;
+            mFlee = false;
+            MoveTo(mTargetCreature.Position);
+        }
+
+        /// <summary>
+        /// Orders the creature to flee from the specified creature.
+        /// </summary>
+        /// <param name="creature">The creature from which to flee.</param>
+        protected virtual void FleeOrder(Creature creature)
+        {
+            ResetAIState();
+            mTargetCreature = creature;
+            mFlee = true;
+            MoveFrom(mTargetCreature.Position);
+        }
+
+        /// <summary>
+        /// Orders the creature to stop acting.
+        /// </summary>
+        protected virtual void StopOrder()
+        {
+            ResetAIState();
+            ResetPart();
+            StopMoving();
+        }
+
+        /// <summary>
+        /// Resets the state of the AI.
+        /// </summary>
+        protected virtual void ResetAIState()
+        {
+            mDurdleTimer.State = DurdleState.Idol;
+            mDurdleTimer.ResetNewState();
+            mTargetCreature = null;
+            mFollowPosition = false;
+        }
+
         /// <summary>
         /// Called in update when the durdle move state begins.
         /// </summary>
         /// <param name="time">The game time.</param>
         protected virtual void DurdleMoveUpdate(GameTime time)
         {
-            // TODO: For some reason this seems to go into one quadrant.
             mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleMoveTime));
 
             Vector3 newDirection = new Vector3(Rand.NextFloat(2.0f) - 1.0f, 0.0f, Rand.NextFloat(2.0f) - 1.0f);
@@ -158,7 +178,7 @@ namespace finalProject
         {
             mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleWaitTime));
             mDurdleTimer.ResetNewState();
-            StopCreature();
+            StopMoving();
         }
 
         /// <summary>
@@ -213,7 +233,7 @@ namespace finalProject
         }
 
         /// <summary>
-        /// Resets the creatures part. Called in StopOrder.
+        /// Resets the creature's part. Called in StopOrder.
         /// </summary>
         protected virtual void ResetPart()
         {
@@ -260,9 +280,14 @@ namespace finalProject
             mCreature.Move(dir);
         }
 
-        protected virtual void StopCreature()
+        /// <summary>
+        /// Makes the creature stop moving.
+        /// </summary>
+        protected virtual void StopMoving()
         {
             mCreature.Move(Vector2.Zero);
         }
+
+        #endregion
     }
 }

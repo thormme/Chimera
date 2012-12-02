@@ -80,6 +80,43 @@ namespace finalProject
             set;
         }
 
+        public override Vector3 Forward
+        {
+            get
+            {
+                return base.Forward;
+            }
+            set
+            {
+                base.Forward = value;
+                Sensor.Forward = Forward;
+            }
+        }
+
+        public override World World
+        {
+            get
+            {
+                return base.World;
+            }
+            set
+            {
+                if (World != null)
+                {
+                    World.Remove(Sensor);
+                    World.Space.Remove(CharacterController);
+                }
+
+                base.World = value;
+
+                if (value != null)
+                {
+                    value.Add(Sensor);
+                    value.Space.Add(CharacterController);
+                }
+            }
+        }
+
         public CharacterController CharacterController
         {
             get;
@@ -300,30 +337,6 @@ namespace finalProject
             }
         }
 
-        public override World World
-        {
-            get
-            {
-                return base.World;
-            }
-            set
-            {
-                if (World != null)
-                {
-                    World.Remove(Sensor);
-                    World.Space.Remove(CharacterController);
-                }
-
-                base.World = value;
-
-                if (value != null)
-                {
-                    value.Add(Sensor);
-                    value.Space.Add(CharacterController);
-                }
-            }
-        }
-
         protected virtual Matrix GetRenderTransform()
         {
             return Matrix.CreateScale(Scale) * Entity.WorldTransform;
@@ -467,19 +480,6 @@ namespace finalProject
 
             mPartAttachments[slot] = null;
             partAttachment.Part.Creature = null;
-        }
-
-        public override Vector3 Forward
-        {
-            get
-            {
-                return base.Forward;
-            }
-            set
-            {
-                base.Forward = value;
-                Sensor.Forward = Forward;
-            }
         }
 
         /// <summary>

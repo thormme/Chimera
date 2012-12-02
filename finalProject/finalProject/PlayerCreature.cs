@@ -135,8 +135,8 @@ namespace finalProject
                 PartAttachment pa = creature.PartAttachments[0];
                 if (pa != null && creature.PartAttachments.Count > 0)
                 {
-                    AddPart(pa.Part, slot);
                     creature.RemovePart(pa.Part);
+                    AddPart(pa.Part, slot);
                     return;
                 }
             }
