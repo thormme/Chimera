@@ -12,7 +12,7 @@ namespace finalProject.AI
 {
     class KangarooAI : PassiveAI
     {
-        private double mJumpTimer = -1.0f;
+        private double mJumpTimer = double.MaxValue;
 
         public override void Damage(int damage, Creature source)
         {
@@ -24,7 +24,9 @@ namespace finalProject.AI
 
         protected virtual bool WithinStompRange(Creature creature)
         {
-            if (mCreature.Position.Y < creature.Position.Y)
+            float myHeight = mCreature.Position.Y - mCreature.CharacterController.Body.Height / 2;
+            float targetHeight = creature.Position.Y + creature.CharacterController.Body.Height / 2;
+            if (myHeight < targetHeight)
             {
                 return false;
             }
@@ -40,14 +42,25 @@ namespace finalProject.AI
 
         protected override void UsePartUpdate(GameTime time)
         {
-            if (State == AIState.FollowCreature && WithinStompRange(mTargetCreature))
+            bool onGround = mCreature.CharacterController.SupportFinder.HasTraction;
+
+            if (!onGround && State == AIState.FollowCreature && WithinStompRange(mTargetCreature))
             {
-                Vector3 downVector = new Vector3(0.0f, -1.0f, 0.0f);
+                Vector3 downVector = mTargetCreature.Position - mCreature.Position;// new Vector3(0.0f, -1.0f, 0.0f);
                 Ray downRay = new Ray(mCreature.Position, downVector);
                 Func<BroadPhaseEntry, bool> filter = (bfe) => (!(bfe.Tag is Sensor) && bfe.Tag != mCreature);
                 RayCastResult result = new RayCastResult();
                 mCreature.World.Space.RayCast(downRay, filter, out result);
-                if (result.HitObject.Tag == mTargetCreature)
+                if (result.HitObject.Tag is CharacterSynchronizer)
+                {
+                    if ((result.HitObject.Tag as CharacterSynchronizer).body.Tag == mTargetCreature)
+                    {
+                        Part part = ChoosePart();
+                        part.Use(downVector);
+                        part.FinishUse(downVector);
+                    }
+                }
+                else if (result.HitObject.Tag == mTargetCreature)
                 {
                     Part part = ChoosePart();
                     part.Use(downVector);
@@ -55,7 +68,13 @@ namespace finalProject.AI
                 }
             }
 
-            if (mUsingPart)
+            if (mTargetCreature == null)
+            {
+                FinishUsePart();
+                return;
+            }
+
+            if (mUsingPart && onGround)
             {
                 Vector3 targetDirection;
                 if (State == AIState.FollowCreature)
@@ -72,18 +91,20 @@ namespace finalProject.AI
                 }
 
                 KangarooLegs kLegs = (ChoosePart() as KangarooLegs);
-                if (mJumpTimer > kLegs.FullJumpTime)
+                if (mJumpTimer < kLegs.FullJumpTime)
                 {
                     mJumpTimer += time.ElapsedGameTime.TotalSeconds;
                     if (mJumpTimer / kLegs.FullJumpTime > targetDirection.Length() / mCreature.Sensor.Radius)
                     {
                         kLegs.FinishUse(targetDirection);
                         mUsingPart = false;
+                        mJumpTimer = double.MaxValue;
                     }
                 }
                 else
                 {
                     ChoosePart().Use(targetDirection);
+                    mJumpTimer = 0.0f;
                 }
             }
         }

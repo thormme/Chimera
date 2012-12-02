@@ -342,6 +342,10 @@ namespace finalProject
             mDurdleTimer.ResetNewState();
             mTargetCreature = null;
             mFollowPosition = false;
+            if (mUsingPart)
+            {
+                FinishUsePart();
+            }
         }
 
         /// <summary>
@@ -352,6 +356,15 @@ namespace finalProject
         {
             mUsePartDirection = direction;
             mUsingPart = true;
+        }
+
+        /// <summary>
+        /// Called when the AI wants to stop using the creature's part.
+        /// </summary>
+        protected virtual void FinishUsePart()
+        {
+            ChoosePart().FinishUse(mCreature.Forward);
+            mUsingPart = false;
         }
 
         #endregion
