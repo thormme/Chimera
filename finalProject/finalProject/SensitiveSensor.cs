@@ -47,7 +47,7 @@ namespace finalProject
             foreach (IGameObject gameObject in CollidingObjects)
             {
                 Creature creature = gameObject as Creature;
-                if (creature != null && (CanHear(creature) || !CanSee(creature)))
+                if (creature != null && CanHear(creature) && !CanSee(creature))
                 {
                     mCollidingCreatures.Add(creature);
                 }

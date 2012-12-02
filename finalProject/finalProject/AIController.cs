@@ -10,11 +10,21 @@ namespace finalProject
     /// <summary>
     /// Enum used with StateTimer to control durdling.
     /// </summary>
-    enum DurdleState
+    public enum DurdleState
     {
         Idol,
         Move,
         Wait
+    }
+
+    public enum AIState
+    {
+        Idol,
+        Stop,
+        Durdle,
+        FollowPosition,
+        FollowCreature,
+        FleeCreature
     }
 
     /// <summary>
@@ -30,9 +40,24 @@ namespace finalProject
         protected Creature mTargetCreature;
         protected Vector3 mTargetPosition;
         protected bool mFollowPosition;
-        protected bool mFlee;
+        protected Vector3 mDurdleDirection;
 
-        private StateTimer<DurdleState> mDurdleTimer;
+        protected Vector3 mMoveDirection;
+
+        protected bool mUsingPart = false;
+        protected Vector3 mUsePartDirection;
+
+        protected StateTimer<DurdleState> mDurdleTimer;
+
+        #endregion
+
+        #region Protected Properties
+
+        protected AIState State
+        {
+            get;
+            set;
+        }
 
         #endregion
 
@@ -57,34 +82,37 @@ namespace finalProject
             }
 
             mDurdleTimer.Update(time);
-            if (mTargetCreature != null)
+            if (State == AIState.Durdle)
             {
-                if (mFlee)
+                if (mDurdleTimer.NewState() == DurdleState.Move)
                 {
-                    FleeUpdate(time);
+                    DurdleMoveUpdate(time);
                 }
-                else
+                else if (mDurdleTimer.NewState() == DurdleState.Wait)
                 {
-                    FollowCreatureUpdate(time);
+                    DurdleWaitUpdate(time);
                 }
             }
-            else if (mFollowPosition)
+            else if (State == AIState.FleeCreature)
+            {
+                FleeCreatureUpdate(time);
+            }
+            else if (State == AIState.FollowCreature)
+            {
+                FollowCreatureUpdate(time);
+            }
+            else if (State == AIState.FollowPosition)
             {
                 FollowPositionUpdate(time);
             }
-            else if (mDurdleTimer.NewState() == DurdleState.Move)
-            {
-                DurdleMoveUpdate(time);
-            }
-            else if (mDurdleTimer.NewState() == DurdleState.Wait)
-            {
-                DurdleWaitUpdate(time);
-            }
+
+            MoveUpdate(time);
+            UsePartUpdate(time);
         }
 
         #endregion
 
-        #region Protected Methods
+        #region Orders
 
         /// <summary>
         /// Orders the creature to durdle around.
@@ -94,6 +122,7 @@ namespace finalProject
             if (mDurdleTimer.State == DurdleState.Idol)
             {
                 ResetAIState();
+                State = AIState.Durdle;
                 mDurdleTimer.Loop();
                 mDurdleTimer.Next();
             }
@@ -108,6 +137,7 @@ namespace finalProject
             ResetAIState();
             mFollowPosition = true;
             mTargetPosition = position;
+            State = AIState.FollowPosition;
             MoveTo(position);
         }
 
@@ -119,7 +149,7 @@ namespace finalProject
         {
             ResetAIState();
             mTargetCreature = creature;
-            mFlee = false;
+            State = AIState.FollowCreature;
             MoveTo(mTargetCreature.Position);
         }
 
@@ -131,7 +161,7 @@ namespace finalProject
         {
             ResetAIState();
             mTargetCreature = creature;
-            mFlee = true;
+            State = AIState.FleeCreature;
             MoveFrom(mTargetCreature.Position);
         }
 
@@ -141,19 +171,25 @@ namespace finalProject
         protected virtual void StopOrder()
         {
             ResetAIState();
+            State = AIState.Stop;
             ResetPart();
             StopMoving();
         }
 
-        /// <summary>
-        /// Resets the state of the AI.
-        /// </summary>
-        protected virtual void ResetAIState()
+        #endregion
+
+        #region Updates
+
+        protected virtual void MoveUpdate(GameTime time)
         {
-            mDurdleTimer.State = DurdleState.Idol;
-            mDurdleTimer.ResetNewState();
-            mTargetCreature = null;
-            mFollowPosition = false;
+            if (mMoveDirection.Length() > 0.2f)
+            {
+                Vector3 newDirection = mCreature.Forward;
+                newDirection += 10.0f * (float)time.ElapsedGameTime.TotalSeconds * (mMoveDirection - mCreature.Forward);
+                Vector2 dir = new Vector2(newDirection.X, newDirection.Z);
+                dir.Normalize();
+                mCreature.Move(dir);
+            }
         }
 
         /// <summary>
@@ -163,11 +199,9 @@ namespace finalProject
         protected virtual void DurdleMoveUpdate(GameTime time)
         {
             mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleMoveTime));
-
-            Vector3 newDirection = new Vector3(Rand.NextFloat(2.0f) - 1.0f, 0.0f, Rand.NextFloat(2.0f) - 1.0f);
-            MoveCreature(newDirection);
-
             mDurdleTimer.ResetNewState();
+
+            MoveCreature(new Vector3(Rand.NextFloat(2.0f) - 1.0f, 0.0f, Rand.NextFloat(2.0f) - 1.0f));
         }
 
         /// <summary>
@@ -178,16 +212,19 @@ namespace finalProject
         {
             mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleWaitTime));
             mDurdleTimer.ResetNewState();
+
             StopMoving();
         }
 
         /// <summary>
-        /// Called in update during the follow position state.
+        /// Called in update during the flee state.
         /// </summary>
-        /// <param name="time">The game time.</param>
-        protected virtual void FollowPositionUpdate(GameTime time)
+        /// <param name="time"></param>
+        protected virtual void FleeCreatureUpdate(GameTime time)
         {
-            FollowUpdate(time, mTargetPosition);
+            Vector3 direction = mCreature.Position - mTargetCreature.Position;
+            MoveCreature(direction);
+            UsePart(direction);
         }
 
         /// <summary>
@@ -200,6 +237,15 @@ namespace finalProject
         }
 
         /// <summary>
+        /// Called in update during the follow position state.
+        /// </summary>
+        /// <param name="time">The game time.</param>
+        protected virtual void FollowPositionUpdate(GameTime time)
+        {
+            FollowUpdate(time, mTargetPosition);
+        }
+
+        /// <summary>
         /// Called in update by FollowCreatureUpdate and FollowPositionUpdate.
         /// </summary>
         /// <param name="time">The game time.</param>
@@ -208,29 +254,27 @@ namespace finalProject
         {
             Vector3 direction = position - mCreature.Position;
             MoveCreature(direction);
-            UsePartUpdate(direction, time);
+            UsePart(direction);
         }
 
         /// <summary>
-        /// Called in update during the flee state.
+        /// Called every frame. Controls the appropriate use of the creature's part.
         /// </summary>
-        /// <param name="time"></param>
-        protected virtual void FleeUpdate(GameTime time)
+        /// <param name="time">The game time.</param>
+        protected virtual void UsePartUpdate(GameTime time)
         {
-            Vector3 direction = mCreature.Position - mTargetCreature.Position;
-            MoveCreature(direction);
-            UsePartUpdate(direction, time);
+            if (mUsingPart)
+            {
+                Part part = ChoosePart();
+                part.Use(mUsePartDirection);
+                part.FinishUse(mUsePartDirection);
+                mUsingPart = false;
+            }
         }
 
-        /// <summary>
-        /// Called when the AI wants to use the creature's part.
-        /// </summary>
-        /// <param name="direction"></param>
-        /// <param name="time"></param>
-        protected virtual void UsePartUpdate(Vector3 direction, GameTime time)
-        {
-            ChoosePart().Use(direction);
-        }
+        #endregion
+
+        #region Helpers
 
         /// <summary>
         /// Resets the creature's part. Called in StopOrder.
@@ -275,9 +319,8 @@ namespace finalProject
         /// <param name="direction">The direction in which to move.</param>
         protected virtual void MoveCreature(Vector3 direction)
         {
-            Vector2 dir = new Vector2(direction.X, direction.Z);
-            dir.Normalize();
-            mCreature.Move(dir);
+            mMoveDirection = direction;
+            mMoveDirection.Normalize();
         }
 
         /// <summary>
@@ -286,6 +329,29 @@ namespace finalProject
         protected virtual void StopMoving()
         {
             mCreature.Move(Vector2.Zero);
+            MoveCreature(Vector3.Zero);
+        }
+
+        /// <summary>
+        /// Resets the state of the AI.
+        /// </summary>
+        protected virtual void ResetAIState()
+        {
+            State = AIState.Idol;
+            mDurdleTimer.State = DurdleState.Idol;
+            mDurdleTimer.ResetNewState();
+            mTargetCreature = null;
+            mFollowPosition = false;
+        }
+
+        /// <summary>
+        /// Called when the AI wants to use the creature's part.
+        /// </summary>
+        /// <param name="direction">The direction in which to use the part.</param>
+        protected virtual void UsePart(Vector3 direction)
+        {
+            mUsePartDirection = direction;
+            mUsingPart = true;
         }
 
         #endregion

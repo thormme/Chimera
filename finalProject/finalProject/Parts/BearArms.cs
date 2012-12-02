@@ -74,7 +74,7 @@ namespace finalProject.Parts
             List<Creature> targets = FindTargets();
             foreach (Creature creature in targets)
             {
-                creature.Damage(AttackDamage);
+                creature.Damage(AttackDamage, Creature);
             }
         }
 

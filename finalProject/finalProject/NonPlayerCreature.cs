@@ -71,22 +71,32 @@ namespace finalProject
             AddPart(part, 0);
         }
 
-        public override void Damage(int damage)
+        public override void Damage(int damage, Creature source)
         {
             if (Invulnerable)
             {
                 return;
             }
 
-            base.Damage(damage);
+            base.Damage(damage, source);
 
             Health -= damage;
             if (Health < 0)
             {
                 Health = 0;
                 mIncapacitated = true;
+                System.Console.WriteLine(this + " died.");
             }
         }
+
+#if DEBUGFACING
+        public override void Render()
+        {
+            base.Render();
+            InanimateModel m = new InanimateModel("dude_walk");
+            m.Render(Position + Forward * 15.0f, -Forward, new Vector3(0.1f));
+        }
+#endif
 
         public override void RemovePart(Part part)
         {
@@ -94,6 +104,7 @@ namespace finalProject
 
             Move(Vector2.Zero);
             mIncapacitated = true;
+            System.Console.WriteLine(this + " died.");
         }
     }
 }

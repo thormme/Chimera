@@ -139,6 +139,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AIController.cs" />
+    <Compile Include="AI\KangarooAI.cs" />
+    <Compile Include="AI\PassiveAI.cs" />
     <Compile Include="ChaseCamera.cs" />
     <Compile Include="CooldownPart.cs" />
     <Compile Include="Creatures\Cheetah.cs" />
@@ -169,7 +171,7 @@
     <Compile Include="DummyController.cs" />
     <Compile Include="DummyCreature.cs" />
     <Compile Include="DummyPart.cs" />
-    <Compile Include="IntimidationAI.cs" />
+    <Compile Include="AI\IntimidationAI.cs" />
     <Compile Include="NonPlayerCreature.cs" />
     <Compile Include="Part.cs" />
     <Compile Include="PlayerController.cs" />

@@ -27,7 +27,7 @@ namespace finalProject
         #region Fields
 
         private const float mPlayerRadius = 1.0f;
-        private const int DefaultSneak = 11;
+        private const int DefaultSneak = 0;
         private const int DefaultIntimidation = 5;
         private const int DamageThreshold = 30;
 
@@ -93,14 +93,14 @@ namespace finalProject
         /// Removes parts until no parts are remaining.
         /// </summary>
         /// <param name="damage">Amount of damage to apply.</param>
-        public override void Damage(int damage)
+        public override void Damage(int damage, Creature source)
         {
             if (Invulnerable)
             {
                 return;
             }
 
-            base.Damage(damage);
+            base.Damage(damage, source);
 
             if (damage - DamageThreshold > 0)
             {
@@ -136,6 +136,7 @@ namespace finalProject
                 if (pa != null && creature.PartAttachments.Count > 0)
                 {
                     creature.RemovePart(pa.Part);
+                    RemovePart(mPartAttachments[slot].Part);
                     AddPart(pa.Part, slot);
                     return;
                 }

@@ -10,22 +10,17 @@ using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Collidables;
 using BEPUphysics.NarrowPhaseSystems.Pairs;
 using finalProject.Parts;
+using finalProject.AI;
 
 namespace finalProject
 {
     public class DummyCreature : NonPlayerCreature
     {
         public DummyCreature(Vector3 position)
-            : base(position, 2.0f, 4.0f, 10.0f, 30.0f, new IntimidationAI(), new InanimateModel("box"), 135, 100, 10, 10, 50, new KangarooLegs())
+            : base(position, 2.0f, 4.0f, 10.0f, 30.0f, new PassiveAI(), new InanimateModel("box"), 135, 100, 10, 5, 50, new BearArms())
         {
             //(mRenderable as AnimateModel).PlayAnimation("Take 001");
             Scale = new Vector3(1.0f);
-        }
-
-        public override void Damage(int damage)
-        {
-            Move(Vector2.Zero);
-            mIncapacitated = true;
         }
 
         public override void Update(GameTime time)

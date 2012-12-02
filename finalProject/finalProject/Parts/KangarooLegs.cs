@@ -12,6 +12,7 @@ namespace finalProject.Parts
     class KangarooLegs : Part
     {
         const double maxJumpCharge = 3.0;
+        const double jumpStrengthTimerStart = 1.0;
         const double jumpStrength = 3.0;
         const float forwardJumpForce = 30f;
         const float poundForce = 320f;
@@ -25,6 +26,14 @@ namespace finalProject.Parts
         double mJumpStrengthTimer;
         double mPoundWaitTimer;
         float mJumpMultiplier;
+
+        public double FullJumpTime
+        {
+            get
+            {
+                return maxJumpCharge - jumpStrengthTimerStart;
+            }
+        }
 
         public KangarooLegs()
             : base(
@@ -67,7 +76,7 @@ namespace finalProject.Parts
             if (Creature.CharacterController.SupportFinder.HasSupport)
             {
                 mJumpInUse = true;
-                mJumpStrengthTimer = 1.0;
+                mJumpStrengthTimer = jumpStrengthTimerStart;
             }
             else
             {
@@ -98,7 +107,7 @@ namespace finalProject.Parts
                     Creature otherCreature = gameObject as Creature;
                     if (otherCreature != null)
                     {
-                        otherCreature.Damage(poundDamage);
+                        otherCreature.Damage(poundDamage, Creature);
                     }
                 }
 

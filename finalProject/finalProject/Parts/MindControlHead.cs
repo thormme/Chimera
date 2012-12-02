@@ -44,9 +44,9 @@ namespace finalProject.Parts
         public override void FinishUse(Vector3 direction)
         { }
 
-        public override void Damage(int damage)
+        public override void Damage(int damage, Creature source)
         {
-            base.Damage(damage);
+            base.Damage(damage, source);
 
             if (projectile != null)
             {
