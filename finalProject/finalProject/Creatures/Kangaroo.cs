@@ -19,7 +19,7 @@ namespace finalProject.Creatures
                 10.0f,                           // Mass
                 10.0f,                           // Sensitivity Radius
                 new IntimidationAI(),            // AI
-                new InanimateModel("kangaroo"),  // Model
+                new AnimateModel("kangaroo", "walk"),  // Model
                 MathHelper.PiOver4,              // Vision Angle
                 10,                              // Listening Sensitivity
                 3,                               // Sneak
@@ -28,16 +28,21 @@ namespace finalProject.Creatures
                 new KangarooLegs()               // Part
                 )
         {
+            Scale = new Vector3(0.02f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
         {
             List<PartBone> bones = new List<PartBone>();
-            bones.Add(PartBone.LegFrontLeft1Cap);
             bones.Add(PartBone.LegRearLeft1Cap);
-            bones.Add(PartBone.LegFrontRight1Cap);
             bones.Add(PartBone.LegRearRight1Cap);
             return bones;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            (mRenderable as AnimateModel).Update(gameTime);
+            base.Update(gameTime);
         }
     }
 }

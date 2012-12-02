@@ -39,6 +39,8 @@ namespace GraphicsLibrary
         // Backlink to the bind pose and skeleton hierarchy data.
         SkinningData skinningDataValue;
 
+        // Whether or not animation loops.
+        private bool mIsSaturated;
 
         #endregion
 
@@ -62,10 +64,12 @@ namespace GraphicsLibrary
         /// <summary>
         /// Starts decoding the specified animation clip.
         /// </summary>
-        public void StartClip(AnimationClip clip)
+        public void StartClip(AnimationClip clip, bool isSaturated)
         {
             if (clip == null)
                 throw new ArgumentNullException("clip");
+
+            mIsSaturated = isSaturated;
 
             currentClipValue = clip;
             currentTimeValue = TimeSpan.Zero;
@@ -103,11 +107,20 @@ namespace GraphicsLibrary
                 time += currentTimeValue;
 
                 // If we reached the end, loop back to the start.
-                while (time >= currentClipValue.Duration)
-                    time -= currentClipValue.Duration;
+                while (time > currentClipValue.Duration)
+                {
+                    if (mIsSaturated)
+                    {
+                        time = currentClipValue.Duration;
+                    }
+                    else
+                    {
+                        time -= currentClipValue.Duration;
+                    }
+                }
             }
 
-            if ((time < TimeSpan.Zero) || (time >= currentClipValue.Duration))
+            if ((time < TimeSpan.Zero) || (time > currentClipValue.Duration))
                 throw new ArgumentOutOfRangeException("time");
 
             // If the position moved backwards, reset the keyframe index.
