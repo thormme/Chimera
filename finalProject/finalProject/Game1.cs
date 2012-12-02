@@ -99,8 +99,8 @@ namespace finalProject
             World.Add(player);
             int i = 0;
             //player.AddPart(new KangarooLegs(), i++);
-            player.AddPart(new FrogHead(), i++);
-            player.AddPart(new PenguinBack(), i++);
+            player.AddPart(new ParrotWings(), i++);
+            player.AddPart(new KangarooLegs(), i++);
             player.AddPart(new PenguinBack(), i++);
             player.AddPart(new CheetahLegs(), i++);
 

@@ -15,6 +15,7 @@ namespace GameConstructLibrary
         public static CollisionGroup ProjectileGroup = new CollisionGroup();
 
         public bool CheckHits { get; set; }
+        private PhysicsObject Stick;
 
         protected Actor mOwner;
         protected Vector3 mProjectileImpulse;
@@ -27,6 +28,7 @@ namespace GameConstructLibrary
             direction.Normalize();
 
             CheckHits = true;
+            Stick = null;
 
             mOwner = owner;
             mProjectileImpulse = new Vector3(direction.X * speed, 0.0f, direction.Z * speed);
@@ -54,11 +56,32 @@ namespace GameConstructLibrary
                     Hit(gameObject);
                 }
             }
+
+            if (Stick != null)
+            {
+                Position = Stick.Position;
+            }
+
         }
 
         protected virtual void Hit(IGameObject gameObject)
         {
             World.Remove(this);
+        }
+
+        protected void StickToObject(PhysicsObject physicsObject)
+        {
+            Stick = physicsObject;
+            CollisionRules.AddRule(Entity, Stick.Entity, CollisionRule.NoBroadPhase);
+        }
+
+        protected void Unstick()
+        {
+            if (Stick != null)
+            {
+                CollisionRules.RemoveRule(Entity, Stick.Entity);
+                Stick = null;
+            }
         }
 
     }
