@@ -87,5 +87,13 @@ namespace finalProject
                 mIncapacitated = true;
             }
         }
+
+        public override void RemovePart(Part part)
+        {
+            base.RemovePart(part);
+
+            Move(Vector2.Zero);
+            mIncapacitated = true;
+        }
     }
 }

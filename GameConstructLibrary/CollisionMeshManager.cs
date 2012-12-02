@@ -46,7 +46,20 @@ namespace GameConstructLibrary
 
             Vector3[] staticTriangleVertices;
             int[] staticTriangleIndices;
+            Vector3 scale = new Vector3();
+            Vector3 translate = new Vector3();
+            Quaternion rotate = new Quaternion();
+            input.Root.Transform.Decompose(out scale, out rotate, out translate);
             TriangleMesh.GetVerticesAndIndicesFromModel(input, out staticTriangleVertices, out staticTriangleIndices);
+
+            Matrix inverseRotation = Matrix.Invert(Matrix.CreateFromQuaternion(rotate));
+
+            for (int i = 0; i < staticTriangleVertices.Length; i++)
+            {
+                staticTriangleVertices[i] -= translate;
+                Vector3.Transform(staticTriangleVertices[i], inverseRotation);
+                staticTriangleVertices[i] /= scale;
+            }
 
             if (mUniqueMeshLibrary.ContainsKey(meshName))
             {

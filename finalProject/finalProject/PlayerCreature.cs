@@ -81,9 +81,9 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, 1.8f, 1.2f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f), new PlayerController(viewPort), 10)
+            : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
         {
-            Scale = new Vector3(0.004f);
+            Scale = new Vector3(0.0028f);
 
             Intimidation = DefaultIntimidation;
             Sneak = DefaultSneak;
@@ -102,15 +102,26 @@ namespace finalProject
 
             base.Damage(damage);
 
-            while (damage - DamageThreshold > 0)
+            if (damage - DamageThreshold > 0)
             {
-                if (mPartAttachments.Count() == 0)
+                List<PartAttachment> validParts = new List<PartAttachment>(mPartAttachments.Count());
+                foreach (PartAttachment pa in mPartAttachments)
                 {
-                    // die!
-                    return;
+                    if (pa != null)
+                    {
+                        validParts.Add(pa);
+                    }
                 }
 
-                mPartAttachments.Remove(mPartAttachments[Rand.rand.Next(mPartAttachments.Count())]);
+                if (validParts.Count() == 0)
+                {
+                    // die!
+                    System.Console.WriteLine("killed, " + damage);
+                    return;
+                }
+                System.Console.WriteLine("damaged, " + damage);
+
+                RemovePart(validParts[Rand.rand.Next(validParts.Count())].Part);
             }
         }
         
@@ -119,12 +130,13 @@ namespace finalProject
         /// </summary>
         public void FindAndAddPart(int slot)
         {
-            foreach (Creature creature in mSensor.CollidingCreatures)
+            foreach (Creature creature in Sensor.CollidingCreatures)
             {
-                if (/*creature.Incapacitated && */creature.PartAttachments.Count > 0)
+                PartAttachment pa = creature.PartAttachments[0];
+                if (pa != null && creature.PartAttachments.Count > 0)
                 {
-                    creature.RemovePart(creature.PartAttachments[0].Part);
-                    AddPart(creature.PartAttachments[0].Part, slot);
+                    creature.RemovePart(pa.Part);
+                    AddPart(pa.Part, slot);
                     return;
                 }
             }

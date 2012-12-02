@@ -88,7 +88,10 @@ namespace finalProject.Parts
             set
             {
                 base.Creature = value;
-                mCreatureSpeed = value.CharacterController.HorizontalMotionConstraint.Speed;
+                if (value != null)
+                {
+                    mCreatureSpeed = value.CharacterController.HorizontalMotionConstraint.Speed;
+                }
             }
         }
     }

@@ -5,145 +5,289 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GameConstructLibrary;
 
-enum DurdleState
-{
-    Idol,
-    Move,
-    Wait
-}
-
 namespace finalProject
 {
+    /// <summary>
+    /// Enum used with StateTimer to control durdling.
+    /// </summary>
+    enum DurdleState
+    {
+        Idol,
+        Move,
+        Wait
+    }
+
+    /// <summary>
+    /// Controller used to make AIs for creatures.
+    /// </summary>
     public class AIController : Controller
     {
-        KeyInputAction mGo;
-        bool active = false;
+        #region Fields
 
-        private const int MaxDurdleMoveTime = 4;
-        private const int MaxDurdleWaitTime = 4;
-        private const float MaxDurdleSpeed = 1.0f;
+        protected const int MaxDurdleMoveTime = 4;
+        protected const int MaxDurdleWaitTime = 4;
 
-        private Creature mTargetCreature;
-        private Vector3 mTargetPosition;
-        private bool mFollowPosition;
-        private float mInversion;
+        protected Creature mTargetCreature;
+        protected Vector3 mTargetPosition;
+        protected bool mFollowPosition;
+        protected bool mFlee;
 
         private StateTimer<DurdleState> mDurdleTimer;
+
+        #endregion
+
+        #region Public Methods
 
         public AIController()
         {
             mDurdleTimer = new StateTimer<DurdleState>(DurdleState.Idol);
-            Stop();
-            mGo = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.RightShift);
+            ResetAIState();
         }
 
         /// <summary>
-        /// Tells the creature to durdle around.
+        /// Decides which of the states the controller is in and calls the appropriate update function.
         /// </summary>
-        public virtual void Durdle()
+        /// <param name="time">The game time.</param>
+        /// <param name="collidingCreatures">The creatures this creature knows about from its radial sensor.</param>
+        public override void Update(GameTime time, List<Creature> collidingCreatures)
+        {
+            if (mCreature.Incapacitated)
+            {
+                return;
+            }
+
+            mDurdleTimer.Update(time);
+            if (mTargetCreature != null)
+            {
+                if (mFlee)
+                {
+                    FleeUpdate(time);
+                }
+                else
+                {
+                    FollowCreatureUpdate(time);
+                }
+            }
+            else if (mFollowPosition)
+            {
+                FollowPositionUpdate(time);
+            }
+            else if (mDurdleTimer.NewState() == DurdleState.Move)
+            {
+                DurdleMoveUpdate(time);
+            }
+            else if (mDurdleTimer.NewState() == DurdleState.Wait)
+            {
+                DurdleWaitUpdate(time);
+            }
+        }
+
+        #endregion
+
+        #region Protected Methods
+
+        /// <summary>
+        /// Orders the creature to durdle around.
+        /// </summary>
+        protected virtual void DurdleOrder()
         {
             if (mDurdleTimer.State == DurdleState.Idol)
             {
-                Stop();
+                ResetAIState();
                 mDurdleTimer.Loop();
                 mDurdleTimer.Next();
             }
         }
 
-        public override void Update(GameTime time, List<Creature> collidingCreatures)
+        /// <summary>
+        /// Orders the creature to go to the position.
+        /// </summary>
+        /// <param name="position">The position to go to.</param>
+        protected virtual void FollowOrder(Vector3 position)
         {
-
-            if (mGo.Active)
-            {
-                active = true;
-            }
-
-            //if (!active)
-            //{
-            //    return;
-            //}
-
-            mDurdleTimer.Update(time);
-            if (mTargetCreature != null)
-            {
-                MoveTo(mTargetCreature.Position, mInversion);
-                Vector3 direction = mTargetCreature.Position - mCreature.Position;
-                if (mInversion < 0.0f)
-                {
-                    direction = -direction;
-                }
-                mCreature.UsePart(0, direction);
-            }
-            else if (mFollowPosition)
-            {
-                MoveTo(mTargetPosition, mInversion);
-                mCreature.UsePart(0, mTargetPosition - mCreature.Position);
-            }
-            else if (mDurdleTimer.NewState() == DurdleState.Move)
-            {
-                // TODO: For some reason this seems to go into one quadrant.
-                mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleMoveTime));
-
-                Vector3 newDirection = new Vector3(Rand.NextFloat(2.0f) - 1.0f, 0.0f, Rand.NextFloat(2.0f) - 1.0f);
-                MoveCreature(newDirection, Rand.NextFloat(MaxDurdleSpeed));
-
-                mDurdleTimer.ResetNewState();
-            }
-            else if (mDurdleTimer.NewState() == DurdleState.Wait)
-            {
-                mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleWaitTime));
-                mDurdleTimer.ResetNewState();
-                mCreature.Move(new Vector2(0.0f));
-            }
+            ResetAIState();
+            mFollowPosition = true;
+            mTargetPosition = position;
+            MoveTo(position);
         }
 
-        private void MoveTo(Vector3 position, float inversion)
+        /// <summary>
+        /// Orders the creature to follow the specified creature.
+        /// </summary>
+        /// <param name="creature">The creature to follow.</param>
+        protected virtual void FollowOrder(Creature creature)
         {
-            Vector3 direction = position - mCreature.Position;
-            MoveCreature(direction, inversion);
+            ResetAIState();
+            mTargetCreature = creature;
+            mFlee = false;
+            MoveTo(mTargetCreature.Position);
         }
 
-        private void MoveCreature(Vector3 direction, float inversion)
+        /// <summary>
+        /// Orders the creature to flee from the specified creature.
+        /// </summary>
+        /// <param name="creature">The creature from which to flee.</param>
+        protected virtual void FleeOrder(Creature creature)
         {
-            Vector2 dir = new Vector2(direction.X, direction.Z) * inversion;
-            dir.Normalize();
-            mCreature.Move(dir);
+            ResetAIState();
+            mTargetCreature = creature;
+            mFlee = true;
+            MoveFrom(mTargetCreature.Position);
         }
 
-        public virtual void Stop()
+        /// <summary>
+        /// Orders the creature to stop acting.
+        /// </summary>
+        protected virtual void StopOrder()
+        {
+            ResetAIState();
+            ResetPart();
+            StopMoving();
+        }
+
+        /// <summary>
+        /// Resets the state of the AI.
+        /// </summary>
+        protected virtual void ResetAIState()
         {
             mDurdleTimer.State = DurdleState.Idol;
             mDurdleTimer.ResetNewState();
-            if (mCreature != null)
-            {
-                mCreature.Move(Vector2.Zero);
-            }
             mTargetCreature = null;
             mFollowPosition = false;
         }
 
-        public virtual void Follow(Vector3 position)
+        /// <summary>
+        /// Called in update when the durdle move state begins.
+        /// </summary>
+        /// <param name="time">The game time.</param>
+        protected virtual void DurdleMoveUpdate(GameTime time)
         {
-            Stop();
-            mFollowPosition = true;
-            mTargetPosition = position;
-            MoveTo(position, 1.0f);
+            mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleMoveTime));
+
+            Vector3 newDirection = new Vector3(Rand.NextFloat(2.0f) - 1.0f, 0.0f, Rand.NextFloat(2.0f) - 1.0f);
+            MoveCreature(newDirection);
+
+            mDurdleTimer.ResetNewState();
         }
 
-        public virtual void Follow(Creature creature)
+        /// <summary>
+        /// Called in update when the durdle wait state begins.
+        /// </summary>
+        /// <param name="time">The game time.</param>
+        protected virtual void DurdleWaitUpdate(GameTime time)
         {
-            Stop();
-            mTargetCreature = creature;
-            mInversion = 1.0f;
-            MoveTo(mTargetCreature.Position, mInversion);
+            mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleWaitTime));
+            mDurdleTimer.ResetNewState();
+            StopMoving();
         }
 
-        public virtual void Run(Creature creature)
+        /// <summary>
+        /// Called in update during the follow position state.
+        /// </summary>
+        /// <param name="time">The game time.</param>
+        protected virtual void FollowPositionUpdate(GameTime time)
         {
-            Stop();
-            mTargetCreature = creature;
-            mInversion = -1.0f;
-            MoveTo(mTargetCreature.Position, mInversion);
+            FollowUpdate(time, mTargetPosition);
         }
+
+        /// <summary>
+        /// Called in update during the follow creature state.
+        /// </summary>
+        /// <param name="time">The game time.</param>
+        protected virtual void FollowCreatureUpdate(GameTime time)
+        {
+            FollowUpdate(time, mTargetCreature.Position);
+        }
+
+        /// <summary>
+        /// Called in update by FollowCreatureUpdate and FollowPositionUpdate.
+        /// </summary>
+        /// <param name="time">The game time.</param>
+        /// <param name="position">The position to follow.</param>
+        protected virtual void FollowUpdate(GameTime time, Vector3 position)
+        {
+            Vector3 direction = position - mCreature.Position;
+            MoveCreature(direction);
+            UsePartUpdate(direction, time);
+        }
+
+        /// <summary>
+        /// Called in update during the flee state.
+        /// </summary>
+        /// <param name="time"></param>
+        protected virtual void FleeUpdate(GameTime time)
+        {
+            Vector3 direction = mCreature.Position - mTargetCreature.Position;
+            MoveCreature(direction);
+            UsePartUpdate(direction, time);
+        }
+
+        /// <summary>
+        /// Called when the AI wants to use the creature's part.
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="time"></param>
+        protected virtual void UsePartUpdate(Vector3 direction, GameTime time)
+        {
+            ChoosePart().Use(direction);
+        }
+
+        /// <summary>
+        /// Resets the creature's part. Called in StopOrder.
+        /// </summary>
+        protected virtual void ResetPart()
+        {
+            ChoosePart().Reset();
+        }
+
+        /// <summary>
+        /// Chooses a part from the creature to use.
+        /// </summary>
+        /// <returns>The part to use.</returns>
+        protected virtual Part ChoosePart()
+        {
+            return mCreature.PartAttachments[0].Part;
+        }
+
+        /// <summary>
+        /// Moves in the direction of the specified position.
+        /// </summary>
+        /// <param name="position">The position towards which to move.</param>
+        protected virtual void MoveTo(Vector3 position)
+        {
+            Vector3 direction = position - mCreature.Position;
+            MoveCreature(direction);
+        }
+
+        /// <summary>
+        /// Moves away from the specified position.
+        /// </summary>
+        /// <param name="position">The position from which to move away.</param>
+        protected virtual void MoveFrom(Vector3 position)
+        {
+            Vector3 direction = mCreature.Position - position;
+            MoveCreature(direction);
+        }
+
+        /// <summary>
+        /// Moves the creature in the specified direction.
+        /// </summary>
+        /// <param name="direction">The direction in which to move.</param>
+        protected virtual void MoveCreature(Vector3 direction)
+        {
+            Vector2 dir = new Vector2(direction.X, direction.Z);
+            dir.Normalize();
+            mCreature.Move(dir);
+        }
+
+        /// <summary>
+        /// Makes the creature stop moving.
+        /// </summary>
+        protected virtual void StopMoving()
+        {
+            mCreature.Move(Vector2.Zero);
+        }
+
+        #endregion
     }
 }

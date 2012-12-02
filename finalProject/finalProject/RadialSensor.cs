@@ -17,6 +17,8 @@ namespace finalProject
     /// </summary>
     public class RadialSensor : Sensor
     {
+        private double mVisionAngle;
+
         protected List<Creature> mCollidingCreatures;
         public List<Creature>  CollidingCreatures
         {
@@ -32,10 +34,19 @@ namespace finalProject
         /// <param name="radius">
         /// The radius of the RadialSensor's sphere.
         /// </param>
-        public RadialSensor(float radius)
+        public RadialSensor(float radius, float visionAngle)
             : base(new Sphere(new Vector3(0), radius))
         {
             mCollidingCreatures = new List<Creature>();
+            mVisionAngle = Math.Cos(MathHelper.ToRadians(visionAngle) / 2.0f);
+        }
+
+        public bool CanSee(Creature creature)
+        {
+            Vector3 curNormal = Vector3.Normalize(Vector3.Subtract(creature.Position, Position));
+            Vector3 normalFacing = Vector3.Normalize(Forward);
+
+            return Vector3.Dot(curNormal, normalFacing) > mVisionAngle;
         }
 
         /// <summary>
@@ -48,15 +59,14 @@ namespace finalProject
         {
             mCollidingCreatures.Clear();
 
-            foreach (IGameObject i in CollidingObjects)
+            foreach (IGameObject gameObject in CollidingObjects)
             {
-                if (i as Creature != null)
+                Creature creature = gameObject as Creature;
+                if (creature != null && CanSee(creature))
                 {
-                    mCollidingCreatures.Add(i as Creature);
-                    //System.Console.WriteLine(i);
+                    mCollidingCreatures.Add(creature);
                 }
             }
-            //System.Console.WriteLine("done");
 
             mCollidingCreatures.Sort(new ClosestPhysicsObject(Position));
         }

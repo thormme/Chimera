@@ -22,14 +22,14 @@ namespace finalProject.Parts
                 2.0,
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new InanimateModel("rhino_head_walk"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.HeadCenterCap,
                             Creature.PartBone.HeadLeftCap,
                             Creature.PartBone.HeadRightCap
                         },
-                        new Vector3(),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
+                        new Vector3(50.0f, 50.0f, 0.0f),
+                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, -MathHelper.PiOver4, 0),
                         new Vector3(1.0f, 1.0f, 1.0f)
                     )
                 }
@@ -38,7 +38,7 @@ namespace finalProject.Parts
             //(mRenderable as AnimateModel).PlayAnimation("Take 001");
         }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime time)
+        public override void Update(GameTime time)
         {
             //(mRenderable as AnimateModel).Update(time);
 
@@ -60,7 +60,7 @@ namespace finalProject.Parts
             base.Update(time);
         }
 
-        protected override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
+        protected override void UseCooldown(Vector3 direction)
         {
             Vector3 impulse = Creature.Forward * 300f;
             Creature.Entity.ApplyLinearImpulse(ref impulse);
