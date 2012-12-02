@@ -20,8 +20,6 @@ namespace finalProject.Projectiles
 
         Vector3 mDestination;
         DistanceLimit mRopeLimit;
-        PhysicsObject mFakeAnchor;
-        PhysicsObject mAnchorObject;
         bool mReachedDestination;
 
         public FrogTongue(Actor owner, Vector3 direction, Vector3 position)
@@ -34,6 +32,7 @@ namespace finalProject.Projectiles
             new Vector3(0.5f)
             )
         {
+            CheckHits = false;
             mDestination = position;
             Entity.IsAffectedByGravity = false;
             mReachedDestination = false;
@@ -43,23 +42,15 @@ namespace finalProject.Projectiles
         {
             base.Update(time);
 
-            if (mRopeLimit == null && (mDestination - Position).Length() <= 2.0f)
-            {
-                mFakeAnchor = new PhysicsObject(null, new Sphere(mDestination, 1.0f));
-                mOwner.World.Add(mFakeAnchor);
-                CreateRope(mFakeAnchor);
-            }
-            
             if (mRopeLimit != null) // You have a connection
             {
-                Ray ray = new Ray(mOwner.Entity.Position, mAnchorObject.Entity.Position - mOwner.Entity.Position);
+                Ray ray = new Ray(mOwner.Entity.Position, Entity.Position - mOwner.Entity.Position);
                 List<RayCastResult> results = new List<RayCastResult>();
-                mOwner.World.Space.RayCast(ray, (mAnchorObject.Entity.Position - mOwner.Entity.Position).Length(), results);
+                mOwner.World.Space.RayCast(ray, (Entity.Position - mOwner.Entity.Position).Length(), results);
                 foreach (RayCastResult result in results)
                 {
-                    if (result.HitObject as Collidable == mAnchorObject.Entity.CollisionInformation)
+                    if (result.HitObject as Collidable == Entity.CollisionInformation)
                     {
-                        Console.WriteLine((result.HitData.Location - mOwner.Entity.Position).Length());
                         if ((result.HitData.Location - mOwner.Entity.Position).Length() <= 5.0f)
                         {
                             mReachedDestination = true;
@@ -77,6 +68,16 @@ namespace finalProject.Projectiles
         {
             base.InitialCollisionDetected(sender, other, collisionPair);
             // If hit physics object link projectile to it then grapple to projectile, otherwise set projectile to kinematic and grapple to projectile
+            if (other.Tag is IEntityOwner)
+            {
+                IEntityOwner entityOwner = other as IEntityOwner;
+                StickToEntity(entityOwner.Entity);
+            }
+            else
+            {
+                
+            }
+            CreateRope();
         }
 
         private void ReleaseTongue()
@@ -92,31 +93,24 @@ namespace finalProject.Projectiles
                 //Unstick();
             }
 
-            if (mFakeAnchor != null)
-            {
-                Console.WriteLine("removing fake anchor");
-                mOwner.World.Remove(mFakeAnchor);
-                mFakeAnchor = null;
-            }
-
         }
 
         
         protected override void Hit(IGameObject gameObject)
         {
+            /*
             PhysicsObject anchor = (gameObject as PhysicsObject);
             if (anchor != null)
             {
                 CreateRope(anchor);
             }
+             */
         }
 
-        private void CreateRope(PhysicsObject anchor)
+        private void CreateRope()
         {
-            mAnchorObject = anchor;
-            CheckHits = false;
-            //StickToObject(mAnchorObject);
-            mRopeLimit = new DistanceLimit(mOwner.Entity, mAnchorObject.Entity, mOwner.Entity.Position, mAnchorObject.Entity.Position, 0.0f, (mAnchorObject.Entity.Position - mOwner.Entity.Position).Length());
+            Entity.BecomeKinematic();
+            mRopeLimit = new DistanceLimit(mOwner.Entity, Entity, mOwner.Entity.Position, Entity.Position, 0.0f, (Entity.Position - mOwner.Entity.Position).Length());
             mRopeLimit.Bounciness = 0.8f;
             mOwner.World.Space.Add(mRopeLimit);
         }
