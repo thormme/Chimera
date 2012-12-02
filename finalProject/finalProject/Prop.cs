@@ -45,7 +45,7 @@ namespace finalProject
         /// <param name="orientation">The orientation.</param>
         /// <param name="scale">The amount to scale by.</param>
         /// <param name="extraParameters">Extra parameters.</param>
-        public Prop(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, object[] extraParameters)
+        public Prop(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, string[] extraParameters)
             : this(modelName, translation, orientation, scale)
         {
         }

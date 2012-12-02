@@ -76,17 +76,39 @@ namespace finalProject
             set;
         }
 
+        /// <summary>
+        /// The position that the player will respawn when killed.
+        /// </summary>
+        public Vector3 SpawnOrigin;
+
         #endregion
 
         #region Public Methods
 
-        public PlayerCreature(Viewport viewPort, Vector3 position)
+        public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
             : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
         {
             Scale = new Vector3(0.0028f);
+            Forward = facingDirection;
 
             Intimidation = DefaultIntimidation;
             Sneak = DefaultSneak;
+
+            SpawnOrigin = position;
+        }
+
+        /// <summary>
+        /// Constructor for use by the World level loading.
+        /// </summary>
+        /// <param name="modelName">Name of the model.</param>
+        /// <param name="translation">The position.</param>
+        /// <param name="orientation">The orientation.</param>
+        /// <param name="scale">The amount to scale by.</param>
+        /// <param name="extraParameters">Extra parameters.</param>
+        public PlayerCreature(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, string[] extraParameters)
+            : this(Game1.Graphics.GraphicsDevice.Viewport, translation, Matrix.CreateFromQuaternion(orientation).Forward)
+        {
+            Game1.Camera = Camera;
         }
 
         /// <summary>
@@ -116,7 +138,7 @@ namespace finalProject
                 if (validParts.Count() == 0)
                 {
                     // die!
-                    System.Console.WriteLine("killed, " + damage);
+                    Position = SpawnOrigin;
                     return;
                 }
                 System.Console.WriteLine("damaged, " + damage);
