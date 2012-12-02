@@ -8,14 +8,18 @@ using BEPUphysics.Entities;
 using Microsoft.Xna.Framework;
 using BEPUphysics.Collidables;
 using BEPUphysics.NarrowPhaseSystems.Pairs;
+using BEPUphysics.BroadPhaseSystems;
+using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.Entities.Prefabs;
 
 namespace finalProject
 {
-    public class Checkpoint : Prop, IActor
+    public class Checkpoint : PhysicsObject
     {
         public Checkpoint(Vector3 position, Quaternion orientation, Vector3 scale)
-            : base("box", position, orientation, scale)
+            : base(new InanimateModel("box"), new Cylinder(position, 1f, scale.Length()))
         {
+            Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
         }
 
         /// <summary>
@@ -31,18 +35,12 @@ namespace finalProject
         {
         }
 
-        public void Update(GameTime time)
+        public void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
         {
-            foreach (CollidablePairHandler pair in StaticCollidable.Pairs)
+            if (other.Tag is CharacterSynchronizer)
             {
-                if (pair.BroadPhaseOverlap.EntryA.Tag is PlayerCreature)
-                {
-                    (pair.BroadPhaseOverlap.EntryA.Tag as PlayerCreature).SpawnOrigin = Position;
-                }
-                if (pair.BroadPhaseOverlap.EntryB.Tag is PlayerCreature)
-                {
-                    (pair.BroadPhaseOverlap.EntryB.Tag as PlayerCreature).SpawnOrigin = Position;
-                }
+                CharacterSynchronizer synchronizer = (other.Tag as CharacterSynchronizer);
+                (synchronizer.body.Tag as PlayerCreature).SpawnOrigin = Position;
             }
         }
     }
