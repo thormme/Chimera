@@ -102,7 +102,7 @@ namespace finalProject
         /// Called when the creature is damaged.
         /// </summary>
         /// <param name="damage">The amount of damage dealt.</param>
-        public virtual void Damage(int damage) { }
+        public virtual void Damage(int damage, Creature source) { }
 
         /// <summary>
         /// Called by creature every frame. Used for passive effects.

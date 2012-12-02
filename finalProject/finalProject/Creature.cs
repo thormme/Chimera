@@ -14,6 +14,7 @@ using BEPUphysics.Collidables;
 using BEPUphysics.Entities.Prefabs;
 using System;
 using System.IO;
+using BEPUphysics.CollisionRuleManagement;
 
 #endregion
 
@@ -77,7 +78,7 @@ namespace finalProject
         public RadialSensor Sensor
         {
             get;
-            set;
+            protected set;
         }
 
         public override Vector3 Forward
@@ -313,6 +314,7 @@ namespace finalProject
             : base(renderable, new Cylinder(position, height, radius, mass))
         {
             Sensor = radialSensor;
+            CollisionRules.AddRule(Entity, Sensor.Entity, CollisionRule.NoBroadPhase);
             Forward = new Vector3(0.0f, 0.0f, 1.0f);
             mPartAttachments = new List<PartAttachment>(numParts);
             for (int i = 0; i < numParts; ++i)
@@ -444,6 +446,11 @@ namespace finalProject
             part.Creature = this;
         }
 
+        public float CollideDistance(Creature creature)
+        {
+            return (Position - creature.Position).Length() - creature.CharacterController.BodyRadius - CharacterController.BodyRadius;
+        }
+
         /// <summary>
         /// Remove attached part from the creature.
         /// </summary>
@@ -536,7 +543,7 @@ namespace finalProject
         /// Damages the creature.
         /// </summary>
         /// <param name="damage">The amount of damage dealt.</param>
-        public virtual void Damage(int damage)
+        public virtual void Damage(int damage, Creature source)
         {
             if (damage > 0 && !Invulnerable)
             {
@@ -544,10 +551,10 @@ namespace finalProject
                 {
                     if (partAttachment != null)
                     {
-                        partAttachment.Part.Damage(damage);
+                        partAttachment.Part.Damage(damage, source);
                     }
                 }
-                Controller.Damage(damage);
+                Controller.Damage(damage, source);
                 Invulnerable = true;
                 mInvulnerableTimer = InvulnerableLength;
             }
@@ -575,10 +582,10 @@ namespace finalProject
 
             float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             List<Creature> sensedCreatures = Sensor.CollidingCreatures;
-            if (sensedCreatures.Contains(this))
-            {
-                sensedCreatures.Remove(this);
-            }
+            //if (sensedCreatures.Contains(this))
+            //{
+            //    sensedCreatures.Remove(this);
+            //}
 
             Sensor.Update(gameTime);
             Controller.Update(gameTime, sensedCreatures);

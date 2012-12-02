@@ -7,10 +7,10 @@ using GraphicsLibrary;
 
 namespace finalProject.Parts
 {
-    class FrilledLizardHead : MeteredPart
+    public class FrilledLizardHead : MeteredPart
     {
-        private const int IntimidationIncrease = 5;
-        private bool mActive = false;
+        public const int IntimidationIncrease = 5;
+        public bool Active = false;
 
         public FrilledLizardHead()
             : base(
@@ -34,19 +34,19 @@ namespace finalProject.Parts
 
         protected override void UseMeter(Vector3 direction)
         {
-            if (!mActive)
+            if (!Active)
             {
-                mActive = true;
+                Active = true;
                 Creature.Intimidation += IntimidationIncrease;
             }
         }
 
         protected override void FinishUseMeter()
         {
-            if (mActive)
+            if (Active)
             {
                 Creature.Intimidation -= IntimidationIncrease;
-                mActive = false;
+                Active = false;
             }
         }
     }

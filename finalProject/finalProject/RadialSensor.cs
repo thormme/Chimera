@@ -28,6 +28,14 @@ namespace finalProject
             }
         }
 
+        public virtual float Radius
+        {
+            get
+            {
+                return (Entity as Sphere).Radius;
+            }
+        }
+
         /// <summary>
         /// Constructs the RadialSensor as a sphere.
         /// </summary>
@@ -62,7 +70,7 @@ namespace finalProject
             foreach (IGameObject gameObject in CollidingObjects)
             {
                 Creature creature = gameObject as Creature;
-                if (creature != null && CanSee(creature))
+                if (creature != null && CanSee(creature) && !creature.Position.Equals(Position))
                 {
                     mCollidingCreatures.Add(creature);
                 }
