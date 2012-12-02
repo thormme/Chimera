@@ -132,10 +132,11 @@ namespace finalProject
         {
             foreach (Creature creature in Sensor.CollidingCreatures)
             {
-                if (/*creature.Incapacitated && */creature.PartAttachments.Count > 0 && creature != this)
+                PartAttachment pa = creature.PartAttachments[0];
+                if (pa != null && creature.PartAttachments.Count > 0)
                 {
-                    AddPart(creature.PartAttachments[0].Part, slot);
-                    creature.RemovePart(creature.PartAttachments[0].Part);
+                    creature.RemovePart(pa.Part);
+                    AddPart(pa.Part, slot);
                     return;
                 }
             }
