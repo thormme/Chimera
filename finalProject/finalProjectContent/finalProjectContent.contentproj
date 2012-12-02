@@ -164,23 +164,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\kangaroo\kangaroo.FBX">
-      <Name>kangaroo</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_leftLeg.FBX">
-      <Name>kangaroo_leftLeg</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_rightLeg.FBX">
-      <Name>kangaroo_rightLeg</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="models\dude\dude_walk.fbx">
       <Name>dude_walk</Name>
       <Importer>FbxImporter</Importer>
@@ -309,6 +292,97 @@
       <Name>rhino_walk</Name>
       <Importer>FbxImporter</Importer>
       <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\kangaroo\kangaroo_leftLeg_stand.FBX">
+      <Name>kangaroo_leftLeg_stand</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_leftLeg_walk.FBX">
+      <Name>kangaroo_leftLeg_walk</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_rightLeg_stand.FBX">
+      <Name>kangaroo_rightLeg_stand</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_rightLeg_walk.FBX">
+      <Name>kangaroo_rightLeg_walk</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_stand.FBX">
+      <Name>kangaroo_stand</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_walk.FBX">
+      <Name>kangaroo_walk</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\kangaroo\kangaroo_charge.FBX">
+      <Name>kangaroo_charge</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_jump.FBX">
+      <Name>kangaroo_jump</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_leftLeg_charge.FBX">
+      <Name>kangaroo_leftLeg_charge</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_leftLeg_jump.FBX">
+      <Name>kangaroo_leftLeg_jump</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_leftLeg_pound.FBX">
+      <Name>kangaroo_leftLeg_pound</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_pound.FBX">
+      <Name>kangaroo_pound</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_rightLeg_charge.FBX">
+      <Name>kangaroo_rightLeg_charge</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_rightLeg_jump.FBX">
+      <Name>kangaroo_rightLeg_jump</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_rightLeg_pound.FBX">
+      <Name>kangaroo_rightLeg_pound</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\rhino\rhino_charge.FBX">
+      <Name>rhino_charge</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\rhino\rhino_head_charge.FBX">
+      <Name>rhino_head_charge</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

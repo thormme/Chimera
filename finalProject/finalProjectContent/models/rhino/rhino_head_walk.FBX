@@ -11,10 +11,10 @@ FBXHeaderExtension:  {
 		Year: 2012
 		Month: 12
 		Day: 1
-		Hour: 2
-		Minute: 48
-		Second: 13
-		Millisecond: 550
+		Hour: 6
+		Minute: 34
+		Second: 51
+		Millisecond: 222
 	}
 	Creator: "FBX SDK/FBX Plugins version 2013.1"
 	SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
@@ -36,13 +36,13 @@ FBXHeaderExtension:  {
 			P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "Original|ApplicationName", "KString", "", "", "3ds Max"
 			P: "Original|ApplicationVersion", "KString", "", "", "2013"
-			P: "Original|DateTime_GMT", "DateTime", "", "", "01/12/2012 07:48:13.549"
+			P: "Original|DateTime_GMT", "DateTime", "", "", "01/12/2012 11:34:51.221"
 			P: "Original|FileName", "KString", "", "", "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\rhino\rhino_head_walk.FBX"
 			P: "LastSaved", "Compound", "", ""
 			P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "LastSaved|ApplicationName", "KString", "", "", "3ds Max"
 			P: "LastSaved|ApplicationVersion", "KString", "", "", "2013"
-			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "01/12/2012 07:48:13.549"
+			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "01/12/2012 11:34:51.221"
 		}
 	}
 }
@@ -60,7 +60,7 @@ GlobalSettings:  {
 		P: "UnitScaleFactor", "double", "Number", "",100
 		P: "OriginalUnitScaleFactor", "double", "Number", "",2.54
 		P: "AmbientColor", "ColorRGB", "Color", "",0,0,0
-		P: "DefaultCamera", "KString", "", "", "Producer Perspective"
+		P: "DefaultCamera", "KString", "", "", "Producer Right"
 		P: "TimeMode", "enum", "", "",6
 		P: "TimeSpanStart", "KTime", "Time", "",0
 		P: "TimeSpanStop", "KTime", "Time", "",61581544000
@@ -73,7 +73,7 @@ GlobalSettings:  {
 
 Documents:  {
 	Count: 1
-	Document: 1910508704, "", "Scene" {
+	Document: 1910550432, "", "Scene" {
 		Properties70:  {
 			P: "SourceObject", "object", "", ""
 			P: "ActiveAnimStackName", "KString", "", "", ""
@@ -312,7 +312,7 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-	Geometry: 1067335040, "Geometry::", "Mesh" {
+	Geometry: 1067332160, "Geometry::", "Mesh" {
 		Properties70:  {
 			P: "Color", "ColorRGB", "Color", "",0.341176470588235,0.882352941176471,0.776470588235294
 		}
@@ -1298,19 +1298,19 @@ Objects:  {
 			}
 		}
 	}
-	NodeAttribute: 1084832752, "NodeAttribute::", "LimbNode" {
+	NodeAttribute: 1606447264, "NodeAttribute::", "LimbNode" {
 		Properties70:  {
 			P: "Size", "double", "Number", "",315.330982208252
 		}
 		TypeFlags: "Skeleton"
 	}
-	NodeAttribute: 1084827712, "NodeAttribute::", "LimbNode" {
+	NodeAttribute: 1606453872, "NodeAttribute::", "LimbNode" {
 		Properties70:  {
 			P: "Size", "double", "Number", "",315.330982208252
 		}
 		TypeFlags: "Skeleton"
 	}
-	Model: 1599440560, "Model::Head", "Mesh" {
+	Model: 1913413936, "Model::Head", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "PreRotation", "Vector3D", "Vector", "",-90,-0,0
@@ -1318,7 +1318,7 @@ Objects:  {
 			P: "InheritType", "enum", "", "",1
 			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
 			P: "DefaultAttributeIndex", "int", "Integer", "",0
-			P: "Lcl Translation", "Lcl Translation", "", "A",-0.0366621123552322,-0.1081278840065,-0.440396471405029
+			P: "Lcl Translation", "Lcl Translation", "", "A",-0.0366621123552322,-0.1081278840065,-0.184466962242126
 			P: "Lcl Rotation", "Lcl Rotation", "", "A",0,-0,-179.999991348578
 			P: "Lcl Scaling", "Lcl Scaling", "", "A",0.0102434487581254,0.0102434487581254,0.0102434487581253
 			P: "MaxHandle", "int", "Integer", "UH",4
@@ -1326,16 +1326,16 @@ Objects:  {
 		Shading: T
 		Culling: "CullingOff"
 	}
-	Model: 1599446560, "Model::Head1", "LimbNode" {
+	Model: 1913403936, "Model::Head1", "LimbNode" {
 		Version: 232
 		Properties70:  {
-			P: "ScalingOffset", "Vector3D", "Vector", "",-6.93889390390723e-018,0,0
+			P: "ScalingOffset", "Vector3D", "Vector", "",0,6.93889390390723e-018,0
 			P: "PreRotation", "Vector3D", "Vector", "",-90,-0,0
 			P: "RotationActive", "bool", "", "",1
 			P: "InheritType", "enum", "", "",1
 			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
 			P: "DefaultAttributeIndex", "int", "Integer", "",0
-			P: "Lcl Translation", "Lcl Translation", "", "A",2.0680719160282e-009,0.00272566749155521,0.0473119589090347
+			P: "Lcl Translation", "Lcl Translation", "", "A",2.0680719160282e-009,0.00272566749155521,0.303241471099854
 			P: "Lcl Rotation", "Lcl Rotation", "", "A",90.0000025044779,-10.3463163130664,90.000009334668
 			P: "Lcl Scaling", "Lcl Scaling", "", "A",0.0253999993075023,0.0253999993075021,0.0254000000000004
 			P: "MaxHandle", "int", "Integer", "UH",220
@@ -1343,13 +1343,13 @@ Objects:  {
 		Shading: T
 		Culling: "CullingOff"
 	}
-	Model: 1599422560, "Model::HeadCap", "LimbNode" {
+	Model: 1913395936, "Model::HeadCap", "LimbNode" {
 		Version: 232
 		Properties70:  {
 			P: "InheritType", "enum", "", "",1
 			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
 			P: "DefaultAttributeIndex", "int", "Integer", "",0
-			P: "Lcl Translation", "Lcl Translation", "", "A",45.0472831726074,-6.13927841186523e-006,-2.21689333557151e-012
+			P: "Lcl Translation", "Lcl Translation", "", "A",45.0472793579102,-6.19888305664063e-006,-2.04636307898909e-012
 			P: "Lcl Rotation", "Lcl Rotation", "", "A",-5.00895602242136e-006,5.00895642953237e-006,-5.12264218284282e-006
 			P: "Lcl Scaling", "Lcl Scaling", "", "A",0.999999940395363,0.999999940395363,1.00000000000001
 			P: "MaxHandle", "int", "Integer", "UH",221
@@ -1357,24 +1357,24 @@ Objects:  {
 		Shading: T
 		Culling: "CullingOff"
 	}
-	Pose: 1450000896, "Pose::BIND_POSES", "BindPose" {
+	Pose: 1904922640, "Pose::BIND_POSES", "BindPose" {
 		Type: "BindPose"
 		Version: 100
 		NbPoseNodes: 2
 		PoseNode:  {
-			Node: 1599446560
+			Node: 1913403936
 			Matrix: *16 {
 				a: -4.07089928273763e-009,0.00456177642345428,-0.0249869998335838,0,1.85347706889161e-009,0.0249869998335838,0.00456177642345428,0,0.0254,-1.0922164236149e-009,-4.33758707742982e-009,0,-2.86874343828458e-008,0.150882820320129,-0.656292014312744,1
 			} 
 		}
 		PoseNode:  {
-			Node: 1599440560
+			Node: 1913413936
 			Matrix: *16 {
 				a: -0.0102434487581253,0,1.54671777607973e-009,0,1.54671777607973e-009,0,0.0102434487581253,0,0,0.0102434487581253,0,0,-0.0366621123552322,-0.1081278840065,-0.440396471405029,1
 			} 
 		}
 	}
-	Material: 1063373152, "Material::_null_", "" {
+	Material: 1064811744, "Material::_null_", "" {
 		Version: 102
 		ShadingModel: "phong"
 		MultiLayer: 0
@@ -1396,11 +1396,11 @@ Objects:  {
 			P: "Reflectivity", "double", "Number", "",0
 		}
 	}
-	Deformer: 1449073456, "Deformer::", "Skin" {
+	Deformer: 1050408976, "Deformer::", "Skin" {
 		Version: 101
 		Link_DeformAcuracy: 50
 	}
-	Deformer: 1603560800, "SubDeformer::", "Cluster" {
+	Deformer: 1601006352, "SubDeformer::", "Cluster" {
 		Version: 100
 		UserData: "", ""
 		Indexes: *3777 {
@@ -1427,7 +1427,7 @@ Objects:  {
 			a: -4.07089928096605e-009,0.00456177642345428,-0.0249869998335838,0,1.85347694606323e-009,0.0249869998335839,0.00456177642345399,0,0.0254,-1.09221642887331e-009,-4.33758712982455e-009,0,-2.86874343828458e-008,0.150882820320129,-0.656292014312744,1
 		} 
 	}
-	Video: 1063370352, "Video::Map #1", "Clip" {
+	Video: 1064811344, "Video::Map #1", "Clip" {
 		Type: "Clip"
 		Properties70:  {
 			P: "Path", "KString", "XRefUrl", "", "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Rhino\rhino_texture.png"
@@ -1436,7 +1436,7 @@ Objects:  {
 		Filename: "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Rhino\rhino_texture.png"
 		RelativeFilename: "..\..\workInProgress\models\Rhino\rhino_texture.png"
 	}
-	Texture: 1079864496, "Texture::Map #1", "" {
+	Texture: 1079867136, "Texture::Map #1", "" {
 		Type: "TextureVideoClip"
 		Version: 202
 		TextureName: "Texture::Map #1"
@@ -1452,13 +1452,13 @@ Objects:  {
 		Texture_Alpha_Source: "None"
 		Cropping: 0,0,0,0
 	}
-	AnimationStack: 1450006512, "AnimStack::Take 001", "" {
+	AnimationStack: 1602845920, "AnimStack::Take 001", "" {
 		Properties70:  {
 			P: "LocalStop", "KTime", "Time", "",61581544000
 			P: "ReferenceStop", "KTime", "Time", "",61581544000
 		}
 	}
-	AnimationLayer: 1064223408, "AnimLayer::BaseLayer", "" {
+	AnimationLayer: 1912328448, "AnimLayer::BaseLayer", "" {
 	}
 }
 
@@ -1468,43 +1468,43 @@ Objects:  {
 Connections:  {
 	
 	;Model::Head, Model::RootNode
-	C: "OO",1599440560,0
+	C: "OO",1913413936,0
 	
 	;Model::Head1, Model::RootNode
-	C: "OO",1599446560,0
+	C: "OO",1913403936,0
 	
 	;AnimLayer::BaseLayer, AnimStack::Take 001
-	C: "OO",1064223408,1450006512
+	C: "OO",1912328448,1602845920
 	
 	;Geometry::, Model::Head
-	C: "OO",1067335040,1599440560
+	C: "OO",1067332160,1913413936
 	
 	;Material::_null_, Model::Head
-	C: "OO",1063373152,1599440560
+	C: "OO",1064811744,1913413936
 	
 	;Model::HeadCap, Model::Head1
-	C: "OO",1599422560,1599446560
+	C: "OO",1913395936,1913403936
 	
 	;NodeAttribute::, Model::Head1
-	C: "OO",1084832752,1599446560
+	C: "OO",1606447264,1913403936
 	
 	;NodeAttribute::, Model::HeadCap
-	C: "OO",1084827712,1599422560
+	C: "OO",1606453872,1913395936
 	
 	;Deformer::, Geometry::
-	C: "OO",1449073456,1067335040
+	C: "OO",1050408976,1067332160
 	
 	;Texture::Map #1, Material::_null_
-	C: "OP",1079864496,1063373152, "DiffuseColor"
+	C: "OP",1079867136,1064811744, "DiffuseColor"
 	
 	;Video::Map #1, Texture::Map #1
-	C: "OO",1063370352,1079864496
+	C: "OO",1064811344,1079867136
 	
 	;SubDeformer::, Deformer::
-	C: "OO",1603560800,1449073456
+	C: "OO",1601006352,1050408976
 	
 	;Model::Head1, SubDeformer::
-	C: "OO",1599446560,1603560800
+	C: "OO",1913403936,1601006352
 }
 ;Takes section
 ;----------------------------------------------------

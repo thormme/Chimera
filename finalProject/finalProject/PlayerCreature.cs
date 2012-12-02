@@ -174,15 +174,39 @@ namespace finalProject
 
             if (mStance == Stance.Standing)
             {
-                model.PlayAnimation("stand");
+                model.PlayAnimation("stand", true);
+
+                foreach (PartAttachment part in mPartAttachments)
+                {
+                    if (part != null)
+                    {
+                        part.Part.TryPlayAnimation("stand", true);
+                    }
+                }
             }
             else if (mStance == Stance.Walking)
             {
-                model.PlayAnimation("walk");
+                model.PlayAnimation("walk", false);
+
+                foreach (PartAttachment part in mPartAttachments)
+                {
+                    if (part != null)
+                    {
+                        part.Part.TryPlayAnimation("walk", false);
+                    }
+                }
             }
             else if (mStance == Stance.Jumping)
             {
-                model.PlayAnimation("jump");
+                model.PlayAnimation("jump", true);
+
+                foreach (PartAttachment part in mPartAttachments)
+                {
+                    if (part != null)
+                    {
+                        part.Part.TryPlayAnimation("jump", true);
+                    }
+                }
             }
 
             model.Update(gameTime);

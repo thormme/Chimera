@@ -58,7 +58,7 @@ namespace GraphicsLibrary
             mAnimationPlayerDatabase = new Dictionary<string, GraphicsLibrary.AnimationPlayer>();
             mSkinningDataDatabase    = new Dictionary<string, GraphicsLibrary.SkinningData>();
             
-            PlayAnimation(defaultAnimation);
+            PlayAnimation(defaultAnimation, false);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace GraphicsLibrary
         /// Begins playing the animation with name animationName.
         /// </summary>
         /// <param name="animationName">Name of the current animation.</param>
-        public void PlayAnimation(string animationName)
+        public void PlayAnimation(string animationName, bool isSaturated)
         {
             string fullAnimationName = "_" + animationName;
 
@@ -107,7 +107,7 @@ namespace GraphicsLibrary
                     throw new InvalidTimeZoneException(mBakedAnimationName + " is not a valid animation for " + mModelName + "_" + mAnimationName + ".");
                 }
 
-                AnimationPlayer.StartClip(clip);
+                AnimationPlayer.StartClip(clip, isSaturated);
             }
         }
 
