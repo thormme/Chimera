@@ -39,7 +39,7 @@ namespace finalProject.Parts
             : base(
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("kangaroo_leftLeg"),
+                        new AnimateModel("kangaroo_leftLeg", "walk"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegFrontLeft3Cap, 
                             Creature.PartBone.LegRearLeft3Cap,
@@ -53,7 +53,7 @@ namespace finalProject.Parts
                         new Vector3(1.0f, 1.0f, 1.0f)
                     ),
                     new SubPart(
-                        new InanimateModel("kangaroo_rightLeg"),
+                        new AnimateModel("kangaroo_rightLeg", "walk"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegFrontRight3Cap, 
                             Creature.PartBone.LegRearRight3Cap,
@@ -77,11 +77,15 @@ namespace finalProject.Parts
             {
                 mJumpInUse = true;
                 mJumpStrengthTimer = jumpStrengthTimerStart;
+
+                PlayAnimation("charge", true);
             }
             else
             {
                 mPoundWaiting = true;
                 mPoundWaitTimer = poundWaitTime;
+
+                PlayAnimation("pound", true);
             }
         }
 
@@ -128,6 +132,11 @@ namespace finalProject.Parts
                 Creature.CharacterController.JumpSpeed /= mJumpMultiplier;
                 Creature.CharacterController.JumpForceFactor /= mJumpMultiplier;
             }
+
+            foreach (SubPart subPart in SubParts)
+            {
+                (subPart.Renderable as AnimateModel).Update(time);
+            }
         }
 
         public override void FinishUse(Vector3 direction)
@@ -147,6 +156,24 @@ namespace finalProject.Parts
 
                 Vector3 pushForward = direction * mJumpMultiplier * forwardJumpForce;
                 Creature.Entity.ApplyLinearImpulse(ref pushForward);
+                
+                PlayAnimation("jump", true);
+            }
+        }
+
+        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        {
+            if (!mJumpInUse && !mPoundInUse && Creature.CharacterController.SupportFinder.HasSupport)
+            {
+                PlayAnimation(animationName, isSaturated);
+            }
+        }
+
+        protected override void PlayAnimation(string animationName, bool isSaturated)
+        {
+            foreach (SubPart subPart in SubParts)
+            {
+                (subPart.Renderable as AnimateModel).PlayAnimation(animationName, isSaturated);
             }
         }
 

@@ -113,6 +113,26 @@ namespace finalProject
         abstract public void Update(GameTime time);
 
         /// <summary>
+        /// Trys to set the animation being played by parts.  Will fail if part state is not appropriate.
+        /// </summary>
+        /// <param name="animationName">The name of the animation to be played must be in a file named model_animation.</param>
+        /// <param name="isSaturated">Whether the animation will loop.</param>
+        public virtual void TryPlayAnimation(string animationName, bool isSaturated)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Sets the animation being played by parts.
+        /// </summary>
+        /// <param name="animationName">The name of the animation to be played must be in a file named model_animation.</param>
+        /// <param name="isSaturated">Whether the animation will loop.</param>
+        protected virtual void PlayAnimation(string animationName, bool isSaturated)
+        {
+            return;
+        }
+
+        /// <summary>
         /// Called when the part should be used. Used for active effects.
         /// If the magnitude of the direction vector is greater than the active effect's range, nothing will happen.
         /// </summary>

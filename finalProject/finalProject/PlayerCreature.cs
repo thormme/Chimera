@@ -81,9 +81,9 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position)
-            : base(position, 1.8f, 1.2f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
+            : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
         {
-            Scale = new Vector3(0.004f);
+            Scale = new Vector3(0.0028f);
 
             Intimidation = DefaultIntimidation;
             Sneak = DefaultSneak;
@@ -153,15 +153,39 @@ namespace finalProject
 
             if (mStance == Stance.Standing)
             {
-                model.PlayAnimation("stand");
+                model.PlayAnimation("stand", true);
+
+                foreach (PartAttachment part in mPartAttachments)
+                {
+                    if (part != null)
+                    {
+                        part.Part.TryPlayAnimation("stand", true);
+                    }
+                }
             }
             else if (mStance == Stance.Walking)
             {
-                model.PlayAnimation("walk");
+                model.PlayAnimation("walk", false);
+
+                foreach (PartAttachment part in mPartAttachments)
+                {
+                    if (part != null)
+                    {
+                        part.Part.TryPlayAnimation("walk", false);
+                    }
+                }
             }
             else if (mStance == Stance.Jumping)
             {
-                model.PlayAnimation("jump");
+                model.PlayAnimation("jump", true);
+
+                foreach (PartAttachment part in mPartAttachments)
+                {
+                    if (part != null)
+                    {
+                        part.Part.TryPlayAnimation("jump", true);
+                    }
+                }
             }
 
             model.Update(gameTime);
