@@ -9,6 +9,8 @@ using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.Constraints.TwoEntity.JointLimits;
 using BEPUphysics.Constraints.TwoEntity.Joints;
 using BEPUphysics.CollisionRuleManagement;
+using BEPUphysics;
+using BEPUphysics.Collidables;
 
 namespace finalProject.Projectiles
 {
@@ -17,6 +19,7 @@ namespace finalProject.Projectiles
 
         DistanceLimit mRopeLimit;
         PhysicsObject mAnchorObject;
+        bool mReachedDestination;
 
         public FrogTongue(Actor owner, Vector3 direction)
             : base(
@@ -29,6 +32,7 @@ namespace finalProject.Projectiles
             )
         {
             Entity.IsAffectedByGravity = false;
+            mReachedDestination = false;
         }
 
         public override void Update(GameTime time)
@@ -36,13 +40,24 @@ namespace finalProject.Projectiles
             base.Update(time);
             if (mRopeLimit != null) // You have a connection
             {
-                if (!mAnchorObject.CollidingObjects.Contains(mOwner.Entity.Tag))
+                Ray ray = new Ray(mOwner.Entity.Position, mAnchorObject.Entity.Position - mOwner.Entity.Position);
+                List<RayCastResult> results = new List<RayCastResult>();
+                mOwner.World.Space.RayCast(ray, (mAnchorObject.Entity.Position - mOwner.Entity.Position).Length(), results);
+                foreach (RayCastResult result in results)
                 {
-                    ReleaseTongue();
-                }
-                else
-                {
-                    mRopeLimit.MaximumLength -= 20.0f * (float)time.ElapsedGameTime.TotalSeconds;
+                    if (result.HitObject as Collidable == mAnchorObject.Entity.CollisionInformation)
+                    {
+                        Console.WriteLine((result.HitData.Location - mOwner.Entity.Position).Length());
+                        if ((result.HitData.Location - mOwner.Entity.Position).Length() <= 5.0f)
+                        {
+                            mReachedDestination = true;
+                        }
+                        else if (!mReachedDestination)
+                        {
+                            Console.WriteLine("here");
+                            mRopeLimit.MaximumLength -= 20.0f * (float)time.ElapsedGameTime.TotalSeconds;
+                        }
+                    }
                 }
             }
         }
@@ -51,14 +66,15 @@ namespace finalProject.Projectiles
         {
             if (mRopeLimit != null)
             {
-                Unstick();
+                mReachedDestination = false;
                 mOwner.World.Space.Remove(mRopeLimit);
                 mRopeLimit = null;
+                Unstick();
             }
         }
 
         protected override void Hit(IGameObject gameObject)
-        { 
+        {
             PhysicsObject anchor = (gameObject as PhysicsObject);
             if (anchor != null)
             {

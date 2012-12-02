@@ -60,6 +60,8 @@ namespace GameConstructLibrary
             if (Stick != null)
             {
                 Position = Stick.Position;
+                Entity.AngularMomentum = Vector3.Zero;
+                Entity.LinearMomentum = Vector3.Zero;
             }
 
         }

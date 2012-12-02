@@ -102,7 +102,7 @@ namespace finalProject
             player.AddPart(new KangarooLegs(), i++);
             player.AddPart(new PenguinBack(), i++);
             player.AddPart(new CheetahLegs(), i++);
-            player.AddPart(new RhinoHead(), i++);
+            player.AddPart(new FrogHead(), i++);
             player.AddPart(new RhinoHead(), i++);
             player.AddPart(new RhinoHead(), i++);
 
