@@ -153,7 +153,7 @@ namespace finalProject
                 {
                     if (entity.Tag is PlayerCreature)
                     {
-                        (entity.Tag as PlayerCreature).Damage(100);
+                        (entity.Tag as PlayerCreature).Damage(100, null);
                     }
                 }
             }
