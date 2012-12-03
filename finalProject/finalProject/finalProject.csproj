@@ -172,6 +172,7 @@
     <Compile Include="Parts\PenguinLimbs.cs" />
     <Compile Include="Parts\RhinoHead.cs" />
     <Compile Include="Parts\TurtleShell.cs" />
+    <Compile Include="PauseState.cs" />
     <Compile Include="PhysicsProp.cs" />
     <Compile Include="Projectiles\CobraVenom.cs" />
     <Compile Include="Projectiles\FrogTongue.cs" />

@@ -13,6 +13,7 @@ using finalProject.Parts;
 using finalProject.Creatures;
 using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.Entities;
+using System.Collections.Generic;
 
 namespace finalProject
 {
@@ -24,21 +25,26 @@ namespace finalProject
         public static int NumParts = 10;
 
         private InputAction forward;
-        private InputAction debug;
-        private KeyInputAction debugGraphics;
         private KeyInputAction celShading;
         private KeyInputAction mouseLock;
+        private KeyInputAction pause = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Pause);
 
-        private bool debugMode;
+        // DEBUG
+        private ModelDrawer DebugModelDrawer;
+        private KeyInputAction debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F1);
+        private KeyInputAction debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
+        bool debugMode = false;
+        // END
 
         public static GraphicsDeviceManager Graphics;
-        private ModelDrawer DebugModelDrawer;
         SpriteBatch spriteBatch;
-        private World World;
+
+        private static List<GameState> mGameStates = new List<GameState>();
+        private static List<GameState> mGameStateAddQueue = new List<GameState>();
+        private static bool mPopQueued = false;
 
         public static ICamera Camera;
         Creature creature;
-        TerrainPhysics terrain;
 
         public Game1()
         {
@@ -46,8 +52,6 @@ namespace finalProject
             Content.RootDirectory = "Content";
 
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
-            debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
-            debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F1);
             celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F2);
             mouseLock = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Tab);
 
@@ -56,8 +60,6 @@ namespace finalProject
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, Projectile.ProjectileGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, Sensor.SensorGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, TerrainPhysics.TerrainPhysicsGroup), CollisionRule.NoBroadPhase);
-
-            debugMode = false;
         }
 
         ~Game1()
@@ -90,29 +92,17 @@ namespace finalProject
             DebugModelDrawer.IsWireframe = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            World = new World(DebugModelDrawer);
+            World world = new World(DebugModelDrawer);
 
             GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
+            
+            creature = new Rhino(new Vector3(0.0f, 1.0f, -20.0f));
+            world.Add(creature);
 
-            //terrain = new TerrainPhysics("default", new Vector3(0.0f, 0.0f, 0.0f), new Quaternion(), new Vector3(2.5f));
-            //World.Add(terrain);
+            world.AddLevelFromFile("jump", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
 
-            Vector3 position = new Vector3(-100, -100, 200);
-
-            //creature = new Kangaroo(position + new Vector3(20.0f, 1.0f, -20.0f));
-            //World.Add(creature);
-
-            //creature = new Kangaroo(position + new Vector3(10.0f, 1.0f, -20.0f));
-            //World.Add(creature);
-
-            //creature = new Bear(position + new Vector3(0.0f, 1.0f, -20.0f));
-            //World.Add(creature);
-
-            //creature = new Bear(position + new Vector3(0.0f, 1.0f, -10.0f));
-            //World.Add(creature);
-
-            World.AddLevelFromFile("corner", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            mGameStates.Add(world);
         }
 
         /// <summary>
@@ -131,6 +121,7 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            // DEBUG STUFF
             if (debug.Active)
             {
                 debugMode = !debugMode;
@@ -140,6 +131,7 @@ namespace finalProject
             {
                 GraphicsManager.DebugVisualization = (GraphicsManager.DebugVisualization) ? false : true;
             }
+            // END
 
             if (celShading.Active)
             {
@@ -149,9 +141,11 @@ namespace finalProject
             if (mouseLock.Active)
             {
                 //InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
-                foreach (Entity entity in World.Space.Entities)
+                if (mGameStates[mGameStates.Count - 1] is World)
                 {
-                    PlayerCreature player = entity.Tag as PlayerCreature;
+                    foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
+                    {
+                        PlayerCreature player = entity.Tag as PlayerCreature;
                     if (player != null)
                     {
                         player.Damage(100, null);
@@ -167,7 +161,14 @@ namespace finalProject
 
                         World.Add(new Turtle(player.Position + new Vector3(0.0f, 0.0f, 20.0f)));
                     }
+
+                    }
                 }
+            }
+
+            if (pause.Active)
+            {
+                PushState(new PauseState());
             }
 
             // Allows the game to exit
@@ -175,10 +176,24 @@ namespace finalProject
                 this.Exit();
 
             InputAction.Update();
-            World.Update(gameTime);
+            if (mGameStates.Count > 0)
+            {
+                mGameStates[mGameStates.Count - 1].Update(gameTime);
+            }
 
             GraphicsManager.Update(Camera);
             DebugModelDrawer.Update();
+
+            if (mPopQueued)
+            {
+                mPopQueued = false;
+                mGameStates.RemoveAt(mGameStates.Count - 1);
+            }
+            foreach (GameState gameState in mGameStateAddQueue)
+            {
+                mGameStates.Add(gameState);
+            }
+            mGameStateAddQueue.Clear();
 
             base.Update(gameTime);
         }
@@ -189,20 +204,39 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsManager.BeginRendering();
 
-            World.Render();
-           
-            GraphicsManager.FinishRendering();
+            if (mGameStates.Count > 0)
+            {
+                mGameStates[mGameStates.Count - 1].Render();
+            }
 
+            // DEBUG
             if (debugMode)
             {
-                DebugModelDrawer.Draw(Camera.GetViewTransform(), Camera.GetProjectionTransform());
+                DebugModelDrawer.Draw(Game1.Camera.GetViewTransform(), Game1.Camera.GetProjectionTransform());
             }
+            // END
 
             base.Draw(gameTime);
         }
 
-        internal PlayerCreature player { get; set; }
+        /// <summary>
+        /// Queue the current state fro removal.
+        /// </summary>
+        /// <returns>Currently running state.</returns>
+        public static GameState PopState()
+        {
+            mPopQueued = true;
+            return mGameStates[mGameStates.Count - 1];
+        }
+
+        /// <summary>
+        /// Queue a new state for addition.
+        /// </summary>
+        /// <param name="gameState">State to be added.</param>
+        public static void PushState(GameState gameState)
+        {
+            mGameStateAddQueue.Add(gameState);
+        }
     }
 }
