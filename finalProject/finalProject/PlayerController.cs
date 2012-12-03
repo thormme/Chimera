@@ -309,7 +309,10 @@ namespace finalProject
                 (mCreature as PlayerCreature).Stance = Stance.Jumping;
             }
 
-            mCreature.Move(walkDirection);
+            if (!Immobilized)
+            {
+                mCreature.Move(walkDirection);
+            }
         }
 
         /// <summary>
@@ -317,27 +320,30 @@ namespace finalProject
         /// </summary>
         private void PerformActions()
         {
-            if (mPressJump.Active || mJumpKey.Active)
+            if (!Immobilized)
             {
-                mCreature.Jump();
-            }
-
-            for(int i = 0; i < NumParts; ++i)
-            {
-                if (mUse[i].Active)
+                if (mPressJump.Active || mJumpKey.Active)
                 {
-                    if (mStealKey.Active && mCreature is PlayerCreature)
-                    {
-                        (mCreature as PlayerCreature).FindAndAddPart(i);
-                    }
-                    else
-                    {
-                        mCreature.UsePart(i, mCamera.Forward);
-                    }
+                    mCreature.Jump();
                 }
-                else if (mFinishUse[i].Active)
+
+                for (int i = 0; i < NumParts; ++i)
                 {
-                    mCreature.FinishUsingPart(i, mCamera.Forward);
+                    if (mUse[i].Active)
+                    {
+                        if (mStealKey.Active && mCreature is PlayerCreature)
+                        {
+                            (mCreature as PlayerCreature).FindAndAddPart(i);
+                        }
+                        else
+                        {
+                            mCreature.UsePart(i, mCamera.Forward);
+                        }
+                    }
+                    else if (mFinishUse[i].Active)
+                    {
+                        mCreature.FinishUsingPart(i, mCamera.Forward);
+                    }
                 }
             }
 

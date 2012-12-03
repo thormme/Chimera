@@ -14,6 +14,7 @@ using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Collidables;
 using FinalProject;
 using System;
+using finalProject.Parts;
 
 #endregion
 
@@ -27,7 +28,7 @@ namespace finalProject
         #region Fields
 
         private const float mPlayerRadius = 1.0f;
-        private const int DefaultSneak = 11;
+        private const int DefaultSneak = 0;
         private const int DefaultIntimidation = 5;
         private const int DamageThreshold = 30;
 
@@ -76,31 +77,55 @@ namespace finalProject
             set;
         }
 
+        /// <summary>
+        /// The position that the player will respawn when killed.
+        /// </summary>
+        public Vector3 SpawnOrigin;
+
         #endregion
 
         #region Public Methods
 
-        public PlayerCreature(Viewport viewPort, Vector3 position)
+        public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
             : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
         {
             Scale = new Vector3(0.0028f);
+            Forward = facingDirection;
 
             Intimidation = DefaultIntimidation;
             Sneak = DefaultSneak;
+
+            SpawnOrigin = position;
+            
+            Entity.PositionUpdateMode = BEPUphysics.PositionUpdating.PositionUpdateMode.Continuous;
+        }
+
+        /// <summary>
+        /// Constructor for use by the World level loading.
+        /// </summary>
+        /// <param name="modelName">Name of the model.</param>
+        /// <param name="translation">The position.</param>
+        /// <param name="orientation">The orientation.</param>
+        /// <param name="scale">The amount to scale by.</param>
+        /// <param name="extraParameters">Extra parameters.</param>
+        public PlayerCreature(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, string[] extraParameters)
+            : this(Game1.Graphics.GraphicsDevice.Viewport, translation, Matrix.CreateFromQuaternion(orientation).Forward)
+        {
+            Game1.Camera = Camera;
         }
 
         /// <summary>
         /// Removes parts until no parts are remaining.
         /// </summary>
         /// <param name="damage">Amount of damage to apply.</param>
-        public override void Damage(int damage)
+        public override void Damage(int damage, Creature source)
         {
             if (Invulnerable)
             {
                 return;
             }
 
-            base.Damage(damage);
+            base.Damage(damage, source);
 
             if (damage - DamageThreshold > 0)
             {
@@ -116,12 +141,12 @@ namespace finalProject
                 if (validParts.Count() == 0)
                 {
                     // die!
-                    System.Console.WriteLine("killed, " + damage);
+                    Position = SpawnOrigin;
                     return;
                 }
                 System.Console.WriteLine("damaged, " + damage);
 
-                RemovePart(validParts[Rand.rand.Next(validParts.Count())].Part);
+                //RemovePart(validParts[Rand.rand.Next(validParts.Count())].Part);
             }
         }
         
@@ -136,6 +161,10 @@ namespace finalProject
                 if (pa != null && creature.PartAttachments.Count > 0)
                 {
                     creature.RemovePart(pa.Part);
+                    if (mPartAttachments[slot] != null)
+                    {
+                        RemovePart(mPartAttachments[slot].Part);
+                    }
                     AddPart(pa.Part, slot);
                     return;
                 }

@@ -10,12 +10,14 @@ using BEPUphysics;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Constraints.TwoEntity.JointLimits;
 using finalProject.Projectiles;
+using BEPUphysics.BroadPhaseEntries;
 
 namespace finalProject.Parts
 {
     class FrogHead : CooldownPart
     {
 
+        private const float tongueLength = 500.0f;
         private FrogTongue mTongue;
 
         public FrogHead()
@@ -49,6 +51,8 @@ namespace finalProject.Parts
             mTongue = new FrogTongue(Creature, direction);
             Creature.World.Add(mTongue);
         }
+
+        
 
         public override void FinishUse(Vector3 direction)
         {

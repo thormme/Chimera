@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-11.0664692</X>
+      <Y>4</Y>
+      <Z>21.1354465</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>4</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>1</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PlayerCreature, finalProject</Type>
+    <Model>kangaroo_leftLeg</Model>
+    <Parameters />
+    <Position>
+      <X>-11.9916725</X>
+      <Y>4</Y>
+      <Z>22.11427</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>4</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>1</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Checkpoint, finalProject</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>-12.5691624</X>
+      <Y>4</Y>
+      <Z>22.7265358</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>1</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>4</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>1</Height>
+  </DummyObject>
+</object>

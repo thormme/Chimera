@@ -72,9 +72,15 @@ namespace finalProject.Parts
         protected override void UseCooldown(Vector3 direction)
         {
             List<Creature> targets = FindTargets();
+
+            if (targets.Count == 0 && direction.Length() < 0.9f || direction.Length() > 1.1f)
+            {
+                base.Reset();
+            }
+
             foreach (Creature creature in targets)
             {
-                creature.Damage(AttackDamage);
+                creature.Damage(AttackDamage, Creature);
             }
         }
 

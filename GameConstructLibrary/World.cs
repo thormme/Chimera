@@ -8,13 +8,14 @@ using GraphicsLibrary;
 using BEPUphysicsDrawer.Models;
 using System.Reflection;
 using BEPUphysics.Collidables;
+using Microsoft.Xna.Framework.Input;
 
 namespace GameConstructLibrary
 {
     /// <summary>
     /// Manages the game world. Contains all loaded GameObjects and level chunks.
     /// </summary>
-    public class World
+    public class World : GameState
     {
         List<IGameObject> mGameObjects;
         List<IActor> mActors;
@@ -103,7 +104,7 @@ namespace GameConstructLibrary
             gameObject.World = null;
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             //try
             {
@@ -122,12 +123,16 @@ namespace GameConstructLibrary
             CommitChanges();
         }
 
-        public void Render()
+        public override void Render()
         {
+            GraphicsManager.BeginRendering();
+
             foreach (IGameObject gameObject in mGameObjects)
             {
                 gameObject.Render();
             }
+
+            GraphicsManager.FinishRendering();
         }
 
         public void AddLevelFromFile(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)

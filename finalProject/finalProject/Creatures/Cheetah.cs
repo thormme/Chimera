@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using GameConstructLibrary;
 using finalProject.Parts;
+using finalProject.AI;
 
 namespace finalProject.Creatures
 {
@@ -18,7 +19,7 @@ namespace finalProject.Creatures
                 2.0f,                            // Radius
                 6.0f,                            // Mass
                 20.0f,                           // Sensitivity Radius
-                new IntimidationAI(),            // AI
+                new PassiveAI(),            // AI
                 new InanimateModel("cheetah"),   // Model
                 MathHelper.PiOver4,              // Vision Angle
                 10,                              // Listening Sensitivity
@@ -33,10 +34,10 @@ namespace finalProject.Creatures
         protected override List<PartBone> GetUsablePartBones()
         {
             List<PartBone> bones = new List<PartBone>();
-            bones.Add(PartBone.LegFrontLeft1Cap);
-            bones.Add(PartBone.LegRearLeft1Cap);
-            bones.Add(PartBone.LegFrontRight1Cap);
-            bones.Add(PartBone.LegRearRight1Cap);
+            //bones.Add(PartBone.LegFrontLeft1Cap);
+            //bones.Add(PartBone.LegRearLeft1Cap);
+            //bones.Add(PartBone.LegFrontRight1Cap);
+            //bones.Add(PartBone.LegRearRight1Cap);
             return bones;
         }
     }

@@ -12,6 +12,7 @@ namespace finalProject.Parts
     class KangarooLegs : Part
     {
         const double maxJumpCharge = 3.0;
+        const double jumpStrengthTimerStart = 1.0;
         const double jumpStrength = 3.0;
         const float forwardJumpForce = 30f;
         const float poundForce = 320f;
@@ -25,6 +26,14 @@ namespace finalProject.Parts
         double mJumpStrengthTimer;
         double mPoundWaitTimer;
         float mJumpMultiplier;
+
+        public double FullJumpTime
+        {
+            get
+            {
+                return maxJumpCharge - jumpStrengthTimerStart;
+            }
+        }
 
         public KangarooLegs()
             : base(
@@ -41,7 +50,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f, 1.0f, 1.0f)
+                        new Vector3(0.2f, 0.2f, 0.2f)
                     ),
                     new SubPart(
                         new AnimateModel("kangaroo_rightLeg", "walk"),
@@ -55,7 +64,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f, 1.0f, 1.0f)
+                        new Vector3(0.2f, 0.2f, 0.2f)
                     )
                 }
             )
@@ -64,10 +73,15 @@ namespace finalProject.Parts
 
         public override void Use(Vector3 direction)
         {
+            if (mPoundInUse || mPoundWaiting)
+            {
+                return;
+            }
+
             if (Creature.CharacterController.SupportFinder.HasSupport)
             {
                 mJumpInUse = true;
-                mJumpStrengthTimer = 1.0;
+                mJumpStrengthTimer = jumpStrengthTimerStart;
 
                 PlayAnimation("charge", true);
             }
@@ -102,7 +116,7 @@ namespace finalProject.Parts
                     Creature otherCreature = gameObject as Creature;
                     if (otherCreature != null)
                     {
-                        otherCreature.Damage(poundDamage);
+                        otherCreature.Damage(poundDamage, Creature);
                     }
                 }
 
@@ -132,7 +146,7 @@ namespace finalProject.Parts
 
         public override void FinishUse(Vector3 direction)
         {
-            if (mJumpInUse)
+            if (mJumpInUse && mResetJump < -5)
             {
                 mJumpInUse = false;
                 mResetJump = 2;
@@ -145,7 +159,7 @@ namespace finalProject.Parts
 
                 Creature.Jump();
 
-                Vector3 pushForward = direction * mJumpMultiplier * forwardJumpForce;
+                Vector3 pushForward = Creature.Forward * mJumpMultiplier * forwardJumpForce;
                 Creature.Entity.ApplyLinearImpulse(ref pushForward);
                 
                 PlayAnimation("jump", true);

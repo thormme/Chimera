@@ -10,14 +10,21 @@ using finalProject.Projectiles;
 
 namespace finalProject.Parts
 {
-    public class MindControlHead : CooldownPart
+    public class MindControlCobraHead : CooldownPart
     {
-        private MindControlProjectile projectile;
-        private int prevHealth = 0;
+        public bool Active
+        {
+            get
+            {
+                return projectile != null && projectile.Active;
+            }
+        }
 
-        public MindControlHead()
+        private MindControlProjectile projectile;
+
+        public MindControlCobraHead()
             : base(
-                2.0,
+                MindControlProjectile.ControlLength * 2.0f,
                 new Part.SubPart[] {
                     new SubPart(
                         new InanimateModel("sphere"),
@@ -44,9 +51,9 @@ namespace finalProject.Parts
         public override void FinishUse(Vector3 direction)
         { }
 
-        public override void Damage(int damage)
+        public override void Damage(int damage, Creature source)
         {
-            base.Damage(damage);
+            base.Damage(damage, source);
 
             if (projectile != null)
             {

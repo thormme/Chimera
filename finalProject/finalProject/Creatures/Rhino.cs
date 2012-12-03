@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using GameConstructLibrary;
 using finalProject.Parts;
+using finalProject.AI;
 
 namespace finalProject.Creatures
 {
@@ -18,12 +19,12 @@ namespace finalProject.Creatures
                 3.0f,                            // Radius
                 30.0f,                           // Mass
                 20.0f,                           // Sensitivity Radius
-                new IntimidationAI(),            // AI
+                new AggressiveAI(),            // AI
                 new AnimateModel("rhino", "walk"),     // Model
                 MathHelper.PiOver4,              // Vision Angle
                 10,                              // Listening Sensitivity
                 1,                               // Sneak
-                7,                               // Intimidation
+                8,                               // Intimidation
                 50,								 // Starting Health
                 new RhinoHead()                  // Part
                 )

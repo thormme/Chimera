@@ -8,7 +8,12 @@ namespace finalProject
 {
     public class StateTimer<T>
     {
-        private double mTimer;
+        public double Timer
+        {
+            get;
+            set;
+        }
+
         private T mIdolState;
 
         private bool mLoop;
@@ -57,7 +62,7 @@ namespace finalProject
 
         public void Stop()
         {
-            mTimer = -1.0f;
+            Timer = -1.0f;
             mLoop = false;
         }
 
@@ -74,21 +79,21 @@ namespace finalProject
 
         public void NextIn(double time)
         {
-            mTimer = time;
+            Timer = time;
         }
 
         public void NextUntil(double time)
         {
             Next();
-            mTimer = time;
+            Timer = time;
         }
 
         public void Update(GameTime time)
         {
-            if (mTimer > 0.0f)
+            if (Timer > 0.0f)
             {
-                mTimer -= time.ElapsedGameTime.TotalSeconds;
-                if (mTimer < 0.0f)
+                Timer -= time.ElapsedGameTime.TotalSeconds;
+                if (Timer < 0.0f)
                 {
                     Next();
                 }

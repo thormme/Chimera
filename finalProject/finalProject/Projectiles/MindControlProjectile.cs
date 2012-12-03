@@ -11,7 +11,13 @@ namespace finalProject.Projectiles
 {
     public class MindControlProjectile : Projectile
     {
-        private const double ControlLength = 10.0f;
+        public bool Active
+        {
+            get;
+            protected set;
+        }
+
+        public const double ControlLength = 5.0f;
 
         private Creature mOriginalCreature = null;
         private Controller mOriginalController = null;
@@ -31,10 +37,13 @@ namespace finalProject.Projectiles
 
         protected override void Hit(IGameObject gameObject)
         {
-            //base.Hit(gameObject);
+            if (Active)
+            {
+                return;
+            }
 
             Creature creature = gameObject as Creature;
-            if (creature != null)
+            if (creature != null && !creature.Incapacitated)
             {
                 Creature owner = mOwner as Creature;
                 Controller ownerController = owner.Controller;
@@ -42,10 +51,13 @@ namespace finalProject.Projectiles
                 mOriginalController = creature.Controller;
                 mOriginalCreature = creature;
 
+                creature.Damage(0, owner);
+                mOriginalController.Immobilized = true;
                 owner.Move(Vector2.Zero);
                 creature.Controller = ownerController;
                 ownerController.SetCreature(creature);
                 mControlTimer = ControlLength;
+                Active = true;
 
                 Position = new Vector3(float.MaxValue);
             }
@@ -57,10 +69,16 @@ namespace finalProject.Projectiles
 
         public void Stop()
         {
-            Creature owner = mOwner as Creature;
-            mOriginalCreature.Controller = mOriginalController;
-            owner.Controller.SetCreature(owner);
-            World.Remove(this);
+            if (Active)
+            {
+                Creature owner = mOwner as Creature;
+                mOriginalController.Immobilized = false;
+                mOriginalCreature.Controller = mOriginalController;
+                owner.Controller.SetCreature(owner);
+                World.Remove(this);
+                Active = false;
+                mControlTimer = -1.0f;
+            }
         }
 
         public override void Update(GameTime time)
@@ -69,6 +87,7 @@ namespace finalProject.Projectiles
 
             if (mControlTimer >= 0.0f)
             {
+                mOriginalController.Update(time, new List<Creature>());
                 mControlTimer -= time.ElapsedGameTime.TotalSeconds;
                 if (mControlTimer < 0.0f)
                 {

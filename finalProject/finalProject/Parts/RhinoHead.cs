@@ -52,7 +52,7 @@ namespace finalProject.Parts
                     if (otherCreature != null)
                     {
                         Vector3 velocityDifference = Creature.Entity.LinearVelocity - otherCreature.Entity.LinearVelocity;
-                        otherCreature.Damage((int)velocityDifference.Length()/*TODO: scale some*/);
+                        otherCreature.Damage((int)velocityDifference.Length()/*TODO: scale some*/, Creature);
                     }
                 }
             }

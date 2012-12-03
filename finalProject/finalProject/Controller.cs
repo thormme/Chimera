@@ -28,7 +28,16 @@ namespace finalProject
 
         #region Public Methods
 
-        public Controller() {}
+        public Controller()
+        {
+            Immobilized = false;
+        }
+
+        public virtual bool Immobilized
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Sets the creature this controller will control.
@@ -58,7 +67,7 @@ namespace finalProject
         /// Called when the creature is damaged.
         /// </summary>
         /// <param name="damage">The amount of damage dealt.</param>
-        public virtual void Damage(int damage) { }
+        public virtual void Damage(int damage, Creature source) { }
         
         #endregion
     }

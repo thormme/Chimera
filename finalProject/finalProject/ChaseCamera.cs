@@ -517,7 +517,8 @@ namespace FinalProject
             foreach (BEPUphysics.RayCastResult result in results)
             {
                 if (result.HitObject as Collidable != mTargetBody.CharacterController.Body.CollisionInformation &&
-                    !(result.HitObject.Tag is RadialSensor))
+                    !(result.HitObject.Tag is RadialSensor) &&
+                    !(result.HitObject.Tag is CharacterSynchronizer))
                 {
                     Vector3 shortenedForward = mLookAt - result.HitData.Location;
                     float distance = shortenedForward.Length();
