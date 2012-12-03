@@ -18,11 +18,11 @@ namespace finalProject.Projectiles
     public class FrogTongue : Projectile
     {
 
-        Vector3 mDestination;
+        InanimateModel mTongueGraphic;
         DistanceLimit mRopeLimit;
         bool mReachedDestination;
 
-        public FrogTongue(Actor owner, Vector3 direction, Vector3 position)
+        public FrogTongue(Actor owner, Vector3 direction)
             : base(
             new InanimateModel("box"),
             new Box(owner.Position, 0.5f, 0.5f, 0.5f, 0.5f),
@@ -32,8 +32,8 @@ namespace finalProject.Projectiles
             new Vector3(0.5f)
             )
         {
+            mTongueGraphic = new InanimateModel("box");
             CheckHits = false;
-            mDestination = position;
             Entity.IsAffectedByGravity = false;
             mReachedDestination = false;
         }
@@ -64,18 +64,19 @@ namespace finalProject.Projectiles
             }
         }
 
+        public override void Render()
+        {
+            base.Render();
+            /*mTongueGraphic.Render(Matrix.Identity);*/
+        }
+
         public override void InitialCollisionDetected(BEPUphysics.Collidables.MobileCollidables.EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
         {
             base.InitialCollisionDetected(sender, other, collisionPair);
             // If hit physics object link projectile to it then grapple to projectile, otherwise set projectile to kinematic and grapple to projectile
-            if (other.Tag is IEntityOwner)
+            if (other.Tag is CharacterSynchronizer)
             {
-                IEntityOwner entityOwner = other as IEntityOwner;
-                StickToEntity(entityOwner.Entity);
-            }
-            else
-            {
-                
+                StickToEntity((other.Tag as CharacterSynchronizer).body);
             }
             CreateRope();
         }
@@ -85,12 +86,9 @@ namespace finalProject.Projectiles
 
             if (mRopeLimit != null)
             {
-                Console.WriteLine("releasing tongue");
-
                 mReachedDestination = false;
                 mOwner.World.Space.Remove(mRopeLimit);
                 mRopeLimit = null;
-                //Unstick();
             }
 
         }
@@ -98,17 +96,12 @@ namespace finalProject.Projectiles
         
         protected override void Hit(IGameObject gameObject)
         {
-            /*
-            PhysicsObject anchor = (gameObject as PhysicsObject);
-            if (anchor != null)
-            {
-                CreateRope(anchor);
-            }
-             */
         }
 
         private void CreateRope()
         {
+            Entity.AngularMomentum = Vector3.Zero;
+            Entity.LinearMomentum = Vector3.Zero;
             Entity.BecomeKinematic();
             mRopeLimit = new DistanceLimit(mOwner.Entity, Entity, mOwner.Entity.Position, Entity.Position, 0.0f, (Entity.Position - mOwner.Entity.Position).Length());
             mRopeLimit.Bounciness = 0.8f;

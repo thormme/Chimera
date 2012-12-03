@@ -14,6 +14,7 @@ using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Collidables;
 using FinalProject;
 using System;
+using finalProject.Parts;
 
 #endregion
 
@@ -95,7 +96,7 @@ namespace finalProject
             Sneak = DefaultSneak;
 
             SpawnOrigin = position;
-
+            
             Entity.PositionUpdateMode = BEPUphysics.PositionUpdating.PositionUpdateMode.Continuous;
         }
 
@@ -145,7 +146,7 @@ namespace finalProject
                 }
                 System.Console.WriteLine("damaged, " + damage);
 
-                RemovePart(validParts[Rand.rand.Next(validParts.Count())].Part);
+                //RemovePart(validParts[Rand.rand.Next(validParts.Count())].Part);
             }
         }
         

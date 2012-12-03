@@ -9,12 +9,12 @@ using GameConstructLibrary;
 
 namespace finalProject.Parts
 {
-    class PenguinBack : Part
+    class PenguinLimbs : Part
     {
         private const float speed = 20.0f;
         private bool mHasTraction;
 
-        public PenguinBack()
+        public PenguinLimbs()
             : base(
                 new Part.SubPart[] {
                     new SubPart(

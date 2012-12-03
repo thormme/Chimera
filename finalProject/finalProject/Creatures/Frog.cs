@@ -10,23 +10,23 @@ using finalProject.AI;
 
 namespace finalProject.Creatures
 {
-    public class Bear : NonPlayerCreature
+    public class Frog : NonPlayerCreature
     {
-        public Bear(Vector3 position)
+        public Frog(Vector3 position)
             : base(
                 position,
                 3.0f,                                   // Height
                 2.0f,                                   // Radius
-                10.0f,                                  // Mass
-                15.0f,                                  // Sensitivity Radius
-                new AggressiveAI(),                       // AI
-                new InanimateModel("box"),   // Model
-                135,                     // Vision Angle
+                2.0f,                                   // Mass
+                20.0f,                                  // Sensitivity Radius
+                new AggressiveAI(),                     // AI
+                new InanimateModel("box"),              // Model
+                135,                                    // Vision Angle
                 10,                                     // Listening Sensitivity
                 3,                                      // Sneak
-                7,                                      // Intimidation
-                100,								        // Starting Health
-                new BearArms()                      // Part
+                2,                                      // Intimidation
+                100,								    // Starting Health
+                new FrogHead()                          // Part
                 )
         {
             Scale = new Vector3(1.0f);

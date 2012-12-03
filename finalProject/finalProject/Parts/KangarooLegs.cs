@@ -73,6 +73,11 @@ namespace finalProject.Parts
 
         public override void Use(Vector3 direction)
         {
+            if (mPoundInUse || mPoundWaiting)
+            {
+                return;
+            }
+
             if (Creature.CharacterController.SupportFinder.HasSupport)
             {
                 mJumpInUse = true;

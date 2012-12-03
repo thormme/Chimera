@@ -9,16 +9,18 @@ namespace finalProject.AI
 {
     class FrilledLizardAI : IntimidationAI
     {
-        private const float RunRatio = 0.5f;
+        private const float RunRatio = 0.25f;
 
         public override void Update(GameTime time, List<Creature> collidingCreatures)
         {
             base.Update(time, collidingCreatures);
 
-            int intimidation = mUsingPart ? mCreature.Intimidation - FrilledLizardHead.IntimidationIncrease : mCreature.Intimidation;
+            FrilledLizardHead part = ChoosePart() as FrilledLizardHead;
+
+            bool noTarget = mTargetCreature == null || (mCreature.Position - mTargetCreature.Position).Length() > mCreature.Sensor.Radius;
+            int intimidation = part.Active ? mCreature.Intimidation - FrilledLizardHead.IntimidationIncrease : mCreature.Intimidation;
             if (mMostIntimidatingCreature != null && mMostIntimidatingCreature.Intimidation > intimidation)
             {
-                FrilledLizardHead part = ChoosePart() as FrilledLizardHead;
                 foreach (Creature creature in collidingCreatures)
                 {
                     if (mCreature.CollideDistance(creature) < mCreature.Sensor.Radius * RunRatio && creature.Intimidation > intimidation)
@@ -28,10 +30,12 @@ namespace finalProject.AI
                     }
                 }
 
-                StopOrder();
-                UsePart(mCreature.Forward);
+                if (noTarget)
+                {
+                    FollowOrder(mMostIntimidatingCreature);
+                }
             }
-            else
+            else if (noTarget)
             {
                 ChoosePart().FinishUse(mCreature.Forward);
                 DurdleOrder();
@@ -43,6 +47,7 @@ namespace finalProject.AI
             if (mUsingPart)
             {
                 ChoosePart().Use(mUsePartDirection);
+                mUsingPart = false;
             }
         }
 

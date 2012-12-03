@@ -18,9 +18,7 @@ namespace finalProject
     {
         public Checkpoint(Vector3 position, Quaternion orientation, Vector3 scale)
             : base(new InanimateModel("box"), new Cylinder(position, 1f, scale.Length()))
-        {
-            Entity.CollisionInformation.Events.InitialCollisionDetected += InitialCollisionDetected;
-        }
+        { }
 
         /// <summary>
         /// Constructor for use by the World level loading.
@@ -35,12 +33,15 @@ namespace finalProject
         {
         }
 
-        public void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
+        public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
         {
             if (other.Tag is CharacterSynchronizer)
             {
                 CharacterSynchronizer synchronizer = (other.Tag as CharacterSynchronizer);
-                (synchronizer.body.Tag as PlayerCreature).SpawnOrigin = Position;
+                if (synchronizer.body.Tag is PlayerCreature)
+                {
+                    (synchronizer.body.Tag as PlayerCreature).SpawnOrigin = Position;
+                }
             }
         }
     }

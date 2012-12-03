@@ -28,7 +28,16 @@ namespace finalProject
 
         #region Public Methods
 
-        public Controller() {}
+        public Controller()
+        {
+            Immobilized = false;
+        }
+
+        public virtual bool Immobilized
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Sets the creature this controller will control.
