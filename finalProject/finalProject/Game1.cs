@@ -112,7 +112,7 @@ namespace finalProject
             //creature = new Bear(position + new Vector3(0.0f, 1.0f, -10.0f));
             //World.Add(creature);
 
-            World.AddLevelFromFile("stress", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            World.AddLevelFromFile("corner", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace finalProject
                         int i = 0;
                         player.AddPart(new BearArms(), i++);
                         player.AddPart(new KangarooLegs(), i++);
-                        player.AddPart(new PenguinBack(), i++);
+                        player.AddPart(new PenguinLimbs(), i++);
                         player.AddPart(new CheetahLegs(), i++);
                         player.AddPart(new RhinoHead(), i++);
                         player.AddPart(new RhinoHead(), i++);
