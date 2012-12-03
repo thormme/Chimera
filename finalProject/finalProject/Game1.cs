@@ -100,7 +100,7 @@ namespace finalProject
             World.Add(creature);
             World.Add(new SpittingCobra(new Vector3(10.0f, 1.0f, -20.0f)));
 
-            World.AddLevelFromFile("corner", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            World.AddLevelFromFile("start", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
 
             /*player = new PlayerCreature(Graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f), Vector3.Forward);
             World.Add(player);

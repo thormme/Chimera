@@ -95,6 +95,8 @@ namespace finalProject
             Sneak = DefaultSneak;
 
             SpawnOrigin = position;
+
+            Entity.PositionUpdateMode = BEPUphysics.PositionUpdating.PositionUpdateMode.Continuous;
         }
 
         /// <summary>
