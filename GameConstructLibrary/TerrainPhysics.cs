@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using BEPUphysics;
 using BEPUphysics.Collidables;
+using BEPUphysics.CollisionRuleManagement;
 
 namespace GameConstructLibrary
 {
@@ -15,6 +16,8 @@ namespace GameConstructLibrary
     /// </summary>
     public class TerrainPhysics : IGameObject, IStaticCollidableOwner
     {
+        public static CollisionGroup TerrainPhysicsGroup = new CollisionGroup();
+
         private TerrainRenderable mTerrainRenderable;
 
         /// <summary>
@@ -31,6 +34,8 @@ namespace GameConstructLibrary
                 heights,
                 new AffineTransform(scale, orientation, translation - new Vector3(scale.X * .5f * heights.GetLength(0), 0f, scale.Z * .5f * heights.GetLength(1)))
             );
+
+            StaticCollidable.CollisionRules.Group = TerrainPhysicsGroup;
 
             StaticCollidable.Tag = this;
 

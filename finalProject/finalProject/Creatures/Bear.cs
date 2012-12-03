@@ -18,7 +18,7 @@ namespace finalProject.Creatures
                 3.0f,                                   // Height
                 2.0f,                                   // Radius
                 10.0f,                                  // Mass
-                30.0f,                                  // Sensitivity Radius
+                15.0f,                                  // Sensitivity Radius
                 new AggressiveAI(),                       // AI
                 new InanimateModel("box"),   // Model
                 135,                     // Vision Angle

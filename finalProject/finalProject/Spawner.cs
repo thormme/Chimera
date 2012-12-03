@@ -47,7 +47,7 @@ namespace finalProject
             Position = translation;
             XNAOrientationMatrix = Matrix.Identity;
             Scale = scale;
-            mCreatureType = Type.GetType("finalProject." + parameters[0] + ", finalProject");
+            mCreatureType = Type.GetType("finalProject.Creatures." + parameters[0] + ", finalProject");
             mSpawnRadius = Convert.ToSingle(parameters[1]);
             mSpawnWait = Convert.ToSingle(parameters[2]);
             mMaxSpawned = Convert.ToInt32(parameters[3]);
@@ -74,8 +74,15 @@ namespace finalProject
             List<Creature> temp = new List<Creature>();
             foreach (Creature creature in mCreatures)
             {
-                if (!creature.Incapacitated) temp.Add(creature);
-                if (temp.Count < mCreatures.Count) mSpawnTime = 0.0f;
+                if (!creature.Incapacitated)
+                {
+                    temp.Add(creature);
+                }
+            }
+
+            if (temp.Count < mCreatures.Count)
+            {
+                mSpawnTime = 0.0f;
             }
             mCreatures = temp;
 
@@ -119,12 +126,12 @@ namespace finalProject
                 else creaturePosition.Y = Position.Y;
 
                 // Only parameter for a creature is position
-                object parameters = new object();
-                parameters = resultDown.HitData.Location;
-                object obj = Activator.CreateInstance(mCreatureType, parameters);
+                //object parameters = new object();
+                //parameters = resultDown.HitData.Location;
+                //object obj = Activator.CreateInstance(mCreatureType, parameters);
 
-                mCreatures.Add(obj as Creature);
-                World.Add(obj as Creature);
+                //mCreatures.Add(obj as Creature);
+                //World.Add(obj as Creature);
 
             }
         }

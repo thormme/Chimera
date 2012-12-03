@@ -25,14 +25,14 @@ namespace finalProject.AI
         protected virtual bool WithinStompRange(Creature creature)
         {
             float myHeight = mCreature.Position.Y - mCreature.CharacterController.Body.Height / 2;
-            float targetHeight = creature.Position.Y + creature.CharacterController.Body.Height / 2;
+            float targetHeight = creature.Position.Y + creature.CharacterController.Body.Height / 2 + 0.1f;
             if (myHeight < targetHeight)
             {
                 return false;
             }
 
-            float distance = (creature.Position - mCreature.Position).Length();
-            if (distance > (creature.CharacterController.BodyRadius + mCreature.CharacterController.BodyRadius) * 1.1f)
+            float distance = mCreature.CollideDistance(creature);
+            if (distance > -1.0f)
             {
                 return false;
             }
@@ -44,9 +44,9 @@ namespace finalProject.AI
         {
             bool onGround = mCreature.CharacterController.SupportFinder.HasTraction;
 
-            if (!mUsingPart && !onGround && State == AIState.FollowCreature)// && WithinStompRange(mTargetCreature))
+            if (!onGround && State == AIState.FollowCreature && WithinStompRange(mTargetCreature))
             {
-                Vector3 downVector = new Vector3(0.0f, -1.0f, 0.0f);// mTargetCreature.Position - mCreature.Position;
+                Vector3 downVector = mTargetCreature.Position - mCreature.Position;
                 Ray downRay = new Ray(mCreature.Position, downVector);
                 Func<BroadPhaseEntry, bool> filter = (bfe) => (!(bfe.Tag is Sensor) && bfe.Tag != mCreature);
                 RayCastResult result = new RayCastResult();
@@ -72,7 +72,8 @@ namespace finalProject.AI
             }
             else if (mUsingPart && mTargetCreature == null)
             {
-                FinishUsePart();
+                ChoosePart().FinishUse(mCreature.Forward);
+                mUsingPart = false;
             }
             else if (mUsingPart && onGround)
             {

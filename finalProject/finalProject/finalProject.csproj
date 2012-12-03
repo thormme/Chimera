@@ -176,7 +176,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Creature.cs" />
     <Compile Include="DummyController.cs" />
-    <Compile Include="DummyCreature.cs" />
+    <Compile Include="Creatures\DummyCreature.cs" />
     <Compile Include="DummyPart.cs" />
     <Compile Include="IntimidationAI.cs" />
     <Compile Include="NonPlayerCreature.cs" />

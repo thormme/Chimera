@@ -1,6 +1,6 @@
 ﻿
 
-#define DEBUGFACING
+//#define DEBUGFACING
 
 using System;
 using System.Collections.Generic;

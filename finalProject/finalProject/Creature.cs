@@ -448,7 +448,9 @@ namespace finalProject
 
         public float CollideDistance(Creature creature)
         {
-            return (Position - creature.Position).Length() - creature.CharacterController.BodyRadius - CharacterController.BodyRadius;
+            Vector3 distanceVector = Position - creature.Position;
+            distanceVector.Y = 0.0f;
+            return distanceVector.Length() - creature.CharacterController.BodyRadius - CharacterController.BodyRadius;
         }
 
         /// <summary>

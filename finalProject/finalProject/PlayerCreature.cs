@@ -96,15 +96,6 @@ namespace finalProject
             Sneak = DefaultSneak;
 
             SpawnOrigin = position;
-
-            int i = 0;
-            AddPart(new KangarooLegs(), i++);
-            AddPart(new KangarooLegs(), i++);
-            AddPart(new PenguinBack(), i++);
-            AddPart(new CheetahLegs(), i++);
-            AddPart(new RhinoHead(), i++);
-            AddPart(new RhinoHead(), i++);
-            AddPart(new RhinoHead(), i++);
             
             Entity.PositionUpdateMode = BEPUphysics.PositionUpdating.PositionUpdateMode.Continuous;
         }
@@ -155,7 +146,7 @@ namespace finalProject
                 }
                 System.Console.WriteLine("damaged, " + damage);
 
-                RemovePart(validParts[Rand.rand.Next(validParts.Count())].Part);
+                //RemovePart(validParts[Rand.rand.Next(validParts.Count())].Part);
             }
         }
         

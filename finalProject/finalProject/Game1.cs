@@ -54,6 +54,8 @@ namespace finalProject
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, Projectile.ProjectileGroup), CollisionRule.NoBroadPhase);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, Sensor.SensorGroup), CollisionRule.NoBroadPhase);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, TerrainPhysics.TerrainPhysicsGroup), CollisionRule.NoBroadPhase);
 
             debugMode = false;
         }
@@ -98,19 +100,19 @@ namespace finalProject
 
             Vector3 position = new Vector3(-100, -100, 200);
 
-            creature = new Kangaroo(position + new Vector3(20.0f, 1.0f, -20.0f));
-            World.Add(creature);
+            //creature = new Kangaroo(position + new Vector3(20.0f, 1.0f, -20.0f));
+            //World.Add(creature);
 
-            creature = new Kangaroo(position + new Vector3(10.0f, 1.0f, -20.0f));
-            World.Add(creature);
+            //creature = new Kangaroo(position + new Vector3(10.0f, 1.0f, -20.0f));
+            //World.Add(creature);
 
-            creature = new Bear(position + new Vector3(0.0f, 1.0f, -20.0f));
-            World.Add(creature);
+            //creature = new Bear(position + new Vector3(0.0f, 1.0f, -20.0f));
+            //World.Add(creature);
 
-            creature = new Bear(position + new Vector3(0.0f, 1.0f, -10.0f));
-            World.Add(creature);
+            //creature = new Bear(position + new Vector3(0.0f, 1.0f, -10.0f));
+            //World.Add(creature);
 
-            World.AddLevelFromFile("corner", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            World.AddLevelFromFile("stress", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
         }
 
         /// <summary>
@@ -146,12 +148,24 @@ namespace finalProject
 
             if (mouseLock.Active)
             {
-                InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
+                //InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
                 foreach (Entity entity in World.Space.Entities)
                 {
-                    if (entity.Tag is PlayerCreature)
+                    PlayerCreature player = entity.Tag as PlayerCreature;
+                    if (player != null)
                     {
-                        (entity.Tag as PlayerCreature).Damage(100, null);
+                        player.Damage(100, null);
+
+                        int i = 0;
+                        player.AddPart(new BearArms(), i++);
+                        player.AddPart(new KangarooLegs(), i++);
+                        player.AddPart(new PenguinBack(), i++);
+                        player.AddPart(new CheetahLegs(), i++);
+                        player.AddPart(new RhinoHead(), i++);
+                        player.AddPart(new RhinoHead(), i++);
+                        player.AddPart(new RhinoHead(), i++);
+
+                        World.Add(new Kangaroo(player.Position + new Vector3(0.0f, 0.0f, 20.0f)));
                     }
                 }
             }

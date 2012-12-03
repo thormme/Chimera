@@ -236,7 +236,7 @@ namespace MapEditor
                 mDirtyProjection = true;
             }
         }
-        private float mFarPlaneDistance = 1000.0f;
+        private float mFarPlaneDistance = 2000.0f;
 
         public float GetFarPlaneDistance()
         {
