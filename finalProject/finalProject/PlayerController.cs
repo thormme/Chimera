@@ -320,30 +320,27 @@ namespace finalProject
         /// </summary>
         private void PerformActions()
         {
-            if (!Immobilized)
+            if (mPressJump.Active || mJumpKey.Active)
             {
-                if (mPressJump.Active || mJumpKey.Active)
-                {
-                    mCreature.Jump();
-                }
+                mCreature.Jump();
+            }
 
-                for (int i = 0; i < NumParts; ++i)
+            for (int i = 0; i < NumParts; ++i)
+            {
+                if (mUse[i].Active && !Immobilized)
                 {
-                    if (mUse[i].Active)
+                    if (mStealKey.Active && mCreature is PlayerCreature)
                     {
-                        if (mStealKey.Active && mCreature is PlayerCreature)
-                        {
-                            (mCreature as PlayerCreature).FindAndAddPart(i);
-                        }
-                        else
-                        {
-                            mCreature.UsePart(i, mCamera.Forward);
-                        }
+                        (mCreature as PlayerCreature).FindAndAddPart(i);
                     }
-                    else if (mFinishUse[i].Active)
+                    else
                     {
-                        mCreature.FinishUsingPart(i, mCamera.Forward);
+                        mCreature.UsePart(i, mCamera.Forward);
                     }
+                }
+                else if (mFinishUse[i].Active)
+                {
+                    mCreature.FinishUsingPart(i, mCamera.Forward);
                 }
             }
 

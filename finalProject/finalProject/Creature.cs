@@ -549,6 +549,7 @@ namespace finalProject
         {
             if (damage > 0 && !Invulnerable)
             {
+                System.Console.WriteLine(this + " took " + damage + " damage.");
                 foreach (PartAttachment partAttachment in mPartAttachments)
                 {
                     if (partAttachment != null)

@@ -157,15 +157,15 @@ namespace finalProject
                         player.Damage(100, null);
 
                         int i = 0;
+                        player.AddPart(new TurtleShell(), i++);
                         player.AddPart(new BearArms(), i++);
                         player.AddPart(new KangarooLegs(), i++);
                         player.AddPart(new PenguinLimbs(), i++);
                         player.AddPart(new CheetahLegs(), i++);
-                        player.AddPart(new RhinoHead(), i++);
-                        player.AddPart(new RhinoHead(), i++);
+                        player.AddPart(new FrilledLizardHead(), i++);
                         player.AddPart(new RhinoHead(), i++);
 
-                        World.Add(new Kangaroo(player.Position + new Vector3(0.0f, 0.0f, 20.0f)));
+                        World.Add(new Turtle(player.Position + new Vector3(0.0f, 0.0f, 20.0f)));
                     }
                 }
             }

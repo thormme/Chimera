@@ -144,7 +144,6 @@ namespace finalProject
                     Position = SpawnOrigin;
                     return;
                 }
-                System.Console.WriteLine("damaged, " + damage);
 
                 //RemovePart(validParts[Rand.rand.Next(validParts.Count())].Part);
             }

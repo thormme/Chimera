@@ -11,11 +11,12 @@ namespace finalProject.Parts
 {
     class RhinoHead : CooldownPart
     {
-        
-        private const float damageStartTime = 0.2f;
-        private const float damageEndTime = 0.6f;
+        private const float GroundDamageMultiplier = 3.0f;
+        private const float AirDamageMultiplier = 1.0f;
+        private const double AttackLength = 0.6f;
+        private const double DamageStart = 0.4f;
+        private double mAttackTimer = -1.0f;
 
-        private float mAttackTimer;
 
         public RhinoHead()
             : base(
@@ -42,17 +43,20 @@ namespace finalProject.Parts
         {
             //(mRenderable as AnimateModel).Update(time);
 
-            mAttackTimer += (float)time.ElapsedGameTime.TotalSeconds;
-
-            if (mAttackTimer >= damageStartTime && mAttackTimer <= damageEndTime)
+            if (mAttackTimer > 0.0f)
             {
-                foreach (IGameObject gameObject in Creature.CollidingObjects)
+                float multiplier = Creature.CharacterController.SupportFinder.HasTraction ? GroundDamageMultiplier : AirDamageMultiplier;
+                mAttackTimer -= time.ElapsedGameTime.TotalSeconds;
+                if (mAttackTimer < DamageStart)
                 {
-                    Creature otherCreature = gameObject as Creature;
-                    if (otherCreature != null)
+                    foreach (IGameObject gameObject in Creature.CollidingObjects)
                     {
-                        Vector3 velocityDifference = Creature.Entity.LinearVelocity - otherCreature.Entity.LinearVelocity;
-                        otherCreature.Damage((int)velocityDifference.Length()/*TODO: scale some*/, Creature);
+                        Creature otherCreature = gameObject as Creature;
+                        if (otherCreature != null)
+                        {
+                            Vector3 velocityDifference = Creature.Entity.LinearVelocity - otherCreature.Entity.LinearVelocity;
+                            otherCreature.Damage((int)(velocityDifference.Length() * multiplier), Creature);
+                        }
                     }
                 }
             }
@@ -62,12 +66,23 @@ namespace finalProject.Parts
 
         protected override void UseCooldown(Vector3 direction)
         {
-            Vector3 impulse = Creature.Forward * 300f;
-            Creature.Entity.ApplyLinearImpulse(ref impulse);
+            if (Creature.CharacterController.SupportFinder.HasTraction)
+            {
+                Vector3 impulse = Creature.Forward * 300f;
+                Creature.Entity.ApplyLinearImpulse(ref impulse);
+            }
+            mAttackTimer = AttackLength;
         }
 
         public override void FinishUse(Vector3 direction)
         {
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+
+            mAttackTimer = -1.0f;
         }
     }
 }
