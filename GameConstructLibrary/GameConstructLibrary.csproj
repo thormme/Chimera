@@ -138,6 +138,7 @@
     <Compile Include="CharacterController.cs" />
     <Compile Include="CollisionMeshManager.cs" />
     <Compile Include="DummyObject.cs" />
+    <Compile Include="GameState.cs" />
     <Compile Include="HorizontalMotionConstraint.cs" />
     <Compile Include="IActor.cs" />
     <Compile Include="ICharacterTag.cs" />
