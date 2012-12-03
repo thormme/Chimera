@@ -105,6 +105,8 @@ namespace finalProject
             AddPart(new RhinoHead(), i++);
             AddPart(new RhinoHead(), i++);
             AddPart(new RhinoHead(), i++);
+            
+            Entity.PositionUpdateMode = BEPUphysics.PositionUpdating.PositionUpdateMode.Continuous;
         }
 
         /// <summary>

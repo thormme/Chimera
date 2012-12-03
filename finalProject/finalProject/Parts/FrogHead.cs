@@ -10,12 +10,14 @@ using BEPUphysics;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Constraints.TwoEntity.JointLimits;
 using finalProject.Projectiles;
+using BEPUphysics.BroadPhaseEntries;
 
 namespace finalProject.Parts
 {
     class FrogHead : CooldownPart
     {
 
+        private const float tongueLength = 500.0f;
         private FrogTongue mTongue;
 
         public FrogHead()
@@ -46,9 +48,18 @@ namespace finalProject.Parts
 
         protected override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
         {
-            mTongue = new FrogTongue(Creature, direction);
-            Creature.World.Add(mTongue);
+            Ray ray = new Ray(Creature.Entity.Position, new Vector3(direction.X, 0.0f, direction.Z));
+            RayCastResult result;
+            Func<BroadPhaseEntry, bool> filter = (bfe) => (bfe.CollisionRules.Group != Sensor.SensorGroup);
+            if (Creature.World.Space.RayCast(ray, filter, out result))
+            {
+                mTongue = new FrogTongue(Creature, direction, result.HitData.Location);
+                Creature.World.Add(mTongue);
+            }
+
         }
+
+        
 
         public override void FinishUse(Vector3 direction)
         {
