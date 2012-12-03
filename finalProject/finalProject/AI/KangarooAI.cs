@@ -108,5 +108,8 @@ namespace finalProject.AI
                 }
             }
         }
+
+        protected override void FinishUsePart()
+        { }
     }
 }

@@ -43,6 +43,7 @@ namespace finalProject.AI
             if (mUsingPart)
             {
                 ChoosePart().Use(mUsePartDirection);
+                mUsingPart = false;
             }
         }
 

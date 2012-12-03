@@ -14,6 +14,7 @@ using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Collidables;
 using FinalProject;
 using System;
+using finalProject.Parts;
 
 #endregion
 
@@ -95,6 +96,15 @@ namespace finalProject
             Sneak = DefaultSneak;
 
             SpawnOrigin = position;
+
+            int i = 0;
+            AddPart(new KangarooLegs(), i++);
+            AddPart(new KangarooLegs(), i++);
+            AddPart(new PenguinBack(), i++);
+            AddPart(new CheetahLegs(), i++);
+            AddPart(new RhinoHead(), i++);
+            AddPart(new RhinoHead(), i++);
+            AddPart(new RhinoHead(), i++);
         }
 
         /// <summary>

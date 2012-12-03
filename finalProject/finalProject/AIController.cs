@@ -76,7 +76,7 @@ namespace finalProject
         /// <param name="collidingCreatures">The creatures this creature knows about from its radial sensor.</param>
         public override void Update(GameTime time, List<Creature> collidingCreatures)
         {
-            if (mCreature.Incapacitated)
+            if (mCreature.Incapacitated || Immobilized)
             {
                 return;
             }

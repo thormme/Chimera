@@ -140,6 +140,7 @@
   <ItemGroup>
     <Compile Include="AIController.cs" />
     <Compile Include="AI\AggressiveAI.cs" />
+    <Compile Include="AI\CobraAI.cs" />
     <Compile Include="AI\FrilledLizardAI.cs" />
     <Compile Include="AI\KangarooAI.cs" />
     <Compile Include="AI\PassiveAI.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="CooldownPart.cs" />
     <Compile Include="Creatures\Bear.cs" />
     <Compile Include="Creatures\Cheetah.cs" />
+    <Compile Include="Creatures\Cobra.cs" />
     <Compile Include="Creatures\FrilledLizard.cs" />
     <Compile Include="Creatures\Kangaroo.cs" />
     <Compile Include="Creatures\Rhino.cs" />
@@ -155,7 +157,7 @@
     <Compile Include="MeteredPart.cs" />
     <Compile Include="Parts\BearArms.cs" />
     <Compile Include="Parts\CheetahLegs.cs" />
-    <Compile Include="Parts\MindControlHead.cs" />
+    <Compile Include="Parts\MindControlCobraHead.cs" />
     <Compile Include="Parts\FrogHead.cs" />
     <Compile Include="Parts\SpittingCobraHead.cs" />
     <Compile Include="Parts\FlyingSquirrelBack.cs" />

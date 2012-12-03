@@ -96,23 +96,21 @@ namespace finalProject
             //terrain = new TerrainPhysics("default", new Vector3(0.0f, 0.0f, 0.0f), new Quaternion(), new Vector3(2.5f));
             //World.Add(terrain);
 
-            creature = new Rhino(new Vector3(0.0f, 1.0f, -20.0f));
+            Vector3 position = new Vector3(-100, -100, 200);
+
+            creature = new Kangaroo(position + new Vector3(20.0f, 1.0f, -20.0f));
+            World.Add(creature);
+
+            creature = new Kangaroo(position + new Vector3(10.0f, 1.0f, -20.0f));
+            World.Add(creature);
+
+            creature = new Bear(position + new Vector3(0.0f, 1.0f, -20.0f));
+            World.Add(creature);
+
+            creature = new Bear(position + new Vector3(0.0f, 1.0f, -10.0f));
             World.Add(creature);
 
             World.AddLevelFromFile("corner", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
-
-            /*player = new PlayerCreature(Graphics.GraphicsDevice.Viewport, new Vector3(0.0f, 1.0f, 0.0f), Vector3.Forward);
-            World.Add(player);
-            int i = 0;
-            //player.AddPart(new KangarooLegs(), i++);
-            player.AddPart(new KangarooLegs(), i++);
-            player.AddPart(new PenguinBack(), i++);
-            player.AddPart(new CheetahLegs(), i++);
-            player.AddPart(new RhinoHead(), i++);
-            player.AddPart(new RhinoHead(), i++);
-            player.AddPart(new RhinoHead(), i++);
-
-            Camera = player.Camera;*/
         }
 
         /// <summary>

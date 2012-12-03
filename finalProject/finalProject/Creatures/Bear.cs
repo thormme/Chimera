@@ -18,13 +18,13 @@ namespace finalProject.Creatures
                 3.0f,                                   // Height
                 2.0f,                                   // Radius
                 10.0f,                                  // Mass
-                100.0f,                                  // Sensitivity Radius
+                30.0f,                                  // Sensitivity Radius
                 new AggressiveAI(),                       // AI
                 new InanimateModel("box"),   // Model
                 135,                     // Vision Angle
                 10,                                     // Listening Sensitivity
                 3,                                      // Sneak
-                5,                                      // Intimidation
+                7,                                      // Intimidation
                 100,								        // Starting Health
                 new BearArms()                      // Part
                 )

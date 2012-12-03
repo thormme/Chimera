@@ -30,6 +30,12 @@ namespace finalProject
 
         public Controller() {}
 
+        public virtual bool Immobilized
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Sets the creature this controller will control.
         /// </summary>
