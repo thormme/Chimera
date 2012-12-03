@@ -96,8 +96,9 @@ namespace finalProject
             //terrain = new TerrainPhysics("default", new Vector3(0.0f, 0.0f, 0.0f), new Quaternion(), new Vector3(2.5f));
             //World.Add(terrain);
 
-            creature = new Rhino(new Vector3(0.0f, 1.0f, -20.0f));
+            creature = new SpittingCobra(new Vector3(0.0f, 1.0f, -20.0f));
             World.Add(creature);
+            World.Add(new SpittingCobra(new Vector3(10.0f, 1.0f, -20.0f)));
 
             World.AddLevelFromFile("corner", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
 

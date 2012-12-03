@@ -8,6 +8,7 @@ using GraphicsLibrary;
 using GameConstructLibrary;
 using BEPUphysics.Entities;
 using BEPUphysics.CollisionShapes.ConvexShapes;
+using finalProject.Projectiles;
 
 namespace finalProject.Parts
 {
@@ -44,7 +45,7 @@ namespace finalProject.Parts
 
         protected override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
         {
-            Creature.World.Add(new Projectile(new InanimateModel("box"), new Entity(new BoxShape(0.2f, 0.2f, 0.2f), 1000.0f), Creature, direction, 40000.0f, new Vector3(0.2f, 0.2f, 0.2f)));
+            Creature.World.Add(new CobraVenom(Creature, direction));
         }
 
         public override void FinishUse(Vector3 direction)

@@ -9,18 +9,19 @@ using GameConstructLibrary;
 
 namespace finalProject.Parts
 {
-    class ParrotWings : Part
+    class EagleWings : Part
     {
 
-        private const int flapPower = 50;
+        private const int flapPower = 100;
         private const int numFlaps = 3;
 
         private const double flapWait = 0.0f;
 
         private int mFlaps;
         private double mFlapTimer;
+        private bool mGlide;
 
-        public ParrotWings()
+        public EagleWings()
             : base(
                 new Part.SubPart[] {
                     new SubPart(
@@ -56,12 +57,27 @@ namespace finalProject.Parts
         public override void Update(Microsoft.Xna.Framework.GameTime time)
         {
             mFlapTimer += time.ElapsedGameTime.TotalSeconds;
-            if (Creature.CharacterController.SupportFinder.HasSupport) mFlaps = 0;
+
+            if (Creature.CharacterController.SupportFinder.HasSupport)
+            {
+                mFlaps = 0;
+                mGlide = false;
+            }
+
+            if (mGlide)
+            {
+                Vector3 direction = new Vector3(0.0f, -Creature.Entity.LinearVelocity.Y, 0.0f);
+                Creature.Entity.ApplyLinearImpulse(ref direction);
+            }
         }
 
         public override void Use(Microsoft.Xna.Framework.Vector3 direction)
         {
-            if (Creature.CharacterController.SupportFinder.HasSupport) Creature.Jump();
+            mGlide = false;
+            if (Creature.CharacterController.SupportFinder.HasSupport)
+            {
+                Creature.Jump();
+            }
             else if (mFlaps < numFlaps && mFlapTimer > flapWait)
             {
                 mFlaps++;
@@ -70,6 +86,7 @@ namespace finalProject.Parts
                 if (Creature.Entity.LinearVelocity.Y < 0) flap.Y -= Creature.Entity.LinearVelocity.Y;
                 Creature.Entity.ApplyLinearImpulse(ref flap);
             }
+            mGlide = true;
         }
 
         public override void FinishUse(Vector3 direction)

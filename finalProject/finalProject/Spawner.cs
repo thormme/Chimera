@@ -75,8 +75,8 @@ namespace finalProject
             foreach (Creature creature in mCreatures)
             {
                 if (!creature.Incapacitated) temp.Add(creature);
-                if (temp.Count < mCreatures.Count) mSpawnTime = 0.0f;
             }
+            if (temp.Count < mCreatures.Count) mSpawnTime = 0.0f;
             mCreatures = temp;
 
         }

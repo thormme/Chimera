@@ -148,9 +148,12 @@
     <Compile Include="CooldownPart.cs" />
     <Compile Include="Creatures\Bear.cs" />
     <Compile Include="Creatures\Cheetah.cs" />
+    <Compile Include="Creatures\Eagle.cs" />
     <Compile Include="Creatures\FrilledLizard.cs" />
+    <Compile Include="Creatures\Frog.cs" />
     <Compile Include="Creatures\Kangaroo.cs" />
     <Compile Include="Creatures\Rhino.cs" />
+    <Compile Include="Creatures\SpittingCobra.cs" />
     <Compile Include="DutyCyclePart.cs" />
     <Compile Include="MeteredPart.cs" />
     <Compile Include="Parts\BearArms.cs" />
@@ -161,11 +164,12 @@
     <Compile Include="Parts\FlyingSquirrelBack.cs" />
     <Compile Include="Parts\FrilledLizardHead.cs" />
     <Compile Include="Parts\KangarooLegs.cs" />
-    <Compile Include="Parts\ParrotWings.cs" />
-    <Compile Include="Parts\PenguinBack.cs" />
+    <Compile Include="Parts\EagleWings.cs" />
+    <Compile Include="Parts\PenguinLimbs.cs" />
     <Compile Include="Parts\RhinoHead.cs" />
     <Compile Include="Parts\TurtleShell.cs" />
     <Compile Include="PhysicsProp.cs" />
+    <Compile Include="Projectiles\CobraVenom.cs" />
     <Compile Include="Projectiles\FrogTongue.cs" />
     <Compile Include="Projectiles\MindControlProjectile.cs" />
     <Compile Include="Prop.cs" />
