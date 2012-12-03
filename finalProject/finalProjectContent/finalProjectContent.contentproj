@@ -57,6 +57,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="models\eagle\eagle_flap_air.FBX">
+      <Name>eagle_flap_air</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\eagle\eagle_flap_ground.FBX">
+      <Name>eagle_flap_ground</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\eagle\eagle_glide.FBX">
+      <Name>eagle_glide</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\eagle\eagle_stand.FBX">
+      <Name>eagle_stand</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\eagle\eagle_walk.FBX">
+      <Name>eagle_walk</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
     <Compile Include="shaders\ConfigurableShader.fx">
       <Name>ConfigurableShader</Name>
       <Importer>EffectImporter</Importer>
