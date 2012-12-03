@@ -126,12 +126,12 @@ namespace finalProject
                 else creaturePosition.Y = Position.Y;
 
                 // Only parameter for a creature is position
-                //object parameters = new object();
-                //parameters = resultDown.HitData.Location;
-                //object obj = Activator.CreateInstance(mCreatureType, parameters);
+                object parameters = new object();
+                parameters = resultDown.HitData.Location;
+                object obj = Activator.CreateInstance(mCreatureType, parameters);
 
-                //mCreatures.Add(obj as Creature);
-                //World.Add(obj as Creature);
+                mCreatures.Add(obj as Creature);
+                World.Add(obj as Creature);
 
             }
         }

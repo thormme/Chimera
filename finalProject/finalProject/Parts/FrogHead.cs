@@ -48,15 +48,8 @@ namespace finalProject.Parts
 
         protected override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
         {
-            Ray ray = new Ray(Creature.Entity.Position, new Vector3(direction.X, 0.0f, direction.Z));
-            RayCastResult result;
-            Func<BroadPhaseEntry, bool> filter = (bfe) => (bfe.CollisionRules.Group != Sensor.SensorGroup);
-            if (Creature.World.Space.RayCast(ray, filter, out result))
-            {
-                mTongue = new FrogTongue(Creature, direction, result.HitData.Location);
-                Creature.World.Add(mTongue);
-            }
-
+            mTongue = new FrogTongue(Creature, direction);
+            Creature.World.Add(mTongue);
         }
 
         
