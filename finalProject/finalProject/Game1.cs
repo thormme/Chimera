@@ -146,22 +146,21 @@ namespace finalProject
                     foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
                     {
                         PlayerCreature player = entity.Tag as PlayerCreature;
-                    if (player != null)
-                    {
-                        player.Damage(100, null);
+                        if (player != null)
+                        {
+                            player.Damage(100, null);
 
-                        int i = 0;
-                        player.AddPart(new TurtleShell(), i++);
-                        player.AddPart(new BearArms(), i++);
-                        player.AddPart(new KangarooLegs(), i++);
-                        player.AddPart(new PenguinLimbs(), i++);
-                        player.AddPart(new CheetahLegs(), i++);
-                        player.AddPart(new FrilledLizardHead(), i++);
-                        player.AddPart(new RhinoHead(), i++);
+                            int i = 0;
+                            player.AddPart(new TurtleShell(), i++);
+                            player.AddPart(new BearArms(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new PenguinLimbs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new FrilledLizardHead(), i++);
+                            player.AddPart(new RhinoHead(), i++);
 
-                        World.Add(new Turtle(player.Position + new Vector3(0.0f, 0.0f, 20.0f)));
-                    }
-
+                            (mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + new Vector3(0.0f, 0.0f, 20.0f)));
+                        }
                     }
                 }
             }
