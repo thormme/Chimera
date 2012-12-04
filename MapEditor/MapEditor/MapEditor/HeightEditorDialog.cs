@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Media;
 using Nuclex.UserInterface;
 using Nuclex.UserInterface.Controls;
 using Nuclex.UserInterface.Controls.Desktop;
+using GameConstructLibrary;
 
 namespace MapEditor
 {
@@ -22,6 +23,8 @@ namespace MapEditor
     public class HeightEditorDialog : Dialog
     {
 
+        private ParametersDialog mParametersDialog;
+
         private Nuclex.UserInterface.Controls.LabelControl mSizeLabel;
         private Nuclex.UserInterface.Controls.LabelControl mIntensityLabel;
         private Nuclex.UserInterface.Controls.LabelControl mFeatherLabel;
@@ -30,7 +33,8 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.Desktop.InputControl mIntensityInput;
         private Nuclex.UserInterface.Controls.Desktop.OptionControl mFeatherOption;
         private Nuclex.UserInterface.Controls.Desktop.OptionControl mSetOption;
-        private Nuclex.UserInterface.Controls.Desktop.ButtonControl mDoneButton;
+        private Nuclex.UserInterface.Controls.Desktop.ButtonControl mEditButton;
+        private Nuclex.UserInterface.Controls.Desktop.ButtonControl mBackButton;
 
         public HeightEditorDialog() :
             base()
@@ -57,7 +61,8 @@ namespace MapEditor
             mIntensityInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
             mFeatherOption = new Nuclex.UserInterface.Controls.Desktop.OptionControl();
             mSetOption = new Nuclex.UserInterface.Controls.Desktop.OptionControl();
-            mDoneButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
+            mEditButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
+            mBackButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
 
             // Position components
             mSizeLabel.Text = "Size:";
@@ -78,11 +83,15 @@ namespace MapEditor
             mSetLabel.Bounds = new UniRectangle(20.0f, 165.0f, 100.0f, 30.0f);
             mSetOption.Bounds = new UniRectangle(120.0f, 160.0f, 30.0f, 30.0f);
 
-            mDoneButton.Text = "Done";
-            mDoneButton.Bounds = new UniRectangle(new UniScalar(1.0f, -100.0f), new UniScalar(1.0f, -45.0f), 80, 24);
-            mDoneButton.Pressed += delegate(object sender, EventArgs arguments) { DoneClicked(sender, arguments); };
+            mEditButton.Text = "Edit";
+            mEditButton.Bounds = new UniRectangle(new UniScalar(1.0f, -180.0f), new UniScalar(1.0f, -45.0f), 80, 24);
+            mEditButton.Pressed += delegate(object sender, EventArgs arguments) { EditClicked(sender, arguments); };
 
-            Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 210.0f);
+            mBackButton.Text = "Back";
+            mBackButton.Bounds = new UniRectangle(new UniScalar(1.0f, -90.0f), new UniScalar(1.0f, -45.0f), 80, 24);
+            mBackButton.Pressed += delegate(object sender, EventArgs arguments) { BackClicked(sender, arguments); };
+
+            Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 260.0f);
             mBounds = Bounds;
 
             // Add components to GUI
@@ -94,7 +103,8 @@ namespace MapEditor
             Children.Add(mFeatherOption);
             Children.Add(mSetLabel);
             Children.Add(mSetOption);
-            Children.Add(mDoneButton);
+            Children.Add(mEditButton);
+            Children.Add(mBackButton);
 
         }
 
@@ -162,7 +172,33 @@ namespace MapEditor
 
         }
 
-        private void DoneClicked(object sender, EventArgs arguments)
+        private void EditClicked(object sender, EventArgs arguments)
+        {
+
+            try
+            {
+                DummyObject temp = new DummyObject();
+                temp.Model = "editor";
+                temp.Position = Vector3.Zero;
+                temp.Orientation = Vector3.Zero;
+                temp.Scale = new Vector3(Convert.ToInt32(mSizeInput.Text) * GameMapEditor.MapScale.X, Convert.ToInt32(mSizeInput.Text) * GameMapEditor.MapScale.Y /*(GameMapEditor.MapScale.X + GameMapEditor.MapScale.Z) / 2*/, Convert.ToInt32(mSizeInput.Text) * GameMapEditor.MapScale.Z);
+                GameMapEditor.Entity.SetModel(temp);
+
+                GameMapEditor.Size = Convert.ToInt32(mSizeInput.Text);
+                GameMapEditor.Intensity = Convert.ToInt32(mIntensityInput.Text);
+                GameMapEditor.Feather = mFeatherOption.Selected;
+                GameMapEditor.Set = mSetOption.Selected;
+
+                GameMapEditor.EditMode = Edit.Height;
+                GameMapEditor.ToggleState(States.Parameters);
+            }
+            catch (FormatException)
+            {
+
+            }
+        }
+
+        private void BackClicked(object sender, EventArgs arguments)
         {
             GameMapEditor.ToggleState(States.None);
         }
