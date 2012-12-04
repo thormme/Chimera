@@ -107,7 +107,6 @@ namespace MapEditor
             for (int count = 0; count < mParameters.Count(); count++)
             {
                 string parameter = mParameterInput[count].Text;
-                Console.WriteLine(parameter);
                 parameters.Add(parameter);
             }
             return parameters;

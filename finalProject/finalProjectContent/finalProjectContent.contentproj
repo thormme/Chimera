@@ -228,88 +228,25 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\test_boxes_high.tga">
-      <Name>test_boxes_high</Name>
+    <Compile Include="levels\maps\level02_texture_high.tga">
+      <Name>level02_texture_high</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="levels\maps\test_boxes_low.tga">
-      <Name>test_boxes_low</Name>
+    <Compile Include="levels\maps\level015_texture_low.tga">
+      <Name>level015_texture_low</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="levels\maps\test_boxes_medium.tga">
-      <Name>test_boxes_medium</Name>
+    <Compile Include="levels\maps\level015_texture_medium.tga">
+      <Name>level015_texture_medium</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\rock\rock2dark.FBX">
-      <Name>rock2dark</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\rock\rock2light.FBX">
-      <Name>rock2light</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\rock\rock3dark.FBX">
-      <Name>rock3dark</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\rock\rock3light.FBX">
-      <Name>rock3light</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\shrub\shrub1.FBX">
-      <Name>shrub1</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\tree\tree1.FBX">
-      <Name>tree1</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\tree\tree2.FBX">
-      <Name>tree2</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\tree\tree3.FBX">
-      <Name>tree3</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\cactus\cactus1.FBX">
-      <Name>cactus1</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\cactus\cactus2.FBX">
-      <Name>cactus2</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\cactus\cactus3.FBX">
-      <Name>cactus3</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\maps\level1_texture_high.tga">
-      <Name>level1_texture_high</Name>
+    <Compile Include="levels\maps\level015_texture_high.tga">
+      <Name>level015_texture_high</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -397,6 +334,73 @@
     </Compile>
     <Compile Include="models\rock\rock1light.X">
       <Name>rock1light</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\cactus\cactus1.X">
+      <Name>cactus1</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\cactus\cactus2.X">
+      <Name>cactus2</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\rock\rock2dark.X">
+      <Name>rock2dark</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\rock\rock2light.X">
+      <Name>rock2light</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\rock\rock3dark.X">
+      <Name>rock3dark</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\rock\rock3light.X">
+      <Name>rock3light</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\cactus\cactus3.X">
+      <Name>cactus3</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\shrub\shrub1.X">
+      <Name>shrub1</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\tree\tree1.X">
+      <Name>tree1</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\tree\tree2.X">
+      <Name>tree2</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\tree\tree3.X">
+      <Name>tree3</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

@@ -20,7 +20,7 @@ namespace MapEditor
     public static class GameMapEditor
     {
 
-        public static Vector3 MapScale = new Vector3(8.0f, 0.25f, 8.0f);
+        public static Vector3 MapScale = new Vector3(8.0f, 0.4f, 8.0f);
 
         public static InputManager Input;
         public static GuiManager GUI;
@@ -33,7 +33,7 @@ namespace MapEditor
         public static Edit EditMode;
         
         public static Dialog Dialog;
-        public static Dialog Parameters = new ParametersDialog(new List<string>());
+        public static ParametersDialog Parameters = new ParametersDialog(new List<string>());
 
         public static Boolean Displayed;
         public static Dialog Reminder;
@@ -285,6 +285,7 @@ namespace MapEditor
 
         public static void Update(GameTime gameTime)
         {
+
             Map.Update(gameTime);
             Entity.Update(gameTime);
             Editor.Update(gameTime);

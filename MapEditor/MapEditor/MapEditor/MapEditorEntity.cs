@@ -124,11 +124,10 @@ namespace MapEditor
             
             if (GameMapEditor.Map.TerrainPhysics.StaticCollidable.RayCast(ray, length, out result))
             {
-
                 GameMapEditor.Placeable = true;
                 GameMapEditor.Position = result.Location;
 
-                mDummy.Position = new Vector3(result.Location.X, result.Location.Y + mDummy.Height * GameMapEditor.MapScale.Y, result.Location.Z);
+                mDummy.Position = new Vector3(result.Location.X, result.Location.Y, result.Location.Z);
 
             }
             else
@@ -149,7 +148,7 @@ namespace MapEditor
         public void Render()
         {
             InanimateModel temp = new InanimateModel(mDummy.Model);
-            temp.Render(mDummy.Position, Matrix.CreateFromYawPitchRoll(mDummy.Orientation.X, mDummy.Orientation.Y, mDummy.Orientation.Z), mDummy.Scale);
+            temp.Render(new Vector3(mDummy.Position.X, mDummy.Position.Y + mDummy.Height * GameMapEditor.MapScale.Y, mDummy.Position.Z), Matrix.CreateFromYawPitchRoll(mDummy.Orientation.X, mDummy.Orientation.Y, mDummy.Orientation.Z), mDummy.Scale);
         }
 
     }

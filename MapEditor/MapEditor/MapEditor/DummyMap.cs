@@ -111,6 +111,7 @@ namespace MapEditor
         public void AddObject()
         {
             GameMapEditor.Dummy.Position = GameMapEditor.Position;
+            GameMapEditor.Dummy.Parameters = GameMapEditor.Parameters.GetParameters().ToArray<string>();
             Add(new DummyObject(GameMapEditor.Dummy));
         }
 
@@ -119,7 +120,7 @@ namespace MapEditor
             List<DummyObject> selected = new List<DummyObject>();
             foreach (DummyObject obj in mDummies)
             {
-                Vector3 cameraCoordinate = Vector3.Transform(obj.Position, GameMapEditor.Camera.ViewTransform * GameMapEditor.Camera.ProjectionTransform);
+                Vector3 cameraCoordinate = Vector3.Transform(new Vector3(obj.Position.X, obj.Position.Y + obj.Height * GameMapEditor.MapScale.Y, obj.Position.Z), GameMapEditor.Camera.ViewTransform * GameMapEditor.Camera.ProjectionTransform);
                 Vector2 screenCoordinate = new Vector2(cameraCoordinate.X + GameMapEditor.Viewport.Width / 2, GameMapEditor.Viewport.Height / 2 - cameraCoordinate.Y );
                 if (screenCoordinate.X > topLeft.X && screenCoordinate.X < bottomRight.X &&
                     screenCoordinate.Y > topLeft.Y && screenCoordinate.Y < bottomRight.Y)
@@ -178,7 +179,7 @@ namespace MapEditor
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X / GameMapEditor.MapScale.X, (obj.Position.Y + obj.Height) / GameMapEditor.MapScale.Y, obj.Position.Z / GameMapEditor.MapScale.Z);
+                obj.Position = new Vector3(obj.Position.X / GameMapEditor.MapScale.X, obj.Position.Y / GameMapEditor.MapScale.Y + obj.Height, obj.Position.Z / GameMapEditor.MapScale.Z);
                 obj.Scale = new Vector3(obj.Scale.X / GameMapEditor.MapScale.X, obj.Scale.Y / GameMapEditor.MapScale.Y, obj.Scale.Z / GameMapEditor.MapScale.Z);
             }
 
@@ -187,7 +188,7 @@ namespace MapEditor
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X * GameMapEditor.MapScale.X, (obj.Position.Y - obj.Height) * GameMapEditor.MapScale.Y, obj.Position.Z * GameMapEditor.MapScale.Z);
+                obj.Position = new Vector3(obj.Position.X * GameMapEditor.MapScale.X, obj.Position.Y * GameMapEditor.MapScale.Y - obj.Height, obj.Position.Z * GameMapEditor.MapScale.Z);
                 obj.Scale = new Vector3(obj.Scale.X * GameMapEditor.MapScale.X, obj.Scale.Y * GameMapEditor.MapScale.Y, obj.Scale.Z * GameMapEditor.MapScale.Z);
             }
 
@@ -207,7 +208,7 @@ namespace MapEditor
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X * GameMapEditor.MapScale.X, (obj.Position.Y - obj.Height) * GameMapEditor.MapScale.Y, obj.Position.Z * GameMapEditor.MapScale.Z);
+                obj.Position = new Vector3(obj.Position.X * GameMapEditor.MapScale.X, obj.Position.Y * GameMapEditor.MapScale.Y - obj.Height, obj.Position.Z * GameMapEditor.MapScale.Z);
                 obj.Scale = new Vector3(obj.Scale.X * GameMapEditor.MapScale.X, obj.Scale.Y * GameMapEditor.MapScale.Y, obj.Scale.Z * GameMapEditor.MapScale.Z);
             }
 
@@ -220,17 +221,15 @@ namespace MapEditor
             mSmoothMode = mSmooth.Active;
             mFlattenMode = mFlatten.Active;
 
-            if (GameMapEditor.EditMode == Edit.Height)
+            foreach (DummyObject obj in mDummies)
             {
-                foreach (DummyObject obj in mDummies)
-                {
-                    // Adjust each to the new height based on terrain modifications
-                    Ray ray = new Ray(new Vector3(obj.Position.X, 1000.0f, obj.Position.Z), new Vector3(0, -1, 0));
-                    RayHit result;
-                    mTerrainPhysics.StaticCollidable.RayCast(ray, length, out result);
-                    obj.Position = result.Location;
-                }
+                // Adjust each to the new height based on terrain modifications
+                Ray ray = new Ray(new Vector3(obj.Position.X, 1000.0f, obj.Position.Z), new Vector3(0, -1, 0));
+                RayHit result;
+                mTerrainPhysics.StaticCollidable.RayCast(ray, length, out result);
+                obj.Position = result.Location;
             }
+            
 
         }
 

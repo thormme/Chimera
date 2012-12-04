@@ -58,7 +58,7 @@ namespace MapEditor
 
             base.Initialize();
 
-            GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
+            GraphicsManager.CelShading = GraphicsManager.CelShaded.Models;
             GraphicsManager.CastingShadows = true;
 
             GameMapEditor.Viewport = GraphicsDevice.Viewport;

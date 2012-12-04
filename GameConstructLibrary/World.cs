@@ -151,9 +151,9 @@ namespace GameConstructLibrary
                     Quaternion objectOrientation = Quaternion.CreateFromYawPitchRoll(dummy.Orientation.X, dummy.Orientation.Y, dummy.Orientation.Z);
                     object[] parameters = new object[5];
                     parameters[0] = dummy.Model;
-                    parameters[1] = (dummy.Position * scale) + position;
+                    parameters[1] = Vector3.Multiply(dummy.Position, scale) + position;
                     parameters[2] = objectOrientation * orientation;
-                    parameters[3] = dummy.Scale * scale;
+                    parameters[3] = Vector3.Multiply(dummy.Scale, scale);
                     parameters[4] = dummy.Parameters;
                     object obj = Activator.CreateInstance(type, parameters);
 
