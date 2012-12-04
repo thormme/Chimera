@@ -29,7 +29,7 @@ namespace finalProject.Creatures
                 new RhinoHead()                                 // Part
                 )
         {
-            Scale = new Vector3(0.02f);
+            Scale = new Vector3(1.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()

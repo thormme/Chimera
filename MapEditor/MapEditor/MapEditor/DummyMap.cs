@@ -24,7 +24,6 @@ namespace MapEditor
     public class DummyMap
     {
 
-        private Vector3 scale = new Vector3(8.0f, 0.25f, 8.0f);
         private const float length = 2000.0f;
         private const float moveSpeed = 0.1f;
         private const float scaleSpeed = 1.05f;
@@ -54,7 +53,7 @@ namespace MapEditor
             mName = "default";
 
             mHeightMap = GraphicsManager.LookupTerrainHeightMap("default");
-            mTerrainPhysics = new TerrainPhysics("default", new Vector3(0, 0, 0), new Quaternion(), scale);
+            mTerrainPhysics = new TerrainPhysics("default", new Vector3(0, 0, 0), new Quaternion(), GameMapEditor.MapScale);
 
             mDummies = new List<DummyObject>();
 
@@ -72,7 +71,7 @@ namespace MapEditor
         {
             mName = copy.mName;
             mHeightMap = new TerrainHeightMap(copy.mHeightMap);
-            mTerrainPhysics = new TerrainPhysics(mName, new Vector3(0, 0, 0), new Quaternion(), scale);
+            mTerrainPhysics = new TerrainPhysics(mName, new Vector3(0, 0, 0), new Quaternion(), GameMapEditor.MapScale);
             mDummies = new List<DummyObject>();
             foreach (DummyObject obj in copy.mDummies)
             {
@@ -95,17 +94,8 @@ namespace MapEditor
 
         public void ModifyVertices(Vector3 position)
         {
-            HeightEditorDialog tempDialog = GameMapEditor.Dialog as HeightEditorDialog;
-            int size;
-            int intensity;
-            bool feather;
-            bool set;
-            if (tempDialog.GetHeight(out size, out intensity, out feather, out set))
-            {
-                mHeightMap.ModifyVertices(position, size, intensity, feather, set, mInverseMode, mSmoothMode, mFlattenMode);
-            }
-
-            mTerrainPhysics = new TerrainPhysics(mName, new Vector3(0, 0, 0), new Quaternion(), scale);
+            mHeightMap.ModifyVertices(position, GameMapEditor.Size, GameMapEditor.Intensity, GameMapEditor.Feather, GameMapEditor.Set, mInverseMode, mSmoothMode, mFlattenMode);
+            mTerrainPhysics = new TerrainPhysics(mName, new Vector3(0, 0, 0), new Quaternion(), GameMapEditor.MapScale);
         }
 
         private void Add(DummyObject obj)
@@ -120,13 +110,9 @@ namespace MapEditor
 
         public void AddObject(Vector3 position)
         {
-            ObjectEditorDialog tempDialog = GameMapEditor.Dialog as ObjectEditorDialog;
-            DummyObject tempObject = new DummyObject();
-            if (tempDialog.GetObject(out tempObject))
-            {
-                tempObject.Position = position;
-                Add(new DummyObject(tempObject));
-            }
+            GameMapEditor.Dummy.Position = position;
+            Add(new DummyObject(GameMapEditor.Dummy));
+            Console.WriteLine(GameMapEditor.Dummy.Height);
         }
 
         public List<DummyObject> Select(Vector2 topLeft, Vector2 bottomRight)
@@ -180,10 +166,8 @@ namespace MapEditor
         {
             foreach (DummyObject obj in selected)
             {
-                Matrix rotation;
-                if (direction) rotation = Matrix.CreateRotationY(rotateSpeed);
-                else rotation = Matrix.CreateRotationY(-rotateSpeed);
-                obj.Orientation = Vector3.Transform(obj.Orientation, rotation);
+                if (direction) obj.Orientation = new Vector3(obj.Orientation.X + rotateSpeed, obj.Orientation.Y, obj.Orientation.Z);
+                else obj.Orientation = new Vector3(obj.Orientation.X - rotateSpeed, obj.Orientation.Y, obj.Orientation.Z);
             }
         }
 
@@ -195,8 +179,8 @@ namespace MapEditor
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X / scale.X, (obj.Position.Y + obj.Height) / scale.Y, obj.Position.Z / scale.Z);
-                obj.Scale = new Vector3(obj.Scale.X / scale.X, obj.Scale.Y / scale.Y, obj.Scale.Z / scale.Z);
+                obj.Position = new Vector3(obj.Position.X / GameMapEditor.MapScale.X, (obj.Position.Y + obj.Height) / GameMapEditor.MapScale.Y, obj.Position.Z / GameMapEditor.MapScale.Z);
+                obj.Scale = new Vector3(obj.Scale.X / GameMapEditor.MapScale.X, obj.Scale.Y / GameMapEditor.MapScale.Y, obj.Scale.Z / GameMapEditor.MapScale.Z);
             }
 
             // Save the rest of the level
@@ -204,8 +188,8 @@ namespace MapEditor
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X * scale.X, (obj.Position.Y - obj.Height) * scale.Y, obj.Position.Z * scale.Z);
-                obj.Scale = new Vector3(obj.Scale.X * scale.X, obj.Scale.Y * scale.Y, obj.Scale.Z * scale.Z);
+                obj.Position = new Vector3(obj.Position.X * GameMapEditor.MapScale.X, (obj.Position.Y - obj.Height) * GameMapEditor.MapScale.Y, obj.Position.Z * GameMapEditor.MapScale.Z);
+                obj.Scale = new Vector3(obj.Scale.X * GameMapEditor.MapScale.X, obj.Scale.Y * GameMapEditor.MapScale.Y, obj.Scale.Z * GameMapEditor.MapScale.Z);
             }
 
         }
@@ -217,15 +201,15 @@ namespace MapEditor
 
             // Load the height map
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(file);
-            mTerrainPhysics = new TerrainPhysics(file, new Vector3(0, 0, 0), new Quaternion(), scale);
+            mTerrainPhysics = new TerrainPhysics(file, new Vector3(0, 0, 0), new Quaternion(), GameMapEditor.MapScale);
 
            // Load the rest of the level
             mDummies = LevelManager.Load(file);
 
             foreach (DummyObject obj in mDummies)
             {
-                obj.Position = new Vector3(obj.Position.X * scale.X, (obj.Position.Y - obj.Height) * scale.Y, obj.Position.Z * scale.Z);
-                obj.Scale = new Vector3(obj.Scale.X * scale.X, obj.Scale.Y * scale.Y, obj.Scale.Z * scale.Z);
+                obj.Position = new Vector3(obj.Position.X * GameMapEditor.MapScale.X, (obj.Position.Y - obj.Height) * GameMapEditor.MapScale.Y, obj.Position.Z * GameMapEditor.MapScale.Z);
+                obj.Scale = new Vector3(obj.Scale.X * GameMapEditor.MapScale.X, obj.Scale.Y * GameMapEditor.MapScale.Y, obj.Scale.Z * GameMapEditor.MapScale.Z);
             }
 
         }
@@ -237,13 +221,16 @@ namespace MapEditor
             mSmoothMode = mSmooth.Active;
             mFlattenMode = mFlatten.Active;
 
-            foreach (DummyObject obj in mDummies)
+            if (GameMapEditor.EditMode == Edit.Height)
             {
-                // Adjust each to the new height based on terrain modifications
-                Ray ray = new Ray(new Vector3(obj.Position.X, 1000.0f, obj.Position.Z), new Vector3(0, -1, 0));
-                RayHit result;
-                mTerrainPhysics.StaticCollidable.RayCast(ray, length, out result);
-                obj.Position = result.Location;
+                foreach (DummyObject obj in mDummies)
+                {
+                    // Adjust each to the new height based on terrain modifications
+                    Ray ray = new Ray(new Vector3(obj.Position.X, 1000.0f, obj.Position.Z), new Vector3(0, -1, 0));
+                    RayHit result;
+                    mTerrainPhysics.StaticCollidable.RayCast(ray, length, out result);
+                    obj.Position = result.Location;
+                }
             }
 
         }
@@ -254,7 +241,7 @@ namespace MapEditor
             foreach (DummyObject obj in mDummies)
             {
                 InanimateModel model = new InanimateModel(obj.Model);
-                model.Render(new Vector3(obj.Position.X, obj.Position.Y + obj.Height * scale.Y, obj.Position.Z), 
+                model.Render(new Vector3(obj.Position.X, obj.Position.Y + obj.Height * GameMapEditor.MapScale.Y, obj.Position.Z), 
                                          Matrix.CreateFromYawPitchRoll(obj.Orientation.X, obj.Orientation.Y, obj.Orientation.Z), 
                                          obj.Scale);
             }

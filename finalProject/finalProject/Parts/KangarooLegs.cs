@@ -50,7 +50,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.2f, 0.2f, 0.2f)
+                        new Vector3(1.0f)
                     ),
                     new SubPart(
                         new AnimateModel("kangaroo_rightLeg", "walk"),
@@ -64,7 +64,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.2f, 0.2f, 0.2f)
+                        new Vector3(1.0f)
                     )
                 }
             )

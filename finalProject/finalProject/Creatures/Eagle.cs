@@ -15,21 +15,21 @@ namespace finalProject.Creatures
         public Eagle(Vector3 position)
             : base(
                 position,
-                3.0f,                                           // Height
-                2.0f,                                           // Radius
-                4.0f,                                           // Mass
-                CreatureConstants.EagleSensitivityRadius,       // Sensitivity Radius
-                new EagleAI(),                                  // AI
-                new InanimateModel("eagle_glide"),              // Model
-                135,                                            // Vision Angle
-                CreatureConstants.EagleListeningSensitivity,    // Listening Sensitivity
+                3.0f,                                   // Height
+                2.0f,                                   // Radius
+                4.0f,                                   // Mass
+                20.0f,                                  // Sensitivity Radius
+                new EagleAI(),                     // AI
+                new AnimateModel("eagle", "stand"),              // Model
+                135,                                    // Vision Angle
+				CreatureConstants.EagleListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.EagleSneak,                   // Sneak
                 CreatureConstants.EagleIntimidation,            // Intimidation
                 CreatureConstants.EagleStartingHealth,		    // Starting Health
-                new EagleWings()                                // Part
+                new EagleWings()                          // Part
                 )
         {
-            Scale = new Vector3(0.02f);
+            Scale = new Vector3(4.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -42,7 +42,7 @@ namespace finalProject.Creatures
 
         public override void Update(GameTime gameTime)
         {
-            //(mRenderable as AnimateModel).Update(gameTime);
+            (mRenderable as AnimateModel).Update(gameTime);
             base.Update(gameTime);
         }
     }

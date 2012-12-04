@@ -36,7 +36,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(1.0f, 1.0f, 1.0f)
+                        new Vector3(4.0f)
                     ),
                     new SubPart(
                         new AnimateModel("eagle_rightWing", "flap_air"),
@@ -47,7 +47,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(1.0f, 1.0f, 1.0f)
+                        new Vector3(4.0f)
                     )
                 }
             )

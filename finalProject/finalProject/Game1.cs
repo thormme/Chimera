@@ -96,6 +96,9 @@ namespace finalProject
 
             GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
+            
+            creature = new Eagle(new Vector3(0.0f, 1.0f, -20.0f));
+            world.Add(creature);
 
             world.AddLevelFromFile("animal_test", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
 

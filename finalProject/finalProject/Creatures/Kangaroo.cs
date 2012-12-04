@@ -29,7 +29,6 @@ namespace finalProject.Creatures
                 new KangarooLegs()                              // Part
                 )
         {
-            Scale = new Vector3(0.02f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
