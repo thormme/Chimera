@@ -14,10 +14,13 @@ using Microsoft.Xna.Framework.Input;
 namespace MapEditor
 {
 
-    public enum States { None, Height, Object, New, Save, Load };
+    public enum Edit { None, Height, Object };
+    public enum States { None, Height, Object, Parameters, New, Save, Load };
 
     public static class GameMapEditor
     {
+
+        public static Vector3 MapScale = new Vector3(8.0f, 0.25f, 8.0f);
 
         public static InputManager Input;
         public static GuiManager GUI;
@@ -27,13 +30,26 @@ namespace MapEditor
         public static FPSCamera Camera;
 
         public static States CurrentState;
-        public static Boolean EditMode;
+        public static Edit EditMode;
+        
         public static Dialog Dialog;
+        public static Dialog Parameters = new ParametersDialog(new List<string>());
 
         public static Boolean Displayed;
         public static Dialog Reminder;
 
         public static Boolean Placeable;
+
+        // Placing properties
+        public static int Size;
+        public static int Intensity;
+        public static bool Feather;
+        public static bool Set;
+
+        public static DummyObject Dummy;
+
+        //public static 
+
         public static Vector3 Position;
 
         public static DummyMap Map;
@@ -52,7 +68,15 @@ namespace MapEditor
 
             // Add dialog to windows
             ToggleState(States.None);
-            EditMode = false;
+            EditMode = Edit.None;
+
+            Size = 0;
+            Intensity = 0;
+            Feather = false;
+            Set = false;
+
+            Dummy = new DummyObject();
+            Dummy.Parameters = new string[0];
 
             // Create default dummy map
             Map = new DummyMap(100, 100);
@@ -93,6 +117,12 @@ namespace MapEditor
                 CurrentState = States.Object;
                 Dialog = new ObjectEditorDialog();
             }
+            else if (state == States.Parameters)
+            {
+                CurrentState = States.Parameters;
+                Parameters = new ParametersDialog(Dummy.Parameters.ToList<string>());
+                Screen.Desktop.Children.Add(Parameters);
+            }
             else if (state == States.New)
             {
                 CurrentState = States.New;
@@ -105,204 +135,4 @@ namespace MapEditor
             }
             else if (state == States.Load)
             {
-                CurrentState = States.Load;
-                Dialog = new LoadMapDialog();
-            }
-
-            Screen.Desktop.Children.Add(Dialog);
-
-        }
-
-        public static void ToggleReminder()
-        {
-            if (Displayed) Reminder.Hide();
-            else Reminder.Show();
-            Displayed = !Displayed;
-        }
-
-        public static void Pressed()
-        {
-
-            Editor.AddState(Map);
-
-            if (EditMode)
-            {
-
-                if (CurrentState == States.None)
-                {
-                    MouseState mouse = Mouse.GetState();
-                    SelectClick = new Vector2(mouse.X, mouse.Y);
-                    SelectRelease = new Vector2(mouse.X, mouse.Y);
-                }
-
-                if (Placeable)
-                {
-                    if (CurrentState == States.Object)
-                    {
-                        Map.AddObject(Position);
-                    }
-                }
-            }
-            else
-            {
-                MouseState mouse = Mouse.GetState();
-                SelectClick = new Vector2(mouse.X, mouse.Y);
-                SelectRelease = new Vector2(mouse.X, mouse.Y);
-            }
-        }
-
-        public static void Hold()
-        {
-            if (EditMode)
-            {
-
-                if (CurrentState == States.None)
-                {
-                    MouseState mouse = Mouse.GetState();
-                    SelectRelease = new Vector2(mouse.X, mouse.Y);
-                }
-
-                if (Placeable)
-                {
-                    if (CurrentState == States.Height)
-                    {
-                        Map.ModifyVertices(Position);
-                    }
-                }
-            }
-            else
-            {
-                MouseState mouse = Mouse.GetState();
-                SelectRelease = new Vector2(mouse.X, mouse.Y);
-            }
-
-        }
-
-        public static void Released()
-        {
-            if (EditMode)
-            {
-
-                if (CurrentState == States.None)
-                {
-                    SelectClick = new Vector2(0.0f, 0.0f);
-                    SelectRelease = new Vector2(0.0f, 0.0f);
-                    Selected = Map.Select(TopLeft, BottomRight);
-                }
-            }
-            else
-            {
-                SelectClick = new Vector2(0.0f, 0.0f);
-                SelectRelease = new Vector2(0.0f, 0.0f);
-                Selected = Map.Select(TopLeft, BottomRight);
-            }
-        }
-
-        public static void ToggleEditMode()
-        {
-            EditMode = !EditMode;
-            if (EditMode)
-            {
-                Dialog.Hide();
-                if (CurrentState == States.Object)
-                {
-                    ObjectEditorDialog tempDialog = Dialog as ObjectEditorDialog;
-                    tempDialog.EnableParameters();
-                }
-            }
-            else
-            {
-                Dialog.Show();
-                if (CurrentState == States.Object)
-                {
-                    ObjectEditorDialog tempDialog = Dialog as ObjectEditorDialog;
-                    tempDialog.DisableParameters();
-                }
-            }
-        }
-
-        public static void Delete()
-        {
-            Map.Delete(Selected);
-        }
-
-        public static void Move(Vector3 movement)
-        {
-            Map.Move(Selected, movement);
-        }
-
-        public static void Scale(Boolean direction)
-        {
-            Map.Scale(Selected, direction);
-        }
-
-        public static void Rotate(Boolean direction)
-        {
-            Map.Rotate(Selected, direction);
-        }
-
-        private static void MakeBox()
-        {
-            TopLeft = SelectClick;
-            BottomRight = SelectClick;
-
-            if (SelectClick.X < SelectRelease.X)
-            {
-                TopLeft.X = SelectClick.X;
-                BottomRight.X = SelectRelease.X;
-            }
-            else
-            {
-                TopLeft.X = SelectRelease.X;
-                BottomRight.X = SelectClick.X;
-            }
-
-            if (SelectClick.Y < SelectRelease.Y)
-            {
-                TopLeft.Y = SelectClick.Y;
-                BottomRight.Y = SelectRelease.Y;
-            }
-            else
-            {
-                TopLeft.Y = SelectRelease.Y;
-                BottomRight.Y = SelectClick.Y;
-            }
-
-            Rectangle = new Rectangle((int)TopLeft.X,
-                                      (int)TopLeft.Y,
-                                      (int)(BottomRight.X - TopLeft.X),
-                                      (int)(BottomRight.Y - TopLeft.Y));
-        }
-
-        public static void Update(GameTime gameTime)
-        {
-            Map.Update(gameTime);
-            Entity.Update(gameTime);
-            Editor.Update(gameTime);
-            MakeBox();
-        }
-
-        public static void Render()
-        {
-            Map.Render();
-            Entity.Render();
-        }
-
-        public static void RenderBox(GraphicsDevice graphics, SpriteBatch sprites)
-        {
-
-            if (Rectangle.Width > 0 && Rectangle.Height > 0)
-            {
-                
-                Texture2D texture = new Texture2D(graphics, Rectangle.Width, Rectangle.Height);
-                Color[] data = new Color[Rectangle.Width * Rectangle.Height];
-                for (int count = 0; count < data.Length; count++) data[count] = new Color(0.5f, 0.5f, 0.5f, 0.5f);
-                texture.SetData(data);
-                sprites.Begin();
-                sprites.Draw(texture, TopLeft, new Color(0.5f, 0.5f, 0.5f, 0.5f));
-                sprites.End();
-            }
-        }
-
-    }
-}
+                CurrentState = Stat

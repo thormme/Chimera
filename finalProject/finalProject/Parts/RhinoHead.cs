@@ -23,15 +23,15 @@ namespace finalProject.Parts
                 2.0,
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("rhino_head_walk"),
+                        new AnimateModel("rhino_head", "charge"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.HeadCenterCap,
                             Creature.PartBone.HeadLeftCap,
                             Creature.PartBone.HeadRightCap
                         },
-                        new Vector3(50.0f, 50.0f, 0.0f),
+                        new Vector3(0.0f),
                         Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, -MathHelper.PiOver4, 0),
-                        new Vector3(1.0f, 1.0f, 1.0f)
+                        new Vector3(4.0f)
                     )
                 }
             )
@@ -41,7 +41,10 @@ namespace finalProject.Parts
 
         public override void Update(GameTime time)
         {
-            //(mRenderable as AnimateModel).Update(time);
+            foreach (SubPart part in SubParts)
+            {
+                (part.Renderable as AnimateModel).Update(time);
+            }
 
             if (mAttackTimer > 0.0f)
             {

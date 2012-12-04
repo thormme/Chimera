@@ -17,8 +17,6 @@ namespace MapEditor
     public class MapEditorEntity
     {
 
-        private Vector3 scale = new Vector3(8.0f, 0.25f, 8.0f);
-
         private const float speed = 0.1f;
         private const float sensitivity = 0.1f;
         private const float length = 2000.0f;
@@ -39,10 +37,8 @@ namespace MapEditor
         private Vector3 mMovement;
         private Vector3 mDirection;
 
-        private InanimateModel mModel;
-        private Vector3 mPosition;
-        private Vector3 mScale;
-        private Vector3 mOrientation;
+        
+        private DummyObject mDummy;
 
         public MapEditorEntity()
         {
@@ -63,10 +59,11 @@ namespace MapEditor
             mMovement = new Vector3(0.0f, 0.0f, 0.0f);
             mDirection = new Vector3(0.0f, 0.0f, 0.0f);
 
-            mModel = new InanimateModel("editor");
-            mPosition = new Vector3(0.0f, 0.0f, 0.0f);
-            mScale = new Vector3(1.0f, 1.0f, 1.0f);
-            mOrientation = new Vector3(0.0f, 0.0f, 1.0f);
+            mDummy = new DummyObject();
+            mDummy.Model = "editor";
+            mDummy.Position = new Vector3(0.0f, 0.0f, 0.0f);
+            mDummy.Scale = new Vector3(1.0f, 1.0f, 1.0f);
+            mDummy.Orientation = new Vector3(0.0f, 0.0f, 0.0f);
 
         }
 
@@ -81,9 +78,6 @@ namespace MapEditor
 
             GameMapEditor.Camera.Move(speed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds, speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds, 0.0f);
             GameMapEditor.Camera.RotateAroundSelf(sensitivity * mDirection.X * gameTime.ElapsedGameTime.Milliseconds, sensitivity * mDirection.Y * gameTime.ElapsedGameTime.Milliseconds, 0.0f);
-            //GameMapEditor.Camera.MoveRight(speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds);
-            //GameMapEditor.Camera.RotatePitch(sensitivity * mDirection.Y * gameTime.ElapsedGameTime.Milliseconds);
-            //GameMapEditor.Camera.RotateYaw(sensitivity * mDirection.X * gameTime.ElapsedGameTime.Milliseconds);
 
         }
 
@@ -133,30 +127,10 @@ namespace MapEditor
             {
 
                 GameMapEditor.Placeable = true;
-                GameMapEditor.Position = mPosition;
+                GameMapEditor.Position = mDummy.Position;
 
+                mDummy.Position = new Vector3(result.Location.X, result.Location.Y + mDummy.Height * GameMapEditor.MapScale.Y, result.Location.Z);
 
-                if (GameMapEditor.CurrentState == States.Height)
-                {
-                    HeightEditorDialog tempDialog = GameMapEditor.Dialog as HeightEditorDialog;
-                    mModel = new InanimateModel("editor");
-                    mPosition = result.Location;
-                    Vector3 tempScale = new Vector3(tempDialog.GetScale());
-                    mScale = new Vector3(tempScale.X * scale.X, tempScale.Y * scale.Y, tempScale.Z * scale.Z);
-                    mOrientation = new Vector3(0.0f, 0.0f, 0.0f);
-                }
-                else if (GameMapEditor.CurrentState == States.Object)
-                {
-                    ObjectEditorDialog tempDialog = GameMapEditor.Dialog as ObjectEditorDialog;
-                    DummyObject tempObject = new DummyObject();
-                    if (tempDialog.GetObject(out tempObject))
-                    {
-                        mModel = new InanimateModel(tempObject.Model);
-                        mPosition = new Vector3(result.Location.X, result.Location.Y + tempObject.Height * scale.Y, result.Location.Z);
-                        mScale = tempObject.Scale;
-                        mOrientation = tempObject.Orientation;
-                    }
-                }
             }
             else
             {
@@ -164,13 +138,19 @@ namespace MapEditor
                 GameMapEditor.Position = new Vector3(0.0f, 0.0f, 0.0f);
             }
 
-            if (!GameMapEditor.EditMode) mPosition = new Vector3(0.0f, 10000.0f, 0.0f);
+            if (GameMapEditor.EditMode == Edit.None) mDummy.Position = new Vector3(0.0f, 10000.0f, 0.0f);
 
+        }
+
+        public void SetModel(DummyObject obj)
+        {
+            mDummy = obj;
         }
 
         public void Render()
         {
-            mModel.Render(mPosition, Matrix.CreateFromYawPitchRoll(mOrientation.X, mOrientation.Y, mOrientation.Z), mScale);
+            InanimateModel temp = new InanimateModel(mDummy.Model);
+            temp.Render(GameMapEditor.Position, Matrix.CreateFromYawPitchRoll(mDummy.Orientation.X, mDummy.Orientation.Y, mDummy.Orientation.Z), mDummy.Scale);
         }
 
     }

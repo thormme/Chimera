@@ -15,10 +15,8 @@ namespace GraphicsLibrary
 
         private string          mModelName;
         private string          mAnimationName;
-        private Dictionary<string, AnimationPlayer> mAnimationPlayerDatabase;
-        private Dictionary<string, SkinningData>    mSkinningDataDatabase;
-
-        string mBakedAnimationName = "Take 001";
+        private AnimationPlayer mAnimationPlayer;
+        private SkinningData    mSkinningData;
 
         #endregion
 
@@ -31,7 +29,7 @@ namespace GraphicsLibrary
         {
             get
             {
-                return mSkinningDataDatabase[mAnimationName];
+                return mSkinningData;
             }
         }
 
@@ -42,7 +40,7 @@ namespace GraphicsLibrary
         {
             get
             {
-                return mAnimationPlayerDatabase[mAnimationName];
+                return mAnimationPlayer;
             }
         }
 
@@ -55,9 +53,14 @@ namespace GraphicsLibrary
         {
             mModelName = modelName;
 
-            mAnimationPlayerDatabase = new Dictionary<string, GraphicsLibrary.AnimationPlayer>();
-            mSkinningDataDatabase    = new Dictionary<string, GraphicsLibrary.SkinningData>();
-            
+            mSkinningData = GraphicsManager.LookupModelSkinningData(mModelName + mAnimationName);
+            if (mSkinningData == null)
+            {
+                throw new Exception("This model does not contain skinningData.");
+            }
+
+            mAnimationPlayer = new AnimationPlayer(mSkinningData);
+
             PlayAnimation(defaultAnimation, false);
         }
 
@@ -72,7 +75,8 @@ namespace GraphicsLibrary
                 throw new Exception(mModelName + " does not contain bone: " + boneName);
             }
 
-            return GraphicsManager.LookupTweakedBoneOrientation(mModelName, boneName) * AnimationPlayer.GetWorldTransforms()[boneIndex];
+            //return GraphicsManager.LookupTweakedBoneOrientation(mModelName, boneName) * AnimationPlayer.GetWorldTransforms()[boneIndex];
+            return AnimationPlayer.GetWorldTransforms()[boneIndex];
         }
 
         /// <summary>
@@ -81,30 +85,12 @@ namespace GraphicsLibrary
         /// <param name="animationName">Name of the current animation.</param>
         public void PlayAnimation(string animationName, bool isSaturated)
         {
-            string fullAnimationName = "_" + animationName;
-
-            if (fullAnimationName != mAnimationName)
+            if (animationName != mAnimationName)
             {
-                mAnimationName = fullAnimationName;
-
-                // Create new skinning data
-                if (!mSkinningDataDatabase.ContainsKey(mAnimationName))
-                {
-                    SkinningData skinningData = GraphicsManager.LookupModelSkinningData(mModelName + mAnimationName);
-                    if (skinningData == null)
-                    {
-                        throw new Exception("This model does not contain skinningData.");
-                    }
-
-                    mSkinningDataDatabase.Add(mAnimationName, skinningData);
-
-                    mAnimationPlayerDatabase.Add(mAnimationName, new AnimationPlayer(skinningData));
-                }
-
                 AnimationClip clip;
-                if (!SkinningData.AnimationClips.TryGetValue(mBakedAnimationName, out clip))
+                if (!SkinningData.AnimationClips.TryGetValue(animationName, out clip))
                 {
-                    throw new InvalidTimeZoneException(mBakedAnimationName + " is not a valid animation for " + mModelName + "_" + mAnimationName + ".");
+                    throw new InvalidTimeZoneException(animationName + " is not a valid animation for " + mModelName);
                 }
 
                 AnimationPlayer.StartClip(clip, isSaturated);
@@ -127,7 +113,7 @@ namespace GraphicsLibrary
         protected override void Draw(Matrix worldTransform)
         {
             Matrix[] skinTransforms = AnimationPlayer.GetSkinTransforms();
-            GraphicsManager.RenderSkinnedModel(mModelName + mAnimationName, skinTransforms, worldTransform);
+            GraphicsManager.RenderSkinnedModel(mModelName, skinTransforms, worldTransform);
         }
 
         #endregion

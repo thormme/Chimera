@@ -18,7 +18,7 @@ namespace finalProject.Parts
                 5.0f,
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("lizard_head", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.HeadCenterCap, 
                             Creature.PartBone.HeadLeftCap,
@@ -26,7 +26,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.25f, 0.25f, 0.25f)
+                        new Vector3(4.0f)
                     )
                 }
             )
@@ -48,6 +48,15 @@ namespace finalProject.Parts
                 Creature.Intimidation -= IntimidationIncrease;
                 Active = false;
             }
+        }
+
+        public override void Update(GameTime time)
+        {
+            foreach (SubPart part in SubParts)
+            {
+                (part.Renderable as AnimateModel).Update(time);
+            }
+            base.Update(time);
         }
     }
 }

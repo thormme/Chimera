@@ -89,7 +89,7 @@ namespace finalProject
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
             : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
         {
-            Scale = new Vector3(0.0028f);
+            Scale = new Vector3(4.0f);
             Forward = facingDirection;
 
             Intimidation = DefaultIntimidation;
@@ -220,7 +220,7 @@ namespace finalProject
 
         protected override Matrix GetRenderTransform()
         {
-            return Matrix.CreateFromYawPitchRoll(MathHelper.Pi, 0, 0) * base.GetRenderTransform() * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
+            return Matrix.CreateFromYawPitchRoll(0, 0, 0) * base.GetRenderTransform() * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
         }
         #endregion
 
