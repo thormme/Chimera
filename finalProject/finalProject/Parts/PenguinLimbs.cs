@@ -50,7 +50,6 @@ namespace finalProject.Parts
         {
             mHasTraction = false;
             Creature.CharacterController.SupportFinder.MaximumSlope = 0.0f;
-            Console.WriteLine(Creature.CharacterController.HorizontalMotionConstraint.MaximumAirForce);
         }
 
         public override void FinishUse(Vector3 direction)

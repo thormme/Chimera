@@ -483,7 +483,7 @@
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
-    <ItemGroup>
+  <ItemGroup>
     <Compile Include="models\eagle\eagle_leftWing_flap_air.FBX">
       <Name>eagle_leftWing_flap_air</Name>
       <Importer>FbxImporter</Importer>
@@ -533,6 +533,23 @@
       <Name>eagle_rightWing_walk</Name>
       <Importer>FbxImporter</Importer>
       <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\maps\level1_texture_high.tga">
+      <Name>level1_texture_high</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\maps\level1_texture_low.tga">
+      <Name>level1_texture_low</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\maps\level1_texture_medium.tga">
+      <Name>level1_texture_medium</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

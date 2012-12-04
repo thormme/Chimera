@@ -45,6 +45,16 @@ Content\models\tree\tree3.xnb
 Content\models\cactus\cactus1.xnb
 Content\models\cactus\cactus2.xnb
 Content\models\cactus\cactus3.xnb
+Content\models\eagle\eagle_leftWing_flap_air.xnb
+Content\models\eagle\eagle_leftWing_flap_ground.xnb
+Content\models\eagle\eagle_leftWing_glide.xnb
+Content\models\eagle\eagle_leftWing_stand.xnb
+Content\models\eagle\eagle_leftWing_walk.xnb
+Content\models\eagle\eagle_rightWing_flap_air.xnb
+Content\models\eagle\eagle_rightWing_flap_ground.xnb
+Content\models\eagle\eagle_rightWing_glide.xnb
+Content\models\eagle\eagle_rightWing_stand.xnb
+Content\models\eagle\eagle_rightWing_walk.xnb
 Content\shaders\ConfigurableShader.xnb
 Content\shaders\PostProcessing.xnb
 Content\levels\maps\default_texture_high.xnb
@@ -67,6 +77,9 @@ Content\levels\maps\test_boxes.xnb
 Content\levels\maps\test_boxes_high.xnb
 Content\levels\maps\test_boxes_low.xnb
 Content\levels\maps\test_boxes_medium.xnb
+Content\levels\maps\level1_texture_high.xnb
+Content\levels\maps\level1_texture_low.xnb
+Content\levels\maps\level1_texture_medium.xnb
 Content\models\parrot\eagle_texture_0.xnb
 Content\models\playerBean\playerBean_texture_0.xnb
 Content\models\dude\head_0.xnb

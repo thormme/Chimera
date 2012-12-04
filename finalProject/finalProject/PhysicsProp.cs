@@ -30,5 +30,19 @@ namespace finalProject
             XNAOrientationMatrix = Matrix.CreateFromQuaternion(orientation);
             Scale = scale;
         }
+
+                /// <summary>
+        /// Constructor for use by the World level loading.
+        /// </summary>
+        /// <param name="modelName">Name of the model.</param>
+        /// <param name="translation">The position.</param>
+        /// <param name="orientation">The orientation.</param>
+        /// <param name="scale">The amount to scale by.</param>
+        /// <param name="extraParameters">Extra parameters.</param>
+        public PhysicsProp(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, string[] extraParameters)
+            : this(modelName, translation, orientation, scale, Convert.ToSingle(extraParameters[0]))
+        {
+        }
+
     }
 }

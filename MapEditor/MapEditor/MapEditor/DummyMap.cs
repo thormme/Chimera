@@ -254,7 +254,9 @@ namespace MapEditor
             foreach (DummyObject obj in mDummies)
             {
                 InanimateModel model = new InanimateModel(obj.Model);
-                model.Render(new Vector3(obj.Position.X, obj.Position.Y + obj.Height * scale.Y, obj.Position.Z), obj.Orientation, obj.Scale);
+                model.Render(new Vector3(obj.Position.X, obj.Position.Y + obj.Height * scale.Y, obj.Position.Z), 
+                                         Matrix.CreateFromYawPitchRoll(obj.Orientation.X, obj.Orientation.Y, obj.Orientation.Z), 
+                                         obj.Scale);
             }
         }
 
