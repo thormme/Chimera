@@ -19,9 +19,9 @@ namespace finalProject.Creatures
                 2.0f,                            // Radius
                 6.0f,                            // Mass
                 20.0f,                           // Sensitivity Radius
-                new PassiveAI(),            // AI
-                new InanimateModel("cheetah"),   // Model
-                MathHelper.PiOver4,              // Vision Angle
+                new ActivationAI(),            // AI
+                new InanimateModel("box"),   // Model
+                135,              // Vision Angle
                 10,                              // Listening Sensitivity
                 8,                               // Sneak
                 4,                               // Intimidation

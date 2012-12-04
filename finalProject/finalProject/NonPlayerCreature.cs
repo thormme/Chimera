@@ -88,6 +88,7 @@ namespace finalProject
             if (Health < 0)
             {
                 Health = 0;
+                Move(Vector2.Zero);
                 mIncapacitated = true;
                 System.Console.WriteLine(this + " died.");
             }
