@@ -11,7 +11,7 @@ namespace finalProject.Parts
 {
     class PenguinLimbs : Part
     {
-        private const float speed = 20.0f;
+        private const float speed = 10.0f;
         private bool mHasTraction;
 
         public PenguinLimbs()
@@ -50,6 +50,7 @@ namespace finalProject.Parts
         {
             mHasTraction = false;
             Creature.CharacterController.SupportFinder.MaximumSlope = 0.0f;
+            Console.WriteLine(Creature.CharacterController.HorizontalMotionConstraint.MaximumAirForce);
         }
 
         public override void FinishUse(Vector3 direction)

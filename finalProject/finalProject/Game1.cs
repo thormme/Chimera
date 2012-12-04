@@ -148,6 +148,7 @@ namespace finalProject
                         if (entity.Tag is PlayerCreature)
                         {
                             (entity.Tag as PlayerCreature).Damage(100, null);
+                            (entity.Tag as PlayerCreature).AddPart(new FrogHead(), 1);
                         }
                     }
                 }
