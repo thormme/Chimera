@@ -15,18 +15,18 @@ namespace finalProject.Creatures
         public Frog(Vector3 position)
             : base(
                 position,
-                3.0f,                                   // Height
-                2.0f,                                   // Radius
-                2.0f,                                   // Mass
-                20.0f,                                  // Sensitivity Radius
-                new AggressiveAI(),                     // AI
-                new InanimateModel("box"),              // Model
-                135,                                    // Vision Angle
-                10,                                     // Listening Sensitivity
-                3,                                      // Sneak
-                2,                                      // Intimidation
-                100,								    // Starting Health
-                new FrogHead()                          // Part
+                3.0f,                                       // Height
+                2.0f,                                       // Radius
+                2.0f,                                       // Mass
+                CreatureConstants.FrogSensitivityRadius,    // Sensitivity Radius
+                new AggressiveAI(),                         // AI
+                new InanimateModel("box"),                  // Model
+                135,                                        // Vision Angle
+                CreatureConstants.FrogListeningSensitivity, // Listening Sensitivity
+                CreatureConstants.FrogSneak,                // Sneak
+                CreatureConstants.FrogIntimidation,         // Intimidation
+                CreatureConstants.FrogStartingHealth,		// Starting Health
+                new FrogHead()                              // Part
                 )
         {
             Scale = new Vector3(1.0f);

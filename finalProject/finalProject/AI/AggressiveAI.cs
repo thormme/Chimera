@@ -16,7 +16,7 @@ namespace finalProject.AI
             {
                 FleeOrder(mMostIntimidatingCreature);
             }
-            else if (mMostIntimidatingCreature != null && mMostIntimidatingCreature.Intimidation < mCreature.Intimidation)
+            else if (mMostIntimidatingCreature != null && mMostIntimidatingCreature.Intimidation <= mCreature.Intimidation)
             {
                 FollowOrder(mMostIntimidatingCreature);
             }

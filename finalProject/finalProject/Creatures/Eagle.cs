@@ -15,18 +15,18 @@ namespace finalProject.Creatures
         public Eagle(Vector3 position)
             : base(
                 position,
-                3.0f,                                   // Height
-                2.0f,                                   // Radius
-                4.0f,                                   // Mass
-                20.0f,                                  // Sensitivity Radius
-                new EagleAI(),                     // AI
-                new InanimateModel("box"),              // Model
-                180,                                    // Vision Angle
-                10,                                     // Listening Sensitivity
-                3,                                      // Sneak
-                3,                                      // Intimidation
-                100,								    // Starting Health
-                new EagleWings()                          // Part
+                3.0f,                                           // Height
+                2.0f,                                           // Radius
+                4.0f,                                           // Mass
+                CreatureConstants.EagleSensitivityRadius,       // Sensitivity Radius
+                new EagleAI(),                                  // AI
+                new InanimateModel("box"),                      // Model
+                135,                                            // Vision Angle
+                CreatureConstants.EagleListeningSensitivity,    // Listening Sensitivity
+                CreatureConstants.EagleSneak,                   // Sneak
+                CreatureConstants.EagleIntimidation,            // Intimidation
+                CreatureConstants.EagleStartingHealth,		    // Starting Health
+                new EagleWings()                                // Part
                 )
         {
             Scale = new Vector3(1.0f);

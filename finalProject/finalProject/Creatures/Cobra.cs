@@ -15,17 +15,17 @@ namespace finalProject.Creatures
         public Cobra(Vector3 position)
             : base(
                 position,
-                3.0f,                                   // Height
-                2.0f,                                   // Radius
-                10.0f,                                  // Mass
-                100.0f,                                  // Sensitivity Radius
-                new CobraAI(),                       // AI
-                new InanimateModel("box"),   // Model
-                135,                     // Vision Angle
-                10,                                     // Listening Sensitivity
-                3,                                      // Sneak
-                1,                                      // Intimidation
-                100,								        // Starting Health
+                3.0f,                                           // Height
+                2.0f,                                           // Radius
+                10.0f,                                          // Mass
+                CreatureConstants.CobraSensitivityRadius,       // Sensitivity Radius
+                new CobraAI(),                                  // AI
+                new InanimateModel("box"),                      // Model
+                135,                                            // Vision Angle
+                CreatureConstants.CobraListeningSensitivity,    // Listening Sensitivity
+                CreatureConstants.CobraSneak,                   // Sneak
+                CreatureConstants.CobraIntimidation,            // Intimidation
+                CreatureConstants.CobraStartingHealth,		    // Starting Health
                 new MindControlCobraHead()                      // Part
                 )
         {
