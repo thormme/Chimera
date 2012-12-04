@@ -52,7 +52,7 @@ namespace finalProject.Projectiles
                 mOriginalCreature = creature;
 
                 creature.Damage(0, owner);
-                mOriginalController.InControl = true;
+                mOriginalController.NoControl = true;
                 owner.Move(Vector2.Zero);
                 creature.Controller = ownerController;
                 ownerController.SetCreature(creature);
@@ -72,7 +72,7 @@ namespace finalProject.Projectiles
             if (Active)
             {
                 Creature owner = mOwner as Creature;
-                mOriginalController.InControl = false;
+                mOriginalController.NoControl = false;
                 mOriginalCreature.Controller = mOriginalController;
                 owner.Controller.SetCreature(owner);
                 World.Remove(this);

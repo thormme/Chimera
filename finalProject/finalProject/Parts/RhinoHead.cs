@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework;
 using BEPUphysics.Entities.Prefabs;
 using GraphicsLibrary;
 using GameConstructLibrary;
+using BEPUphysics.BroadPhaseEntries;
+using Utility;
 
 namespace finalProject.Parts
 {
@@ -17,10 +19,18 @@ namespace finalProject.Parts
         //private const double DamageStart = 0.4f;
         //private double mAttackTimer = -1.0f;
 
+        private const double RunLength = 5.0f;
+        private const float SpeedBoost = 10.0f;
+        private const int DamageMultiplier = 3;
+
+        private double mRunTimer = -1.0f;
+        private float NewSpeed;
+        private float OldSpeed;
+
 
         public RhinoHead()
             : base(
-                2.0,
+                10.0,
                 new Part.SubPart[] {
                     new SubPart(
                         new AnimateModel("rhino_head", "charge"),
@@ -64,6 +74,32 @@ namespace finalProject.Parts
             //    }
             //}
 
+            if (mRunTimer > 0.0f)
+            {
+                foreach (IGameObject gameObject in Creature.CollidingObjects)
+                {
+                    Creature creature = gameObject as Creature;
+                    if (creature != null)
+                    {
+                        Vector3 velocityDifference = Creature.Entity.LinearVelocity - creature.Entity.LinearVelocity;
+                        creature.Damage((int)(velocityDifference.Length() * DamageMultiplier), Creature);
+                    }
+                }
+
+                Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
+                if (Utils.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space))
+                {
+                    Creature.Stun();
+                    mRunTimer = -1.0f;
+                }
+
+                mRunTimer -= time.ElapsedGameTime.TotalSeconds;
+                if (mRunTimer < 0.0f)
+                {
+                    Creature.CharacterController.HorizontalMotionConstraint.Speed = OldSpeed;
+                }
+            }
+
             base.Update(time);
         }
 
@@ -75,7 +111,11 @@ namespace finalProject.Parts
                 return;
             }
 
-
+            NewSpeed = Creature.CharacterController.HorizontalMotionConstraint.Speed + SpeedBoost;
+            mRunTimer = RunLength;
+            OldSpeed = Creature.CharacterController.HorizontalMotionConstraint.Speed;
+            Creature.CharacterController.HorizontalMotionConstraint.Speed = NewSpeed;
+            Creature.Stun(RunLength, Creature.Forward);
             //if (Creature.CharacterController.SupportFinder.HasTraction)
             //{
             //    Vector3 impulse = Creature.Forward * 300f;

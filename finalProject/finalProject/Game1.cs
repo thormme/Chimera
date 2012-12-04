@@ -100,7 +100,7 @@ namespace finalProject
             creature = new Eagle(new Vector3(0.0f, 1.0f, -20.0f));
             world.Add(creature);
 
-            world.AddLevelFromFile("animal_test", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            world.AddLevelFromFile("jump", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
 
             mGameStates.Add(world);
         }
@@ -151,15 +151,15 @@ namespace finalProject
                             player.Damage(100, null);
 
                             int i = 0;
-                            player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new BearArms(), i++);
-                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new RhinoHead(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new PenguinLimbs(), i++);
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new FrilledLizardHead(), i++);
-                            player.AddPart(new RhinoHead(), i++);
 
-                            (mGameStates[mGameStates.Count - 1] as World).Add(new Eagle(player.Position + 30.0f * player.Forward));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Eagle(player.Position + 30.0f * player.Forward));
                         }
                     }
                 }

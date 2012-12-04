@@ -30,10 +30,10 @@ namespace finalProject
 
         public Controller()
         {
-            InControl = false;
+            NoControl = false;
         }
 
-        public virtual bool InControl
+        public virtual bool NoControl
         {
             get;
             set;

@@ -588,12 +588,17 @@ namespace finalProject
 
         public virtual void Stun()
         {
-            Stun(DefaultStunLength);
+            Stun(DefaultStunLength, Vector3.Zero);
         }
 
-        public virtual void Stun(double stunLength)
+        public virtual void Stun(double stunLength, Vector3 velocity)
         {
-            Move(Vector2.Zero);
+            Vector2 dir = new Vector2(velocity.X, velocity.Z);
+            if (dir.Length() > 0.1f)
+            {
+                dir.Normalize();
+            }
+            Move(dir);
             foreach (PartAttachment pa in mPartAttachments)
             {
                 if (pa != null)
@@ -601,7 +606,7 @@ namespace finalProject
                     pa.Part.FinishUse(Forward);
                 }
             }
-            Controller.InControl = false;
+            Controller.NoControl = true;
             mStunTimer = stunLength;
         }
 
@@ -630,7 +635,7 @@ namespace finalProject
                 mStunTimer -= gameTime.ElapsedGameTime.TotalSeconds;
                 if (mStunTimer < 0.0f)
                 {
-                    Controller.InControl = false;
+                    Controller.NoControl = false;
                 }
             }
 
