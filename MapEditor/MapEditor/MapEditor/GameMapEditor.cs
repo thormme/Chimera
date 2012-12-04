@@ -135,4 +135,183 @@ namespace MapEditor
             }
             else if (state == States.Load)
             {
-                CurrentState = Stat
+                CurrentState = States.Load;
+                Dialog = new LoadMapDialog();
+            }
+
+            if (CurrentState != States.Parameters) Screen.Desktop.Children.Add(Dialog);
+
+        }
+
+        public static void ReturnState()
+        {
+            
+            Screen.Desktop.Children.Remove(Parameters);
+            Screen.Desktop.Children.Add(Dialog);
+
+            Size = 0;
+            Intensity = 0;
+            Feather = false;
+            Set = false;
+
+            Dummy = new DummyObject();
+            Dummy.Parameters = new string[0];
+
+        }
+
+        public static void ToggleReminder()
+        {
+            if (Displayed) Reminder.Hide();
+            else Reminder.Show();
+            Displayed = !Displayed;
+        }
+
+        public static void Pressed()
+        {
+
+            Editor.AddState(Map);
+
+            MouseState mouse = Mouse.GetState();
+
+            if (mouse.X <= Parameters.Bounds.Left.Offset || mouse.X >= Parameters.Bounds.Right.Offset ||
+                mouse.Y <= Parameters.Bounds.Top.Offset || mouse.Y >= Parameters.Bounds.Bottom.Offset)
+            {
+                if (Placeable)
+                {
+                    if (EditMode == Edit.Object)
+                    {
+                        Map.AddObject();
+                    }
+                }
+
+                if (EditMode == Edit.None)
+                {
+                    SelectClick = new Vector2(mouse.X, mouse.Y);
+                    SelectRelease = new Vector2(mouse.X, mouse.Y);
+                }
+
+            }
+
+        }
+
+        public static void Hold()
+        {
+
+            MouseState mouse = Mouse.GetState();
+
+            if (mouse.X <= Parameters.Bounds.Left.Offset || mouse.X >= Parameters.Bounds.Right.Offset ||
+                mouse.Y <= Parameters.Bounds.Top.Offset || mouse.Y >= Parameters.Bounds.Bottom.Offset)
+            {
+                if (Placeable)
+                {
+                    if (EditMode == Edit.Height)
+                    {
+                        Map.ModifyVertices();
+                    }
+                }
+
+                if (EditMode == Edit.None)
+                {
+                    SelectRelease = new Vector2(mouse.X, mouse.Y);
+                }
+
+            }
+
+        }
+
+        public static void Released()
+        {
+            if (EditMode == Edit.None)
+            {
+                SelectClick = new Vector2(0.0f, 0.0f);
+                SelectRelease = new Vector2(0.0f, 0.0f);
+                Selected = Map.Select(TopLeft, BottomRight);
+            }
+        }
+
+
+        public static void Delete()
+        {
+            Map.Delete(Selected);
+        }
+
+        public static void Move(Vector3 movement)
+        {
+            Map.Move(Selected, movement);
+        }
+
+        public static void Scale(Boolean direction)
+        {
+            Map.Scale(Selected, direction);
+        }
+
+        public static void Rotate(Boolean direction)
+        {
+            Map.Rotate(Selected, direction);
+        }
+
+        private static void MakeBox()
+        {
+            TopLeft = SelectClick;
+            BottomRight = SelectClick;
+
+            if (SelectClick.X < SelectRelease.X)
+            {
+                TopLeft.X = SelectClick.X;
+                BottomRight.X = SelectRelease.X;
+            }
+            else
+            {
+                TopLeft.X = SelectRelease.X;
+                BottomRight.X = SelectClick.X;
+            }
+
+            if (SelectClick.Y < SelectRelease.Y)
+            {
+                TopLeft.Y = SelectClick.Y;
+                BottomRight.Y = SelectRelease.Y;
+            }
+            else
+            {
+                TopLeft.Y = SelectRelease.Y;
+                BottomRight.Y = SelectClick.Y;
+            }
+
+            Rectangle = new Rectangle((int)TopLeft.X,
+                                      (int)TopLeft.Y,
+                                      (int)(BottomRight.X - TopLeft.X),
+                                      (int)(BottomRight.Y - TopLeft.Y));
+        }
+
+        public static void Update(GameTime gameTime)
+        {
+            Map.Update(gameTime);
+            Entity.Update(gameTime);
+            Editor.Update(gameTime);
+            MakeBox();
+        }
+
+        public static void Render()
+        {
+            Map.Render();
+            Entity.Render();
+        }
+
+        public static void RenderBox(GraphicsDevice graphics, SpriteBatch sprites)
+        {
+
+            if (Rectangle.Width > 0 && Rectangle.Height > 0)
+            {
+
+                Texture2D texture = new Texture2D(graphics, Rectangle.Width, Rectangle.Height);
+                Color[] data = new Color[Rectangle.Width * Rectangle.Height];
+                for (int count = 0; count < data.Length; count++) data[count] = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+                texture.SetData(data);
+                sprites.Begin();
+                sprites.Draw(texture, TopLeft, new Color(0.5f, 0.5f, 0.5f, 0.5f));
+                sprites.End();
+            }
+        }
+
+    }
+}
