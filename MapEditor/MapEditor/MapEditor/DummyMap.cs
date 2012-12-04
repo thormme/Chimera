@@ -92,9 +92,9 @@ namespace MapEditor
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
         }
 
-        public void ModifyVertices(Vector3 position)
+        public void ModifyVertices()
         {
-            mHeightMap.ModifyVertices(position, GameMapEditor.Size, GameMapEditor.Intensity, GameMapEditor.Feather, GameMapEditor.Set, mInverseMode, mSmoothMode, mFlattenMode);
+            mHeightMap.ModifyVertices(GameMapEditor.Position, GameMapEditor.Size, GameMapEditor.Intensity, GameMapEditor.Feather, GameMapEditor.Set, mInverseMode, mSmoothMode, mFlattenMode);
             mTerrainPhysics = new TerrainPhysics(mName, new Vector3(0, 0, 0), new Quaternion(), GameMapEditor.MapScale);
         }
 
@@ -108,11 +108,10 @@ namespace MapEditor
             mDummies.Remove(obj);
         }
 
-        public void AddObject(Vector3 position)
+        public void AddObject()
         {
-            GameMapEditor.Dummy.Position = position;
+            GameMapEditor.Dummy.Position = GameMapEditor.Position;
             Add(new DummyObject(GameMapEditor.Dummy));
-            Console.WriteLine(GameMapEditor.Dummy.Height);
         }
 
         public List<DummyObject> Select(Vector2 topLeft, Vector2 bottomRight)

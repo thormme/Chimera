@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 4.0f,                                   // Mass
                 20.0f,                                  // Sensitivity Radius
                 new EagleAI(),                     // AI
-                new AnimateModel("eagle", "stand"),              // Model
+                new InanimateModel("box"),//new AnimateModel("eagle", "stand"),              // Model
                 135,                                    // Vision Angle
 				CreatureConstants.EagleListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.EagleSneak,                   // Sneak
@@ -42,7 +42,7 @@ namespace finalProject.Creatures
 
         public override void Update(GameTime gameTime)
         {
-            (mRenderable as AnimateModel).Update(gameTime);
+            //(mRenderable as AnimateModel).Update(gameTime);
             base.Update(gameTime);
         }
     }
