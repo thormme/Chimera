@@ -71,7 +71,7 @@ namespace MapEditor
         public void Update(GameTime gameTime)
         {
 
-            if (mToggleEditMode.Active) GameMapEditor.ToggleEditMode();
+            //if (mToggleEditMode.Active) GameMapEditor.ToggleEditMode();
 
             if (mDelete.Active) GameMapEditor.Delete();
 

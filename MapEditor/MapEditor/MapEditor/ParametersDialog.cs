@@ -31,6 +31,9 @@ namespace MapEditor
         private List<Nuclex.UserInterface.Controls.LabelControl> mParameterLabel;
         private List<Nuclex.UserInterface.Controls.Desktop.InputControl> mParameterInput;
 
+        private Nuclex.UserInterface.Controls.Desktop.ButtonControl mDummyButton;
+        private Nuclex.UserInterface.Controls.Desktop.ButtonControl mBackButton;
+
         public ParametersDialog(List<string> parameters) :
             base()
         {
@@ -74,6 +77,23 @@ namespace MapEditor
                 location += 50.0f;
             }
 
+            mDummyButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
+
+            mDummyButton.Text = "Dummy";
+            mDummyButton.Bounds = new UniRectangle(new UniScalar(1.0f, -180.0f), location, 80, 24);
+
+            Children.Add(mDummyButton);
+
+            mBackButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
+
+            mBackButton.Text = "Back";
+            mBackButton.Bounds = new UniRectangle(new UniScalar(1.0f, -90.0f), location, 80, 24);
+            mBackButton.Pressed += delegate(object sender, EventArgs arguments) { BackClicked(sender, arguments); };
+
+            Children.Add(mBackButton);
+
+            location += 34.0f;
+
             Bounds = new UniRectangle(10.0f, 10.0f, 420.0f, location);
             mBounds = Bounds;
 
@@ -91,6 +111,12 @@ namespace MapEditor
                 parameters.Add(parameter);
             }
             return parameters;
+        }
+
+        private void BackClicked(object sender, EventArgs arguments)
+        {
+            GameMapEditor.EditMode = Edit.None;
+            GameMapEditor.ReturnState();
         }
 
     }
