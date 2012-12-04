@@ -100,7 +100,7 @@ namespace finalProject
             creature = new Eagle(new Vector3(0.0f, 1.0f, -20.0f));
             world.Add(creature);
 
-            world.AddLevelFromFile("testingPhys", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            world.AddLevelFromFile("level015", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.4f, 8.0f));
 
             mGameStates.Add(world);
         }
@@ -152,7 +152,7 @@ namespace finalProject
 
                             int i = 0;
                             player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new BearArms(), i++);
+                            player.AddPart(new FrogHead(), i++);
                             player.AddPart(new KangarooLegs(), i++);
                             player.AddPart(new PenguinLimbs(), i++);
                             player.AddPart(new CheetahLegs(), i++);
