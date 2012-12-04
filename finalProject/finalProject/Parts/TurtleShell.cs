@@ -39,7 +39,7 @@ namespace finalProject.Parts
                 mActive = true;
                 Creature.Invulnerable = true;
                 Creature.Move(Vector2.Zero);
-                Creature.Controller.Immobilized = true;
+                Creature.Controller.InControl = true;
             }
         }
 
@@ -49,7 +49,7 @@ namespace finalProject.Parts
             {
                 mActive = false;
                 Creature.Invulnerable = false;
-                Creature.Controller.Immobilized = false;
+                Creature.Controller.InControl = false;
             }
         }
 

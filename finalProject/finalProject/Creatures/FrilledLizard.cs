@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 6.0f,                                                   // Mass
                 CreatureConstants.FrilledLizardSensitivityRadius,       // Sensitivity Radius
                 new FrilledLizardAI(),                                  // AI
-                new InanimateModel("box"),                              // Model
+                new InanimateModel("lizard"),                           // Model
                 135,                                                    // Vision Angle
                 CreatureConstants.FrilledLizardListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.FrilledLizardSneak,                   // Sneak
@@ -29,6 +29,7 @@ namespace finalProject.Creatures
                 new FrilledLizardHead()                                 // Part
                 )
         {
+            Scale = new Vector3(0.02f);
         }
 
         protected override List<PartBone> GetUsablePartBones()

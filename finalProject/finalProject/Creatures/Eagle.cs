@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 4.0f,                                           // Mass
                 CreatureConstants.EagleSensitivityRadius,       // Sensitivity Radius
                 new EagleAI(),                                  // AI
-                new InanimateModel("box"),                      // Model
+                new InanimateModel("eagle_glide"),              // Model
                 135,                                            // Vision Angle
                 CreatureConstants.EagleListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.EagleSneak,                   // Sneak
@@ -29,8 +29,7 @@ namespace finalProject.Creatures
                 new EagleWings()                                // Part
                 )
         {
-            Scale = new Vector3(1.0f);
-            //CharacterController.JumpSpeed *= 2;
+            Scale = new Vector3(0.02f);
         }
 
         protected override List<PartBone> GetUsablePartBones()

@@ -583,6 +583,11 @@ namespace finalProject
             }
         }
 
+        public virtual void Stun()
+        {
+            Move(Vector2.Zero);
+        }
+
         /// <summary>
         /// Called every frame. 
         /// </summary>

@@ -149,6 +149,7 @@
     <Compile Include="ChaseCamera.cs" />
     <Compile Include="Checkpoint.cs" />
     <Compile Include="CooldownPart.cs" />
+    <Compile Include="CreatureConstants.cs" />
     <Compile Include="Creatures\Bear.cs" />
     <Compile Include="Creatures\Cheetah.cs" />
     <Compile Include="Creatures\Cobra.cs" />
