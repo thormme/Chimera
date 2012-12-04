@@ -116,7 +116,7 @@ namespace finalProject
                 FollowPositionUpdate(time);
             }
 
-            if (!Immobilized)
+            if (!InControl)
             {
                 MoveUpdate(time);
                 UsePartUpdate(time);
