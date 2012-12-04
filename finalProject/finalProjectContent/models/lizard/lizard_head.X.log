@@ -1,0 +1,45 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\lizard\lizard_head.X
+@0.000034: kW X-port: 3ds max compatible version 9.00
+@2.016493: Saving node: Head
+@2.030381: Limiting exported UV coordinates to 1 because of available maps.
+@4.764006: 4738 skinned vertices in Head
+@4.794447: Material 0 shader returned effect file name 'null'
+@4.798709: Saving node: Head1
+@4.798791: Saving node: UpperJaw1
+@4.798855: Saving node: UpperJaw2
+@4.798915: Saving node: UpperJawCap
+@4.798975: Saving node: LowerJaw1
+@4.799034: Saving node: LowerJaw2
+@4.799096: Saving node: LowerJawCap
+@4.799154: Saving node: FrillLeftCenter
+@4.799218: Saving node: FrillLeft1
+@4.799278: Saving node: FrillLeft1Cap
+@4.799338: Saving node: FrillLeft2
+@4.799401: Saving node: FrillLeft2Cap
+@4.799464: Saving node: FrillLeft3
+@4.799520: Saving node: FrillLeft3Cap
+@4.799581: Saving node: FrillLeft4
+@4.799644: Saving node: FrillLeft4Cap
+@4.799702: Saving node: FrillLeft5
+@4.799802: Saving node: FrillLeft5Cap
+@4.799860: Saving node: FrillLeft6
+@4.799917: Saving node: FrillLeft6Cap
+@4.799973: Saving node: FrillRightCenter
+@4.800030: Saving node: FrillRight1
+@4.800086: Saving node: FrillRight1Cap
+@4.800144: Saving node: FrillRight5
+@4.800200: Saving node: FrillRight5Cap
+@4.800257: Saving node: FrillRight2
+@4.800317: Saving node: FrillRight2Cap
+@4.800375: Saving node: FrillRight4
+@4.800437: Saving node: FrillRight4Cap
+@4.800493: Saving node: FrillRight3
+@4.800551: Saving node: FrillRight3Cap
+@4.800607: Saving node: FrillRight6
+@4.800663: Saving node: FrillRight6Cap
+@4.800744: Saving node: IK_Chain001
+@4.800813: Saving node: IK_Chain002
+@4.800859: Extracting animation spit.
+@5.118625: Extracting animation walk.
+@5.122522: Extracting animation stand.
+@5.276092: File D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Lizard\lizard_texture.png has same mod time as D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\lizard\lizard_texture.png; not copying.

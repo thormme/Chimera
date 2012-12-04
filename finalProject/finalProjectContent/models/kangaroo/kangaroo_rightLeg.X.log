@@ -1,0 +1,20 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\kangaroo\kangaroo_rightLeg.X
+@0.000025: kW X-port: 3ds max compatible version 9.00
+@3.660627: Saving node: RightLeg
+@3.666143: Limiting exported UV coordinates to 1 because of available maps.
+@3.957168: 1368 skinned vertices in RightLeg
+@3.961109: Material 0 shader returned effect file name 'null'
+@3.962751: Saving node: LegRight1
+@3.963072: Saving node: LegRight2
+@3.963454: Saving node: LegRight3
+@3.963770: Saving node: LegRight4
+@3.964131: Saving node: LegRight5
+@3.964451: Saving node: LegRightCap
+@3.964655: Saving node: IK_Chain005
+@3.964725: Saving node: IK_Chain006
+@3.964780: Extracting animation walk.
+@3.999450: Extracting animation pound.
+@4.014680: Extracting animation jump.
+@4.025891: Extracting animation charge.
+@4.076508: Extracting animation stand.
+@4.119998: File D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Kangaroo\kangaroo_texture.png has same mod time as D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\kangaroo\kangaroo_texture.png; not copying.

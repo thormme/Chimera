@@ -1,0 +1,12 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\rhino\rhino_head.X
+@0.000022: kW X-port: 3ds max compatible version 9.00
+@11.992273: Saving node: Head
+@12.003788: Limiting exported UV coordinates to 1 because of available maps.
+@13.761201: 3777 skinned vertices in Head
+@13.770051: Material 0 shader returned effect file name 'null'
+@13.773414: Saving node: Bone001
+@13.773485: Saving node: Bone002
+@13.773544: Extracting animation walk.
+@13.774414: Extracting animation charge.
+@13.774974: Extracting animation stand.
+@13.884147: File D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Rhino\rhino_texture.png has same mod time as D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\rhino\rhino_texture.png; not copying.
