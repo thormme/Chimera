@@ -64,7 +64,7 @@ namespace finalProject
             int startingHealth,
             Part part
             )
-            : base(position, height, radius, mass, renderable, new SensitiveSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller, 1)
+            : base(position, height, radius, mass, renderable, new ListeningSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller, 1)
         {
             mIncapacitated = false;
             Sneak = sneak;

@@ -30,10 +30,10 @@ namespace finalProject
 
         public Controller()
         {
-            Immobilized = false;
+            InControl = false;
         }
 
-        public virtual bool Immobilized
+        public virtual bool InControl
         {
             get;
             set;

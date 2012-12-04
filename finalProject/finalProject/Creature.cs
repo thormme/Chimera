@@ -569,7 +569,7 @@ namespace finalProject
         {
             if (damage > 0 && !Invulnerable)
             {
-                System.Console.WriteLine(this + " took " + damage + " damage.");
+                System.Console.WriteLine(this + " took " + damage + " damage from " + source);
                 foreach (PartAttachment partAttachment in mPartAttachments)
                 {
                     if (partAttachment != null)
@@ -581,6 +581,11 @@ namespace finalProject
                 Invulnerable = true;
                 mInvulnerableTimer = InvulnerableLength;
             }
+        }
+
+        public virtual void Stun()
+        {
+            Move(Vector2.Zero);
         }
 
         /// <summary>

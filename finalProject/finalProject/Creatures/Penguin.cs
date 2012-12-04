@@ -15,18 +15,18 @@ namespace finalProject.Creatures
         public Penguin(Vector3 position)
             : base(
                 position,
-                3.0f,                                   // Height
-                2.0f,                                   // Radius
-                6.0f,                                   // Mass
-                15.0f,                                  // Sensitivity Radius
-                new PassiveAI(),                        // AI
-                new InanimateModel("box"),              // Model
-                135,                                    // Vision Angle
-                10,                                     // Listening Sensitivity
-                3,                                      // Sneak
-                2,                                      // Intimidation
-                40, 		   						    // Starting Health
-                new PenguinLimbs()                      // Part
+                3.0f,                                           // Height
+                2.0f,                                           // Radius
+                6.0f,                                           // Mass
+                CreatureConstants.PenguinSensitivityRadius,     // Sensitivity Radius
+                new PassiveAI(),                                // AI
+                new InanimateModel("box"),                      // Model
+                135,                                            // Vision Angle
+                CreatureConstants.PenguinListeningSensitivity,  // Listening Sensitivity
+                CreatureConstants.PenguinSneak,                 // Sneak
+                CreatureConstants.PenguinIntimidation,          // Intimidation
+                CreatureConstants.PenguinStartingHealth, 		// Starting Health
+                new PenguinLimbs()                              // Part
                 )
         {
             Scale = new Vector3(1.0f);

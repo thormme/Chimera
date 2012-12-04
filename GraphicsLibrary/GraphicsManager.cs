@@ -145,7 +145,7 @@ namespace GraphicsLibrary
             {
                 string subDirName = subDir.Name;
 
-                FileInfo[] files = subDir.GetFiles("*.fbx");
+                FileInfo[] files = subDir.GetFiles("*.*x");
                 foreach (FileInfo file in files)
                 {
                     string modelName = Path.GetFileNameWithoutExtension(file.Name);

@@ -57,31 +57,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\eagle\eagle_flap_air.FBX">
-      <Name>eagle_flap_air</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_flap_ground.FBX">
-      <Name>eagle_flap_ground</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_glide.FBX">
-      <Name>eagle_glide</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_stand.FBX">
-      <Name>eagle_stand</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_walk.FBX">
-      <Name>eagle_walk</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
     <Compile Include="shaders\ConfigurableShader.fx">
       <Name>ConfigurableShader</Name>
       <Importer>EffectImporter</Importer>
@@ -172,23 +147,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\playerBean\playerBean_jump.FBX">
-      <Name>playerBean_jump</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\playerBean\playerBean_stand.FBX">
-      <Name>playerBean_stand</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\playerBean\playerBean_walk.FBX">
-      <Name>playerBean_walk</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="models\dude\dude_walk.fbx">
       <Name>dude_walk</Name>
       <Importer>FbxImporter</Importer>
@@ -203,20 +161,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\lizard\lizard.FBX">
-      <Name>lizard</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\parrot\parrot.FBX">
-      <Name>parrot</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="models\primitives\box.FBX">
       <Name>box</Name>
       <Importer>FbxImporter</Importer>
@@ -224,13 +168,6 @@
     </Compile>
     <Compile Include="models\primitives\sphere.FBX">
       <Name>sphere</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\rhino\rhino.FBX">
-      <Name>rhino</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -308,109 +245,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\rhino\rhino_head_walk.FBX">
-      <Name>rhino_head_walk</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\rhino\rhino_walk.FBX">
-      <Name>rhino_walk</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\kangaroo\kangaroo_leftLeg_stand.FBX">
-      <Name>kangaroo_leftLeg_stand</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_leftLeg_walk.FBX">
-      <Name>kangaroo_leftLeg_walk</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_rightLeg_stand.FBX">
-      <Name>kangaroo_rightLeg_stand</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_rightLeg_walk.FBX">
-      <Name>kangaroo_rightLeg_walk</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_stand.FBX">
-      <Name>kangaroo_stand</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_walk.FBX">
-      <Name>kangaroo_walk</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\kangaroo\kangaroo_charge.FBX">
-      <Name>kangaroo_charge</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_jump.FBX">
-      <Name>kangaroo_jump</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_leftLeg_charge.FBX">
-      <Name>kangaroo_leftLeg_charge</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_leftLeg_jump.FBX">
-      <Name>kangaroo_leftLeg_jump</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_leftLeg_pound.FBX">
-      <Name>kangaroo_leftLeg_pound</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_pound.FBX">
-      <Name>kangaroo_pound</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_rightLeg_charge.FBX">
-      <Name>kangaroo_rightLeg_charge</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_rightLeg_jump.FBX">
-      <Name>kangaroo_rightLeg_jump</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\kangaroo\kangaroo_rightLeg_pound.FBX">
-      <Name>kangaroo_rightLeg_pound</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\rhino\rhino_charge.FBX">
-      <Name>rhino_charge</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\rhino\rhino_head_charge.FBX">
-      <Name>rhino_head_charge</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="models\rock\rock1dark.FBX">
       <Name>rock1dark</Name>
       <Importer>FbxImporter</Importer>
@@ -484,58 +318,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\eagle\eagle_leftWing_flap_air.FBX">
-      <Name>eagle_leftWing_flap_air</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_leftWing_flap_ground.FBX">
-      <Name>eagle_leftWing_flap_ground</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_leftWing_glide.FBX">
-      <Name>eagle_leftWing_glide</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_leftWing_stand.FBX">
-      <Name>eagle_leftWing_stand</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_leftWing_walk.FBX">
-      <Name>eagle_leftWing_walk</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_rightWing_flap_air.FBX">
-      <Name>eagle_rightWing_flap_air</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_rightWing_flap_ground.FBX">
-      <Name>eagle_rightWing_flap_ground</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_rightWing_glide.FBX">
-      <Name>eagle_rightWing_glide</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_rightWing_stand.FBX">
-      <Name>eagle_rightWing_stand</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\eagle\eagle_rightWing_walk.FBX">
-      <Name>eagle_rightWing_walk</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="levels\maps\level1_texture_high.tga">
       <Name>level1_texture_high</Name>
       <Importer>TextureImporter</Importer>
@@ -550,6 +332,71 @@
       <Name>level1_texture_medium</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\eagle\eagle.X">
+      <Name>eagle</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\eagle\eagle_leftWing.X">
+      <Name>eagle_leftWing</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\eagle\eagle_rightWing.X">
+      <Name>eagle_rightWing</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\kangaroo\kangaroo.X">
+      <Name>kangaroo</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_leftLeg.X">
+      <Name>kangaroo_leftLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\kangaroo\kangaroo_rightLeg.X">
+      <Name>kangaroo_rightLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\rhino\rhino.X">
+      <Name>rhino</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\rhino\rhino_head.X">
+      <Name>rhino_head</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\playerBean\playerBean.X">
+      <Name>playerBean</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\lizard\lizard.X">
+      <Name>lizard</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\lizard\lizard_head.X">
+      <Name>lizard_head</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

@@ -309,7 +309,7 @@ namespace finalProject
                 (mCreature as PlayerCreature).Stance = Stance.Jumping;
             }
 
-            if (!Immobilized)
+            if (!InControl)
             {
                 mCreature.Move(walkDirection);
             }
@@ -327,7 +327,7 @@ namespace finalProject
 
             for (int i = 0; i < NumParts; ++i)
             {
-                if (mUse[i].Active && !Immobilized)
+                if (mUse[i].Active && !InControl)
                 {
                     if (mStealKey.Active && mCreature is PlayerCreature)
                     {
