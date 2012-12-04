@@ -97,7 +97,7 @@ namespace finalProject
             GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
             
-            creature = new Rhino(new Vector3(0.0f, 1.0f, -20.0f));
+            creature = new Eagle(new Vector3(0.0f, 1.0f, -20.0f));
             world.Add(creature);
 
             world.AddLevelFromFile("testingPhys", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
@@ -148,7 +148,10 @@ namespace finalProject
                         if (entity.Tag is PlayerCreature)
                         {
                             (entity.Tag as PlayerCreature).Damage(100, null);
-                            (entity.Tag as PlayerCreature).AddPart(new FrogHead(), 1);
+                            (entity.Tag as PlayerCreature).AddPart(new KangarooLegs(), 0);
+                            (entity.Tag as PlayerCreature).AddPart(new EagleWings(), 1);
+                            (entity.Tag as PlayerCreature).AddPart(new RhinoHead(), 2);
+                            (entity.Tag as PlayerCreature).AddPart(new FrilledLizardHead(), 3);
                         }
                     }
                 }

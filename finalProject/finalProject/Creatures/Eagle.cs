@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 4.0f,                                   // Mass
                 20.0f,                                  // Sensitivity Radius
                 new AggressiveAI(),                     // AI
-                new InanimateModel("box"),              // Model
+                new AnimateModel("eagle", "stand"),              // Model
                 180,                                    // Vision Angle
                 10,                                     // Listening Sensitivity
                 3,                                      // Sneak
@@ -29,7 +29,7 @@ namespace finalProject.Creatures
                 new EagleWings()                          // Part
                 )
         {
-            Scale = new Vector3(1.0f);
+            Scale = new Vector3(4.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -42,7 +42,7 @@ namespace finalProject.Creatures
 
         public override void Update(GameTime gameTime)
         {
-            //(mRenderable as AnimateModel).Update(gameTime);
+            (mRenderable as AnimateModel).Update(gameTime);
             base.Update(gameTime);
         }
     }

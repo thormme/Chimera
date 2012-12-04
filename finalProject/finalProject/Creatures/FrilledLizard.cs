@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 6.0f,                       // Mass
                 15.0f,                      // Sensitivity Radius
                 new FrilledLizardAI(),      // AI
-                new InanimateModel("box"),  // Model
+                new AnimateModel("lizard", "stand"),  // Model
                 MathHelper.PiOver4,         // Vision Angle
                 10,                         // Listening Sensitivity
                 8,                          // Sneak
@@ -29,14 +29,20 @@ namespace finalProject.Creatures
                 new FrilledLizardHead()     // Part
                 )
         {
+            Scale = new Vector3(4.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
         {
             List<PartBone> bones = new List<PartBone>();
-            //bones.Add(PartBone.LegFrontLeft1Cap);
-            //bones.Add(PartBone.LegFrontRight1Cap);
+            bones.Add(PartBone.HeadCenterCap);
             return bones;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            (mRenderable as AnimateModel).Update(gameTime);
+            base.Update(gameTime);
         }
     }
 }
