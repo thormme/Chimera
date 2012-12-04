@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameConstructLibrary", "Gam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapEditor", "MapEditor\MapEditor\MapEditor\MapEditor.csproj", "{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +134,26 @@ Global
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release|Any CPU.ActiveCfg = Release|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release|x86.ActiveCfg = Release|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Debug|x86.ActiveCfg = Debug|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Debug|x86.Build.0 = Debug|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.MapEditor Debug|Any CPU.ActiveCfg = Debug|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.MapEditor Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.MapEditor Debug|Mixed Platforms.Build.0 = Debug|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.MapEditor Debug|x86.ActiveCfg = Debug|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.MapEditor Debug|x86.Build.0 = Debug|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.MapEditor Release|Any CPU.ActiveCfg = Release|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.MapEditor Release|Mixed Platforms.ActiveCfg = Release|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.MapEditor Release|Mixed Platforms.Build.0 = Release|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.MapEditor Release|x86.ActiveCfg = Release|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.MapEditor Release|x86.Build.0 = Release|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Release|Any CPU.ActiveCfg = Release|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Release|Mixed Platforms.Build.0 = Release|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Release|x86.ActiveCfg = Release|x86
+		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

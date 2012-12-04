@@ -1,0 +1,40 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\rhino\rhino.X
+@0.000041: kW X-port: 3ds max compatible version 9.00
+@27.286797: Saving node: Body
+@27.295083: Limiting exported UV coordinates to 1 because of available maps.
+@28.198972: 2677 skinned vertices in Body
+@28.211534: Material 0 shader returned effect file name 'null'
+@28.213960: Saving node: IK_Chain002
+@28.214034: Saving node: IK_Chain003
+@28.214104: Saving node: Chord1
+@28.214167: Saving node: Chord2
+@28.214230: Saving node: Chord3
+@28.214289: Saving node: Chord4
+@28.214346: Saving node: Chord5
+@28.214404: Saving node: ChordCap
+@28.214464: Saving node: LegRearRight1
+@28.214525: Saving node: LegRearRight2
+@28.214588: Saving node: LegRearRight3
+@28.214651: Saving node: LegRearRight4
+@28.214710: Saving node: LegRearRightCap
+@28.214767: Saving node: LegRearLeft1
+@28.214823: Saving node: LegRearLeft2
+@28.214886: Saving node: LegRearLeft3
+@28.214943: Saving node: LegRearLeft4
+@28.214998: Saving node: LegRearLeftCap
+@28.215056: Saving node: LegFrontRight1
+@28.215111: Saving node: LegFrontRight2
+@28.215173: Saving node: LegFrontRight3
+@28.215231: Saving node: LegFrontRight4
+@28.215288: Saving node: LegFrontRightCap
+@28.215344: Saving node: LegFrontLeft1
+@28.215400: Saving node: LegFrontLeft2
+@28.215455: Saving node: LegFrontLeft3
+@28.215513: Saving node: LegFrontLeft4
+@28.215570: Saving node: LegFrontLeftCap
+@28.215632: Saving node: IK_Chain004
+@28.215693: Saving node: IK_Chain005
+@28.215744: Extracting animation walk.
+@28.575595: Extracting animation charge.
+@28.754139: Extracting animation stand.
+@28.838356: File D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Rhino\rhino_texture.png has same mod time as D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\rhino\rhino_texture.png; not copying.
