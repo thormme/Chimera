@@ -148,7 +148,7 @@ namespace GameConstructLibrary
 
                 if (type != null)
                 {
-                    Quaternion objectOrientation = Quaternion.CreateFromRotationMatrix(Matrix.CreateLookAt(new Vector3(), dummy.Orientation, new Vector3(0, 1, 0)));
+                    Quaternion objectOrientation = Quaternion.CreateFromYawPitchRoll(dummy.Orientation.X, dummy.Orientation.Y, dummy.Orientation.Z);
                     object[] parameters = new object[5];
                     parameters[0] = dummy.Model;
                     parameters[1] = (dummy.Position * scale) + position;

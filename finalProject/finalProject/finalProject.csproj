@@ -156,6 +156,7 @@
     <Compile Include="Creatures\FrilledLizard.cs" />
     <Compile Include="Creatures\Frog.cs" />
     <Compile Include="Creatures\Kangaroo.cs" />
+    <Compile Include="Creatures\Penguin.cs" />
     <Compile Include="Creatures\Rhino.cs" />
     <Compile Include="Creatures\SpittingCobra.cs" />
     <Compile Include="Creatures\Turtle.cs" />

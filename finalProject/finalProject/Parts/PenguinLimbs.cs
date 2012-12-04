@@ -11,7 +11,7 @@ namespace finalProject.Parts
 {
     class PenguinLimbs : Part
     {
-        private const float speed = 20.0f;
+        private const float speed = 10.0f;
         private bool mHasTraction;
 
         public PenguinLimbs()
