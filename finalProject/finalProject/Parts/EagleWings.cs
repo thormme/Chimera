@@ -25,7 +25,7 @@ namespace finalProject.Parts
             : base(
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("eagle_leftWing", "flap_air"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.ArmLeft1Cap,
                             Creature.PartBone.ArmLeft2Cap,
@@ -36,7 +36,7 @@ namespace finalProject.Parts
                         new Vector3(1.0f, 1.0f, 1.0f)
                     ),
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("eagle_rightWing", "flap_air"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.ArmRight1Cap,
                             Creature.PartBone.ArmRight2Cap,
@@ -68,6 +68,11 @@ namespace finalProject.Parts
             {
                 Vector3 direction = new Vector3(0.0f, -Creature.Entity.LinearVelocity.Y, 0.0f);
                 Creature.Entity.ApplyLinearImpulse(ref direction);
+            }
+
+            foreach (SubPart subPart in SubParts)
+            {
+                (subPart.Renderable as AnimateModel).Update(time);
             }
         }
 

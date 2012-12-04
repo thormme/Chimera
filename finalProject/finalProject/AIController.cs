@@ -76,7 +76,7 @@ namespace finalProject
         /// <param name="collidingCreatures">The creatures this creature knows about from its radial sensor.</param>
         public override void Update(GameTime time, List<Creature> collidingCreatures)
         {
-            if (mCreature.Incapacitated || Immobilized)
+            if (mCreature.Incapacitated)
             {
                 return;
             }
@@ -106,8 +106,11 @@ namespace finalProject
                 FollowPositionUpdate(time);
             }
 
-            MoveUpdate(time);
-            UsePartUpdate(time);
+            if (!Immobilized)
+            {
+                MoveUpdate(time);
+                UsePartUpdate(time);
+            }
         }
 
         #endregion
@@ -119,7 +122,7 @@ namespace finalProject
         /// </summary>
         protected virtual void DurdleOrder()
         {
-            if (mDurdleTimer.State == DurdleState.Idol)
+            if (State != AIState.Durdle)
             {
                 ResetAIState();
                 State = AIState.Durdle;
@@ -134,11 +137,14 @@ namespace finalProject
         /// <param name="position">The position to go to.</param>
         protected virtual void FollowOrder(Vector3 position)
         {
-            ResetAIState();
-            mFollowPosition = true;
-            mTargetPosition = position;
-            State = AIState.FollowPosition;
-            MoveTo(position);
+            if (!(State == AIState.FollowPosition && position.Equals(mTargetPosition)))
+            {
+                ResetAIState();
+                mFollowPosition = true;
+                mTargetPosition = position;
+                State = AIState.FollowPosition;
+                MoveTo(position);
+            }
         }
 
         /// <summary>
@@ -147,10 +153,13 @@ namespace finalProject
         /// <param name="creature">The creature to follow.</param>
         protected virtual void FollowOrder(Creature creature)
         {
-            ResetAIState();
-            mTargetCreature = creature;
-            State = AIState.FollowCreature;
-            MoveTo(mTargetCreature.Position);
+            if (!(State == AIState.FollowCreature && creature == mTargetCreature))
+            {
+                ResetAIState();
+                mTargetCreature = creature;
+                State = AIState.FollowCreature;
+                MoveTo(mTargetCreature.Position);
+            }
         }
 
         /// <summary>
@@ -159,10 +168,13 @@ namespace finalProject
         /// <param name="creature">The creature from which to flee.</param>
         protected virtual void FleeOrder(Creature creature)
         {
-            ResetAIState();
-            mTargetCreature = creature;
-            State = AIState.FleeCreature;
-            MoveFrom(mTargetCreature.Position);
+            if (!(State == AIState.FleeCreature && creature == mTargetCreature))
+            {
+                ResetAIState();
+                mTargetCreature = creature;
+                State = AIState.FleeCreature;
+                MoveFrom(mTargetCreature.Position);
+            }
         }
 
         /// <summary>

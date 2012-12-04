@@ -9,9 +9,8 @@ namespace finalProject.Parts
 {
     public class CheetahLegs : MeteredPart
     {
-        private const float RunSpeed = 30.0f;
-
-        private float mCreatureSpeed;
+        private const float RunGainSpeed = 22.0f;
+        private bool mActive = false;
 
         public CheetahLegs()
             : base(
@@ -68,30 +67,19 @@ namespace finalProject.Parts
                 
         protected override void UseMeter(Vector3 direction)
         {
-            Creature.CharacterController.HorizontalMotionConstraint.Speed = RunSpeed;
+            if (!mActive)
+            {
+                Creature.CharacterController.HorizontalMotionConstraint.Speed += RunGainSpeed;
+                mActive = true;
+            }
         }
 
         protected override void FinishUseMeter()
         {
-            if (Creature != null)
+            if (Creature != null && mActive)
             {
-                Creature.CharacterController.HorizontalMotionConstraint.Speed = mCreatureSpeed;
-            }
-        }
-
-        public override Creature Creature
-        {
-            protected get
-            {
-                return base.Creature;
-            }
-            set
-            {
-                base.Creature = value;
-                if (value != null)
-                {
-                    mCreatureSpeed = value.CharacterController.HorizontalMotionConstraint.Speed;
-                }
+                Creature.CharacterController.HorizontalMotionConstraint.Speed -= RunGainSpeed;
+                mActive = false;
             }
         }
     }
