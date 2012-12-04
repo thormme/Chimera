@@ -100,7 +100,7 @@ namespace finalProject
             creature = new Rhino(new Vector3(0.0f, 1.0f, -20.0f));
             world.Add(creature);
 
-            world.AddLevelFromFile("jump", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            world.AddLevelFromFile("testingPhys", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
 
             mGameStates.Add(world);
         }
@@ -148,6 +148,7 @@ namespace finalProject
                         if (entity.Tag is PlayerCreature)
                         {
                             (entity.Tag as PlayerCreature).Damage(100, null);
+                            (entity.Tag as PlayerCreature).AddPart(new FrogHead(), 1);
                         }
                     }
                 }

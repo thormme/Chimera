@@ -96,8 +96,6 @@ namespace finalProject
             Sneak = DefaultSneak;
 
             SpawnOrigin = position;
-            
-            Entity.PositionUpdateMode = BEPUphysics.PositionUpdating.PositionUpdateMode.Continuous;
         }
 
         /// <summary>
@@ -144,7 +142,6 @@ namespace finalProject
                     Position = SpawnOrigin;
                     return;
                 }
-                System.Console.WriteLine("damaged, " + damage);
 
                 //RemovePart(validParts[Rand.rand.Next(validParts.Count())].Part);
             }
@@ -223,7 +220,7 @@ namespace finalProject
 
         protected override Matrix GetRenderTransform()
         {
-            return Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(MathHelper.Pi, 0, 0) * Entity.WorldTransform * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
+            return Matrix.CreateFromYawPitchRoll(MathHelper.Pi, 0, 0) * base.GetRenderTransform() * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
         }
         #endregion
 

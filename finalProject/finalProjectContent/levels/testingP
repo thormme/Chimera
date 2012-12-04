@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>cactus1</Model>
+    <Parameters />
+    <Position>
+      <X>34.1682129</X>
+      <Y>0</Y>
+      <Z>-16.58361</Z>
+    </Position>
+    <Orientation>
+      <X>3</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>4</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>cactus1</Model>
+    <Parameters />
+    <Position>
+      <X>34.7706757</X>
+      <Y>0</Y>
+      <Z>-15.3715134</Z>
+    </Position>
+    <Orientation>
+      <X>1</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>4</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>cactus1</Model>
+    <Parameters />
+    <Position>
+      <X>33.43078</X>
+      <Y>0</Y>
+      <Z>-15.4633608</Z>
+    </Position>
+    <Orientation>
+      <X>2</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>4</Y>
+      <Z>0.25</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>cactus1</Model>
+    <Parameters />
+    <Position>
+      <X>31.204546</X>
+      <Y>0</Y>
+      <Z>-13.0347252</Z>
+    </Position>
+    <Orientation>
+      <X>2.4</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>4</Y>
+      <Z>0.1875</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>cactus1</Model>
+    <Parameters />
+    <Position>
+      <X>30.3215961</X>
+      <Y>0</Y>
+      <Z>-13.517561</Z>
+    </Position>
+    <Orientation>
+      <X>0.4</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>4</Y>
+      <Z>0.1375</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters />
+    <Position>
+      <X>28.5877056</X>
+      <Y>40</Y>
+      <Z>-12.0784149</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>1.25</X>
+      <Y>40</Y>
+      <Z>0.625</Z>
+    </Scale>
+    <Height>10</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters />
+    <Position>
+      <X>27.8580284</X>
+      <Y>120</Y>
+      <Z>-12.6517754</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>4</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>30</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters />
+    <Position>
+      <X>27.8521919</X>
+      <Y>120</Y>
+      <Z>-11.827754</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.25</X>
+      <Y>8</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>30</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock2dark</Model>
+    <Parameters />
+    <Position>
+      <X>28.6448364</X>
+      <Y>160</Y>
+      <Z>-12.6057425</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>4</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>40</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock3dark</Model>
+    <Parameters />
+    <Position>
+      <X>28.9271278</X>
+      <Y>160</Y>
+      <Z>-11.3964329</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.15</X>
+      <Y>4</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>40</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock3dark</Model>
+    <Parameters />
+    <Position>
+      <X>32.8269539</X>
+      <Y>160</Y>
+      <Z>-16.98336</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.15</X>
+      <Y>4</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>40</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters />
+    <Position>
+      <X>32.4365768</X>
+      <Y>160</Y>
+      <Z>-17.540102</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.15</X>
+      <Y>4</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>40</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters />
+    <Position>
+      <X>28.4975586</X>
+      <Y>160</Y>
+      <Z>-14.4189863</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.15</X>
+      <Y>4</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>40</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PlayerCreature, finalProject</Type>
+    <Model>playerBean_stand</Model>
+    <Parameters />
+    <Position>
+      <X>31.2782364</X>
+      <Y>160</Y>
+      <Z>-15.2309151</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>4.74</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.00125</X>
+      <Y>0.04</Y>
+      <Z>0.00125</Z>
+    </Scale>
+    <Height>40</Height>
+  </DummyObject>
+</object>

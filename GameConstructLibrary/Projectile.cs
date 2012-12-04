@@ -31,7 +31,7 @@ namespace GameConstructLibrary
             Stick = null;
 
             mOwner = owner;
-            mProjectileImpulse = new Vector3(direction.X * speed, 0.0f, direction.Z * speed);
+            mProjectileImpulse = new Vector3(direction.X * speed, direction.Y * speed, direction.Z * speed);
             mSpeed = speed;
             
             Entity.Position = owner.Position;

@@ -140,6 +140,7 @@
   <ItemGroup>
     <Compile Include="AIController.cs" />
     <Compile Include="AI\AggressiveAI.cs" />
+    <Compile Include="AI\ActivationAI.cs" />
     <Compile Include="AI\CobraAI.cs" />
     <Compile Include="AI\FrilledLizardAI.cs" />
     <Compile Include="AI\KangarooAI.cs" />
@@ -154,8 +155,10 @@
     <Compile Include="Creatures\FrilledLizard.cs" />
     <Compile Include="Creatures\Frog.cs" />
     <Compile Include="Creatures\Kangaroo.cs" />
+    <Compile Include="Creatures\Penguin.cs" />
     <Compile Include="Creatures\Rhino.cs" />
     <Compile Include="Creatures\SpittingCobra.cs" />
+    <Compile Include="Creatures\Turtle.cs" />
     <Compile Include="DutyCyclePart.cs" />
     <Compile Include="MeteredPart.cs" />
     <Compile Include="Parts\BearArms.cs" />
@@ -208,6 +211,10 @@
     <ProjectReference Include="..\..\GraphicsLibrary\GraphicsLibrary.csproj">
       <Project>{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}</Project>
       <Name>GraphicsLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utility\Utility.csproj">
+      <Project>{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}</Project>
+      <Name>Utility</Name>
     </ProjectReference>
     <ProjectReference Include="..\finalProjectContent\finalProjectContent.contentproj">
       <Name>finalProjectContent %28Content%29</Name>

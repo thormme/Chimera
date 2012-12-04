@@ -12,6 +12,8 @@ using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics;
 using BEPUphysics.Collidables;
 using BEPUphysics.Entities;
+using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject.Projectiles
 {
@@ -57,7 +59,7 @@ namespace finalProject.Projectiles
                         }
                         else if (!mReachedDestination)
                         {
-                            mRopeLimit.MaximumLength -= 20.0f * (float)time.ElapsedGameTime.TotalSeconds;
+                            mRopeLimit.MaximumLength -= 10.0f * (float)time.ElapsedGameTime.TotalSeconds;
                         }
                     }
                 }
@@ -66,11 +68,15 @@ namespace finalProject.Projectiles
 
         public override void Render()
         {
-            base.Render();
-            /*mTongueGraphic.Render(Matrix.Identity);*/
+            //base.Render();
+            Vector3 offset = Entity.Position - mOwner.Entity.Position;
+            offset.Normalize();
+            mTongueGraphic.Render(mOwner.Entity.Position + offset * (Entity.Position - mOwner.Entity.Position).Length(), 
+                                  offset, 
+                                  new Vector3(0.2f, 0.05f, (Entity.Position - mOwner.Entity.Position).Length()));
         }
 
-        public override void InitialCollisionDetected(BEPUphysics.Collidables.MobileCollidables.EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
+        public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
         {
             base.InitialCollisionDetected(sender, other, collisionPair);
             // If hit physics object link projectile to it then grapple to projectile, otherwise set projectile to kinematic and grapple to projectile
@@ -88,7 +94,6 @@ namespace finalProject.Projectiles
             {
                 mReachedDestination = false;
                 mOwner.World.Space.Remove(mRopeLimit);
-                mRopeLimit = null;
             }
 
         }

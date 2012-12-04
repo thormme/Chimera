@@ -143,7 +143,7 @@ namespace MapEditor
                     mPosition = result.Location;
                     Vector3 tempScale = new Vector3(tempDialog.GetScale());
                     mScale = new Vector3(tempScale.X * scale.X, tempScale.Y * scale.Y, tempScale.Z * scale.Z);
-                    mOrientation = new Vector3(0.0f, 0.0f, 1.0f);
+                    mOrientation = new Vector3(0.0f, 0.0f, 0.0f);
                 }
                 else if (GameMapEditor.CurrentState == States.Object)
                 {
@@ -170,7 +170,7 @@ namespace MapEditor
 
         public void Render()
         {
-            mModel.Render(mPosition, mOrientation, mScale);
+            mModel.Render(mPosition, Matrix.CreateFromYawPitchRoll(mOrientation.X, mOrientation.Y, mOrientation.Z), mScale);
         }
 
     }
