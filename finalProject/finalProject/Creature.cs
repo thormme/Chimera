@@ -15,6 +15,7 @@ using BEPUphysics.Entities.Prefabs;
 using System;
 using System.IO;
 using BEPUphysics.CollisionRuleManagement;
+using Utility;
 
 #endregion
 
@@ -81,16 +82,35 @@ namespace finalProject
             protected set;
         }
 
+        private Vector3 mForward;
         public override Vector3 Forward
         {
             get
             {
-                return base.Forward;
+                return mForward;
             }
             set
             {
-                base.Forward = value;
-                Sensor.Forward = Forward;
+                Vector2 movement = new Vector2(value.X, value.Z);
+                movement.Normalize();
+                if (value != Vector3.Zero)
+                {
+                    value.Normalize();
+                    mForward = value;
+                }
+                Sensor.Forward = mForward;
+            }
+        }
+
+        public override Matrix XNAOrientationMatrix
+        {
+            get
+            {
+                return Utils.GetMatrixFromLookAtVector(Forward);
+            }
+            set
+            {
+                Forward = value.Forward;
             }
         }
 
@@ -341,7 +361,7 @@ namespace finalProject
 
         protected virtual Matrix GetRenderTransform()
         {
-            return Matrix.CreateScale(Scale) * Entity.WorldTransform;
+            return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
         }
 
         public override void Render()
