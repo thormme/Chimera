@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using GameConstructLibrary;
+using BEPUphysics.BroadPhaseEntries;
+using BEPUphysics;
 
 namespace finalProject
 {
@@ -187,6 +189,32 @@ namespace finalProject
                 newDirection += 10.0f * (float)time.ElapsedGameTime.TotalSeconds * (mMoveDirection - mCreature.Forward);
                 Vector2 dir = new Vector2(newDirection.X, newDirection.Z);
                 dir.Normalize();
+
+                Ray forwardRay = new Ray(mCreature.Position, new Vector3(mMoveDirection.X, 0, mMoveDirection.Z));
+                Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
+                RayCastResult result = new RayCastResult();
+                mCreature.World.Space.RayCast(forwardRay, filter, out result);
+
+                Vector3 flatNormal = new Vector3(result.HitData.Normal.X, 0, result.HitData.Normal.Z);
+                float normalDot = Vector3.Dot(result.HitData.Normal, flatNormal);
+                float minDot = (float)Math.Cos(MathHelper.PiOver4) * flatNormal.Length() * result.HitData.Normal.Length();
+                if ((result.HitData.Location - forwardRay.Position).Length() < 5.0f && normalDot < minDot)
+                {
+                    dir = Vector2.Zero;
+                }
+                Console.WriteLine((result.HitData.Location - forwardRay.Position).Length());
+                Console.WriteLine(minDot + " " + normalDot);
+
+                Ray futureDownRay = new Ray(mCreature.Position + new Vector3(mMoveDirection.X * 1.0f, 0, mMoveDirection.Z * 1.0f), Vector3.Down);
+                mCreature.World.Space.RayCast(futureDownRay, filter, out result);
+
+                Vector3 drop = result.HitData.Location - futureDownRay.Position;
+                if (drop.Y < -6.0f)
+                {
+                    dir = Vector2.Zero;
+                }
+                Console.WriteLine(drop.Y + " ^ " + drop.Length());
+
                 mCreature.Move(dir);
             }
         }

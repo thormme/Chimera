@@ -38,7 +38,7 @@ namespace GameConstructLibrary
 
         protected Renderable mRenderable;
 
-        public Matrix XNAOrientationMatrix
+        public virtual Matrix XNAOrientationMatrix
         {
             get
             {
