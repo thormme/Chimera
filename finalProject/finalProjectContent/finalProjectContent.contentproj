@@ -245,16 +245,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\rock\rock1dark.FBX">
-      <Name>rock1dark</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\rock\rock1light.FBX">
-      <Name>rock1light</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
     <Compile Include="models\rock\rock2dark.FBX">
       <Name>rock2dark</Name>
       <Importer>FbxImporter</Importer>
@@ -397,6 +387,18 @@
       <Name>lizard_head</Name>
       <Importer>XImporter</Importer>
       <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\rock\rock1dark.X">
+      <Name>rock1dark</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\rock\rock1light.X">
+      <Name>rock1light</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
