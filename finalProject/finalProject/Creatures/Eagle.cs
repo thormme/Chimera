@@ -19,7 +19,7 @@ namespace finalProject.Creatures
                 2.0f,                                   // Radius
                 4.0f,                                   // Mass
                 20.0f,                                  // Sensitivity Radius
-                new AggressiveAI(),                     // AI
+                new EagleAI(),                     // AI
                 new InanimateModel("box"),              // Model
                 180,                                    // Vision Angle
                 10,                                     // Listening Sensitivity
@@ -30,6 +30,7 @@ namespace finalProject.Creatures
                 )
         {
             Scale = new Vector3(1.0f);
+            //CharacterController.JumpSpeed *= 2;
         }
 
         protected override List<PartBone> GetUsablePartBones()

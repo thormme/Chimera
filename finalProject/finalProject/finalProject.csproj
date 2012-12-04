@@ -142,6 +142,7 @@
     <Compile Include="AI\AggressiveAI.cs" />
     <Compile Include="AI\ActivationAI.cs" />
     <Compile Include="AI\CobraAI.cs" />
+    <Compile Include="AI\EagleAI.cs" />
     <Compile Include="AI\FrilledLizardAI.cs" />
     <Compile Include="AI\KangarooAI.cs" />
     <Compile Include="AI\PassiveAI.cs" />
@@ -195,7 +196,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="RadialSensor.cs" />
     <Compile Include="Rand.cs" />
-    <Compile Include="SensitiveSensor.cs" />
+    <Compile Include="ListeningSensor.cs" />
     <Compile Include="StateTimer.cs" />
   </ItemGroup>
   <ItemGroup>

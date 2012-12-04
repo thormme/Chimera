@@ -56,5 +56,18 @@ namespace finalProject.AI
 
         protected override void FinishUsePart()
         { }
+
+        protected override Part ChoosePart()
+        {
+            List<Part> parts = new List<Part>();
+            foreach (Creature.PartAttachment pa in mCreature.PartAttachments)
+            {
+                if (pa != null)
+                {
+                    parts.Add(pa.Part);
+                }
+            }
+            return parts[Rand.rand.Next(parts.Count)];
+        }
     }
 }

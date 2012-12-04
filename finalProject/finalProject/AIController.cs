@@ -86,9 +86,17 @@ namespace finalProject
             {
                 if (mDurdleTimer.NewState() == DurdleState.Move)
                 {
+                    DurdleBeginMoveUpdate(time);
+                }
+                else if (mDurdleTimer.State == DurdleState.Move)
+                {
                     DurdleMoveUpdate(time);
                 }
                 else if (mDurdleTimer.NewState() == DurdleState.Wait)
+                {
+                    DurdleBeginWaitUpdate(time);
+                }
+                else if (mDurdleTimer.State == DurdleState.Wait)
                 {
                     DurdleWaitUpdate(time);
                 }
@@ -207,7 +215,7 @@ namespace finalProject
         /// Called in update when the durdle move state begins.
         /// </summary>
         /// <param name="time">The game time.</param>
-        protected virtual void DurdleMoveUpdate(GameTime time)
+        protected virtual void DurdleBeginMoveUpdate(GameTime time)
         {
             mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleMoveTime));
             mDurdleTimer.ResetNewState();
@@ -216,16 +224,28 @@ namespace finalProject
         }
 
         /// <summary>
+        /// Called in update every frame the creature is durdling.
+        /// </summary>
+        /// <param name="time">The game time.</param>
+        protected virtual void DurdleMoveUpdate(GameTime time) { }
+
+        /// <summary>
         /// Called in update when the durdle wait state begins.
         /// </summary>
         /// <param name="time">The game time.</param>
-        protected virtual void DurdleWaitUpdate(GameTime time)
+        protected virtual void DurdleBeginWaitUpdate(GameTime time)
         {
             mDurdleTimer.NextIn(Rand.NextFloat(MaxDurdleWaitTime));
             mDurdleTimer.ResetNewState();
 
             StopMoving();
         }
+
+        /// <summary>
+        /// Called in update every frame the creature is waiting.
+        /// </summary>
+        /// <param name="time">The game time.</param>
+        protected virtual void DurdleWaitUpdate(GameTime time) { }
 
         /// <summary>
         /// Called in update during the flee state.
