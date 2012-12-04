@@ -7,12 +7,14 @@ using GraphicsLibrary;
 
 namespace finalProject.Parts
 {
-    public class TurtleShell : Part
+    public class TurtleShell : MeteredPart
     {
         private bool mActive = false;
 
         public TurtleShell()
             : base(
+                3.0f,
+                3.0f,
                 new Part.SubPart[] {
                     new SubPart(
                         new InanimateModel("sphere"),
@@ -32,9 +34,9 @@ namespace finalProject.Parts
         public override void Update(GameTime time)
         { }
 
-        public override void Use(Vector3 direction)
+        protected override void UseMeter(Vector3 direction)
         {
-            if (!mActive)
+            if (!mActive && Creature != null)
             {
                 mActive = true;
                 Creature.Invulnerable = true;
@@ -43,7 +45,7 @@ namespace finalProject.Parts
             }
         }
 
-        public override void FinishUse(Vector3 direction)
+        protected override void FinishUseMeter()
         {
             if (mActive)
             {

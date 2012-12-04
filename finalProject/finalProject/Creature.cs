@@ -48,6 +48,12 @@ namespace finalProject
 
         protected const double InvulnerableLength = 1.0f;
 
+        protected int mInvulnerableCount = 0;
+        protected double mInvulnerableTimer = -1.0f;
+
+        protected const double DefaultStunLength = 1.0f;
+        protected double mStunTimer = -1.0f;
+
         public class PartAttachment
         {
             public Part Part;
@@ -62,9 +68,6 @@ namespace finalProject
 
         protected List<PartAttachment> mPartAttachments;
         protected List<PartBone> mUnusedPartBones;
-
-        protected int mInvulnerableCount = 0;
-        protected double mInvulnerableTimer = -1.0f;
         
         #endregion
 
@@ -382,8 +385,8 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
-                        partAttachment.Part.SubParts[count].Render(worldTransform);
+                        //Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        //partAttachment.Part.SubParts[count].Render(worldTransform);
 
                         count++;
                     }
@@ -585,7 +588,21 @@ namespace finalProject
 
         public virtual void Stun()
         {
+            Stun(DefaultStunLength);
+        }
+
+        public virtual void Stun(double stunLength)
+        {
             Move(Vector2.Zero);
+            foreach (PartAttachment pa in mPartAttachments)
+            {
+                if (pa != null)
+                {
+                    pa.Part.FinishUse(Forward);
+                }
+            }
+            Controller.InControl = false;
+            mStunTimer = stunLength;
         }
 
         /// <summary>
@@ -605,6 +622,15 @@ namespace finalProject
                 if (mInvulnerableTimer < 0.0f)
                 {
                     Invulnerable = false;
+                }
+            }
+
+            if (mStunTimer > 0.0f)
+            {
+                mStunTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (mStunTimer < 0.0f)
+                {
+                    Controller.InControl = false;
                 }
             }
 
