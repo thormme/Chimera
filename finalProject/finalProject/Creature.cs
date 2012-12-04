@@ -132,7 +132,7 @@ namespace finalProject
 
                 if (value != null)
                 {
-                    //value.Add(Sensor);
+                    value.Add(Sensor);
                     value.Space.Add(CharacterController);
                 }
             }
@@ -361,7 +361,7 @@ namespace finalProject
 
         protected virtual Matrix GetRenderTransform()
         {
-            return Matrix.CreateScale(Scale) * Utils.GetMatrixFromLookAtVector(Forward) * Matrix.CreateTranslation(Position);
+            return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
         }
 
         public override void Render()

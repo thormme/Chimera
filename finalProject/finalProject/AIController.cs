@@ -214,8 +214,8 @@ namespace finalProject
                 {
                     dir = Vector2.Zero;
                 }
-                Console.WriteLine((result.HitData.Location - forwardRay.Position).Length());
-                Console.WriteLine(minDot + " " + normalDot);
+                /*Console.WriteLine((result.HitData.Location - forwardRay.Position).Length());
+                Console.WriteLine(minDot + " " + normalDot);*/
 
                 Ray futureDownRay = new Ray(mCreature.Position + new Vector3(mMoveDirection.X * 1.0f, 0, mMoveDirection.Z * 1.0f), Vector3.Down);
                 mCreature.World.Space.RayCast(futureDownRay, filter, out result);
@@ -225,7 +225,7 @@ namespace finalProject
                 {
                     dir = Vector2.Zero;
                 }
-                Console.WriteLine(drop.Y + " ^ " + drop.Length());
+                /*Console.WriteLine(drop.Y + " ^ " + drop.Length());*/
 
                 mCreature.Move(dir);
             }
