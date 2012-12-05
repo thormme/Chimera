@@ -36,7 +36,6 @@ namespace MapEditor
 
         private Vector3 mMovement;
         private Vector3 mDirection;
-
         
         private DummyObject mDummy;
 
@@ -125,17 +124,16 @@ namespace MapEditor
             
             if (GameMapEditor.Map.TerrainPhysics.StaticCollidable.RayCast(ray, length, out result))
             {
-
                 GameMapEditor.Placeable = true;
-                GameMapEditor.Position = mDummy.Position;
+                GameMapEditor.Position = result.Location;
 
-                mDummy.Position = new Vector3(result.Location.X, result.Location.Y + mDummy.Height * GameMapEditor.MapScale.Y, result.Location.Z);
+                mDummy.Position = new Vector3(result.Location.X, result.Location.Y, result.Location.Z);
 
             }
             else
             {
                 GameMapEditor.Placeable = false;
-                GameMapEditor.Position = new Vector3(0.0f, 0.0f, 0.0f);
+                GameMapEditor.Position = new Vector3(0.0f, 10000.0f, 0.0f);
             }
 
             if (GameMapEditor.EditMode == Edit.None) mDummy.Position = new Vector3(0.0f, 10000.0f, 0.0f);
@@ -150,7 +148,7 @@ namespace MapEditor
         public void Render()
         {
             InanimateModel temp = new InanimateModel(mDummy.Model);
-            temp.Render(GameMapEditor.Position, Matrix.CreateFromYawPitchRoll(mDummy.Orientation.X, mDummy.Orientation.Y, mDummy.Orientation.Z), mDummy.Scale);
+            temp.Render(new Vector3(mDummy.Position.X, mDummy.Position.Y + mDummy.Height * GameMapEditor.MapScale.Y, mDummy.Position.Z), Matrix.CreateFromYawPitchRoll(mDummy.Orientation.X, mDummy.Orientation.Y, mDummy.Orientation.Z), mDummy.Scale);
         }
 
     }

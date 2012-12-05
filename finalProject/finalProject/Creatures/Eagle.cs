@@ -19,13 +19,13 @@ namespace finalProject.Creatures
                 2.0f,                                   // Radius
                 4.0f,                                   // Mass
                 20.0f,                                  // Sensitivity Radius
-                new AggressiveAI(),                     // AI
-                new AnimateModel("eagle", "stand"),              // Model
-                180,                                    // Vision Angle
-                10,                                     // Listening Sensitivity
-                3,                                      // Sneak
-                3,                                      // Intimidation
-                100,								    // Starting Health
+                new EagleAI(),                     // AI
+                new InanimateModel("box"),//new AnimateModel("eagle", "stand"),              // Model
+                135,                                    // Vision Angle
+				CreatureConstants.EagleListeningSensitivity,    // Listening Sensitivity
+                CreatureConstants.EagleSneak,                   // Sneak
+                CreatureConstants.EagleIntimidation,            // Intimidation
+                CreatureConstants.EagleStartingHealth,		    // Starting Health
                 new EagleWings()                          // Part
                 )
         {
@@ -42,7 +42,7 @@ namespace finalProject.Creatures
 
         public override void Update(GameTime gameTime)
         {
-            (mRenderable as AnimateModel).Update(gameTime);
+            //(mRenderable as AnimateModel).Update(gameTime);
             base.Update(gameTime);
         }
     }

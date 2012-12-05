@@ -48,6 +48,12 @@ namespace finalProject
 
         protected const double InvulnerableLength = 1.0f;
 
+        protected int mInvulnerableCount = 0;
+        protected double mInvulnerableTimer = -1.0f;
+
+        protected const double DefaultStunLength = 1.0f;
+        protected double mStunTimer = -1.0f;
+
         public class PartAttachment
         {
             public Part Part;
@@ -62,9 +68,6 @@ namespace finalProject
 
         protected List<PartAttachment> mPartAttachments;
         protected List<PartBone> mUnusedPartBones;
-
-        protected int mInvulnerableCount = 0;
-        protected double mInvulnerableTimer = -1.0f;
         
         #endregion
 
@@ -382,8 +385,8 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
-                        partAttachment.Part.SubParts[count].Render(worldTransform);
+                        //Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        //partAttachment.Part.SubParts[count].Render(worldTransform);
 
                         count++;
                     }
@@ -569,7 +572,7 @@ namespace finalProject
         {
             if (damage > 0 && !Invulnerable)
             {
-                System.Console.WriteLine(this + " took " + damage + " damage.");
+                System.Console.WriteLine(this + " took " + damage + " damage from " + source);
                 foreach (PartAttachment partAttachment in mPartAttachments)
                 {
                     if (partAttachment != null)
@@ -581,6 +584,30 @@ namespace finalProject
                 Invulnerable = true;
                 mInvulnerableTimer = InvulnerableLength;
             }
+        }
+
+        public virtual void Stun()
+        {
+            Stun(DefaultStunLength, Vector3.Zero);
+        }
+
+        public virtual void Stun(double stunLength, Vector3 velocity)
+        {
+            Vector2 dir = new Vector2(velocity.X, velocity.Z);
+            if (dir.Length() > 0.1f)
+            {
+                dir.Normalize();
+            }
+            Move(dir);
+            foreach (PartAttachment pa in mPartAttachments)
+            {
+                if (pa != null)
+                {
+                    pa.Part.FinishUse(Forward);
+                }
+            }
+            Controller.NoControl = true;
+            mStunTimer = stunLength;
         }
 
         /// <summary>
@@ -600,6 +627,15 @@ namespace finalProject
                 if (mInvulnerableTimer < 0.0f)
                 {
                     Invulnerable = false;
+                }
+            }
+
+            if (mStunTimer > 0.0f)
+            {
+                mStunTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (mStunTimer < 0.0f)
+                {
+                    Controller.NoControl = false;
                 }
             }
 

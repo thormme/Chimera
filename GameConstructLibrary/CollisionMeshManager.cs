@@ -29,13 +29,17 @@ namespace GameConstructLibrary
 
             FileInfo meshFile = new FileInfo(mMeshDirectory + meshAndDirectoryName + ".fbx");
             FileInfo meshFileUpper = new FileInfo(mMeshDirectory + meshAndDirectoryName + ".FBX");
+            FileInfo meshFileX = new FileInfo(mMeshDirectory + meshAndDirectoryName + ".x");
+            FileInfo meshFileXUpper = new FileInfo(mMeshDirectory + meshAndDirectoryName + ".X");
             FileInfo modelFile = new FileInfo(mModelDirectory + meshAndDirectoryName + ".fbx");
             FileInfo modelFileUpper = new FileInfo(mModelDirectory + meshAndDirectoryName + ".FBX");
-            if (meshFile.Exists || meshFileUpper.Exists)
+            FileInfo modelFileX = new FileInfo(mModelDirectory + meshAndDirectoryName + ".x");
+            FileInfo modelFileXUpper = new FileInfo(mModelDirectory + meshAndDirectoryName + ".X");
+            if (meshFile.Exists || meshFileUpper.Exists || meshFileXUpper.Exists || meshFileX.Exists)
             {
                 input = content.Load<Model>("models/collision/" + meshAndDirectoryName);
             }
-            else if (modelFile.Exists || modelFileUpper.Exists)
+            else if (modelFile.Exists || modelFileUpper.Exists || modelFileXUpper.Exists || modelFileX.Exists)
             {
                 input = content.Load<Model>("models/" + meshAndDirectoryName);
             }
@@ -90,7 +94,7 @@ namespace GameConstructLibrary
             DirectoryInfo[] subDirs = dir.GetDirectories();
             foreach (DirectoryInfo subDir in subDirs)
             {
-                FileInfo[] files = subDir.GetFiles("*.fbx");
+                FileInfo[] files = subDir.GetFiles("*.*x");
                 foreach (FileInfo file in files)
                 {
                     string meshName = Path.GetFileNameWithoutExtension(file.Name);

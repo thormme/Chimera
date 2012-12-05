@@ -17,6 +17,9 @@ namespace finalProject.Parts
 
         private const double flapWait = 0.0f;
 
+        private int ResetFrames = 2;
+        private int mReset = 0;
+
         private int mFlaps;
         private double mFlapTimer;
         private bool mGlide;
@@ -54,9 +57,18 @@ namespace finalProject.Parts
             mFlapTimer = 0.0f;
         }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime time)
+        public override void Update(GameTime time)
         {
             mFlapTimer += time.ElapsedGameTime.TotalSeconds;
+
+            if (mReset > 0)
+            {
+                --mReset;
+                if (mReset == 0)
+                {
+                    Creature.CharacterController.JumpSpeed /= 2;
+                }
+            }
 
             if (Creature.CharacterController.SupportFinder.HasSupport)
             {
@@ -76,12 +88,13 @@ namespace finalProject.Parts
             }
         }
 
-        public override void Use(Microsoft.Xna.Framework.Vector3 direction)
+        public override void Use(Vector3 direction)
         {
-            mGlide = false;
             if (Creature.CharacterController.SupportFinder.HasSupport)
             {
+                Creature.CharacterController.JumpSpeed *= 2;
                 Creature.Jump();
+                mReset = ResetFrames;
             }
             else if (mFlaps < numFlaps && mFlapTimer > flapWait)
             {
@@ -96,7 +109,7 @@ namespace finalProject.Parts
 
         public override void FinishUse(Vector3 direction)
         {
-            
+            mGlide = false;
         }
 
         public override void Reset()
