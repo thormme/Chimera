@@ -14,6 +14,7 @@ using GameConstructLibrary;
 using BEPUphysics.CollisionShapes;
 using Nuclex.UserInterface;
 using BEPUphysics;
+using Utility;
 
 
 namespace MapEditor
@@ -120,8 +121,13 @@ namespace MapEditor
             List<DummyObject> selected = new List<DummyObject>();
             foreach (DummyObject obj in mDummies)
             {
-                Vector3 cameraCoordinate = Vector3.Transform(new Vector3(obj.Position.X, obj.Position.Y + obj.Height * GameMapEditor.MapScale.Y, obj.Position.Z), GameMapEditor.Camera.ViewTransform * GameMapEditor.Camera.ProjectionTransform);
-                Vector2 screenCoordinate = new Vector2(cameraCoordinate.X + GameMapEditor.Viewport.Width / 2, GameMapEditor.Viewport.Height / 2 - cameraCoordinate.Y );
+                Vector2 screenCoordinate = Utils.WorldToScreenCoordinates(
+                    new Vector3(obj.Position.X, obj.Position.Y + obj.Height * GameMapEditor.MapScale.Y, obj.Position.Z),
+                    GameMapEditor.Viewport.Width,
+                    GameMapEditor.Viewport.Height,
+                    GameMapEditor.Camera.ViewTransform,
+                    GameMapEditor.Camera.ProjectionTransform);
+                Console.WriteLine(screenCoordinate);
                 if (screenCoordinate.X > topLeft.X && screenCoordinate.X < bottomRight.X &&
                     screenCoordinate.Y > topLeft.Y && screenCoordinate.Y < bottomRight.Y)
                 {
