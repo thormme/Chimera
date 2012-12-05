@@ -28,26 +28,26 @@ namespace finalProject.Parts
             : base(
                 new Part.SubPart[] {
                     new SubPart(
-                        new AnimateModel("eagle_leftWing", "flap_air"),
+                        new AnimateModel("eagle_leftWing", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.ArmLeft1Cap,
                             Creature.PartBone.ArmLeft2Cap,
                             Creature.PartBone.ArmLeft3Cap
                         },
-                        new Vector3(),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(4.0f)
+                        new Vector3(0.0f),
+                        Matrix.CreateFromYawPitchRoll(0, 0, 0),
+                        new Vector3(1.0f)
                     ),
                     new SubPart(
-                        new AnimateModel("eagle_rightWing", "flap_air"),
+                        new AnimateModel("eagle_rightWing", "glide"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.ArmRight1Cap,
                             Creature.PartBone.ArmRight2Cap,
                             Creature.PartBone.ArmRight3Cap
                         },
-                        new Vector3(),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(4.0f)
+                        new Vector3(0.0f),
+                        Matrix.CreateFromYawPitchRoll(0, 0, 0),
+                        new Vector3(1.0f)
                     )
                 }
             )
@@ -84,7 +84,8 @@ namespace finalProject.Parts
 
             foreach (SubPart subPart in SubParts)
             {
-                (subPart.Renderable as AnimateModel).Update(time);
+                AnimateModel wing = subPart.Renderable as AnimateModel;
+                wing.Update(time);
             }
         }
 
