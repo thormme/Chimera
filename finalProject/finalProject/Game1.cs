@@ -145,19 +145,19 @@ namespace finalProject
                         PlayerCreature player = entity.Tag as PlayerCreature;
                         if (player != null)
                         {
-                            player.Damage(100, null);
+                            //player.Damage(100, null);
 
                             int i = 0;
+                            player.AddPart(new EagleWings(), i++);
                             player.AddPart(new RhinoHead(), i++);
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new KangarooLegs(), i++);
                             player.AddPart(new PenguinLimbs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new FrilledLizardHead(), i++);
 
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Eagle(player.Position + 30.0f * player.Forward));
+                            (mGameStates[mGameStates.Count - 1] as World).Add(new Kangaroo(player.Position + 5.0f * player.Forward));
                         }
                     }
                 }

@@ -87,8 +87,8 @@ namespace finalProject.Parts
                 }
 
                 Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
-                if (Utils.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space, 5.0f))
-                //if (Utils.FindCliff(Creature.Position, Creature.Forward, filter, Creature.World.Space, 4.0f * (float)time.ElapsedGameTime.TotalSeconds * Creature.Entity.LinearVelocity.Length() + Creature.CharacterController.BodyRadius))
+                //if (Utils.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space, 5.0f))
+                if (Utils.FindCliff(Creature.Position, Creature.Forward, filter, Creature.World.Space, 4.0f * (float)time.ElapsedGameTime.TotalSeconds * Creature.Entity.LinearVelocity.Length() + Creature.CharacterController.BodyRadius))
                 {
                     Creature.Stun();
                     mRunTimer = -1.0f;

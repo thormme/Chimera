@@ -213,8 +213,10 @@ namespace finalProject
 
                 Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
 
-                if (Utils.FindCliff(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, 1.0f) ||
-                    Utils.FindWall(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, 5.0f))
+                float distance = (float)time.ElapsedGameTime.TotalSeconds * mCreature.Entity.LinearVelocity.Length() * 5.0f + mCreature.CharacterController.BodyRadius; 
+
+                if (Utils.FindWall(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance) ||
+                    Utils.FindCliff(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance))
                 {
                     dir = Vector2.Zero;
                 }
