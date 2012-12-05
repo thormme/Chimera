@@ -367,11 +367,16 @@ namespace finalProject
             return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
         }
 
+        protected virtual Matrix GetOptionalTransforms()
+        {
+            return Matrix.Identity;
+        }
+
         public override void Render()
         {
             if (mRenderable != null)
             {
-                mRenderable.Render(GetRenderTransform());
+                mRenderable.Render(GetOptionalTransforms() * GetRenderTransform());
             }
             RenderParts();
         }
@@ -385,8 +390,8 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        //Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
-                        //partAttachment.Part.SubParts[count].Render(worldTransform);
+                        Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        partAttachment.Part.SubParts[count].Render(worldTransform);
 
                         count++;
                     }
