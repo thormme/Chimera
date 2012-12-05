@@ -87,7 +87,7 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
-            : base(position, 1.3f, 3.0f/*0.75f*/, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
+            : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
         {
             Scale = new Vector3(1.0f);
             Forward = facingDirection;

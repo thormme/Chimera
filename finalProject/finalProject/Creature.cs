@@ -16,6 +16,7 @@ using System;
 using System.IO;
 using BEPUphysics.CollisionRuleManagement;
 using Utility;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 #endregion
 
@@ -362,6 +363,11 @@ namespace finalProject
             }
         }
 
+        protected virtual Matrix GetOptionalTransforms()
+        {
+            return Matrix.Identity;
+        }
+
         protected virtual Matrix GetRenderTransform()
         {
             return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
@@ -371,7 +377,7 @@ namespace finalProject
         {
             if (mRenderable != null)
             {
-                mRenderable.Render(GetRenderTransform());
+                mRenderable.Render(GetOptionalTransforms() * GetRenderTransform());
             }
             RenderParts();
         }
@@ -385,8 +391,8 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        //Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
-                        //partAttachment.Part.SubParts[count].Render(worldTransform);
+                        Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        partAttachment.Part.SubParts[count].Render(worldTransform);
 
                         count++;
                     }
@@ -669,6 +675,19 @@ namespace finalProject
                 if (p != null)
                 {
                     p.Part.Update(gameTime);
+                }
+            }
+        }
+
+        public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
+        {
+            base.InitialCollisionDetected(sender, other, collisionPair);
+
+            foreach (PartAttachment pa in mPartAttachments)
+            {
+                if (pa != null)
+                {
+                    pa.Part.InitialCollisionDetected(sender, other, collisionPair);
                 }
             }
         }

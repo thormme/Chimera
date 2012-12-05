@@ -35,8 +35,11 @@ namespace finalProject.AI
 
         protected override void FinishUsePart()
         {
-            base.FinishUsePart();
-            mStopTimer = -1.0f;
+            if (mCreature.PartAttachments[0] != null)
+            {
+                base.FinishUsePart();
+                mStopTimer = -1.0f;
+            }
         }
     }
 }
