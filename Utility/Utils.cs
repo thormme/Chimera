@@ -61,10 +61,10 @@ namespace Utility
         /// <param name="space">The space to check for a wall in.</param>
         /// <param name="distance">The distance to check within.</param>
         /// <returns>True if a wall was detected, false otherwise.</returns>
-        public static bool FindWall(Vector3 position, Vector3 facingDirection, Func<BroadPhaseEntry, bool> filter, Space space, float distance)
+        public static bool FindWall(Vector3 position, Vector3 facingDirection, Func<BroadPhaseEntry, bool> filter, Space space, float distance, out RayCastResult result)
         {
             Ray forwardRay = new Ray(position, new Vector3(facingDirection.X, 0, facingDirection.Z));
-            RayCastResult result = new RayCastResult();
+            result = new RayCastResult();
             space.RayCast(forwardRay, filter, out result);
 
             Vector3 flatNormal = new Vector3(result.HitData.Normal.X, 0, result.HitData.Normal.Z);
