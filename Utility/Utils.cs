@@ -73,7 +73,7 @@ namespace Utility
 
         public static bool FindCliff(Vector3 position, Vector3 facingDirection, Func<BroadPhaseEntry, bool> filter, Space space, float distance)
         {
-            Ray futureDownRay = new Ray(position + new Vector3(facingDirection.X * 1.0f, 0, facingDirection.Z * 1.0f), Vector3.Down);
+            Ray futureDownRay = new Ray(position + new Vector3(facingDirection.X * distance, 0, facingDirection.Z * distance), Vector3.Down);
             RayCastResult result = new RayCastResult();
             space.RayCast(futureDownRay, filter, out result);
 
