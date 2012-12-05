@@ -56,11 +56,11 @@ namespace Utility
         /// Determines whether there is a wall nearby.
         /// </summary>
         /// <param name="position">Position to look from.</param>
-        /// <param name="facingDirection"></param>
-        /// <param name="filter"></param>
-        /// <param name="space"></param>
-        /// <param name="distance"></param>
-        /// <returns></returns>
+        /// <param name="facingDirection">Direction to check in.</param>
+        /// <param name="filter">Anonymous function to filter out unwanted objects.</param>
+        /// <param name="space">The space to check for a wall in.</param>
+        /// <param name="distance">The distance to check within.</param>
+        /// <returns>True if a wall was detected, false otherwise.</returns>
         public static bool FindWall(Vector3 position, Vector3 facingDirection, Func<BroadPhaseEntry, bool> filter, Space space, float distance)
         {
             Ray forwardRay = new Ray(position, new Vector3(facingDirection.X, 0, facingDirection.Z));
@@ -80,9 +80,22 @@ namespace Utility
             }
         }
 
+        /// <summary>
+        /// Determines whether there is a cliff nearby.
+        /// </summary>
+        /// <param name="position">Position to look from.</param>
+        /// <param name="facingDirection">Direction to check in.</param>
+        /// <param name="filter">Anonymous function to filter out unwanted objects.</param>
+        /// <param name="space">The space to check for a cliff in.</param>
+        /// <param name="distance">The distance to check at.</param>
+        /// <returns>True if a cliff was detected, false otherwise.</returns>
         public static bool FindCliff(Vector3 position, Vector3 facingDirection, Func<BroadPhaseEntry, bool> filter, Space space, float distance)
         {
-            if (FindWall(position, facingDirection, filter, space, distance))
+            // If there is a wall before the requested distance assume there is no cliff.
+            Ray forwardRay = new Ray(position, new Vector3(facingDirection.X, 0, facingDirection.Z));
+            RayCastResult forwardResult = new RayCastResult();
+            space.RayCast(forwardRay, filter, out forwardResult);
+            if ((forwardResult.HitData.Location - position).Length() < distance)
             {
                 return false;
             }
