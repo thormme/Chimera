@@ -8,6 +8,7 @@ using GraphicsLibrary;
 using GameConstructLibrary;
 using BEPUphysics.BroadPhaseEntries;
 using Utility;
+using BEPUphysics;
 
 namespace finalProject.Parts
 {
@@ -51,29 +52,6 @@ namespace finalProject.Parts
 
         public override void Update(GameTime time)
         {
-            //foreach (SubPart part in SubParts)
-            //{
-            //    (part.Renderable as AnimateModel).Update(time);
-            //}
-
-            //if (mAttackTimer > 0.0f)
-            //{
-            //    float multiplier = Creature.CharacterController.SupportFinder.HasTraction ? GroundDamageMultiplier : AirDamageMultiplier;
-            //    mAttackTimer -= time.ElapsedGameTime.TotalSeconds;
-            //    if (mAttackTimer < DamageStart)
-            //    {
-            //        foreach (IGameObject gameObject in Creature.CollidingObjects)
-            //        {
-            //            Creature otherCreature = gameObject as Creature;
-            //            if (otherCreature != null)
-            //            {
-            //                Vector3 velocityDifference = Creature.Entity.LinearVelocity - otherCreature.Entity.LinearVelocity;
-            //                otherCreature.Damage((int)(velocityDifference.Length() * multiplier), Creature);
-            //            }
-            //        }
-            //    }
-            //}
-
             if (mRunTimer > 0.0f)
             {
                 foreach (IGameObject gameObject in Creature.CollidingObjects)
@@ -87,8 +65,9 @@ namespace finalProject.Parts
                 }
 
                 Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
-                //if (Utils.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space, 5.0f))
-                if (Utils.FindCliff(Creature.Position, Creature.Forward, filter, Creature.World.Space, 4.0f * (float)time.ElapsedGameTime.TotalSeconds * Creature.Entity.LinearVelocity.Length() + Creature.CharacterController.BodyRadius))
+                RayCastResult result;
+                if (Utils.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space, 2.0f * Creature.CharacterController.BodyRadius, out result))
+                //if (Utils.FindCliff(Creature.Position, Creature.Forward, filter, Creature.World.Space, 4.0f * (float)time.ElapsedGameTime.TotalSeconds * Creature.Entity.LinearVelocity.Length() + Creature.CharacterController.BodyRadius))
                 {
                     Creature.Stun();
                     mRunTimer = -1.0f;

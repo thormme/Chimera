@@ -19,7 +19,7 @@ namespace finalProject.Creatures
                 3.0f,                                           // Radius
                 30.0f,                                          // Mass
                 CreatureConstants.RhinoSensitivityRadius,       // Sensitivity Radius
-                new AggressiveAI(),                             // AI
+                new RhinoAI(),                             // AI
                 new InanimateModel("box"),//new AnimateModel("rhino", "walk"),              // Model
                 135,                                            // Vision Angle
                 CreatureConstants.RhinoListeningSensitivity,    // Listening Sensitivity

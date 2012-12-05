@@ -148,6 +148,7 @@ namespace finalProject
                             //player.Damage(100, null);
 
                             int i = 0;
+                            player.AddPart(new RhinoHead(), i++);
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new CheetahLegs(), i++);
@@ -155,12 +156,11 @@ namespace finalProject
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new RhinoHead(), i++);
                             player.AddPart(new KangarooLegs(), i++);
                             player.AddPart(new PenguinLimbs(), i++);
                             player.AddPart(new FrilledLizardHead(), i++);
 
-                            (mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward));
+                            (mGameStates[mGameStates.Count - 1] as World).Add(new Rhino(player.Position + 30.0f * player.Forward));
                         }
                     }
                 }
