@@ -57,6 +57,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="models\eagle\eagle.X">
+      <Name>eagle</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
     <Compile Include="shaders\ConfigurableShader.fx">
       <Name>ConfigurableShader</Name>
       <Importer>EffectImporter</Importer>
@@ -216,11 +221,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\eagle\eagle.X">
-      <Name>eagle</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
     <Compile Include="models\eagle\eagle_leftWing.X">
       <Name>eagle_leftWing</Name>
       <Importer>XImporter</Importer>

@@ -33,20 +33,19 @@ namespace finalProject.Parts
                 10.0,
                 new Part.SubPart[] {
                     new SubPart(
-                        new AnimateModel("rhino_head", "charge"),
+                        new AnimateModel("rhino_head", "walk"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.HeadCenterCap,
                             Creature.PartBone.HeadLeftCap,
                             Creature.PartBone.HeadRightCap
                         },
                         new Vector3(0.0f),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, -MathHelper.PiOver4, 0),
-                        new Vector3(4.0f)
+                        Matrix.CreateFromYawPitchRoll(0, 0, 0),
+                        new Vector3(1.0f)
                     )
                 }
             )
         {
-            //(mRenderable as AnimateModel).PlayAnimation("Take 001");
         }
 
         public override void Update(GameTime time)

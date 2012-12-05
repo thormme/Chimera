@@ -1,0 +1,15 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\eagle\eagle_leftWing.X
+@0.000029: kW X-port: 3ds max compatible version 9.00
+@3.083626: Saving node: WingLeft
+@3.085632: Limiting exported UV coordinates to 1 because of available maps.
+@3.128505: 419 skinned vertices in WingLeft
+@3.129781: Material 0 shader returned effect file name 'null'
+@3.130576: Saving node: WingLeft1
+@3.130669: Saving node: WingLeft2
+@3.130760: Saving node: WingLeftCap
+@3.130827: Extracting animation flap_air.
+@3.132235: Extracting animation glide.
+@3.132330: Extracting animation flap_ground.
+@3.134792: Extracting animation walk.
+@3.136010: Extracting animation stand.
+@3.150033: File D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Eagle\eagle_texture.png has same mod time as D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\eagle\eagle_texture.png; not copying.

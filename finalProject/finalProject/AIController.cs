@@ -206,21 +206,62 @@ namespace finalProject
         {
             if (mMoveDirection.Length() > 0.2f)
             {
+                Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
+
+                float distance = /*(float)time.ElapsedGameTime.TotalSeconds * mCreature.Entity.LinearVelocity.Length() * */5.0f + mCreature.CharacterController.BodyRadius;
+                RayCastResult result;
+
+                if (State != AIState.Durdle && Utils.FindWall(mCreature.Position, mCreature.Position, filter, mCreature.World.Space, distance, out result))
+                {
+                    mMoveDirection.Y = 0;
+                    mMoveDirection.Normalize();
+                    Vector3 cross = Vector3.Cross(mMoveDirection, result.HitData.Normal);
+                    cross.Y = 0;
+                    cross.Normalize();
+
+                    if (Vector3.Dot(mMoveDirection, cross) >= 0.0f)
+                    {
+                        mMoveDirection = cross;
+                    }
+                    else
+                    {
+                        mMoveDirection = -cross;
+                    }
+                }
+
                 Vector3 newDirection = mCreature.Forward;
                 newDirection += 10.0f * (float)time.ElapsedGameTime.TotalSeconds * (mMoveDirection - mCreature.Forward);
+
+                //if (State != AIState.Durdle && Utils.FindWall(mCreature.Position, newDirection, filter, mCreature.World.Space, distance, out result))
+                //{
+                //    newDirection.Y = 0;
+                //    newDirection.Normalize();
+                //    Vector3 cross = Vector3.Cross(newDirection, result.HitData.Normal);
+                //    cross.Y = 0;
+                //    cross.Normalize();
+
+                //    if (Vector3.Dot(newDirection, cross) >= 0.0f)
+                //    {
+                //        newDirection = cross;
+                //    }
+                //    else
+                //    {
+                //        newDirection = -cross;
+                //    }
+                //}
+
                 Vector2 dir = new Vector2(newDirection.X, newDirection.Z);
                 dir.Normalize();
 
-                Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
 
-                float distance = (float)time.ElapsedGameTime.TotalSeconds * mCreature.Entity.LinearVelocity.Length() * 5.0f + mCreature.CharacterController.BodyRadius; 
-
-                if (Utils.FindWall(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance) ||
-                    Utils.FindCliff(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance))
+                if (State == AIState.Durdle)
                 {
-                    dir = Vector2.Zero;
+                    if (Utils.FindWall(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance, out result) ||
+                        Utils.FindCliff(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance))
+                    {
+                        dir = Vector2.Zero;
+                    }
                 }
-
                 mCreature.Move(dir);
             }
         }
