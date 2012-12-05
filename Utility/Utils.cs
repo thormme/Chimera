@@ -52,6 +52,15 @@ namespace Utility
             return worldTransforms;
         }
 
+        /// <summary>
+        /// Determines whether there is a wall nearby.
+        /// </summary>
+        /// <param name="position">Position to look from.</param>
+        /// <param name="facingDirection"></param>
+        /// <param name="filter"></param>
+        /// <param name="space"></param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
         public static bool FindWall(Vector3 position, Vector3 facingDirection, Func<BroadPhaseEntry, bool> filter, Space space, float distance)
         {
             Ray forwardRay = new Ray(position, new Vector3(facingDirection.X, 0, facingDirection.Z));
@@ -73,6 +82,12 @@ namespace Utility
 
         public static bool FindCliff(Vector3 position, Vector3 facingDirection, Func<BroadPhaseEntry, bool> filter, Space space, float distance)
         {
+            if (FindWall(position, facingDirection, filter, space, distance))
+            {
+                return false;
+            }
+
+            facingDirection.Normalize();
             Ray futureDownRay = new Ray(position + new Vector3(facingDirection.X * distance, 0, facingDirection.Z * distance), Vector3.Down);
             RayCastResult result = new RayCastResult();
             space.RayCast(futureDownRay, filter, out result);
