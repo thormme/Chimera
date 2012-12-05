@@ -52,7 +52,7 @@ namespace Utility
             return worldTransforms;
         }
 
-        public static bool FindWall(Vector3 position, Vector3 facingDirection, Func<BroadPhaseEntry, bool> filter, Space space)
+        public static bool FindWall(Vector3 position, Vector3 facingDirection, Func<BroadPhaseEntry, bool> filter, Space space, float distance)
         {
             Ray forwardRay = new Ray(position, new Vector3(facingDirection.X, 0, facingDirection.Z));
             RayCastResult result = new RayCastResult();
@@ -61,7 +61,7 @@ namespace Utility
             Vector3 flatNormal = new Vector3(result.HitData.Normal.X, 0, result.HitData.Normal.Z);
             float normalDot = Vector3.Dot(result.HitData.Normal, flatNormal);
             float minDot = (float)Math.Cos(MathHelper.PiOver4) * flatNormal.Length() * result.HitData.Normal.Length();
-            if ((result.HitData.Location - forwardRay.Position).Length() < 5.0f && normalDot > minDot)
+            if ((result.HitData.Location - forwardRay.Position).Length() < distance && normalDot > minDot)
             {
                 return true;
             }
@@ -71,7 +71,7 @@ namespace Utility
             }
         }
 
-        public static bool FindCliff(Vector3 position, Vector3 facingDirection, Func<BroadPhaseEntry, bool> filter, Space space)
+        public static bool FindCliff(Vector3 position, Vector3 facingDirection, Func<BroadPhaseEntry, bool> filter, Space space, float distance)
         {
             Ray futureDownRay = new Ray(position + new Vector3(facingDirection.X * 1.0f, 0, facingDirection.Z * 1.0f), Vector3.Down);
             RayCastResult result = new RayCastResult();

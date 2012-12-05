@@ -87,7 +87,7 @@ namespace finalProject.Parts
                 }
 
                 Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
-                if (Utils.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space))
+                if (Utils.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space, 5.0f))
                 {
                     Creature.Stun();
                     mRunTimer = -1.0f;
