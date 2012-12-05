@@ -373,6 +373,11 @@ namespace finalProject
             return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
         }
 
+        protected virtual Matrix GetOptionalTransforms()
+        {
+            return Matrix.Identity;
+        }
+
         public override void Render()
         {
             if (mRenderable != null)

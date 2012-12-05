@@ -116,5 +116,26 @@ namespace Utility
             }
                 
         }
+
+        public static BoundingBox GetCameraBoundingBox(Matrix viewTransform, Matrix projectionTransform)
+        {
+            BoundingFrustum cameraFrustum = new BoundingFrustum(Matrix.Identity);
+            cameraFrustum.Matrix = viewTransform * projectionTransform;
+
+            // Get the corners of the frustum
+            Vector3[] frustumCorners = cameraFrustum.GetCorners();
+
+            BoundingBox bounds = BoundingBox.CreateFromPoints(frustumCorners);
+            return bounds;
+        }
+
+        public static Vector2 WorldToScreenCoordinates(Vector3 worldCoordinate, float viewportWidth, float viewportHeight, Matrix viewTransform, Matrix projectionTransform)
+        {
+            Vector4 position = new Vector4(worldCoordinate.X, worldCoordinate.Y, worldCoordinate.Z, 1);
+            Vector4 cameraCoordinate = Vector4.Transform(position, viewTransform * projectionTransform);
+            cameraCoordinate /= cameraCoordinate.W;
+            Vector2 screenCoordinate = new Vector2((cameraCoordinate.X + 1.0f) * viewportWidth / 2.0f, (cameraCoordinate.Y - 1.0f) * viewportHeight / -2.0f);
+            return screenCoordinate;
+        }
     }
 }
