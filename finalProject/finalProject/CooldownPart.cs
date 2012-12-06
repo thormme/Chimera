@@ -39,6 +39,7 @@ namespace finalProject
         public override void Update(GameTime time)
         {
             CooldownTimer -= time.ElapsedGameTime.TotalSeconds;
+            base.Update(time);
         }
 
         public override void Use(Vector3 direction)

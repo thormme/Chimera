@@ -19,9 +19,9 @@ namespace finalProject
             mMostIntimidatingCreature = null;
             foreach (Creature creature in collidingCreatures)
             {
-                if (mMostIntimidatingCreature == null ||
-                    (creature.Intimidation > mMostIntimidatingCreature.Intimidation &&
-                    creature.GetType() != mCreature.GetType()))
+                if (creature.Incapacitated == false &&
+                    creature.GetType() != mCreature.GetType() &&
+                    (mMostIntimidatingCreature == null || creature.Intimidation > mMostIntimidatingCreature.Intimidation))
                 {
                     mMostIntimidatingCreature = creature;
                 }

@@ -110,7 +110,13 @@ namespace finalProject
         /// <param name="time">
         /// The game time.
         /// </param>
-        abstract public void Update(GameTime time);
+        public virtual void Update(GameTime time)
+        {
+            foreach (SubPart subPart in SubParts)
+            {
+                (subPart.Renderable as AnimateModel).Update(time);
+            }
+        }
 
         /// <summary>
         /// Trys to set the animation being played by parts.  Will fail if part state is not appropriate.
@@ -154,5 +160,7 @@ namespace finalProject
         /// Called when the Creature is set.
         /// </summary>
         abstract public void Reset();
+
+        public virtual void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair) { }
     }
 }

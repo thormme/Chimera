@@ -44,6 +44,13 @@ namespace finalProject.Parts
         public override void Update(Microsoft.Xna.Framework.GameTime time)
         {
             base.Update(time);
+            if (mTongue != null)
+            {
+                if ((mTongue.Entity.Position - Creature.Entity.Position).Length() > 300)
+                {
+                    FinishUse(Vector3.Zero);
+                }
+            }
         }
 
         protected override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
