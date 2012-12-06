@@ -16,11 +16,11 @@ namespace finalProject.Creatures
             : base(
                 position,
                 2.0f,                                           // Height
-                3.0f,                                           // Radius
+                0.75f,                                           // Radius
                 30.0f,                                          // Mass
                 CreatureConstants.RhinoSensitivityRadius,       // Sensitivity Radius
-                new AggressiveAI(),                             // AI
-                new InanimateModel("box"),//new AnimateModel("rhino", "walk"),              // Model
+                new RhinoAI(),                                  // AI
+                new AnimateModel("rhino", "walk"),              // Model
                 135,                                            // Vision Angle
                 CreatureConstants.RhinoListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.RhinoSneak,                   // Sneak
@@ -41,7 +41,7 @@ namespace finalProject.Creatures
 
         public override void Update(GameTime gameTime)
         {
-            //(mRenderable as AnimateModel).Update(gameTime);
+            (mRenderable as AnimateModel).Update(gameTime);
             base.Update(gameTime);
         }
     }

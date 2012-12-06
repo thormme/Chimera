@@ -16,6 +16,7 @@ using System;
 using System.IO;
 using BEPUphysics.CollisionRuleManagement;
 using Utility;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 #endregion
 
@@ -362,16 +363,26 @@ namespace finalProject
             }
         }
 
+        protected virtual Matrix GetOptionalTransforms()
+        {
+            return Matrix.Identity;
+        }
+
         protected virtual Matrix GetRenderTransform()
         {
             return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
+        }
+
+        protected virtual Matrix GetOptionalTransforms()
+        {
+            return Matrix.Identity;
         }
 
         public override void Render()
         {
             if (mRenderable != null)
             {
-                mRenderable.Render(GetRenderTransform());
+                mRenderable.Render(GetOptionalTransforms() * GetRenderTransform());
             }
             RenderParts();
         }
@@ -385,8 +396,8 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        //Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
-                        //partAttachment.Part.SubParts[count].Render(worldTransform);
+                        Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        partAttachment.Part.SubParts[count].Render(worldTransform);
 
                         count++;
                     }
@@ -588,12 +599,17 @@ namespace finalProject
 
         public virtual void Stun()
         {
-            Stun(DefaultStunLength);
+            Stun(DefaultStunLength, Vector3.Zero);
         }
 
-        public virtual void Stun(double stunLength)
+        public virtual void Stun(double stunLength, Vector3 velocity)
         {
-            Move(Vector2.Zero);
+            Vector2 dir = new Vector2(velocity.X, velocity.Z);
+            if (dir.Length() > 0.1f)
+            {
+                dir.Normalize();
+            }
+            Move(dir);
             foreach (PartAttachment pa in mPartAttachments)
             {
                 if (pa != null)
@@ -601,7 +617,7 @@ namespace finalProject
                     pa.Part.FinishUse(Forward);
                 }
             }
-            Controller.InControl = false;
+            Controller.NoControl = true;
             mStunTimer = stunLength;
         }
 
@@ -630,7 +646,7 @@ namespace finalProject
                 mStunTimer -= gameTime.ElapsedGameTime.TotalSeconds;
                 if (mStunTimer < 0.0f)
                 {
-                    Controller.InControl = false;
+                    Controller.NoControl = false;
                 }
             }
 
@@ -664,6 +680,19 @@ namespace finalProject
                 if (p != null)
                 {
                     p.Part.Update(gameTime);
+                }
+            }
+        }
+
+        public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
+        {
+            base.InitialCollisionDetected(sender, other, collisionPair);
+
+            foreach (PartAttachment pa in mPartAttachments)
+            {
+                if (pa != null)
+                {
+                    pa.Part.InitialCollisionDetected(sender, other, collisionPair);
                 }
             }
         }

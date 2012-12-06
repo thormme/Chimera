@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using GameConstructLibrary;
 using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics;
+using Utility;
 
 namespace finalProject
 {
@@ -116,7 +117,7 @@ namespace finalProject
                 FollowPositionUpdate(time);
             }
 
-            if (!InControl)
+            if (!NoControl)
             {
                 MoveUpdate(time);
                 UsePartUpdate(time);
@@ -205,36 +206,62 @@ namespace finalProject
         {
             if (mMoveDirection.Length() > 0.2f)
             {
+                Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
+
+                float distance = /*(float)time.ElapsedGameTime.TotalSeconds * mCreature.Entity.LinearVelocity.Length() * */5.0f + mCreature.CharacterController.BodyRadius;
+                RayCastResult result;
+
+                if (State != AIState.Durdle && Utils.FindWall(mCreature.Position, mCreature.Position, filter, mCreature.World.Space, distance, out result))
+                {
+                    mMoveDirection.Y = 0;
+                    mMoveDirection.Normalize();
+                    Vector3 cross = Vector3.Cross(mMoveDirection, result.HitData.Normal);
+                    cross.Y = 0;
+                    cross.Normalize();
+
+                    if (Vector3.Dot(mMoveDirection, cross) >= 0.0f)
+                    {
+                        mMoveDirection = cross;
+                    }
+                    else
+                    {
+                        mMoveDirection = -cross;
+                    }
+                }
+
                 Vector3 newDirection = mCreature.Forward;
                 newDirection += 10.0f * (float)time.ElapsedGameTime.TotalSeconds * (mMoveDirection - mCreature.Forward);
+
+                //if (State != AIState.Durdle && Utils.FindWall(mCreature.Position, newDirection, filter, mCreature.World.Space, distance, out result))
+                //{
+                //    newDirection.Y = 0;
+                //    newDirection.Normalize();
+                //    Vector3 cross = Vector3.Cross(newDirection, result.HitData.Normal);
+                //    cross.Y = 0;
+                //    cross.Normalize();
+
+                //    if (Vector3.Dot(newDirection, cross) >= 0.0f)
+                //    {
+                //        newDirection = cross;
+                //    }
+                //    else
+                //    {
+                //        newDirection = -cross;
+                //    }
+                //}
+
                 Vector2 dir = new Vector2(newDirection.X, newDirection.Z);
                 dir.Normalize();
 
-                Ray forwardRay = new Ray(mCreature.Position, new Vector3(mMoveDirection.X, 0, mMoveDirection.Z));
-                Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
-                RayCastResult result = new RayCastResult();
-                mCreature.World.Space.RayCast(forwardRay, filter, out result);
 
-                Vector3 flatNormal = new Vector3(result.HitData.Normal.X, 0, result.HitData.Normal.Z);
-                float normalDot = Vector3.Dot(result.HitData.Normal, flatNormal);
-                float minDot = (float)Math.Cos(MathHelper.PiOver4) * flatNormal.Length() * result.HitData.Normal.Length();
-                if ((result.HitData.Location - forwardRay.Position).Length() < 5.0f && normalDot < minDot)
+                if (State == AIState.Durdle)
                 {
-                    dir = Vector2.Zero;
+                    if (Utils.FindWall(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance, out result) ||
+                        Utils.FindCliff(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance))
+                    {
+                        dir = Vector2.Zero;
+                    }
                 }
-                /*Console.WriteLine((result.HitData.Location - forwardRay.Position).Length());
-                Console.WriteLine(minDot + " " + normalDot);*/
-
-                Ray futureDownRay = new Ray(mCreature.Position + new Vector3(mMoveDirection.X * 1.0f, 0, mMoveDirection.Z * 1.0f), Vector3.Down);
-                mCreature.World.Space.RayCast(futureDownRay, filter, out result);
-
-                Vector3 drop = result.HitData.Location - futureDownRay.Position;
-                if (drop.Y < -6.0f)
-                {
-                    dir = Vector2.Zero;
-                }
-                /*Console.WriteLine(drop.Y + " ^ " + drop.Length());*/
-
                 mCreature.Move(dir);
             }
         }

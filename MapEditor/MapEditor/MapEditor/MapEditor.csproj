@@ -242,6 +242,10 @@
       <Project>{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}</Project>
       <Name>GraphicsLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Utility\Utility.csproj">
+      <Project>{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

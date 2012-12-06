@@ -6,63 +6,73 @@ using Microsoft.Xna.Framework;
 using BEPUphysics.Entities.Prefabs;
 using GraphicsLibrary;
 using GameConstructLibrary;
+using BEPUphysics.BroadPhaseEntries;
+using Utility;
+using BEPUphysics;
+using BEPUphysics.CollisionTests;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject.Parts
 {
     class RhinoHead : CooldownPart
     {
-        //private const float GroundDamageMultiplier = 3.0f;
-        //private const float AirDamageMultiplier = 1.0f;
-        //private const double AttackLength = 0.6f;
-        //private const double DamageStart = 0.4f;
-        //private double mAttackTimer = -1.0f;
+        private const double RunLength = 5.0f;
+        private const float SpeedBoost = 10.0f;
+        private const float DamageMultiplier = 4.0f;
 
+        private double mRunTimer = -1.0f;
+        private float NewSpeed;
+        private float OldSpeed;
 
         public RhinoHead()
             : base(
-                2.0,
+                10.0,
                 new Part.SubPart[] {
                     new SubPart(
-                        new AnimateModel("rhino_head", "charge"),
+                        new AnimateModel("rhino_head", "walk"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.HeadCenterCap,
                             Creature.PartBone.HeadLeftCap,
                             Creature.PartBone.HeadRightCap
                         },
                         new Vector3(0.0f),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, -MathHelper.PiOver4, 0),
-                        new Vector3(4.0f)
+                        Matrix.CreateFromYawPitchRoll(0, 0, 0),
+                        new Vector3(1.0f)
                     )
                 }
             )
         {
-            //(mRenderable as AnimateModel).PlayAnimation("Take 001");
         }
 
         public override void Update(GameTime time)
         {
-            //foreach (SubPart part in SubParts)
-            //{
-            //    (part.Renderable as AnimateModel).Update(time);
-            //}
+            if (mRunTimer > 0.0f)
+            {
+                //foreach (IGameObject gameObject in Creature.CollidingObjects)
+                //{
+                //    Creature creature = gameObject as Creature;
+                //    if (creature != null)
+                //    {
+                //        Vector3 velocityDifference = Creature.Entity.LinearVelocity - creature.Entity.LinearVelocity;
+                //        creature.Damage((int)(velocityDifference.Length() * DamageMultiplier), Creature);
+                //    }
+                //}
 
-            //if (mAttackTimer > 0.0f)
-            //{
-            //    float multiplier = Creature.CharacterController.SupportFinder.HasTraction ? GroundDamageMultiplier : AirDamageMultiplier;
-            //    mAttackTimer -= time.ElapsedGameTime.TotalSeconds;
-            //    if (mAttackTimer < DamageStart)
-            //    {
-            //        foreach (IGameObject gameObject in Creature.CollidingObjects)
-            //        {
-            //            Creature otherCreature = gameObject as Creature;
-            //            if (otherCreature != null)
-            //            {
-            //                Vector3 velocityDifference = Creature.Entity.LinearVelocity - otherCreature.Entity.LinearVelocity;
-            //                otherCreature.Damage((int)(velocityDifference.Length() * multiplier), Creature);
-            //            }
-            //        }
-            //    }
-            //}
+                Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
+                RayCastResult result;
+                if (Utils.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space, 2.0f * Creature.CharacterController.BodyRadius, out result))
+                //if (Utils.FindCliff(Creature.Position, Creature.Forward, filter, Creature.World.Space, 4.0f * (float)time.ElapsedGameTime.TotalSeconds * Creature.Entity.LinearVelocity.Length() + Creature.CharacterController.BodyRadius))
+                {
+                    Creature.Stun();
+                    mRunTimer = -1.0f;
+                }
+
+                mRunTimer -= time.ElapsedGameTime.TotalSeconds;
+                if (mRunTimer < 0.0f)
+                {
+                    Creature.CharacterController.HorizontalMotionConstraint.Speed = OldSpeed;
+                }
+            }
 
             base.Update(time);
         }
@@ -75,15 +85,11 @@ namespace finalProject.Parts
                 return;
             }
 
-
-            //if (Creature.CharacterController.SupportFinder.HasTraction)
-            //{
-            //    Vector3 impulse = Creature.Forward * 300f;
-            //    Creature.Entity.ApplyLinearImpulse(ref impulse);
-            //}
-            //mAttackTimer = AttackLength;
-
-
+            NewSpeed = Creature.CharacterController.HorizontalMotionConstraint.Speed + SpeedBoost;
+            mRunTimer = RunLength;
+            Creature.Stun(RunLength, Creature.Forward);
+            OldSpeed = Creature.CharacterController.HorizontalMotionConstraint.Speed;
+            Creature.CharacterController.HorizontalMotionConstraint.Speed = NewSpeed;
         }
 
         public override void FinishUse(Vector3 direction)
@@ -94,7 +100,28 @@ namespace finalProject.Parts
         {
             base.Reset();
 
-            //mAttackTimer = -1.0f;
+            mRunTimer = -1.0f;
+            if (Creature != null)
+            {
+                Creature.CharacterController.HorizontalMotionConstraint.Speed = OldSpeed;
+            }
+        }
+
+        public override void InitialCollisionDetected(BEPUphysics.Collidables.MobileCollidables.EntityCollidable sender, BEPUphysics.Collidables.Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
+        {
+            base.InitialCollisionDetected(sender, other, collisionPair);
+
+            if (other.Tag is CharacterSynchronizer && mRunTimer > 0.0f)
+            {
+                float totalImpulse = 0;
+                foreach (ContactInformation c in collisionPair.Contacts)
+                {
+                    totalImpulse += c.NormalImpulse;
+                }
+
+                Creature creature = (other.Tag as CharacterSynchronizer).body.Tag as Creature;
+                creature.Damage((int)(totalImpulse / DamageMultiplier), Creature);
+            }
         }
     }
 }
