@@ -18,7 +18,7 @@ namespace GameConstructLibrary
     public class TerrainHeightMap
     {
 
-        private Vector3 scale = new Vector3(8.0f, 0.4f, 8.0f);
+        private Vector3 scale = new Vector3(8.0f, 0.01f, 8.0f);
 
         private Bitmap mMap;
         private int mWidth;
@@ -118,7 +118,7 @@ namespace GameConstructLibrary
                     }
                     else // Otherwise create vertices
                     {
-                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, mMap.GetPixel(x, z).R, z - mHeight / 2);
+                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, mMap.GetPixel(x, z).R * 256 * 256 + mMap.GetPixel(x, z).G * 256 + mMap.GetPixel(x, z).B, z - mHeight / 2);
                         vertices1D[x + z * mWidth].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                         vertices2D[x, z] = vertices1D[x + z * mWidth];
                     }
@@ -219,6 +219,8 @@ namespace GameConstructLibrary
         public void ModifyVertices(Vector3 position, int size, int intensity, bool feather, bool set, bool inverse, bool smooth, bool flatten)
         {
 
+            intensity = (int)(intensity / scale.Y);
+
             // Adjust for the rendered location of the terrain
             position.X /= scale.X;
             position.Z /= scale.Z;
@@ -258,7 +260,7 @@ namespace GameConstructLibrary
                             }
                         }
 
-                        if (vertices2D[x, z].Position.Y > 255) vertices2D[x, z].Position.Y = 255;
+                        if (vertices2D[x, z].Position.Y > (256 * 256 * 256) - 1) vertices2D[x, z].Position.Y = (256 * 256 * 256) - 1;
                         else if (vertices2D[x, z].Position.Y < 0) vertices2D[x, z].Position.Y = 0;
 
                         vertices1D[x + z * mWidth] = vertices2D[x, z];
@@ -385,7 +387,11 @@ namespace GameConstructLibrary
             {
                 for (int x = 0; x < mWidth; x++)
                 {
-                    mMap.SetPixel(x, z, System.Drawing.Color.FromArgb((int)(vertices2D[x, z].Position.Y), 0, 0));
+                    int height = (int)(vertices2D[x, z].Position.Y);
+                    int blue = height % 256;
+                    int green = ((height - blue) / 256) % 256;
+                    int red = ((height - (blue + green)) / (256 * 256) % 256);
+                    mMap.SetPixel(x, z, System.Drawing.Color.FromArgb(red, green, blue));
                 }
             }
 

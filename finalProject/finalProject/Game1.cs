@@ -97,7 +97,7 @@ namespace finalProject
             GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
 
-            world.AddLevelFromFile("level015", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            world.AddLevelFromFile("spiral", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
 
             mGameStates.Add(world);
         }
@@ -132,7 +132,7 @@ namespace finalProject
 
             if (celShading.Active)
             {
-                GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.None : GraphicsManager.CelShaded.All;
+                GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.Models : GraphicsManager.CelShaded.All;
             }
 
             if (mouseLock.Active)
