@@ -111,9 +111,22 @@ namespace MapEditor
 
         public void AddObject()
         {
-            GameMapEditor.Dummy.Position = GameMapEditor.Position;
-            GameMapEditor.Dummy.Parameters = GameMapEditor.Parameters.GetParameters().ToArray<string>();
-            Add(new DummyObject(GameMapEditor.Dummy));
+
+            DummyObject temp = new DummyObject(GameMapEditor.Dummy);
+
+            temp.Position = GameMapEditor.Position;
+
+            if (GameMapEditor.RandomOrientation)
+            {
+                float randomOrientation = Convert.ToSingle(Rand.rand.NextDouble() * 2 * Math.PI);
+                temp.Orientation = new Vector3(randomOrientation, temp.Orientation.Y, temp.Orientation.Z);
+            }
+
+            temp.Scale *= (float)(1.0f + (Rand.rand.NextDouble() * 2 * GameMapEditor.RandomScale) - GameMapEditor.RandomScale);
+
+            temp.Parameters = GameMapEditor.Parameters.GetParameters().ToArray<string>();
+
+            Add(temp);
         }
 
         public List<DummyObject> Select(Vector2 topLeft, Vector2 bottomRight)
@@ -127,7 +140,6 @@ namespace MapEditor
                     GameMapEditor.Viewport.Height,
                     GameMapEditor.Camera.ViewTransform,
                     GameMapEditor.Camera.ProjectionTransform);
-                Console.WriteLine(screenCoordinate);
                 if (screenCoordinate.X > topLeft.X && screenCoordinate.X < bottomRight.X &&
                     screenCoordinate.Y > topLeft.Y && screenCoordinate.Y < bottomRight.Y)
                 {

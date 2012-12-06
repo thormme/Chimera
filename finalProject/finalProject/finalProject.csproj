@@ -146,6 +146,7 @@
     <Compile Include="AI\FrilledLizardAI.cs" />
     <Compile Include="AI\KangarooAI.cs" />
     <Compile Include="AI\PassiveAI.cs" />
+    <Compile Include="AI\PenguinAI.cs" />
     <Compile Include="AI\RhinoAI.cs" />
     <Compile Include="ChaseCamera.cs" />
     <Compile Include="Checkpoint.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Creatures\Rhino.cs" />
     <Compile Include="Creatures\Turtle.cs" />
     <Compile Include="DutyCyclePart.cs" />
+    <Compile Include="GoalPoint.cs" />
     <Compile Include="MeteredPart.cs" />
     <Compile Include="Parts\BearArms.cs" />
     <Compile Include="Parts\CheetahLegs.cs" />
@@ -197,7 +199,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="RadialSensor.cs" />
-    <Compile Include="Rand.cs" />
     <Compile Include="ListeningSensor.cs" />
     <Compile Include="StateTimer.cs" />
   </ItemGroup>

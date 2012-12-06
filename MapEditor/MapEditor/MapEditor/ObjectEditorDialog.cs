@@ -24,10 +24,11 @@ namespace MapEditor
     /// </summary>
     public class ObjectEditorDialog : Dialog
     {
-        
-        private ParametersDialog mParametersDialog;
 
         private Dictionary<string, DummyObject> mTypes;
+
+        private Nuclex.UserInterface.Controls.Desktop.ButtonControl mMinimizeMaximize;
+        private System.Collections.ObjectModel.Collection<Control> mControls;
 
         private Nuclex.UserInterface.Controls.LabelControl mObjectLabel;
         private Nuclex.UserInterface.Controls.Desktop.ListControl mObjectList;
@@ -35,10 +36,14 @@ namespace MapEditor
         private Nuclex.UserInterface.Controls.Desktop.InputControl mScaleXInput;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mScaleYInput;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mScaleZInput;
+        private Nuclex.UserInterface.Controls.LabelControl mScaleRandomLabel;
+        private Nuclex.UserInterface.Controls.Desktop.InputControl mScaleRandomInput;
         private Nuclex.UserInterface.Controls.LabelControl mOrientationLabel;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mOrientationXInput;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mOrientationYInput;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mOrientationZInput;
+        private Nuclex.UserInterface.Controls.LabelControl mOrientationRandomLabel;
+        private Nuclex.UserInterface.Controls.Desktop.OptionControl mOrientationRandomOption;
         private Nuclex.UserInterface.Controls.LabelControl mHeightLabel;
         private Nuclex.UserInterface.Controls.Desktop.InputControl mHeightInput;
         private Nuclex.UserInterface.Controls.Desktop.ButtonControl mPlaceButton;
@@ -59,28 +64,40 @@ namespace MapEditor
         /// </summary>
         private void InitializeComponent()
         {
-            
+
+            mControls = new System.Collections.ObjectModel.Collection<Control>();
+
             // Declare all components
+            mMinimizeMaximize = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
             mObjectLabel = new Nuclex.UserInterface.Controls.LabelControl();
             mObjectList = new Nuclex.UserInterface.Controls.Desktop.ListControl();
             mScaleLabel = new Nuclex.UserInterface.Controls.LabelControl();
             mScaleXInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
             mScaleYInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
             mScaleZInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
+            mScaleRandomLabel = new Nuclex.UserInterface.Controls.LabelControl();
+            mScaleRandomInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
             mOrientationLabel = new Nuclex.UserInterface.Controls.LabelControl();
             mOrientationXInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
             mOrientationYInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
             mOrientationZInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
+            mOrientationRandomLabel = new Nuclex.UserInterface.Controls.LabelControl();
+            mOrientationRandomOption = new Nuclex.UserInterface.Controls.Desktop.OptionControl();
             mHeightLabel = new Nuclex.UserInterface.Controls.LabelControl();
             mHeightInput = new Nuclex.UserInterface.Controls.Desktop.InputControl();
             mPlaceButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
             mBackButton = new Nuclex.UserInterface.Controls.Desktop.ButtonControl();
 
             // Position components
+
+            mMinimizeMaximize.Text = "Minimize";
+            mMinimizeMaximize.Bounds = new UniRectangle(new UniScalar(0.0f, 10.0f), new UniScalar(1.0f, -40.0f), 80.0f, 24.0f);
+            mMinimizeMaximize.Pressed += delegate(object sender, EventArgs arguments) { MinimizeMaximizeClicked(sender, arguments); };
+
             mObjectLabel.Text = "Object:";
             mObjectLabel.Bounds = new UniRectangle(20.0f, 40.0f, 100.0f, 30.0f);
 
-            mObjectList.Bounds = new UniRectangle(20.0f, 70.0f, 240.0f, 200.0f);
+            mObjectList.Bounds = new UniRectangle(20.0f, 70.0f, 360.0f, 200.0f);
             mObjectList.Slider.Bounds.Location.X.Offset -= 1.0f;
             mObjectList.Slider.Bounds.Location.Y.Offset += 1.0f;
             mObjectList.Slider.Bounds.Size.Y.Offset -= 2.0f;
@@ -96,6 +113,11 @@ namespace MapEditor
             mScaleZInput.Bounds = new UniRectangle(190.0f, 280.0f, 30.0f, 30.0f);
             mScaleZInput.Text = "1";
 
+            mScaleRandomLabel.Text = "Random:";
+            mScaleRandomLabel.Bounds = new UniRectangle(262.0f, 280.0f, 50.0f, 30.0f);
+            mScaleRandomInput.Bounds = new UniRectangle(330.0f, 280.0f, 30.0f, 30.0f);
+            mScaleRandomInput.Text = "0";
+
             mOrientationLabel.Text = "Orientation:";
             mOrientationLabel.Bounds = new UniRectangle(20.0f, 320.0f, 90.0f, 30.0f);
             mOrientationXInput.Bounds = new UniRectangle(110.0f, 320.0f, 30.0f, 30.0f);
@@ -104,6 +126,10 @@ namespace MapEditor
             mOrientationYInput.Text = "0";
             mOrientationZInput.Bounds = new UniRectangle(190.0f, 320.0f, 30.0f, 30.0f);
             mOrientationZInput.Text = "0";
+
+            mOrientationRandomLabel.Text = "Random:";
+            mOrientationRandomLabel.Bounds = new UniRectangle(262.0f, 320.0f, 50.0f, 30.0f);
+            mOrientationRandomOption.Bounds = new UniRectangle(330.0f, 320.0f, 30.0f, 30.0f);
 
             mHeightLabel.Text = "Height:";
             mHeightLabel.Bounds = new UniRectangle(52.0f, 360.0f, 54.0f, 30.0f);
@@ -118,24 +144,34 @@ namespace MapEditor
             mBackButton.Bounds = new UniRectangle(new UniScalar(1.0f, -90.0f), new UniScalar(1.0f, -40.0f), 80, 24);
             mBackButton.Pressed += delegate(object sender, EventArgs arguments) { BackClicked(sender, arguments); };
 
-            Bounds = new UniRectangle(10.0f, 10.0f, 280.0f, 460.0f);
-            mBounds = Bounds;
+            Bounds = new UniRectangle(10.0f, 10.0f, 400.0f, 460.0f);
+            mBounds = new UniRectangle(10.0f, 10.0f, 100.0f, 80.0f);
 
             // Add components to GUI
+            Children.Add(mMinimizeMaximize);
             Children.Add(mObjectLabel);
             Children.Add(mObjectList);
             Children.Add(mScaleLabel);
             Children.Add(mScaleXInput);
             Children.Add(mScaleYInput);
             Children.Add(mScaleZInput);
+            Children.Add(mScaleRandomLabel);
+            Children.Add(mScaleRandomInput);
             Children.Add(mOrientationLabel);
             Children.Add(mOrientationXInput);
             Children.Add(mOrientationYInput);
             Children.Add(mOrientationZInput);
+            Children.Add(mOrientationRandomLabel);
+            Children.Add(mOrientationRandomOption);
             Children.Add(mHeightLabel);
             Children.Add(mHeightInput);
             Children.Add(mPlaceButton);
             Children.Add(mBackButton);
+
+            foreach (Control child in Children)
+            {
+                if (child != mMinimizeMaximize) mControls.Add(child);
+            }
 
         }
 
@@ -183,6 +219,31 @@ namespace MapEditor
 
         }
 
+        private void MinimizeMaximizeClicked(object sender, EventArgs arguments)
+        {
+
+            if (mMinimizeMaximize.Text == "Minimize")
+            {
+                mMinimizeMaximize.Text = "Maximize";
+                foreach (Control child in mControls)
+                {
+                    Children.Remove(child);
+                }
+            }
+            else
+            {
+                mMinimizeMaximize.Text = "Minimize";
+                foreach (Control child in mControls)
+                {
+                    Children.Add(child);
+                }
+            }
+
+            UniRectangle temp = Bounds;
+            Bounds = mBounds;
+            mBounds = temp;
+        }
+
         private void PlaceClicked(object sender, EventArgs arguments)
         {
             try
@@ -196,6 +257,14 @@ namespace MapEditor
                 temp.Height = Convert.ToSingle(mHeightInput.Text);
 
                 GameMapEditor.Dummy = temp;
+
+                GameMapEditor.RandomOrientation = mOrientationRandomOption.Selected;
+
+                Single randomScale = Convert.ToSingle(mScaleRandomInput.Text);
+                if (randomScale > 1.0f) randomScale = 1.0f;
+                else if (randomScale < 0.0f) randomScale = 0.0f;
+                GameMapEditor.RandomScale = randomScale;
+
                 GameMapEditor.Entity.SetModel(temp);
                 GameMapEditor.EditMode = Edit.Object;
                 GameMapEditor.ToggleState(States.Parameters);
