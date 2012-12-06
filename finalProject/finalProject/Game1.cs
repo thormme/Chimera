@@ -92,12 +92,12 @@ namespace finalProject
             DebugModelDrawer.IsWireframe = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            World world = new World(DebugModelDrawer);
-
             GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
 
-            world.AddLevelFromFile("spiral", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
+            World world = new World(DebugModelDrawer);
+            
+            world.AddLevelFromFile("goaltest2", new Vector3(0, 0, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
 
             mGameStates.Add(world);
         }

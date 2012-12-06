@@ -42,8 +42,9 @@ namespace GameConstructLibrary
 
         private void CommitChanges()
         {
-            foreach (IGameObject gameObject in mUncommittedGameObjectAdditions)
+            for (int i = 0; i < mUncommittedGameObjectAdditions.Count; i++)
             {
+                IGameObject gameObject = mUncommittedGameObjectAdditions[i];
                 mGameObjects.Add(gameObject);
                 if (gameObject is IActor)
                 {
@@ -59,10 +60,12 @@ namespace GameConstructLibrary
                     Space.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
                     mDebugModelDrawer.Add((gameObject as IStaticCollidableOwner).StaticCollidable);
                 }
+                gameObject.World = this;
             }
 
-            foreach (IGameObject gameObject in mUncommittedGameObjectRemovals)
+            for (int i = 0; i < mUncommittedGameObjectRemovals.Count; i++)
             {
+                IGameObject gameObject = mUncommittedGameObjectRemovals[i];
                 mGameObjects.Remove(gameObject);
                 if (gameObject is IActor)
                 {
@@ -78,6 +81,7 @@ namespace GameConstructLibrary
                     Space.Remove((gameObject as IStaticCollidableOwner).StaticCollidable);
                     mDebugModelDrawer.Remove((gameObject as IStaticCollidableOwner).StaticCollidable);
                 }
+                gameObject.World = null;
             }
 
             mUncommittedGameObjectAdditions.Clear();
@@ -90,8 +94,10 @@ namespace GameConstructLibrary
             {
                 throw new Exception("Null added to World.");
             }
-            mUncommittedGameObjectAdditions.Add(gameObject);
-            gameObject.World = this;
+            if (!mUncommittedGameObjectAdditions.Contains(gameObject))
+            {
+                mUncommittedGameObjectAdditions.Add(gameObject);
+            }
         }
 
         public void Remove(IGameObject gameObject)
@@ -100,8 +106,10 @@ namespace GameConstructLibrary
             {
                 throw new Exception("Null removed from World.");
             }
-            mUncommittedGameObjectRemovals.Add(gameObject);
-            gameObject.World = null;
+            if (!mUncommittedGameObjectRemovals.Contains(gameObject))
+            {
+                mUncommittedGameObjectRemovals.Add(gameObject);
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -168,6 +176,14 @@ namespace GameConstructLibrary
             (tf.StaticCollidable as Terrain).Thickness = 5.0f;
             Add(tf);
 
+        }
+
+        public void Clear()
+        {
+            foreach (IGameObject gameObject in mGameObjects)
+            {
+                Remove(gameObject);
+            }
         }
     }
 }
