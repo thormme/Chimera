@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using finalProject.Parts;
 using finalProject.Creatures;
+using GameConstructLibrary;
 
 namespace finalProject.AI
 {

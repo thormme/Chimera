@@ -22,7 +22,9 @@ namespace finalProject
         #region Fields
 
         private const float rotationRate = MathHelper.PiOver2; // Number of radians per second the camera can turn.
-        private const int NumParts = 10;
+        private const int NumParts = 13;
+        private const int NumKeys = 10;
+        private const int NumButtons = 3;
 
         public ChaseCamera mCamera;
 
@@ -53,8 +55,8 @@ namespace finalProject
         private GamePadButtonInputAction mReleasePart3;
         private GamePadButtonInputAction mPressJump;
 
-        private List<KeyInputAction> mUse;
-        private List<KeyInputAction> mFinishUse;
+        private List<InputAction> mUse;
+        private List<InputAction> mFinishUse;
 
         private KeyInputAction mJumpKey;
 
@@ -114,7 +116,10 @@ namespace finalProject
             mReleasePart3 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Buttons.B);
             mPressJump = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.A);
 
-            mUse = new List<KeyInputAction>(NumParts);
+            mUse = new List<InputAction>(NumParts);
+            mUse.Add(mPressPart1);
+            mUse.Add(mPressPart2);
+            mUse.Add(mPressPart3);
             mUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D1));
             mUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D2));
             mUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D3));
@@ -126,7 +131,10 @@ namespace finalProject
             mUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D9));
             mUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.D0));
 
-            mFinishUse = new List<KeyInputAction>(NumParts);
+            mFinishUse = new List<InputAction>(NumParts);
+            mFinishUse.Add(mReleasePart1);
+            mFinishUse.Add(mReleasePart2);
+            mFinishUse.Add(mReleasePart3);
             mFinishUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D1));
             mFinishUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D2));
             mFinishUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D3));
@@ -136,7 +144,7 @@ namespace finalProject
             mFinishUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D7));
             mFinishUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D8));
             mFinishUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D9));
-            mFinishUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D0)); 
+            mFinishUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D0));
 
             mJumpKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Space);
 
@@ -327,20 +335,21 @@ namespace finalProject
 
             for (int i = 0; i < NumParts; ++i)
             {
+                int j = (i >= NumButtons) ? (i - NumButtons) : i;
                 if (mUse[i].Active && !NoControl)
                 {
                     if (mStealKey.Active && mCreature is PlayerCreature)
                     {
-                        (mCreature as PlayerCreature).FindAndAddPart(i);
+                        (mCreature as PlayerCreature).FindAndAddPart(j);
                     }
                     else
                     {
-                        mCreature.UsePart(i, mCamera.Forward);
+                        mCreature.UsePart(j, mCamera.Forward);
                     }
                 }
                 else if (mFinishUse[i].Active)
                 {
-                    mCreature.FinishUsingPart(i, mCamera.Forward);
+                    mCreature.FinishUsingPart(j, mCamera.Forward);
                 }
             }
 

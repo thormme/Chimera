@@ -299,6 +299,7 @@ namespace finalProject
             TextWriter tw = new StreamWriter("playerBeanPartOrientations.txt");
 
             tw.WriteLine(mNumParts);
+            tw.WriteLine("");
             for (int i = 0; i < mNumParts; ++i)
             {
                 tw.WriteLine(((PartBone)i).ToString());
@@ -373,6 +374,11 @@ namespace finalProject
             return Matrix.Identity;
         }
 
+        protected virtual Matrix GetOptionalPartTransforms()
+        {
+            return Matrix.Identity;
+        }
+
         public override void Render()
         {
             if (mRenderable != null)
@@ -391,7 +397,7 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        Matrix worldTransform = /*mPartRotations[(int)partBone]*/(mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        Matrix worldTransform = GetOptionalPartTransforms() * /*mPartRotations[(int)partBone] * */(mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
                         partAttachment.Part.SubParts[count].Render(worldTransform);
 
                         count++;

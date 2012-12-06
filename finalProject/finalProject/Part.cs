@@ -116,7 +116,10 @@ namespace finalProject
             {
                 if (subPart.Renderable is AnimateModel)
                 {
-                    (subPart.Renderable as AnimateModel).Update(time);
+                    if (subPart.Renderable is AnimateModel)
+                    {
+                        (subPart.Renderable as AnimateModel).Update(time);
+                    }
                 }
             }
         }

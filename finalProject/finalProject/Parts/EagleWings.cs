@@ -12,7 +12,7 @@ namespace finalProject.Parts
     class EagleWings : Part
     {
 
-        private const int flapPower = 100;
+        private const int flapPower = 300;
         private const int numFlaps = 3;
 
         private const double flapWait = 0.0f;
@@ -28,7 +28,7 @@ namespace finalProject.Parts
             : base(
                 new Part.SubPart[] {
                     new SubPart(
-                        new AnimateModel("eagle_leftWing", "stand"),
+                        new AnimateModel("eagle_leftWing", "glide"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.ArmLeft1Cap,
                             Creature.PartBone.ArmLeft2Cap,
@@ -82,11 +82,7 @@ namespace finalProject.Parts
                 Creature.Entity.ApplyLinearImpulse(ref direction);
             }
 
-            foreach (SubPart subPart in SubParts)
-            {
-                AnimateModel wing = subPart.Renderable as AnimateModel;
-                wing.Update(time);
-            }
+            base.Update(time);
         }
 
         public override void Use(Vector3 direction)
