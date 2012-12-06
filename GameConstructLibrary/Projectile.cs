@@ -6,6 +6,9 @@ using GraphicsLibrary;
 using BEPUphysics.Entities;
 using Microsoft.Xna.Framework;
 using BEPUphysics.CollisionRuleManagement;
+using BEPUphysics.Constraints.TwoEntity.Joints;
+using BEPUphysics.Constraints.TwoEntity.JointLimits;
+using BEPUphysics.Constraints.SolverGroups;
 
 namespace GameConstructLibrary
 {
@@ -16,6 +19,8 @@ namespace GameConstructLibrary
 
         public bool CheckHits { get; set; }
         private Entity Stick;
+        private WeldJoint mStickConstraint;
+        private float mOriginalMass;
 
         protected Actor mOwner;
         protected Vector3 mProjectileImpulse;
@@ -33,6 +38,7 @@ namespace GameConstructLibrary
             mOwner = owner;
             mProjectileImpulse = new Vector3(direction.X * speed, direction.Y * speed, direction.Z * speed);
             mSpeed = speed;
+            mOriginalMass = Entity.Mass;
             
             Entity.Position = owner.Position;
             XNAOrientationMatrix = Matrix.CreateLookAt(owner.Position, direction, owner.Up);
@@ -57,23 +63,21 @@ namespace GameConstructLibrary
                 }
             }
 
-            if (Stick != null)
-            {
-                Position = Stick.Position;
-                Entity.AngularMomentum = Vector3.Zero;
-                Entity.LinearMomentum = Vector3.Zero;
-            }
-
         }
 
         protected virtual void Hit(IGameObject gameObject)
         {
-            World.Remove(this);
         }
 
         protected void StickToEntity(Entity entity)
         {
             Stick = entity;
+            Position = Stick.Position;
+            Entity.AngularMomentum = Vector3.Zero;
+            Entity.LinearMomentum = Vector3.Zero;
+            mStickConstraint = new WeldJoint(Stick, Entity);
+            Entity.Mass = 0.001f;
+            World.Space.Add(mStickConstraint);
             CollisionRules.AddRule(Entity, Stick, CollisionRule.NoBroadPhase);
         }
 
@@ -82,6 +86,8 @@ namespace GameConstructLibrary
             if (Stick != null)
             {
                 CollisionRules.RemoveRule(Entity, Stick);
+                Entity.Mass = mOriginalMass;
+                World.Space.Remove(mStickConstraint);
                 Stick = null;
             }
         }

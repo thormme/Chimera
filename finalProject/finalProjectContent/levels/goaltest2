@@ -6,7 +6,7 @@
     <Parameters />
     <Position>
       <X>0.246915847</X>
-      <Y>0</Y>
+      <Y>100</Y>
       <Z>14.7414551</Z>
     </Position>
     <Orientation>
@@ -25,7 +25,7 @@
     <Type>finalProject.GoalPoint, finalProject</Type>
     <Model>box</Model>
     <Parameters>
-      <string>spiral</string>
+      <string>goaltest2</string>
       <string>CheetahLegs</string>
     </Parameters>
     <Position>
@@ -56,7 +56,7 @@
     </Parameters>
     <Position>
       <X>1.749505</X>
-      <Y>0</Y>
+      <Y>100</Y>
       <Z>14.9624729</Z>
     </Position>
     <Orientation>
