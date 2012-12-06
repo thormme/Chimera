@@ -96,8 +96,8 @@ namespace finalProject
             CollisionMeshManager.LoadContent(this.Content);
 
             World world = new World(DebugModelDrawer);
-
-            world.AddLevelFromFile("goaltest", new Vector3(0, 0, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            
+            world.AddLevelFromFile("spiral", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
 
             mGameStates.Add(world);
         }
@@ -132,7 +132,7 @@ namespace finalProject
 
             if (celShading.Active)
             {
-                GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.None : GraphicsManager.CelShaded.All;
+                GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.Models : GraphicsManager.CelShaded.All;
             }
 
             if (mouseLock.Active)
@@ -150,15 +150,15 @@ namespace finalProject
                             int i = 0;
                             player.AddPart(new RhinoHead(), i++);
                             player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new TurtleShell(), i++);
+                            //player.AddPart(new FrogHead(), i++);
                             player.AddPart(new PenguinLimbs(), i++);
-                            player.AddPart(new FrilledLizardHead(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new EagleWings(), i++);
+                            player.AddPart(new EagleWings(), i++);
+                            player.AddPart(new EagleWings(), i++);
+                            player.AddPart(new TestingLegs(), i++);
+                            player.AddPart(new TestingWings(), i++);
 
                             (mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward));
                         }

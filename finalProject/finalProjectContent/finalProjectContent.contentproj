@@ -202,20 +202,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\level015_texture_low.tga">
-      <Name>level015_texture_low</Name>
+    <Compile Include="levels\maps\spiral_texture_low.tga">
+      <Name>spiral_texture_low</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="levels\maps\level015_texture_medium.tga">
-      <Name>level015_texture_medium</Name>
+    <Compile Include="levels\maps\spiral_texture_medium.tga">
+      <Name>spiral_texture_medium</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\level015_texture_high.tga">
-      <Name>level015_texture_high</Name>
+    <Compile Include="levels\maps\spiral_texture_high.tga">
+      <Name>spiral_texture_high</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -357,6 +357,27 @@
       <Name>tree3</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\maps\basic_arena_texture_high.tga">
+      <Name>basic_arena_texture_high</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\maps\basic_arena_texture_medium.tga">
+      <Name>basic_arena_texture_medium</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\maps\basic_arena_texture_low.tga">
+      <Name>basic_arena_texture_low</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
