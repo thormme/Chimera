@@ -19,7 +19,7 @@ namespace finalProject.Creatures
                 2.0f,                                           // Radius
                 6.0f,                                           // Mass
                 CreatureConstants.PenguinSensitivityRadius,     // Sensitivity Radius
-                new PassiveAI(),                                // AI
+                new PenguinAI(),                                // AI
                 new InanimateModel("box"),                      // Model
                 135,                                            // Vision Angle
                 CreatureConstants.PenguinListeningSensitivity,  // Listening Sensitivity
