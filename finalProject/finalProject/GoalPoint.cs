@@ -21,11 +21,13 @@ namespace finalProject
     {
         string mNextLevel = null;
         bool mLoaded = false;
+        Type mPartType;
 
-        public GoalPoint(Vector3 position, Quaternion orientation, Vector3 scale, string nextLevel)
+        public GoalPoint(Vector3 position, Quaternion orientation, Vector3 scale, string nextLevel, Type partType)
             : base(new InanimateModel("box"), new Cylinder(position, 1f, scale.Length()))
         {
             mNextLevel = nextLevel;
+            mPartType = partType;
         }
 
         /// <summary>
@@ -37,7 +39,7 @@ namespace finalProject
         /// <param name="scale">The amount to scale by.</param>
         /// <param name="extraParameters">Extra parameters.</param>
         public GoalPoint(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, string[] extraParameters)
-            : this(translation, orientation, scale, extraParameters[0])
+            : this(translation, orientation, scale, extraParameters[0], Type.GetType("finalProject.Parts." + extraParameters[1] + ", finalProject"))
         {
         }
 
@@ -48,11 +50,25 @@ namespace finalProject
                 CharacterSynchronizer synchronizer = (other.Tag as CharacterSynchronizer);
                 if (synchronizer.body.Tag is PlayerCreature)
                 {
-                    mLoaded = true;
-                    // TODO: Investigate last frame object additions to next world.
-                    World.Clear();
-                    // TODO: Make scale globally accessible or modifiable.
-                    World.AddLevelFromFile(mNextLevel, Vector3.Zero, new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+                    // Check that the player has the requested part.
+                    bool hasCorrectPart = false;
+                    foreach (Creature.PartAttachment partAttachment in (synchronizer.body.Tag as Creature).PartAttachments)
+                    {
+                        if (partAttachment != null && partAttachment.Part.GetType() == mPartType)
+                        {
+                            hasCorrectPart = true;
+                            break;
+                        }
+                    }
+                    if (hasCorrectPart)
+                    {
+                        // Load the next level.
+                        mLoaded = true;
+                        // TODO: Investigate last frame object additions to next world.
+                        World.Clear();
+                        // TODO: Make scale globally accessible or modifiable.
+                        World.AddLevelFromFile(mNextLevel, Vector3.Zero, new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
+                    }
                 }
             }
         }

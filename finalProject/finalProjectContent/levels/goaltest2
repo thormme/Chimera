@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DummyObject>
+    <Type>finalProject.PlayerCreature, finalProject</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>0.246915847</X>
+      <Y>0</Y>
+      <Z>14.7414551</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.GoalPoint, finalProject</Type>
+    <Model>box</Model>
+    <Parameters>
+      <string>spiral</string>
+      <string>CheetahLegs</string>
+    </Parameters>
+    <Position>
+      <X>3.45431566</X>
+      <Y>0</Y>
+      <Z>14.7546825</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Spawner, finalProject</Type>
+    <Model>box</Model>
+    <Parameters>
+      <string>Cheetah</string>
+      <string>10</string>
+      <string>0</string>
+      <string>2</string>
+    </Parameters>
+    <Position>
+      <X>1.749505</X>
+      <Y>0</Y>
+      <Z>14.9624729</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+</object>

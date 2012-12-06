@@ -97,7 +97,7 @@ namespace finalProject
 
             World world = new World(DebugModelDrawer);
             
-            world.AddLevelFromFile("spiral", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("goaltest2", new Vector3(0, 0, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
 
             mGameStates.Add(world);
         }
@@ -160,7 +160,7 @@ namespace finalProject
                             player.AddPart(new TestingLegs(), i++);
                             player.AddPart(new TestingWings(), i++);
 
-                            (mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward));
                         }
                     }
                 }
