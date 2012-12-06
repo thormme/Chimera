@@ -20,7 +20,7 @@ namespace MapEditor
     public static class GameMapEditor
     {
 
-        public static Vector3 MapScale = new Vector3(8.0f, 0.4f, 8.0f);
+        public static Vector3 MapScale = new Vector3(8.0f, 0.01f, 8.0f);
 
         public static InputManager Input;
         public static GuiManager GUI;

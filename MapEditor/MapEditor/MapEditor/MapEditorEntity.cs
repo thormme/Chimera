@@ -17,7 +17,7 @@ namespace MapEditor
     public class MapEditorEntity
     {
 
-        private const float speed = 0.1f;
+        private const float speed = 0.5f;
         private const float sensitivity = 0.1f;
         private const float length = 2000.0f;
 
