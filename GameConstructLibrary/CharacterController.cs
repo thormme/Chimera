@@ -694,7 +694,6 @@ namespace GameConstructLibrary
         public override void OnRemovalFromSpace(ISpace oldSpace)
         {
             //Remove any supplements from the space too.
-            oldSpace.Remove(Body);
             oldSpace.Remove(HorizontalMotionConstraint);
             oldSpace.Remove(VerticalMotionConstraint);
             //This character controller requires the standard implementation of Space.

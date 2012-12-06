@@ -216,16 +216,17 @@ namespace finalProject
                     mMoveDirection.Y = 0;
                     mMoveDirection.Normalize();
                     Vector3 cross = Vector3.Cross(mMoveDirection, result.HitData.Normal);
-                    cross.Y = 0;
-                    cross.Normalize();
+                    Vector3 wallparallel = Vector3.Cross(cross, result.HitData.Normal);
+                    wallparallel.Y = 0;
+                    wallparallel.Normalize();
 
-                    if (Vector3.Dot(mMoveDirection, cross) >= 0.0f)
+                    if (Vector3.Dot(mMoveDirection, wallparallel) >= 0.0f)
                     {
-                        mMoveDirection = cross;
+                        mMoveDirection = wallparallel;
                     }
                     else
                     {
-                        mMoveDirection = -cross;
+                        mMoveDirection = -wallparallel;
                     }
                 }
 
