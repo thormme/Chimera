@@ -97,7 +97,7 @@ namespace finalProject
             GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
             CollisionMeshManager.LoadContent(this.Content);
 
-            world.AddLevelFromFile("jump", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
+            world.AddLevelFromFile("level14", new Vector3(0, -100, 0), new Quaternion(), new Vector3(8.0f, 0.25f, 8.0f));
 
             mGameStates.Add(world);
         }
@@ -150,15 +150,15 @@ namespace finalProject
                             int i = 0;
                             player.AddPart(new RhinoHead(), i++);
                             player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new TurtleShell(), i++);
+                            //player.AddPart(new FrogHead(), i++);
                             player.AddPart(new PenguinLimbs(), i++);
-                            player.AddPart(new FrilledLizardHead(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new EagleWings(), i++);
+                            player.AddPart(new EagleWings(), i++);
+                            player.AddPart(new EagleWings(), i++);
+                            player.AddPart(new TestingLegs(), i++);
+                            player.AddPart(new TestingWings(), i++);
 
                             (mGameStates[mGameStates.Count - 1] as World).Add(new Rhino(player.Position + 30.0f * player.Forward));
                         }
