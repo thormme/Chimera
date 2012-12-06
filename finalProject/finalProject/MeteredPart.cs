@@ -84,6 +84,8 @@ namespace finalProject
                     MeterTimer = MeterLength;
                 }
             }
+
+            base.Update(time);
         }
 
         /// <summary>

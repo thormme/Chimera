@@ -29,7 +29,7 @@ namespace finalProject.Parts
                 10.0,
                 new Part.SubPart[] {
                     new SubPart(
-                        new AnimateModel("rhino_head", "walk"),
+                        new AnimateModel("rhino_head", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.HeadCenterCap,
                             Creature.PartBone.HeadLeftCap,

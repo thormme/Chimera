@@ -39,7 +39,7 @@ namespace finalProject.Parts
             : base(
                 new Part.SubPart[] {
                     new SubPart(
-                        new AnimateModel("kangaroo_leftLeg", "walk"),
+                        new AnimateModel("kangaroo_leftLeg", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegFrontLeft3Cap, 
                             Creature.PartBone.LegRearLeft3Cap,
@@ -53,7 +53,7 @@ namespace finalProject.Parts
                         new Vector3(1.0f)
                     ),
                     new SubPart(
-                        new AnimateModel("kangaroo_rightLeg", "walk"),
+                        new AnimateModel("kangaroo_rightLeg", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegFrontRight3Cap, 
                             Creature.PartBone.LegRearRight3Cap,
