@@ -147,11 +147,15 @@ namespace finalProject
                         {
                             int i = 0;
                             player.AddPart(new RhinoHead(), i++);
-                            player.AddPart(new FrilledLizardHead(), i++);
-                            player.AddPart(new FrilledLizardHead(), i++);
+                            player.AddPart(new RhinoHead(), i++);
+                            player.AddPart(new RhinoHead(), i++);
+                            //player.AddPart(new FrilledLizardHead(), i++);
+                            //player.AddPart(new FrilledLizardHead(), i++);
+                            //player.AddPart(new EagleWings(), i++);
+                            //player.AddPart(new EagleWings(), i++);
                             player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new EagleWings(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
                             player.AddPart(new KangarooLegs(), i++);
                             player.AddPart(new KangarooLegs(), i++);
                             player.AddPart(new KangarooLegs(), i++);

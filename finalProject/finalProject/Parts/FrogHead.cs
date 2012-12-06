@@ -35,7 +35,8 @@ namespace finalProject.Parts
                         Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
                         new Vector3(1.0f, 1.0f, 1.0f)
                     )
-                }
+                },
+                false
             )
         {
             //(mRenderable as AnimateModel).PlayAnimation("Take 001");

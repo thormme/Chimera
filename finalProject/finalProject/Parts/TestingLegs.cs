@@ -61,7 +61,8 @@ namespace finalProject.Parts
                         Matrix.CreateFromQuaternion(new Quaternion()),
                         new Vector3(0.02f)
                     )
-                }
+                },
+                true
             )
         { }
                 

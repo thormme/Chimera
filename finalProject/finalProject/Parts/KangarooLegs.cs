@@ -66,7 +66,8 @@ namespace finalProject.Parts
                         Matrix.CreateFromQuaternion(new Quaternion()),
                         new Vector3(1.0f)
                     )
-                }
+                },
+                true
             )
         {
         }
@@ -171,14 +172,6 @@ namespace finalProject.Parts
             if (!mJumpInUse && !mPoundInUse && Creature.CharacterController.SupportFinder.HasSupport)
             {
                 PlayAnimation(animationName, isSaturated);
-            }
-        }
-
-        protected override void PlayAnimation(string animationName, bool isSaturated)
-        {
-            foreach (SubPart subPart in SubParts)
-            {
-                (subPart.Renderable as AnimateModel).PlayAnimation(animationName, isSaturated);
             }
         }
 

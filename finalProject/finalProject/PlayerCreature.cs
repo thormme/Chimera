@@ -32,6 +32,8 @@ namespace finalProject
         private const int DefaultIntimidation = 5;
         private const int DamageThreshold = 30;
 
+        private int mNumHeightModifyingParts = 0;
+
         #endregion
 
         #region Public Properties
@@ -166,6 +168,35 @@ namespace finalProject
                     return;
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds part to creature and increases height of body if part modifies height.
+        /// </summary>
+        public override void  AddPart(Part part, int slot)
+        {
+ 	        base.AddPart(part, slot);
+
+            if (mNumHeightModifyingParts == 0 && part.Height > 0.0f)
+            {
+                this.CharacterController.Body.Height = mHeight + part.Height;
+            }
+
+            mNumHeightModifyingParts += (part.Height > 0.0f) ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Removes part from creature and decreases height of body if part modifies height.
+        /// </summary>
+        public override void RemovePart(Part part)
+        {
+            base.RemovePart(part);
+
+            if (mNumHeightModifyingParts != 0 && part.Height > 0.0f)
+            {
+                this.CharacterController.Body.Height = mHeight;
+            }
+            mNumHeightModifyingParts -= (part.Height > 0.0f) ? 1 : 0;
         }
 
         /// <summary>

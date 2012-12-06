@@ -49,10 +49,10 @@ namespace finalProject.Parts
                         Matrix.CreateFromYawPitchRoll(0, 0, 0),
                         new Vector3(1.0f)
                     )
-                }
+                },
+                false
             )
         {
-            //(mRenderable as AnimateModel).PlayAnimation("Take 001");
             mFlaps = 0;
             mFlapTimer = 0.0f;
         }
@@ -80,6 +80,7 @@ namespace finalProject.Parts
             {
                 Vector3 direction = new Vector3(0.0f, -Creature.Entity.LinearVelocity.Y, 0.0f);
                 Creature.Entity.ApplyLinearImpulse(ref direction);
+                PlayAnimation("glide", true);
             }
 
             base.Update(time);
@@ -92,6 +93,7 @@ namespace finalProject.Parts
                 Creature.CharacterController.JumpSpeed *= 2;
                 Creature.Jump();
                 mReset = ResetFrames;
+                PlayAnimation("flap_air", true);
             }
             else if (mFlaps < numFlaps && mFlapTimer > flapWait)
             {
@@ -100,6 +102,7 @@ namespace finalProject.Parts
                 Vector3 flap = new Vector3(0.0f, 1.0f * flapPower, 0.0f);
                 if (Creature.Entity.LinearVelocity.Y < 0) flap.Y -= Creature.Entity.LinearVelocity.Y;
                 Creature.Entity.ApplyLinearImpulse(ref flap);
+                PlayAnimation("flap_air", true);
             }
             mGlide = true;
         }

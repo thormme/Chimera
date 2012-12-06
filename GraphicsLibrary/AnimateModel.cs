@@ -87,6 +87,8 @@ namespace GraphicsLibrary
         {
             if (animationName != mAnimationName)
             {
+                mAnimationName = animationName;
+
                 AnimationClip clip;
                 if (!SkinningData.AnimationClips.TryGetValue(animationName, out clip))
                 {
