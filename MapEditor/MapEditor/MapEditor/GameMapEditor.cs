@@ -47,6 +47,8 @@ namespace MapEditor
         public static bool Set;
 
         public static DummyObject Dummy;
+        public static bool RandomOrientation;
+        public static float RandomScale;
 
         //public static 
 

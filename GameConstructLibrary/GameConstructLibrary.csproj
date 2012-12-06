@@ -158,6 +158,7 @@
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryManager.cs" />
+    <Compile Include="Rand.cs" />
     <Compile Include="Sensor.cs" />
     <Compile Include="StanceManager.cs" />
     <Compile Include="StepManager.cs" />

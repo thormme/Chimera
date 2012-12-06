@@ -198,7 +198,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="RadialSensor.cs" />
-    <Compile Include="Rand.cs" />
     <Compile Include="ListeningSensor.cs" />
     <Compile Include="StateTimer.cs" />
   </ItemGroup>
