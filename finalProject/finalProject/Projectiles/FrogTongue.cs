@@ -43,7 +43,11 @@ namespace finalProject.Projectiles
         public override void Update(GameTime time)
         {
             base.Update(time);
+            if ((Entity.Position - mOwner.Entity.Position).Length() > 300)
+            {
 
+            }
+            /*
             if (mRopeLimit != null) // You have a connection
             {
                 Ray ray = new Ray(mOwner.Entity.Position, Entity.Position - mOwner.Entity.Position);
@@ -64,6 +68,7 @@ namespace finalProject.Projectiles
                     }
                 }
             }
+             */
         }
 
         public override void Render()
@@ -101,6 +106,7 @@ namespace finalProject.Projectiles
         
         protected override void Hit(IGameObject gameObject)
         {
+
         }
 
         private void CreateRope()

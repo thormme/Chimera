@@ -197,42 +197,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\test_texture_high.tga">
-      <Name>test_texture_high</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\test_texture_low.tga">
-      <Name>test_texture_low</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\test_texture_medium.tga">
-      <Name>test_texture_medium</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\maps\test.bmp">
-      <Name>test</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\maps\test_boxes.bmp">
-      <Name>test_boxes</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\maps\level02_texture_high.tga">
-      <Name>level02_texture_high</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="levels\maps\level015_texture_low.tga">
       <Name>level015_texture_low</Name>
       <Importer>TextureImporter</Importer>
@@ -247,16 +211,6 @@
   <ItemGroup>
     <Compile Include="levels\maps\level015_texture_high.tga">
       <Name>level015_texture_high</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\level1_texture_low.tga">
-      <Name>level1_texture_low</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\level1_texture_medium.tga">
-      <Name>level1_texture_medium</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

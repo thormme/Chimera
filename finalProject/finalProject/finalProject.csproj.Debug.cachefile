@@ -12,17 +12,9 @@ Content\levels\maps\jump_texture_low.xnb
 Content\levels\maps\jump.xnb
 Content\levels\maps\jump_texture_high.xnb
 Content\levels\maps\jump_texture_medium.xnb
-Content\levels\maps\test_texture_high.xnb
-Content\levels\maps\test_texture_low.xnb
-Content\levels\maps\test_texture_medium.xnb
-Content\levels\maps\test.xnb
-Content\levels\maps\test_boxes.xnb
-Content\levels\maps\level02_texture_high.xnb
 Content\levels\maps\level015_texture_low.xnb
 Content\levels\maps\level015_texture_medium.xnb
 Content\levels\maps\level015_texture_high.xnb
-Content\levels\maps\level1_texture_low.xnb
-Content\levels\maps\level1_texture_medium.xnb
 Content\models\dude\dude_walk.xnb
 Content\models\editor\editor.xnb
 Content\models\primitives\box.xnb
