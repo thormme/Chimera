@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DummyObject>
+    <Type>finalProject.PlayerCreature, finalProject</Type>
+    <Model>box</Model>
+    <Parameters />
+    <Position>
+      <X>8.48862</X>
+      <Y>0</Y>
+      <Z>3.30283546</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>2.5</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.GoalPoint, finalProject</Type>
+    <Model>box</Model>
+    <Parameters>
+      <string>jump</string>
+    </Parameters>
+    <Position>
+      <X>4.882666</X>
+      <Y>0</Y>
+      <Z>6.74607849</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>2.5</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+</object>
