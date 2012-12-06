@@ -5,9 +5,9 @@
     <Model>box</Model>
     <Parameters />
     <Position>
-      <X>-15.479475</X>
+      <X>-5.47555542</X>
       <Y>0</Y>
-      <Z>-18.9413567</Z>
+      <Z>11.692585</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -22,18 +22,38 @@
     <Height>0</Height>
   </DummyObject>
   <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
     <Parameters>
-      <string>Cheetah</string>
-      <string>10</string>
-      <string>5</string>
-      <string>5</string>
+      <string>.5</string>
     </Parameters>
     <Position>
-      <X>-0.494516373</X>
+      <X>-6.207409</X>
       <Y>0</Y>
-      <Z>-17.6027946</Z>
+      <Z>10.5983133</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>12.5</X>
+      <Y>10000</Y>
+      <Z>12.5</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters>
+      <string>.5</string>
+    </Parameters>
+    <Position>
+      <X>-4.73568726</X>
+      <Y>29.3000755</Y>
+      <Z>10.3594227</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -45,21 +65,18 @@
       <Y>1000</Y>
       <Z>1.25</Z>
     </Scale>
-    <Height>0</Height>
+    <Height>29.3000755</Height>
   </DummyObject>
   <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
     <Parameters>
-      <string>Cheetah</string>
-      <string>10</string>
-      <string>5</string>
-      <string>5</string>
+      <string>.5</string>
     </Parameters>
     <Position>
-      <X>-2.26156616</X>
-      <Y>0</Y>
-      <Z>-1.35946178</Z>
+      <X>-6.273224</X>
+      <Y>29.3000755</Y>
+      <Z>9.497307</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -71,21 +88,18 @@
       <Y>1000</Y>
       <Z>1.25</Z>
     </Scale>
-    <Height>0</Height>
+    <Height>29.3000755</Height>
   </DummyObject>
   <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
     <Parameters>
-      <string>Cheetah</string>
-      <string>10</string>
-      <string>5</string>
-      <string>5</string>
+      <string>.5</string>
     </Parameters>
     <Position>
-      <X>12.8995914</X>
-      <Y>0</Y>
-      <Z>-3.93721771</Z>
+      <X>-3.16706848</X>
+      <Y>29.3000755</Y>
+      <Z>11.2507019</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -97,21 +111,18 @@
       <Y>1000</Y>
       <Z>1.25</Z>
     </Scale>
-    <Height>0</Height>
+    <Height>29.3000755</Height>
   </DummyObject>
   <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
     <Parameters>
-      <string>Bear</string>
-      <string>10</string>
-      <string>5</string>
-      <string>5</string>
+      <string>.5</string>
     </Parameters>
     <Position>
-      <X>6.864378</X>
-      <Y>0</Y>
-      <Z>14.0909252</Z>
+      <X>-3.33794785</X>
+      <Y>29.3000755</Y>
+      <Z>8.452444</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -123,21 +134,18 @@
       <Y>1000</Y>
       <Z>1.25</Z>
     </Scale>
-    <Height>0</Height>
+    <Height>29.3000755</Height>
   </DummyObject>
   <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
     <Parameters>
-      <string>Bear</string>
-      <string>10</string>
-      <string>5</string>
-      <string>5</string>
+      <string>.5</string>
     </Parameters>
     <Position>
-      <X>-0.334140778</X>
-      <Y>0</Y>
-      <Z>13.5177345</Z>
+      <X>-2.23775482</X>
+      <Y>29.3000755</Y>
+      <Z>9.785036</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -149,21 +157,18 @@
       <Y>1000</Y>
       <Z>1.25</Z>
     </Scale>
-    <Height>0</Height>
+    <Height>29.3000755</Height>
   </DummyObject>
   <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
     <Parameters>
-      <string>Bear</string>
-      <string>10</string>
-      <string>5</string>
-      <string>5</string>
+      <string>.5</string>
     </Parameters>
     <Position>
-      <X>-8.201107</X>
-      <Y>0</Y>
-      <Z>13.6643658</Z>
+      <X>-4.8318367</X>
+      <Y>29.3000755</Y>
+      <Z>8.389801</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -175,30 +180,6 @@
       <Y>1000</Y>
       <Z>1.25</Z>
     </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.GoalPoint, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>CheetahLevel</string>
-      <string>CheetahLegs</string>
-    </Parameters>
-    <Position>
-      <X>-17.3618221</X>
-      <Y>0</Y>
-      <Z>7.39110565</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>0.125</X>
-      <Y>100</Y>
-      <Z>0.125</Z>
-    </Scale>
-    <Height>0</Height>
+    <Height>29.3000755</Height>
   </DummyObject>
 </object>

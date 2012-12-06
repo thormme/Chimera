@@ -63,7 +63,7 @@ namespace finalProject.Projectiles
             }
             else
             {
-                base.Hit(gameObject);
+                World.Remove(this);
             }
         }
 

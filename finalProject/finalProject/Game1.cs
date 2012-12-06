@@ -14,6 +14,7 @@ using finalProject.Creatures;
 using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.Entities;
 using System.Collections.Generic;
+using finalProject.Projectiles;
 
 namespace finalProject
 {
@@ -97,7 +98,7 @@ namespace finalProject
 
             World world = new World(DebugModelDrawer);
             
-            world.AddLevelFromFile("CheetahLevel", new Vector3(0, 0, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("tonguetest", new Vector3(0, 0, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
 
             mGameStates.Add(world);
         }
@@ -147,14 +148,14 @@ namespace finalProject
                         {
                             //player.Damage(100, null);
 
-                            //int i = 0;
+                            int i = 0;
                             //player.AddPart(new RhinoHead(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new FrogHead(), i++);
                             //player.AddPart(new EagleWings(), i++);
                             //player.AddPart(new KangarooLegs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
