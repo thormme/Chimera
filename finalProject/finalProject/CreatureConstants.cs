@@ -20,7 +20,7 @@ namespace finalProject
         public const int TurtleIntimidation         = 1;
 
         public const float PlayerSensitivityRadius          = 10.0f;
-        public const float BearSensitivityRadius            = 100.0f;//15.0f;
+        public const float BearSensitivityRadius            = 15.0f;
         public const float CheetahSensitivityRadius         = 15.0f;
         public const float CobraSensitivityRadius           = 25.0f;
         public const float EagleSensitivityRadius           = 20.0f;
