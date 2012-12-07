@@ -18,21 +18,53 @@ namespace finalProject.Parts
             : base(
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("penguin_leftFlipper", "stand"),
                         new Creature.PartBone[] { 
-                            Creature.PartBone.Spine1Cap,
-                            Creature.PartBone.Spine2Cap,
-                            Creature.PartBone.Spine3Cap
+                            Creature.PartBone.ArmLeft1Cap,
+                            Creature.PartBone.ArmLeft2Cap,
+                            Creature.PartBone.ArmLeft3Cap
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(0.02f)
+                        new Vector3(1.0f)
+                    ),
+                    new SubPart(
+                        new AnimateModel("penguin_rightFlipper", "stand"),
+                        new Creature.PartBone[] { 
+                            Creature.PartBone.ArmRight1Cap,
+                            Creature.PartBone.ArmRight2Cap,
+                            Creature.PartBone.ArmRight3Cap
+                        },
+                        new Vector3(),
+                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
+                        new Vector3(1.0f)
+                    ),
+                    new SubPart(
+                        new AnimateModel("penguin_leftFoot", "stand"),
+                        new Creature.PartBone[] { 
+                            Creature.PartBone.LegRearLeft1Cap,
+                            Creature.PartBone.LegRearLeft2Cap,
+                            Creature.PartBone.LegRearLeft3Cap
+                        },
+                        new Vector3(),
+                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
+                        new Vector3(1.0f)
+                    ),
+                    new SubPart(
+                        new AnimateModel("penguin_rightFoot", "stand"),
+                        new Creature.PartBone[] { 
+                            Creature.PartBone.LegRearRight1Cap,
+                            Creature.PartBone.LegRearRight2Cap,
+                            Creature.PartBone.LegRearRight3Cap
+                        },
+                        new Vector3(),
+                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
+                        new Vector3(1.0f)
                     )
                 },
                 false
             )
         {
-            //(mRenderable as AnimateModel).PlayAnimation("Take 001");
             mHasTraction = true;
         }
 
@@ -44,7 +76,7 @@ namespace finalProject.Parts
                 Vector3 direction = new Vector3(0.0f, -speed, 0.0f);
                 Creature.Entity.ApplyLinearImpulse(ref direction);
             }
-
+            base.Update(time);
         }
 
         public override void Use(Microsoft.Xna.Framework.Vector3 direction)

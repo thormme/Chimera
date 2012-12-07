@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 6.0f,                                           // Mass
                 CreatureConstants.PenguinSensitivityRadius,     // Sensitivity Radius
                 new PenguinAI(),                                // AI
-                new InanimateModel("box"),                      // Model
+                new AnimateModel("penguin", "stand"),                      // Model
                 135,                                            // Vision Angle
                 CreatureConstants.PenguinListeningSensitivity,  // Listening Sensitivity
                 CreatureConstants.PenguinSneak,                 // Sneak
@@ -34,14 +34,16 @@ namespace finalProject.Creatures
         protected override List<PartBone> GetUsablePartBones()
         {
             List<PartBone> bones = new List<PartBone>();
-            //bones.Add(PartBone.LegRearLeft1Cap);
-            //bones.Add(PartBone.LegRearRight1Cap);
+            bones.Add(PartBone.LegRearLeft1Cap);
+            bones.Add(PartBone.LegRearRight1Cap);
+            bones.Add(PartBone.ArmLeft1Cap);
+            bones.Add(PartBone.ArmRight1Cap);
             return bones;
         }
 
         public override void Update(GameTime gameTime)
         {
-            //(mRenderable as AnimateModel).Update(gameTime);
+            (mRenderable as AnimateModel).Update(gameTime);
             base.Update(gameTime);
         }
     }

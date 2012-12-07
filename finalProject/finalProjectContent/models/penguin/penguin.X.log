@@ -1,0 +1,28 @@
+@0.000000: Output file name: C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\penguin\penguin.X
+@0.000022: kW X-port: 3ds max compatible version 9.00
+@22.791529: Saving node: default
+@22.794582: Limiting exported UV coordinates to 1 because of available maps.
+@23.167672: 1881 skinned vertices in default
+@23.176615: Material 0 shader returned effect file name 'null'
+@23.177956: Saving node: BackBase
+@23.178027: Saving node: BackUpper
+@23.178077: Saving node: Neck
+@23.178124: Saving node: Head
+@23.178169: Saving node: HeadCap
+@23.178218: Saving node: Tail1
+@23.178276: Saving node: Tail2
+@23.178332: Saving node: TailCap
+@23.178378: Saving node: ArmL1
+@23.178424: Saving node: ArmLeft1Cap
+@23.178468: Saving node: ArmR1
+@23.178513: Saving node: ArmRight1Cap
+@23.178559: Saving node: RightThigh
+@23.178608: Saving node: LegRearRight1Cap
+@23.178652: Saving node: LeftThigh
+@23.178697: Saving node: LegRearLeft1Cap
+@23.178750: Saving node: IK_Chain001
+@23.178795: Saving node: IK_Chain002
+@23.178832: Extracting animation slide.
+@23.204421: Extracting animation stand.
+@23.204734: Extracting animation walk.
+@23.276025: File C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Penguin\penguin.png has same mod time as C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\penguin\penguin.png; not copying.

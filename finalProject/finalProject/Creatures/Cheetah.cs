@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 6.0f,                                           // Mass
                 CreatureConstants.CheetahSensitivityRadius,     // Sensitivity Radius
                 new ActivationAI(),                             // AI
-                new InanimateModel("box"),                      // Model
+                new AnimateModel("cheetah", "stand"),                     // Model
                 135,                                            // Vision Angle
                 CreatureConstants.CheetahListeningSensitivity,  // Listening Sensitivity
                 CreatureConstants.CheetahSneak,                 // Sneak
@@ -33,11 +33,17 @@ namespace finalProject.Creatures
         protected override List<PartBone> GetUsablePartBones()
         {
             List<PartBone> bones = new List<PartBone>();
-            //bones.Add(PartBone.LegFrontLeft1Cap);
-            //bones.Add(PartBone.LegRearLeft1Cap);
-            //bones.Add(PartBone.LegFrontRight1Cap);
-            //bones.Add(PartBone.LegRearRight1Cap);
+            bones.Add(PartBone.LegFrontLeft1Cap);
+            bones.Add(PartBone.LegRearLeft1Cap);
+            bones.Add(PartBone.LegFrontRight1Cap);
+            bones.Add(PartBone.LegRearRight1Cap);
             return bones;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            (mRenderable as AnimateModel).Update(gameTime);
+            base.Update(gameTime);
         }
     }
 }
