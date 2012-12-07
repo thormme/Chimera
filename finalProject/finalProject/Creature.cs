@@ -832,23 +832,26 @@ namespace finalProject
                 }
             }
 
-            float totalImpulse = 0;
-            foreach (ContactInformation c in collisionPair.Contacts)
-            {
-                totalImpulse += c.NormalImpulse;
-            }
+            //float totalImpulse = 0;
+            //foreach (ContactInformation c in collisionPair.Contacts)
+            //{
+            //    Vector3 normal = -c.Contact.Normal;
+            //    normal.Normalize();
+            //    normal *= c.NormalImpulse;
+            //    totalImpulse += normal.Y;
+            //}
 
-            if (totalImpulse > 300)
-            {
-                Damage(12, null);
-            }
-            else if (totalImpulse > 200)
-            {
-                mShield = false;
-                mShieldRechargeTimer = ShieldRechargeLength;
-            }
+            //if (totalImpulse > 300)
+            //{
+            //    Damage(12, null);
+            //}
+            //else if (totalImpulse > 200)
+            //{
+            //    mShield = false;
+            //    mShieldRechargeTimer = ShieldRechargeLength;
+            //}
 
-            System.Console.WriteLine(totalImpulse);
+            //System.Console.WriteLine(totalImpulse);
         }
         
         public void AddModification(Modification add, Modification remove)

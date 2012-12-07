@@ -44,6 +44,17 @@ namespace finalProject
         {
             base.Update(time);
 
+            List<Creature> newList = new List<Creature>();
+            foreach(Creature creature in mCollidingCreatures)
+            {
+                if (!creature.Incapacitated)
+                {
+                    newList.Add(creature);
+                }
+            }
+
+            mCollidingCreatures = newList;
+
             foreach (IGameObject gameObject in CollidingObjects)
             {
                 Creature creature = gameObject as Creature;
