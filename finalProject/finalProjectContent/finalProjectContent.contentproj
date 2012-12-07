@@ -431,6 +431,7 @@
       <Name>CheetahLevel2_texture_medium</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="models\rock\rock1dark_collision.X">
