@@ -60,9 +60,6 @@ namespace finalProject
         /// <summary>
         /// Stores the list of PhysicsObjects, and also a list of Creatures.
         /// </summary>
-        /// <param name="objects">
-        /// The list of colliding PhysicsObjects.
-        /// </param>
         public virtual void Update(GameTime time)
         {
             mCollidingCreatures.Clear();
@@ -70,7 +67,7 @@ namespace finalProject
             foreach (IGameObject gameObject in CollidingObjects)
             {
                 Creature creature = gameObject as Creature;
-                if (creature != null && CanSee(creature) && !creature.Position.Equals(Position))
+                if (creature != null && !creature.Incapacitated && CanSee(creature) && !creature.Position.Equals(Position))
                 {
                     mCollidingCreatures.Add(creature);
                 }

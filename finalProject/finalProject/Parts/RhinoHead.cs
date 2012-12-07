@@ -11,12 +11,14 @@ using Utility;
 using BEPUphysics;
 using BEPUphysics.CollisionTests;
 using BEPUphysics.NarrowPhaseSystems.Pairs;
+using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.Collidables;
 
 namespace finalProject.Parts
 {
     class RhinoHead : CooldownPart
     {
-        private const double RunLength = 5.0f;
+        private const double RunLength = 2.0f;
         private const float SpeedBoost = 10.0f;
         private const float DamageMultiplier = 4.0f;
 
@@ -48,16 +50,6 @@ namespace finalProject.Parts
         {
             if (mRunTimer > 0.0f)
             {
-                //foreach (IGameObject gameObject in Creature.CollidingObjects)
-                //{
-                //    Creature creature = gameObject as Creature;
-                //    if (creature != null)
-                //    {
-                //        Vector3 velocityDifference = Creature.Entity.LinearVelocity - creature.Entity.LinearVelocity;
-                //        creature.Damage((int)(velocityDifference.Length() * DamageMultiplier), Creature);
-                //    }
-                //}
-
                 Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
                 RayCastResult result;
                 if (Utils.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space, 2.0f * Creature.CharacterController.BodyRadius, out result))
@@ -70,7 +62,7 @@ namespace finalProject.Parts
                 mRunTimer -= time.ElapsedGameTime.TotalSeconds;
                 if (mRunTimer < 0.0f)
                 {
-                    Creature.CharacterController.HorizontalMotionConstraint.Speed = OldSpeed;
+                    Stop();
                 }
             }
 
@@ -81,15 +73,26 @@ namespace finalProject.Parts
         {
             if (!Creature.CharacterController.SupportFinder.HasTraction)
             {
-                CooldownTimer = -1.0f;
+                base.Reset();
                 return;
             }
 
-            NewSpeed = Creature.CharacterController.HorizontalMotionConstraint.Speed + SpeedBoost;
-            mRunTimer = RunLength;
-            Creature.Stun(RunLength, Creature.Forward);
+            OldSpeed = NewSpeed = Creature.CharacterController.HorizontalMotionConstraint.Speed + SpeedBoost;
+            Vector2 moveDir = new Vector2(Creature.Forward.X, Creature.Forward.Z);
+            moveDir.Normalize();
+            Creature.Move(moveDir);
+            Creature.Immobilized = true;
+            Creature.Silenced = true;
             OldSpeed = Creature.CharacterController.HorizontalMotionConstraint.Speed;
             Creature.CharacterController.HorizontalMotionConstraint.Speed = NewSpeed;
+            mRunTimer = RunLength;
+        }
+
+        protected void Stop()
+        {
+            Creature.CharacterController.HorizontalMotionConstraint.Speed = OldSpeed;
+            Creature.Immobilized = false;
+            Creature.Silenced = false;
         }
 
         public override void FinishUse(Vector3 direction)
@@ -99,15 +102,19 @@ namespace finalProject.Parts
         public override void Reset()
         {
             base.Reset();
-
-            mRunTimer = -1.0f;
-            if (Creature != null)
-            {
-                Creature.CharacterController.HorizontalMotionConstraint.Speed = OldSpeed;
-            }
+            Cancel();
         }
 
-        public override void InitialCollisionDetected(BEPUphysics.Collidables.MobileCollidables.EntityCollidable sender, BEPUphysics.Collidables.Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
+        public override void Cancel()
+        {
+            if (Creature != null && mRunTimer > 0.0f)
+            {
+                Stop();
+            }
+            mRunTimer = -1.0f;
+        }
+
+        public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
         {
             base.InitialCollisionDetected(sender, other, collisionPair);
 
@@ -119,8 +126,16 @@ namespace finalProject.Parts
                     totalImpulse += c.NormalImpulse;
                 }
 
+                System.Console.WriteLine(totalImpulse);
                 Creature creature = (other.Tag as CharacterSynchronizer).body.Tag as Creature;
-                creature.Damage((int)(totalImpulse / DamageMultiplier), Creature);
+                if (totalImpulse > 150.0f)
+                {
+                    creature.Damage(2, Creature);
+                }
+                else if (totalImpulse > 45.0f)
+                {
+                    creature.Damage(1, Creature);
+                }
             }
         }
     }

@@ -12,6 +12,16 @@ namespace finalProject.Parts
         private const float RunGainSpeed = 22.0f;
         private bool mActive = false;
 
+        static void AddCheetahSpeed(Creature creature)
+        {
+            creature.CharacterController.HorizontalMotionConstraint.Speed += RunGainSpeed;
+        }
+
+        static void RemoveCheetahSpeed(Creature creature)
+        {
+            creature.CharacterController.HorizontalMotionConstraint.Speed -= RunGainSpeed;
+        }
+
         public CheetahLegs()
             : base(
                 2.0f,
@@ -69,7 +79,7 @@ namespace finalProject.Parts
         {
             if (!mActive)
             {
-                Creature.CharacterController.HorizontalMotionConstraint.Speed += RunGainSpeed;
+                Creature.AddModification(AddCheetahSpeed, RemoveCheetahSpeed);
                 mActive = true;
             }
         }
@@ -78,9 +88,14 @@ namespace finalProject.Parts
         {
             if (Creature != null && mActive)
             {
-                Creature.CharacterController.HorizontalMotionConstraint.Speed -= RunGainSpeed;
+                Creature.RemoveModification(RemoveCheetahSpeed);
                 mActive = false;
             }
+        }
+
+        public override void Cancel()
+        {
+            FinishUseMeter();
         }
     }
 }

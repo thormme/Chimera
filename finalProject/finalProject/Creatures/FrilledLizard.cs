@@ -25,7 +25,6 @@ namespace finalProject.Creatures
                 CreatureConstants.FrilledLizardListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.FrilledLizardSneak,                   // Sneak
                 CreatureConstants.FrilledLizardIntimidation,            // Intimidation
-                CreatureConstants.FrilledLizardStartingHealth,		    // Starting Health
                 new FrilledLizardHead()                                 // Part
                 )
         {

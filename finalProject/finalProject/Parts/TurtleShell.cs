@@ -9,8 +9,6 @@ namespace finalProject.Parts
 {
     public class TurtleShell : MeteredPart
     {
-        private bool mActive = false;
-
         public TurtleShell()
             : base(
                 3.0f,
@@ -31,33 +29,63 @@ namespace finalProject.Parts
             )
         { }
 
-        public override void Update(GameTime time)
-        { }
+        private bool mActive = false;
+        protected bool Active
+        {
+            get
+            {
+                return mActive;
+            }
+            set
+            {
+                if (value)
+                {
+                    Creature.Move(Vector2.Zero);
+                }
+                Creature.Silenced = value;
+                Creature.Immobilized = value;
+                Creature.Invulnerable = value;
+                mActive = value;
+            }
+        }
 
         protected override void UseMeter(Vector3 direction)
         {
-            if (!mActive && Creature != null)
+            if (!Active && Creature != null)
             {
-                mActive = true;
-                Creature.Invulnerable = true;
-                Creature.Move(Vector2.Zero);
-                Creature.Controller.NoControl = true;
+                Active = true;
+                System.Console.WriteLine("used");
             }
         }
 
         protected override void FinishUseMeter()
         {
-            if (mActive)
+            if (Active)
             {
-                mActive = false;
-                Creature.Invulnerable = false;
-                Creature.Controller.NoControl = false;
+                Active = false;
+                System.Console.WriteLine("stopped");
             }
         }
 
         public override void Reset()
         {
-            FinishUse(Vector3.Zero);
+            base.Reset();
+            Cancel();
+        }
+
+        public override void Cancel()
+        {
+            FinishUseMeter();
+        }
+
+        public override void Damage(int damage, Creature source)
+        {
+            base.Damage(damage, source);
+
+            if (Active)
+            {
+                source.Stun();
+            }
         }
     }
 }

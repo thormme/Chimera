@@ -115,7 +115,13 @@ namespace finalProject.Parts
 
         public override void Reset()
         {
+            Cancel();
             mFlaps = 0;
+        }
+
+        public override void Cancel()
+        {
+            FinishUse(Creature.Forward);
         }
     }
 }

@@ -25,7 +25,6 @@ namespace finalProject.Creatures
                 CreatureConstants.FrogListeningSensitivity, // Listening Sensitivity
                 CreatureConstants.FrogSneak,                // Sneak
                 CreatureConstants.FrogIntimidation,         // Intimidation
-                CreatureConstants.FrogStartingHealth,		// Starting Health
                 new FrogHead()                              // Part
                 )
         {

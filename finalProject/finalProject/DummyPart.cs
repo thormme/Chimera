@@ -37,5 +37,7 @@ namespace finalProject
         public override void FinishUse(Vector3 direction)
         {
         }
+
+        public override void Cancel() { }
     }
 }

@@ -36,7 +36,7 @@ namespace finalProject
 
         protected bool IsReady()
         {
-            return MeterTimer > 0.0f;
+            return MeterTimer >= 0.0f;
         }
 
         public MeteredPart(double meterLength, double cooldownLength, finalProject.Part.SubPart[] subParts)
@@ -79,7 +79,7 @@ namespace finalProject
             else
             {
                 CooldownTimer -= time.ElapsedGameTime.TotalSeconds;
-                if (CooldownTimer < 0.0f)
+                if (CooldownTimer <= 0.0f)
                 {
                     MeterTimer = MeterLength;
                 }

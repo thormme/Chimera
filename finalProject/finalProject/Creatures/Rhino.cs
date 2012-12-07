@@ -25,7 +25,6 @@ namespace finalProject.Creatures
                 CreatureConstants.RhinoListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.RhinoSneak,                   // Sneak
                 CreatureConstants.RhinoIntimidation,            // Intimidation
-                CreatureConstants.RhinoStartingHealth,			// Starting Health
                 new RhinoHead()                                 // Part
                 )
         {

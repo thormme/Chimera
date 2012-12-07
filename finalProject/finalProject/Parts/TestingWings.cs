@@ -116,6 +116,12 @@ namespace finalProject.Parts
         public override void Reset()
         {
             mFlaps = 0;
+            Cancel();
+        }
+
+        public override void Cancel()
+        {
+            FinishUse(Vector3.Zero);
         }
     }
 }

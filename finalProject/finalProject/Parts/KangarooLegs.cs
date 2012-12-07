@@ -17,7 +17,7 @@ namespace finalProject.Parts
         const float forwardJumpForce = 30f;
         const float poundForce = 320f;
         const double poundWaitTime = .5;
-        const int poundDamage = 35;
+        const int poundDamage = 2;
 
         bool mJumpInUse = false;
         bool mPoundInUse = false;
@@ -183,6 +183,11 @@ namespace finalProject.Parts
         }
 
         public override void Reset()
+        {
+            Cancel();
+        }
+
+        public override void Cancel()
         {
             mJumpInUse = false;
             mPoundInUse = false;
