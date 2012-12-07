@@ -75,8 +75,8 @@ namespace GraphicsLibrary
                 throw new Exception(mModelName + " does not contain bone: " + boneName);
             }
 
-            //return GraphicsManager.LookupTweakedBoneOrientation(mModelName, boneName) * AnimationPlayer.GetWorldTransforms()[boneIndex];
-            return AnimationPlayer.GetWorldTransforms()[boneIndex];
+            return GraphicsManager.LookupTweakedBoneOrientation(mModelName, boneName) * AnimationPlayer.GetWorldTransforms()[boneIndex];
+            //return AnimationPlayer.GetWorldTransforms()[boneIndex];
         }
 
         /// <summary>
@@ -87,6 +87,8 @@ namespace GraphicsLibrary
         {
             if (animationName != mAnimationName)
             {
+                mAnimationName = animationName;
+
                 AnimationClip clip;
                 if (!SkinningData.AnimationClips.TryGetValue(animationName, out clip))
                 {

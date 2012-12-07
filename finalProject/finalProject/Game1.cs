@@ -14,6 +14,7 @@ using finalProject.Creatures;
 using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.Entities;
 using System.Collections.Generic;
+using finalProject.Projectiles;
 
 namespace finalProject
 {

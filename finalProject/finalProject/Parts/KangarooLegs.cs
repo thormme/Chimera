@@ -39,7 +39,7 @@ namespace finalProject.Parts
             : base(
                 new Part.SubPart[] {
                     new SubPart(
-                        new AnimateModel("kangaroo_leftLeg", "walk"),
+                        new AnimateModel("kangaroo_leftLeg", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegFrontLeft3Cap, 
                             Creature.PartBone.LegRearLeft3Cap,
@@ -53,7 +53,7 @@ namespace finalProject.Parts
                         new Vector3(1.0f)
                     ),
                     new SubPart(
-                        new AnimateModel("kangaroo_rightLeg", "walk"),
+                        new AnimateModel("kangaroo_rightLeg", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegFrontRight3Cap, 
                             Creature.PartBone.LegRearRight3Cap,
@@ -66,7 +66,8 @@ namespace finalProject.Parts
                         Matrix.CreateFromQuaternion(new Quaternion()),
                         new Vector3(1.0f)
                     )
-                }
+                },
+                true
             )
         {
         }
@@ -171,14 +172,6 @@ namespace finalProject.Parts
             if (!mJumpInUse && !mPoundInUse && Creature.CharacterController.SupportFinder.HasSupport)
             {
                 PlayAnimation(animationName, isSaturated);
-            }
-        }
-
-        protected override void PlayAnimation(string animationName, bool isSaturated)
-        {
-            foreach (SubPart subPart in SubParts)
-            {
-                (subPart.Renderable as AnimateModel).PlayAnimation(animationName, isSaturated);
             }
         }
 
