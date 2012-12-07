@@ -171,7 +171,7 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
-            : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
+            : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 3)
         {
             Forward = facingDirection;
 
@@ -283,8 +283,15 @@ namespace finalProject
                 {
                     if (Sensor.CollidingCreatures.Count > 0)
                     {
-                        mStealTarget = Sensor.CollidingCreatures[0];
-                        mStealTimer = StealLength;
+                        foreach (Creature creature in Sensor.CollidingCreatures)
+                        {
+                            if (creature.PartAttachments[0] != null)
+                            {
+                                mStealTarget = creature;
+                                mStealTimer = StealLength;
+                                creature.Damage(0, this);
+                            }
+                        }
                     }
                 }
             }

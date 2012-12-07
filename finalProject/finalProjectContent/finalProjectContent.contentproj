@@ -207,25 +207,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\tree_31_texture_low.tga">
-      <Name>tree_31_texture_low</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\tree_31_texture_medium.tga">
-      <Name>tree_31_texture_medium</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\maps\tree_31_texture_high.tga">
-      <Name>tree_31_texture_high</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="models\eagle\eagle_leftWing.X">
       <Name>eagle_leftWing</Name>
       <Importer>XImporter</Importer>
@@ -471,10 +452,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\bear\bear_leftArm.X">
-      <Name>bear_leftArm</Name>
+    <Compile Include="models\leaves\leaf.X">
+      <Name>leaf</Name>
       <Importer>XImporter</Importer>
       <Processor>AnimateModelProcessor</Processor>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\bear\bear_rightArm.X">
       <Name>bear_rightArm</Name>
@@ -483,10 +465,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\cheetah\cheetah.X">
-      <Name>cheetah</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
+    <Compile Include="models\leaves\leaftex.png">
+      <Name>leaftex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="models\cheetah\cheetah_frontLeftLeg.X">
       <Name>cheetah_frontLeftLeg</Name>
@@ -567,6 +549,37 @@
       <Name>bear</Name>
       <Importer>XImporter</Importer>
       <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\bear\bear_leftArm.X">
+      <Name>bear_leftArm</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\cheetah\cheetah.X">
+      <Name>cheetah</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\maps\tree_37_texture_high.tga">
+      <Name>tree_37_texture_high</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\maps\tree_37_texture_low.tga">
+      <Name>tree_37_texture_low</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\maps\tree_37_texture_medium.tga">
+      <Name>tree_37_texture_medium</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

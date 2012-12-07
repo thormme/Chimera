@@ -19,7 +19,7 @@ namespace finalProject.Creatures
                 2.0f,                                       // Radius
                 2.0f,                                       // Mass
                 CreatureConstants.FrogSensitivityRadius,    // Sensitivity Radius
-                new AggressiveAI(),                         // AI
+                new FrogAI(),                         // AI
                 new AnimateModel("frog", "stand"),                  // Model
                 135,                                        // Vision Angle
                 CreatureConstants.FrogListeningSensitivity, // Listening Sensitivity

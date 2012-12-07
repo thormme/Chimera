@@ -62,6 +62,7 @@ namespace finalProject.Projectiles
                 if (other.Tag is CharacterSynchronizer)
                 {
                     StickToEntity((other.Tag as CharacterSynchronizer).body);
+                    ((other.Tag as CharacterSynchronizer).body.Tag as Creature).Damage(0, (mOwner as Creature));
                 }
                 else if (other.Tag is IEntityOwner)
                 {

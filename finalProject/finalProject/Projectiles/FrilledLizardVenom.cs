@@ -15,10 +15,10 @@ using BEPUphysics.Entities;
 
 namespace finalProject.Projectiles
 {
-    public class CobraVenom : Projectile
+    public class FrilledLizardVenom : Projectile
     {
 
-        public CobraVenom(Actor owner, Vector3 direction)
+        public FrilledLizardVenom(Actor owner, Vector3 direction)
             : base(
             new InanimateModel("box"),
             new Box(owner.Position, 0.5f, 0.5f, 0.5f, 0.5f),
@@ -40,11 +40,13 @@ namespace finalProject.Projectiles
         public override void InitialCollisionDetected(BEPUphysics.Collidables.MobileCollidables.EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
         {
             base.InitialCollisionDetected(sender, other, collisionPair);
-            // If hit physics object link projectile to it then grapple to projectile, otherwise set projectile to kinematic and grapple to projectile
+
             if (other.Tag is CharacterSynchronizer)
             {
-                // Do something to the character
+                ((other.Tag as CharacterSynchronizer).body.Tag as Creature).Poisoned = true;
+                ((other.Tag as CharacterSynchronizer).body.Tag as Creature).Damage(0, mOwner as Creature);
             }
+            World.Remove(this);
         }
 
     }
