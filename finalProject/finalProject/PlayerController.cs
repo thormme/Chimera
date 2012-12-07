@@ -60,6 +60,9 @@ namespace finalProject
 
         private KeyInputAction mJumpKey;
 
+        private GamePadButtonInputAction mStealPress;
+        private GamePadButtonInputAction mStealRelease;
+
         private KeyInputAction mStealPressKey;
         private KeyInputAction mStealReleaseKey;
 
@@ -151,6 +154,9 @@ namespace finalProject
 
             mStealPressKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.LeftShift);
             mStealReleaseKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.LeftShift);
+
+            mStealPress = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.RightShoulder);
+            mStealRelease = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Buttons.RightShoulder);
 
             mPressDecBoneYaw = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.T);
             mPressIncBoneYaw = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Y);
@@ -339,7 +345,7 @@ namespace finalProject
                 mCreature.Jump();
             }
 
-            if (mStealPressKey.Active)
+            if (mStealPressKey.Active || mStealPress.Active)
             {
                 if (player != null)
                 {
@@ -347,7 +353,7 @@ namespace finalProject
                 }
             }
 
-            if (mStealReleaseKey.Active)
+            if (mStealReleaseKey.Active || mStealRelease.Active)
             {
                 if (player != null)
                 {
@@ -362,7 +368,7 @@ namespace finalProject
                 {
                     if (player != null && player.FoundPart)
                     {
-                        player.StealPart(i);
+                        player.StealPart(j);
                     }
                     else
                     {
@@ -371,7 +377,7 @@ namespace finalProject
                 }
                 else if (mFinishUse[i].Active)
                 {
-                    mCreature.FinishUsingPart(j, mCamera.Forward);
+                    mCreature.FinishUsePart(j, mCamera.Forward);
                 }
             }
 

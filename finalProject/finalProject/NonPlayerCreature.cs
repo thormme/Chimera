@@ -55,12 +55,31 @@ namespace finalProject
             Intimidation = intimidation;
             Controller = controller;
             AddPart(part, 0);
+            CharacterController.HorizontalMotionConstraint.Speed = 9.0f;
         }
 
         public override void RemovePart(Part part)
         {
             base.RemovePart(part);
             Die();
+        }
+
+        public override void Damage(int damage, Creature source)
+        {
+            int health = 0;
+            if (mShield)
+            {
+                ++health;
+            }
+
+            if (damage > health)
+            {
+                Die();
+            }
+            else
+            {
+                base.Damage(damage, source);
+            }
         }
 
         protected void Die()

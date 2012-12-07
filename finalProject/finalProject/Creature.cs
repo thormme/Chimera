@@ -76,6 +76,18 @@ namespace finalProject
 
         public delegate void Modification(Creature creature);
 
+        public class PartAttachment
+        {
+            public Part Part;
+            public List<PartBone> Bones;
+
+            public PartAttachment(Part part, List<PartBone> bones)
+            {
+                Part = part;
+                Bones = bones;
+            }
+        }
+
         #region Fields
 
         protected const float DamageImpulseMultiplier = 255.0f;
@@ -93,18 +105,6 @@ namespace finalProject
         protected double mPoisonTimer = -1.0f;
 
         protected Dictionary<Modification, int> mModifications = new Dictionary<Modification, int>();
-
-        public class PartAttachment
-        {
-            public Part Part;
-            public List<PartBone> Bones;
-
-            public PartAttachment(Part part, List<PartBone> bones)
-            {
-                Part = part;
-                Bones = bones;
-            }
-        }
 
         protected float mHeight;
 
@@ -652,7 +652,7 @@ namespace finalProject
         /// </summary>
         /// <param name="part">The index into the list of parts.</param>
         /// <param name="direction">The direction in which to use the part.</param>
-        public virtual void FinishUsingPart(int part, Vector3 direction)
+        public virtual void FinishUsePart(int part, Vector3 direction)
         {
             if (part < mPartAttachments.Count() &&
                 mPartAttachments[part] != null)
@@ -832,23 +832,26 @@ namespace finalProject
                 }
             }
 
-            float totalImpulse = 0;
-            foreach (ContactInformation c in collisionPair.Contacts)
-            {
-                totalImpulse += c.NormalImpulse;
-            }
+            //float totalImpulse = 0;
+            //foreach (ContactInformation c in collisionPair.Contacts)
+            //{
+            //    Vector3 normal = -c.Contact.Normal;
+            //    normal.Normalize();
+            //    normal *= c.NormalImpulse;
+            //    totalImpulse += normal.Y;
+            //}
 
-            if (totalImpulse > 300)
-            {
-                Damage(12, null);
-            }
-            else if (totalImpulse > 200)
-            {
-                mShield = false;
-                mShieldRechargeTimer = ShieldRechargeLength;
-            }
+            //if (totalImpulse > 300)
+            //{
+            //    Damage(12, null);
+            //}
+            //else if (totalImpulse > 200)
+            //{
+            //    mShield = false;
+            //    mShieldRechargeTimer = ShieldRechargeLength;
+            //}
 
-            System.Console.WriteLine(totalImpulse);
+            //System.Console.WriteLine(totalImpulse);
         }
         
         public void AddModification(Modification add, Modification remove)

@@ -24,8 +24,8 @@ namespace finalProject.AI
                 mFlapTimer -= time.ElapsedGameTime.TotalSeconds;
                 if (mFlapTimer < 0.0f)
                 {
-                    Part part = ChoosePart();
-                    part.Use(mUsePartDirection);
+                    int part = ChoosePartSlot();
+                    mCreature.UsePart(part, mUsePartDirection);
                     mFlapTimer = FlapInterval;
                 }
             }

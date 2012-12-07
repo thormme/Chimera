@@ -9,26 +9,27 @@ using GameConstructLibrary;
 
 namespace finalProject.AI
 {
-    class CobraAI : IntimidationAI
+    class RangedAI : IntimidationAI
     {
         private const float RunRatio = 0.5f;
 
         public override void Update(GameTime time, List<Creature> collidingCreatures)
         {
-            List<Creature> noCobras = new List<Creature>();
+            Type type = mCreature.GetType();
+            List<Creature> noLikeType = new List<Creature>();
             foreach (Creature creature in collidingCreatures)
             {
-                if (!(creature is Cobra))
+                if (!(creature.GetType() == type))
                 {
-                    noCobras.Add(creature);
+                    noLikeType.Add(creature);
                 }
             }
 
-            base.Update(time, noCobras);
+            base.Update(time, noLikeType);
 
             if (mMostIntimidatingCreature != null && mMostIntimidatingCreature.Intimidation > mCreature.Intimidation)
             {
-                foreach (Creature creature in collidingCreatures)
+                foreach (Creature creature in noLikeType)
                 {
                     if (creature.Intimidation > mCreature.Intimidation && mCreature.CollideDistance(creature) < mCreature.Sensor.Radius * RunRatio)
                     {
@@ -41,7 +42,7 @@ namespace finalProject.AI
             }
             else
             {
-                ChoosePart().FinishUse(mCreature.Forward);
+                mCreature.FinishUsePart(ChoosePartSlot(), mCreature.Forward);
                 DurdleOrder();
             }
         }
@@ -50,7 +51,7 @@ namespace finalProject.AI
         {
             if (mUsingPart && State != AIState.FleeCreature)
             {
-                ChoosePart().Use(mUsePartDirection);
+                mCreature.UsePart(ChoosePartSlot(), mUsePartDirection);
             }
             mUsingPart = false;
         }
@@ -58,17 +59,9 @@ namespace finalProject.AI
         protected override void FinishUsePart()
         { }
 
-        protected override Part ChoosePart()
+        protected override int ChoosePartSlot()
         {
-            List<Part> parts = new List<Part>();
-            foreach (Creature.PartAttachment pa in mCreature.PartAttachments)
-            {
-                if (pa != null)
-                {
-                    parts.Add(pa.Part);
-                }
-            }
-            return parts[Rand.rand.Next(parts.Count)];
+            return Rand.rand.Next(mCreature.PartAttachments.Count);
         }
     }
 }

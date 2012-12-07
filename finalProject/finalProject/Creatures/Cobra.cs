@@ -19,7 +19,7 @@ namespace finalProject.Creatures
                 2.0f,                                           // Radius
                 10.0f,                                          // Mass
                 CreatureConstants.CobraSensitivityRadius,       // Sensitivity Radius
-                new CobraAI(),                                  // AI
+                new RangedAI(),                                  // AI
                 new InanimateModel("box"),                      // Model
                 135,                                            // Vision Angle
                 CreatureConstants.CobraListeningSensitivity,    // Listening Sensitivity
