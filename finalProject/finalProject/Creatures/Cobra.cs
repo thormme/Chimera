@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 10.0f,                                          // Mass
                 CreatureConstants.CobraSensitivityRadius,       // Sensitivity Radius
                 new CobraAI(),                                  // AI
-                new InanimateModel("box"),                      // Model
+                new AnimateModel("cobra", "stand"),                      // Model
                 135,                                            // Vision Angle
                 CreatureConstants.CobraListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.CobraSneak,                   // Sneak
@@ -34,14 +34,13 @@ namespace finalProject.Creatures
         protected override List<PartBone> GetUsablePartBones()
         {
             List<PartBone> bones = new List<PartBone>();
-            //bones.Add(PartBone.LegRearLeft1Cap);
-            //bones.Add(PartBone.LegRearRight1Cap);
+            bones.Add(PartBone.HeadCenterCap);
             return bones;
         }
 
         public override void Update(GameTime gameTime)
         {
-            //(mRenderable as AnimateModel).Update(gameTime);
+            (mRenderable as AnimateModel).Update(gameTime);
             base.Update(gameTime);
         }
     }

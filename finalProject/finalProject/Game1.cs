@@ -104,7 +104,13 @@ namespace finalProject
 
             World world = new World(DebugModelDrawer);
             
-            world.AddLevelFromFile("tonguetest", new Vector3(0, 0, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("tree_31", new Vector3(0, 0, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
+            world.Add(new Bear(new Vector3(20.0f, 1.0f, 20.0f)));
+            world.Add(new Cheetah(new Vector3(-20.0f, 1.0f, 20.0f)));
+            world.Add(new Frog(new Vector3(-20.0f, 1.0f, -20.0f)));
+            world.Add(new Penguin(new Vector3(-20.0f, 1.0f, 20.0f)));
+            world.Add(new Cobra(new Vector3(0.0f, 1.0f, 0.0f)));
+            world.Add(new FrilledLizard(new Vector3(50.0f, 1.0f, 20.0f)));
 
             mGameStates.Add(world);
         }
@@ -155,12 +161,15 @@ namespace finalProject
                             player.Damage(100, null);
 
                             int i = 0;
-                            player.AddPart(new TestingLegs(), i++);
-                            player.AddPart(new TestingWings(), i++);
+                            //player.AddPart(new TestingLegs(), i++);
+                            //player.AddPart(new TestingWings(), i++);
                             //player.AddPart(new RhinoHead(), i++);
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
                             
                             player.AddPart(new FrogHead(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new BearArms(), i++);
+                            player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);

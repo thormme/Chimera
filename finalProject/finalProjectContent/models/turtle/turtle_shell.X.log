@@ -1,0 +1,12 @@
+@0.000001: Output file name: C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\turtle\turtle_shell.X
+@0.000024: kW X-port: 3ds max compatible version 9.00
+@33.688502: Saving node: Shell
+@33.695747: Limiting exported UV coordinates to 1 because of available maps.
+@34.651270: 3124 skinned vertices in Shell
+@34.657307: Material 0 shader returned effect file name 'null'
+@34.659476: Saving node: Shell
+@34.659565: Saving node: ShellCap
+@34.659619: Extracting animation hide.
+@34.659828: Extracting animation stand.
+@34.659887: Extracting animation walk.
+@34.729056: File C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Turtle\Turtle.png has same mod time as C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\turtle\Turtle.png; not copying.

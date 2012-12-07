@@ -341,7 +341,7 @@ namespace finalProject
             }
             else if (mStance == Stance.Walking)
             {
-                model.PlayAnimation("walk", false);
+                //model.PlayAnimation("walk", false);
 
                 foreach (PartAttachment part in mPartAttachments)
                 {

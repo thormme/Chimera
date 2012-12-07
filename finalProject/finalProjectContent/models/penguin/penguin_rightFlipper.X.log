@@ -1,0 +1,12 @@
+@0.000000: Output file name: C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\penguin\penguin_rightFlipper.X
+@0.000022: kW X-port: 3ds max compatible version 9.00
+@1.276412: Saving node: RightWing
+@1.277946: Limiting exported UV coordinates to 1 because of available maps.
+@1.409496: 900 skinned vertices in RightWing
+@1.411129: Material 0 shader returned effect file name 'null'
+@1.412039: Saving node: flipperRight2
+@1.412101: Saving node: flipperRightCap
+@1.412143: Extracting animation slide.
+@1.413009: Extracting animation stand.
+@1.413076: Extracting animation walk.
+@1.433245: File C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Penguin\penguin.png has same mod time as C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\penguin\penguin.png; not copying.

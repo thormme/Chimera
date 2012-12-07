@@ -62,6 +62,11 @@
       <Importer>XImporter</Importer>
       <Processor>AnimateModelProcessor</Processor>
     </Compile>
+    <Compile Include="models\frog\frog.X">
+      <Name>frog</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
     <Compile Include="shaders\ConfigurableShader.fx">
       <Name>ConfigurableShader</Name>
       <Importer>EffectImporter</Importer>
@@ -463,6 +468,105 @@
       <Name>rock3light_collision</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\bear\bear_leftArm.X">
+      <Name>bear_leftArm</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\bear\bear_rightArm.X">
+      <Name>bear_rightArm</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\cheetah\cheetah.X">
+      <Name>cheetah</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\cheetah\cheetah_frontLeftLeg.X">
+      <Name>cheetah_frontLeftLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\cheetah\cheetah_frontRightLeg.X">
+      <Name>cheetah_frontRightLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\cheetah\cheetah_rearLeftLeg.X">
+      <Name>cheetah_rearLeftLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\cheetah\cheetah_rearRightLeg.X">
+      <Name>cheetah_rearRightLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\cobra\cobra.X">
+      <Name>cobra</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\cobra\cobra_head.X">
+      <Name>cobra_head</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\frog\frog_head.X">
+      <Name>frog_head</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\penguin\penguin.X">
+      <Name>penguin</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\penguin\penguin_leftFlipper.X">
+      <Name>penguin_leftFlipper</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\penguin\penguin_leftFoot.X">
+      <Name>penguin_leftFoot</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\penguin\penguin_rightFlipper.X">
+      <Name>penguin_rightFlipper</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\penguin\penguin_rightFoot.X">
+      <Name>penguin_rightFoot</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\turtle\turtle.X">
+      <Name>turtle</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\bear\bear.X">
+      <Name>bear</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

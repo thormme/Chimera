@@ -17,7 +17,7 @@ namespace finalProject.Parts
                 1.1f,
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("bear_leftArm", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.ArmLeft1Cap, 
                             Creature.PartBone.ArmLeft2Cap,
@@ -25,10 +25,10 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.02f)
+                        new Vector3(1.0f)
                     ),
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("bear_rightArm", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.ArmRight1Cap, 
                             Creature.PartBone.ArmRight2Cap,
@@ -36,7 +36,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.02f)
+                        new Vector3(1.0f)
                     )
                 },
                 false
@@ -83,6 +83,11 @@ namespace finalProject.Parts
             {
                 creature.Damage(AttackDamage, Creature);
             }
+        }
+
+        public override void Update(GameTime time)
+        {
+            base.Update(time);
         }
 
         public override void FinishUse(Vector3 direction) { }

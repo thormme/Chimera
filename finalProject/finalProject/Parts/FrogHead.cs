@@ -25,7 +25,7 @@ namespace finalProject.Parts
                 0.0,
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("frog_head", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.HeadCenterCap,
                             Creature.PartBone.HeadLeftCap,
@@ -33,7 +33,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(0.05f, 0.05f, 0.05f)
+                        new Vector3(1.0f)
                     )
                 },
                 false
