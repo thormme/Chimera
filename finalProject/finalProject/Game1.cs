@@ -170,7 +170,7 @@ namespace finalProject
                             //player.AddPart(new FrilledLizardHead(), i++);
                              
 
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Rhino(player.Position + 30.0f * player.Forward));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Penguin(player.Position + 30.0f * player.Forward));
                         }
                     }
                 }
