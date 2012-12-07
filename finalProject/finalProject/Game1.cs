@@ -149,11 +149,11 @@ namespace finalProject
                             player.Damage(100, null);
 
                             int i = 0;
-                            player.AddPart(new KangarooLegs(), i++);
-                            player.AddPart(new FrogHead(), i++);
-                            (mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
-                            /*
+                            player.AddPart(new TestingLegs(), i++);
+                            player.AddPart(new TestingWings(), i++);
                             player.AddPart(new RhinoHead(), i++);
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
+                            /*
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new CheetahLegs(), i++);
