@@ -16,11 +16,11 @@ namespace GameConstructLibrary
     {
 
         public static CollisionGroup ProjectileGroup = new CollisionGroup();
+        public static CollisionGroup SensorProjectileGroup = new CollisionGroup();
 
         public bool CheckHits { get; set; }
-        private Entity Stick;
+        public Entity StuckEntity;
         private WeldJoint mStickConstraint;
-        private float mOriginalMass;
 
         protected Actor mOwner;
         protected Vector3 mProjectileImpulse;
@@ -33,12 +33,11 @@ namespace GameConstructLibrary
             direction.Normalize();
 
             CheckHits = true;
-            Stick = null;
+            StuckEntity = null;
 
             mOwner = owner;
             mProjectileImpulse = new Vector3(direction.X * speed, direction.Y * speed, direction.Z * speed);
             mSpeed = speed;
-            mOriginalMass = Entity.Mass;
             
             Entity.Position = owner.Position;
             XNAOrientationMatrix = Matrix.CreateLookAt(owner.Position, direction, owner.Up);
@@ -71,24 +70,21 @@ namespace GameConstructLibrary
 
         protected void StickToEntity(Entity entity)
         {
-            Stick = entity;
-            Position = Stick.Position;
+            StuckEntity = entity;
             Entity.AngularMomentum = Vector3.Zero;
             Entity.LinearMomentum = Vector3.Zero;
-            mStickConstraint = new WeldJoint(Stick, Entity);
-            Entity.Mass = 0.001f;
+            mStickConstraint = new WeldJoint(StuckEntity, Entity);
             World.Space.Add(mStickConstraint);
-            CollisionRules.AddRule(Entity, Stick, CollisionRule.NoBroadPhase);
+            CollisionRules.AddRule(Entity, StuckEntity, CollisionRule.NoBroadPhase);
         }
 
         protected void Unstick()
         {
-            if (Stick != null)
+            if (StuckEntity != null)
             {
-                CollisionRules.RemoveRule(Entity, Stick);
-                Entity.Mass = mOriginalMass;
+                CollisionRules.RemoveRule(Entity, StuckEntity);
                 World.Space.Remove(mStickConstraint);
-                Stick = null;
+                StuckEntity = null;
             }
         }
 
