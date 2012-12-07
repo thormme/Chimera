@@ -81,7 +81,7 @@ namespace finalProject.AI
                 {
                     if (mClimbing)
                     {
-                        ChoosePart().Use(mCreature.Forward);
+                        mCreature.UsePart(ChoosePartSlot(), mCreature.Forward);
                         mUsingPart = true;
                     }
                 }

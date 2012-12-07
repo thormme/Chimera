@@ -12,7 +12,7 @@ namespace finalProject.AI
         {
             if (mUsingPart)
             {
-                ChoosePart().Use(mUsePartDirection);
+                mCreature.UsePart(ChoosePartSlot(), mUsePartDirection);
             }
         }
     }

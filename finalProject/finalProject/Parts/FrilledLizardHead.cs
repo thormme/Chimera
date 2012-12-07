@@ -4,18 +4,15 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
+using finalProject.Projectiles;
 
 namespace finalProject.Parts
 {
-    public class FrilledLizardHead : MeteredPart
+    public class FrilledLizardHead : CooldownPart
     {
-        public const int IntimidationIncrease = 5;
-        public bool Active = false;
-
         public FrilledLizardHead()
             : base(
-                3.0f,
-                5.0f,
+                20.0f,
                 new Part.SubPart[] {
                     new SubPart(
                         new AnimateModel("lizard_head", "standOpen"),
@@ -26,39 +23,20 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        new Vector3(0.1f)
                     )
                 },
                 false
             )
         { }
 
-        protected override void UseMeter(Vector3 direction)
+        protected override void UseCooldown(Vector3 direction)
         {
-            if (!Active)
-            {
-                Active = true;
-                Creature.Intimidation += IntimidationIncrease;
-            }
+            Creature.World.Add(new FrilledLizardVenom(Creature, direction));
         }
 
-        protected override void FinishUseMeter()
-        {
-            if (Active)
-            {
-                Creature.Intimidation -= IntimidationIncrease;
-                Active = false;
-            }
-        }
+        public override void FinishUse(Vector3 direction) { }
 
-        public override void Update(GameTime time)
-        {
-            base.Update(time);
-        }
-
-        public override void Cancel()
-        {
-            FinishUseMeter();
-        }
+        public override void Cancel() { }
     }
 }

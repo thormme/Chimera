@@ -371,7 +371,7 @@ namespace finalProject
                 }
                 else if (mFinishUse[i].Active)
                 {
-                    mCreature.FinishUsingPart(j, mCamera.Forward);
+                    mCreature.FinishUsePart(j, mCamera.Forward);
                 }
             }
 

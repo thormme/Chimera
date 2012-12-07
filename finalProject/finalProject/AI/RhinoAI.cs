@@ -22,7 +22,7 @@ namespace finalProject.AI
 
                     if (mStopTimer <= 0.0f)
                     {
-                        ChoosePart().Use(mUsePartDirection);
+                        mCreature.UsePart(ChoosePartSlot(), mUsePartDirection);
                         FinishUsePart();
                     }
                 }

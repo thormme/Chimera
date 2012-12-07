@@ -352,9 +352,9 @@ namespace finalProject
         {
             if (mUsingPart)
             {
-                Part part = ChoosePart();
-                part.Use(mUsePartDirection);
-                part.FinishUse(mUsePartDirection);
+                int part = ChoosePartSlot();
+                mCreature.UsePart(part, mUsePartDirection);
+                mCreature.FinishUsePart(part, mUsePartDirection);
                 mUsingPart = false;
             }
         }
@@ -363,21 +363,21 @@ namespace finalProject
 
         #region Helpers
 
-        /// <summary>
-        /// Resets the creature's part. Called in StopOrder.
-        /// </summary>
-        protected virtual void ResetPart()
-        {
-            ChoosePart().Reset();
-        }
+        ///// <summary>
+        ///// Resets the creature's part. Called in StopOrder.
+        ///// </summary>
+        //protected virtual void ResetPart()
+        //{
+        //    ChoosePartSlot().Reset();
+        //}
 
         /// <summary>
         /// Chooses a part from the creature to use.
         /// </summary>
         /// <returns>The part to use.</returns>
-        protected virtual Part ChoosePart()
+        protected virtual int ChoosePartSlot()
         {
-            return mCreature.PartAttachments[0].Part;
+            return 0;
         }
 
         /// <summary>
@@ -450,7 +450,7 @@ namespace finalProject
         /// </summary>
         protected virtual void FinishUsePart()
         {
-            ChoosePart().FinishUse(mCreature.Forward);
+            mCreature.FinishUsePart(ChoosePartSlot(), mCreature.Forward);
             mUsingPart = false;
         }
 

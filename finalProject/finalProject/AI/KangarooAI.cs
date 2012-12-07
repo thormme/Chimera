@@ -55,24 +55,24 @@ namespace finalProject.AI
                 {
                     if ((result.HitObject.Tag as CharacterSynchronizer).body.Tag == mTargetCreature)
                     {
-                        Part part = ChoosePart();
-                        part.Use(downVector);
-                        part.FinishUse(downVector);
+                        int part = ChoosePartSlot();
+                        mCreature.UsePart(part, downVector);
+                        mCreature.FinishUsePart(ChoosePartSlot(), downVector);
                         return;
                     }
                 }
                 else if (result.HitObject.Tag == mTargetCreature)
                 {
-                    Part part = ChoosePart();
-                    part.Use(downVector);
-                    part.FinishUse(downVector);
+                    int part = ChoosePartSlot();
+                    mCreature.UsePart(part, downVector);
+                    mCreature.FinishUsePart(part, downVector);
                     return;
                 }
                 System.Console.WriteLine("Ray fail");
             }
             else if (mUsingPart && mTargetCreature == null)
             {
-                ChoosePart().FinishUse(mCreature.Forward);
+                mCreature.FinishUsePart(ChoosePartSlot(), mCreature.Forward);
                 mUsingPart = false;
             }
             else if (mUsingPart && onGround)
@@ -91,20 +91,21 @@ namespace finalProject.AI
                     return;
                 }
 
-                KangarooLegs kLegs = (ChoosePart() as KangarooLegs);
+                int part = ChoosePartSlot();
+                KangarooLegs kLegs = (mCreature.PartAttachments[part].Part as KangarooLegs);
                 if (mJumpTimer < kLegs.FullJumpTime)
                 {
                     mJumpTimer += time.ElapsedGameTime.TotalSeconds;
                     if (mJumpTimer / kLegs.FullJumpTime > targetDirection.Length() / mCreature.Sensor.Radius)
                     {
-                        kLegs.FinishUse(targetDirection);
+                        mCreature.FinishUsePart(part, targetDirection);
                         mUsingPart = false;
                         mJumpTimer = double.MaxValue;
                     }
                 }
                 else
                 {
-                    ChoosePart().Use(targetDirection);
+                    mCreature.UsePart(ChoosePartSlot(), targetDirection);
                     mJumpTimer = 0.0f;
                 }
             }

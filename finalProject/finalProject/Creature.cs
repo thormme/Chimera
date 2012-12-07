@@ -76,6 +76,18 @@ namespace finalProject
 
         public delegate void Modification(Creature creature);
 
+        public class PartAttachment
+        {
+            public Part Part;
+            public List<PartBone> Bones;
+
+            public PartAttachment(Part part, List<PartBone> bones)
+            {
+                Part = part;
+                Bones = bones;
+            }
+        }
+
         #region Fields
 
         protected const float DamageImpulseMultiplier = 255.0f;
@@ -93,18 +105,6 @@ namespace finalProject
         protected double mPoisonTimer = -1.0f;
 
         protected Dictionary<Modification, int> mModifications = new Dictionary<Modification, int>();
-
-        public class PartAttachment
-        {
-            public Part Part;
-            public List<PartBone> Bones;
-
-            public PartAttachment(Part part, List<PartBone> bones)
-            {
-                Part = part;
-                Bones = bones;
-            }
-        }
 
         protected float mHeight;
 
@@ -652,7 +652,7 @@ namespace finalProject
         /// </summary>
         /// <param name="part">The index into the list of parts.</param>
         /// <param name="direction">The direction in which to use the part.</param>
-        public virtual void FinishUsingPart(int part, Vector3 direction)
+        public virtual void FinishUsePart(int part, Vector3 direction)
         {
             if (part < mPartAttachments.Count() &&
                 mPartAttachments[part] != null)
