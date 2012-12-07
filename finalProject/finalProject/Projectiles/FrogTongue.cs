@@ -35,6 +35,7 @@ namespace finalProject.Projectiles
             mTongueGraphic = new InanimateModel("box");
             CheckHits = false;
             Entity.IsAffectedByGravity = false;
+            Entity.CollisionInformation.CollisionRules.Group = Projectile.SensorProjectileGroup;
         }
 
         public override void Update(GameTime time)
@@ -114,6 +115,5 @@ namespace finalProject.Projectiles
                 base.World = value;
             }
         }
-
     }
 }

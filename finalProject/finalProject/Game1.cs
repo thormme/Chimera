@@ -61,6 +61,12 @@ namespace finalProject
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, Projectile.ProjectileGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, Sensor.SensorGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, TerrainPhysics.TerrainPhysicsGroup), CollisionRule.NoBroadPhase);
+
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Projectile.ProjectileGroup), CollisionRule.NoBroadPhase);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Sensor.SensorGroup), CollisionRule.NoBroadPhase);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Projectile.SensorProjectileGroup), CollisionRule.NoBroadPhase);
         }
 
         ~Game1()
@@ -98,7 +104,7 @@ namespace finalProject
 
             World world = new World(DebugModelDrawer);
             
-            world.AddLevelFromFile("spiral", new Vector3(0, 0, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("tonguetest", new Vector3(0, 0, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
 
             mGameStates.Add(world);
         }
@@ -151,18 +157,18 @@ namespace finalProject
                             int i = 0;
                             player.AddPart(new TestingLegs(), i++);
                             player.AddPart(new TestingWings(), i++);
-                            player.AddPart(new RhinoHead(), i++);
+                            //player.AddPart(new RhinoHead(), i++);
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
-                            /*
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new KangarooLegs(), i++);
-                            player.AddPart(new PenguinLimbs(), i++);
-                            player.AddPart(new FrilledLizardHead(), i++);
-                             */
+                            
+                            player.AddPart(new FrogHead(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
+                            //player.AddPart(new EagleWings(), i++);
+                            //player.AddPart(new KangarooLegs(), i++);
+                            //player.AddPart(new PenguinLimbs(), i++);
+                            //player.AddPart(new FrilledLizardHead(), i++);
+                             
 
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Rhino(player.Position + 30.0f * player.Forward));
                         }
