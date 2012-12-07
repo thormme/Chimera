@@ -98,7 +98,7 @@ namespace finalProject
 
             World world = new World(DebugModelDrawer);
             
-            world.AddLevelFromFile("tonguetest", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("tree_28", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
             mGameStates.Add(world);
         }
@@ -151,6 +151,7 @@ namespace finalProject
                             int i = 0;
                             player.AddPart(new KangarooLegs(), i++);
                             player.AddPart(new FrogHead(), i++);
+                            (mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
                             /*
                             player.AddPart(new RhinoHead(), i++);
                             player.AddPart(new CheetahLegs(), i++);

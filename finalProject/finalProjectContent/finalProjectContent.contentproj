@@ -202,20 +202,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\tree_18_texture_low.tga">
-      <Name>tree_18_texture_low</Name>
+    <Compile Include="levels\maps\tree_29_texture_low.tga">
+      <Name>tree_29_texture_low</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="levels\maps\tree_18_texture_medium.tga">
-      <Name>tree_18_texture_medium</Name>
+    <Compile Include="levels\maps\tree_29_texture_medium.tga">
+      <Name>tree_29_texture_medium</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\tree_18_texture_high.tga">
-      <Name>tree_18_texture_high</Name>
+    <Compile Include="levels\maps\tree_29_texture_high.tga">
+      <Name>tree_29_texture_high</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

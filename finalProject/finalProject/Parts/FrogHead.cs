@@ -22,7 +22,7 @@ namespace finalProject.Parts
 
         public FrogHead()
             : base(
-                3.0,
+                0.0,
                 new Part.SubPart[] {
                     new SubPart(
                         new InanimateModel("sphere"),
