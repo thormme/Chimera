@@ -94,6 +94,9 @@ namespace finalProject
             Scale = new Vector3(1.0f);
             Forward = facingDirection;
 
+            CharacterController.JumpSpeed *= 1.6f;
+            CharacterController.JumpForceFactor *= 1.6f;
+
             Intimidation = DefaultIntimidation;
             Sneak = DefaultSneak;
 
@@ -120,6 +123,8 @@ namespace finalProject
         /// <param name="damage">Amount of damage to apply.</param>
         public override void Damage(int damage, Creature source)
         {
+
+            Position = SpawnOrigin;
             if (Invulnerable)
             {
                 return;

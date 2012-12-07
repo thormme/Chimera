@@ -254,7 +254,7 @@ namespace MapEditor
 
                 temp.Scale = new Vector3(Convert.ToSingle(mScaleXInput.Text), Convert.ToSingle(mScaleYInput.Text), Convert.ToSingle(mScaleZInput.Text));
                 temp.Orientation = new Vector3(Convert.ToSingle(mOrientationXInput.Text), Convert.ToSingle(mOrientationYInput.Text), Convert.ToSingle(mOrientationZInput.Text));
-                temp.Height = Convert.ToSingle(mHeightInput.Text);
+                temp.Height = Convert.ToSingle(mHeightInput.Text) / GameMapEditor.MapScale.Y;
 
                 GameMapEditor.Dummy = temp;
 

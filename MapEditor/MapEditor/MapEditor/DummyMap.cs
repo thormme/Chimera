@@ -162,11 +162,11 @@ namespace MapEditor
             foreach (DummyObject obj in selected)
             {
 
-                obj.Position = new Vector3(obj.Position.X + movement.X * moveSpeed,
+                obj.Position = new Vector3(obj.Position.X + movement.X * moveSpeed / GameMapEditor.MapScale.X,
                                            obj.Position.Y,
-                                           obj.Position.Z + movement.Z * moveSpeed);
+                                           obj.Position.Z + movement.Z * moveSpeed / GameMapEditor.MapScale.Z);
 
-                obj.Height += movement.Y * moveSpeed;
+                obj.Height += movement.Y * moveSpeed / GameMapEditor.MapScale.Y;
 
             }
         }
