@@ -22,21 +22,6 @@ namespace finalProject
     /// </summary>
     public abstract class NonPlayerCreature : Creature
     {
-        protected int Health
-        {
-            get;
-            set;
-        }
-
-        protected bool mIncapacitated;
-        public override bool Incapacitated
-        {
-            get
-            {
-                return mIncapacitated;
-            }
-        }
-
         public override int Sneak
         {
             get;
@@ -61,7 +46,6 @@ namespace finalProject
             int listeningSensitivity,
             int sneak,
             int intimidation,
-            int startingHealth,
             Part part
             )
             : base(position, height, radius, mass, renderable, new ListeningSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller, 1)
@@ -70,28 +54,20 @@ namespace finalProject
             Sneak = sneak;
             Intimidation = intimidation;
             Controller = controller;
-            mIncapacitated = false;
-            Health = startingHealth;
             AddPart(part, 0);
         }
 
-        public override void Damage(int damage, Creature source)
+        public override void RemovePart(Part part)
         {
-            if (Invulnerable)
-            {
-                return;
-            }
+            base.RemovePart(part);
+            Die();
+        }
 
-            base.Damage(damage, source);
-
-            Health -= damage;
-            if (Health < 0)
-            {
-                Health = 0;
-                Move(Vector2.Zero);
-                mIncapacitated = true;
-                System.Console.WriteLine(this + " died.");
-            }
+        protected void Die()
+        {
+            Move(Vector2.Zero);
+            Incapacitated = true;
+            System.Console.WriteLine(this + " died.");
         }
 
 #if DEBUGFACING
@@ -102,14 +78,5 @@ namespace finalProject
             m.Render(Position + Forward * 15.0f, -Forward, new Vector3(0.1f));
         }
 #endif
-
-        public override void RemovePart(Part part)
-        {
-            base.RemovePart(part);
-
-            Move(Vector2.Zero);
-            mIncapacitated = true;
-            System.Console.WriteLine(this + " died.");
-        }
     }
 }

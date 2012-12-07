@@ -15,7 +15,6 @@ namespace GameConstructLibrary
     public static class CollisionMeshManager
     {
         static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
-        static private string mMeshDirectory = mBASE_DIRECTORY + "models/collision/";
         static private string mModelDirectory = mBASE_DIRECTORY + "models/";
 
         static private Dictionary<string, InstancedMeshShape> mUniqueMeshLibrary = new Dictionary<string, InstancedMeshShape>();
@@ -27,17 +26,17 @@ namespace GameConstructLibrary
 
             string meshAndDirectoryName = directoryName + "/" + meshName;
 
-            FileInfo meshFile = new FileInfo(mMeshDirectory + meshAndDirectoryName + ".fbx");
-            FileInfo meshFileUpper = new FileInfo(mMeshDirectory + meshAndDirectoryName + ".FBX");
-            FileInfo meshFileX = new FileInfo(mMeshDirectory + meshAndDirectoryName + ".x");
-            FileInfo meshFileXUpper = new FileInfo(mMeshDirectory + meshAndDirectoryName + ".X");
+            FileInfo meshFile = new FileInfo(mModelDirectory + meshAndDirectoryName + "_collision" + ".fbx");
+            FileInfo meshFileUpper = new FileInfo(mModelDirectory + meshAndDirectoryName + "_collision" + ".FBX");
+            FileInfo meshFileX = new FileInfo(mModelDirectory + meshAndDirectoryName + "_collision" + ".x");
+            FileInfo meshFileXUpper = new FileInfo(mModelDirectory + meshAndDirectoryName + "_collision" + ".X");
             FileInfo modelFile = new FileInfo(mModelDirectory + meshAndDirectoryName + ".fbx");
             FileInfo modelFileUpper = new FileInfo(mModelDirectory + meshAndDirectoryName + ".FBX");
             FileInfo modelFileX = new FileInfo(mModelDirectory + meshAndDirectoryName + ".x");
             FileInfo modelFileXUpper = new FileInfo(mModelDirectory + meshAndDirectoryName + ".X");
             if (meshFile.Exists || meshFileUpper.Exists || meshFileXUpper.Exists || meshFileX.Exists)
             {
-                input = content.Load<Model>("models/collision/" + meshAndDirectoryName);
+                input = content.Load<Model>("models/" + meshAndDirectoryName + "_collision");
             }
             else if (modelFile.Exists || modelFileUpper.Exists || modelFileXUpper.Exists || modelFileX.Exists)
             {

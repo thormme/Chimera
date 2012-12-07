@@ -22,6 +22,35 @@ using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace finalProject
 {
+    public class BoolCounter
+    {
+        private int mValueCount = 0;
+
+        public bool Value
+        {
+            get
+            {
+                return mValueCount > 0;
+            }
+            set
+            {
+                if (value)
+                {
+                    ++mValueCount;
+                }
+                else if (Value)
+                {
+                    --mValueCount;
+                }
+            }
+        }
+
+        public void Reset()
+        {
+            mValueCount = 0;
+        }
+    }
+
     /// <summary>
     /// Abstract class for a creature. It is controlled by its controller.
     /// </summary>
@@ -45,15 +74,25 @@ namespace finalProject
             Spine1Cap, Spine2Cap, Spine3Cap
         }
 
+        public delegate void Modification(Creature creature);
+
         #region Fields
 
-        protected const double InvulnerableLength = 1.0f;
+        protected const float DamageImpulseMultiplier = 255.0f;
 
-        protected int mInvulnerableCount = 0;
+        protected const double InvulnerableLength = 1.0f;
         protected double mInvulnerableTimer = -1.0f;
 
-        protected const double DefaultStunLength = 1.0f;
+        protected const double DefaultStunLength = 3.0f;
         protected double mStunTimer = -1.0f;
+
+        protected const double ShieldRechargeLength = 10.0f;
+        protected double mShieldRechargeTimer = -1.0f;
+        protected bool mShield = true;
+
+        protected double mPoisonTimer = -1.0f;
+
+        protected Dictionary<Modification, int> mModifications = new Dictionary<Modification, int>();
 
         public class PartAttachment
         {
@@ -97,14 +136,17 @@ namespace finalProject
             }
             set
             {
-                Vector2 movement = new Vector2(value.X, value.Z);
-                movement.Normalize();
-                if (value != Vector3.Zero)
+                if (!Immobilized)
                 {
-                    value.Normalize();
-                    mForward = value;
+                    Vector2 movement = new Vector2(value.X, value.Z);
+                    movement.Normalize();
+                    if (value != Vector3.Zero)
+                    {
+                        value.Normalize();
+                        mForward = value;
+                    }
+                    Sensor.Forward = mForward;
                 }
-                Sensor.Forward = mForward;
             }
         }
 
@@ -164,9 +206,19 @@ namespace finalProject
             set;
         }
 
-        public abstract bool Incapacitated
+        protected bool mIncapacitated = false;
+        public bool Incapacitated
         {
-            get;
+            get
+            {
+                return mIncapacitated;
+            }
+            set
+            {
+                mIncapacitated = value;
+                Silenced = value;
+                Immobilized = value;
+            }
         }
 
         public abstract int Intimidation
@@ -175,22 +227,46 @@ namespace finalProject
             set;
         }
 
+        protected BoolCounter mInvulnerable = new BoolCounter();
         public bool Invulnerable
         {
             get
             {
-                return mInvulnerableCount > 0;
+                return mInvulnerable.Value;
+            }
+            set
+            {
+                mInvulnerable.Value = value;
+            }
+        }
+
+        protected BoolCounter mSilenced = new BoolCounter();
+        public bool Silenced
+        {
+            get
+            {
+                return mSilenced.Value;
             }
             set
             {
                 if (value)
                 {
-                    ++mInvulnerableCount;
+                    CancelParts();
                 }
-                else if (Invulnerable)
-                {
-                    --mInvulnerableCount;
-                }
+                mSilenced.Value = value;
+            }
+        }
+
+        protected BoolCounter mImmobilized = new BoolCounter();
+        public bool Immobilized
+        {
+            get
+            {
+                return mImmobilized.Value;
+            }
+            set
+            {
+                mImmobilized.Value = value;
             }
         }
 
@@ -205,6 +281,33 @@ namespace finalProject
             {
                 mSlideSlope = value;
                 CharacterController.SupportFinder.MaximumSlope = value;
+            }
+        }
+        
+        protected bool mPoisoned;
+        public bool Poisoned
+        {
+            get
+            {
+                return mPoisoned;
+            }
+            set
+            {
+                if (value)
+                {
+                    Silenced = true;
+                    mShield = false;
+                    mPoisonTimer = ShieldRechargeLength;
+                    mShieldRechargeTimer = ShieldRechargeLength * 2;
+                }
+                else
+                {
+                    Silenced = false;
+                    mPoisonTimer = -1.0f;
+                    mShieldRechargeTimer = ShieldRechargeLength;
+                }
+
+                mPoisoned = value;
             }
         }
 
@@ -318,55 +421,16 @@ namespace finalProject
 
         #endregion
 
-        #region Protected Properties
+        #region Protected Methods
 
-        protected virtual void OnDeath()
+        protected virtual void CancelParts()
         {
-            World.Remove(Sensor);
-            mPartAttachments.Clear();
-        }
-
-        protected bool OnGround
-        {
-            get
+            foreach (PartAttachment pa in mPartAttachments)
             {
-                // TODO: check if it is actually on the ground
-                return true;
-            }
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, RadialSensor radialSensor, Controller controller, int numParts)
-            : base(renderable, new Cylinder(position, height, radius, mass))
-        {
-            mHeight = height;
-
-            Sensor = radialSensor;
-            CollisionRules.AddRule(Entity, Sensor.Entity, CollisionRule.NoBroadPhase);
-            Forward = new Vector3(0.0f, 0.0f, 1.0f);
-            mPartAttachments = new List<PartAttachment>(numParts);
-            for (int i = 0; i < numParts; ++i)
-            {
-                mPartAttachments.Add(null);
-            }
-
-            mUnusedPartBones = GetUsablePartBones();
-
-            CharacterController = new CharacterController(Entity, 1.0f);
-            SlideSlope = CharacterController.SupportFinder.MaximumSlope;
-
-            Controller = controller;
-            controller.SetCreature(this);
-
-            for (int i = 0; i < mNumParts; ++i)
-            {
-                mPartRotations[i] = Matrix.Identity;
-                mBoneUp[i] = Vector3.Up;
-                mBoneForward[i] = Vector3.Forward;
-                mBoneRight[i] = Vector3.Right;
+                if (pa != null)
+                {
+                    pa.Part.Cancel();
+                }
             }
         }
 
@@ -383,15 +447,6 @@ namespace finalProject
         protected virtual Matrix GetOptionalPartTransforms()
         {
             return Matrix.Identity;
-        }
-
-        public override void Render()
-        {
-            if (mRenderable != null)
-            {
-                mRenderable.Render(GetOptionalTransforms() * GetRenderTransform());
-            }
-            RenderParts();
         }
 
         protected void RenderParts()
@@ -419,7 +474,7 @@ namespace finalProject
         /// </summary>
         /// <param name="part">The part to fetch bones for.</param>
         /// <returns>List of bones for use by the part.</returns>
-        private List<PartBone> GetPartBonesForPart(Part part)
+        protected List<PartBone> GetPartBonesForPart(Part part)
         {
             List<PartBone> partBones = new List<PartBone>();
 
@@ -464,6 +519,50 @@ namespace finalProject
             return partBones;
         }
 
+        #endregion
+
+        #region Public Methods
+
+        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, RadialSensor radialSensor, Controller controller, int numParts)
+            : base(renderable, new Cylinder(position, height, radius, mass))
+        {
+            mHeight = height;
+
+            Sensor = radialSensor;
+            CollisionRules.AddRule(Entity, Sensor.Entity, CollisionRule.NoBroadPhase);
+            Forward = new Vector3(0.0f, 0.0f, 1.0f);
+            mPartAttachments = new List<PartAttachment>(numParts);
+            for (int i = 0; i < numParts; ++i)
+            {
+                mPartAttachments.Add(null);
+            }
+
+            mUnusedPartBones = GetUsablePartBones();
+
+            CharacterController = new CharacterController(Entity, 1.0f);
+            SlideSlope = CharacterController.SupportFinder.MaximumSlope;
+
+            Controller = controller;
+            controller.SetCreature(this);
+
+            for (int i = 0; i < mNumParts; ++i)
+            {
+                mPartRotations[i] = Matrix.Identity;
+                mBoneUp[i] = Vector3.Up;
+                mBoneForward[i] = Vector3.Forward;
+                mBoneRight[i] = Vector3.Right;
+            }
+        }
+
+        public override void Render()
+        {
+            if (mRenderable != null)
+            {
+                mRenderable.Render(GetOptionalTransforms() * GetRenderTransform());
+            }
+            RenderParts();
+        }
+
         /// <summary>
         /// Attach part to the creature.
         /// </summary>
@@ -503,7 +602,7 @@ namespace finalProject
         {
             int slot = -1;
             PartAttachment partAttachment = null;
-            for (int i = 0; i < mPartAttachments.Count(); ++i)//PartAttachment attachment in mPartAttachments)
+            for (int i = 0; i < mPartAttachments.Count(); ++i)
             {
                 PartAttachment attachment = mPartAttachments[i];
                 if (attachment == null)
@@ -540,7 +639,9 @@ namespace finalProject
         /// <param name="direction">The direction in which to use the part.</param>
         public virtual void UsePart(int part, Vector3 direction)
         {
-            if (part < mPartAttachments.Count() && mPartAttachments[part] != null)
+            if (part < mPartAttachments.Count() &&
+                mPartAttachments[part] != null &&
+                !Silenced)
             {
                 mPartAttachments[part].Part.Use(direction);
             }
@@ -553,7 +654,8 @@ namespace finalProject
         /// <param name="direction">The direction in which to use the part.</param>
         public virtual void FinishUsingPart(int part, Vector3 direction)
         {
-            if (part < mPartAttachments.Count() && mPartAttachments[part] != null)
+            if (part < mPartAttachments.Count() &&
+                mPartAttachments[part] != null)
             {
                 mPartAttachments[part].Part.FinishUse(direction);
             }
@@ -561,7 +663,7 @@ namespace finalProject
 
         public virtual void Jump()
         {
-            if (!Incapacitated)
+            if (!Immobilized)
             {
                 CharacterController.Jump();
             }
@@ -573,7 +675,7 @@ namespace finalProject
         /// <param name="direction">The direction to move relative to the facing direction.</param>
         public virtual void Move(Vector2 direction)
         {
-            if (!Incapacitated)
+            if (!Immobilized)
             {
                 CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
                 if (direction != Vector2.Zero)
@@ -589,44 +691,71 @@ namespace finalProject
         /// <param name="damage">The amount of damage dealt.</param>
         public virtual void Damage(int damage, Creature source)
         {
-            if (damage > 0 && !Invulnerable)
+            if (Invulnerable)
             {
-                System.Console.WriteLine(this + " took " + damage + " damage from " + source);
-                foreach (PartAttachment partAttachment in mPartAttachments)
+                damage = 0;
+            }
+
+            System.Console.WriteLine(this + " took " + damage + " damage from " + source);
+            foreach (PartAttachment partAttachment in mPartAttachments)
+            {
+                if (partAttachment != null)
                 {
-                    if (partAttachment != null)
-                    {
-                        partAttachment.Part.Damage(damage, source);
-                    }
+                    partAttachment.Part.Damage(damage, source);
                 }
-                Controller.Damage(damage, source);
+            }
+            Controller.Damage(damage, source);
+
+            if (damage <= 0)
+            {
+                return;
+            }
+
+            // TODO: make this work with rolling rocks
+            if (source != null)
+            {
+                Vector3 impulseVector = Vector3.Normalize(Position - source.Position);
+                impulseVector.Y = 1.0f;
+                impulseVector.Normalize();
+                impulseVector *= damage * DamageImpulseMultiplier;
+                Entity.ApplyLinearImpulse(ref impulseVector);
+            }
+
+            if (!mShield)
+            {
                 Invulnerable = true;
                 mInvulnerableTimer = InvulnerableLength;
+            }
+            else
+            {
+                mShield = false;
+                mShieldRechargeTimer = ShieldRechargeLength;
+                --damage;
+            }
+
+            List<PartAttachment> validParts = new List<PartAttachment>(mPartAttachments.Count());
+            foreach (PartAttachment pa in mPartAttachments)
+            {
+                if (pa != null)
+                {
+                    validParts.Add(pa);
+                }
+            }
+
+            for (; damage > 0 && validParts.Count > 0; --damage)
+            {
+                PartAttachment pa = validParts[Rand.rand.Next(validParts.Count())];
+                RemovePart(pa.Part);
+                validParts.Remove(pa);
             }
         }
 
         public virtual void Stun()
         {
-            Stun(DefaultStunLength, Vector3.Zero);
-        }
-
-        public virtual void Stun(double stunLength, Vector3 velocity)
-        {
-            Vector2 dir = new Vector2(velocity.X, velocity.Z);
-            if (dir.Length() > 0.1f)
-            {
-                dir.Normalize();
-            }
-            Move(dir);
-            foreach (PartAttachment pa in mPartAttachments)
-            {
-                if (pa != null)
-                {
-                    pa.Part.FinishUse(Forward);
-                }
-            }
-            Controller.NoControl = true;
-            mStunTimer = stunLength;
+            Move(Vector2.Zero);
+            Silenced = true;
+            Immobilized = true;
+            mStunTimer = DefaultStunLength;
         }
 
         /// <summary>
@@ -654,34 +783,33 @@ namespace finalProject
                 mStunTimer -= gameTime.ElapsedGameTime.TotalSeconds;
                 if (mStunTimer < 0.0f)
                 {
-                    Controller.NoControl = false;
+                    Silenced = false;
+                    Immobilized = false;
                 }
             }
 
-            float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            List<Creature> sensedCreatures = Sensor.CollidingCreatures;
-            //if (sensedCreatures.Contains(this))
-            //{
-            //    sensedCreatures.Remove(this);
-            //}
+            if (mShieldRechargeTimer > 0.0f)
+            {
+                mShieldRechargeTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (mShieldRechargeTimer < 0.0f)
+                {
+                    mShield = true;
+                }
+            }
+
+            if (mPoisonTimer > 0.0f)
+            {
+                mPoisonTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (mPoisonTimer < 0.0f)
+                {
+                    Poisoned = false;
+                }
+            }
 
             Sensor.Update(gameTime);
-            Controller.Update(gameTime, sensedCreatures);
+            Controller.Update(gameTime, Sensor.CollidingCreatures);
             Sensor.Position = Position;
             Sensor.Forward = Forward;
-
-            List<BEPUphysics.RayCastResult> results = new List<BEPUphysics.RayCastResult>();
-            World.Space.RayCast(new Ray(Position, -1.0f * Up), 4.0f, results);
-
-            BEPUphysics.RayCastResult result = new BEPUphysics.RayCastResult();
-            foreach (BEPUphysics.RayCastResult collider in results)
-            {
-                if (collider.HitObject as Collidable != CharacterController.Body.CollisionInformation)
-                {
-                    result = collider;
-                    break;
-                }
-            }
 
             foreach (PartAttachment p in mPartAttachments)
             {
@@ -702,6 +830,54 @@ namespace finalProject
                 {
                     pa.Part.InitialCollisionDetected(sender, other, collisionPair);
                 }
+            }
+
+            float totalImpulse = 0;
+            foreach (ContactInformation c in collisionPair.Contacts)
+            {
+                totalImpulse += c.NormalImpulse;
+            }
+
+            if (totalImpulse > 300)
+            {
+                Damage(12, null);
+            }
+            else if (totalImpulse > 200)
+            {
+                mShield = false;
+                mShieldRechargeTimer = ShieldRechargeLength;
+            }
+
+            System.Console.WriteLine(totalImpulse);
+        }
+        
+        public void AddModification(Modification add, Modification remove)
+        {
+            if (!mModifications.ContainsKey(remove))
+            {
+                mModifications.Add(remove, 0);
+            }
+
+            if (mModifications[remove] == 0)
+            {
+                add(this);
+            }
+
+            ++mModifications[remove];
+        }
+
+        public void RemoveModification(Modification remove)
+        {
+            if (!mModifications.ContainsKey(remove))
+            {
+                throw new ArgumentException("Modification not found.");
+            }
+
+            --mModifications[remove];
+
+            if (mModifications[remove] == 0)
+            {
+                remove(this);
             }
         }
 

@@ -55,11 +55,21 @@ namespace finalProject.Parts
         public override void Damage(int damage, Creature source)
         {
             base.Damage(damage, source);
+            Cancel();
+        }
 
+        public override void Cancel()
+        {
             if (projectile != null)
             {
                 projectile.Stop();
             }
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            Cancel();
         }
     }
 }

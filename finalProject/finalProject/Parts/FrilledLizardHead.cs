@@ -55,5 +55,10 @@ namespace finalProject.Parts
         {
             base.Update(time);
         }
+
+        public override void Cancel()
+        {
+            FinishUseMeter();
+        }
     }
 }

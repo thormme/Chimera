@@ -73,6 +73,11 @@ namespace finalProject.Parts
 
         public override void Reset()
         {
+            Cancel();
+        }
+
+        public override void Cancel()
+        {
             FinishUse(Vector3.Zero);
         }
 
