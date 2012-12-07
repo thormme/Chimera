@@ -65,9 +65,12 @@ namespace GraphicsLibrary
                 pitchAngle *= -1.0f;
             }
 
+            Matrix pitchRotation = Matrix.CreateRotationX(pitchAngle);
+            Vector3 rotatedY = Vector3.Transform(Vector3.Up, pitchRotation);
+
             Matrix worldTransforms = Matrix.CreateScale(worldScale);
             worldTransforms *= Matrix.CreateRotationX(pitchAngle);
-            worldTransforms *= Matrix.CreateRotationY(yawAngle);
+            worldTransforms *= Matrix.CreateFromAxisAngle(rotatedY, yawAngle);
             worldTransforms *= Matrix.CreateTranslation(worldPosition);
 
             Draw(worldTransforms);

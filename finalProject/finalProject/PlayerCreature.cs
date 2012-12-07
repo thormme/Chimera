@@ -32,6 +32,8 @@ namespace finalProject
         private const int DefaultIntimidation = 5;
         private const int DamageThreshold = 30;
 
+        private int mNumHeightModifyingParts = 0;
+
         #endregion
 
         #region Public Properties
@@ -92,6 +94,9 @@ namespace finalProject
             Scale = new Vector3(1.0f);
             Forward = facingDirection;
 
+            CharacterController.JumpSpeed *= 1.6f;
+            CharacterController.JumpForceFactor *= 1.6f;
+
             Intimidation = DefaultIntimidation;
             Sneak = DefaultSneak;
 
@@ -118,6 +123,8 @@ namespace finalProject
         /// <param name="damage">Amount of damage to apply.</param>
         public override void Damage(int damage, Creature source)
         {
+
+            Position = SpawnOrigin;
             if (Invulnerable)
             {
                 return;
@@ -166,6 +173,35 @@ namespace finalProject
                     return;
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds part to creature and increases height of body if part modifies height.
+        /// </summary>
+        public override void  AddPart(Part part, int slot)
+        {
+ 	        base.AddPart(part, slot);
+
+            if (mNumHeightModifyingParts == 0 && part.Height > 0.0f)
+            {
+                this.CharacterController.Body.Height = mHeight + part.Height;
+            }
+
+            mNumHeightModifyingParts += (part.Height > 0.0f) ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Removes part from creature and decreases height of body if part modifies height.
+        /// </summary>
+        public override void RemovePart(Part part)
+        {
+            base.RemovePart(part);
+
+            if (mNumHeightModifyingParts != 0 && part.Height > 0.0f)
+            {
+                this.CharacterController.Body.Height = mHeight;
+            }
+            mNumHeightModifyingParts -= (part.Height > 0.0f) ? 1 : 0;
         }
 
         /// <summary>

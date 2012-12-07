@@ -25,7 +25,8 @@ namespace finalProject
                         Matrix.CreateFromQuaternion(new Quaternion()),
                         new Vector3(0.25f, 0.25f, 0.25f)
                     )
-                }
+                },
+                false
             )
         { }
 

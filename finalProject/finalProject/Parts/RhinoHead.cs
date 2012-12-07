@@ -21,6 +21,7 @@ namespace finalProject.Parts
         private const float DamageMultiplier = 4.0f;
 
         private double mRunTimer = -1.0f;
+        private double mChargeAnimationTime = 5.0f;
         private float NewSpeed;
         private float OldSpeed;
 
@@ -39,7 +40,8 @@ namespace finalProject.Parts
                         Matrix.CreateFromYawPitchRoll(0, 0, 0),
                         new Vector3(1.0f)
                     )
-                }
+                },
+                false
             )
         {
         }
@@ -71,6 +73,11 @@ namespace finalProject.Parts
                 if (mRunTimer < 0.0f)
                 {
                     Creature.CharacterController.HorizontalMotionConstraint.Speed = OldSpeed;
+                    PlayAnimation("stand", true);
+                }
+                else if (mRunTimer < mChargeAnimationTime)
+                {
+                    PlayAnimation("charge", true);
                 }
             }
 
@@ -94,6 +101,14 @@ namespace finalProject.Parts
 
         public override void FinishUse(Vector3 direction)
         {
+        }
+
+        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        {
+            if (mRunTimer > 0.0f)
+            {
+                PlayAnimation(animationName, isSaturated);
+            }
         }
 
         public override void Reset()
