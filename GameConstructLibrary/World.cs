@@ -161,6 +161,7 @@ namespace GameConstructLibrary
                     parameters[0] = dummy.Model;
                     parameters[1] = Vector3.Multiply(dummy.Position, scale) + position;
                     parameters[2] = objectOrientation * orientation;
+                    Console.WriteLine(Matrix.CreateFromQuaternion(orientation).Forward);
                     parameters[3] = Vector3.Multiply(dummy.Scale, scale);
                     parameters[4] = dummy.Parameters;
                     object obj = Activator.CreateInstance(type, parameters);

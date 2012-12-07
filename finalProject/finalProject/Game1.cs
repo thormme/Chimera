@@ -97,7 +97,7 @@ namespace finalProject
 
             World world = new World(DebugModelDrawer);
             
-            world.AddLevelFromFile("CheetahLevel", new Vector3(0, 0, 0), new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("lols", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
             mGameStates.Add(world);
         }
@@ -145,20 +145,22 @@ namespace finalProject
                         PlayerCreature player = entity.Tag as PlayerCreature;
                         if (player != null)
                         {
-                            //player.Damage(100, null);
+                            player.Damage(100, null);
 
-                            //int i = 0;
-                            //player.AddPart(new RhinoHead(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new EagleWings(), i++);
-                            //player.AddPart(new KangarooLegs(), i++);
-                            //player.AddPart(new PenguinLimbs(), i++);
-                            //player.AddPart(new FrilledLizardHead(), i++);
+                            int i = 0;
+                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new FrogHead(), i++);
+                            /*
+                            player.AddPart(new RhinoHead(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new EagleWings(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new PenguinLimbs(), i++);
+                            player.AddPart(new FrilledLizardHead(), i++);
+                             */
 
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Penguin(player.Position + 30.0f * player.Forward));
                         }
