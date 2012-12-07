@@ -70,7 +70,7 @@ namespace finalProject.Parts
                 }
             }
 
-            if (Creature.CharacterController.SupportFinder.HasSupport)
+            if (Creature.CharacterController.SupportFinder.HasTraction)
             {
                 mFlaps = 0;
                 mGlide = false;
@@ -88,7 +88,7 @@ namespace finalProject.Parts
 
         public override void Use(Vector3 direction)
         {
-            if (Creature.CharacterController.SupportFinder.HasSupport)
+            if (mFlaps == 0 && Creature.CharacterController.SupportFinder.HasSupport)
             {
                 Creature.CharacterController.JumpSpeed *= 2;
                 Creature.Jump();
