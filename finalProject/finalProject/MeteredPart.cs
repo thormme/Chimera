@@ -39,8 +39,8 @@ namespace finalProject
             return MeterTimer >= 0.0f;
         }
 
-        public MeteredPart(double meterLength, double cooldownLength, finalProject.Part.SubPart[] subParts)
-            : base(subParts)
+        public MeteredPart(double meterLength, double cooldownLength, finalProject.Part.SubPart[] subParts, bool raisesBody)
+            : base(subParts, raisesBody)
         {
             MeterLength = meterLength;
             CooldownLength = cooldownLength;
@@ -84,6 +84,8 @@ namespace finalProject
                     MeterTimer = MeterLength;
                 }
             }
+
+            base.Update(time);
         }
 
         /// <summary>

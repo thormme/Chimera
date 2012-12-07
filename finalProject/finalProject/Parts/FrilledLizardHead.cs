@@ -18,7 +18,7 @@ namespace finalProject.Parts
                 5.0f,
                 new Part.SubPart[] {
                     new SubPart(
-                        new AnimateModel("lizard_head", "stand"),
+                        new AnimateModel("lizard_head", "standOpen"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.HeadCenterCap, 
                             Creature.PartBone.HeadLeftCap,
@@ -26,9 +26,10 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(4.0f)
+                        new Vector3(1.0f)
                     )
-                }
+                },
+                false
             )
         { }
 
@@ -52,10 +53,6 @@ namespace finalProject.Parts
 
         public override void Update(GameTime time)
         {
-            foreach (SubPart part in SubParts)
-            {
-                (part.Renderable as AnimateModel).Update(time);
-            }
             base.Update(time);
         }
 

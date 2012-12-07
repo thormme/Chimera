@@ -80,9 +80,16 @@ namespace finalProject
             protected set;
         }
 
-        public Part(SubPart[] subParts)
+        public float Height
+        {
+            get;
+            protected set;
+        }
+
+        public Part(SubPart[] subParts, bool raisesBody)
         {
             SubParts = subParts;
+            Height = raisesBody ? 1.0f : 0.0f;
         }
 
         public virtual Creature Creature
@@ -116,7 +123,10 @@ namespace finalProject
             {
                 if (subPart.Renderable is AnimateModel)
                 {
-                    (subPart.Renderable as AnimateModel).Update(time);
+                    if (subPart.Renderable is AnimateModel)
+                    {
+                        (subPart.Renderable as AnimateModel).Update(time);
+                    }
                 }
             }
         }
@@ -138,7 +148,13 @@ namespace finalProject
         /// <param name="isSaturated">Whether the animation will loop.</param>
         protected virtual void PlayAnimation(string animationName, bool isSaturated)
         {
-            return;
+            foreach (SubPart subPart in SubParts)
+            {
+                if (subPart.Renderable is AnimateModel)
+                {
+                    (subPart.Renderable as AnimateModel).PlayAnimation(animationName, isSaturated);
+                }
+            }
         }
 
         /// <summary>

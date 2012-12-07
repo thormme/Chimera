@@ -181,7 +181,7 @@
     <Type>finalProject.GoalPoint, finalProject</Type>
     <Model>box</Model>
     <Parameters>
-      <string>spiral</string>
+      <string>CheetahLevel</string>
       <string>CheetahLegs</string>
     </Parameters>
     <Position>

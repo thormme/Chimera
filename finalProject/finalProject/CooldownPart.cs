@@ -29,8 +29,8 @@ namespace finalProject
             }
         }
 
-        public CooldownPart(double cooldownLength, SubPart[] subParts)
-            : base(subParts)
+        public CooldownPart(double cooldownLength, SubPart[] subParts, bool raisesBody)
+            : base(subParts, raisesBody)
         {
             CooldownLength = cooldownLength;
             Reset();

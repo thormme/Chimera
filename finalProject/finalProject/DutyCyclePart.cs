@@ -23,8 +23,8 @@ namespace finalProject
             }
         }
 
-        public DutyCyclePart(double dutyCycle, double cooldownLength, SubPart[] subParts)
-            : base(cooldownLength, subParts)
+        public DutyCyclePart(double dutyCycle, double cooldownLength, SubPart[] subParts, bool raisesBody)
+            : base(cooldownLength, subParts, raisesBody)
         {
             DutyCycle = dutyCycle;
             Reset();

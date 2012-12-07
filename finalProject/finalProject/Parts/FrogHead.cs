@@ -22,7 +22,7 @@ namespace finalProject.Parts
 
         public FrogHead()
             : base(
-                3.0,
+                0.0,
                 new Part.SubPart[] {
                     new SubPart(
                         new InanimateModel("sphere"),
@@ -33,9 +33,10 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(1.0f, 1.0f, 1.0f)
+                        new Vector3(0.05f, 0.05f, 0.05f)
                     )
-                }
+                },
+                false
             )
         {
             //(mRenderable as AnimateModel).PlayAnimation("Take 001");

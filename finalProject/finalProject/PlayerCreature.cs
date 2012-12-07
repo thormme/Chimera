@@ -38,6 +38,8 @@ namespace finalProject
         private Creature mStealTarget = null;
         private double mStealTimer = -1.0f;
         private Part mStolenPart = null;
+        
+        private int mNumHeightModifyingParts = 0;
 
         #endregion
 
@@ -101,6 +103,11 @@ namespace finalProject
         protected override Matrix GetOptionalTransforms()
         {
             return Matrix.CreateScale(4.0f) * Matrix.CreateRotationY(MathHelper.Pi);
+        }
+
+        protected override Matrix GetOptionalPartTransforms()
+        {
+            return Matrix.CreateScale(3.0f);
         }
 
         protected override List<Creature.PartBone> GetUsablePartBones()
@@ -167,6 +174,9 @@ namespace finalProject
             : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
         {
             Forward = facingDirection;
+
+            CharacterController.JumpSpeed *= 1.6f;
+            CharacterController.JumpForceFactor *= 1.6f;
 
             Intimidation = DefaultIntimidation;
             Sneak = DefaultSneak;
@@ -278,6 +288,35 @@ namespace finalProject
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds part to creature and increases height of body if part modifies height.
+        /// </summary>
+        public override void  AddPart(Part part, int slot)
+        {
+ 	        base.AddPart(part, slot);
+
+            if (mNumHeightModifyingParts == 0 && part.Height > 0.0f)
+            {
+                this.CharacterController.Body.Height = mHeight + part.Height;
+            }
+
+            mNumHeightModifyingParts += (part.Height > 0.0f) ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Removes part from creature and decreases height of body if part modifies height.
+        /// </summary>
+        public override void RemovePart(Part part)
+        {
+            base.RemovePart(part);
+
+            if (mNumHeightModifyingParts != 0 && part.Height > 0.0f)
+            {
+                this.CharacterController.Body.Height = mHeight;
+            }
+            mNumHeightModifyingParts -= (part.Height > 0.0f) ? 1 : 0;
         }
 
         /// <summary>

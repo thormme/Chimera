@@ -22,6 +22,9 @@ Content\models\shrub\shrub1.xnb
 Content\models\tree\tree1.xnb
 Content\models\tree\tree2.xnb
 Content\models\tree\tree3.xnb
+Content\models\deadTree\deadTree1.xnb
+Content\models\deadTree\deadTree2.xnb
+Content\models\shrub\shrub2.xnb
 Content\shaders\ConfigurableShader.xnb
 Content\shaders\PostProcessing.xnb
 Content\levels\maps\default_texture_high.xnb
@@ -36,12 +39,12 @@ Content\levels\maps\jump_texture_low.xnb
 Content\levels\maps\jump.xnb
 Content\levels\maps\jump_texture_high.xnb
 Content\levels\maps\jump_texture_medium.xnb
-Content\levels\maps\spiral_texture_low.xnb
-Content\levels\maps\spiral_texture_medium.xnb
-Content\levels\maps\spiral_texture_high.xnb
 Content\levels\maps\basic_arena_texture_high.xnb
 Content\levels\maps\basic_arena_texture_medium.xnb
 Content\levels\maps\basic_arena_texture_low.xnb
+Content\levels\maps\CheetahLevel_texture_high.xnb
+Content\levels\maps\CheetahLevel_texture_low.xnb
+Content\levels\maps\CheetahLevel_texture_medium.xnb
 Content\models\dude\dude_walk.xnb
 Content\models\editor\editor.xnb
 Content\models\primitives\box.xnb
@@ -64,6 +67,9 @@ Content\models\shrub\shrub1tex_0.xnb
 Content\models\tree\tree1tex_0.xnb
 Content\models\tree\tree2tex_0.xnb
 Content\models\tree\tree3tex_0.xnb
+Content\models\deadTree\deadtree1tex_0.xnb
+Content\models\deadTree\deadtree2tex_0.xnb
+Content\models\shrub\shrub2tex_0.xnb
 Content\models\dude\head_0.xnb
 Content\models\dude\jacket_0.xnb
 Content\models\dude\pants_0.xnb
@@ -71,3 +77,6 @@ Content\models\dude\upBodyC_0.xnb
 Content\models\editor\editor_0.xnb
 Content\models\primitives\purple_block_0.xnb
 Content\models\primitives\orange_ball_0.xnb
+Content\levels\maps\tree_29_texture_low.xnb
+Content\levels\maps\tree_29_texture_medium.xnb
+Content\levels\maps\tree_29_texture_high.xnb

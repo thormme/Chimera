@@ -106,6 +106,8 @@ namespace finalProject
             }
         }
 
+        protected float mHeight;
+
         protected List<PartAttachment> mPartAttachments;
         protected List<PartBone> mUnusedPartBones;
         
@@ -393,6 +395,8 @@ namespace finalProject
                     mBoneIndex += mNumParts;
                 }
                 mBoneIndex %= mNumParts;
+
+                Console.WriteLine(((PartBone)mBoneIndex).ToString());
             }
         }
         private int mBoneIndex = 0;
@@ -402,6 +406,7 @@ namespace finalProject
             TextWriter tw = new StreamWriter("playerBeanPartOrientations.txt");
 
             tw.WriteLine(mNumParts);
+            tw.WriteLine("");
             for (int i = 0; i < mNumParts; ++i)
             {
                 tw.WriteLine(((PartBone)i).ToString());
@@ -439,6 +444,11 @@ namespace finalProject
             return Matrix.Identity;
         }
 
+        protected virtual Matrix GetOptionalPartTransforms()
+        {
+            return Matrix.Identity;
+        }
+
         protected void RenderParts()
         {
             foreach (PartAttachment partAttachment in mPartAttachments)
@@ -448,7 +458,7 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        Matrix worldTransform = /*mPartRotations[(int)partBone]*/(mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        Matrix worldTransform = GetOptionalPartTransforms() * mPartRotations[(int)partBone] * (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
                         partAttachment.Part.SubParts[count].Render(worldTransform);
 
                         count++;
@@ -516,6 +526,8 @@ namespace finalProject
         public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, RadialSensor radialSensor, Controller controller, int numParts)
             : base(renderable, new Cylinder(position, height, radius, mass))
         {
+            mHeight = height;
+
             Sensor = radialSensor;
             CollisionRules.AddRule(Entity, Sensor.Entity, CollisionRule.NoBroadPhase);
             Forward = new Vector3(0.0f, 0.0f, 1.0f);
@@ -556,7 +568,7 @@ namespace finalProject
         /// </summary>
         /// <param name="part">The part to attach.</param>
         /// <param name="slot">The slot in the list to put the part</param>
-        public void AddPart(Part part, int slot)
+        public virtual void AddPart(Part part, int slot)
         {
             if (slot >= mPartAttachments.Count())
             {
@@ -572,6 +584,7 @@ namespace finalProject
             mPartAttachments[slot] = new PartAttachment(part, usedBones);
 
             part.Creature = this;
+
         }
 
         public float CollideDistance(Creature creature)

@@ -55,6 +55,7 @@ namespace GraphicsLibrary
         static private int mShadowFarClip = 128;
 
         static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
+        static private char[] mDelimeterChars = {' '};
 
         #endregion
 
@@ -190,53 +191,56 @@ namespace GraphicsLibrary
                     int count = int.Parse(tr.ReadLine());
                     string blank = tr.ReadLine();
 
-                    char[] delimeterChars = {' '};
-
                     for (int i = 0; i < count; ++i)
                     {
-                        // Get bone name.
-                        string boneName = tr.ReadLine();
+                        Matrix tweakMatrix;
+                        string boneName;
+                        ParseTweakFile(tr, out boneName, out tweakMatrix);
 
-                        // Get first row of matrix.
-                        string[] row1Parts = tr.ReadLine().Split(delimeterChars, 4);
-
-                        float M11 = float.Parse(row1Parts[0]);
-                        float M12 = float.Parse(row1Parts[1]);
-                        float M13 = float.Parse(row1Parts[2]);
-                        float M14 = float.Parse(row1Parts[3]);
-
-                        // Get second row of matrix.
-                        string[] row2Parts = tr.ReadLine().Split(delimeterChars, 4);
-
-                        float M21 = float.Parse(row2Parts[0]);
-                        float M22 = float.Parse(row2Parts[1]);
-                        float M23 = float.Parse(row2Parts[2]);
-                        float M24 = float.Parse(row2Parts[3]);
-
-                        // Get third row of matrix.
-                        string[] row3Parts = tr.ReadLine().Split(delimeterChars, 4);
-
-                        float M31 = float.Parse(row3Parts[0]);
-                        float M32 = float.Parse(row3Parts[1]);
-                        float M33 = float.Parse(row3Parts[2]);
-                        float M34 = float.Parse(row3Parts[3]);
-
-                        // Get fourth row of matrix.
-                        string[] row4Parts = tr.ReadLine().Split(delimeterChars, 4);
-
-                        float M41 = float.Parse(row4Parts[0]);
-                        float M42 = float.Parse(row4Parts[1]);
-                        float M43 = float.Parse(row4Parts[2]);
-                        float M44 = float.Parse(row4Parts[3]);
-
-                        blank = tr.ReadLine();
-
-                        Matrix tweakMatrix = new Matrix(M11, M12, M13, M14, M21, M22, M23, M24, M31, M32, M33, M34, M41, M42, M43, M44);
                         tweakLibrary.Add(boneName, tweakMatrix);
                     }
                     tr.Close();
 
                     mUniqueModelBoneLibrary.Add(Path.GetFileNameWithoutExtension(file.Name), tweakLibrary);
+                }
+
+                FileInfo[] tweakModifierFiles = subDir.GetFiles("*.modtweak");
+                foreach (FileInfo file in tweakModifierFiles)
+                {
+                    TextReader tr = new StreamReader(file.DirectoryName + "\\" + file.Name);
+                    int count = int.Parse(tr.ReadLine());
+                    string blank = tr.ReadLine();
+
+                    Dictionary<string, Matrix> tweakLibrary;
+                    if (mUniqueModelBoneLibrary.TryGetValue(Path.GetFileNameWithoutExtension(file.Name), out tweakLibrary))
+                    {
+                        TextWriter tw = new StreamWriter("playerBeanPartOrientations.txt");
+
+                        tw.WriteLine(count);
+                        tw.WriteLine("");
+
+                        for (int i = 0; i < count; ++i)
+                        {
+                            Matrix modifyMatrix;
+                            string boneName;
+                            ParseTweakFile(tr, out boneName, out modifyMatrix);
+
+                            Matrix storedMatrix;
+                            if (tweakLibrary.TryGetValue(boneName, out storedMatrix))
+                            {
+                                storedMatrix = modifyMatrix * storedMatrix;
+                                tweakLibrary[boneName] = storedMatrix;
+                            }
+
+                            tw.WriteLine(boneName);
+                            tw.WriteLine(storedMatrix.M11.ToString() + " " + storedMatrix.M12.ToString() + " " + storedMatrix.M13.ToString() + " " + storedMatrix.M14.ToString());
+                            tw.WriteLine(storedMatrix.M21.ToString() + " " + storedMatrix.M22.ToString() + " " + storedMatrix.M23.ToString() + " " + storedMatrix.M24.ToString());
+                            tw.WriteLine(storedMatrix.M31.ToString() + " " + storedMatrix.M32.ToString() + " " + storedMatrix.M33.ToString() + " " + storedMatrix.M34.ToString());
+                            tw.WriteLine(storedMatrix.M41.ToString() + " " + storedMatrix.M42.ToString() + " " + storedMatrix.M43.ToString() + " " + storedMatrix.M44.ToString());
+                            tw.WriteLine("");
+                        }
+                        tw.Close();
+                    }
                 }
             }
 
@@ -797,6 +801,55 @@ namespace GraphicsLibrary
             //mProjection = mLightProjection;
 
             mLightTransform = mLightView * mProjection;
+        }
+
+        /// <summary>
+        /// Reads tweak file and extracts matrices.
+        /// </summary>
+        /// <param name="tr">Text reader open to tweak file.</param>
+        /// <param name="boneName">Name of bone associated with current matrix.</param>
+        /// <param name="tweakMatrix">Tweak matrix of current bone.</param>
+        static private void ParseTweakFile(TextReader tr, out string boneName, out Matrix tweakMatrix)
+        {
+            // Get bone name.
+            boneName = tr.ReadLine();
+
+            // Get first row of matrix.
+            string[] row1Parts = tr.ReadLine().Split(mDelimeterChars, 4);
+
+            float M11 = float.Parse(row1Parts[0]);
+            float M12 = float.Parse(row1Parts[1]);
+            float M13 = float.Parse(row1Parts[2]);
+            float M14 = float.Parse(row1Parts[3]);
+
+            // Get second row of matrix.
+            string[] row2Parts = tr.ReadLine().Split(mDelimeterChars, 4);
+
+            float M21 = float.Parse(row2Parts[0]);
+            float M22 = float.Parse(row2Parts[1]);
+            float M23 = float.Parse(row2Parts[2]);
+            float M24 = float.Parse(row2Parts[3]);
+
+            // Get third row of matrix.
+            string[] row3Parts = tr.ReadLine().Split(mDelimeterChars, 4);
+
+            float M31 = float.Parse(row3Parts[0]);
+            float M32 = float.Parse(row3Parts[1]);
+            float M33 = float.Parse(row3Parts[2]);
+            float M34 = float.Parse(row3Parts[3]);
+
+            // Get fourth row of matrix.
+            string[] row4Parts = tr.ReadLine().Split(mDelimeterChars, 4);
+
+            float M41 = float.Parse(row4Parts[0]);
+            float M42 = float.Parse(row4Parts[1]);
+            float M43 = float.Parse(row4Parts[2]);
+            float M44 = float.Parse(row4Parts[3]);
+
+            // Skip blank line.
+            tr.ReadLine();
+
+            tweakMatrix = new Matrix(M11, M12, M13, M14, M21, M22, M23, M24, M31, M32, M33, M34, M41, M42, M43, M44);
         }
 
         #endregion
