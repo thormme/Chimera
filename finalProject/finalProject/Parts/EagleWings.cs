@@ -14,6 +14,7 @@ namespace finalProject.Parts
 
         private const int flapPower = 300;
         private const int numFlaps = 3;
+        private const float glideDivider = 2.0f;
 
         private const double flapWait = 0.0f;
 
@@ -78,7 +79,7 @@ namespace finalProject.Parts
 
             if (mGlide)
             {
-                Vector3 direction = new Vector3(0.0f, -Creature.Entity.LinearVelocity.Y, 0.0f);
+                Vector3 direction = new Vector3(0.0f, -Creature.Entity.LinearVelocity.Y * (1.0f / glideDivider), 0.0f);
                 Creature.Entity.ApplyLinearImpulse(ref direction);
                 PlayAnimation("glide", true);
             }
