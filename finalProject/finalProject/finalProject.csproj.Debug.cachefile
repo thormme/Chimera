@@ -80,3 +80,12 @@ Content\models\dude\upBodyC_0.xnb
 Content\models\editor\editor_0.xnb
 Content\models\primitives\purple_block_0.xnb
 Content\models\primitives\orange_ball_0.xnb
+Content\models\rock\rock1dark_collision.xnb
+Content\models\rock\rock1light_collision.xnb
+Content\models\rock\rock2dark_collision.xnb
+Content\models\rock\rock2light_collision.xnb
+Content\models\rock\rock3dark_collision.xnb
+Content\models\rock\rock3light_collision.xnb
+Content\levels\maps\CheetahLevel2_texture_high.xnb
+Content\levels\maps\CheetahLevel2_texture_low.xnb
+Content\levels\maps\CheetahLevel2_texture_medium.xnb

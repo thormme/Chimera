@@ -100,7 +100,9 @@ namespace finalProject
             }
             set
             {
-                Reset();
+                if (mCreature != null) 
+                    {Reset();
+                }
                 mCreature = value;
             }
         }
