@@ -25,7 +25,6 @@ namespace finalProject.Creatures
                 CreatureConstants.TurtleListeningSensitivity,   // Listening Sensitivity
                 CreatureConstants.TurtleSneak,                  // Sneak
                 CreatureConstants.TurtleIntimidation,           // Intimidation
-                CreatureConstants.BearStartingHealth,			// Starting Health
                 new TurtleShell()                               // Part
                 )
         {

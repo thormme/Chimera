@@ -42,20 +42,11 @@ namespace GameConstructLibrary
         {
             get
             {
-                return new Matrix(
-                    Entity.OrientationMatrix.M11, Entity.OrientationMatrix.M12, Entity.OrientationMatrix.M13, 1.0f,
-                    Entity.OrientationMatrix.M21, Entity.OrientationMatrix.M22, Entity.OrientationMatrix.M23, 1.0f,
-                    Entity.OrientationMatrix.M31, Entity.OrientationMatrix.M32, Entity.OrientationMatrix.M33, 1.0f,
-                    1.0f, 1.0f, 1.0f, 1.0f
-                    );
+                return Matrix3X3.ToMatrix4X4(Entity.OrientationMatrix);
             }
             set
             {
-                Entity.OrientationMatrix = new Matrix3X3(
-                    value.M11, value.M12, value.M13,
-                    value.M21, value.M22, value.M23,
-                    value.M31, value.M32, value.M33
-                    );
+                Entity.OrientationMatrix = Matrix3X3.CreateFromMatrix(value);
             }
         }
 
@@ -121,7 +112,7 @@ namespace GameConstructLibrary
         {
             if (mRenderable != null)
             {
-                mRenderable.Render(Matrix.CreateScale(Scale) * Entity.WorldTransform);
+                mRenderable.Render(Position, XNAOrientationMatrix, Scale);
             }
         }
 

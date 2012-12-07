@@ -25,7 +25,6 @@ namespace finalProject.Creatures
                 CreatureConstants.CobraListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.CobraSneak,                   // Sneak
                 CreatureConstants.CobraIntimidation,            // Intimidation
-                CreatureConstants.CobraStartingHealth,		    // Starting Health
                 new MindControlCobraHead()                      // Part
                 )
         {

@@ -25,7 +25,6 @@ namespace finalProject.Creatures
                 CreatureConstants.BearListeningSensitivity, // Listening Sensitivity
                 CreatureConstants.BearSneak,                // Sneak
                 CreatureConstants.BearIntimidation,         // Intimidation
-                CreatureConstants.BearStartingHealth,		// Starting Health
                 new BearArms()                              // Part
                 )
         {

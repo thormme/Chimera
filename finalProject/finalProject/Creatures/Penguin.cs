@@ -25,7 +25,6 @@ namespace finalProject.Creatures
                 CreatureConstants.PenguinListeningSensitivity,  // Listening Sensitivity
                 CreatureConstants.PenguinSneak,                 // Sneak
                 CreatureConstants.PenguinIntimidation,          // Intimidation
-                CreatureConstants.PenguinStartingHealth, 		// Starting Health
                 new PenguinLimbs()                              // Part
                 )
         {

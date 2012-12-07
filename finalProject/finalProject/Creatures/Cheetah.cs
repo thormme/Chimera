@@ -25,7 +25,6 @@ namespace finalProject.Creatures
                 CreatureConstants.CheetahListeningSensitivity,  // Listening Sensitivity
                 CreatureConstants.CheetahSneak,                 // Sneak
                 CreatureConstants.CheetahIntimidation,          // Intimidation
-                CreatureConstants.CheetahStartingHealth,		// Starting Health
                 new CheetahLegs()                               // Part
                 )
         {

@@ -22,7 +22,7 @@ namespace finalProject.Parts
 
         public FrogHead()
             : base(
-                3.0,
+                0.0,
                 new Part.SubPart[] {
                     new SubPart(
                         new InanimateModel("sphere"),
@@ -72,6 +72,11 @@ namespace finalProject.Parts
         }
 
         public override void Reset()
+        {
+            Cancel();
+        }
+
+        public override void Cancel()
         {
             FinishUse(Vector3.Zero);
         }

@@ -180,6 +180,11 @@ namespace finalProject
         /// </summary>
         abstract public void Reset();
 
+        /// <summary>
+        /// Called when the creature is put into a state where it cannot use parts.
+        /// </summary>
+        abstract public void Cancel();
+
         public virtual void InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair) { }
     }
 }

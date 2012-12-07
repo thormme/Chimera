@@ -32,6 +32,13 @@ namespace finalProject
         private const int DefaultIntimidation = 5;
         private const int DamageThreshold = 30;
 
+        private const double StealLength = 3.0f;
+
+        private bool mStealing = false;
+        private Creature mStealTarget = null;
+        private double mStealTimer = -1.0f;
+        private Part mStolenPart = null;
+        
         private int mNumHeightModifyingParts = 0;
 
         #endregion
@@ -65,14 +72,6 @@ namespace finalProject
             set;
         }
 
-        public override bool Incapacitated
-        {
-            get
-            {
-                return false;
-            }
-        }
-
         public override int Intimidation
         {
             get;
@@ -84,6 +83,89 @@ namespace finalProject
         /// </summary>
         public Vector3 SpawnOrigin;
 
+        public bool FoundPart
+        {
+            get
+            {
+                return mStolenPart != null;
+            }
+        }
+
+        #endregion
+
+        #region Protected Methods
+
+        protected override Matrix GetRenderTransform()
+        {
+            return Matrix.CreateFromYawPitchRoll(0, 0, 0) * base.GetRenderTransform() * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
+        }
+
+        protected override Matrix GetOptionalTransforms()
+        {
+            return Matrix.CreateScale(4.0f) * Matrix.CreateRotationY(MathHelper.Pi);
+        }
+
+        protected override Matrix GetOptionalPartTransforms()
+        {
+            return Matrix.CreateScale(3.0f);
+        }
+
+        protected override List<Creature.PartBone> GetUsablePartBones()
+        {
+            List<Creature.PartBone> bones = new List<PartBone>();
+            bones.Add(PartBone.ArmLeft1Cap);
+            bones.Add(PartBone.ArmLeft2Cap);
+            bones.Add(PartBone.ArmLeft3Cap);
+            bones.Add(PartBone.ArmRight1Cap);
+            bones.Add(PartBone.ArmRight2Cap);
+            bones.Add(PartBone.ArmRight3Cap);
+            bones.Add(PartBone.HeadCenterCap);
+            bones.Add(PartBone.HeadLeftCap);
+            bones.Add(PartBone.HeadRightCap);
+            bones.Add(PartBone.LegFrontLeft1Cap);
+            bones.Add(PartBone.LegFrontLeft2Cap);
+            bones.Add(PartBone.LegFrontLeft3Cap);
+            bones.Add(PartBone.LegFrontRight1Cap);
+            bones.Add(PartBone.LegFrontRight2Cap);
+            bones.Add(PartBone.LegFrontRight3Cap);
+            bones.Add(PartBone.LegRearLeft1Cap);
+            bones.Add(PartBone.LegRearLeft2Cap);
+            bones.Add(PartBone.LegRearLeft3Cap);
+            bones.Add(PartBone.LegRearRight1Cap);
+            bones.Add(PartBone.LegRearRight2Cap);
+            bones.Add(PartBone.LegRearRight3Cap);
+            bones.Add(PartBone.Spine1Cap);
+            bones.Add(PartBone.Spine2Cap);
+            bones.Add(PartBone.Spine3Cap);
+
+            return bones;
+        }
+
+        protected void Die()
+        {
+            System.Console.WriteLine("Player died.");
+            Position = SpawnOrigin;
+            mShield = true;
+            Poisoned = false;
+            CancelParts();
+            mSilenced.Reset();
+            mImmobilized.Reset();
+            Move(Vector2.Zero);
+            mShieldRechargeTimer = -1.0f;
+            mPoisonTimer = -1.0f;
+            mInvulnerable.Reset();
+            Invulnerable = true;
+            mInvulnerableTimer = InvulnerableLength;
+            Incapacitated = false;
+        }
+
+        protected override void CancelParts()
+        {
+            base.CancelParts();
+
+            DeactivateStealPart();
+        }
+
         #endregion
 
         #region Public Methods
@@ -91,7 +173,6 @@ namespace finalProject
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
             : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 10)
         {
-            Scale = new Vector3(1.0f);
             Forward = facingDirection;
 
             CharacterController.JumpSpeed *= 1.6f;
@@ -123,16 +204,8 @@ namespace finalProject
         /// <param name="damage">Amount of damage to apply.</param>
         public override void Damage(int damage, Creature source)
         {
-
-            Position = SpawnOrigin;
-            if (Invulnerable)
-            {
-                return;
-            }
-
-            base.Damage(damage, source);
-
-            if (damage - DamageThreshold > 0)
+            bool die = false;
+            if (!Invulnerable)
             {
                 List<PartAttachment> validParts = new List<PartAttachment>(mPartAttachments.Count());
                 foreach (PartAttachment pa in mPartAttachments)
@@ -143,34 +216,76 @@ namespace finalProject
                     }
                 }
 
-                if (validParts.Count() == 0)
+                int shield = 0;
+                if (mShield)
                 {
-                    // die!
-                    Position = SpawnOrigin;
-                    return;
+                    shield = 1;
                 }
 
-                //RemovePart(validParts[Rand.rand.Next(validParts.Count())].Part);
+                if (damage > validParts.Count + shield)
+                {
+                    die = true;
+                }
+            }
+            
+            base.Damage(damage, source);
+
+            if (die)
+            {
+                Die();
             }
         }
         
         /// <summary>
         /// Adds a part to the PlayerCreature. The part chosen is from the closest incapacitated animal within the radial sensor.
         /// </summary>
-        public void FindAndAddPart(int slot)
+        public void StealPart(int slot)
         {
-            foreach (Creature creature in Sensor.CollidingCreatures)
+            if (FoundPart)
             {
-                PartAttachment pa = creature.PartAttachments[0];
-                if (pa != null && creature.PartAttachments.Count > 0)
+                if (mPartAttachments[slot] != null)
                 {
-                    creature.RemovePart(pa.Part);
-                    if (mPartAttachments[slot] != null)
+                    RemovePart(mPartAttachments[slot].Part);
+                }
+                AddPart(mStolenPart, slot);
+                mStolenPart = null;
+            }
+        }
+
+        protected virtual void StealPartsUpdate(GameTime time)
+        {
+            if (mStealing && !FoundPart)
+            {
+                if (mStealTarget != null)
+                {
+                    if (!Sensor.CollidingCreatures.Contains(mStealTarget))
                     {
-                        RemovePart(mPartAttachments[slot].Part);
+                        mStealTarget = null;
                     }
-                    AddPart(pa.Part, slot);
-                    return;
+                    else
+                    {
+                        mStealTimer -= time.ElapsedGameTime.TotalSeconds;
+                        if (mStealTimer < 0.0f)
+                        {
+                            PartAttachment pa = mStealTarget.PartAttachments[0];
+                            if (pa != null && mStealTarget.PartAttachments.Count > 0)
+                            {
+                                mStealTarget.RemovePart(pa.Part);
+                                mStealTarget = null;
+                                mStolenPart = pa.Part;
+                                DeactivateStealPart();
+                            }
+                        }
+                    }
+                }
+
+                if (mStealTarget == null)
+                {
+                    if (Sensor.CollidingCreatures.Count > 0)
+                    {
+                        mStealTarget = Sensor.CollidingCreatures[0];
+                        mStealTimer = StealLength;
+                    }
                 }
             }
         }
@@ -251,56 +366,28 @@ namespace finalProject
 
             model.Update(gameTime);
 
+            StealPartsUpdate(gameTime);
+
             base.Update(gameTime);
         }
 
-        protected override Matrix GetRenderTransform()
+        public void ActivateStealPart()
         {
-            return Matrix.CreateFromYawPitchRoll(0, 0, 0) * base.GetRenderTransform() * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
+            if (!mStealing && !Silenced && !FoundPart)
+            {
+                mStealing = true;
+            }
         }
 
-        protected override Matrix GetOptionalTransforms()
+        public void DeactivateStealPart()
         {
-            return Matrix.CreateScale(4.0f) * Matrix.CreateRotationY(MathHelper.Pi);
-        }
-
-        protected override Matrix GetOptionalPartTransforms()
-        {
-            return Matrix.CreateScale(3.0f);
+            if (mStealing)
+            {
+                mStealing = false;
+            }
         }
 
         #endregion
-
-        protected override List<Creature.PartBone> GetUsablePartBones()
-        {
-            List<Creature.PartBone> bones = new List<PartBone>();
-            bones.Add(PartBone.ArmLeft1Cap);
-            bones.Add(PartBone.ArmLeft2Cap);
-            bones.Add(PartBone.ArmLeft3Cap);
-            bones.Add(PartBone.ArmRight1Cap);
-            bones.Add(PartBone.ArmRight2Cap);
-            bones.Add(PartBone.ArmRight3Cap);
-            bones.Add(PartBone.HeadCenterCap);
-            bones.Add(PartBone.HeadLeftCap);
-            bones.Add(PartBone.HeadRightCap);
-            bones.Add(PartBone.LegFrontLeft1Cap);
-            bones.Add(PartBone.LegFrontLeft2Cap);
-            bones.Add(PartBone.LegFrontLeft3Cap);
-            bones.Add(PartBone.LegFrontRight1Cap);
-            bones.Add(PartBone.LegFrontRight2Cap);
-            bones.Add(PartBone.LegFrontRight3Cap);
-            bones.Add(PartBone.LegRearLeft1Cap);
-            bones.Add(PartBone.LegRearLeft2Cap);
-            bones.Add(PartBone.LegRearLeft3Cap);
-            bones.Add(PartBone.LegRearRight1Cap);
-            bones.Add(PartBone.LegRearRight2Cap);
-            bones.Add(PartBone.LegRearRight3Cap);
-            bones.Add(PartBone.Spine1Cap);
-            bones.Add(PartBone.Spine2Cap);
-            bones.Add(PartBone.Spine3Cap);
-
-            return bones;
-        }
     }
 
     public enum Stance { Standing, Walking, Jumping };

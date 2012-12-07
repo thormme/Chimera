@@ -9,7 +9,7 @@ namespace finalProject.Parts
 {
     public class BearArms : CooldownPart
     {
-        protected const int AttackDamage = 35;
+        protected const int AttackDamage = 1;
         protected const float Range = 0.75f;
 
         public BearArms()
@@ -86,5 +86,7 @@ namespace finalProject.Parts
         }
 
         public override void FinishUse(Vector3 direction) { }
+
+        public override void Cancel() { }
     }
 }

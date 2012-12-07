@@ -10,17 +10,20 @@ using BEPUphysics.Entities;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.CollisionShapes;
 using GameConstructLibrary;
+using BEPUphysics.Entities.Prefabs;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace finalProject
 {
     public class PhysicsProp : PhysicsObject
     {
+
         private static Entity CreateEntity(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, float mass)
         {
             Vector3[] vertices;
             int[] indices;
             CollisionMeshManager.LookupMesh(modelName, out vertices, out indices);
-            return new Entity(new MobileMeshCollidable(new MobileMeshShape(vertices, indices, new AffineTransform(scale, orientation, translation), MobileMeshSolidity.Solid)), mass);
+            return new MobileMesh(vertices, indices, new AffineTransform(scale, orientation, translation), MobileMeshSolidity.Solid, mass);
         }
 
         public PhysicsProp(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, float mass)

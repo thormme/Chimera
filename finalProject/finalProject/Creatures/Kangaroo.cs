@@ -25,7 +25,6 @@ namespace finalProject.Creatures
                 CreatureConstants.KangarooListeningSensitivity, // Listening Sensitivity
                 CreatureConstants.KangarooSneak,                // Sneak
                 CreatureConstants.KangarooIntimidation,         // Intimidation
-                CreatureConstants.KangarooStartingHealth,		// Starting Health
                 new KangarooLegs()                              // Part
                 )
         {

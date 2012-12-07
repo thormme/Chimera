@@ -25,7 +25,6 @@ namespace finalProject.Creatures
 				CreatureConstants.EagleListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.EagleSneak,                   // Sneak
                 CreatureConstants.EagleIntimidation,            // Intimidation
-                CreatureConstants.EagleStartingHealth,		    // Starting Health
                 new EagleWings()                          // Part
                 )
         {

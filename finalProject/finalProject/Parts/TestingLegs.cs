@@ -83,5 +83,10 @@ namespace finalProject.Parts
                 mActive = false;
             }
         }
+
+        public override void Cancel()
+        {
+            FinishUseMeter();
+        }
     }
 }

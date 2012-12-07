@@ -60,7 +60,8 @@ namespace finalProject
 
         private KeyInputAction mJumpKey;
 
-        private KeyInputAction mStealKey;
+        private KeyInputAction mStealPressKey;
+        private KeyInputAction mStealReleaseKey;
 
         private KeyInputAction mPressIncBonePitch;
         private KeyInputAction mPressDecBonePitch;
@@ -146,9 +147,10 @@ namespace finalProject
             mFinishUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D9));
             mFinishUse.Add(new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.D0));
 
-            mJumpKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Space);
+            mJumpKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Space);
 
-            mStealKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.LeftShift);
+            mStealPressKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.LeftShift);
+            mStealReleaseKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.LeftShift);
 
             mPressDecBoneYaw = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.T);
             mPressIncBoneYaw = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Y);
@@ -164,6 +166,7 @@ namespace finalProject
 
         ~PlayerController()
         {
+            // TODO: make sure errything is destroyed
             mMoveForward.Destroy();
             mMoveRight.Destroy();
 
@@ -188,7 +191,8 @@ namespace finalProject
             mPressPart3.Destroy();
             mPressJump.Destroy();
 
-            mStealKey.Destroy();
+            mStealPressKey.Destroy();
+            mStealReleaseKey.Destroy();
         }
 
         /// <summary>
@@ -328,9 +332,27 @@ namespace finalProject
         /// </summary>
         private void PerformActions()
         {
+            PlayerCreature player = (mCreature as PlayerCreature);
+
             if (!NoControl && (mPressJump.Active || mJumpKey.Active))
             {
                 mCreature.Jump();
+            }
+
+            if (mStealPressKey.Active)
+            {
+                if (player != null)
+                {
+                    player.ActivateStealPart();
+                }
+            }
+
+            if (mStealReleaseKey.Active)
+            {
+                if (player != null)
+                {
+                    player.DeactivateStealPart();
+                }
             }
 
             for (int i = 0; i < NumParts; ++i)
@@ -338,9 +360,9 @@ namespace finalProject
                 int j = (i >= NumButtons) ? (i - NumButtons) : i;
                 if (mUse[i].Active && !NoControl)
                 {
-                    if (mStealKey.Active && mCreature is PlayerCreature)
+                    if (player != null && player.FoundPart)
                     {
-                        (mCreature as PlayerCreature).FindAndAddPart(j);
+                        player.StealPart(i);
                     }
                     else
                     {

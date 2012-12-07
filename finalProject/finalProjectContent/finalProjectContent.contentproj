@@ -202,20 +202,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\tree_18_texture_low.tga">
-      <Name>tree_18_texture_low</Name>
+    <Compile Include="levels\maps\tree_31_texture_low.tga">
+      <Name>tree_31_texture_low</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="levels\maps\tree_18_texture_medium.tga">
-      <Name>tree_18_texture_medium</Name>
+    <Compile Include="levels\maps\tree_31_texture_medium.tga">
+      <Name>tree_31_texture_medium</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\tree_18_texture_high.tga">
-      <Name>tree_18_texture_high</Name>
+    <Compile Include="levels\maps\tree_31_texture_high.tga">
+      <Name>tree_31_texture_high</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -414,6 +414,55 @@
       <Name>CheetahLevel_texture_medium</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\maps\CheetahLevel2_texture_high.tga">
+      <Name>CheetahLevel2_texture_high</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\maps\CheetahLevel2_texture_low.tga">
+      <Name>CheetahLevel2_texture_low</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\maps\CheetahLevel2_texture_medium.tga">
+      <Name>CheetahLevel2_texture_medium</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\rock\rock1dark_collision.X">
+      <Name>rock1dark_collision</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\rock\rock1light_collision.X">
+      <Name>rock1light_collision</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\rock\rock2dark_collision.X">
+      <Name>rock2dark_collision</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\rock\rock2light_collision.X">
+      <Name>rock2light_collision</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\rock\rock3dark_collision.X">
+      <Name>rock3dark_collision</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\rock\rock3light_collision.X">
+      <Name>rock3light_collision</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
