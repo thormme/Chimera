@@ -26,19 +26,13 @@ namespace GameConstructLibrary
 
             string meshAndDirectoryName = directoryName + "/" + meshName;
 
-            FileInfo meshFile = new FileInfo(mModelDirectory + meshAndDirectoryName + "_collision" + ".fbx");
-            FileInfo meshFileUpper = new FileInfo(mModelDirectory + meshAndDirectoryName + "_collision" + ".FBX");
-            FileInfo meshFileX = new FileInfo(mModelDirectory + meshAndDirectoryName + "_collision" + ".x");
-            FileInfo meshFileXUpper = new FileInfo(mModelDirectory + meshAndDirectoryName + "_collision" + ".X");
-            FileInfo modelFile = new FileInfo(mModelDirectory + meshAndDirectoryName + ".fbx");
-            FileInfo modelFileUpper = new FileInfo(mModelDirectory + meshAndDirectoryName + ".FBX");
-            FileInfo modelFileX = new FileInfo(mModelDirectory + meshAndDirectoryName + ".x");
-            FileInfo modelFileXUpper = new FileInfo(mModelDirectory + meshAndDirectoryName + ".X");
-            if (meshFile.Exists || meshFileUpper.Exists || meshFileXUpper.Exists || meshFileX.Exists)
+            FileInfo meshFile = new FileInfo(content.RootDirectory + "\\" + "models/" + meshAndDirectoryName + "_collision" + ".xnb");
+            FileInfo modelFile = new FileInfo(content.RootDirectory + "\\" + "models/" + meshAndDirectoryName + ".xnb");
+            if (meshFile.Exists)
             {
                 input = content.Load<Model>("models/" + meshAndDirectoryName + "_collision");
             }
-            else if (modelFile.Exists || modelFileUpper.Exists || modelFileXUpper.Exists || modelFileX.Exists)
+            else if (modelFile.Exists)
             {
                 input = content.Load<Model>("models/" + meshAndDirectoryName);
             }
@@ -84,7 +78,7 @@ namespace GameConstructLibrary
         static public void LoadContent(ContentManager content)
         {
             // Load models.
-            DirectoryInfo dir = new DirectoryInfo(mBASE_DIRECTORY + "models/");
+            DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "models");
             if (!dir.Exists)
             {
                 throw new DirectoryNotFoundException("Could not find models/ directory in content.");
@@ -93,11 +87,17 @@ namespace GameConstructLibrary
             DirectoryInfo[] subDirs = dir.GetDirectories();
             foreach (DirectoryInfo subDir in subDirs)
             {
-                FileInfo[] files = subDir.GetFiles("*.*x");
+                FileInfo[] files = subDir.GetFiles("*.*x*");
                 foreach (FileInfo file in files)
                 {
                     string meshName = Path.GetFileNameWithoutExtension(file.Name);
-                    LoadMeshIntoDatabase(content, subDir.Name, meshName);
+                    try
+                    {
+                        LoadMeshIntoDatabase(content, subDir.Name, meshName);
+                    }
+                    catch (Exception e)
+                    {
+                    }
                 }
             }
         }

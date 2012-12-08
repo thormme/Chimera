@@ -19,7 +19,8 @@
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
-    <PublishUrl>publish\</PublishUrl>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\Projects\School\EECS494\fppublish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -29,10 +30,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>6</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -96,12 +97,28 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>AC26A5CDDBF3EE0B4799B309F1EDD34422E3C373</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>finalProject_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BEPUphysics">
       <HintPath>libraries\bepu\x86\Release\BEPUphysics.dll</HintPath>
     </Reference>
     <Reference Include="BEPUphysicsDrawer">
       <HintPath>libraries\bepu\x86\Release\BEPUphysicsDrawer.dll</HintPath>
+    </Reference>
+    <Reference Include="DPSF, Version=2.3.0.0, Culture=neutral, PublicKeyToken=32c832bfa7326ee2, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libraries\DPSF\x86\DPSF.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
@@ -180,6 +197,7 @@
     <Compile Include="Parts\TurtleShell.cs" />
     <Compile Include="PauseState.cs" />
     <Compile Include="PhysicsProp.cs" />
+    <Compile Include="PlayerInfo.cs" />
     <Compile Include="Projectiles\FrilledLizardVenom.cs" />
     <Compile Include="Projectiles\FrogTongue.cs" />
     <Compile Include="Projectiles\MindControlProjectile.cs" />
@@ -255,6 +273,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="finalProject_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

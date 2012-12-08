@@ -135,10 +135,10 @@ namespace GraphicsLibrary
             mLightDirection = new Vector3(-0.3333333f, 0.6666667f, 0.6666667f);
 
             // Load models.
-            DirectoryInfo dir = new DirectoryInfo(mBASE_DIRECTORY + "models/");
+            DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "models");
             if (!dir.Exists)
             {
-                throw new DirectoryNotFoundException("Could not find models directory in content.");
+                throw new DirectoryNotFoundException("Could not find models directory \n" + dir.FullName + "\nin content.");
             }
 
             DirectoryInfo[] subDirs = dir.GetDirectories();
@@ -146,39 +146,45 @@ namespace GraphicsLibrary
             {
                 string subDirName = subDir.Name;
 
-                FileInfo[] files = subDir.GetFiles("*.*x");
+                FileInfo[] files = subDir.GetFiles("*.xnb");
                 foreach (FileInfo file in files)
                 {
                     string modelName = Path.GetFileNameWithoutExtension(file.Name);
-                    Model input = content.Load<Model>("models/" + subDirName + "/" + modelName);
 
-                    foreach (ModelMesh mesh in input.Meshes)
+                    try
                     {
-                        foreach (ModelMeshPart part in mesh.MeshParts)
-                        {
-                            Microsoft.Xna.Framework.Graphics.SkinnedEffect skinnedEffect = part.Effect as Microsoft.Xna.Framework.Graphics.SkinnedEffect;
-                            if (skinnedEffect != null)
-                            {
-                                SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
-                                newEffect.CopyFromSkinnedEffect(skinnedEffect);
+                        Model input = content.Load<Model>("models/" + subDirName + "/" + modelName);
 
-                                part.Effect = newEffect;
-                            }
-                            else
+                        foreach (ModelMesh mesh in input.Meshes)
+                        {
+                            foreach (ModelMeshPart part in mesh.MeshParts)
                             {
-                                Microsoft.Xna.Framework.Graphics.BasicEffect basicEffect = part.Effect as Microsoft.Xna.Framework.Graphics.BasicEffect;
-                                if (basicEffect != null)
+                                Microsoft.Xna.Framework.Graphics.SkinnedEffect skinnedEffect = part.Effect as Microsoft.Xna.Framework.Graphics.SkinnedEffect;
+                                if (skinnedEffect != null)
                                 {
                                     SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
-                                    newEffect.CopyFromBasicEffect(basicEffect);
+                                    newEffect.CopyFromSkinnedEffect(skinnedEffect);
 
                                     part.Effect = newEffect;
                                 }
+                                else
+                                {
+                                    Microsoft.Xna.Framework.Graphics.BasicEffect basicEffect = part.Effect as Microsoft.Xna.Framework.Graphics.BasicEffect;
+                                    if (basicEffect != null)
+                                    {
+                                        SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
+                                        newEffect.CopyFromBasicEffect(basicEffect);
+
+                                        part.Effect = newEffect;
+                                    }
+                                }
                             }
                         }
-                    }
 
-                    AddModel(modelName, input);
+                        AddModel(modelName, input);
+                    }
+                    catch
+                    { }
                 }
 
                 // Parse Bone Orientation Tweak File and store in library.
@@ -245,17 +251,22 @@ namespace GraphicsLibrary
             }
 
             // Load terrain.
-            dir = new DirectoryInfo(mBASE_DIRECTORY + "levels/maps/");
+            dir = new DirectoryInfo(content.RootDirectory + "\\" + "levels/maps/");
             if (!dir.Exists)
             {
                 throw new DirectoryNotFoundException("Could not find levels/maps directory in content.");
             }
 
-            FileInfo[] terrainFiles = dir.GetFiles("*.bmp");
+            FileInfo[] terrainFiles = dir.GetFiles("*");
             foreach (FileInfo file in terrainFiles)
             {
+                if (Path.GetFileNameWithoutExtension(file.Name).Contains("_texture"))
+                {
+                    continue;
+                }
                 string terrainName = Path.GetFileNameWithoutExtension(file.Name);
-                TerrainHeightMap heightMap = new TerrainHeightMap(terrainName, mDevice);
+                Texture2D terrain = content.Load<Texture2D>("levels/maps/" + terrainName);
+                TerrainHeightMap heightMap = new TerrainHeightMap(terrain, mDevice);
 
                 List<Texture2D> textures = new List<Texture2D>();
                 List<float> heights = new List<float>();

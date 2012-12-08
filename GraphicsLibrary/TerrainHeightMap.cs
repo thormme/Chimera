@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using GraphicsLibrary;
+using Utility;
 
 namespace GameConstructLibrary
 {
@@ -20,7 +21,7 @@ namespace GameConstructLibrary
 
         private Vector3 scale = new Vector3(8.0f, 0.01f, 8.0f);
 
-        private Bitmap mMap;
+        private Texture2D mMap;
         private int mWidth;
         private int mHeight;
 
@@ -73,16 +74,16 @@ namespace GameConstructLibrary
         public TerrainHeightMap(int width, int height, GraphicsDevice device)
         {
             mDevice = device;
-            mMap = new Bitmap(width, height);
+            mMap = new Texture2D(device, width, height);
             mWidth = mMap.Width;
             mHeight = mMap.Height;
             LoadData(true);
         }
 
-        public TerrainHeightMap(string file, GraphicsDevice device)
+        public TerrainHeightMap(Texture2D heightTexture, GraphicsDevice device)
         {
             mDevice = device;
-            mMap = new Bitmap(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
+            mMap = heightTexture;
             mWidth = mMap.Width;
             mHeight = mMap.Height;
             LoadData(false);
@@ -118,7 +119,8 @@ namespace GameConstructLibrary
                     }
                     else // Otherwise create vertices
                     {
-                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, mMap.GetPixel(x, z).R * 256 * 256 + mMap.GetPixel(x, z).G * 256 + mMap.GetPixel(x, z).B, z - mHeight / 2);
+
+                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, Utils.GetTexture2DPixelColor(x, z, mMap).R * 256 * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).G * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).B, z - mHeight / 2);
                         vertices1D[x + z * mWidth].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                         vertices2D[x, z] = vertices1D[x + z * mWidth];
                     }
@@ -192,7 +194,10 @@ namespace GameConstructLibrary
         public void FixHeightMap(TerrainHeightMap copy)
         {
             mDevice = copy.mDevice;
-            mMap = copy.mMap.Clone() as Bitmap;
+            mMap = new Texture2D(copy.mMap.GraphicsDevice, copy.mMap.Width, copy.mMap.Height);
+            Microsoft.Xna.Framework.Color[] destinationColorData = new Microsoft.Xna.Framework.Color[copy.mWidth * copy.mHeight];
+            copy.mMap.GetData<Microsoft.Xna.Framework.Color>(destinationColorData);
+            mMap.SetData<Microsoft.Xna.Framework.Color>(destinationColorData);
             mWidth = copy.mWidth;
             mHeight = copy.mHeight;
             vertices1D = new VertexPositionColorNormal[mWidth * mHeight];
@@ -380,7 +385,7 @@ namespace GameConstructLibrary
         public void Save(string file)
         {
 
-            mMap = new Bitmap(mMap, new Size(mWidth, mHeight));
+            Bitmap bmp = new Bitmap(mMap.Width, mMap.Height);
 
             // Update mMap with modifications
             for (int z = 0; z < mHeight; z++)
@@ -391,18 +396,12 @@ namespace GameConstructLibrary
                     int blue = height % 256;
                     int green = ((height - blue) / 256) % 256;
                     int red = ((height - (blue + green)) / (256 * 256) % 256);
-                    mMap.SetPixel(x, z, System.Drawing.Color.FromArgb(red, green, blue));
+                    bmp.SetPixel(x, z, System.Drawing.Color.FromArgb(red, green, blue));
                 }
             }
 
             // Redefine bitmap for permissions purposes
-            Bitmap newMap = new Bitmap(mMap);
-            mMap.Dispose();
-            newMap.Save(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
-
-            // Reassign map
-            mMap = new Bitmap(newMap);
-            newMap.Dispose();
+            bmp.Save(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
         }
     }
 }

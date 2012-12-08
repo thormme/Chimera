@@ -15,17 +15,17 @@ namespace finalProject.Creatures
         public Eagle(Vector3 position)
             : base(
                 position,
-                3.0f,                                   // Height
-                2.0f,                                   // Radius
-                4.0f,                                   // Mass
-                20.0f,                                  // Sensitivity Radius
-                new EagleAI(),                     // AI
-                new InanimateModel("box"),//new AnimateModel("eagle", "stand"),              // Model
-                135,                                    // Vision Angle
-				CreatureConstants.EagleListeningSensitivity,    // Listening Sensitivity
-                CreatureConstants.EagleSneak,                   // Sneak
-                CreatureConstants.EagleIntimidation,            // Intimidation
-                new EagleWings()                          // Part
+                3.0f,                                       // Height
+                2.0f,                                       // Radius
+                4.0f,                                       // Mass
+                20.0f,                                      // Sensitivity Radius
+                new EagleAI(),                              // AI
+                new AnimateModel("eagle", "stand"),         // Model
+                135,                                        // Vision Angle
+				CreatureConstants.EagleListeningSensitivity,// Listening Sensitivity
+                CreatureConstants.EagleSneak,               // Sneak
+                CreatureConstants.EagleIntimidation,        // Intimidation
+                new EagleWings()                            // Part
                 )
         {
             Scale = new Vector3(4.0f);
@@ -34,14 +34,14 @@ namespace finalProject.Creatures
         protected override List<PartBone> GetUsablePartBones()
         {
             List<PartBone> bones = new List<PartBone>();
-            //bones.Add(PartBone.LegRearLeft1Cap);
-            //bones.Add(PartBone.LegRearRight1Cap);
+            bones.Add(PartBone.ArmLeft1Cap);
+            bones.Add(PartBone.ArmRight1Cap);
             return bones;
         }
 
         public override void Update(GameTime gameTime)
         {
-            //(mRenderable as AnimateModel).Update(gameTime);
+            (mRenderable as AnimateModel).Update(gameTime);
             base.Update(gameTime);
         }
     }

@@ -100,11 +100,6 @@ namespace finalProject
             return Matrix.CreateFromYawPitchRoll(0, 0, 0) * base.GetRenderTransform() * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
         }
 
-        protected override Matrix GetOptionalTransforms()
-        {
-            return Matrix.CreateScale(4.0f) * Matrix.CreateRotationY(MathHelper.Pi);
-        }
-
         protected override Matrix GetOptionalPartTransforms()
         {
             return Matrix.CreateScale(3.0f);
@@ -348,7 +343,7 @@ namespace finalProject
             }
             else if (mStance == Stance.Walking)
             {
-                //model.PlayAnimation("walk", false);
+                model.PlayAnimation("walk", false);
 
                 foreach (PartAttachment part in mPartAttachments)
                 {

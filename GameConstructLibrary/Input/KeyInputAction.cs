@@ -9,10 +9,7 @@ namespace GameConstructLibrary
 {
     public class KeyInputAction : InputAction
     {
-        ButtonAction mButtonAction;
         Keys mKey;
-
-        bool previousDown;
 
         /// <summary>
         /// Constructs an InputAction which tracks keyboard keys.
@@ -24,7 +21,6 @@ namespace GameConstructLibrary
             : base(playerIndex, buttonAction)
         {
             mKey = key;
-            mButtonAction = buttonAction;
         }
 
         protected override bool IsDown()

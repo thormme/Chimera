@@ -16,6 +16,7 @@ using BEPUphysics.Entities;
 using System.Collections.Generic;
 using finalProject.Projectiles;
 using GameConstructLibrary.Menu;
+using System.IO;
 
 namespace finalProject
 {
@@ -46,7 +47,6 @@ namespace finalProject
         private static bool mPopQueued = false;
 
         public static ICamera Camera;
-        Creature creature;
 
         public Game1()
         {
@@ -86,7 +86,7 @@ namespace finalProject
             GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
             GraphicsManager.CastingShadows = true;
             GraphicsManager.DebugVisualization = false;
-            
+
             base.Initialize();
         }
 
@@ -100,21 +100,32 @@ namespace finalProject
             DebugModelDrawer.IsWireframe = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
-            CollisionMeshManager.LoadContent(this.Content);
+            try
+            {
+                GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
+                CollisionMeshManager.LoadContent(this.Content);
 
-            World world = new World(DebugModelDrawer);
+                World world = new World(DebugModelDrawer);
             
             world.AddLevelFromFile("tree_45", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
-            mGameStates.Add(world);
+                mGameStates.Add(world);
 
-            GameMenu menu = new GameMenu();
-            Rectangle rect = new Rectangle(0, 0, 200, 200);
-            Button button = new Button(rect, new Button.ButtonAction(StartGame));
-            menu.Add(button);
+                GameMenu menu = new GameMenu();
+                Rectangle rect = new Rectangle(0, 0, 200, 200);
+                Button button = new Button(rect, new Button.ButtonAction(StartGame));
+                menu.Add(button);
 
-            PushState(menu);
+                //PushState(menu);
+            }
+            catch (Exception e) 
+            {
+                TextWriter tw = new StreamWriter("log.txt");
+                tw.WriteLine(e.Message);
+                tw.WriteLine(e.StackTrace);
+                tw.Close();
+                throw e;
+            }
         }
 
         private void StartGame(Button button)
@@ -179,7 +190,7 @@ namespace finalProject
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new EagleWings(), i++);
-                            //player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
 
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
@@ -187,6 +198,8 @@ namespace finalProject
                     }
                 }
             }
+
+            FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
 
             if (pause.Active)
             {
@@ -226,7 +239,6 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-
             if (mGameStates.Count > 0)
             {
                 mGameStates[mGameStates.Count - 1].Render();
@@ -240,6 +252,8 @@ namespace finalProject
             // END
 
             base.Draw(gameTime);
+
+            
         }
 
         /// <summary>

@@ -434,19 +434,14 @@ namespace finalProject
             }
         }
 
-        protected virtual Matrix GetRenderTransform()
-        {
-            return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
-        }
-
-        protected virtual Matrix GetOptionalTransforms()
-        {
-            return Matrix.Identity;
-        }
-
         protected virtual Matrix GetOptionalPartTransforms()
         {
             return Matrix.Identity;
+        }
+
+        protected virtual Matrix GetRenderTransform()
+        {
+            return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
         }
 
         protected void RenderParts()
@@ -558,7 +553,7 @@ namespace finalProject
         {
             if (mRenderable != null)
             {
-                mRenderable.Render(GetOptionalTransforms() * GetRenderTransform());
+                mRenderable.Render(GetRenderTransform());
             }
             RenderParts();
         }

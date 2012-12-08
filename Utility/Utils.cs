@@ -110,5 +110,21 @@ namespace Utility
             Vector2 screenCoordinate = new Vector2((cameraCoordinate.X + 1.0f) * viewportWidth / 2.0f, (cameraCoordinate.Y - 1.0f) * viewportHeight / -2.0f);
             return screenCoordinate;
         }
+
+        public static Color GetTexture2DPixelColor(int x, int y, Texture2D texture)
+        {
+            Rectangle sourceRectangle = new Rectangle(x, y, 1, 1);
+
+            Color[] retrievedColor = new Color[1];
+
+            texture.GetData<Color>(
+                0,
+                sourceRectangle,
+                retrievedColor,
+                0,
+                1);
+
+            return retrievedColor[0];
+        }
     }
 }
