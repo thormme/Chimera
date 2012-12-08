@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 6.0f,                                           // Mass
                 CreatureConstants.TurtleSensitivityRadius,      // Sensitivity Radius
                 new ActivationAI(),                             // AI
-                new InanimateModel("box"),                      // Model
+                new AnimateModel("turtle", "stand"),            // Model
                 135,                                            // Vision Angle
                 CreatureConstants.TurtleListeningSensitivity,   // Listening Sensitivity
                 CreatureConstants.TurtleSneak,                  // Sneak
@@ -33,10 +33,7 @@ namespace finalProject.Creatures
         protected override List<PartBone> GetUsablePartBones()
         {
             List<PartBone> bones = new List<PartBone>();
-            //bones.Add(PartBone.LegFrontLeft1Cap);
-            //bones.Add(PartBone.LegRearLeft1Cap);
-            //bones.Add(PartBone.LegFrontRight1Cap);
-            //bones.Add(PartBone.LegRearRight1Cap);
+            bones.Add(PartBone.Spine1Cap);
             return bones;
         }
     }
