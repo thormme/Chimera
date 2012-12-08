@@ -16,6 +16,7 @@ using BEPUphysics.Entities;
 using System.Collections.Generic;
 using finalProject.Projectiles;
 using GameConstructLibrary.Menu;
+using System.IO;
 
 namespace finalProject
 {
@@ -100,21 +101,32 @@ namespace finalProject
             DebugModelDrawer.IsWireframe = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
-            CollisionMeshManager.LoadContent(this.Content);
+            try
+            {
+                GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
+                CollisionMeshManager.LoadContent(this.Content);
 
-            World world = new World(DebugModelDrawer);
+                World world = new World(DebugModelDrawer);
             
-            world.AddLevelFromFile("tree_39", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+                world.AddLevelFromFile("tree_39", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
-            mGameStates.Add(world);
+                mGameStates.Add(world);
 
-            GameMenu menu = new GameMenu();
-            Rectangle rect = new Rectangle(0, 0, 200, 200);
-            Button button = new Button(rect, new Button.ButtonAction(StartGame));
-            menu.Add(button);
+                GameMenu menu = new GameMenu();
+                Rectangle rect = new Rectangle(0, 0, 200, 200);
+                Button button = new Button(rect, new Button.ButtonAction(StartGame));
+                menu.Add(button);
 
-            //PushState(menu);
+                //PushState(menu);
+            }
+            catch (Exception e) 
+            {
+                TextWriter tw = new StreamWriter("log.txt");
+                tw.WriteLine(e.Message);
+                tw.WriteLine(e.StackTrace);
+                tw.Close();
+                throw e;
+            }
         }
 
         private void StartGame(Button button)
