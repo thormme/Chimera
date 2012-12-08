@@ -114,7 +114,7 @@ namespace finalProject
             Button button = new Button(rect, new Button.ButtonAction(StartGame));
             menu.Add(button);
 
-            PushState(menu);
+            //PushState(menu);
         }
 
         private void StartGame(Button button)
