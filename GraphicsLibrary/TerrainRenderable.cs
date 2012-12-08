@@ -13,9 +13,9 @@ namespace GraphicsLibrary
             mTerrainName = terrainName;
         }
 
-        protected override void Draw(Matrix worldTransform)
+        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            GraphicsManager.RenderTerrain(mTerrainName, worldTransform);
+            GraphicsManager.RenderTerrain(mTerrainName, worldTransform, overlayColor, overlayColorWeight);
         }
     }
 }

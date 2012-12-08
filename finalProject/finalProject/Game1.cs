@@ -192,6 +192,7 @@ namespace finalProject
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new EagleWings(), i++);
+                            player.AddPart(new EagleWings(), i++);
                             player.AddPart(new KangarooLegs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
 
@@ -247,8 +248,6 @@ namespace finalProject
             {
                 mGameStates[mGameStates.Count - 1].Render();
             }
-
-            mSprite.Render(new Vector2(0.0f, 0.0f), 50, 50);
 
             GraphicsManager.FinishRendering();
 
