@@ -104,7 +104,7 @@ namespace finalProject
 
             World world = new World(DebugModelDrawer);
             
-            world.AddLevelFromFile("tree_37", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("tree_39", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
             mGameStates.Add(world);
         }
