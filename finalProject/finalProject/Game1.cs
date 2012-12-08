@@ -48,6 +48,8 @@ namespace finalProject
 
         public static ICamera Camera;
 
+        private Sprite mSprite = new Sprite("test_tex");
+
         public Game1()
         {
             Graphics = new GraphicsDeviceManager(this);
@@ -239,10 +241,16 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsManager.BeginRendering();
+
             if (mGameStates.Count > 0)
             {
                 mGameStates[mGameStates.Count - 1].Render();
             }
+
+            mSprite.Render(new Vector2(0.0f, 0.0f), 50, 50);
+
+            GraphicsManager.FinishRendering();
 
             // DEBUG
             if (debugMode)
@@ -252,8 +260,6 @@ namespace finalProject
             // END
 
             base.Draw(gameTime);
-
-            
         }
 
         /// <summary>

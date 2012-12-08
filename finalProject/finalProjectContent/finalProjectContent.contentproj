@@ -874,6 +874,11 @@
       <Name>bear</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Compile Include="textures\sprites\test_tex.png">
+      <Name>test_tex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="models\cheetah\cheetah.tweak">
