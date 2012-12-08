@@ -103,6 +103,10 @@
     <Reference Include="BEPUphysicsDrawer">
       <HintPath>libraries\bepu\x86\Release\BEPUphysicsDrawer.dll</HintPath>
     </Reference>
+    <Reference Include="DPSF, Version=2.3.0.0, Culture=neutral, PublicKeyToken=32c832bfa7326ee2, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libraries\DPSF\x86\DPSF.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>

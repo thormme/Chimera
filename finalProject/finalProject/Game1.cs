@@ -16,6 +16,7 @@ using BEPUphysics.Entities;
 using System.Collections.Generic;
 using finalProject.Projectiles;
 using GameConstructLibrary.Menu;
+using DPSF;
 
 namespace finalProject
 {
@@ -46,7 +47,6 @@ namespace finalProject
         private static bool mPopQueued = false;
 
         public static ICamera Camera;
-        Creature creature;
 
         public Game1()
         {
@@ -86,7 +86,7 @@ namespace finalProject
             GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
             GraphicsManager.CastingShadows = true;
             GraphicsManager.DebugVisualization = false;
-            
+
             base.Initialize();
         }
 
@@ -175,11 +175,11 @@ namespace finalProject
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
 
                             //player.AddPart(new FrogHead(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new EagleWings(), i++);
-                            //player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
 
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
@@ -187,6 +187,8 @@ namespace finalProject
                     }
                 }
             }
+
+            FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
 
             if (pause.Active)
             {
@@ -226,7 +228,6 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-
             if (mGameStates.Count > 0)
             {
                 mGameStates[mGameStates.Count - 1].Render();
@@ -240,6 +241,8 @@ namespace finalProject
             // END
 
             base.Draw(gameTime);
+
+            
         }
 
         /// <summary>

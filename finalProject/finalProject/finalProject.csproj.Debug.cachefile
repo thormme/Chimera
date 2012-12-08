@@ -52,6 +52,7 @@ Content\models\bear\bear_leftArm.xnb
 Content\models\cheetah\cheetah.xnb
 Content\shaders\ConfigurableShader.xnb
 Content\shaders\PostProcessing.xnb
+Content\shaders\DPSFDefaultEffect.xnb
 Content\levels\maps\default_texture_high.xnb
 Content\levels\maps\default_texture_low.xnb
 Content\levels\maps\default_texture_medium.xnb
@@ -74,6 +75,7 @@ Content\levels\maps\CheetahLevel2_texture_high.xnb
 Content\levels\maps\CheetahLevel2_texture_low.xnb
 Content\levels\maps\CheetahLevel2_texture_medium.xnb
 Content\models\leaves\leaftex.xnb
+Content\textures\air_particle.xnb
 Content\models\dude\dude_walk.xnb
 Content\models\editor\editor.xnb
 Content\models\primitives\box.xnb
