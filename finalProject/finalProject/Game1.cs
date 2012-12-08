@@ -15,6 +15,7 @@ using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.Entities;
 using System.Collections.Generic;
 using finalProject.Projectiles;
+using GameConstructLibrary.Menu;
 
 namespace finalProject
 {
@@ -40,8 +41,8 @@ namespace finalProject
         public static GraphicsDeviceManager Graphics;
         SpriteBatch spriteBatch;
 
-        private static List<GameState> mGameStates = new List<GameState>();
-        private static List<GameState> mGameStateAddQueue = new List<GameState>();
+        private static List<IGameState> mGameStates = new List<IGameState>();
+        private static List<IGameState> mGameStateAddQueue = new List<IGameState>();
         private static bool mPopQueued = false;
 
         public static ICamera Camera;
@@ -107,6 +108,18 @@ namespace finalProject
             world.AddLevelFromFile("tree_37", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
             mGameStates.Add(world);
+
+            GameMenu menu = new GameMenu();
+            Rectangle rect = new Rectangle(0, 0, 200, 200);
+            Button button = new Button(rect, new Button.ButtonAction(StartGame));
+            menu.Add(button);
+
+            PushState(menu);
+        }
+
+        private void StartGame(Button button)
+        {
+            PopState();
         }
 
         /// <summary>
@@ -198,7 +211,7 @@ namespace finalProject
                 mPopQueued = false;
                 mGameStates.RemoveAt(mGameStates.Count - 1);
             }
-            foreach (GameState gameState in mGameStateAddQueue)
+            foreach (IGameState gameState in mGameStateAddQueue)
             {
                 mGameStates.Add(gameState);
             }
@@ -233,7 +246,7 @@ namespace finalProject
         /// Queue the current state fro removal.
         /// </summary>
         /// <returns>Currently running state.</returns>
-        public static GameState PopState()
+        public static IGameState PopState()
         {
             mPopQueued = true;
             return mGameStates[mGameStates.Count - 1];
@@ -243,7 +256,7 @@ namespace finalProject
         /// Queue a new state for addition.
         /// </summary>
         /// <param name="gameState">State to be added.</param>
-        public static void PushState(GameState gameState)
+        public static void PushState(IGameState gameState)
         {
             mGameStateAddQueue.Add(gameState);
         }

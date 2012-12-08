@@ -8,14 +8,14 @@ using Microsoft.Xna.Framework.Input;
 
 namespace finalProject
 {
-    public class PauseState : GameState
+    public class PauseState : IGameState
     {
         int count = 100;
         public PauseState()
         {
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             count--;
             if (count < 0)
@@ -24,7 +24,7 @@ namespace finalProject
             }
         }
 
-        public override void Render()
+        public void Render()
         {
             
         }

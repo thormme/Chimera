@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace GameConstructLibrary
+namespace GameConstructLibrary.Menu
 {
-    public interface IGameState
+    public interface IMenuItem
     {
+        GameMenu Menu { get; set; }
+
         void Update(GameTime gameTime);
         void Render();
     }

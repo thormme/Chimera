@@ -154,6 +154,9 @@
     <Compile Include="Input\MouseButtonInputAction.cs" />
     <Compile Include="Input\MouseMovementInputAction.cs" />
     <Compile Include="LevelManager.cs" />
+    <Compile Include="Menu\Button.cs" />
+    <Compile Include="Menu\GameMenu.cs" />
+    <Compile Include="Menu\IMenuItem.cs" />
     <Compile Include="PhysicsObject.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -177,6 +180,7 @@
       <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
