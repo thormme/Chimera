@@ -207,25 +207,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\tree_37_texture_low.tga">
-      <Name>tree_37_texture_low</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\tree_37_texture_medium.tga">
-      <Name>tree_37_texture_medium</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\maps\tree_37_texture_high.tga">
-      <Name>tree_37_texture_high</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="models\eagle\eagle_leftWing.X">
       <Name>eagle_leftWing</Name>
       <Importer>XImporter</Importer>
@@ -365,22 +346,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\basic_arena_texture_high.tga">
-      <Name>basic_arena_texture_high</Name>
+    <Compile Include="levels\maps\tree_39_texture_high.tga">
+      <Name>tree_39_texture_high</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\basic_arena_texture_medium.tga">
-      <Name>basic_arena_texture_medium</Name>
+    <Compile Include="levels\maps\tree_39_texture_medium.tga">
+      <Name>tree_39_texture_medium</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\basic_arena_texture_low.tga">
-      <Name>basic_arena_texture_low</Name>
+    <Compile Include="levels\maps\tree_39_texture_low.tga">
+      <Name>tree_39_texture_low</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -582,23 +563,6 @@
       <Name>cheetah</Name>
       <Importer>XImporter</Importer>
       <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\maps\tree_37_texture_high.tga">
-      <Name>tree_37_texture_high</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\tree_37_texture_low.tga">
-      <Name>tree_37_texture_low</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\tree_37_texture_medium.tga">
-      <Name>tree_37_texture_medium</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
