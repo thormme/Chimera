@@ -109,7 +109,7 @@ namespace finalProject
 
                 World world = new World(DebugModelDrawer);
             
-                world.AddLevelFromFile("tree_39", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("tree_45", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
                 mGameStates.Add(world);
 
@@ -179,7 +179,7 @@ namespace finalProject
                         if (player != null)
                         {
                             //player.Damage(100, null);
-
+                            player.Position = player.SpawnOrigin;
                             int i = 0;
                             //player.AddPart(new TestingLegs(), i++);
                             //player.AddPart(new TestingWings(), i++);
@@ -187,9 +187,9 @@ namespace finalProject
                             //player.AddPart(new RhinoHead(), i++);
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
 
-                            //player.AddPart(new FrogHead(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new FrogHead(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new EagleWings(), i++);
                             player.AddPart(new KangarooLegs(), i++);
