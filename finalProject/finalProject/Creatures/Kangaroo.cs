@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 10.0f,                                          // Mass
                 CreatureConstants.KangarooSensitivityRadius,    // Sensitivity Radius
                 new KangarooAI(),                               // AI
-                new InanimateModel("box"),//new AnimateModel("kangaroo", "walk"),           // Model
+                new AnimateModel("kangaroo", "walk"),          // Model
                 135,                                            // Vision Angle
                 CreatureConstants.KangarooListeningSensitivity, // Listening Sensitivity
                 CreatureConstants.KangarooSneak,                // Sneak
@@ -33,14 +33,14 @@ namespace finalProject.Creatures
         protected override List<PartBone> GetUsablePartBones()
         {
             List<PartBone> bones = new List<PartBone>();
-            //bones.Add(PartBone.LegRearLeft1Cap);
-            //bones.Add(PartBone.LegRearRight1Cap);
+            bones.Add(PartBone.LegRearLeft1Cap);
+            bones.Add(PartBone.LegRearRight1Cap);
             return bones;
         }
 
         public override void Update(GameTime gameTime)
         {
-            //(mRenderable as AnimateModel).Update(gameTime);
+            (mRenderable as AnimateModel).Update(gameTime);
             base.Update(gameTime);
         }
     }
