@@ -131,16 +131,15 @@ namespace GameConstructLibrary
             CommitChanges();
         }
 
+        /// <summary>
+        /// Renders contents of world.  MUST be called between BeginRendering and FinishRendering.
+        /// </summary>
         public void Render()
         {
-            GraphicsManager.BeginRendering();
-
             foreach (IGameObject gameObject in mGameObjects)
             {
                 gameObject.Render();
             }
-
-            GraphicsManager.FinishRendering();
         }
 
         public void AddLevelFromFile(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)

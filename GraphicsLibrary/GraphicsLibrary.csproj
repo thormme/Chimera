@@ -139,6 +139,7 @@
     <Compile Include="AnimateModel.cs" />
     <Compile Include="AnimationClip.cs" />
     <Compile Include="AnimationPlayer.cs" />
+    <Compile Include="Billboard.cs" />
     <Compile Include="DirectoryManager.cs" />
     <Compile Include="ICamera.cs" />
     <Compile Include="InanimateModel.cs" />
@@ -149,6 +150,8 @@
     <Compile Include="RenderableDefinition.cs" />
     <Compile Include="SkinnedEffect.cs" />
     <Compile Include="SkinningData.cs" />
+    <Compile Include="Sprite.cs" />
+    <Compile Include="SpriteDefinition.cs" />
     <Compile Include="TerrainDescription.cs" />
     <Compile Include="TerrainHeightMap.cs" />
     <Compile Include="TerrainRenderable.cs" />

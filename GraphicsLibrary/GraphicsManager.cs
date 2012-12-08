@@ -35,11 +35,13 @@ namespace GraphicsLibrary
         static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string,Model>();
         static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
         static private Dictionary<string, Dictionary<string, Matrix>> mUniqueModelBoneLibrary = new Dictionary<string, Dictionary<string, Matrix>>();
+        static private Dictionary<string, Texture2D> mUniqueSpriteLibrary = new Dictionary<string, Texture2D>();
 
         static private GraphicsDevice mDevice;
         static private SpriteBatch mSpriteBatch;
 
-        static private Queue<RenderableDefinition> mRenderQueue;
+        static private Queue<RenderableDefinition> mRenderQueue = new Queue<RenderableDefinition>();
+        static private Queue<SpriteDefinition> mSpriteQueue = new Queue<SpriteDefinition>();
 
         static private RenderTarget2D mShadowMap;
         static private RenderTarget2D mSceneBuffer;
@@ -112,11 +114,6 @@ namespace GraphicsLibrary
 
             mSpriteBatch = spriteBatch;
 
-            mRenderQueue = new Queue<RenderableDefinition>();
-
-            //CelShading = CelShaded.All;
-            //CastingShadows = true;
-
             // Load shaders.
             mConfigurableShader = content.Load<Effect>("shaders/ConfigurableShader");
             mPostProcessShader = content.Load<Effect>("shaders/PostProcessing");
@@ -149,10 +146,10 @@ namespace GraphicsLibrary
                 FileInfo[] files = subDir.GetFiles("*.xnb");
                 foreach (FileInfo file in files)
                 {
-                    string modelName = Path.GetFileNameWithoutExtension(file.Name);
-
                     try
                     {
+                        string modelName = Path.GetFileNameWithoutExtension(file.Name);
+
                         Model input = content.Load<Model>("models/" + subDirName + "/" + modelName);
 
                         foreach (ModelMesh mesh in input.Meshes)
@@ -183,8 +180,7 @@ namespace GraphicsLibrary
 
                         AddModel(modelName, input);
                     }
-                    catch
-                    { }
+                    catch { }
                 }
 
                 // Parse Bone Orientation Tweak File and store in library.
@@ -260,11 +256,13 @@ namespace GraphicsLibrary
             FileInfo[] terrainFiles = dir.GetFiles("*");
             foreach (FileInfo file in terrainFiles)
             {
-                if (Path.GetFileNameWithoutExtension(file.Name).Contains("_texture"))
+                string terrainName = Path.GetFileNameWithoutExtension(file.Name);
+
+                if (terrainName.Contains("_texture"))
                 {
                     continue;
                 }
-                string terrainName = Path.GetFileNameWithoutExtension(file.Name);
+                
                 Texture2D terrain = content.Load<Texture2D>("levels/maps/" + terrainName);
                 TerrainHeightMap heightMap = new TerrainHeightMap(terrain, mDevice);
 
@@ -292,9 +290,29 @@ namespace GraphicsLibrary
                 TerrainDescription newTerrain = new TerrainDescription(heightMap, textures, heights);
                 if (mUniqueTerrainLibrary.ContainsKey(terrainName))
                 {
-                    throw new Exception("Duplicate model key: " + terrainName);
+                    throw new Exception("Duplicate terrain key: " + terrainName);
                 }
                 mUniqueTerrainLibrary.Add(terrainName, newTerrain);
+            }
+            
+            // Load sprites.
+            dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/sprites/");
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException("Could not find textures/sprites/ directory in content.");
+            }
+
+            FileInfo[] spriteFiles = dir.GetFiles("*");
+            foreach (FileInfo file in spriteFiles)
+            {
+                string spriteName = Path.GetFileNameWithoutExtension(file.Name);
+                Texture2D sprite = content.Load<Texture2D>("textures/sprites/" + spriteName);
+
+                if (mUniqueSpriteLibrary.ContainsKey(spriteName))
+                {
+                    throw new Exception("Duplicate sprite key: " + spriteName);
+                }
+                mUniqueSpriteLibrary.Add(spriteName, sprite);
             }
         }
 
@@ -324,6 +342,7 @@ namespace GraphicsLibrary
         static public void BeginRendering()
         {
             mRenderQueue.Clear();
+            mSpriteQueue.Clear();
             mCanRender = true;
         }
         
@@ -413,7 +432,15 @@ namespace GraphicsLibrary
                     DrawRenderableDefinition(renderable, false, false);
                 }
             }
-            
+
+            mDevice.SetRenderTarget(null);
+            foreach (SpriteDefinition sprite in mSpriteQueue)
+            {
+                mSpriteBatch.Begin(0, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+                mSpriteBatch.Draw(LookupSprite(sprite.Name), sprite.ScreenSpace, new Color(sprite.BlendColor.R, sprite.BlendColor.G, sprite.BlendColor.B, sprite.BlendColorWeight));
+                mSpriteBatch.End();
+            }
+
             mCanRender = false;
         }
 
@@ -515,6 +542,22 @@ namespace GraphicsLibrary
             }
         }
 
+        /// <summary>
+        /// Renders sprite to the screen.  Useful for things like UI.
+        /// </summary>
+        /// <param name="screenSpace"></param>
+        static public void RenderSprite(string spriteName, Rectangle screenSpace, Color blendColor, float blendColorWeight)
+        {
+            if (mCanRender)
+            {
+                mSpriteQueue.Enqueue(new SpriteDefinition(spriteName, screenSpace, blendColor, blendColorWeight));
+            }
+            else
+            {
+                throw new Exception("Unable to render sprite " + spriteName + " before calling BeginRendering() or after FinishRendering().\n");
+            }
+        }
+
         #endregion
 
         ///////////////////////////// Internal functions /////////////////////////////
@@ -557,6 +600,21 @@ namespace GraphicsLibrary
                 return result;
             }
             throw new KeyNotFoundException("Unable to find terrain key: " + terrainName);
+        }
+
+        /// <summary>
+        /// Retrieves sprite from database.  Throws KeyNotFoundException if spriteName does not exist in database.
+        /// </summary>
+        /// <param name="spriteName"></param>
+        /// <returns></returns>
+        static private Texture2D LookupSprite(string spriteName)
+        {
+            Texture2D result;
+            if (mUniqueSpriteLibrary.TryGetValue(spriteName, out result))
+            {
+                return result;
+            }
+            throw new KeyNotFoundException("Unable to find sprite key: " + spriteName);
         }
 
         /// <summary>
