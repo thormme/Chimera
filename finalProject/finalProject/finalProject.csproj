@@ -180,6 +180,7 @@
     <Compile Include="Parts\TurtleShell.cs" />
     <Compile Include="PauseState.cs" />
     <Compile Include="PhysicsProp.cs" />
+    <Compile Include="PlayerInfo.cs" />
     <Compile Include="Projectiles\FrilledLizardVenom.cs" />
     <Compile Include="Projectiles\FrogTongue.cs" />
     <Compile Include="Projectiles\MindControlProjectile.cs" />
