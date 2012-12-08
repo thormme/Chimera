@@ -15,7 +15,7 @@ namespace GameConstructLibrary
     /// <summary>
     /// Manages the game world. Contains all loaded GameObjects and level chunks.
     /// </summary>
-    public class World : GameState
+    public class World : IGameState
     {
         List<IGameObject> mGameObjects;
         List<IActor> mActors;
@@ -112,7 +112,7 @@ namespace GameConstructLibrary
             }
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             //try
             {
@@ -131,7 +131,7 @@ namespace GameConstructLibrary
             CommitChanges();
         }
 
-        public override void Render()
+        public void Render()
         {
             GraphicsManager.BeginRendering();
 

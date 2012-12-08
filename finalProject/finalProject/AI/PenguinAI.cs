@@ -61,7 +61,8 @@ namespace finalProject.AI
                 mWaitTimer = WaitLength;
             }
 
-            System.Console.WriteLine(mostDegrees);
+            //
+            //System.Console.WriteLine(mostDegrees);
 
             Vector3 moveDirection = Vector3.Zero;
             if (!mUsingPart && mostDegrees > 0.0f)
