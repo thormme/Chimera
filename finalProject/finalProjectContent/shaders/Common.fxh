@@ -29,6 +29,9 @@ BEGIN_CONSTANTS
     
     float4x3 Bones[SKINNED_EFFECT_MAX_BONES]    _vs(c26)          _cb(c22);
 
+	float3 xOverlayColor;
+	float  xOverlayColorWeight;
+
 MATRIX_CONSTANTS
 
     float4x4 WorldViewProj                      _vs(c15)          _cb(c0);

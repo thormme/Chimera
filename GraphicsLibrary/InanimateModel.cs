@@ -12,9 +12,9 @@ namespace GraphicsLibrary
             mModelName = modelName;
         }
 
-        protected override void Draw(Matrix worldTransform)
+        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            GraphicsManager.RenderUnskinnedModel(mModelName, worldTransform);
+            GraphicsManager.RenderUnskinnedModel(mModelName, worldTransform, overlayColor, overlayColorWeight);
         }
     }
 }

@@ -13,6 +13,11 @@ float discretePallete = 0.1f;
 float4 CelShadePS(VSOutput pin) : SV_Target0
 {
 	float4 color = SAMPLE_TEXTURE(Texture, pin.TexCoord);
+
+	float textureWeight = 1.0f - xOverlayColorWeight;
+	color.rgb *= textureWeight;
+	color.rgb += xOverlayColorWeight * xOverlayColor;
+
 	color.rgba -= (color.rgba % discretePallete);
 
 	if (pin.LightAmount <= 0.0f || ComputeShadow(pin.ShadowPosition))
@@ -38,6 +43,10 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 
 	float4 color = float4(xDirLightAmbientColor, 1.0) + diffuse;
 
+	float textureWeight = 1.0f - xOverlayColorWeight;
+	color.rgb *= textureWeight;
+	color.rgb += xOverlayColorWeight * xOverlayColor;
+
 	if (ComputeShadow(pin.ShadowPosition))
 	{	
 		color *= 0.5f;
@@ -55,6 +64,10 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 float4 TerrainCelShadePS(VSOutput pin) : SV_Target0
 {
 	float4 color = PhongPS(pin);
+
+	float textureWeight = 1.0f - xOverlayColorWeight;
+	color.rgb *= textureWeight;
+	color.rgb += xOverlayColorWeight * xOverlayColor;
 	color.rgba -= (color.rgba % discretePallete);
 
 	return color;

@@ -222,7 +222,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SaveMapDialog.cs" />
-    <Compile Include="TerrainRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

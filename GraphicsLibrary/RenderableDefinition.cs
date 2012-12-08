@@ -34,13 +34,27 @@ namespace GraphicsLibrary
             get { return mBoneTransforms; }
         }
 
-        public RenderableDefinition(string name, bool isModel, bool isSkinned, Matrix worldTransform, Matrix[] boneTransforms)
+        public Vector3 OverlayColor
+        {
+            get { return mOverlayColor; }
+        }
+        private Vector3 mOverlayColor;
+
+        public float OverlayColorWeight
+        {
+            get { return mOverlayColorWeight; }
+        }
+        private float mOverlayColorWeight;
+
+        public RenderableDefinition(string name, bool isModel, bool isSkinned, Matrix worldTransform, Matrix[] boneTransforms, Color overlayColor, float overlayColorWeight)
         {
             mName           = name;
             mIsModel        = isModel;
             mIsSkinned      = isSkinned;
             mWorldTransform = worldTransform;
             mBoneTransforms = boneTransforms;
+            mOverlayColor = overlayColor.ToVector3();
+            mOverlayColorWeight = overlayColorWeight;
         }
     }
 }

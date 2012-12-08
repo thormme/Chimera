@@ -184,14 +184,14 @@ namespace finalProject
                             //player.AddPart(new TestingLegs(), i++);
                             //player.AddPart(new TestingWings(), i++);
                             //player.AddPart(new BearArms(), i++);
-                            //player.AddPart(new RhinoHead(), i++);
+                            player.AddPart(new RhinoHead(), i++);
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
 
                             //player.AddPart(new FrogHead(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new EagleWings(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new EagleWings(), i++);
                             player.AddPart(new KangarooLegs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
 
@@ -247,8 +247,6 @@ namespace finalProject
             {
                 mGameStates[mGameStates.Count - 1].Render();
             }
-
-            mSprite.Render(new Vector2(0.0f, 0.0f), 50, 50);
 
             GraphicsManager.FinishRendering();
 
