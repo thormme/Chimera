@@ -396,7 +396,7 @@ namespace finalProject
                 }
                 mBoneIndex %= mNumParts;
 
-                Console.WriteLine(((PartBone)mBoneIndex).ToString());
+                //Console.WriteLine(((PartBone)mBoneIndex).ToString());
             }
         }
         private int mBoneIndex = 0;
@@ -717,7 +717,7 @@ namespace finalProject
                 damage = 0;
             }
 
-            System.Console.WriteLine(this + " took " + damage + " damage from " + source);
+            //Console.WriteLine(this + " took " + damage + " damage from " + source);
             foreach (PartAttachment partAttachment in mPartAttachments)
             {
                 if (partAttachment != null)
@@ -872,7 +872,7 @@ namespace finalProject
             //    mShieldRechargeTimer = ShieldRechargeLength;
             //}
 
-            //System.Console.WriteLine(totalImpulse);
+            ////Console.WriteLine(totalImpulse);
         }
         
         public void AddModification(Modification add, Modification remove)

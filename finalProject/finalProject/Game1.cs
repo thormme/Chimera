@@ -57,7 +57,7 @@ namespace finalProject
             Graphics = new GraphicsDeviceManager(this);
             Graphics.PreferredBackBufferWidth = 1280;
             Graphics.PreferredBackBufferHeight = 720;
-            Graphics.ToggleFullScreen();
+            //Graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
 
@@ -132,10 +132,10 @@ namespace finalProject
             }
             catch (Exception e) 
             {
-                TextWriter tw = new StreamWriter("log.txt");
-                tw.WriteLine(e.Message);
-                tw.WriteLine(e.StackTrace);
-                tw.Close();
+                //TextWriter tw = new StreamWriter("log.txt");
+                //tw.WriteLine(e.Message);
+                //tw.WriteLine(e.StackTrace);
+                //tw.Close();
                 throw e;
             }
         }
@@ -205,6 +205,8 @@ namespace finalProject
                             //player.AddPart(new EagleWings(), i++);
                             //player.AddPart(new EagleWings(), i++);
                             //player.AddPart(new KangarooLegs(), i++);
+                            //player.AddPart(new PenguinLimbs(), i++);
+                            //player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
 
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));

@@ -51,7 +51,8 @@ namespace finalProject.Parts
                     )
                 },
                 false,
-                new Sprite("eagleIcon")            )
+                new Sprite("eagleIcon")            
+            )
         {
             //(mRenderable as AnimateModel).PlayAnimation("Take 001");
             mFlaps = 0;

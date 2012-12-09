@@ -149,7 +149,7 @@ namespace finalProject
 
         protected void Die()
         {
-            System.Console.WriteLine("Player died.");
+            ////Console.WriteLine("Player died.");
             Position = SpawnOrigin;
             mShield = true;
             Poisoned = false;
@@ -410,7 +410,12 @@ namespace finalProject
             {
                 if (mPartAttachments[count] != null)
                 {
-                    mPartAttachments[count].Part.RenderSprite(rects[count]);
+                    mPartAttachments[count].Part.RenderSprite(new Rectangle(
+                        (int)(rects[count].Left - rects[count].Width / 2.0f),
+                        (int)(rects[count].Top - rects[count].Height / 2.0f),
+                        (int)(rects[count].Width * 2.0f),
+                        (int)(rects[count].Height * 2.0f))
+                    );
                 }
             }
 

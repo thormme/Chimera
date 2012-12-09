@@ -62,7 +62,7 @@ namespace finalProject.AI
             }
 
             //
-            //System.Console.WriteLine(mostDegrees);
+            ////Console.WriteLine(mostDegrees);
 
             Vector3 moveDirection = Vector3.Zero;
             if (!mUsingPart && mostDegrees > 0.0f)

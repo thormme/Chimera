@@ -56,7 +56,7 @@ namespace finalProject.Parts
             if (!Active && Creature != null)
             {
                 Active = true;
-                System.Console.WriteLine("used");
+                //Console.WriteLine("used");
             }
         }
 
@@ -65,7 +65,7 @@ namespace finalProject.Parts
             if (Active)
             {
                 Active = false;
-                System.Console.WriteLine("stopped");
+                //Console.WriteLine("stopped");
             }
         }
 

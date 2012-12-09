@@ -68,7 +68,7 @@ namespace finalProject.AI
                     mCreature.FinishUsePart(part, downVector);
                     return;
                 }
-                System.Console.WriteLine("Ray fail");
+                ////Console.WriteLine("Ray fail");
             }
             else if (mUsingPart && mTargetCreature == null)
             {

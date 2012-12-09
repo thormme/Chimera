@@ -47,6 +47,48 @@ namespace finalProject
                 protected set;
             }
 
+            public float Yaw
+            {
+                get
+                {
+                    return mYaw;
+                }
+                set
+                {
+                    mYaw = value;
+                    Orientation = Matrix.CreateFromYawPitchRoll(mYaw, mPitch, mRoll);
+                }
+            }
+            private float mYaw = 0.0f;
+
+            public float Pitch
+            {
+                get
+                {
+                    return mPitch;
+                }
+                set
+                {
+                    mPitch = value;
+                    Orientation = Matrix.CreateFromYawPitchRoll(mYaw, mPitch, mRoll);
+                }
+            }
+            private float mPitch = 0.0f;
+
+            public float Roll
+            {
+                get
+                {
+                    return mRoll;
+                }
+                set
+                {
+                    mRoll = value;
+                    Orientation = Matrix.CreateFromYawPitchRoll(mYaw, mPitch, mRoll);
+                }
+            }
+            private float mRoll = 0.0f;
+
             public Renderable Renderable;
 
             /// <summary>
@@ -138,15 +180,7 @@ namespace finalProject
 
         public void RenderSprite(Rectangle bounds)
         {
-
-            Rectangle newBounds = new Rectangle(
-                (int)(bounds.Left - bounds.Width / 2.0f),
-                (int)(bounds.Top - bounds.Height / 2.0f),
-                (int)(bounds.Width * 2.0f),
-                (int)(bounds.Height * 2.0f)
-            );
-
-            mSprite.Render(newBounds);
+            mSprite.Render(bounds);
         }
 
         /// <summary>
