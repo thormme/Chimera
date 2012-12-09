@@ -96,7 +96,7 @@ namespace finalProject.Projectiles
             Entity.AngularMomentum = Vector3.Zero;
             Entity.LinearMomentum = Vector3.Zero;
             mRopeLimit = new DistanceLimit(mOwner.Entity, Entity, mOwner.Entity.Position, Entity.Position, 0.0f, (Entity.Position - mOwner.Entity.Position).Length());
-            mRopeLimit.Bounciness = 0.8f;
+            //mRopeLimit.Bounciness = 0.8f;
             mOwner.World.Space.Add(mRopeLimit);
         }
          

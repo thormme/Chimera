@@ -57,6 +57,7 @@ namespace finalProject
             Graphics = new GraphicsDeviceManager(this);
             Graphics.PreferredBackBufferWidth = 1280;
             Graphics.PreferredBackBufferHeight = 720;
+            //Graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
 
@@ -180,7 +181,7 @@ namespace finalProject
             if (mouseLock.Active)
             {
                 InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
-                /*if (mGameStates[mGameStates.Count - 1] is World)
+                if (mGameStates[mGameStates.Count - 1] is World)
                 {
                     foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
                     {
@@ -193,7 +194,7 @@ namespace finalProject
                             //player.AddPart(new TestingLegs(), i++);
                             //player.AddPart(new TestingWings(), i++);
                             //player.AddPart(new BearArms(), i++);
-                            player.AddPart(new RhinoHead(), i++);
+                            //player.AddPart(new RhinoHead(), i++);
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
 
                             //player.AddPart(new FrogHead(), i++);
@@ -201,14 +202,16 @@ namespace finalProject
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new KangarooLegs(), i++);
+                            //player.AddPart(new EagleWings(), i++);
+                            //player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new PenguinLimbs(), i++);
+                            //player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
 
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
                         }
                     }
-                }*/
+                }
             }
 
             FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;

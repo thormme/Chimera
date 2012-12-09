@@ -41,6 +41,12 @@ namespace finalProject
         
         private int mNumHeightModifyingParts = 0;
 
+        private Sprite[] mButtonSprites = new Sprite[3] {
+            new Sprite("blueButton"), 
+            new Sprite("yellowButton"), 
+            new Sprite("redButton") 
+        };
+
         #endregion
 
         #region Public Properties
@@ -91,6 +97,11 @@ namespace finalProject
             }
         }
 
+        public bool Stealing
+        {
+            get { return mStealing; }
+        }
+
         #endregion
 
         #region Protected Methods
@@ -138,7 +149,7 @@ namespace finalProject
 
         protected void Die()
         {
-            System.Console.WriteLine("Player died.");
+            ////Console.WriteLine("Player died.");
             Position = SpawnOrigin;
             mShield = true;
             Poisoned = false;
@@ -168,6 +179,7 @@ namespace finalProject
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
             : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 3)
         {
+
             Forward = facingDirection;
 
             CharacterController.JumpSpeed *= 1.6f;
@@ -177,6 +189,7 @@ namespace finalProject
             Sneak = DefaultSneak;
 
             SpawnOrigin = position;
+
         }
 
         /// <summary>
@@ -371,6 +384,39 @@ namespace finalProject
             StealPartsUpdate(gameTime);
 
             base.Update(gameTime);
+        }
+
+        public override void Render()
+        {
+            base.Render();
+
+            int width = Game1.Graphics.PreferredBackBufferWidth;
+            int height = Game1.Graphics.PreferredBackBufferHeight;
+            int buttonSize = (int)(0.1f * height);
+
+            Rectangle[] rects = new Rectangle[3] {
+                new Rectangle((int)(width - width * 0.3f), (int)(height - height * 0.2f), buttonSize, buttonSize),
+                new Rectangle((int)(width - width * 0.2f), (int)(height - height * 0.25f), buttonSize, buttonSize),
+                new Rectangle((int)(width - width * 0.1f), (int)(height - height * 0.2f), buttonSize, buttonSize)
+            };
+
+            mButtonSprites[0].Render(rects[0]);
+            mButtonSprites[1].Render(rects[1]);
+            mButtonSprites[2].Render(rects[2]);
+
+            for (int count = 0; count < mPartAttachments.Count() && count < rects.Length; count++)
+            {
+                if (mPartAttachments[count] != null)
+                {
+                    mPartAttachments[count].Part.RenderSprite(new Rectangle(
+                        (int)(rects[count].Left - rects[count].Width / 2.0f),
+                        (int)(rects[count].Top - rects[count].Height / 2.0f),
+                        (int)(rects[count].Width * 2.0f),
+                        (int)(rects[count].Height * 2.0f))
+                    );
+                }
+            }
+
         }
 
         public void ActivateStealPart()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using GraphicsLibrary;
 
 namespace finalProject
 {
@@ -23,8 +24,8 @@ namespace finalProject
             }
         }
 
-        public DutyCyclePart(double dutyCycle, double cooldownLength, SubPart[] subParts, bool raisesBody)
-            : base(cooldownLength, subParts, raisesBody)
+        public DutyCyclePart(double dutyCycle, double cooldownLength, SubPart[] subParts, bool raisesBody, Sprite partSprite)
+            : base(cooldownLength, subParts, raisesBody, partSprite)
         {
             DutyCycle = dutyCycle;
             Reset();

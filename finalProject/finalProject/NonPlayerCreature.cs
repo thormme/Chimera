@@ -86,7 +86,7 @@ namespace finalProject
         {
             Move(Vector2.Zero);
             Incapacitated = true;
-            System.Console.WriteLine(this + " died.");
+            //Console.WriteLine(this + " died.");
         }
 
 #if DEBUGFACING

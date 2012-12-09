@@ -134,6 +134,17 @@ Content\levels\maps\tree_9.xnb
 Content\levels\maps\tree_complete.xnb
 Content\levels\maps\tree_slide.xnb
 Content\levels\maps\tree_45.xnb
+Content\textures\sprites\test_tex.xnb
+Content\textures\sprites\bearIcon.xnb
+Content\textures\sprites\cheetahIcon.xnb
+Content\textures\sprites\cobraIcon.xnb
+Content\textures\sprites\eagleIcon.xnb
+Content\textures\sprites\frilledLizardIcon.xnb
+Content\textures\sprites\frogIcon.xnb
+Content\textures\sprites\kangarooIcon.xnb
+Content\textures\sprites\penguinIcon.xnb
+Content\textures\sprites\rhinoIcon.xnb
+Content\textures\sprites\turtleIcon.xnb
 Content\models\dude\dude_walk.xnb
 Content\models\editor\editor.xnb
 Content\models\primitives\box.xnb
@@ -173,6 +184,9 @@ Content\models\dude\upBodyC_0.xnb
 Content\models\editor\editor_0.xnb
 Content\models\primitives\purple_block_0.xnb
 Content\models\primitives\orange_ball_0.xnb
+Content\textures\sprites\blueButton.xnb
+Content\textures\sprites\redButton.xnb
+Content\textures\sprites\yellowButton.xnb
 Content\models\bear\bear.tweak
 Content\models\cheetah\cheetah.tweak
 Content\models\cobra\cobra.tweak

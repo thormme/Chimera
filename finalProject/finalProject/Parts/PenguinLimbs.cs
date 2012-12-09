@@ -25,8 +25,8 @@ namespace finalProject.Parts
                             Creature.PartBone.ArmLeft3Cap
                         },
                         new Vector3(),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(1.0f)
+                        Matrix.CreateFromYawPitchRoll(0.2094397f, 0.2932154f, 4.272569f),
+                        new Vector3(2.0f)
                     ),
                     new SubPart(
                         new AnimateModel("penguin_rightFlipper", "stand"),
@@ -36,19 +36,19 @@ namespace finalProject.Parts
                             Creature.PartBone.ArmRight3Cap
                         },
                         new Vector3(),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(1.0f)
+                        Matrix.CreateFromYawPitchRoll(4.188794f, -2.722715f, 4.021243f),
+                        new Vector3(2.0f)
                     ),
                     new SubPart(
-                        new AnimateModel("penguin_leftFoot", "stand"),
+                        new AnimateModel("penguin_rightFoot", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegRearLeft1Cap,
                             Creature.PartBone.LegRearLeft2Cap,
                             Creature.PartBone.LegRearLeft3Cap
                         },
                         new Vector3(),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(1.0f)
+                        Matrix.CreateFromYawPitchRoll(0, 0, 0),
+                        new Vector3(2.0f)
                     ),
                     new SubPart(
                         new AnimateModel("penguin_rightFoot", "stand"),
@@ -58,11 +58,12 @@ namespace finalProject.Parts
                             Creature.PartBone.LegRearRight3Cap
                         },
                         new Vector3(),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(1.0f)
+                        Matrix.CreateFromYawPitchRoll(0.2094395f, -0.08377583f, 0.04188792f),
+                        new Vector3(2.0f)
                     )
                 },
-                false
+                false,
+                new Sprite("penguinIcon")
             )
         {
             mHasTraction = true;

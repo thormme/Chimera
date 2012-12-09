@@ -26,7 +26,8 @@ namespace finalProject.Parts
                         new Vector3(0.1f)
                     )
                 },
-                false
+                false,
+                new Sprite("frilledLizardIcon")
             )
         { }
 

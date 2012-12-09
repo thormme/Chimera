@@ -98,7 +98,7 @@ namespace finalProject
         protected const double DefaultStunLength = 3.0f;
         protected double mStunTimer = -1.0f;
 
-        protected const double ShieldRechargeLength = 10.0f;
+        protected const double ShieldRechargeLength = 6.0f;
         protected double mShieldRechargeTimer = -1.0f;
         protected bool mShield = true;
 
@@ -396,7 +396,7 @@ namespace finalProject
                 }
                 mBoneIndex %= mNumParts;
 
-                Console.WriteLine(((PartBone)mBoneIndex).ToString());
+                //Console.WriteLine(((PartBone)mBoneIndex).ToString());
             }
         }
         private int mBoneIndex = 0;
@@ -553,7 +553,8 @@ namespace finalProject
         {
             if (mRenderable != null)
             {
-                mRenderable.Render(GetRenderTransform());
+                //mRenderable.Render(GetRenderTransform());
+                mRenderable.Render(GetRenderTransform(), Color.Red, (float)(0.5f * mShieldRechargeTimer / ShieldRechargeLength));
             }
             RenderParts();
         }
@@ -670,12 +671,20 @@ namespace finalProject
         /// <param name="direction">The direction to move relative to the facing direction.</param>
         public virtual void Move(Vector2 direction)
         {
+            Move(direction, direction);
+        }
+
+        /// <summary>
+        /// Moves the creature in a direction and makes the creature face a different direction.
+        /// </summary>
+        public virtual void Move(Vector2 direction, Vector2 facing)
+        {
             if (!Immobilized)
             {
                 CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
                 if (direction != Vector2.Zero)
                 {
-                    Forward = new Vector3(direction.X, 0.0f, direction.Y);
+                    Forward = new Vector3(facing.X, 0.0f, facing.Y);
                 }
             }
         }
@@ -691,7 +700,7 @@ namespace finalProject
                 damage = 0;
             }
 
-            System.Console.WriteLine(this + " took " + damage + " damage from " + source);
+            //Console.WriteLine(this + " took " + damage + " damage from " + source);
             foreach (PartAttachment partAttachment in mPartAttachments)
             {
                 if (partAttachment != null)
@@ -846,7 +855,7 @@ namespace finalProject
             //    mShieldRechargeTimer = ShieldRechargeLength;
             //}
 
-            //System.Console.WriteLine(totalImpulse);
+            ////Console.WriteLine(totalImpulse);
         }
         
         public void AddModification(Modification add, Modification remove)
