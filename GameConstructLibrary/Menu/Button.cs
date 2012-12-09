@@ -8,7 +8,7 @@ using GraphicsLibrary;
 
 namespace GameConstructLibrary.Menu
 {
-    public class Button : IMenuItem
+    public class Button : SelectableItem
     {
         public delegate void ButtonAction(Button button);
 
@@ -23,7 +23,7 @@ namespace GameConstructLibrary.Menu
             mAction = action;
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             // Check that mouse is within button.
             if (Mouse.GetState().X > Bounds.X && Mouse.GetState().X < Bounds.X + Bounds.Width &&
@@ -39,11 +39,17 @@ namespace GameConstructLibrary.Menu
             mAction(this);
         }
 
-        public void Render()
+        public override void Render()
         {
             mSprite.Render(Bounds);
         }
 
-        public GameMenu Menu { get; set; }
+        public override void OnSelect()
+        {
+        }
+
+        public override void OnDeselect()
+        {
+        }
     }
 }

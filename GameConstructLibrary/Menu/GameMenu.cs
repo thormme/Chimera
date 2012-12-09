@@ -13,8 +13,46 @@ namespace GameConstructLibrary.Menu
         List<IMenuItem> mUncommittedMenuItemAdditions = new List<IMenuItem>();
         List<IMenuItem> mUncommittedMenuItemRemovals = new List<IMenuItem>();
 
+        private SelectableItem mSelectedItem;
+        public SelectableItem SelectedItem
+        {
+            get
+            {
+                return mSelectedItem;
+            }
+            set
+            {
+                if (value != mSelectedItem)
+                {
+                    mSelectedItem.OnDeselect();
+                    mSelectedItem = value;
+                    mSelectedItem.OnSelect();
+                }
+            }
+        }
+
+        InputAction mSelectPrevious = new CombinedInputAction(
+            new InputAction[]
+            {
+                new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Up)
+            },
+            InputAction.ButtonAction.Down
+        );
+        InputAction mSelectNext = new CombinedInputAction(
+            new InputAction[]
+            {
+                new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Down)
+            },
+            InputAction.ButtonAction.Down
+        );
+
         public void Update(GameTime gameTime)
         {
+            if (mSelectPrevious.Active)
+            {
+
+            }
+
             foreach (IMenuItem item in mMenuItems)
             {
                 item.Update(gameTime);
