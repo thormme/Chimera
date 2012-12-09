@@ -37,6 +37,11 @@ bool ComputeShadow(float4 shadowMapPosition)
 	float2 shadowTexCoord = 0.5 * shadowMapPosition.xy / shadowMapPosition.w + float2(0.5f, 0.5f);
 	shadowTexCoord.y = 1.0f - shadowTexCoord.y;
 
+	if (shadowTexCoord.x < 0.0 || shadowTexCoord.y > 1.0 || shadowTexCoord.y < 0.0 || shadowTexCoord.y > 1.0)
+	{
+		return false;
+	}
+
 	float shadowDepth = SAMPLE_TEXTURE(ShadowMap, shadowTexCoord).r;
 
 	float ourDepth = (shadowMapPosition.z / shadowMapPosition.w) - DepthBias;

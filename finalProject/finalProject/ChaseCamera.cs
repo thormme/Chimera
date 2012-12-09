@@ -98,7 +98,7 @@ namespace FinalProject
                 mMaxRopeLengthSquared = value;
             }
         }
-        private float mMaxRopeLengthSquared = 64.0f;
+        private float mMaxRopeLengthSquared = 81.0f;
 
         public float MinRopeLengthSquared
         {
@@ -111,7 +111,7 @@ namespace FinalProject
                 mMinRopeLengthSquared = value;
             }
         }
-        private float mMinRopeLengthSquared = 49.0f;
+        private float mMinRopeLengthSquared = 46.0f;
 
         /// <summary>
         /// Desired position of camera in target's local space.
@@ -337,7 +337,7 @@ namespace FinalProject
                 mMass = value;
             }
         }
-        private float mMass = 50.0f;
+        private float mMass = 10.0f;
 
         /// <summary>
         /// Rope attaching camera to target.
@@ -468,6 +468,10 @@ namespace FinalProject
             return FarPlaneDistance;
         }
 
+        public float GetNearPlaneDistance()
+        {
+            return NearPlaneDistance;
+        }
 
         public void SetFarPlaneDistance(float value)
         {
