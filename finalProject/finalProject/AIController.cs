@@ -309,9 +309,17 @@ namespace finalProject
         /// <param name="time"></param>
         protected virtual void FleeCreatureUpdate(GameTime time)
         {
-            Vector3 direction = mCreature.Position - mTargetCreature.Position;
-            MoveCreature(direction);
-            UsePart(direction);
+            if (mTargetCreature.Incapacitated)
+            {
+                mTargetCreature = null;
+                ResetAIState();
+            }
+            else
+            {
+                Vector3 direction = mCreature.Position - mTargetCreature.Position;
+                MoveCreature(direction);
+                UsePart(direction);
+            }
         }
 
         /// <summary>
@@ -320,7 +328,15 @@ namespace finalProject
         /// <param name="time">The game time.</param>
         protected virtual void FollowCreatureUpdate(GameTime time)
         {
-            FollowUpdate(time, mTargetCreature.Position);
+            if (mTargetCreature.Incapacitated)
+            {
+                mTargetCreature = null;
+                ResetAIState();
+            }
+            else
+            {
+                FollowUpdate(time, mTargetCreature.Position);
+            }
         }
 
         /// <summary>

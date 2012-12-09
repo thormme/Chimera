@@ -15,7 +15,7 @@ namespace finalProject.Creatures
         public Bear(Vector3 position)
             : base(
                 position,
-                3.0f,                                       // Height
+                1.8f,                                       // Height
                 2.0f,                                       // Radius
                 10.0f,                                      // Mass
                 CreatureConstants.BearSensitivityRadius,    // Sensitivity Radius
@@ -28,7 +28,7 @@ namespace finalProject.Creatures
                 new BearArms()                              // Part
                 )
         {
-            Scale = new Vector3(1.0f);
+            Scale = new Vector3(1.5f);
         }
 
         protected override List<PartBone> GetUsablePartBones()

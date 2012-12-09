@@ -90,7 +90,9 @@ namespace finalProject
 
         #region Fields
 
-        protected const float DamageImpulseMultiplier = 255.0f;
+        protected const double FlashLength = 0.5f;
+        protected const double AlternateFlashLength = FlashLength / 2.0f;
+        protected double mFlashTimer = FlashLength;
 
         protected const double InvulnerableLength = 1.0f;
         protected double mInvulnerableTimer = -1.0f;
@@ -564,16 +566,32 @@ namespace finalProject
         {
             Color color = Color.Black;
             float weight = 0.0f;
-            if (Poisoned)
+            if (Incapacitated)
             {
-                color = Color.Violet;
-                weight = (float)(0.5f * mPoisonTimer / ShieldRechargeLength);
+                weight = 1.0f;
             }
-            else if (!mShield)
+            else if (mFlashTimer > AlternateFlashLength)
             {
-                color = Color.Red;
-                weight = (float)(0.5f * mShieldRechargeTimer / ShieldRechargeLength);
+                if (Poisoned)
+                {
+                    color = Color.Violet;
+                    weight = (float)(0.5f);// * mPoisonTimer / ShieldRechargeLength);
+                }
+                else if (!mShield)
+                {
+                    color = Color.Red;
+                    weight = (float)(0.5f);// * mShieldRechargeTimer / ShieldRechargeLength);
+                }
             }
+            else
+            {
+                if (Invulnerable)
+                {
+                    color = Color.White;
+                    weight = (float)(0.5f);// * mInvulnerableTimer / InvulnerableLength);
+                }
+            }
+
             if (mRenderable != null)
             {
                 //mRenderable.Render(GetRenderTransform());
@@ -746,26 +764,17 @@ namespace finalProject
                 return;
             }
 
-            // TODO: make this work with rolling rocks
-            if (source != null)
-            {
-                Vector3 impulseVector = Vector3.Normalize(Position - source.Position);
-                impulseVector.Y = 1.0f;
-                impulseVector.Normalize();
-                impulseVector *= damage * DamageImpulseMultiplier;
-                Entity.ApplyLinearImpulse(ref impulseVector);
-            }
-
-            if (!mShield)
-            {
-                Invulnerable = true;
-                mInvulnerableTimer = InvulnerableLength;
-            }
-            else
+            if (mShield)
             {
                 mShield = false;
                 mShieldRechargeTimer = ShieldRechargeLength;
                 --damage;
+            }
+
+            if (damage > 0)
+            {
+                Invulnerable = true;
+                mInvulnerableTimer = InvulnerableLength;
             }
 
             List<PartAttachment> validParts = new List<PartAttachment>(mPartAttachments.Count());
@@ -802,6 +811,12 @@ namespace finalProject
             if (Incapacitated)
             {
                 return;
+            }
+
+            mFlashTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (mFlashTimer < 0.0f)
+            {
+                mFlashTimer = FlashLength;
             }
 
             if (mInvulnerableTimer > 0.0f)
