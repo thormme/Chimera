@@ -21,7 +21,7 @@ namespace finalProject
     {
         #region Fields
 
-        private const float rotationRate = MathHelper.PiOver2; // Number of radians per second the camera can turn.
+        private float rotationRate = MathHelper.Pi; // Number of radians per second the camera can turn.
         private const int NumParts = 13;
         private const int NumKeys = 10;
         private const int NumButtons = 3;
@@ -221,34 +221,56 @@ namespace finalProject
             float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             // Parse movement input.
-            bool moveForwardActive  = mMoveForward.Active;
-            float moveForwardDegree = mMoveForward.Degree;
-            if (moveForwardActive == false)
+            bool moveForwardActive = false;
+            float moveForwardDegree = 0.0f;
+            if (mMoveForward.Active)
             {
-                moveForwardActive = mMoveForwardKey.Active || mMoveBackwardKey.Active;
+                mCamera.TrackTarget = !(mCreature as PlayerCreature).Stealing;
+                rotationRate = MathHelper.Pi;
+
+                moveForwardActive = true;
+                moveForwardDegree = mMoveForward.Degree;
+            }
+            else if (mMoveForwardKey.Active || mMoveBackwardKey.Active)
+            {
+                mCamera.TrackTarget = false;
+                rotationRate = MathHelper.PiOver2;
+
+                moveForwardActive = true;
                 moveForwardDegree = mMoveForwardKey.Degree - mMoveBackwardKey.Degree;
             }
 
-            bool moveRightActive  = mMoveRight.Active;
-            float moveRightDegree = mMoveRight.Degree;
-            if (moveRightActive == false)
+            bool moveRightActive  = false;
+            float moveRightDegree = 0.0f;
+            if (mMoveRight.Active)
             {
-                moveRightActive = mMoveRightKey.Active || mMoveLeftKey.Active;
+                mCamera.TrackTarget = !(mCreature as PlayerCreature).Stealing;
+                rotationRate = MathHelper.Pi;
+
+                moveRightActive = true;
+                moveRightDegree = mMoveRight.Degree;
+            }
+            else if (mMoveRightKey.Active || mMoveLeftKey.Active)
+            {
+                mCamera.TrackTarget = false;
+                rotationRate = MathHelper.PiOver2;
+
+                moveRightActive = true;
                 moveRightDegree = mMoveRightKey.Degree - mMoveLeftKey.Degree;
             }
 
             // Moving player.
             Vector2 walkDirection = Vector2.Zero;
+            Vector3 forward = mCamera.Forward;
+            forward.Y = 0.0f;
+            forward.Normalize();
+
             if (moveForwardActive || moveRightActive)
             {
                 if (mCreature is PlayerCreature)
                 {
                     (mCreature as PlayerCreature).Stance = Stance.Walking;
                 }
-
-                Vector3 forward = mCamera.Forward;
-                forward.Y = 0.0f;
-                forward.Normalize();
 
                 Vector3 right = mCamera.Right;
 
@@ -261,19 +283,41 @@ namespace finalProject
             }
 
             // Parse look input.
-            bool lookForwardActive = false;// mLookForward.Active;
-            float lookForwardDegree = mLookForward.Degree;
-            if (lookForwardActive == false)
+            bool lookForwardActive = false;
+            float lookForwardDegree = 0.0f;
+            if (mLookForward.Active)
             {
-                lookForwardActive = mLookForwardMouse.Active;
+                mCamera.TrackTarget = !(mCreature as PlayerCreature).Stealing;
+                rotationRate = MathHelper.Pi;
+
+                lookForwardActive = true;
+                lookForwardDegree = mLookForward.Degree;
+            }
+            else if (mLookForwardMouse.Active)
+            {
+                mCamera.TrackTarget = false;
+                rotationRate = MathHelper.PiOver2;
+
+                lookForwardActive = true;
                 lookForwardDegree = -mLookForwardMouse.Degree;
             }
 
-            bool lookRightActive = false;// mLookRight.Active;
-            float lookRightDegree = mLookRight.Degree;
-            if (lookRightActive == false)
+            bool lookRightActive = false;
+            float lookRightDegree = 0.0f;
+            if (mLookRight.Active)
             {
-                lookRightActive = mLookRightMouse.Active;
+                mCamera.TrackTarget = !(mCreature as PlayerCreature).Stealing;
+                rotationRate = MathHelper.Pi;
+
+                lookRightActive = true;
+                lookRightDegree = mLookRight.Degree;
+            }
+            else if (mLookRightMouse.Active)
+            {
+                mCamera.TrackTarget = false;
+                rotationRate = MathHelper.PiOver2;
+
+                lookRightActive = true;
                 lookRightDegree = mLookRightMouse.Degree;
             }
 
@@ -282,29 +326,14 @@ namespace finalProject
             {
                 mCamera.RotateAroundTarget(elapsedTime * rotationRate * lookRightDegree, elapsedTime * rotationRate * lookForwardDegree, 0.0f);
             }
-
-            if (mCamera.TrackTarget)
+            else if (mCamera.TrackTarget && (moveForwardActive || moveRightActive))
             {
-                float ropeLength = mCamera.Rope.LengthSquared();
-                if (ropeLength > mCamera.MaxRopeLengthSquared && walkDirection != Vector2.Zero)
+                Vector3 walkDirection3D = new Vector3(walkDirection.X, 0.0f, walkDirection.Y);
+                float theta = Vector3.Dot(walkDirection3D, mCamera.Forward);
+                if (theta < 0.9f && theta > -0.9f)
                 {
-                    Vector3 walkDirection3D = new Vector3(walkDirection.X, 0.0f, walkDirection.Y);
-                    float theta = Vector3.Dot(walkDirection3D, mCamera.Forward);
-                    if (theta < 0.9f)
-                    {
-                        float direction = (Vector3.Cross(walkDirection3D, mCamera.Forward).Y < 0) ? -1.0f : 1.0f;
-                        mCamera.RotateAroundTarget(elapsedTime * rotationRate * direction, 0.0f, 0.0f);
-                    }
-                }
-                else if (ropeLength < mCamera.MinRopeLengthSquared && walkDirection != Vector2.Zero)
-                {
-                    Vector3 walkDirection3D = new Vector3(walkDirection.X, 0.0f, walkDirection.Y);
-                    float theta = Vector3.Dot(walkDirection3D, mCamera.Forward);
-                    if (theta > -0.9f)
-                    {
-                        float direction = (Vector3.Cross(walkDirection3D, mCamera.Forward).Y < 0) ? -1.0f : 1.0f;
-                        mCamera.RotateAroundTarget(elapsedTime * 4.0f * rotationRate * direction, 0.0f, 0.0f);
-                    }
+                    float direction = (Vector3.Cross(walkDirection3D, mCamera.Forward).Y < 0) ? -1.0f : 1.0f;
+                    mCamera.RotateAroundTarget(elapsedTime * (1.0f - theta) * rotationRate * direction, 0.0f, 0.0f);
                 }
             }
 
@@ -316,7 +345,7 @@ namespace finalProject
 
             if (!NoControl)
             {
-                mCreature.Move(walkDirection);
+                mCreature.Move(walkDirection, (mCamera.TrackTarget) ? walkDirection : new Vector2(forward.X, forward.Z));
             }
         }
 

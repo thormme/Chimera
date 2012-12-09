@@ -179,7 +179,7 @@ namespace finalProject
 
             if (mouseLock.Active)
             {
-                //InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
+                InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
                 if (mGameStates[mGameStates.Count - 1] is World)
                 {
                     foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)

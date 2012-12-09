@@ -98,7 +98,7 @@ namespace FinalProject
                 mMaxRopeLengthSquared = value;
             }
         }
-        private float mMaxRopeLengthSquared = 81.0f;
+        private float mMaxRopeLengthSquared = 36.0f;
 
         public float MinRopeLengthSquared
         {
@@ -145,6 +145,10 @@ namespace FinalProject
             }
         }
         private Vector3 mDesiredPosition;
+
+        private Vector3 mOldDesiredPositionLocal;
+
+        private bool mDesiredPositionDirty = false;
 
         /// <summary>
         /// Position of where the camera is looking in target's local space.
@@ -534,9 +538,6 @@ namespace FinalProject
                 }
             }
 
-            // Calculate new rope.
-            mRope = mPosition - mTargetPosition;
-
             mViewTransform = Matrix.CreateLookAt(mPosition, mLookAt, mUp);
         }
 
@@ -558,6 +559,16 @@ namespace FinalProject
                 pitch *= -1.0f;
             }
 
+            // Rotate yaw.
+            Matrix yawRotation = Matrix.CreateFromAxisAngle(mUp, yaw);
+            mDesiredPositionLocal = Vector3.Transform(mDesiredPositionLocal, yawRotation);
+            mOldDesiredPositionLocal = Vector3.Transform(mOldDesiredPositionLocal, yawRotation);
+
+            // Rotate roll.
+            Matrix rollRotation = Matrix.CreateFromAxisAngle(mForward, roll);
+            mDesiredPositionLocal = Vector3.Transform(mDesiredPositionLocal, rollRotation);
+            mOldDesiredPositionLocal = Vector3.Transform(mOldDesiredPositionLocal, rollRotation);
+
             // Rotate pitch.
             Matrix pitchRotation = Matrix.CreateFromAxisAngle(Vector3.Normalize(Vector3.Cross(mUp, mDesiredPositionLocal)), pitch);
             Vector3 newDesiredPosition = Vector3.Transform(mDesiredPositionLocal, pitchRotation);
@@ -568,16 +579,13 @@ namespace FinalProject
                 newDesiredPosition = mDesiredPositionLocal;
             }
 
-            // Rotate yaw.
-            Matrix yawRotation = Matrix.CreateFromAxisAngle(mUp, yaw);
-            newDesiredPosition = Vector3.Transform(newDesiredPosition, yawRotation);
-
-            // Rotate roll.
-            Matrix rollRotation = Matrix.CreateFromAxisAngle(mForward, roll);
-            newDesiredPosition = Vector3.Transform(newDesiredPosition, rollRotation);
-
-            // Apply rotations.
             mDesiredPositionLocal = newDesiredPosition;
+        }
+
+        public void ResetRotations()
+        {
+            mDesiredPositionDirty = false;
+            mDesiredPositionLocal = mOldDesiredPositionLocal;
         }
 
         #endregion
