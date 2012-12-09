@@ -36,7 +36,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        new Vector3(2.0f)
                     ),
                     new SubPart(
                         new AnimateModel("cheetah_frontRightLeg", "stand"),
@@ -47,7 +47,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        new Vector3(2.0f)
                     ),
                     new SubPart(
                         new AnimateModel("cheetah_rearLeftLeg", "stand"),
@@ -58,7 +58,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        new Vector3(2.0f)
                     ),
                     new SubPart(
                         new AnimateModel("cheetah_rearRightLeg", "stand"),
@@ -69,7 +69,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        new Vector3(2.0f)
                     )
                 },
                 true,
