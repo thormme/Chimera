@@ -671,12 +671,20 @@ namespace finalProject
         /// <param name="direction">The direction to move relative to the facing direction.</param>
         public virtual void Move(Vector2 direction)
         {
+            Move(direction, direction);
+        }
+
+        /// <summary>
+        /// Moves the creature in a direction and makes the creature face a different direction.
+        /// </summary>
+        public virtual void Move(Vector2 direction, Vector2 facing)
+        {
             if (!Immobilized)
             {
                 CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
                 if (direction != Vector2.Zero)
                 {
-                    Forward = new Vector3(direction.X, 0.0f, direction.Y);
+                    Forward = new Vector3(facing.X, 0.0f, facing.Y);
                 }
             }
         }

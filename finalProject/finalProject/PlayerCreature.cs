@@ -97,6 +97,11 @@ namespace finalProject
             }
         }
 
+        public bool Stealing
+        {
+            get { return mStealing; }
+        }
+
         #endregion
 
         #region Protected Methods
