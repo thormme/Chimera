@@ -31,8 +31,8 @@ namespace finalProject.Parts
                             Creature.PartBone.HeadRightCap
                         },
                         new Vector3(),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(1.0f)
+                        Matrix.CreateFromYawPitchRoll(-0.1256637f, 0.2094395f, 7.450581E-09f),
+                        new Vector3(2.0f)
                     )
                 },
                 false,

@@ -108,9 +108,9 @@ namespace finalProject
                 Scale = scale;
             }
 
-            public void Render(Matrix worldTransform)
+            public void Render(Matrix worldTransform, Color color, float weight)
             {
-                Renderable.Render(Orientation * Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position) * worldTransform);
+                Renderable.Render(Orientation * Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position) * worldTransform, color, weight);
             }
 
         }

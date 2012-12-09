@@ -444,7 +444,7 @@ namespace finalProject
             return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
         }
 
-        protected void RenderParts()
+        protected void RenderParts(Color color, float weight)
         {
             foreach (PartAttachment partAttachment in mPartAttachments)
             {
@@ -454,7 +454,7 @@ namespace finalProject
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
                         Matrix worldTransform = GetOptionalPartTransforms() * mPartRotations[(int)partBone] * (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
-                        partAttachment.Part.SubParts[count].Render(worldTransform);
+                        partAttachment.Part.SubParts[count].Render(worldTransform, color , weight);
 
                         count++;
                     }
@@ -562,12 +562,24 @@ namespace finalProject
 
         public override void Render()
         {
+            Color color = Color.Black;
+            float weight = 0.0f;
+            if (Poisoned)
+            {
+                color = Color.Violet;
+                weight = (float)(0.5f * mPoisonTimer / ShieldRechargeLength);
+            }
+            else if (!mShield)
+            {
+                color = Color.Red;
+                weight = (float)(0.5f * mShieldRechargeTimer / ShieldRechargeLength);
+            }
             if (mRenderable != null)
             {
                 //mRenderable.Render(GetRenderTransform());
-                mRenderable.Render(GetRenderTransform(), Color.Red, (float)(0.5f * mShieldRechargeTimer / ShieldRechargeLength));
+                mRenderable.Render(GetRenderTransform(), color, weight);
             }
-            RenderParts();
+            RenderParts(color, weight);
         }
 
         /// <summary>
@@ -698,10 +710,12 @@ namespace finalProject
                 {
                     Forward = new Vector3(facing.X, 0.0f, facing.Y);
                     PlayPartAnimation("walk", false);
+                    (mRenderable as AnimateModel).PlayAnimation("walk", false);
                 }
                 else
                 {
                     PlayPartAnimation("stand", true);
+                    (mRenderable as AnimateModel).PlayAnimation("stand", true);
                 }
             }
         }

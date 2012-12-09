@@ -87,6 +87,8 @@ namespace finalProject
             mImmobilized.Reset();
             Move(Vector2.Zero);
             Incapacitated = true;
+            mPoisoned = false;
+            mShield = true;
             //Console.WriteLine(this + " died.");
         }
 

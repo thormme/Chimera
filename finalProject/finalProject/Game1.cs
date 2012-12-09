@@ -188,8 +188,8 @@ namespace finalProject
                         PlayerCreature player = entity.Tag as PlayerCreature;
                         if (player != null)
                         {
-                            //player.Damage(100, null);
-                            player.Position = player.SpawnOrigin;
+                            player.Damage(100, null);
+                            //player.Position = player.SpawnOrigin;
                             int i = 0;
                             //player.AddPart(new BearArms(), i++);
                             //player.AddPart(new RhinoHead(), i++);
