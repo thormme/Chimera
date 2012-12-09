@@ -24,8 +24,8 @@ namespace finalProject.Parts
                             Creature.PartBone.ArmLeft3Cap
                         },
                         new Vector3(),
-                        Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        Matrix.CreateFromYawPitchRoll(10.09499f, 0.0837759f, -2.638938f),
+                        new Vector3(1.2f)
                     ),
                     new SubPart(
                         new AnimateModel("bear_rightArm", "stand"),
@@ -35,8 +35,8 @@ namespace finalProject.Parts
                             Creature.PartBone.ArmRight3Cap
                         },
                         new Vector3(),
-                        Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        Matrix.CreateFromYawPitchRoll(1.675516f, 0.502655f, 0.3769911f),
+                        new Vector3(1.2f)
                     )
                 },
                 false,
