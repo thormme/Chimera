@@ -39,11 +39,6 @@ namespace finalProject
         private GamePadThumbStickInputAction mLookForward;
         private GamePadThumbStickInputAction mLookRight;
 
-        private KeyInputAction mLookForwardKey;
-        private KeyInputAction mLookBackwardKey;
-        private KeyInputAction mLookRightKey;
-        private KeyInputAction mLookLeftKey;
-
         private MouseMovementInputAction mLookForwardMouse;
         private MouseMovementInputAction mLookRightMouse;
 
@@ -104,13 +99,8 @@ namespace finalProject
             mMoveRightKey    = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.D);
             mMoveLeftKey     = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.A);
 
-            mLookForwardMouse  = new MouseMovementInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.MouseAxis.Y, 4.0f, 0.5f, 1.0f);
-            mLookRightMouse    = new MouseMovementInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.MouseAxis.X, 4.0f, 0.5f, 1.0f);
-
-            mLookForwardKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Up);
-            mLookBackwardKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Down);
-            mLookRightKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Right);
-            mLookLeftKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Left);
+            mLookForwardMouse  = new MouseMovementInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.MouseAxis.Y, 4.0f, 0f, 0f);
+            mLookRightMouse    = new MouseMovementInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.MouseAxis.X, 4.0f, 0f, 0f);
 
             mPressPart1 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.X);
             mPressPart2 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.Y);
@@ -186,11 +176,6 @@ namespace finalProject
 
             mLookForwardMouse.Destroy();
             mLookRightMouse.Destroy();
-
-            mLookForwardKey.Destroy();
-            mLookBackwardKey.Destroy();
-            mLookRightKey.Destroy();
-            mLookLeftKey.Destroy();
 
             mPressPart1.Destroy();
             mPressPart2.Destroy();
@@ -278,16 +263,16 @@ namespace finalProject
             float lookForwardDegree = mLookForward.Degree;
             if (lookForwardActive == false)
             {
-                lookForwardActive = mLookForwardKey.Active || mLookBackwardKey.Active;
-                lookForwardDegree = mLookForwardKey.Degree - mLookBackwardKey.Degree;
+                lookForwardActive = mLookForwardMouse.Active;
+                lookForwardDegree = -mLookForwardMouse.Degree;
             }
 
             bool lookRightActive = mLookRight.Active;
             float lookRightDegree = mLookRight.Degree;
             if (lookRightActive == false)
             {
-                lookRightActive = mLookRightKey.Active || mLookLeftKey.Active;
-                lookRightDegree = mLookRightKey.Degree - mLookLeftKey.Degree;
+                lookRightActive = mLookRightMouse.Active;
+                lookRightDegree = mLookRightMouse.Degree;
             }
 
             // Rotating camera.
