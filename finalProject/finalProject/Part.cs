@@ -70,9 +70,11 @@ namespace finalProject
             {
                 Renderable.Render(Orientation * Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position) * worldTransform);
             }
+
         }
 
         private Creature mCreature;
+        private Sprite mSprite;
 
         public SubPart[] SubParts
         {
@@ -86,10 +88,11 @@ namespace finalProject
             protected set;
         }
 
-        public Part(SubPart[] subParts, bool raisesBody)
+        public Part(SubPart[] subParts, bool raisesBody, Sprite partSprite)
         {
             SubParts = subParts;
             Height = raisesBody ? 1.0f : 0.0f;
+            mSprite = partSprite;
         }
 
         public virtual Creature Creature
@@ -131,6 +134,19 @@ namespace finalProject
                     }
                 }
             }
+        }
+
+        public void RenderSprite(Rectangle bounds)
+        {
+
+            Rectangle newBounds = new Rectangle(
+                (int)(bounds.Left - bounds.Width / 2.0f),
+                (int)(bounds.Top - bounds.Height / 2.0f),
+                (int)(bounds.Width * 2.0f),
+                (int)(bounds.Height * 2.0f)
+            );
+
+            mSprite.Render(newBounds);
         }
 
         /// <summary>

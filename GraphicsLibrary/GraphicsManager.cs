@@ -35,11 +35,13 @@ namespace GraphicsLibrary
         static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string,Model>();
         static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
         static private Dictionary<string, Dictionary<string, Matrix>> mUniqueModelBoneLibrary = new Dictionary<string, Dictionary<string, Matrix>>();
+        static private Dictionary<string, Texture2D> mUniqueSpriteLibrary = new Dictionary<string, Texture2D>();
 
         static private GraphicsDevice mDevice;
         static private SpriteBatch mSpriteBatch;
 
-        static private Queue<RenderableDefinition> mRenderQueue;
+        static private Queue<RenderableDefinition> mRenderQueue = new Queue<RenderableDefinition>();
+        static private Queue<SpriteDefinition> mSpriteQueue = new Queue<SpriteDefinition>();
 
         static private RenderTarget2D mShadowMap;
         static private RenderTarget2D mSceneBuffer;
@@ -52,7 +54,7 @@ namespace GraphicsLibrary
         static private int mEdgeWidth = 1;
         static private int mEdgeIntensity = 1;
         static private int mShadowMapLength = 4096;
-        static private int mShadowFarClip = 128;
+        static private int mShadowFarClip = 512;
 
         static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
         static private char[] mDelimeterChars = {' '};
@@ -112,11 +114,6 @@ namespace GraphicsLibrary
 
             mSpriteBatch = spriteBatch;
 
-            mRenderQueue = new Queue<RenderableDefinition>();
-
-            //CelShading = CelShaded.All;
-            //CastingShadows = true;
-
             // Load shaders.
             mConfigurableShader = content.Load<Effect>("shaders/ConfigurableShader");
             mPostProcessShader = content.Load<Effect>("shaders/PostProcessing");
@@ -149,10 +146,10 @@ namespace GraphicsLibrary
                 FileInfo[] files = subDir.GetFiles("*.xnb");
                 foreach (FileInfo file in files)
                 {
-                    string modelName = Path.GetFileNameWithoutExtension(file.Name);
-
                     try
                     {
+                        string modelName = Path.GetFileNameWithoutExtension(file.Name);
+
                         Model input = content.Load<Model>("models/" + subDirName + "/" + modelName);
 
                         foreach (ModelMesh mesh in input.Meshes)
@@ -183,8 +180,7 @@ namespace GraphicsLibrary
 
                         AddModel(modelName, input);
                     }
-                    catch
-                    { }
+                    catch { }
                 }
 
                 // Parse Bone Orientation Tweak File and store in library.
@@ -260,11 +256,13 @@ namespace GraphicsLibrary
             FileInfo[] terrainFiles = dir.GetFiles("*");
             foreach (FileInfo file in terrainFiles)
             {
-                if (Path.GetFileNameWithoutExtension(file.Name).Contains("_texture"))
+                string terrainName = Path.GetFileNameWithoutExtension(file.Name);
+
+                if (terrainName.Contains("_texture"))
                 {
                     continue;
                 }
-                string terrainName = Path.GetFileNameWithoutExtension(file.Name);
+                
                 Texture2D terrain = content.Load<Texture2D>("levels/maps/" + terrainName);
                 TerrainHeightMap heightMap = new TerrainHeightMap(terrain, mDevice);
 
@@ -292,9 +290,29 @@ namespace GraphicsLibrary
                 TerrainDescription newTerrain = new TerrainDescription(heightMap, textures, heights);
                 if (mUniqueTerrainLibrary.ContainsKey(terrainName))
                 {
-                    throw new Exception("Duplicate model key: " + terrainName);
+                    throw new Exception("Duplicate terrain key: " + terrainName);
                 }
                 mUniqueTerrainLibrary.Add(terrainName, newTerrain);
+            }
+            
+            // Load sprites.
+            dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/sprites/");
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException("Could not find textures/sprites/ directory in content.");
+            }
+
+            FileInfo[] spriteFiles = dir.GetFiles("*");
+            foreach (FileInfo file in spriteFiles)
+            {
+                string spriteName = Path.GetFileNameWithoutExtension(file.Name);
+                Texture2D sprite = content.Load<Texture2D>("textures/sprites/" + spriteName);
+
+                if (mUniqueSpriteLibrary.ContainsKey(spriteName))
+                {
+                    throw new Exception("Duplicate sprite key: " + spriteName);
+                }
+                mUniqueSpriteLibrary.Add(spriteName, sprite);
             }
         }
 
@@ -324,6 +342,7 @@ namespace GraphicsLibrary
         static public void BeginRendering()
         {
             mRenderQueue.Clear();
+            mSpriteQueue.Clear();
             mCanRender = true;
         }
         
@@ -413,7 +432,15 @@ namespace GraphicsLibrary
                     DrawRenderableDefinition(renderable, false, false);
                 }
             }
-            
+
+            mDevice.SetRenderTarget(null);
+            foreach (SpriteDefinition sprite in mSpriteQueue)
+            {
+                mSpriteBatch.Begin(0, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+                mSpriteBatch.Draw(LookupSprite(sprite.Name), sprite.ScreenSpace, Color.White);
+                mSpriteBatch.End();
+            }
+
             mCanRender = false;
         }
 
@@ -467,11 +494,11 @@ namespace GraphicsLibrary
         /// <param name="modelName">Name of model stored in database.</param>
         /// <param name="boneTransforms">State of rigged skeleton for current frame</param>
         /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
-        static public void RenderSkinnedModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms)
+        static public void RenderSkinnedModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, Color overlayColor, float overlayColorWeight)
         {
             if (mCanRender)
             {
-                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, true, worldTransforms, boneTransforms));
+                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, true, worldTransforms, boneTransforms, overlayColor, overlayColorWeight));
             }
             else
             {
@@ -484,13 +511,13 @@ namespace GraphicsLibrary
         /// </summary>
         /// <param name="modelName">Name of model stored in database.</param>
         /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
-        static public void RenderUnskinnedModel(string modelName, Matrix worldTransforms)
+        static public void RenderUnskinnedModel(string modelName, Matrix worldTransforms, Color overlayColor, float overlayColorWeight)
         {
             if (mCanRender)
             {
                 Matrix[] emptyTransforms = new Matrix[1];
                 emptyTransforms[0] = Matrix.Identity;
-                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, false, worldTransforms, emptyTransforms));
+                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, false, worldTransforms, emptyTransforms, overlayColor, overlayColorWeight));
             }
             else
             {
@@ -503,15 +530,31 @@ namespace GraphicsLibrary
         /// </summary>
         /// <param name="terrainName">Name of terrain stored in database.</param>
         /// <param name="worldTransforms">Position, orientation, and scale of terrain in world space.</param>
-        static public void RenderTerrain(string terrainName, Matrix worldTransforms)
+        static public void RenderTerrain(string terrainName, Matrix worldTransforms, Color overlayColor, float overlayColorWeight)
         {
             if (mCanRender)
             {
-                mRenderQueue.Enqueue(new RenderableDefinition(terrainName, false, false, worldTransforms, null));
+                mRenderQueue.Enqueue(new RenderableDefinition(terrainName, false, false, worldTransforms, null, overlayColor, overlayColorWeight));
             }
             else
             {
                 throw new Exception("Unable to render terrain " + terrainName + " before calling BeginRendering() or after FinishRendering().\n");
+            }
+        }
+
+        /// <summary>
+        /// Renders sprite to the screen.  Useful for things like UI.
+        /// </summary>
+        /// <param name="screenSpace"></param>
+        static public void RenderSprite(string spriteName, Rectangle screenSpace, Color blendColor, float blendColorWeight)
+        {
+            if (mCanRender)
+            {
+                mSpriteQueue.Enqueue(new SpriteDefinition(spriteName, screenSpace, blendColor, blendColorWeight));
+            }
+            else
+            {
+                throw new Exception("Unable to render sprite " + spriteName + " before calling BeginRendering() or after FinishRendering().\n");
             }
         }
 
@@ -560,6 +603,21 @@ namespace GraphicsLibrary
         }
 
         /// <summary>
+        /// Retrieves sprite from database.  Throws KeyNotFoundException if spriteName does not exist in database.
+        /// </summary>
+        /// <param name="spriteName"></param>
+        /// <returns></returns>
+        static private Texture2D LookupSprite(string spriteName)
+        {
+            Texture2D result;
+            if (mUniqueSpriteLibrary.TryGetValue(spriteName, out result))
+            {
+                return result;
+            }
+            throw new KeyNotFoundException("Unable to find sprite key: " + spriteName);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="renderable"></param>
@@ -568,19 +626,19 @@ namespace GraphicsLibrary
             if (!renderable.IsModel)
             {
                 // Render Terrain.
-                DrawTerrain(renderable.Name, renderable.WorldTransform, isShadow, isOutline);
+                DrawTerrain(renderable.Name, renderable.WorldTransform, isShadow, isOutline, renderable.OverlayColor, renderable.OverlayColorWeight);
             }
             else
             {
                 // Render Inanimate or Animate Model.
-                DrawModel(renderable.Name, renderable.BoneTransforms, renderable.WorldTransform, renderable.IsSkinned, isShadow, isOutline);
+                DrawModel(renderable.Name, renderable.BoneTransforms, renderable.WorldTransform, renderable.IsSkinned, isShadow, isOutline, renderable.OverlayColor, renderable.OverlayColorWeight);
             }
         }
 
         /// <summary>
         /// Draws all meshes within model to current rendertarget.  Applies rigged model transforms if necesarry.
         /// </summary>
-        static private void DrawModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, bool isSkinned, bool isShadow, bool isOutline)
+        static private void DrawModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, bool isSkinned, bool isShadow, bool isOutline, Vector3 overlayColor, float overlayColorWeight)
         {
             Model model = LookupModel(modelName);
 
@@ -605,7 +663,7 @@ namespace GraphicsLibrary
                     {
                         techniqueName = (isSkinned) ? "SkinnedPhong" : "Phong";
                     }
-                    DrawMesh(mesh, techniqueName, boneTransforms, worldTransforms);
+                    DrawMesh(mesh, techniqueName, boneTransforms, worldTransforms, overlayColor, overlayColorWeight);
                 }
             }
         }
@@ -613,7 +671,7 @@ namespace GraphicsLibrary
         /// <summary>
         /// Draws current Terrain to render target using appropriate effects.
         /// </summary>
-        static private void DrawTerrain(string terrainName, Matrix worldTransforms, bool isShadow, bool isOutline)
+        static private void DrawTerrain(string terrainName, Matrix worldTransforms, bool isShadow, bool isOutline, Vector3 overlayColor, float overlayColorWeight)
         {
             TerrainDescription heightmap = LookupTerrain(terrainName);
 
@@ -627,7 +685,7 @@ namespace GraphicsLibrary
             else
             {
                 string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "TerrainCelShade" : "Phong");
-                DrawTerrainHeightMap(heightmap, techniqueName, worldTransforms);
+                DrawTerrainHeightMap(heightmap, techniqueName, worldTransforms, overlayColor, overlayColorWeight);
             }
         }
 
@@ -654,7 +712,7 @@ namespace GraphicsLibrary
         /// <summary>
         /// Sets all effects for current mesh and renders to screen.
         /// </summary>
-        static private void DrawMesh(ModelMesh mesh, string techniqueName, Matrix[] boneTransforms, Matrix worldTransforms)
+        static private void DrawMesh(ModelMesh mesh, string techniqueName, Matrix[] boneTransforms, Matrix worldTransforms, Vector3 overlayColor, float overlayColorWeight)
         {
             foreach (SkinnedEffect effect in mesh.Effects)
             {
@@ -677,6 +735,9 @@ namespace GraphicsLibrary
                 effect.Parameters["xDirLightDiffuseColor"].SetValue(mLightDiffuseColor);
                 effect.Parameters["xDirLightSpecularColor"].SetValue(mLightSpecularColor);
                 effect.Parameters["xDirLightAmbientColor"].SetValue(mLightAmbientColor);
+
+                effect.Parameters["xOverlayColor"].SetValue(overlayColor);
+                effect.Parameters["xOverlayColorWeight"].SetValue(overlayColorWeight);
 
                 effect.SpecularColor = new Vector3(0.25f);
                 effect.SpecularPower = 16;
@@ -711,7 +772,7 @@ namespace GraphicsLibrary
         /// <summary>
         /// Sets effect for current terrain and renders to screen.
         /// </summary>
-        static private void DrawTerrainHeightMap(TerrainDescription heightMap, string techniqueName, Matrix worldTransforms)
+        static private void DrawTerrainHeightMap(TerrainDescription heightMap, string techniqueName, Matrix worldTransforms, Vector3 overlayColor, float overlayColorWeight)
         {
             mTerrainShader.Texture = heightMap.TextureHigh;
 
@@ -730,6 +791,9 @@ namespace GraphicsLibrary
             mTerrainShader.Parameters["xDirLightDiffuseColor"].SetValue(mLightDiffuseColor);
             mTerrainShader.Parameters["xDirLightSpecularColor"].SetValue(mLightSpecularColor);
             mTerrainShader.Parameters["xDirLightAmbientColor"].SetValue(mLightAmbientColor);
+
+            mTerrainShader.Parameters["xOverlayColor"].SetValue(overlayColor);
+            mTerrainShader.Parameters["xOverlayColorWeight"].SetValue(overlayColorWeight);
 
             mTerrainShader.SpecularColor = new Vector3(0.25f);
             mTerrainShader.SpecularPower = 16;

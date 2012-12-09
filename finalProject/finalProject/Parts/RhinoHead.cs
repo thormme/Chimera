@@ -43,7 +43,8 @@ namespace finalProject.Parts
                         new Vector3(1.0f)
                     )
                 },
-                false
+                false,
+                new Sprite("rhinoIcon")
             )
         {
         }
@@ -108,7 +109,7 @@ namespace finalProject.Parts
 
         public override void TryPlayAnimation(string animationName, bool isSaturated)
         {
-            if (mRunTimer > 0.0f)
+            if (mRunTimer < 0.0f && animationName != "jump")
             {
                 PlayAnimation(animationName, isSaturated);
             }

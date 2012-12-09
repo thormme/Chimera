@@ -24,6 +24,11 @@ namespace GraphicsLibrary
         float GetFarPlaneDistance();
 
         /// <summary>
+        /// Distance of the near plance from camera.
+        /// </summary>
+        float GetNearPlaneDistance();
+
+        /// <summary>
         /// Sets distance of far plane from camera.
         /// </summary>
         void SetFarPlaneDistance(float value);

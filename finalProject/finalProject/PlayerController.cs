@@ -39,11 +39,6 @@ namespace finalProject
         private GamePadThumbStickInputAction mLookForward;
         private GamePadThumbStickInputAction mLookRight;
 
-        private KeyInputAction mLookForwardKey;
-        private KeyInputAction mLookBackwardKey;
-        private KeyInputAction mLookRightKey;
-        private KeyInputAction mLookLeftKey;
-
         private MouseMovementInputAction mLookForwardMouse;
         private MouseMovementInputAction mLookRightMouse;
 
@@ -87,11 +82,13 @@ namespace finalProject
         public PlayerController(Viewport viewPort) 
         {
             mCamera = new ChaseCamera(viewPort);
-            mCamera.DesiredPositionLocal = new Vector3(0.0f, 2.0f, 5.0f);
-            mCamera.LookAtLocal = new Vector3(0.0f, 0.75f, 0.0f);
+            mCamera.DesiredPositionLocal = new Vector3(0.0f, 2.0f, 10.0f);
+            mCamera.LookAtLocal = new Vector3(0.0f, 1.5f, 0.0f);
             mCamera.TargetDirection = Vector3.Forward;
             mCamera.MaxRopeLengthSquared = mCamera.DesiredPositionLocal.LengthSquared();
             mCamera.MinRopeLengthSquared = mCamera.MaxRopeLengthSquared * 0.75f;
+
+            mCamera.TrackTarget = true;
 
             mMoveForward  = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.Y, GamePadDeadZone.Circular, -0.2f, 0.2f);
             mMoveRight    = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.X, GamePadDeadZone.Circular, -0.2f, 0.2f);
@@ -104,13 +101,8 @@ namespace finalProject
             mMoveRightKey    = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.D);
             mMoveLeftKey     = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.A);
 
-            mLookForwardMouse  = new MouseMovementInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.MouseAxis.Y, 4.0f, 0.5f, 1.0f);
-            mLookRightMouse    = new MouseMovementInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.MouseAxis.X, 4.0f, 0.5f, 1.0f);
-
-            mLookForwardKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Up);
-            mLookBackwardKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Down);
-            mLookRightKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Right);
-            mLookLeftKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Left);
+            mLookForwardMouse  = new MouseMovementInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.MouseAxis.Y, 4.0f, 0f, 0f);
+            mLookRightMouse    = new MouseMovementInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.MouseAxis.X, 4.0f, 0f, 0f);
 
             mPressPart1 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.X);
             mPressPart2 = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.Y);
@@ -186,11 +178,6 @@ namespace finalProject
 
             mLookForwardMouse.Destroy();
             mLookRightMouse.Destroy();
-
-            mLookForwardKey.Destroy();
-            mLookBackwardKey.Destroy();
-            mLookRightKey.Destroy();
-            mLookLeftKey.Destroy();
 
             mPressPart1.Destroy();
             mPressPart2.Destroy();
@@ -274,20 +261,20 @@ namespace finalProject
             }
 
             // Parse look input.
-            bool lookForwardActive = mLookForward.Active;
+            bool lookForwardActive = false;// mLookForward.Active;
             float lookForwardDegree = mLookForward.Degree;
             if (lookForwardActive == false)
             {
-                lookForwardActive = mLookForwardKey.Active || mLookBackwardKey.Active;
-                lookForwardDegree = mLookForwardKey.Degree - mLookBackwardKey.Degree;
+                lookForwardActive = mLookForwardMouse.Active;
+                lookForwardDegree = -mLookForwardMouse.Degree;
             }
 
-            bool lookRightActive = mLookRight.Active;
+            bool lookRightActive = false;// mLookRight.Active;
             float lookRightDegree = mLookRight.Degree;
             if (lookRightActive == false)
             {
-                lookRightActive = mLookRightKey.Active || mLookLeftKey.Active;
-                lookRightDegree = mLookRightKey.Degree - mLookLeftKey.Degree;
+                lookRightActive = mLookRightMouse.Active;
+                lookRightDegree = mLookRightMouse.Degree;
             }
 
             // Rotating camera.

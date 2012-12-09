@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysicsDrawer.Models;
-using System;
 using finalProject.Parts;
 using finalProject.Creatures;
 using BEPUphysics.CollisionRuleManagement;
@@ -16,7 +15,10 @@ using BEPUphysics.Entities;
 using System.Collections.Generic;
 using finalProject.Projectiles;
 using GameConstructLibrary.Menu;
+using System;
 using System.IO;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace finalProject
 {
@@ -48,14 +50,20 @@ namespace finalProject
 
         public static ICamera Camera;
 
+        private Sprite mSprite = new Sprite("test_tex");
+
         public Game1()
         {
             Graphics = new GraphicsDeviceManager(this);
+            Graphics.PreferredBackBufferWidth = 1280;
+            Graphics.PreferredBackBufferHeight = 720;
+            Graphics.ToggleFullScreen();
+
             Content.RootDirectory = "Content";
 
-            forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.W);
-            celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F2);
-            mouseLock = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Tab);
+            forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.W);
+            celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.F2);
+            mouseLock = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Tab);
 
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
@@ -87,6 +95,10 @@ namespace finalProject
             GraphicsManager.CastingShadows = true;
             GraphicsManager.DebugVisualization = false;
 
+            IntPtr ptr = this.Window.Handle;
+            System.Windows.Forms.Form form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(ptr);
+            form.Size = new System.Drawing.Size(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
+
             base.Initialize();
         }
 
@@ -107,13 +119,13 @@ namespace finalProject
 
                 World world = new World(DebugModelDrawer);
             
-                world.AddLevelFromFile("tree_39", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+                world.AddLevelFromFile("tree_45", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
                 mGameStates.Add(world);
 
                 GameMenu menu = new GameMenu();
-                Rectangle rect = new Rectangle(0, 0, 200, 200);
-                Button button = new Button(rect, new Button.ButtonAction(StartGame));
+                Rectangle rect = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 200);
+                GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
                 menu.Add(button);
 
                 //PushState(menu);
@@ -128,7 +140,7 @@ namespace finalProject
             }
         }
 
-        private void StartGame(Button button)
+        private void StartGame(GameConstructLibrary.Menu.Button button)
         {
             PopState();
         }
@@ -168,7 +180,7 @@ namespace finalProject
 
             if (mouseLock.Active)
             {
-                //InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
+                InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
                 if (mGameStates[mGameStates.Count - 1] is World)
                 {
                     foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
@@ -177,7 +189,7 @@ namespace finalProject
                         if (player != null)
                         {
                             //player.Damage(100, null);
-
+                            player.Position = player.SpawnOrigin;
                             int i = 0;
                             player.AddPart(new BearArms(), i++);
                             player.AddPart(new RhinoHead(), i++);
@@ -191,7 +203,9 @@ namespace finalProject
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new EagleWings(), i++);
-                            //player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new EagleWings(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
+                            //player.AddPart(new PenguinLimbs(), i++);
 
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
                         }
@@ -239,10 +253,14 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsManager.BeginRendering();
+
             if (mGameStates.Count > 0)
             {
                 mGameStates[mGameStates.Count - 1].Render();
             }
+
+            GraphicsManager.FinishRendering();
 
             // DEBUG
             if (debugMode)
@@ -252,8 +270,6 @@ namespace finalProject
             // END
 
             base.Draw(gameTime);
-
-            
         }
 
         /// <summary>

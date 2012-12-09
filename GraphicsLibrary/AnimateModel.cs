@@ -92,7 +92,7 @@ namespace GraphicsLibrary
                 AnimationClip clip;
                 if (!SkinningData.AnimationClips.TryGetValue(animationName, out clip))
                 {
-                    throw new InvalidTimeZoneException(animationName + " is not a valid animation for " + mModelName);
+                    throw new Exception(animationName + " is not a valid animation for " + mModelName);
                 }
 
                 AnimationPlayer.StartClip(clip, isSaturated);
@@ -112,10 +112,10 @@ namespace GraphicsLibrary
         /// Draws animated model to the screen.
         /// </summary>
         /// <param name="worldTransform">Transformation of model in to place in world space.</param>
-        protected override void Draw(Matrix worldTransform)
+        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
             Matrix[] skinTransforms = AnimationPlayer.GetSkinTransforms();
-            GraphicsManager.RenderSkinnedModel(mModelName, skinTransforms, worldTransform);
+            GraphicsManager.RenderSkinnedModel(mModelName, skinTransforms, worldTransform, overlayColor, overlayColorWeight);
         }
 
         #endregion
