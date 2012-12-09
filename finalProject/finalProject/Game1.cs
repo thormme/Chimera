@@ -32,12 +32,12 @@ namespace finalProject
         private InputAction forward;
         private KeyInputAction celShading;
         private KeyInputAction mouseLock;
-        private KeyInputAction pause = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Pause);
+        private KeyInputAction pause = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Pause);
 
         // DEBUG
         private ModelDrawer DebugModelDrawer;
-        private KeyInputAction debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.F1);
-        private KeyInputAction debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemTilde);
+        private KeyInputAction debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.F1);
+        private KeyInputAction debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.OemTilde);
         bool debugMode = false;
         // END
 
@@ -124,7 +124,7 @@ namespace finalProject
                 mGameStates.Add(world);
 
                 GameMenu menu = new GameMenu();
-                Rectangle rect = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 200);
+                Microsoft.Xna.Framework.Rectangle rect = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 200);
                 GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
                 menu.Add(button);
 
@@ -221,7 +221,7 @@ namespace finalProject
             }
 
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 this.Exit();
 
             InputAction.Update();
