@@ -54,7 +54,7 @@ namespace GraphicsLibrary
         static private int mEdgeWidth = 1;
         static private int mEdgeIntensity = 1;
         static private int mShadowMapLength = 4096;
-        static private int mShadowFarClip = 128;
+        static private int mShadowFarClip = 512;
 
         static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
         static private char[] mDelimeterChars = {' '};

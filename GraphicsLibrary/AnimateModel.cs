@@ -92,7 +92,7 @@ namespace GraphicsLibrary
                 AnimationClip clip;
                 if (!SkinningData.AnimationClips.TryGetValue(animationName, out clip))
                 {
-                    throw new InvalidTimeZoneException(animationName + " is not a valid animation for " + mModelName);
+                    throw new Exception(animationName + " is not a valid animation for " + mModelName);
                 }
 
                 AnimationPlayer.StartClip(clip, isSaturated);
