@@ -36,7 +36,8 @@ namespace finalProject.Parts
                         new Vector3(1.0f)
                     )
                 },
-                false
+                false,
+                new Sprite("frogIcon")
             )
         {
             //(mRenderable as AnimateModel).PlayAnimation("Take 001");

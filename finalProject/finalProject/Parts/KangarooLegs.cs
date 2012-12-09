@@ -67,7 +67,8 @@ namespace finalProject.Parts
                         new Vector3(1.0f)
                     )
                 },
-                true
+                true,
+                new Sprite("kangarooIcon")
             )
         {
         }

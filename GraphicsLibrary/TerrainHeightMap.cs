@@ -194,7 +194,7 @@ namespace GameConstructLibrary
         public void FixHeightMap(TerrainHeightMap copy)
         {
             mDevice = copy.mDevice;
-            mMap = new Texture2D(copy.mMap.GraphicsDevice, copy.mMap.Width, copy.mMap.Height);
+            mMap = new Texture2D(copy.mMap.GraphicsDevice, copy.mWidth, copy.mHeight);
             Microsoft.Xna.Framework.Color[] destinationColorData = new Microsoft.Xna.Framework.Color[copy.mWidth * copy.mHeight];
             copy.mMap.GetData<Microsoft.Xna.Framework.Color>(destinationColorData);
             mMap.SetData<Microsoft.Xna.Framework.Color>(destinationColorData);
@@ -377,9 +377,25 @@ namespace GameConstructLibrary
 
         public void Resize(int width, int height)
         {
+
             mWidth = width;
             mHeight = height;
+
+            Microsoft.Xna.Framework.Rectangle sourceRectangle = new Microsoft.Xna.Framework.Rectangle(0, 0, mWidth, mHeight);
+            Microsoft.Xna.Framework.Color[] retrievedColor = new Microsoft.Xna.Framework.Color[mWidth * mHeight];
+
+            mMap.GetData<Microsoft.Xna.Framework.Color>(
+                0,
+                sourceRectangle,
+                retrievedColor,
+                0,
+                mWidth * mHeight);
+
+            mMap = new Texture2D(mDevice, mWidth, mHeight);
+            mMap.SetData<Microsoft.Xna.Framework.Color>(retrievedColor);
+
             LoadData(true);
+
         }
 
         public void Save(string file)

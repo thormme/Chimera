@@ -30,7 +30,10 @@ namespace GameConstructLibrary
         public Projectile(Renderable renderable, Entity entity, Actor owner, Vector3 direction, float speed, Vector3 scale) :
             base(renderable, entity)
         {
-            direction.Normalize();
+            if (direction.Length() != 0.0f)
+            {
+                direction.Normalize();
+            }
 
             CheckHits = true;
             StuckEntity = null;

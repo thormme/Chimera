@@ -39,7 +39,8 @@ namespace finalProject.Parts
                         new Vector3(0.02f)
                     )
                 },
-                false
+                false,
+                new Sprite("cobraIcon")
             )
         { }
 

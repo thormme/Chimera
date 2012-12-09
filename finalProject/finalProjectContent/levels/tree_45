@@ -31,7 +31,7 @@
       <Z>6.847516</Z>
     </Position>
     <Orientation>
-      <X>0</X>
+      <X>1.20000017</X>
       <Y>0</Y>
       <Z>0</Z>
     </Orientation>
@@ -52,7 +52,7 @@
       <Z>8.038664</Z>
     </Position>
     <Orientation>
-      <X>1.81746423</X>
+      <X>3.01746321</X>
       <Y>0</Y>
       <Z>0</Z>
     </Orientation>
@@ -510,11 +510,32 @@
     <Parameters />
     <Position>
       <X>3.68184</X>
-      <Y>20006.6953</Y>
+      <Y>19276.6953</Y>
       <Z>4.297964</Z>
     </Position>
     <Orientation>
       <X>-1.30000019</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>50</X>
+      <Y>10000</Y>
+      <Z>50</Z>
+    </Scale>
+    <Height>19270</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock3dark</Model>
+    <Parameters />
+    <Position>
+      <X>1.71728134</X>
+      <Y>20077.71</Y>
+      <Z>3.78327465</Z>
+    </Position>
+    <Orientation>
+      <X>1.60000014</X>
       <Y>0</Y>
       <Z>0</Z>
     </Orientation>
@@ -530,29 +551,8 @@
     <Model>rock3dark</Model>
     <Parameters />
     <Position>
-      <X>1.71728134</X>
-      <Y>21077.71</Y>
-      <Z>3.78327465</Z>
-    </Position>
-    <Orientation>
-      <X>1.60000014</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>50</X>
-      <Y>10000</Y>
-      <Z>50</Z>
-    </Scale>
-    <Height>21000</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock3dark</Model>
-    <Parameters />
-    <Position>
       <X>6.477639</X>
-      <Y>21716.4512</Y>
+      <Y>21426.4512</Y>
       <Z>0.214133263</Z>
     </Position>
     <Orientation>
@@ -565,7 +565,7 @@
       <Y>20000</Y>
       <Z>125</Z>
     </Scale>
-    <Height>21710</Height>
+    <Height>21420</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
@@ -657,7 +657,7 @@
     <Parameters />
     <Position>
       <X>-5.61925125</X>
-      <Y>22500</Y>
+      <Y>22390</Y>
       <Z>-22.2850132</Z>
     </Position>
     <Orientation>
@@ -670,7 +670,7 @@
       <Y>10000</Y>
       <Z>50</Z>
     </Scale>
-    <Height>22500</Height>
+    <Height>22390</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
@@ -678,7 +678,7 @@
     <Parameters />
     <Position>
       <X>0.6168289</X>
-      <Y>21074.83</Y>
+      <Y>20784.83</Y>
       <Z>-10.6951962</Z>
     </Position>
     <Orientation>
@@ -691,7 +691,7 @@
       <Y>150000</Y>
       <Z>187.5</Z>
     </Scale>
-    <Height>20000</Height>
+    <Height>19710</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
@@ -909,7 +909,7 @@
     <Parameters />
     <Position>
       <X>39.7274628</X>
-      <Y>10070</Y>
+      <Y>11650</Y>
       <Z>13.4289246</Z>
     </Position>
     <Orientation>
@@ -922,7 +922,7 @@
       <Y>100</Y>
       <Z>0.125</Z>
     </Scale>
-    <Height>-930.000061</Height>
+    <Height>650</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Spawner, finalProject</Type>
@@ -1006,32 +1006,6 @@
     <Type>finalProject.Spawner, finalProject</Type>
     <Model>box</Model>
     <Parameters>
-      <string>Penguin</string>
-      <string>1</string>
-      <string>0</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>-38.7227936</X>
-      <Y>22000</Y>
-      <Z>-35.50431</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
       <string>Eagle</string>
       <string>1</string>
       <string>0</string>
@@ -1041,32 +1015,6 @@
       <X>-32.7113</X>
       <Y>20000</Y>
       <Z>29.7775726</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>Eagle</string>
-      <string>1</string>
-      <string>0</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>-37.08976</X>
-      <Y>20000</Y>
-      <Z>27.6647072</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -1105,134 +1053,6 @@
       <Z>1.25</Z>
     </Scale>
     <Height>-840</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>Frog</string>
-      <string>1</string>
-      <string>0</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>38.5333176</X>
-      <Y>10000</Y>
-      <Z>31.6501656</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>Frog</string>
-      <string>1</string>
-      <string>0</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>33.000042</X>
-      <Y>10000</Y>
-      <Z>36.5323563</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>Frog</string>
-      <string>1</string>
-      <string>0</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>25.50898</X>
-      <Y>10000</Y>
-      <Z>38.38793</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>Kangaroo</string>
-      <string>1</string>
-      <string>0</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>41.9165039</X>
-      <Y>6000</Y>
-      <Z>-1.846611</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.GoalPoint, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>null</string>
-      <string>PenguinLimbs</string>
-    </Parameters>
-    <Position>
-      <X>38.03768</X>
-      <Y>438.411865</Y>
-      <Z>-14.5497913</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>2.5</X>
-      <Y>2000</Y>
-      <Z>2.5</Z>
-    </Scale>
-    <Height>260</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.PlayerCreature, finalProject</Type>
@@ -1513,7 +1333,7 @@
     <Parameters />
     <Position>
       <X>14.8446369</X>
-      <Y>885.9558</Y>
+      <Y>823.364258</Y>
       <Z>-31.2187824</Z>
     </Position>
     <Orientation>
@@ -1891,7 +1711,7 @@
     <Parameters />
     <Position>
       <X>-19.3812561</X>
-      <Y>4616.962</Y>
+      <Y>4286.962</Y>
       <Z>-7.24984837</Z>
     </Position>
     <Orientation>
@@ -1904,7 +1724,7 @@
       <Y>20420.8438</Y>
       <Z>25.5260544</Z>
     </Scale>
-    <Height>800</Height>
+    <Height>470</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
@@ -1912,7 +1732,7 @@
     <Parameters />
     <Position>
       <X>-18.2422943</X>
-      <Y>4475.446</Y>
+      <Y>4145.446</Y>
       <Z>-8.731569</Z>
     </Position>
     <Orientation>
@@ -1925,7 +1745,7 @@
       <Y>16714.5215</Y>
       <Z>20.8931522</Z>
     </Scale>
-    <Height>800</Height>
+    <Height>470</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
@@ -1954,7 +1774,7 @@
     <Parameters />
     <Position>
       <X>-6.46228456</X>
-      <Y>2893.58521</Y>
+      <Y>2673.58521</Y>
       <Z>-7.322446</Z>
     </Position>
     <Orientation>
@@ -1967,7 +1787,7 @@
       <Y>23050.418</Y>
       <Z>28.81302</Z>
     </Scale>
-    <Height>800</Height>
+    <Height>580</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
@@ -2765,58 +2585,6 @@
     <Type>finalProject.Spawner, finalProject</Type>
     <Model>box</Model>
     <Parameters>
-      <string>Cheetah</string>
-      <string>1</string>
-      <string>0</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>-33.7647743</X>
-      <Y>16060.2607</Y>
-      <Z>16.98209</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>Turtle</string>
-      <string>1</string>
-      <string>0</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>36.53004</X>
-      <Y>10000</Y>
-      <Z>27.1933365</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
       <string>Rhino</string>
       <string>1</string>
       <string>0</string>
@@ -2888,48 +2656,6 @@
       <X>1.25</X>
       <Y>1000</Y>
       <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock3dark</Model>
-    <Parameters />
-    <Position>
-      <X>-48.00901</X>
-      <Y>0</Y>
-      <Z>-11.8005724</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>50</X>
-      <Y>200000</Y>
-      <Z>500</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock3dark</Model>
-    <Parameters />
-    <Position>
-      <X>47.5044479</X>
-      <Y>0</Y>
-      <Z>-10.4194708</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>50</X>
-      <Y>200000</Y>
-      <Z>500</Z>
     </Scale>
     <Height>0</Height>
   </DummyObject>
@@ -3018,18 +2744,333 @@
     <Height>14600</Height>
   </DummyObject>
   <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock3dark</Model>
+    <Parameters />
+    <Position>
+      <X>6.0927887</X>
+      <Y>14006.5244</Y>
+      <Z>0.09430885</Z>
+    </Position>
+    <Orientation>
+      <X>1.20000017</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>50</X>
+      <Y>10000</Y>
+      <Z>50</Z>
+    </Scale>
+    <Height>14000</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>cactus1</Model>
+    <Parameters />
+    <Position>
+      <X>33.4820328</X>
+      <Y>6355.70068</Y>
+      <Z>-4.179714</Z>
+    </Position>
+    <Orientation>
+      <X>1.27407634</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>3.54133368</X>
+      <Y>2833.067</Y>
+      <Z>3.54133368</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>cactus1</Model>
+    <Parameters />
+    <Position>
+      <X>33.2631378</X>
+      <Y>6401.2085</Y>
+      <Z>-3.36599874</Z>
+    </Position>
+    <Orientation>
+      <X>3.17379475</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>5.04734755</X>
+      <Y>4037.87817</Y>
+      <Z>5.04734755</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>cactus1</Model>
+    <Parameters />
+    <Position>
+      <X>36.59815</X>
+      <Y>6394.23242</Y>
+      <Z>-15.3978081</Z>
+    </Position>
+    <Orientation>
+      <X>0.5985143</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>3.91659379</X>
+      <Y>3133.27515</Y>
+      <Z>3.91659379</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>cactus1</Model>
+    <Parameters />
+    <Position>
+      <X>37.7548752</X>
+      <Y>6448.401</Y>
+      <Z>-15.7434273</Z>
+    </Position>
+    <Orientation>
+      <X>2.314458</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>2.372151</X>
+      <Y>1897.7207</Y>
+      <Z>2.372151</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>cactus1</Model>
+    <Parameters />
+    <Position>
+      <X>37.4559174</X>
+      <Y>6410.27246</Y>
+      <Z>-14.6968288</Z>
+    </Position>
+    <Orientation>
+      <X>4.7195363</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>5.508803</X>
+      <Y>4407.04248</Y>
+      <Z>5.508803</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>cactus1</Model>
+    <Parameters />
+    <Position>
+      <X>43.6558838</X>
+      <Y>6052.0083</Y>
+      <Z>-5.8010025</Z>
+    </Position>
+    <Orientation>
+      <X>1.0277642</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>3.50875187</X>
+      <Y>2807.00146</Y>
+      <Z>3.50875187</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>shrub1</Model>
+    <Parameters />
+    <Position>
+      <X>43.950058</X>
+      <Y>6056.349</Y>
+      <Z>-6.26704836</Z>
+    </Position>
+    <Orientation>
+      <X>4.098981</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>5.11655</X>
+      <Y>4093.24</Y>
+      <Z>5.11655</Z>
+    </Scale>
+    <Height>-20</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>shrub1</Model>
+    <Parameters />
+    <Position>
+      <X>44.1304169</X>
+      <Y>5911.65527</Y>
+      <Z>-5.334875</Z>
+    </Position>
+    <Orientation>
+      <X>5.241808</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>10.9189234</X>
+      <Y>8735.139</Y>
+      <Z>10.9189234</Z>
+    </Scale>
+    <Height>-160</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>shrub1</Model>
+    <Parameters />
+    <Position>
+      <X>32.1974945</X>
+      <Y>5804.12256</Y>
+      <Z>-13.01552</Z>
+    </Position>
+    <Orientation>
+      <X>2.121001</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>25</X>
+      <Y>20000</Y>
+      <Z>25</Z>
+    </Scale>
+    <Height>-240</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>shrub1</Model>
+    <Parameters />
+    <Position>
+      <X>37.79546</X>
+      <Y>5860.829</Y>
+      <Z>-0.286556244</Z>
+    </Position>
+    <Orientation>
+      <X>5.97237158</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>20</X>
+      <Y>16000</Y>
+      <Z>20</Z>
+    </Scale>
+    <Height>-170</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>deadTree2</Model>
+    <Parameters />
+    <Position>
+      <X>44.3092575</X>
+      <Y>6290.15625</Y>
+      <Z>-14.659729</Z>
+    </Position>
+    <Orientation>
+      <X>1.51574636</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>115.836136</X>
+      <Y>92668.9141</Y>
+      <Z>115.836136</Z>
+    </Scale>
+    <Height>-170.000015</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock3light</Model>
+    <Parameters />
+    <Position>
+      <X>43.2626953</X>
+      <Y>6393.811</Y>
+      <Z>-15.6514015</Z>
+    </Position>
+    <Orientation>
+      <X>5.1381073</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>20</X>
+      <Y>16000</Y>
+      <Z>20</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock3light</Model>
+    <Parameters />
+    <Position>
+      <X>30.11246</X>
+      <Y>6364.53857</Y>
+      <Z>-0.540351868</Z>
+    </Position>
+    <Orientation>
+      <X>1.77618837</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>27.8516541</X>
+      <Y>22281.3242</Y>
+      <Z>27.8516541</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock3light</Model>
+    <Parameters />
+    <Position>
+      <X>29.4802265</X>
+      <Y>6397.43066</Y>
+      <Z>-2.02130055</Z>
+    </Position>
+    <Orientation>
+      <X>4.16251659</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>20.4166527</X>
+      <Y>16333.3223</Y>
+      <Z>20.4166527</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
     <Type>finalProject.Spawner, finalProject</Type>
     <Model>box</Model>
     <Parameters>
-      <string>Cheetah</string>
+      <string>Frog</string>
       <string>1</string>
       <string>0</string>
       <string>1</string>
     </Parameters>
     <Position>
-      <X>18.5090771</X>
-      <Y>0</Y>
-      <Z>-13.9324589</Z>
+      <X>26.9016113</X>
+      <Y>10000</Y>
+      <Z>37.68518</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -3042,5 +3083,78 @@
       <Z>1.25</Z>
     </Scale>
     <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Spawner, finalProject</Type>
+    <Model>box</Model>
+    <Parameters>
+      <string>Frog</string>
+      <string>1</string>
+      <string>0</string>
+      <string>1</string>
+    </Parameters>
+    <Position>
+      <X>40.2197571</X>
+      <Y>10000</Y>
+      <Z>25.3958778</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>1.25</X>
+      <Y>1000</Y>
+      <Z>1.25</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Spawner, finalProject</Type>
+    <Model>box</Model>
+    <Parameters>
+      <string>Turtle</string>
+      <string>1</string>
+      <string>0</string>
+      <string>1</string>
+    </Parameters>
+    <Position>
+      <X>37.35741</X>
+      <Y>10000</Y>
+      <Z>32.8251877</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>1.25</X>
+      <Y>1000</Y>
+      <Z>1.25</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>leaf</Model>
+    <Parameters />
+    <Position>
+      <X>-23.5988579</X>
+      <Y>28000</Y>
+      <Z>22.0114136</Z>
+    </Position>
+    <Orientation>
+      <X>3.2</X>
+      <Y>-1.6</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>87.5</X>
+      <Y>70000</Y>
+      <Z>87.5</Z>
+    </Scale>
+    <Height>28000</Height>
   </DummyObject>
 </object>
