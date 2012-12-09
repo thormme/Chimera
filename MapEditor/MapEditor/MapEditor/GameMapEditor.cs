@@ -171,7 +171,7 @@ namespace MapEditor
         public static void Pressed()
         {
 
-            Editor.AddState(Map);
+            
 
             MouseState mouse = Mouse.GetState();
 
@@ -180,6 +180,7 @@ namespace MapEditor
             {
                 if (Placeable)
                 {
+                    Editor.AddState(Map);
                     if (EditMode == Edit.Object)
                     {
                         Map.AddObject();

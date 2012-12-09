@@ -274,7 +274,9 @@ namespace finalProject
             }
 
             // Parse look input.
+            //bool lookForwardActive = mLookForwardMouse.Active;
             bool lookForwardActive = mLookForward.Active;
+            //float lookForwardDegree = mLookForwardMouse.Degree;
             float lookForwardDegree = mLookForward.Degree;
             if (lookForwardActive == false)
             {
@@ -282,7 +284,9 @@ namespace finalProject
                 lookForwardDegree = mLookForwardKey.Degree - mLookBackwardKey.Degree;
             }
 
+            //bool lookRightActive = mLookRightMouse.Active;
             bool lookRightActive = mLookRight.Active;
+            //float lookRightDegree = mLookRightMouse.Degree;
             float lookRightDegree = mLookRight.Degree;
             if (lookRightActive == false)
             {

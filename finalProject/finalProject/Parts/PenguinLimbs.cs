@@ -62,7 +62,8 @@ namespace finalProject.Parts
                         new Vector3(1.0f)
                     )
                 },
-                false
+                false,
+                new Sprite("penguinIcon")
             )
         {
             mHasTraction = true;

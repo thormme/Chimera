@@ -553,7 +553,8 @@ namespace finalProject
         {
             if (mRenderable != null)
             {
-                mRenderable.Render(GetRenderTransform());
+                //mRenderable.Render(GetRenderTransform());
+                mRenderable.Render(GetRenderTransform(), Color.Red, (float)(0.5f * mShieldRechargeTimer / ShieldRechargeLength));
             }
             RenderParts();
         }
