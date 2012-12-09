@@ -98,7 +98,7 @@ namespace finalProject
         protected const double DefaultStunLength = 3.0f;
         protected double mStunTimer = -1.0f;
 
-        protected const double ShieldRechargeLength = 10.0f;
+        protected const double ShieldRechargeLength = 6.0f;
         protected double mShieldRechargeTimer = -1.0f;
         protected bool mShield = true;
 

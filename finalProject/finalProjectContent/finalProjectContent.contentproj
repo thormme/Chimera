@@ -884,11 +884,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\blueButton.png">
-      <Name>blueButton</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="textures\sprites\cheetahIcon.png">
       <Name>cheetahIcon</Name>
       <Importer>TextureImporter</Importer>
@@ -924,11 +919,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\redButton.png">
-      <Name>redButton</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="textures\sprites\rhinoIcon.png">
       <Name>rhinoIcon</Name>
       <Importer>TextureImporter</Importer>
@@ -936,6 +926,16 @@
     </Compile>
     <Compile Include="textures\sprites\turtleIcon.png">
       <Name>turtleIcon</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\blueButton.png">
+      <Name>blueButton</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\redButton.png">
+      <Name>redButton</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

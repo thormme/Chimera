@@ -57,6 +57,7 @@ namespace finalProject
             Graphics = new GraphicsDeviceManager(this);
             Graphics.PreferredBackBufferWidth = 1280;
             Graphics.PreferredBackBufferHeight = 720;
+            Graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
 
@@ -179,7 +180,7 @@ namespace finalProject
 
             if (mouseLock.Active)
             {
-                //InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
+                InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
                 if (mGameStates[mGameStates.Count - 1] is World)
                 {
                     foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
