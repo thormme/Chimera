@@ -109,16 +109,16 @@ namespace finalProject
 
                 World world = new World(DebugModelDrawer);
             
-            world.AddLevelFromFile("tree_45", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+                world.AddLevelFromFile("tonguetest", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
                 mGameStates.Add(world);
 
                 GameMenu menu = new GameMenu();
                 Rectangle rect = new Rectangle(0, 0, 200, 200);
-                Button button = new Button(rect, new Button.ButtonAction(StartGame));
+                Button button = new Button(rect, new Sprite("test_tex"), new Button.ButtonAction(StartGame));
                 menu.Add(button);
 
-                //PushState(menu);
+                PushState(menu);
             }
             catch (Exception e) 
             {
@@ -170,8 +170,8 @@ namespace finalProject
 
             if (mouseLock.Active)
             {
-                //InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
-                if (mGameStates[mGameStates.Count - 1] is World)
+                InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
+                /*if (mGameStates[mGameStates.Count - 1] is World)
                 {
                     foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
                     {
@@ -199,7 +199,7 @@ namespace finalProject
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
                         }
                     }
-                }
+                }*/
             }
 
             FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using GraphicsLibrary;
 
 namespace GameConstructLibrary.Menu
 {
@@ -12,13 +13,13 @@ namespace GameConstructLibrary.Menu
         public delegate void ButtonAction(Button button);
 
         public Rectangle Bounds;
-        //Sprite mSprite;
+        Sprite mSprite;
         ButtonAction mAction;
 
-        public Button(Rectangle bounds, /*Sprite sprite, */ButtonAction action)
+        public Button(Rectangle bounds, Sprite sprite, ButtonAction action)
         {
             Bounds = bounds;
-            //mSprite = size;
+            mSprite = sprite;
             mAction = action;
         }
 
@@ -29,13 +30,18 @@ namespace GameConstructLibrary.Menu
                 Mouse.GetState().Y > Bounds.Y && Mouse.GetState().Y < Bounds.X + Bounds.Height &&
                 Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
-                mAction(this);
+                Use();
             }
+        }
+
+        public void Use()
+        {
+            mAction(this);
         }
 
         public void Render()
         {
-            //mSprite.Render(Bounds);
+            mSprite.Render(Bounds);
         }
 
         public GameMenu Menu { get; set; }
