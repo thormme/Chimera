@@ -142,7 +142,7 @@ namespace finalProject.Parts
                     totalImpulse += c.NormalImpulse;
                 }
 
-                System.Console.WriteLine(totalImpulse);
+                //Console.WriteLine(totalImpulse);
                 Creature creature = (other.Tag as CharacterSynchronizer).body.Tag as Creature;
                 if (totalImpulse > 150.0f)
                 {

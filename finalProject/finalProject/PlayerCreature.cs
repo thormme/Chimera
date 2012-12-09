@@ -149,7 +149,7 @@ namespace finalProject
 
         protected void Die()
         {
-            System.Console.WriteLine("Player died.");
+            ////Console.WriteLine("Player died.");
             Position = SpawnOrigin;
             mShield = true;
             Poisoned = false;
