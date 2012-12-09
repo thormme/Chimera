@@ -243,6 +243,10 @@ namespace MapEditor
             return FarPlaneDistance;
         }
 
+        public float GetNearPlaneDistance()
+        {
+            return NearPlaneDistance;
+        }
 
         public void SetFarPlaneDistance(float value)
         {

@@ -82,11 +82,13 @@ namespace finalProject
         public PlayerController(Viewport viewPort) 
         {
             mCamera = new ChaseCamera(viewPort);
-            mCamera.DesiredPositionLocal = new Vector3(0.0f, 2.0f, 5.0f);
-            mCamera.LookAtLocal = new Vector3(0.0f, 0.75f, 0.0f);
+            mCamera.DesiredPositionLocal = new Vector3(0.0f, 2.0f, 10.0f);
+            mCamera.LookAtLocal = new Vector3(0.0f, 1.5f, 0.0f);
             mCamera.TargetDirection = Vector3.Forward;
             mCamera.MaxRopeLengthSquared = mCamera.DesiredPositionLocal.LengthSquared();
             mCamera.MinRopeLengthSquared = mCamera.MaxRopeLengthSquared * 0.75f;
+
+            mCamera.TrackTarget = true;
 
             mMoveForward  = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.Y, GamePadDeadZone.Circular, -0.2f, 0.2f);
             mMoveRight    = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.X, GamePadDeadZone.Circular, -0.2f, 0.2f);
@@ -259,7 +261,7 @@ namespace finalProject
             }
 
             // Parse look input.
-            bool lookForwardActive = mLookForward.Active;
+            bool lookForwardActive = false;// mLookForward.Active;
             float lookForwardDegree = mLookForward.Degree;
             if (lookForwardActive == false)
             {
@@ -267,7 +269,7 @@ namespace finalProject
                 lookForwardDegree = -mLookForwardMouse.Degree;
             }
 
-            bool lookRightActive = mLookRight.Active;
+            bool lookRightActive = false;// mLookRight.Active;
             float lookRightDegree = mLookRight.Degree;
             if (lookRightActive == false)
             {

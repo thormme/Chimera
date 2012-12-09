@@ -140,6 +140,7 @@
     <Compile Include="AnimationClip.cs" />
     <Compile Include="AnimationPlayer.cs" />
     <Compile Include="Billboard.cs" />
+    <Compile Include="BillboardDefinition.cs" />
     <Compile Include="DirectoryManager.cs" />
     <Compile Include="ICamera.cs" />
     <Compile Include="InanimateModel.cs" />
