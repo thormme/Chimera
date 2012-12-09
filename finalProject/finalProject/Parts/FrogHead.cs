@@ -61,8 +61,6 @@ namespace finalProject.Parts
             Creature.World.Add(mTongue);
         }
 
-        
-
         public override void FinishUse(Vector3 direction)
         {
             if (Creature != null && mTongue != null)
@@ -82,5 +80,12 @@ namespace finalProject.Parts
             FinishUse(Vector3.Zero);
         }
 
+        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        {
+            if (mTongue == null && animationName != "jump")
+            {
+                PlayAnimation(animationName, isSaturated);
+            }
+        }
     }
 }
