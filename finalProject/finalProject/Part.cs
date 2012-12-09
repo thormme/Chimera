@@ -180,15 +180,7 @@ namespace finalProject
 
         public void RenderSprite(Rectangle bounds)
         {
-
-            Rectangle newBounds = new Rectangle(
-                (int)(bounds.Left - bounds.Width / 2.0f),
-                (int)(bounds.Top - bounds.Height / 2.0f),
-                (int)(bounds.Width * 2.0f),
-                (int)(bounds.Height * 2.0f)
-            );
-
-            mSprite.Render(newBounds);
+            mSprite.Render(bounds);
         }
 
         /// <summary>
