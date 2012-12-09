@@ -514,6 +514,17 @@ namespace finalProject
             return partBones;
         }
 
+        protected void PlayPartAnimation(string animation, bool isSaturating)
+        {
+            foreach (PartAttachment pa in mPartAttachments)
+            {
+                if (pa != null)
+                {
+                    pa.Part.TryPlayAnimation(animation, isSaturating);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -661,6 +672,7 @@ namespace finalProject
             if (!Immobilized)
             {
                 CharacterController.Jump();
+                PlayPartAnimation("jump", true);
             }
         }
 
@@ -676,6 +688,11 @@ namespace finalProject
                 if (direction != Vector2.Zero)
                 {
                     Forward = new Vector3(direction.X, 0.0f, direction.Y);
+                    PlayPartAnimation("walk", false);
+                }
+                else
+                {
+                    PlayPartAnimation("stand", true);
                 }
             }
         }

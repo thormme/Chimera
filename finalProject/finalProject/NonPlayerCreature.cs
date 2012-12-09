@@ -84,6 +84,7 @@ namespace finalProject
 
         protected void Die()
         {
+            mImmobilized.Reset();
             Move(Vector2.Zero);
             Incapacitated = true;
             System.Console.WriteLine(this + " died.");

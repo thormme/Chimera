@@ -81,6 +81,7 @@ namespace finalProject.Parts
 
         public override void Use(Microsoft.Xna.Framework.Vector3 direction)
         {
+            PlayAnimation("slide", true);
             mHasTraction = false;
             Creature.CharacterController.SupportFinder.MaximumSlope = 0.0f;
         }

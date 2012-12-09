@@ -79,6 +79,7 @@ namespace finalProject.Parts
                 base.Reset();
             }
 
+            PlayAnimation("attack", true);
             foreach (Creature creature in targets)
             {
                 creature.Damage(AttackDamage, Creature);
@@ -93,5 +94,13 @@ namespace finalProject.Parts
         public override void FinishUse(Vector3 direction) { }
 
         public override void Cancel() { }
+
+        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        {
+            if (animationName != "jump")
+            {
+                PlayAnimation(animationName, isSaturated);
+            }
+        }
     }
 }

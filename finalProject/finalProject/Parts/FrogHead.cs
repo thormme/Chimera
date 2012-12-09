@@ -14,7 +14,7 @@ using BEPUphysics.BroadPhaseEntries;
 
 namespace finalProject.Parts
 {
-    class FrogHead : CooldownPart
+    class FrogHead : Part
     {
 
         private const float tongueLength = 500.0f;
@@ -22,7 +22,6 @@ namespace finalProject.Parts
 
         public FrogHead()
             : base(
-                0.0,
                 new Part.SubPart[] {
                     new SubPart(
                         new AnimateModel("frog_head", "stand"),
@@ -42,7 +41,7 @@ namespace finalProject.Parts
             //(mRenderable as AnimateModel).PlayAnimation("Take 001");
         }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime time)
+        public override void Update(GameTime time)
         {
             base.Update(time);
             if (mTongue != null)
@@ -54,8 +53,9 @@ namespace finalProject.Parts
             }
         }
 
-        protected override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
+        public override void Use(Vector3 direction)
         {
+            PlayAnimation("tongue", true);
             mTongue = new FrogTongue(Creature, direction);
             Creature.World.Add(mTongue);
         }
