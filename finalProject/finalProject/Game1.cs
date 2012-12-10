@@ -42,7 +42,9 @@ namespace finalProject
         // END
 
         public static GraphicsDeviceManager Graphics;
-        SpriteBatch spriteBatch;
+        public static SpriteBatch spriteBatch;
+        private SpriteFont font;
+        public static Queue<string> tips;
 
         private static List<IGameState> mGameStates = new List<IGameState>();
         private static List<IGameState> mGameStateAddQueue = new List<IGameState>();
@@ -95,6 +97,8 @@ namespace finalProject
             GraphicsManager.CastingShadows = true;
             GraphicsManager.DebugVisualization = false;
 
+            tips = new Queue<string>();
+
             IntPtr ptr = this.Window.Handle;
             System.Windows.Forms.Form form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(ptr);
             form.Size = new System.Drawing.Size(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
@@ -111,15 +115,15 @@ namespace finalProject
             DebugModelDrawer = new InstancedModelDrawer(this);
             DebugModelDrawer.IsWireframe = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            font = Content.Load<SpriteFont>("font");
             try
             {
-                GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
+                GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, spriteBatch);
                 CollisionMeshManager.LoadContent(this.Content);
 
                 World world = new World(DebugModelDrawer);
             
-                world.AddLevelFromFile("tree_45", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+                world.AddLevelFromFile("trigger_test", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
                 mGameStates.Add(world);
 
@@ -266,6 +270,17 @@ namespace finalProject
             }
 
             GraphicsManager.FinishRendering();
+
+            float tipHeight = 20.0f;
+            spriteBatch.Begin();
+            foreach (string tip in tips)
+            {
+                spriteBatch.DrawString(font, tip, new Vector2(20.0f, tipHeight), Microsoft.Xna.Framework.Color.White);
+                tipHeight += /*font.MeasureString(tip).Y +*/ font.LineSpacing;
+            }
+            spriteBatch.End();
+            tips.Clear();
+
 
             // DEBUG
             if (debugMode)

@@ -147,7 +147,7 @@ namespace GameConstructLibrary
             }
         }
 
-        public void CollisionEnded(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
+        public virtual void CollisionEnded(EntityCollidable sender, Collidable other, CollidablePairHandler collisionPair)
         {
             if (other.Tag is CharacterSynchronizer)
             {
