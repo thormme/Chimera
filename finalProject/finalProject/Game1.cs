@@ -210,6 +210,8 @@ namespace finalProject
                 }
             }
 
+            IsMouseVisible = !InputAction.IsMouseLocked;
+
             FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
 
             if (pause.Active)
