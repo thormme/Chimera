@@ -32,7 +32,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(10.09499f, 0.0837759f, -2.638938f),
-                        new Vector3(1.2f)
+                        new Vector3(3.0f)
                     ),
                     new SubPart(
                         new AnimateModel("bear_rightArm", "stand"),
@@ -43,7 +43,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(1.675516f, 0.502655f, 0.3769911f),
-                        new Vector3(1.2f)
+                        new Vector3(3.0f)
                     )
                 },
                 false,
@@ -87,7 +87,7 @@ namespace finalProject.Parts
                 base.Reset();
             }
 
-            PlayAnimation("attack", true);
+            PlayAnimation("attack", true, false);
             foreach (Creature creature in targets)
             {
                 Vector3 impulseVector = Vector3.Normalize(creature.Position - Creature.Position);
@@ -122,11 +122,11 @@ namespace finalProject.Parts
 
         public override void Cancel() { }
 
-        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
         {
             if (!mActive && animationName != "jump")
             {
-                PlayAnimation(animationName, isSaturated);
+                PlayAnimation(animationName, isSaturated, playOnCreature);
             }
         }
     }

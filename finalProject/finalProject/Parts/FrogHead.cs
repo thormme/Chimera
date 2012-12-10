@@ -32,14 +32,13 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(-0.1256637f, 0.2094395f, 7.450581E-09f),
-                        new Vector3(2.0f)
+                        new Vector3(5.0f)
                     )
                 },
                 false,
                 new Sprite("frogIcon")
             )
         {
-            //(mRenderable as AnimateModel).PlayAnimation("Take 001");
         }
 
         public override void Update(GameTime time)
@@ -56,7 +55,7 @@ namespace finalProject.Parts
 
         public override void Use(Vector3 direction)
         {
-            PlayAnimation("tongue", true);
+            PlayAnimation("tongue", true, false);
             mTongue = new FrogTongue(Creature, direction);
             Creature.World.Add(mTongue);
         }
@@ -80,11 +79,11 @@ namespace finalProject.Parts
             FinishUse(Vector3.Zero);
         }
 
-        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
         {
             if (mTongue == null && animationName != "jump")
             {
-                PlayAnimation(animationName, isSaturated);
+                PlayAnimation(animationName, isSaturated, playOnCreature);
             }
         }
     }

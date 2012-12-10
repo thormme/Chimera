@@ -28,6 +28,7 @@ namespace finalProject.Creatures
                 new CheetahLegs()                               // Part
                 )
         {
+            Scale = new Vector3(2.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -38,6 +39,11 @@ namespace finalProject.Creatures
             bones.Add(PartBone.LegFrontRight1Cap);
             bones.Add(PartBone.LegRearRight1Cap);
             return bones;
+        }
+
+        protected virtual Matrix GetOptionalPartTransforms()
+        {
+            return Matrix.CreateScale(0.5f);
         }
 
         public override void Update(GameTime gameTime)

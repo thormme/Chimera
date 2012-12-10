@@ -280,7 +280,10 @@ namespace finalProject
             Vector2 walkDirection = Vector2.Zero;
             Vector3 forward = mCamera.Forward;
             forward.Y = 0.0f;
-            forward.Normalize();
+            if (forward != Vector3.Zero)
+            {
+                forward.Normalize();
+            }
 
             if (moveForwardActive || moveRightActive)
             {

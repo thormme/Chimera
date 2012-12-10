@@ -36,7 +36,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(2.0f)
+                        new Vector3(3.5f)
                     ),
                     new SubPart(
                         new AnimateModel("cheetah_frontRightLeg", "stand"),
@@ -47,7 +47,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(2.0f)
+                        new Vector3(3.5f)
                     ),
                     new SubPart(
                         new AnimateModel("cheetah_rearLeftLeg", "stand"),
@@ -58,7 +58,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(2.0f)
+                        new Vector3(4.0f)
                     ),
                     new SubPart(
                         new AnimateModel("cheetah_rearRightLeg", "stand"),
@@ -69,7 +69,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(2.0f)
+                        new Vector3(4.0f)
                     )
                 },
                 true,
@@ -83,7 +83,7 @@ namespace finalProject.Parts
             {
                 Creature.AddModification(AddCheetahSpeed, RemoveCheetahSpeed);
                 mActive = true;
-                PlayAnimation("run", false);
+                PlayAnimation("run", false, true);
             }
         }
 
@@ -101,11 +101,11 @@ namespace finalProject.Parts
             base.Update(time);
         }
 
-        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
         {
             if (!mActive && animationName != "jump")
             {
-                PlayAnimation(animationName, isSaturated);
+                PlayAnimation(animationName, isSaturated, playOnCreature);
             }
         }
 

@@ -82,7 +82,7 @@ namespace finalProject.Parts
             {
                 Vector3 direction = new Vector3(0.0f, -Creature.Entity.LinearVelocity.Y * (1.0f / glideDivider), 0.0f);
                 Creature.Entity.ApplyLinearImpulse(ref direction);
-                PlayAnimation("glide", true);
+                PlayAnimation("glide", true, true);
             }
 
             base.Update(time);
@@ -95,7 +95,7 @@ namespace finalProject.Parts
                 Creature.CharacterController.JumpSpeed *= 2;
                 Creature.Jump();
                 mReset = ResetFrames;
-                PlayAnimation("flap_air", true);
+                PlayAnimation("flap_air", true, true);
             }
             else if (mFlaps < numFlaps && mFlapTimer > flapWait)
             {
@@ -104,7 +104,7 @@ namespace finalProject.Parts
                 Vector3 flap = new Vector3(0.0f, 1.0f * flapPower, 0.0f);
                 if (Creature.Entity.LinearVelocity.Y < 0) flap.Y -= Creature.Entity.LinearVelocity.Y;
                 Creature.Entity.ApplyLinearImpulse(ref flap);
-                PlayAnimation("flap_air", true);
+                PlayAnimation("flap_air", true, true);
             }
             mGlide = true;
         }
@@ -125,11 +125,11 @@ namespace finalProject.Parts
             FinishUse(Creature.Forward);
         }
 
-        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
         {
             if (!mGlide && animationName != "jump")
             {
-                PlayAnimation(animationName, isSaturated);
+                PlayAnimation(animationName, isSaturated, playOnCreature);
             }
         }
     }

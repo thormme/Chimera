@@ -191,25 +191,16 @@ namespace finalProject
                             player.Damage(100, null);
                             //player.Position = player.SpawnOrigin;
                             int i = 0;
+                            player.AddPart(new RhinoHead(), i++);
+                            player.AddPart(new FrogHead(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new FrogHead(), i++);
                             player.AddPart(new BearArms(), i++);
-                            player.AddPart(new BearArms(), i++);
-                            player.AddPart(new BearArms(), i++);
-                            //player.AddPart(new RhinoHead(), i++);
+                            //player.AddPart(new FrilledLizardHead(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
-                            //player.AddPart(new TestingLegs(), i++);
-                            //player.AddPart(new TestingWings(), i++);
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
-
-                            //player.AddPart(new FrogHead(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new EagleWings(), i++);
-                            //player.AddPart(new EagleWings(), i++);
-                            //player.AddPart(new KangarooLegs(), i++);
-                            //player.AddPart(new PenguinLimbs(), i++);
-                            //player.AddPart(new PenguinLimbs(), i++);
-                            //player.AddPart(new PenguinLimbs(), i++);
 
                             (mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
                             (mGameStates[mGameStates.Count - 1] as World).Add(new Rhino(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));

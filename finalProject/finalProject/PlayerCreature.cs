@@ -306,6 +306,11 @@ namespace finalProject
             }
         }
 
+        protected override void RenderParts(Color color, float weight)
+        {
+            RenderPartsHelper(color, weight, true);
+        }
+
         /// <summary>
         /// Adds part to creature and increases height of body if part modifies height.
         /// </summary>
@@ -361,6 +366,14 @@ namespace finalProject
             StealPartsUpdate(gameTime);
 
             base.Update(gameTime);
+        }
+
+        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        {
+            if (animationName == "walk" || animationName == "stand" || animationName == "jump")
+            {
+                base.TryPlayAnimation(animationName, isSaturated);
+            }
         }
 
         public override void Render()
