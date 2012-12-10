@@ -32,7 +32,15 @@ namespace finalProject
         private InputAction forward;
         private KeyInputAction celShading;
         private KeyInputAction mouseLock;
-        private KeyInputAction pause = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Pause);
+        private InputAction pause = new CombinedInputAction(
+                new InputAction[]
+                {
+                    new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Pause),
+                    new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Escape),
+                    new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.Start)
+                },
+                InputAction.ButtonAction.Down
+            );
 
         // DEBUG
         private ModelDrawer DebugModelDrawer;
@@ -212,9 +220,13 @@ namespace finalProject
 
             FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
 
-            if (pause.Active)
+            if (mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
             {
-                PushState(new PauseState());
+                PopState();
+            }
+            else if (pause.Active)
+            {
+                PushState(new PauseState(this));
             }
 
             // Allows the game to exit
@@ -252,9 +264,13 @@ namespace finalProject
         {
             GraphicsManager.BeginRendering();
 
-            if (mGameStates.Count > 0)
+            /*if (mGameStates.Count > 0)
             {
                 mGameStates[mGameStates.Count - 1].Render();
+            }*/
+            foreach (IGameState state in mGameStates)
+            {
+                state.Render();
             }
 
             GraphicsManager.FinishRendering();

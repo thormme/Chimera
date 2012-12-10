@@ -86,7 +86,7 @@ namespace GameConstructLibrary.Menu
             }
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             RunNavigation();
 
@@ -98,7 +98,7 @@ namespace GameConstructLibrary.Menu
             CommitChanges();
         }
 
-        public void Render()
+        public virtual void Render()
         {
             foreach (IMenuItem item in mMenuItems)
             {

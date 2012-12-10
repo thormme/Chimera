@@ -46,7 +46,7 @@ namespace GameConstructLibrary.Menu
             if ((Mouse.GetState().X > Bounds.X && Mouse.GetState().X < Bounds.X + Bounds.Width &&
                 Mouse.GetState().Y > Bounds.Y && Mouse.GetState().Y < Bounds.X + Bounds.Height &&
                 mUseMouse.Active) ||
-                mUseButton.Active)
+                (mUseButton.Active && Selected))
             {
                 Use();
             }
