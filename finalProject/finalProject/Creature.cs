@@ -475,7 +475,7 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        Matrix worldTransform = GetOptionalPartTransforms() * mPartRotations[(int)partBone] * (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        Matrix worldTransform = GetOptionalPartTransforms() * /*mPartRotations[(int)partBone] **/ (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
                         partAttachment.Part.SubParts[count].Render(worldTransform, color , weight);
 
                         count++;
