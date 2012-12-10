@@ -111,10 +111,10 @@ namespace finalProject
             return Matrix.CreateFromYawPitchRoll(0, 0, 0) * base.GetRenderTransform() * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
         }
 
-        protected override Matrix GetOptionalPartTransforms()
-        {
-            return Matrix.CreateScale(3.0f);
-        }
+        //protected override Matrix GetOptionalPartTransforms()
+        //{
+            //return Matrix.CreateScale(3.0f);
+        //}
 
         protected override List<Creature.PartBone> GetUsablePartBones()
         {
@@ -191,7 +191,6 @@ namespace finalProject
             Sneak = DefaultSneak;
 
             SpawnOrigin = position;
-
         }
 
         /// <summary>
@@ -307,6 +306,11 @@ namespace finalProject
             }
         }
 
+        protected override void RenderParts(Color color, float weight)
+        {
+            RenderPartsHelper(color, weight, true);
+        }
+
         /// <summary>
         /// Adds part to creature and increases height of body if part modifies height.
         /// </summary>
@@ -344,48 +348,32 @@ namespace finalProject
         {
             AnimateModel model = mRenderable as AnimateModel;
 
-            if (mStance == Stance.Standing)
-            {
-                model.PlayAnimation("stand", true);
+            //else if (mStance == Stance.Jumping)
+            //{
+            //    model.PlayAnimation("jump", true);
 
-                foreach (PartAttachment part in mPartAttachments)
-                {
-                    if (part != null)
-                    {
-                        part.Part.TryPlayAnimation("stand", true);
-                    }
-                }
-            }
-            else if (mStance == Stance.Walking)
-            {
-                model.PlayAnimation("walk", false);
-
-                foreach (PartAttachment part in mPartAttachments)
-                {
-                    if (part != null)
-                    {
-                        part.Part.TryPlayAnimation("walk", false);
-                    }
-                }
-            }
-            else if (mStance == Stance.Jumping)
-            {
-                model.PlayAnimation("jump", true);
-
-                foreach (PartAttachment part in mPartAttachments)
-                {
-                    if (part != null)
-                    {
-                        part.Part.TryPlayAnimation("jump", true);
-                    }
-                }
-            }
+            //    foreach (PartAttachment part in mPartAttachments)
+            //    {
+            //        if (part != null)
+            //        {
+            //            part.Part.TryPlayAnimation("jump", true);
+            //        }
+            //    }
+            //}
 
             model.Update(gameTime);
 
             StealPartsUpdate(gameTime);
 
             base.Update(gameTime);
+        }
+
+        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        {
+            if (animationName == "walk" || animationName == "stand" || animationName == "jump")
+            {
+                base.TryPlayAnimation(animationName, isSaturated);
+            }
         }
 
         public override void Render()

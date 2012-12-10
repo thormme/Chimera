@@ -38,6 +38,11 @@ namespace finalProject.Creatures
             return bones;
         }
 
+        protected virtual Matrix GetOptionalPartTransforms()
+        {
+            return Matrix.CreateScale(0.5f);
+        }
+
         public override void Update(GameTime gameTime)
         {
             (mRenderable as AnimateModel).Update(gameTime);

@@ -108,9 +108,10 @@ namespace finalProject
                 Scale = scale;
             }
 
-            public void Render(Matrix worldTransform, Color color, float weight)
+            public void Render(Matrix worldTransform, Color color, float weight, bool scale)
             {
-                Renderable.Render(Orientation * Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position) * worldTransform, color, weight);
+                Matrix transform = Orientation * (scale ? Matrix.CreateScale(Scale) : Matrix.Identity) * Matrix.CreateTranslation(Position) * worldTransform;
+                Renderable.Render(transform, color, weight);
             }
 
         }
@@ -188,7 +189,7 @@ namespace finalProject
         /// </summary>
         /// <param name="animationName">The name of the animation to be played must be in a file named model_animation.</param>
         /// <param name="isSaturated">Whether the animation will loop.</param>
-        public virtual void TryPlayAnimation(string animationName, bool isSaturated)
+        public virtual void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
         {
             return;
         }
@@ -198,7 +199,7 @@ namespace finalProject
         /// </summary>
         /// <param name="animationName">The name of the animation to be played must be in a file named model_animation.</param>
         /// <param name="isSaturated">Whether the animation will loop.</param>
-        protected virtual void PlayAnimation(string animationName, bool isSaturated)
+        protected virtual void PlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
         {
             foreach (SubPart subPart in SubParts)
             {
@@ -206,6 +207,10 @@ namespace finalProject
                 {
                     (subPart.Renderable as AnimateModel).PlayAnimation(animationName, isSaturated);
                 }
+            }
+            if (playOnCreature)
+            {
+                mCreature.TryPlayAnimation(animationName, isSaturated);
             }
         }
 

@@ -40,7 +40,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(0.0f),
                         Matrix.CreateFromYawPitchRoll(0, 0, 0),
-                        new Vector3(1.0f)
+                        new Vector3(3.0f)
                     )
                 },
                 false,
@@ -66,11 +66,11 @@ namespace finalProject.Parts
                 if (mRunTimer < 0.0f)
                 {
                     Stop();
-                    PlayAnimation("stand", true);
+                    PlayAnimation("stand", true, true);
                 }
                 else if (mRunTimer < mChargeAnimationTime)
                 {
-                    PlayAnimation("charge", true);
+                    PlayAnimation("charge", false, true);
                 }
             }
 
@@ -87,7 +87,11 @@ namespace finalProject.Parts
 
             OldSpeed = NewSpeed = Creature.CharacterController.HorizontalMotionConstraint.Speed + SpeedBoost;
             Vector2 moveDir = new Vector2(Creature.Forward.X, Creature.Forward.Z);
-            moveDir.Normalize();
+
+            if (moveDir != Vector2.Zero)
+            {
+                moveDir.Normalize();
+            }
             Creature.Move(moveDir);
             Creature.Immobilized = true;
             Creature.Silenced = true;
@@ -107,11 +111,11 @@ namespace finalProject.Parts
         {
         }
 
-        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
         {
             if (mRunTimer < 0.0f && animationName != "jump")
             {
-                PlayAnimation(animationName, isSaturated);
+                PlayAnimation(animationName, isSaturated, playOnCreature);
             }
         }
 
@@ -154,7 +158,13 @@ namespace finalProject.Parts
                     damage = 1;
                 }
 
-                Vector3 impulseVector = Vector3.Normalize(creature.Position - Creature.Position);
+                Vector3 impulseVector = Vector3.Zero;
+                Vector3 impulseDirection = creature.Position - Creature.Position;
+                if (impulseDirection != Vector3.Zero)
+                {
+                    impulseVector = Vector3.Normalize(impulseDirection);
+                }
+
                 impulseVector.Y = 1.0f;
                 impulseVector.Normalize();
                 impulseVector *= damage * DamageImpulseMultiplier;

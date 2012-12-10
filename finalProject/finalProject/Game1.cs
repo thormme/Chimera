@@ -57,8 +57,8 @@ namespace finalProject
         public Game1()
         {
             Graphics = new GraphicsDeviceManager(this);
-            Graphics.PreferredBackBufferWidth = 1280;
-            Graphics.PreferredBackBufferHeight = 720;
+            /*Graphics.PreferredBackBufferWidth = 1280;
+            Graphics.PreferredBackBufferHeight = 720;*/
             //Graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
@@ -129,17 +129,19 @@ namespace finalProject
 
                 GameMenu menu = new GameMenu();
                 Microsoft.Xna.Framework.Rectangle rect = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 200);
-                GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
+                GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
+                GameConstructLibrary.Menu.Button b2 = new GameConstructLibrary.Menu.Button(new Microsoft.Xna.Framework.Rectangle(0, 200, 200, 200), new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
                 menu.Add(button);
+                menu.Add(b2);
 
-                //PushState(menu);
+                PushState(menu);
             }
             catch (Exception e) 
             {
-                //TextWriter tw = new StreamWriter("log.txt");
-                //tw.WriteLine(e.Message);
-                //tw.WriteLine(e.StackTrace);
-                //tw.Close();
+                TextWriter tw = new StreamWriter("log.txt");
+                tw.WriteLine(e.Message);
+                tw.WriteLine(e.StackTrace);
+                tw.Close();
                 throw e;
             }
         }
@@ -195,28 +197,18 @@ namespace finalProject
                             player.Damage(100, null);
                             //player.Position = player.SpawnOrigin;
                             int i = 0;
+                            player.AddPart(new RhinoHead(), i++);
+                            player.AddPart(new FrogHead(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new FrogHead(), i++);
                             player.AddPart(new BearArms(), i++);
-                            player.AddPart(new BearArms(), i++);
-                            player.AddPart(new BearArms(), i++);
-                            //player.AddPart(new RhinoHead(), i++);
+                            //player.AddPart(new FrilledLizardHead(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
-                            //player.AddPart(new TestingLegs(), i++);
-                            //player.AddPart(new TestingWings(), i++);
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
-
-                            //player.AddPart(new FrogHead(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new EagleWings(), i++);
-                            //player.AddPart(new EagleWings(), i++);
-                            //player.AddPart(new KangarooLegs(), i++);
-                            //player.AddPart(new PenguinLimbs(), i++);
-                            //player.AddPart(new PenguinLimbs(), i++);
-                            //player.AddPart(new PenguinLimbs(), i++);
 
-                            (mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
-                            (mGameStates[mGameStates.Count - 1] as World).Add(new Rhino(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
                         }
                     }
                 }

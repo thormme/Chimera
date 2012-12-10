@@ -73,6 +73,15 @@ namespace finalProject
         private KeyInputAction mPressIncBoneIndex;
         private KeyInputAction mPressDecBoneIndex;
 
+        private KeyInputAction mPressIncTransX;
+        private KeyInputAction mPressDecTransX;
+
+        private KeyInputAction mPressIncTransY;
+        private KeyInputAction mPressDecTransY;
+
+        private KeyInputAction mPressIncTransZ;
+        private KeyInputAction mPressDecTransZ;
+
         private KeyInputAction mSaveBoneTransforms;
 
         private int mBoneIndex = 0;
@@ -159,6 +168,13 @@ namespace finalProject
             mPressDecBoneRoll = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.P);
             mPressIncBoneIndex = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemPlus);
             mPressDecBoneIndex = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemMinus);
+
+            mPressDecTransX = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.F);
+            mPressIncTransX = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.G);
+            mPressDecTransY = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.H);
+            mPressIncTransY = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.J);
+            mPressIncTransZ = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.K);
+            mPressDecTransZ = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.L);
 
             mSaveBoneTransforms = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.OemQuestion);
         }
@@ -264,7 +280,10 @@ namespace finalProject
             Vector2 walkDirection = Vector2.Zero;
             Vector3 forward = mCamera.Forward;
             forward.Y = 0.0f;
-            forward.Normalize();
+            if (forward != Vector3.Zero)
+            {
+                forward.Normalize();
+            }
 
             if (moveForwardActive || moveRightActive)
             {
@@ -400,116 +419,151 @@ namespace finalProject
 
             if (mSaveBoneTransforms.Active)
             {
-                //mCreature.WriteBoneTransforms();
-                if (mCreature.PartAttachments[0] != null)
-                {
-                    int count = 0;
-                    foreach (Part.SubPart subpart in mCreature.PartAttachments[0].Part.SubParts)
-                    {
-                        Console.WriteLine("Orientation for subPart: " + count++);
-                        Console.WriteLine("yaw: " + subpart.Yaw);
-                        Console.WriteLine("pitch: " + subpart.Pitch);
-                        Console.WriteLine("roll: " + subpart.Roll);
-                    }
-                }
+                mCreature.WriteBoneTransforms();
+                //if (mCreature.PartAttachments[0] != null)
+                //{
+                //    int count = 0;
+                //    foreach (Part.SubPart subpart in mCreature.PartAttachments[0].Part.SubParts)
+                //    {
+                //        Console.WriteLine("Orientation for subPart: " + count++);
+                //        Console.WriteLine("yaw: " + subpart.Yaw);
+                //        Console.WriteLine("pitch: " + subpart.Pitch);
+                //        Console.WriteLine("roll: " + subpart.Roll);
+                //    }
+                //}
+            }
+
+            if (mPressDecTransX.Active)
+            {
+                Matrix translation = Matrix.CreateTranslation(mCreature.BoneForward * MathHelper.Pi / 500.0f);
+                mCreature.BoneRotations *= translation;
+            }
+            else if (mPressIncTransX.Active)
+            {
+                Matrix translation = Matrix.CreateTranslation(mCreature.BoneForward * -MathHelper.Pi / 500.0f);
+                mCreature.BoneRotations *= translation;
             }
 
             if (mPressIncBoneRoll.Active)
             {
-                //Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneForward, MathHelper.Pi / 50.0f);
-                //mCreature.BoneRotations *= rotation;
-                //mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
-                //mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
-                if (mCreature.PartAttachments[0] != null)
-                {
-                    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
-                    subpart.Roll += MathHelper.Pi / 75.0f;
-                }
+                    Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneForward, MathHelper.Pi / 500.0f);
+                    mCreature.BoneRotations *= rotation;
+                    mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
+                    mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
+                //if (mCreature.PartAttachments[0] != null)
+                //{
+                //    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
+                //    subpart.Roll += MathHelper.Pi / 75.0f;
+                //}
             }
             else if (mPressDecBoneRoll.Active)
             {
-                //Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneForward, -MathHelper.Pi / 50.0f);
-                //mCreature.BoneRotations *= rotation;
-                //mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
-                //mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
-                if (mCreature.PartAttachments[0] != null)
-                {
-                    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
-                    subpart.Roll -= MathHelper.Pi / 75.0f;
-                }
+                    Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneForward, -MathHelper.Pi / 500.0f);
+                    mCreature.BoneRotations *= rotation;
+                    mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
+                    mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
+                //if (mCreature.PartAttachments[0] != null)
+                //{
+                //    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
+                //    subpart.Roll -= MathHelper.Pi / 75.0f;
+                //}
+            }
+
+            if (mPressDecTransY.Active)
+            {
+                Matrix translation = Matrix.CreateTranslation(mCreature.BoneUp * MathHelper.Pi / 500.0f);
+                mCreature.BoneRotations *= translation;
+            }
+            else if (mPressIncTransY.Active)
+            {
+                Matrix translation = Matrix.CreateTranslation(mCreature.BoneUp * -MathHelper.Pi / 500.0f);
+                mCreature.BoneRotations *= translation;
             }
 
             if (mPressIncBoneYaw.Active)
             {
-                //Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneUp, MathHelper.Pi / 50.0f);
-                //mCreature.BoneRotations *= rotation;
-                //mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
-                //mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
-                if (mCreature.PartAttachments[0] != null)
-                {
-                    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
-                    subpart.Yaw += MathHelper.Pi / 75.0f;
-                }
+                    Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneUp, MathHelper.Pi / 500.0f);
+                    mCreature.BoneRotations *= rotation;
+                    mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
+                    mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
+                //if (mCreature.PartAttachments[0] != null)
+                //{
+                //    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
+                //    subpart.Yaw += MathHelper.Pi / 75.0f;
+                //}
             }
             else if (mPressDecBoneYaw.Active)
             {
-                //Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneUp, -MathHelper.Pi / 50.0f);
-                //mCreature.BoneRotations *= rotation;
-                //mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
-                //mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
-                if (mCreature.PartAttachments[0] != null)
-                {
-                    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
-                    subpart.Yaw -= MathHelper.Pi / 75.0f;
-                }
+                    Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneUp, -MathHelper.Pi / 500.0f);
+                    mCreature.BoneRotations *= rotation;
+                    mCreature.BoneRight = Vector3.Transform(mCreature.BoneRight, rotation);
+                    mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
+                //if (mCreature.PartAttachments[0] != null)
+                //{
+                //    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
+                //    subpart.Yaw -= MathHelper.Pi / 75.0f;
+                //}
+            }
+
+            if (mPressDecTransZ.Active)
+            {
+                Matrix translation = Matrix.CreateTranslation(mCreature.BoneRight * MathHelper.Pi / 500.0f);
+                mCreature.BoneRotations *= translation;
+            }
+            else if (mPressIncTransZ.Active)
+            {
+                Matrix translation = Matrix.CreateTranslation(mCreature.BoneRight * -MathHelper.Pi / 500.0f);
+                mCreature.BoneRotations *= translation;
             }
 
             if (mPressIncBonePitch.Active)
             {
-                //Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneRight, MathHelper.Pi / 50.0f);
-                //mCreature.BoneRotations *= rotation;
-                //mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
-                //mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
-                if (mCreature.PartAttachments[0] != null)
-                {
-                    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
-                    subpart.Pitch += MathHelper.Pi / 75.0f;
-                }
+                    Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneRight, MathHelper.Pi / 500.0f);
+                    mCreature.BoneRotations *= rotation;
+                    mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
+                    mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
+                //if (mCreature.PartAttachments[0] != null)
+                //{
+                //    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
+                //    subpart.Pitch += MathHelper.Pi / 75.0f;
+                //}
             }
             else if (mPressDecBonePitch.Active)
             {
-                //Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneRight, -MathHelper.Pi / 50.0f);
-                //mCreature.BoneRotations *= rotation;
-                //mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
-                //mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
-                if (mCreature.PartAttachments[0] != null)
-                {
-                    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
-                    subpart.Pitch -= MathHelper.Pi / 75.0f;
-                }
+                    Matrix rotation = Matrix.CreateFromAxisAngle(mCreature.BoneRight, -MathHelper.Pi / 500.0f);
+                    mCreature.BoneRotations *= rotation;
+                    mCreature.BoneUp = Vector3.Transform(mCreature.BoneUp, rotation);
+                    mCreature.BoneForward = Vector3.Transform(mCreature.BoneForward, rotation);
+                //if (mCreature.PartAttachments[0] != null)
+                //{
+                //    Part.SubPart subpart = mCreature.PartAttachments[0].Part.SubParts[mBoneIndex];
+                //    subpart.Pitch -= MathHelper.Pi / 75.0f;
+                //}
             }
 
             if (mPressIncBoneIndex.Active)
             {
-                if (mCreature.PartAttachments[0] != null)
-                {
-                    mBoneIndex++;
-                    if (mBoneIndex >= mCreature.PartAttachments[0].Part.SubParts.Length)
-                    {
-                        mBoneIndex = 0;
-                    }
-                }
+                //if (mCreature.PartAttachments[0] != null)
+                //{
+                //    mBoneIndex++;
+                //    if (mBoneIndex >= mCreature.PartAttachments[0].Part.SubParts.Length)
+                //    {
+                //        mBoneIndex = 0;
+                //    }
+                //}
+                mCreature.BoneIndex++;
             }
             else if (mPressDecBoneIndex.Active)
             {
-                if (mCreature.PartAttachments[0] != null)
-                {
-                    mBoneIndex++;
-                    if (mBoneIndex < 0)
-                    {
-                        mBoneIndex = mCreature.PartAttachments[0].Part.SubParts.Length - 1;
-                    }
-                }
+                //if (mCreature.PartAttachments[0] != null)
+                //{
+                //    mBoneIndex++;
+                //    if (mBoneIndex < 0)
+                //    {
+                //        mBoneIndex = mCreature.PartAttachments[0].Part.SubParts.Length - 1;
+                //    }
+                //}
+                mCreature.BoneIndex--;
             }
         }
 

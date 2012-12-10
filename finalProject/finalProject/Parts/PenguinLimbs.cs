@@ -26,7 +26,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(0.2094397f, 0.2932154f, 4.272569f),
-                        new Vector3(2.0f)
+                        new Vector3(3.0f)
                     ),
                     new SubPart(
                         new AnimateModel("penguin_rightFlipper", "stand"),
@@ -37,7 +37,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(4.188794f, -2.722715f, 4.021243f),
-                        new Vector3(2.0f)
+                        new Vector3(3.0f)
                     ),
                     new SubPart(
                         new AnimateModel("penguin_rightFoot", "stand"),
@@ -82,7 +82,7 @@ namespace finalProject.Parts
 
         public override void Use(Microsoft.Xna.Framework.Vector3 direction)
         {
-            PlayAnimation("slide", true);
+            PlayAnimation("slide", true, true);
             mHasTraction = false;
             Creature.CharacterController.SupportFinder.MaximumSlope = 0.0f;
         }
