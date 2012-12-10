@@ -55,8 +55,8 @@ namespace finalProject
         public Game1()
         {
             Graphics = new GraphicsDeviceManager(this);
-            Graphics.PreferredBackBufferWidth = 1280;
-            Graphics.PreferredBackBufferHeight = 720;
+            /*Graphics.PreferredBackBufferWidth = 1280;
+            Graphics.PreferredBackBufferHeight = 720;*/
             //Graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
@@ -124,9 +124,11 @@ namespace finalProject
                 mGameStates.Add(world);
 
                 GameMenu menu = new GameMenu();
-                Rectangle rect = new Rectangle(0, 0, 200, 200);
-                Button button = new Button(rect, new Sprite("test_tex"), new Button.ButtonAction(StartGame));
+                Microsoft.Xna.Framework.Rectangle rect = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 200);
+                GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
+                GameConstructLibrary.Menu.Button b2 = new GameConstructLibrary.Menu.Button(new Microsoft.Xna.Framework.Rectangle(0, 200, 200, 200), new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
                 menu.Add(button);
+                menu.Add(b2);
 
                 PushState(menu);
             }
@@ -204,7 +206,7 @@ namespace finalProject
                             //player.AddPart(new EagleWings(), i++);
                             //player.AddPart(new EagleWings(), i++);
                             //player.AddPart(new KangarooLegs(), i++);
-                            player.AddPart(new PenguinLimbs(), i++);
+                            player.AddPart(new MindControlCobraHead(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
 
