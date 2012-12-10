@@ -190,13 +190,16 @@ namespace finalProject
                         PlayerCreature player = entity.Tag as PlayerCreature;
                         if (player != null)
                         {
-                            //player.Damage(100, null);
-                            player.Position = player.SpawnOrigin;
+                            player.Damage(100, null);
+                            //player.Position = player.SpawnOrigin;
                             int i = 0;
+                            player.AddPart(new BearArms(), i++);
+                            player.AddPart(new BearArms(), i++);
+                            player.AddPart(new BearArms(), i++);
+                            //player.AddPart(new RhinoHead(), i++);
+                            //player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new TestingLegs(), i++);
                             //player.AddPart(new TestingWings(), i++);
-                            //player.AddPart(new BearArms(), i++);
-                            //player.AddPart(new RhinoHead(), i++);
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new Checkpoint(player.Position, Quaternion.Identity, new Vector3(0.0f)));
 
                             //player.AddPart(new FrogHead(), i++);
@@ -206,7 +209,7 @@ namespace finalProject
                             //player.AddPart(new EagleWings(), i++);
                             //player.AddPart(new EagleWings(), i++);
                             //player.AddPart(new KangarooLegs(), i++);
-                            player.AddPart(new MindControlCobraHead(), i++);
+                            //player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
 

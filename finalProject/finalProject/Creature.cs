@@ -90,7 +90,9 @@ namespace finalProject
 
         #region Fields
 
-        protected const float DamageImpulseMultiplier = 255.0f;
+        protected const double FlashLength = 0.5f;
+        protected const double AlternateFlashLength = FlashLength / 2.0f;
+        protected double mFlashTimer = FlashLength;
 
         protected const double InvulnerableLength = 1.0f;
         protected double mInvulnerableTimer = -1.0f;
@@ -324,14 +326,18 @@ namespace finalProject
         {
             get
             {
-                return mPartRotations[mBoneIndex];
+                if (mPartRotations != null)
+                {
+                    return mPartRotations[mBoneIndex];
+                }
+                return Matrix.Identity;
             }
             set
             {
                 mPartRotations[mBoneIndex] = value;
             }
         }
-        private Matrix[] mPartRotations = new Matrix[mNumParts];
+        private Matrix[] mPartRotations;
 
         /// <summary>
         /// Up Basis Vector for current part rotation.
@@ -340,14 +346,18 @@ namespace finalProject
         {
             get
             {
-                return mBoneUp[mBoneIndex];
+                if (mBoneUp != null)
+                {
+                    return mBoneUp[mBoneIndex];
+                }
+                return Vector3.Zero;
             }
             set
             {
                 mBoneUp[mBoneIndex] = value;
             }
         }
-        private Vector3[] mBoneUp = new Vector3[mNumParts];
+        private Vector3[] mBoneUp;
 
         /// <summary>
         /// Forward Basis Vector for current part rotation.
@@ -356,14 +366,18 @@ namespace finalProject
         {
             get
             {
-                return mBoneForward[mBoneIndex];
+                if (mBoneUp != null)
+                {
+                    return mBoneForward[mBoneIndex];
+                }
+                return Vector3.Zero;
             }
             set
             {
                 mBoneForward[mBoneIndex] = value;
             }
         }
-        private Vector3[] mBoneForward = new Vector3[mNumParts];
+        private Vector3[] mBoneForward;
 
         /// <summary>
         /// Right Basis Vector for current part rotation.
@@ -372,14 +386,18 @@ namespace finalProject
         {
             get
             {
-                return mBoneRight[mBoneIndex];
+                if (mBoneRight != null)
+                {
+                    return mBoneRight[mBoneIndex];
+                }
+                return Vector3.Zero;
             }
             set
             {
                 mBoneRight[mBoneIndex] = value;
             }
         }
-        private Vector3[] mBoneRight = new Vector3[mNumParts];
+        private Vector3[] mBoneRight;
 
         public int BoneIndex
         {
@@ -390,33 +408,37 @@ namespace finalProject
             set
             {
                 mBoneIndex = value;
-                if (mBoneIndex < 0)
+                if (mPartAttachments[0] != null)
                 {
-                    mBoneIndex += mNumParts;
+                    if (mBoneIndex < 0)
+                    {
+                        mBoneIndex += mPartAttachments[0].Bones.Count;
+                    }
+                    mBoneIndex %= mPartAttachments[0].Bones.Count;
                 }
-                mBoneIndex %= mNumParts;
-
-                //Console.WriteLine(((PartBone)mBoneIndex).ToString());
             }
         }
         private int mBoneIndex = 0;
 
         public void WriteBoneTransforms()
         {
-            TextWriter tw = new StreamWriter("playerBeanPartOrientations.txt");
-
-            tw.WriteLine(mNumParts);
-            tw.WriteLine("");
-            for (int i = 0; i < mNumParts; ++i)
+            if (mPartAttachments[0] != null)
             {
-                tw.WriteLine(((PartBone)i).ToString());
-                tw.WriteLine(mPartRotations[i].M11.ToString() + " " + mPartRotations[i].M12.ToString() + " " + mPartRotations[i].M13.ToString() + " " + mPartRotations[i].M14.ToString());
-                tw.WriteLine(mPartRotations[i].M21.ToString() + " " + mPartRotations[i].M22.ToString() + " " + mPartRotations[i].M23.ToString() + " " + mPartRotations[i].M24.ToString());
-                tw.WriteLine(mPartRotations[i].M31.ToString() + " " + mPartRotations[i].M32.ToString() + " " + mPartRotations[i].M33.ToString() + " " + mPartRotations[i].M34.ToString());
-                tw.WriteLine(mPartRotations[i].M41.ToString() + " " + mPartRotations[i].M42.ToString() + " " + mPartRotations[i].M43.ToString() + " " + mPartRotations[i].M44.ToString());
+                TextWriter tw = new StreamWriter("playerBeanPartOrientations.txt");
+
+                tw.WriteLine(mNumParts);
                 tw.WriteLine("");
+                for (int i = 0; i < mPartAttachments[0].Bones.Count; ++i)
+                {
+                    tw.WriteLine(mPartAttachments[0].Bones[i].ToString());
+                    tw.WriteLine(mPartRotations[i].M11.ToString() + " " + mPartRotations[i].M12.ToString() + " " + mPartRotations[i].M13.ToString() + " " + mPartRotations[i].M14.ToString());
+                    tw.WriteLine(mPartRotations[i].M21.ToString() + " " + mPartRotations[i].M22.ToString() + " " + mPartRotations[i].M23.ToString() + " " + mPartRotations[i].M24.ToString());
+                    tw.WriteLine(mPartRotations[i].M31.ToString() + " " + mPartRotations[i].M32.ToString() + " " + mPartRotations[i].M33.ToString() + " " + mPartRotations[i].M34.ToString());
+                    tw.WriteLine(mPartRotations[i].M41.ToString() + " " + mPartRotations[i].M42.ToString() + " " + mPartRotations[i].M43.ToString() + " " + mPartRotations[i].M44.ToString());
+                    tw.WriteLine("");
+                }
+                tw.Close();
             }
-            tw.Close();
         }
 
         #endregion
@@ -444,7 +466,7 @@ namespace finalProject
             return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
         }
 
-        protected void RenderParts()
+        protected void RenderParts(Color color, float weight)
         {
             foreach (PartAttachment partAttachment in mPartAttachments)
             {
@@ -453,8 +475,8 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        Matrix worldTransform = GetOptionalPartTransforms() * mPartRotations[(int)partBone] * (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
-                        partAttachment.Part.SubParts[count].Render(worldTransform);
+                        Matrix worldTransform = GetOptionalPartTransforms() * /*mPartRotations[(int)partBone] **/ (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        partAttachment.Part.SubParts[count].Render(worldTransform, color , weight);
 
                         count++;
                     }
@@ -514,6 +536,17 @@ namespace finalProject
             return partBones;
         }
 
+        protected void PlayPartAnimation(string animation, bool isSaturating)
+        {
+            foreach (PartAttachment pa in mPartAttachments)
+            {
+                if (pa != null)
+                {
+                    pa.Part.TryPlayAnimation(animation, isSaturating);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -540,23 +573,56 @@ namespace finalProject
             Controller = controller;
             controller.SetCreature(this);
 
-            for (int i = 0; i < mNumParts; ++i)
+            if (PartAttachments[0] != null)
             {
-                mPartRotations[i] = Matrix.Identity;
-                mBoneUp[i] = Vector3.Up;
-                mBoneForward[i] = Vector3.Forward;
-                mBoneRight[i] = Vector3.Right;
+                for (int i = 0; i < PartAttachments[0].Bones.Count; ++i)
+                {
+                    mPartRotations[i] = Matrix.Identity;
+                    mBoneUp[i] = Vector3.Up;
+                    mBoneForward[i] = Vector3.Forward;
+                    mBoneRight[i] = Vector3.Right;
+                }
             }
+
+            mBoneIndex = 0;
         }
 
         public override void Render()
         {
+            Color color = Color.Black;
+            float weight = 0.0f;
+            if (Incapacitated)
+            {
+                weight = 1.0f;
+            }
+            else if (mFlashTimer > AlternateFlashLength)
+            {
+                if (Poisoned)
+                {
+                    color = Color.Violet;
+                    weight = (float)(0.5f);// * mPoisonTimer / ShieldRechargeLength);
+                }
+                else if (!mShield)
+                {
+                    color = Color.Red;
+                    weight = (float)(0.5f);// * mShieldRechargeTimer / ShieldRechargeLength);
+                }
+            }
+            else
+            {
+                if (Invulnerable)
+                {
+                    color = Color.White;
+                    weight = (float)(0.5f);// * mInvulnerableTimer / InvulnerableLength);
+                }
+            }
+
             if (mRenderable != null)
             {
                 //mRenderable.Render(GetRenderTransform());
-                mRenderable.Render(GetRenderTransform(), Color.Red, (float)(0.5f * mShieldRechargeTimer / ShieldRechargeLength));
+                mRenderable.Render(GetRenderTransform(), color, weight);
             }
-            RenderParts();
+            RenderParts(color, weight);
         }
 
         /// <summary>
@@ -581,6 +647,17 @@ namespace finalProject
 
             part.Creature = this;
 
+            mPartRotations = new Matrix[PartAttachments[0].Bones.Count];
+            mBoneUp = new Vector3[PartAttachments[0].Bones.Count];
+            mBoneForward = new Vector3[PartAttachments[0].Bones.Count];
+            mBoneRight = new Vector3[PartAttachments[0].Bones.Count];
+            for (int i = 0; i < PartAttachments[0].Bones.Count; ++i)
+            {
+                mPartRotations[i] = Matrix.Identity;
+                mBoneUp[i] = Vector3.Up;
+                mBoneForward[i] = Vector3.Forward;
+                mBoneRight[i] = Vector3.Right;
+            }
         }
 
         public float CollideDistance(Creature creature)
@@ -662,6 +739,7 @@ namespace finalProject
             if (!Immobilized)
             {
                 CharacterController.Jump();
+                PlayPartAnimation("jump", true);
             }
         }
 
@@ -685,6 +763,13 @@ namespace finalProject
                 if (direction != Vector2.Zero)
                 {
                     Forward = new Vector3(facing.X, 0.0f, facing.Y);
+                    PlayPartAnimation("walk", false);
+                    (mRenderable as AnimateModel).PlayAnimation("walk", false);
+                }
+                else
+                {
+                    PlayPartAnimation("stand", true);
+                    (mRenderable as AnimateModel).PlayAnimation("stand", true);
                 }
             }
         }
@@ -715,26 +800,17 @@ namespace finalProject
                 return;
             }
 
-            // TODO: make this work with rolling rocks
-            if (source != null)
-            {
-                Vector3 impulseVector = Vector3.Normalize(Position - source.Position);
-                impulseVector.Y = 1.0f;
-                impulseVector.Normalize();
-                impulseVector *= damage * DamageImpulseMultiplier;
-                Entity.ApplyLinearImpulse(ref impulseVector);
-            }
-
-            if (!mShield)
-            {
-                Invulnerable = true;
-                mInvulnerableTimer = InvulnerableLength;
-            }
-            else
+            if (mShield)
             {
                 mShield = false;
                 mShieldRechargeTimer = ShieldRechargeLength;
                 --damage;
+            }
+
+            if (damage > 0)
+            {
+                Invulnerable = true;
+                mInvulnerableTimer = InvulnerableLength;
             }
 
             List<PartAttachment> validParts = new List<PartAttachment>(mPartAttachments.Count());
@@ -771,6 +847,12 @@ namespace finalProject
             if (Incapacitated)
             {
                 return;
+            }
+
+            mFlashTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (mFlashTimer < 0.0f)
+            {
+                mFlashTimer = FlashLength;
             }
 
             if (mInvulnerableTimer > 0.0f)

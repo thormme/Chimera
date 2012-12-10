@@ -12,6 +12,13 @@ namespace finalProject.Parts
         protected const int AttackDamage = 1;
         protected const float Range = 0.75f;
 
+        protected const double AnimationLength = 1.0f;
+        protected double mAnimationTimer = -1.0f;
+
+        protected const float DamageImpulseMultiplier = 270.0f;
+
+        protected bool mActive = false;
+
         public BearArms()
             : base(
                 1.1f,
@@ -24,8 +31,8 @@ namespace finalProject.Parts
                             Creature.PartBone.ArmLeft3Cap
                         },
                         new Vector3(),
-                        Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        Matrix.CreateFromYawPitchRoll(10.09499f, 0.0837759f, -2.638938f),
+                        new Vector3(1.2f)
                     ),
                     new SubPart(
                         new AnimateModel("bear_rightArm", "stand"),
@@ -35,8 +42,8 @@ namespace finalProject.Parts
                             Creature.PartBone.ArmRight3Cap
                         },
                         new Vector3(),
-                        Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        Matrix.CreateFromYawPitchRoll(1.675516f, 0.502655f, 0.3769911f),
+                        new Vector3(1.2f)
                     )
                 },
                 false,
@@ -80,19 +87,47 @@ namespace finalProject.Parts
                 base.Reset();
             }
 
+            PlayAnimation("attack", true);
             foreach (Creature creature in targets)
             {
+                Vector3 impulseVector = Vector3.Normalize(creature.Position - Creature.Position);
+                impulseVector.Y = 1.0f;
+                impulseVector.Normalize();
+                impulseVector *= DamageImpulseMultiplier;
+                //creature.Entity.LinearVelocity = impulseVector;
+                creature.Entity.ApplyLinearImpulse(ref impulseVector);
+
                 creature.Damage(AttackDamage, Creature);
             }
+
+            mActive = true;
+            mAnimationTimer = AnimationLength;
         }
 
         public override void Update(GameTime time)
         {
             base.Update(time);
+
+            if (mAnimationTimer > 0.0f)
+            {
+                mAnimationTimer -= time.ElapsedGameTime.TotalSeconds;
+                if (mAnimationTimer < 0.0f)
+                {
+                    mActive = false;
+                }
+            }
         }
 
         public override void FinishUse(Vector3 direction) { }
 
         public override void Cancel() { }
+
+        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        {
+            if (!mActive && animationName != "jump")
+            {
+                PlayAnimation(animationName, isSaturated);
+            }
+        }
     }
 }

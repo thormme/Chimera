@@ -34,6 +34,7 @@ namespace finalProject.Parts
         protected override void UseCooldown(Vector3 direction)
         {
             Creature.World.Add(new FrilledLizardVenom(Creature, direction));
+            PlayAnimation("spit", true);
         }
 
         public override void FinishUse(Vector3 direction) { }

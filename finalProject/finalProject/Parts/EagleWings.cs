@@ -124,5 +124,13 @@ namespace finalProject.Parts
         {
             FinishUse(Creature.Forward);
         }
+
+        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        {
+            if (!mGlide && animationName != "jump")
+            {
+                PlayAnimation(animationName, isSaturated);
+            }
+        }
     }
 }
