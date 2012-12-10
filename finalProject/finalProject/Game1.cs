@@ -31,13 +31,21 @@ namespace finalProject
 
         private InputAction forward;
         private KeyInputAction celShading;
-        private KeyInputAction mouseLock;
-        private KeyInputAction pause = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Pause);
+        private InputAction pause = new CombinedInputAction(
+                new InputAction[]
+                {
+                    new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Pause),
+                    new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Escape),
+                    new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.Start)
+                },
+                InputAction.ButtonAction.Down
+            );
 
         // DEBUG
         private ModelDrawer DebugModelDrawer;
         private KeyInputAction debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.F1);
         private KeyInputAction debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.OemTilde);
+        private KeyInputAction cheat = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Tab);
         bool debugMode = false;
         // END
 
@@ -65,7 +73,6 @@ namespace finalProject
 
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.W);
             celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.F2);
-            mouseLock = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Tab);
 
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
@@ -148,6 +155,7 @@ namespace finalProject
 
         private void StartGame(GameConstructLibrary.Menu.Button button)
         {
+            InputAction.IsMouseLocked = true;
             PopState();
         }
 
@@ -184,9 +192,8 @@ namespace finalProject
                 GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.Models : GraphicsManager.CelShaded.All;
             }
 
-            if (mouseLock.Active)
+            if (cheat.Active)
             {
-                InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
                 if (mGameStates[mGameStates.Count - 1] is World)
                 {
                     foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
@@ -214,11 +221,17 @@ namespace finalProject
                 }
             }
 
+            IsMouseVisible = !InputAction.IsMouseLocked;
+
             FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
 
-            if (pause.Active)
+            if (mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
             {
-                PushState(new PauseState());
+                PopState();
+            }
+            else if (pause.Active)
+            {
+                PushState(new PauseState(this));
             }
 
             // Allows the game to exit
@@ -256,9 +269,13 @@ namespace finalProject
         {
             GraphicsManager.BeginRendering();
 
-            if (mGameStates.Count > 0)
+            /*if (mGameStates.Count > 0)
             {
                 mGameStates[mGameStates.Count - 1].Render();
+            }*/
+            foreach (IGameState state in mGameStates)
+            {
+                state.Render();
             }
 
             GraphicsManager.FinishRendering();

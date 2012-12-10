@@ -24,7 +24,7 @@ namespace GameConstructLibrary.Menu
         protected static InputAction mUseMouse = new CombinedInputAction(
             new InputAction[]
             {
-                new MouseButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, InputAction.MouseButton.Left)
+                new MouseButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, InputAction.MouseButton.Left)
             },
             InputAction.ButtonAction.Down
         );
@@ -46,7 +46,7 @@ namespace GameConstructLibrary.Menu
             if ((Mouse.GetState().X > Bounds.X && Mouse.GetState().X < Bounds.X + Bounds.Width &&
                 Mouse.GetState().Y > Bounds.Y && Mouse.GetState().Y < Bounds.X + Bounds.Height &&
                 mUseMouse.Active) ||
-                mUseButton.Active)
+                (mUseButton.Active && Selected))
             {
                 Use();
             }
