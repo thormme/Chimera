@@ -153,6 +153,7 @@ Content\models\dude\dude_walk.xnb
 Content\models\editor\editor.xnb
 Content\models\primitives\box.xnb
 Content\models\primitives\sphere.xnb
+Content\font.xnb
 Content\models\eagle\eagle_texture_0.xnb
 Content\models\frog\frog_texture_0.xnb
 Content\models\kangaroo\kangaroo_texture_0.xnb
@@ -188,7 +189,6 @@ Content\models\dude\upBodyC_0.xnb
 Content\models\editor\editor_0.xnb
 Content\models\primitives\purple_block_0.xnb
 Content\models\primitives\orange_ball_0.xnb
-Content\font.xnb
 Content\models\bear\bear.tweak
 Content\models\cheetah\cheetah.tweak
 Content\models\cobra\cobra.tweak
