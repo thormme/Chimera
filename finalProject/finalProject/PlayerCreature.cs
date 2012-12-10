@@ -111,38 +111,46 @@ namespace finalProject
             return Matrix.CreateFromYawPitchRoll(0, 0, 0) * base.GetRenderTransform() * Matrix.CreateTranslation(new Vector3(0.0f, -0.2f, 0.0f));
         }
 
-        protected override Matrix GetOptionalPartTransforms()
-        {
-            return Matrix.CreateScale(3.0f);
-        }
+        //protected override Matrix GetOptionalPartTransforms()
+        //{
+            //return Matrix.CreateScale(3.0f);
+        //}
 
         protected override List<Creature.PartBone> GetUsablePartBones()
         {
             List<Creature.PartBone> bones = new List<PartBone>();
-            bones.Add(PartBone.ArmLeft1Cap);
-            bones.Add(PartBone.ArmLeft2Cap);
-            bones.Add(PartBone.ArmLeft3Cap);
-            bones.Add(PartBone.ArmRight1Cap);
-            bones.Add(PartBone.ArmRight2Cap);
-            bones.Add(PartBone.ArmRight3Cap);
-            bones.Add(PartBone.HeadCenterCap);
-            bones.Add(PartBone.HeadLeftCap);
-            bones.Add(PartBone.HeadRightCap);
-            bones.Add(PartBone.LegFrontLeft1Cap);
-            bones.Add(PartBone.LegFrontLeft2Cap);
-            bones.Add(PartBone.LegFrontLeft3Cap);
-            bones.Add(PartBone.LegFrontRight1Cap);
-            bones.Add(PartBone.LegFrontRight2Cap);
-            bones.Add(PartBone.LegFrontRight3Cap);
+            //bones.Add(PartBone.ArmLeft1Cap);
+            //bones.Add(PartBone.ArmLeft2Cap);
+            //bones.Add(PartBone.ArmLeft3Cap);
+            //bones.Add(PartBone.ArmRight1Cap);
+            //bones.Add(PartBone.ArmRight2Cap);
+            //bones.Add(PartBone.ArmRight3Cap);
+            //bones.Add(PartBone.HeadCenterCap);
+            //bones.Add(PartBone.HeadLeftCap);
+            //bones.Add(PartBone.HeadRightCap);
+            //bones.Add(PartBone.LegFrontLeft1Cap);
+            //bones.Add(PartBone.LegFrontLeft2Cap);
+            //bones.Add(PartBone.LegFrontLeft3Cap);
+            //bones.Add(PartBone.LegFrontRight1Cap);
+            //bones.Add(PartBone.LegFrontRight2Cap);
+            //bones.Add(PartBone.LegFrontRight3Cap);
+            //bones.Add(PartBone.LegRearLeft1Cap);
+            //bones.Add(PartBone.LegRearLeft2Cap);
+            //bones.Add(PartBone.LegRearLeft3Cap);
+            //bones.Add(PartBone.LegRearRight1Cap);
+            //bones.Add(PartBone.LegRearRight2Cap);
+            //bones.Add(PartBone.LegRearRight3Cap);
+            //bones.Add(PartBone.Spine1Cap);
+            //bones.Add(PartBone.Spine2Cap);
+            //bones.Add(PartBone.Spine3Cap);
+
             bones.Add(PartBone.LegRearLeft1Cap);
-            bones.Add(PartBone.LegRearLeft2Cap);
-            bones.Add(PartBone.LegRearLeft3Cap);
             bones.Add(PartBone.LegRearRight1Cap);
-            bones.Add(PartBone.LegRearRight2Cap);
-            bones.Add(PartBone.LegRearRight3Cap);
-            bones.Add(PartBone.Spine1Cap);
-            bones.Add(PartBone.Spine2Cap);
-            bones.Add(PartBone.Spine3Cap);
+
+            //bones.Add(PartBone.LegFrontLeft1Cap);
+            //bones.Add(PartBone.LegRearLeft1Cap);
+            //bones.Add(PartBone.LegFrontRight1Cap);
+            //bones.Add(PartBone.LegRearRight1Cap);
 
             return bones;
         }
@@ -177,7 +185,7 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
-            : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 3)
+            : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("kangaroo", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 3)
         {
 
             Forward = facingDirection;
@@ -189,7 +197,6 @@ namespace finalProject
             Sneak = DefaultSneak;
 
             SpawnOrigin = position;
-
         }
 
         /// <summary>
@@ -342,42 +349,18 @@ namespace finalProject
         {
             AnimateModel model = mRenderable as AnimateModel;
 
-            if (mStance == Stance.Standing)
-            {
-                model.PlayAnimation("stand", true);
+            //else if (mStance == Stance.Jumping)
+            //{
+            //    model.PlayAnimation("jump", true);
 
-                foreach (PartAttachment part in mPartAttachments)
-                {
-                    if (part != null)
-                    {
-                        part.Part.TryPlayAnimation("stand", true);
-                    }
-                }
-            }
-            else if (mStance == Stance.Walking)
-            {
-                model.PlayAnimation("walk", false);
-
-                foreach (PartAttachment part in mPartAttachments)
-                {
-                    if (part != null)
-                    {
-                        part.Part.TryPlayAnimation("walk", false);
-                    }
-                }
-            }
-            else if (mStance == Stance.Jumping)
-            {
-                model.PlayAnimation("jump", true);
-
-                foreach (PartAttachment part in mPartAttachments)
-                {
-                    if (part != null)
-                    {
-                        part.Part.TryPlayAnimation("jump", true);
-                    }
-                }
-            }
+            //    foreach (PartAttachment part in mPartAttachments)
+            //    {
+            //        if (part != null)
+            //        {
+            //            part.Part.TryPlayAnimation("jump", true);
+            //        }
+            //    }
+            //}
 
             model.Update(gameTime);
 

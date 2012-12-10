@@ -203,8 +203,8 @@ namespace finalProject
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new EagleWings(), i++);
                             //player.AddPart(new EagleWings(), i++);
-                            //player.AddPart(new KangarooLegs(), i++);
-                            player.AddPart(new PenguinLimbs(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
+                            //player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
 

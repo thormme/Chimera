@@ -15,12 +15,12 @@ namespace finalProject.Creatures
         public Kangaroo(Vector3 position)
             : base(
                 position,
-                3.0f,                                           // Height
+                2.5f,                                           // Height
                 2.0f,                                           // Radius
                 10.0f,                                          // Mass
                 CreatureConstants.KangarooSensitivityRadius,    // Sensitivity Radius
                 new KangarooAI(),                               // AI
-                new AnimateModel("kangaroo", "walk"),          // Model
+                new AnimateModel("kangaroo", "stand"),          // Model
                 135,                                            // Vision Angle
                 CreatureConstants.KangarooListeningSensitivity, // Listening Sensitivity
                 CreatureConstants.KangarooSneak,                // Sneak
