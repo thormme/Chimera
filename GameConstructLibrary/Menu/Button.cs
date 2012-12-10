@@ -24,7 +24,7 @@ namespace GameConstructLibrary.Menu
         protected static InputAction mUseMouse = new CombinedInputAction(
             new InputAction[]
             {
-                new MouseButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, InputAction.MouseButton.Left)
+                new MouseButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, InputAction.MouseButton.Left)
             },
             InputAction.ButtonAction.Down
         );
