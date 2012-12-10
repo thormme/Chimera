@@ -14,7 +14,7 @@ using BEPUphysics.BroadPhaseEntries;
 
 namespace finalProject.Parts
 {
-    class FrogHead : CooldownPart
+    class FrogHead : Part
     {
 
         private const float tongueLength = 500.0f;
@@ -22,7 +22,6 @@ namespace finalProject.Parts
 
         public FrogHead()
             : base(
-                0.0,
                 new Part.SubPart[] {
                     new SubPart(
                         new AnimateModel("frog_head", "stand"),
@@ -32,8 +31,8 @@ namespace finalProject.Parts
                             Creature.PartBone.HeadRightCap
                         },
                         new Vector3(),
-                        Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(1.0f)
+                        Matrix.CreateFromYawPitchRoll(-0.1256637f, 0.2094395f, 7.450581E-09f),
+                        new Vector3(2.0f)
                     )
                 },
                 false,
@@ -43,7 +42,7 @@ namespace finalProject.Parts
             //(mRenderable as AnimateModel).PlayAnimation("Take 001");
         }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime time)
+        public override void Update(GameTime time)
         {
             base.Update(time);
             if (mTongue != null)
@@ -55,13 +54,12 @@ namespace finalProject.Parts
             }
         }
 
-        protected override void UseCooldown(Microsoft.Xna.Framework.Vector3 direction)
+        public override void Use(Vector3 direction)
         {
+            PlayAnimation("tongue", true);
             mTongue = new FrogTongue(Creature, direction);
             Creature.World.Add(mTongue);
         }
-
-        
 
         public override void FinishUse(Vector3 direction)
         {
@@ -82,5 +80,12 @@ namespace finalProject.Parts
             FinishUse(Vector3.Zero);
         }
 
+        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        {
+            if (mTongue == null && animationName != "jump")
+            {
+                PlayAnimation(animationName, isSaturated);
+            }
+        }
     }
 }

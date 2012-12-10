@@ -20,7 +20,7 @@ namespace finalProject.Parts
     {
         private const double RunLength = 2.0f;
         private const float SpeedBoost = 10.0f;
-        private const float DamageMultiplier = 4.0f;
+        protected const float DamageImpulseMultiplier = 270.0f;
 
         private double mRunTimer = -1.0f;
         private double mChargeAnimationTime = 5.0f;
@@ -144,14 +144,23 @@ namespace finalProject.Parts
 
                 //Console.WriteLine(totalImpulse);
                 Creature creature = (other.Tag as CharacterSynchronizer).body.Tag as Creature;
+                int damage = 0;
                 if (totalImpulse > 150.0f)
                 {
-                    creature.Damage(2, Creature);
+                    damage = 2;
                 }
                 else if (totalImpulse > 45.0f)
                 {
-                    creature.Damage(1, Creature);
+                    damage = 1;
                 }
+
+                Vector3 impulseVector = Vector3.Normalize(creature.Position - Creature.Position);
+                impulseVector.Y = 1.0f;
+                impulseVector.Normalize();
+                impulseVector *= damage * DamageImpulseMultiplier;
+                creature.Entity.ApplyLinearImpulse(ref impulseVector);
+
+                creature.Damage(damage, Creature);
             }
         }
     }

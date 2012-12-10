@@ -165,6 +165,8 @@ namespace finalProject
             mSilenced.Reset();
             mImmobilized.Reset();
             Move(Vector2.Zero);
+            Entity.LinearMomentum = Vector3.Zero;
+            Entity.LinearVelocity = Vector3.Zero;
             mShieldRechargeTimer = -1.0f;
             mPoisonTimer = -1.0f;
             mInvulnerable.Reset();

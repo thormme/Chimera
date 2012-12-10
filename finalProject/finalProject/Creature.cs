@@ -90,7 +90,9 @@ namespace finalProject
 
         #region Fields
 
-        protected const float DamageImpulseMultiplier = 255.0f;
+        protected const double FlashLength = 0.5f;
+        protected const double AlternateFlashLength = FlashLength / 2.0f;
+        protected double mFlashTimer = FlashLength;
 
         protected const double InvulnerableLength = 1.0f;
         protected double mInvulnerableTimer = -1.0f;
@@ -464,7 +466,7 @@ namespace finalProject
             return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
         }
 
-        protected void RenderParts()
+        protected void RenderParts(Color color, float weight)
         {
             foreach (PartAttachment partAttachment in mPartAttachments)
             {
@@ -473,8 +475,8 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        Matrix worldTransform = GetOptionalPartTransforms() * mPartRotations[count] * (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
-                        partAttachment.Part.SubParts[count].Render(worldTransform);
+                        Matrix worldTransform = GetOptionalPartTransforms() * mPartRotations[(int)partBone] * (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        partAttachment.Part.SubParts[count].Render(worldTransform, color , weight);
 
                         count++;
                     }
@@ -534,6 +536,17 @@ namespace finalProject
             return partBones;
         }
 
+        protected void PlayPartAnimation(string animation, bool isSaturating)
+        {
+            foreach (PartAttachment pa in mPartAttachments)
+            {
+                if (pa != null)
+                {
+                    pa.Part.TryPlayAnimation(animation, isSaturating);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -576,12 +589,40 @@ namespace finalProject
 
         public override void Render()
         {
+            Color color = Color.Black;
+            float weight = 0.0f;
+            if (Incapacitated)
+            {
+                weight = 1.0f;
+            }
+            else if (mFlashTimer > AlternateFlashLength)
+            {
+                if (Poisoned)
+                {
+                    color = Color.Violet;
+                    weight = (float)(0.5f);// * mPoisonTimer / ShieldRechargeLength);
+                }
+                else if (!mShield)
+                {
+                    color = Color.Red;
+                    weight = (float)(0.5f);// * mShieldRechargeTimer / ShieldRechargeLength);
+                }
+            }
+            else
+            {
+                if (Invulnerable)
+                {
+                    color = Color.White;
+                    weight = (float)(0.5f);// * mInvulnerableTimer / InvulnerableLength);
+                }
+            }
+
             if (mRenderable != null)
             {
                 //mRenderable.Render(GetRenderTransform());
-                mRenderable.Render(GetRenderTransform(), Color.Red, (float)(0.5f * mShieldRechargeTimer / ShieldRechargeLength));
+                mRenderable.Render(GetRenderTransform(), color, weight);
             }
-            RenderParts();
+            RenderParts(color, weight);
         }
 
         /// <summary>
@@ -698,6 +739,7 @@ namespace finalProject
             if (!Immobilized)
             {
                 CharacterController.Jump();
+                PlayPartAnimation("jump", true);
             }
         }
 
@@ -721,27 +763,13 @@ namespace finalProject
                 if (direction != Vector2.Zero)
                 {
                     Forward = new Vector3(facing.X, 0.0f, facing.Y);
+                    PlayPartAnimation("walk", false);
                     (mRenderable as AnimateModel).PlayAnimation("walk", false);
-
-                    foreach (PartAttachment part in mPartAttachments)
-                    {
-                        if (part != null)
-                        {
-                            part.Part.TryPlayAnimation("walk", false);
-                        }
-                    }
                 }
                 else
                 {
-                    (mRenderable as AnimateModel).PlayAnimation("stand", false);
-
-                    foreach (PartAttachment part in mPartAttachments)
-                    {
-                        if (part != null)
-                        {
-                            part.Part.TryPlayAnimation("stand", false);
-                        }
-                    }
+                    PlayPartAnimation("stand", true);
+                    (mRenderable as AnimateModel).PlayAnimation("stand", true);
                 }
             }
         }
@@ -772,26 +800,17 @@ namespace finalProject
                 return;
             }
 
-            // TODO: make this work with rolling rocks
-            if (source != null)
-            {
-                Vector3 impulseVector = Vector3.Normalize(Position - source.Position);
-                impulseVector.Y = 1.0f;
-                impulseVector.Normalize();
-                impulseVector *= damage * DamageImpulseMultiplier;
-                Entity.ApplyLinearImpulse(ref impulseVector);
-            }
-
-            if (!mShield)
-            {
-                Invulnerable = true;
-                mInvulnerableTimer = InvulnerableLength;
-            }
-            else
+            if (mShield)
             {
                 mShield = false;
                 mShieldRechargeTimer = ShieldRechargeLength;
                 --damage;
+            }
+
+            if (damage > 0)
+            {
+                Invulnerable = true;
+                mInvulnerableTimer = InvulnerableLength;
             }
 
             List<PartAttachment> validParts = new List<PartAttachment>(mPartAttachments.Count());
@@ -828,6 +847,12 @@ namespace finalProject
             if (Incapacitated)
             {
                 return;
+            }
+
+            mFlashTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (mFlashTimer < 0.0f)
+            {
+                mFlashTimer = FlashLength;
             }
 
             if (mInvulnerableTimer > 0.0f)
