@@ -47,9 +47,9 @@
     <Model>rock3light</Model>
     <Parameters />
     <Position>
-      <X>2.905927</X>
-      <Y>3000</Y>
-      <Z>-3.15199566</Z>
+      <X>3.63253355</X>
+      <Y>3030</Y>
+      <Z>-3.75828266</Z>
     </Position>
     <Orientation>
       <X>3.539863</X>
@@ -61,16 +61,16 @@
       <Y>10000</Y>
       <Z>50</Z>
     </Scale>
-    <Height>3000</Height>
+    <Height>3030</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
     <Model>rock3light</Model>
     <Parameters />
     <Position>
-      <X>1.75388074</X>
-      <Y>4000</Y>
-      <Z>-3.55076647</Z>
+      <X>2.475781</X>
+      <Y>4050</Y>
+      <Z>-4.113301</Z>
     </Position>
     <Orientation>
       <X>6.799394</X>
@@ -82,7 +82,7 @@
       <Y>10000</Y>
       <Z>50</Z>
     </Scale>
-    <Height>4000</Height>
+    <Height>4050</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
@@ -106,84 +106,6 @@
     <Height>5000</Height>
   </DummyObject>
   <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>Rhino</string>
-      <string>0</string>
-      <string>0</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>-6.54591036</X>
-      <Y>14000</Y>
-      <Z>-6.816869</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>Kangaroo</string>
-      <string>0</string>
-      <string>0</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>4.53815269</X>
-      <Y>0</Y>
-      <Z>-8.245323</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>Kangaroo</string>
-      <string>0</string>
-      <string>0</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>-0.101114273</X>
-      <Y>0</Y>
-      <Z>-6.58416176</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
     <Type>finalProject.Checkpoint, finalProject</Type>
     <Model>sphere</Model>
     <Parameters />
@@ -205,6 +127,79 @@
     <Height>0</Height>
   </DummyObject>
   <DummyObject>
+    <Type>finalProject.Spawner, finalProject</Type>
+    <Model>kangaroo</Model>
+    <Parameters>
+      <string>Kangaroo</string>
+      <string>2</string>
+      <string>0</string>
+      <string>2</string>
+    </Parameters>
+    <Position>
+      <X>3.08301544</X>
+      <Y>0</Y>
+      <Z>-6.862768</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>1.25</X>
+      <Y>1000</Y>
+      <Z>1.25</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PlayerCreature, finalProject</Type>
+    <Model>playerBean</Model>
+    <Parameters />
+    <Position>
+      <X>7.677659</X>
+      <Y>0</Y>
+      <Z>-6.952979</Z>
+    </Position>
+    <Orientation>
+      <X>4.499998</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>1.25</X>
+      <Y>1000</Y>
+      <Z>1.25</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Spawner, finalProject</Type>
+    <Model>rhino</Model>
+    <Parameters>
+      <string>Rhino</string>
+      <string>1</string>
+      <string>0</string>
+      <string>1</string>
+    </Parameters>
+    <Position>
+      <X>-5.514596</X>
+      <Y>14000</Y>
+      <Z>-6.553441</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>1.25</X>
+      <Y>1000</Y>
+      <Z>1.25</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
     <Type>finalProject.GoalPoint, finalProject</Type>
     <Model>box</Model>
     <Parameters>
@@ -212,9 +207,9 @@
       <string>RhinoHead</string>
     </Parameters>
     <Position>
-      <X>7.25253868</X>
+      <X>1.49131346</X>
       <Y>0</Y>
-      <Z>-8.273142</Z>
+      <Z>-9.009238</Z>
     </Position>
     <Orientation>
       <X>0</X>

@@ -222,7 +222,7 @@
     <Compile Include="RadialSensor.cs" />
     <Compile Include="ListeningSensor.cs" />
     <Compile Include="StateTimer.cs" />
-    <Compile Include="TipTrigger.cs" />
+    <Compile Include="Triggers\TipTrigger.cs" />
     <Compile Include="Trigger.cs" />
   </ItemGroup>
   <ItemGroup>

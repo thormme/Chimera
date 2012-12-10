@@ -13,6 +13,7 @@ using BEPUphysics.CollisionTests;
 using BEPUphysics.NarrowPhaseSystems.Pairs;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Collidables;
+using BEPUphysics.Entities;
 
 namespace finalProject.Parts
 {
@@ -51,6 +52,7 @@ namespace finalProject.Parts
 
         public override void Update(GameTime time)
         {
+            
             if (mRunTimer > 0.0f)
             {
                 Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
@@ -138,7 +140,8 @@ namespace finalProject.Parts
         {
             base.InitialCollisionDetected(sender, other, collisionPair);
 
-            if (other.Tag is CharacterSynchronizer && mRunTimer > 0.0f)
+            Console.WriteLine(other.Tag + " " + mRunTimer);
+            if ((other.Tag is CharacterSynchronizer || other.Tag is PhysicsProp)/* && mRunTimer > 0.0f*/)
             {
                 float totalImpulse = 0;
                 foreach (ContactInformation c in collisionPair.Contacts)
@@ -147,7 +150,7 @@ namespace finalProject.Parts
                 }
 
                 //Console.WriteLine(totalImpulse);
-                Creature creature = (other.Tag as CharacterSynchronizer).body.Tag as Creature;
+                    
                 int damage = 0;
                 if (totalImpulse > 150.0f)
                 {
@@ -158,8 +161,18 @@ namespace finalProject.Parts
                     damage = 1;
                 }
 
+                Entity hitEntity;
+                if (other.Tag is CharacterSynchronizer)
+                {
+                    hitEntity = (other.Tag as CharacterSynchronizer).body;
+                }
+                else
+                {
+                    hitEntity = (other.Tag as PhysicsProp).Entity;
+                }
+
                 Vector3 impulseVector = Vector3.Zero;
-                Vector3 impulseDirection = creature.Position - Creature.Position;
+                Vector3 impulseDirection = hitEntity.Position - Creature.Position;
                 if (impulseDirection != Vector3.Zero)
                 {
                     impulseVector = Vector3.Normalize(impulseDirection);
@@ -168,9 +181,12 @@ namespace finalProject.Parts
                 impulseVector.Y = 1.0f;
                 impulseVector.Normalize();
                 impulseVector *= damage * DamageImpulseMultiplier;
-                creature.Entity.ApplyLinearImpulse(ref impulseVector);
+                hitEntity.ApplyLinearImpulse(ref impulseVector);
 
-                creature.Damage(damage, Creature);
+                if (other.Tag is CharacterSynchronizer)
+                {
+                    ((other.Tag as CharacterSynchronizer).body.Tag as Creature).Damage(damage, Creature);
+                }
             }
         }
     }

@@ -175,6 +175,7 @@ namespace GameConstructLibrary
             (tf.StaticCollidable as Terrain).Thickness = 5.0f;
             Add(tf);
 
+            Vector3[] corners = tf.StaticCollidable.BoundingBox.GetCorners();
         }
 
         public void Clear()
