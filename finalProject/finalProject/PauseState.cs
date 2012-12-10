@@ -41,12 +41,19 @@ namespace finalProject
 
         private void Resume(Button button)
         {
+            InputAction.IsMouseLocked = true;
             Game1.PopState();
         }
 
         private void Quit(Button button)
         {
             mOwnerGame.Exit();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            InputAction.IsMouseLocked = false;
+            base.Update(gameTime);
         }
     }
 }
