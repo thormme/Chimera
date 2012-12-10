@@ -50,7 +50,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        new Vector3(3.0f)
                     ),
                     new SubPart(
                         new AnimateModel("kangaroo_rightLeg", "stand"),
@@ -64,7 +64,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        new Vector3(3.0f)
                     )
                 },
                 true,
@@ -85,14 +85,14 @@ namespace finalProject.Parts
                 mJumpInUse = true;
                 mJumpStrengthTimer = jumpStrengthTimerStart;
 
-                PlayAnimation("charge", true);
+                PlayAnimation("charge", true, true);
             }
             else
             {
                 mPoundWaiting = true;
                 mPoundWaitTimer = poundWaitTime;
 
-                PlayAnimation("pound", true);
+                PlayAnimation("pound", true, true);
             }
         }
 
@@ -164,15 +164,15 @@ namespace finalProject.Parts
                 Vector3 pushForward = Creature.Forward * mJumpMultiplier * forwardJumpForce;
                 Creature.Entity.ApplyLinearImpulse(ref pushForward);
                 
-                PlayAnimation("jump", true);
+                PlayAnimation("jump", true, true);
             }
         }
 
-        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
         {
             if (!mJumpInUse && !mPoundInUse && Creature.CharacterController.SupportFinder.HasSupport)
             {
-                PlayAnimation(animationName, isSaturated);
+                PlayAnimation(animationName, isSaturated, playOnCreature);
             }
         }
 

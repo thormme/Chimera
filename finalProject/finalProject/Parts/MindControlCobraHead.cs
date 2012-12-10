@@ -27,7 +27,7 @@ namespace finalProject.Parts
                 MindControlProjectile.ControlLength * 2.0f,
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("cobra_head", "stand"),
                         new Creature.PartBone[]
                         { 
                             Creature.PartBone.HeadCenterCap,
@@ -36,7 +36,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(-MathHelper.PiOver2, 0, 0),
-                        new Vector3(0.02f)
+                        new Vector3(2.0f)
                     )
                 },
                 false,
@@ -46,7 +46,7 @@ namespace finalProject.Parts
 
         protected override void UseCooldown(Vector3 direction)
         {
-            PlayAnimation("spit", true);
+            PlayAnimation("spit", true, false);
             projectile = new MindControlProjectile(Creature, direction);
             Creature.World.Add(projectile);
         }
@@ -58,6 +58,11 @@ namespace finalProject.Parts
         {
             base.Damage(damage, source);
             Cancel();
+        }
+
+        public override void Update(GameTime time)
+        {
+            base.Update(time);
         }
 
         public override void Cancel()

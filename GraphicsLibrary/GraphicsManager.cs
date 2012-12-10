@@ -438,6 +438,11 @@ namespace GraphicsLibrary
             {
                 mSpriteBatch.Begin(0, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
                 mSpriteBatch.Draw(LookupSprite(sprite.Name), sprite.ScreenSpace, Color.White);
+                if (sprite.BlendColorWeight > 0.0f)
+                {
+                    Color overlay = new Color(sprite.BlendColor.R, sprite.BlendColor.G, sprite.BlendColor.B, sprite.BlendColorWeight);
+                    mSpriteBatch.Draw(LookupSprite(sprite.Name), sprite.ScreenSpace, overlay);
+                }
                 mSpriteBatch.End();
             }
 

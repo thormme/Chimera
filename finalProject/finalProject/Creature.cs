@@ -140,8 +140,6 @@ namespace finalProject
             {
                 if (!Immobilized)
                 {
-                    Vector2 movement = new Vector2(value.X, value.Z);
-                    movement.Normalize();
                     if (value != Vector3.Zero)
                     {
                         value.Normalize();
@@ -456,17 +454,17 @@ namespace finalProject
             }
         }
 
-        protected virtual Matrix GetOptionalPartTransforms()
-        {
-            return Matrix.Identity;
-        }
-
         protected virtual Matrix GetRenderTransform()
         {
             return Matrix.CreateScale(Scale) * XNAOrientationMatrix * Matrix.CreateTranslation(Position);
         }
 
-        protected void RenderParts(Color color, float weight)
+        protected virtual void RenderParts(Color color, float weight)
+        {
+            RenderPartsHelper(color, weight, false);
+        }
+
+        protected void RenderPartsHelper(Color overlayColor, float overlayColorWeight, bool scale)
         {
             foreach (PartAttachment partAttachment in mPartAttachments)
             {
@@ -475,8 +473,8 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        Matrix worldTransform = GetOptionalPartTransforms() * /*mPartRotations[(int)partBone] **/ (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
-                        partAttachment.Part.SubParts[count].Render(worldTransform, color , weight);
+                        Matrix worldTransform = /* mPartRotations[count] * */(mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        partAttachment.Part.SubParts[count].Render(worldTransform, overlayColor, overlayColorWeight, scale);
 
                         count++;
                     }
@@ -542,7 +540,7 @@ namespace finalProject
             {
                 if (pa != null)
                 {
-                    pa.Part.TryPlayAnimation(animation, isSaturating);
+                    pa.Part.TryPlayAnimation(animation, isSaturating, false);
                 }
             }
         }
@@ -558,7 +556,7 @@ namespace finalProject
 
             Sensor = radialSensor;
             CollisionRules.AddRule(Entity, Sensor.Entity, CollisionRule.NoBroadPhase);
-            Forward = new Vector3(0.0f, 0.0f, 1.0f);
+            Forward = new Vector3(0.0f, 0.0f, -1.0f);
             mPartAttachments = new List<PartAttachment>(numParts);
             for (int i = 0; i < numParts; ++i)
             {
@@ -619,10 +617,17 @@ namespace finalProject
 
             if (mRenderable != null)
             {
-                //mRenderable.Render(GetRenderTransform());
                 mRenderable.Render(GetRenderTransform(), color, weight);
             }
             RenderParts(color, weight);
+        }
+
+        public virtual void TryPlayAnimation(string animationName, bool isSaturated)
+        {
+            if (true)
+            {
+                (mRenderable as AnimateModel).PlayAnimation(animationName, isSaturated);
+            }
         }
 
         /// <summary>
@@ -763,13 +768,13 @@ namespace finalProject
                 if (direction != Vector2.Zero)
                 {
                     Forward = new Vector3(facing.X, 0.0f, facing.Y);
+                    TryPlayAnimation("walk", false);
                     PlayPartAnimation("walk", false);
-                    (mRenderable as AnimateModel).PlayAnimation("walk", false);
                 }
                 else
                 {
+                    TryPlayAnimation("stand", true);
                     PlayPartAnimation("stand", true);
-                    (mRenderable as AnimateModel).PlayAnimation("stand", true);
                 }
             }
         }

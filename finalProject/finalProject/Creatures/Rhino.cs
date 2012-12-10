@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 30.0f,                                          // Mass
                 CreatureConstants.RhinoSensitivityRadius,       // Sensitivity Radius
                 new RhinoAI(),                                  // AI
-                new AnimateModel("rhino", "walk"),              // Model
+                new AnimateModel("rhino", "stand"),              // Model
                 135,                                            // Vision Angle
                 CreatureConstants.RhinoListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.RhinoSneak,                   // Sneak
@@ -28,7 +28,7 @@ namespace finalProject.Creatures
                 new RhinoHead()                                 // Part
                 )
         {
-            Scale = new Vector3(1.0f);
+            Scale = new Vector3(2.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -36,6 +36,11 @@ namespace finalProject.Creatures
             List<PartBone> bones = new List<PartBone>();
             bones.Add(PartBone.HeadCenterCap);
             return bones;
+        }
+
+        protected virtual Matrix GetOptionalPartTransforms()
+        {
+            return Matrix.CreateScale(0.5f);
         }
 
         public override void Update(GameTime gameTime)

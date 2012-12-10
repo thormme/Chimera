@@ -28,7 +28,7 @@ namespace finalProject.Creatures
                 new BearArms()                              // Part
                 )
         {
-            Scale = new Vector3(1.5f);
+            Scale = new Vector3(2.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -37,6 +37,11 @@ namespace finalProject.Creatures
             bones.Add(PartBone.ArmLeft1Cap);
             bones.Add(PartBone.ArmRight1Cap);
             return bones;
+        }
+
+        protected virtual Matrix GetOptionalPartTransforms()
+        {
+            return Matrix.CreateScale(0.5f);
         }
 
         public override void Update(GameTime gameTime)
