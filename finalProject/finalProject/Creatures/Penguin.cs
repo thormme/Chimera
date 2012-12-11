@@ -41,11 +41,6 @@ namespace finalProject.Creatures
             return bones;
         }
 
-        public override void TryPlayAnimation(string animationName, bool isSaturated)
-        {
-            base.TryPlayAnimation(animationName, isSaturated);
-        }
-
         public override void Update(GameTime gameTime)
         {
             (mRenderable as AnimateModel).Update(gameTime);
