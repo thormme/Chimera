@@ -41,6 +41,10 @@ namespace finalProject
         
         private int mNumHeightModifyingParts = 0;
 
+        private Sprite mRequirementBoxSprite = new Sprite("requirementBox");
+        private Sprite mRequirementSprite = null;
+        private Sprite mCheckSprite = new Sprite("check");
+
         private Sprite[] mButtonSprites = new Sprite[3] {
             new Sprite("blueButton"), 
             new Sprite("yellowButton"), 
@@ -373,15 +377,30 @@ namespace finalProject
         public override void Render()
         {
             base.Render();
+            RenderRequirement();
+            RenderAbilities();
+        }
 
+        private void RenderRequirement()
+        {
+            int width = Game1.Graphics.PreferredBackBufferWidth;
+            int height = Game1.Graphics.PreferredBackBufferHeight;
+            Rectangle rect = new Rectangle((int)(width * 0.02f), (int)(height * 0.02f), (int)(0.26f * height), (int)(0.26f * height));
+
+            mRequirementBoxSprite.Render(rect);
+
+        }
+
+        private void RenderAbilities()
+        {
             int width = Game1.Graphics.PreferredBackBufferWidth;
             int height = Game1.Graphics.PreferredBackBufferHeight;
             int buttonSize = (int)(0.1f * height);
 
             Rectangle[] rects = new Rectangle[3] {
-                new Rectangle((int)(width - width * 0.3f), (int)(height - height * 0.2f), buttonSize, buttonSize),
-                new Rectangle((int)(width - width * 0.2f), (int)(height - height * 0.25f), buttonSize, buttonSize),
-                new Rectangle((int)(width - width * 0.1f), (int)(height - height * 0.2f), buttonSize, buttonSize)
+                new Rectangle((int)(width - width * 0.26f), (int)(height - height * 0.2f), buttonSize, buttonSize),
+                new Rectangle((int)(width - width * 0.18f), (int)(height - height * 0.25f), buttonSize, buttonSize),
+                new Rectangle((int)(width - width * 0.10f), (int)(height - height * 0.2f), buttonSize, buttonSize)
             };
 
             mButtonSprites[0].Render(rects[0]);
@@ -400,7 +419,6 @@ namespace finalProject
                     );
                 }
             }
-
         }
 
         public void ActivateStealPart()

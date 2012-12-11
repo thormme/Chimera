@@ -64,10 +64,11 @@ namespace finalProject
 
         public Game1()
         {
+
             Graphics = new GraphicsDeviceManager(this);
             /*Graphics.PreferredBackBufferWidth = 1280;
             Graphics.PreferredBackBufferHeight = 720;*/
-            //Graphics.ToggleFullScreen();
+            Graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
 
