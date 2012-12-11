@@ -43,10 +43,15 @@ namespace GameConstructLibrary.Menu
         public override void Update(GameTime gameTime)
         {
             // Check that mouse is within button.
-            if ((Mouse.GetState().X > Bounds.X && Mouse.GetState().X < Bounds.X + Bounds.Width &&
-                Mouse.GetState().Y > Bounds.Y && Mouse.GetState().Y < Bounds.Y + Bounds.Height &&
-                mUseMouse.Active) ||
-                (mUseButton.Active && Selected))
+            bool mouseContained = (Mouse.GetState().X > Bounds.X && Mouse.GetState().X < Bounds.X + Bounds.Width &&
+                Mouse.GetState().Y > Bounds.Y && Mouse.GetState().Y < Bounds.Y + Bounds.Height);
+
+            if (mouseContained && Menu != null)
+            {
+                Menu.SelectedItem = this;
+            }
+
+            if ((mouseContained && mUseMouse.Active) || (mUseButton.Active && Selected))
             {
                 Use();
             }
