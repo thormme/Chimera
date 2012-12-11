@@ -58,6 +58,7 @@ namespace finalProject.Parts
             PlayAnimation("tongue", true, false);
             mTongue = new FrogTongue(Creature, direction);
             Creature.World.Add(mTongue);
+            mCanAnimate = false;
         }
 
         public override void FinishUse(Vector3 direction)
@@ -67,6 +68,7 @@ namespace finalProject.Parts
                 Creature.World.Remove(mTongue);
             }
             mTongue = null;
+            mCanAnimate = true;
         }
 
         public override void Reset()
@@ -77,14 +79,6 @@ namespace finalProject.Parts
         public override void Cancel()
         {
             FinishUse(Vector3.Zero);
-        }
-
-        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
-        {
-            if (mTongue == null && animationName != "jump")
-            {
-                PlayAnimation(animationName, isSaturated, playOnCreature);
-            }
         }
     }
 }
