@@ -772,7 +772,6 @@ namespace finalProject
                 CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
                 if (direction != Vector2.Zero)
                 {
-                    Forward = new Vector3(facing.X, 0.0f, facing.Y);
                     TryPlayAnimation("walk", false);
                     PlayPartAnimation("walk", false);
                 }
@@ -781,6 +780,7 @@ namespace finalProject
                     TryPlayAnimation("stand", true);
                     PlayPartAnimation("stand", true);
                 }
+                Forward = new Vector3(facing.X, 0.0f, facing.Y);
             }
         }
 

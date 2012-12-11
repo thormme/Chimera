@@ -270,7 +270,7 @@ namespace FinalProject
                 return mForward;
             }
         }
-        private Vector3 mForward;
+        private Vector3 mForward = Vector3.Forward;
 
         public Vector3 GetForward()
         {
@@ -287,7 +287,7 @@ namespace FinalProject
                 return mRight;
             }
         }
-        private Vector3 mRight;
+        private Vector3 mRight = Vector3.Right;
 
         /// <summary>
         /// Minimum number of degrees camera can be from the up vector.

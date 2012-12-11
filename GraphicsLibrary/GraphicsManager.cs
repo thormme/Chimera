@@ -829,6 +829,7 @@ namespace GraphicsLibrary
 
                 if (animationRate != Vector2.Zero)
                 {
+                    mTimeElapsed %= 1.0f;
                     animationRate *= mTimeElapsed;
                     animationRate.X %= 1.0f;
                     animationRate.Y %= 1.0f;

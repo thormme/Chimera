@@ -170,6 +170,7 @@
     <Compile Include="AI\RhinoAI.cs" />
     <Compile Include="ChaseCamera.cs" />
     <Compile Include="Checkpoint.cs" />
+    <Compile Include="ConeSensor.cs" />
     <Compile Include="CooldownPart.cs" />
     <Compile Include="CreatureConstants.cs" />
     <Compile Include="Creatures\Bear.cs" />

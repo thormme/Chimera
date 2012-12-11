@@ -235,6 +235,8 @@ namespace finalProject
         /// </summary>
         private void MoveCreature(GameTime gameTime)
         {
+            mCamera.TrackTarget = false;
+
             float elapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             // Parse movement input.
@@ -341,6 +343,9 @@ namespace finalProject
                 lookRightDegree = mLookRightMouse.Degree;
             }
 
+            Vector2 cameraDirection = new Vector2(forward.X, forward.Z);
+            Vector2 previousDirection = new Vector2(mCreature.Forward.X, mCreature.Forward.Z);
+
             // Rotating camera.
             if (lookForwardActive || lookRightActive)
             {
@@ -365,7 +370,7 @@ namespace finalProject
 
             if (!NoControl)
             {
-                mCreature.Move(walkDirection, (mCamera.TrackTarget) ? walkDirection : new Vector2(forward.X, forward.Z));
+                mCreature.Move(walkDirection, (mCamera.TrackTarget) ? walkDirection : (walkDirection == Vector2.Zero && !(mCreature as PlayerCreature).Stealing ? previousDirection : cameraDirection));
             }
         }
 

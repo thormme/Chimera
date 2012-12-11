@@ -16,7 +16,7 @@ namespace finalProject.Creatures
             : base(
                 position,
                 2.5f,                                           // Height
-                2.0f,                                           // Radius
+                1.0f,                                           // Radius
                 10.0f,                                          // Mass
                 CreatureConstants.KangarooSensitivityRadius,    // Sensitivity Radius
                 new KangarooAI(),                               // AI

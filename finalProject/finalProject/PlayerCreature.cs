@@ -16,6 +16,8 @@ using FinalProject;
 using System;
 using finalProject.Parts;
 using finalProject.Creatures;
+using BEPUphysics.MathExtensions;
+using BEPUphysics.CollisionRuleManagement;
 
 #endregion
 
@@ -33,7 +35,7 @@ namespace finalProject
         private const int DefaultIntimidation = 5;
         private const int DamageThreshold = 30;
 
-        private const double StealLength = 3.0f;
+        private const double StealLength = 2.5f;
 
         private bool mStealing = false;
         private Creature mStealTarget = null;
@@ -41,6 +43,9 @@ namespace finalProject
         private Part mStolenPart = null;
         
         private int mNumHeightModifyingParts = 0;
+
+        private ConeSensor mPartStealSensor;
+        private Matrix mConeOrientation = Matrix.Identity;
 
         private Sprite mRequirementText = new Sprite("requirements");
         private Sprite mRequirementBoxSprite = new Sprite("requirementBox");
@@ -143,6 +148,28 @@ namespace finalProject
         #endregion
 
         #region Public Properties
+
+        public override World World
+        {
+            get
+            {
+                return base.World;
+            }
+            set
+            {
+                if (World != null)
+                {
+                    World.Remove(mPartStealSensor);
+                }
+
+                if (value != null)
+                {
+                    value.Add(mPartStealSensor);
+                }
+
+                base.World = value;
+            }
+        }
 
         public ChaseCamera Camera
         {
@@ -270,6 +297,17 @@ namespace finalProject
             : base(position + Vector3.Up * 10.0f, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new VisionSensor(4.0f, 135), new PlayerController(viewPort), 3)
         {
             Forward = facingDirection;
+
+            Vector3[] vertices;
+            int[] indices;
+            CollisionMeshManager.LookupMesh("suckConeCollision", out vertices, out indices);
+
+            MobileMesh coneMesh = new MobileMesh(vertices, indices,
+                new AffineTransform(new Vector3(3.0f, 3.0f, 3.0f), Quaternion.Identity, Vector3.Zero), 
+                BEPUphysics.CollisionShapes.MobileMeshSolidity.Clockwise);
+
+            mPartStealSensor = new ConeSensor(coneMesh);
+            CollisionRules.AddRule(Entity, mPartStealSensor.Entity, CollisionRule.NoBroadPhase);
 
             CharacterController.JumpSpeed *= 1.6f;
             CharacterController.JumpForceFactor *= 1.6f;
@@ -449,7 +487,7 @@ namespace finalProject
             {
                 if (mStealTarget != null)
                 {
-                    if (!Sensor.CollidingCreatures.Contains(mStealTarget))
+                    if (!mPartStealSensor.CollidingCreatures.Contains(mStealTarget))
                     {
                         mStealTarget = null;
                     }
@@ -465,6 +503,7 @@ namespace finalProject
                                 mStealTarget = null;
                                 mStolenPart = pa.Part;
                                 DeactivateStealPart();
+                                mStealTimer = -1.0f;
                             }
                         }
                     }
@@ -472,9 +511,10 @@ namespace finalProject
 
                 if (mStealTarget == null)
                 {
-                    if (Sensor.CollidingCreatures.Count > 0)
+                    mStealTimer = -1.0f;
+                    if (mPartStealSensor.CollidingCreatures.Count > 0)
                     {
-                        foreach (Creature creature in Sensor.CollidingCreatures)
+                        foreach (Creature creature in mPartStealSensor.CollidingCreatures)
                         {
                             if (creature.PartAttachments[0] != null)
                             {
@@ -530,19 +570,6 @@ namespace finalProject
         {
             AnimateModel model = mRenderable as AnimateModel;
 
-            //else if (mStance == Stance.Jumping)
-            //{
-            //    model.PlayAnimation("jump", true);
-
-            //    foreach (PartAttachment part in mPartAttachments)
-            //    {
-            //        if (part != null)
-            //        {
-            //            part.Part.TryPlayAnimation("jump", true);
-            //        }
-            //    }
-            //}
-
             if (World.Goal != String.Empty)
             {
                 mRequirementSprite = new Sprite(World.Goal + "Icon");
@@ -551,6 +578,26 @@ namespace finalProject
             model.Update(gameTime);
 
             StealPartsUpdate(gameTime);
+
+            float partStealFraction = (float)((StealLength - mStealTimer) / StealLength);
+            float rotationIncrease = 0.0f;
+            if (mStealTimer >= 0.0f)
+            {
+                rotationIncrease = partStealFraction * 1.5f;
+            }
+
+            mSuckModel.HorizontalVelocity = 1.0f + rotationIncrease;
+            mSuckModel.VerticalVelocity = mSuckModel.HorizontalVelocity;
+
+            mConeOrientation = Matrix.CreateScale(new Vector3(3.0f, 3.0f, 3.0f));
+            mConeOrientation *= Matrix.CreateRotationX(MathHelper.PiOver2);
+            mConeOrientation *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
+
+            mPartStealSensor.Update(gameTime);
+
+            mPartStealSensor.Position = Position + Camera.Forward * 6.0f;
+            mPartStealSensor.XNAOrientationMatrix  = Matrix.CreateRotationX(MathHelper.Pi);
+            mPartStealSensor.XNAOrientationMatrix *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
 
             base.Update(gameTime);
         }
@@ -567,10 +614,7 @@ namespace finalProject
         {
             if (mStealing)
             {
-                Matrix coneOrientation = Matrix.CreateScale(new Vector3(3.0f, 4.0f, 3.0f));
-                coneOrientation *= Matrix.CreateRotationX(MathHelper.PiOver2);
-                coneOrientation *= Matrix.CreateWorld(Position + Forward * 9.0f, Forward, Up);
-                mSuckModel.Render(coneOrientation);
+                mSuckModel.Render(mConeOrientation);
             }
 
             base.Render();
