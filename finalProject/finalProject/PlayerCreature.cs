@@ -47,6 +47,8 @@ namespace finalProject
             new Sprite("redButton") 
         };
 
+        private ScrollingTransparentModel mSuckModel;
+
         #endregion
 
         #region Public Properties
@@ -185,6 +187,10 @@ namespace finalProject
             Sneak = DefaultSneak;
 
             SpawnOrigin = position;
+
+            mSuckModel = new ScrollingTransparentModel("suckCone");
+            mSuckModel.HorizontalVelocity = 1.0f;
+            mSuckModel.VerticalVelocity = 1.0f;
         }
 
         /// <summary>
@@ -342,19 +348,6 @@ namespace finalProject
         {
             AnimateModel model = mRenderable as AnimateModel;
 
-            //else if (mStance == Stance.Jumping)
-            //{
-            //    model.PlayAnimation("jump", true);
-
-            //    foreach (PartAttachment part in mPartAttachments)
-            //    {
-            //        if (part != null)
-            //        {
-            //            part.Part.TryPlayAnimation("jump", true);
-            //        }
-            //    }
-            //}
-
             model.Update(gameTime);
 
             StealPartsUpdate(gameTime);
@@ -372,6 +365,14 @@ namespace finalProject
 
         public override void Render()
         {
+            if (mStealing)
+            {
+                Matrix coneOrientation = Matrix.CreateScale(new Vector3(3.0f, 4.0f, 3.0f));
+                coneOrientation *= Matrix.CreateRotationX(MathHelper.PiOver2);
+                coneOrientation *= Matrix.CreateWorld(Position + Forward * 9.0f, Forward, Up);
+                mSuckModel.Render(coneOrientation);
+            }
+
             base.Render();
 
             int width = Game1.Graphics.PreferredBackBufferWidth;

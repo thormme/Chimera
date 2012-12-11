@@ -28,6 +28,27 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 	return color;
 }
 
+sampler NoShade_Sampler = sampler_state
+{
+	texture = <Texture>;
+	magfilter = LINEAR;
+	minfilter = LINEAR;
+	mipfilter = LINEAR;
+	AddressU = wrap;
+	AddressV = wrap;
+};
+
+float4 NoShadePS(VSOutput pin) : SV_Target0
+{
+	float4 color = tex2D(NoShade_Sampler, pin.TexCoord);
+
+	float textureWeight = 1.0f - xOverlayColorWeight;
+	color.rgb *= textureWeight;
+	color.rgb += xOverlayColorWeight * xOverlayColor;
+
+	return color;
+}
+
 float4 OutlinePS(OutlineVSOutput pin) : SV_Target0
 {
 	return float4(0.0, 0.0, 0.0, 1.0);

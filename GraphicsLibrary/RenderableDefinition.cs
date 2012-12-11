@@ -34,6 +34,13 @@ namespace GraphicsLibrary
             get { return mBoneTransforms; }
         }
 
+        public Vector2 AnimationRate
+        {
+            get { return mAnimationRate; }
+            set { mAnimationRate = value; }
+        }
+        private Vector2 mAnimationRate;
+
         public Vector3 OverlayColor
         {
             get { return mOverlayColor; }
@@ -46,7 +53,7 @@ namespace GraphicsLibrary
         }
         private float mOverlayColorWeight;
 
-        public RenderableDefinition(string name, bool isModel, bool isSkinned, Matrix worldTransform, Matrix[] boneTransforms, Color overlayColor, float overlayColorWeight)
+        public RenderableDefinition(string name, bool isModel, bool isSkinned, Matrix worldTransform, Matrix[] boneTransforms, Color overlayColor, float overlayColorWeight, Vector2 animationRate)
         {
             mName           = name;
             mIsModel        = isModel;
@@ -55,6 +62,7 @@ namespace GraphicsLibrary
             mBoneTransforms = boneTransforms;
             mOverlayColor = overlayColor.ToVector3();
             mOverlayColorWeight = overlayColorWeight;
+            mAnimationRate = animationRate;
         }
     }
 }

@@ -36,12 +36,14 @@ namespace GraphicsLibrary
         static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
         static private Dictionary<string, Dictionary<string, Matrix>> mUniqueModelBoneLibrary = new Dictionary<string, Dictionary<string, Matrix>>();
         static private Dictionary<string, Texture2D> mUniqueSpriteLibrary = new Dictionary<string, Texture2D>();
+        static private Dictionary<string, Dictionary<int, Texture2D>> mUniqueAnimateTextureLibrary = new Dictionary<string, Dictionary<int, Texture2D>>();
 
         static private GraphicsDevice mDevice;
         static private SpriteBatch mSpriteBatch;
 
         static private Queue<RenderableDefinition> mRenderQueue = new Queue<RenderableDefinition>();
         static private Queue<SpriteDefinition> mSpriteQueue = new Queue<SpriteDefinition>();
+        static private SortedList<float, RenderableDefinition> mTransparentQueue = new SortedList<float, RenderableDefinition>();
 
         static private RenderTarget2D mShadowMap;
         static private RenderTarget2D mSceneBuffer;
@@ -49,7 +51,11 @@ namespace GraphicsLibrary
         static private RenderTarget2D mOutlineBuffer;
         static private RenderTarget2D mCompositeBuffer;
 
+        static private Vector3 mCameraPosition;
+
         static private bool mCanRender = false;
+
+        static private float mTimeElapsed = 0.0f;
 
         static private int mEdgeWidth = 1;
         static private int mEdgeIntensity = 1;
@@ -148,37 +154,55 @@ namespace GraphicsLibrary
                 {
                     try
                     {
+                        string textureKey = "_animate_texture_";
                         string modelName = Path.GetFileNameWithoutExtension(file.Name);
-
-                        Model input = content.Load<Model>("models/" + subDirName + "/" + modelName);
-
-                        foreach (ModelMesh mesh in input.Meshes)
+                        if (modelName.Contains(textureKey))
                         {
-                            foreach (ModelMeshPart part in mesh.MeshParts)
-                            {
-                                Microsoft.Xna.Framework.Graphics.SkinnedEffect skinnedEffect = part.Effect as Microsoft.Xna.Framework.Graphics.SkinnedEffect;
-                                if (skinnedEffect != null)
-                                {
-                                    SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
-                                    newEffect.CopyFromSkinnedEffect(skinnedEffect);
+                            Texture2D texture = content.Load<Texture2D>("models/" + subDirName + "/" + modelName);
 
-                                    part.Effect = newEffect;
-                                }
-                                else
+                            string[] nameParts = modelName.Split(new char[] { '_' });
+
+                            Dictionary<int, Texture2D> animateTextures;
+                            if (!mUniqueAnimateTextureLibrary.TryGetValue(nameParts[0], out animateTextures))
+                            {
+                                animateTextures = new Dictionary<int, Texture2D>();
+                                mUniqueAnimateTextureLibrary.Add(nameParts[0], animateTextures);
+                            }
+
+                            animateTextures.Add(Int32.Parse(nameParts[3]), texture);
+                        }
+                        else
+                        {
+                            Model input = content.Load<Model>("models/" + subDirName + "/" + modelName);
+
+                            foreach (ModelMesh mesh in input.Meshes)
+                            {
+                                foreach (ModelMeshPart part in mesh.MeshParts)
                                 {
-                                    Microsoft.Xna.Framework.Graphics.BasicEffect basicEffect = part.Effect as Microsoft.Xna.Framework.Graphics.BasicEffect;
-                                    if (basicEffect != null)
+                                    Microsoft.Xna.Framework.Graphics.SkinnedEffect skinnedEffect = part.Effect as Microsoft.Xna.Framework.Graphics.SkinnedEffect;
+                                    if (skinnedEffect != null)
                                     {
                                         SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
-                                        newEffect.CopyFromBasicEffect(basicEffect);
+                                        newEffect.CopyFromSkinnedEffect(skinnedEffect);
 
                                         part.Effect = newEffect;
                                     }
+                                    else
+                                    {
+                                        Microsoft.Xna.Framework.Graphics.BasicEffect basicEffect = part.Effect as Microsoft.Xna.Framework.Graphics.BasicEffect;
+                                        if (basicEffect != null)
+                                        {
+                                            SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
+                                            newEffect.CopyFromBasicEffect(basicEffect);
+
+                                            part.Effect = newEffect;
+                                        }
+                                    }
                                 }
                             }
-                        }
 
-                        AddModel(modelName, input);
+                            AddModel(modelName, input);
+                        }
                     }
                     catch { }
                 }
@@ -320,11 +344,15 @@ namespace GraphicsLibrary
         /// Updates Projection and View matrices to current view space.
         /// </summary>
         /// <param name="camera">View space camera.</param>
-        static public void Update(ICamera camera)
+        static public void Update(ICamera camera, GameTime gameTime)
         {
+            mTimeElapsed = (float)gameTime.TotalGameTime.TotalSeconds;
+
             mView = camera.GetViewTransform();
             
             mProjection = camera.GetProjectionTransform();
+
+            mCameraPosition = camera.GetPosition();
 
             float oldFarPlane = camera.GetFarPlaneDistance();
             camera.SetFarPlaneDistance(mShadowFarClip);
@@ -343,6 +371,7 @@ namespace GraphicsLibrary
         {
             mRenderQueue.Clear();
             mSpriteQueue.Clear();
+            mTransparentQueue.Clear();
             mCanRender = true;
         }
         
@@ -363,7 +392,7 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
-                    DrawRenderableDefinition(renderable, true, false);
+                    DrawRenderableDefinition(renderable, true, false, false);
                 }
             }
 
@@ -375,7 +404,7 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
-                    DrawRenderableDefinition(renderable, false, true);
+                    DrawRenderableDefinition(renderable, false, true, false);
                 }
 
                 // Draw Scene to Texture.
@@ -384,7 +413,30 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
-                    DrawRenderableDefinition(renderable, false, false);
+                    DrawRenderableDefinition(renderable, false, false, false);
+                }
+
+                // Draw semi transparent renderables to texture.
+                if (mTransparentQueue.Count > 0)
+                {
+                    RasterizerState cull = new RasterizerState();
+                    cull.CullMode = CullMode.None;
+                    mDevice.RasterizerState = cull;
+
+                    mDevice.BlendState = BlendState.AlphaBlend;
+                    mDevice.DepthStencilState = DepthStencilState.DepthRead;
+
+                    for (int i = mTransparentQueue.Count - 1; i >= 0; --i)
+                    {
+                        DrawRenderableDefinition(mTransparentQueue.Values[i], false, false, true);
+                    }
+
+                    cull = new RasterizerState();
+                    cull.CullMode = CullMode.CullCounterClockwiseFace;
+                    mDevice.RasterizerState = cull;
+
+                    mDevice.BlendState = BlendState.Opaque;
+                    mDevice.DepthStencilState = DepthStencilState.Default;
                 }
 
                 // Draw Outline to outline texture.
@@ -429,7 +481,7 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
-                    DrawRenderableDefinition(renderable, false, false);
+                    DrawRenderableDefinition(renderable, false, false, false);
                 }
             }
 
@@ -503,7 +555,7 @@ namespace GraphicsLibrary
         {
             if (mCanRender)
             {
-                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, true, worldTransforms, boneTransforms, overlayColor, overlayColorWeight));
+                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, true, worldTransforms, boneTransforms, overlayColor, overlayColorWeight, Vector2.Zero));
             }
             else
             {
@@ -522,11 +574,36 @@ namespace GraphicsLibrary
             {
                 Matrix[] emptyTransforms = new Matrix[1];
                 emptyTransforms[0] = Matrix.Identity;
-                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, false, worldTransforms, emptyTransforms, overlayColor, overlayColorWeight));
+                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, false, worldTransforms, emptyTransforms, overlayColor, overlayColorWeight, Vector2.Zero));
             }
             else
             {
                 throw new Exception("Unable to render inanimate model " + modelName + " before calling BeginRendering() or after FinishRendering().\n");
+            }
+        }
+
+        /// <summary>
+        /// Renders semi-transparent model.
+        /// </summary>
+        /// /// <param name="modelName">Name of model stored in database.</param>
+        /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
+        static public void RenderTransparentModel(string modelName, Matrix worldTransforms, Color overlayColor, float overlayColorWeight, Vector2 animationRate)
+        {
+            if (mCanRender)
+            {
+                Matrix[] emptyTransforms = new Matrix[1];
+                emptyTransforms[0] = Matrix.Identity;
+                Vector3 translation;
+                Quaternion rotation;
+                Vector3 scale;
+
+                worldTransforms.Decompose(out scale, out rotation, out translation);
+
+                mTransparentQueue.Add((translation - mCameraPosition).LengthSquared(), new RenderableDefinition(modelName, true, false, worldTransforms, emptyTransforms, overlayColor, overlayColorWeight, animationRate));
+            }
+            else
+            {
+                throw new Exception("Unable to render transparent model " + modelName + " before calling BeginRendering() or after FinishRendering().\n");
             }
         }
 
@@ -539,7 +616,7 @@ namespace GraphicsLibrary
         {
             if (mCanRender)
             {
-                mRenderQueue.Enqueue(new RenderableDefinition(terrainName, false, false, worldTransforms, null, overlayColor, overlayColorWeight));
+                mRenderQueue.Enqueue(new RenderableDefinition(terrainName, false, false, worldTransforms, null, overlayColor, overlayColorWeight, Vector2.Zero));
             }
             else
             {
@@ -626,7 +703,7 @@ namespace GraphicsLibrary
         /// 
         /// </summary>
         /// <param name="renderable"></param>
-        static private void DrawRenderableDefinition(RenderableDefinition renderable, bool isShadow, bool isOutline)
+        static private void DrawRenderableDefinition(RenderableDefinition renderable, bool isShadow, bool isOutline, bool hasTransparency)
         {
             if (!renderable.IsModel)
             {
@@ -636,14 +713,14 @@ namespace GraphicsLibrary
             else
             {
                 // Render Inanimate or Animate Model.
-                DrawModel(renderable.Name, renderable.BoneTransforms, renderable.WorldTransform, renderable.IsSkinned, isShadow, isOutline, renderable.OverlayColor, renderable.OverlayColorWeight);
+                DrawModel(renderable.Name, renderable.BoneTransforms, renderable.WorldTransform, renderable.IsSkinned, isShadow, isOutline, hasTransparency, renderable.AnimationRate, renderable.OverlayColor, renderable.OverlayColorWeight);
             }
         }
 
         /// <summary>
         /// Draws all meshes within model to current rendertarget.  Applies rigged model transforms if necesarry.
         /// </summary>
-        static private void DrawModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, bool isSkinned, bool isShadow, bool isOutline, Vector3 overlayColor, float overlayColorWeight)
+        static private void DrawModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, bool isSkinned, bool isShadow, bool isOutline, bool hasTransparency, Vector2 animationRate, Vector3 overlayColor, float overlayColorWeight)
         {
             Model model = LookupModel(modelName);
 
@@ -662,13 +739,14 @@ namespace GraphicsLibrary
                     }
                     else if (CelShading == CelShaded.Models || CelShading == CelShaded.All)
                     {
-                        techniqueName = (isSkinned) ? "SkinnedCelShade" : "CelShade";
+                        techniqueName = (isSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "CelShade";
                     }
                     else
                     {
-                        techniqueName = (isSkinned) ? "SkinnedPhong" : "Phong";
+                        techniqueName = (isSkinned) ? "SkinnedPhong" : (hasTransparency) ? "NoShade" : "Phong";
                     }
-                    DrawMesh(mesh, techniqueName, boneTransforms, worldTransforms, overlayColor, overlayColorWeight);
+
+                    DrawMesh(mesh, techniqueName, boneTransforms, worldTransforms, animationRate, overlayColor, overlayColorWeight);
                 }
             }
         }
@@ -717,7 +795,7 @@ namespace GraphicsLibrary
         /// <summary>
         /// Sets all effects for current mesh and renders to screen.
         /// </summary>
-        static private void DrawMesh(ModelMesh mesh, string techniqueName, Matrix[] boneTransforms, Matrix worldTransforms, Vector3 overlayColor, float overlayColorWeight)
+        static private void DrawMesh(ModelMesh mesh, string techniqueName, Matrix[] boneTransforms, Matrix worldTransforms, Vector2 animationRate, Vector3 overlayColor, float overlayColorWeight)
         {
             foreach (SkinnedEffect effect in mesh.Effects)
             {
@@ -748,6 +826,14 @@ namespace GraphicsLibrary
                 effect.SpecularPower = 16;
 
                 effect.World = worldTransforms;
+
+                if (animationRate != Vector2.Zero)
+                {
+                    animationRate *= mTimeElapsed;
+                    animationRate.X %= 1.0f;
+                    animationRate.Y %= 1.0f;
+                }
+                effect.Parameters["xTextureOffset"].SetValue(animationRate);
             }
             mesh.Draw();
         }

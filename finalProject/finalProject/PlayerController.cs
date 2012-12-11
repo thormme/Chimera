@@ -36,6 +36,9 @@ namespace finalProject
         private KeyInputAction mMoveRightKey;
         private KeyInputAction mMoveLeftKey;
 
+        private MouseButtonInputAction mStealPressMouse;
+        private MouseButtonInputAction mStealReleaseMouse;
+
         private GamePadThumbStickInputAction mLookForward;
         private GamePadThumbStickInputAction mLookRight;
 
@@ -55,11 +58,8 @@ namespace finalProject
 
         private KeyInputAction mJumpKey;
 
-        private GamePadButtonInputAction mStealPress;
-        private GamePadButtonInputAction mStealRelease;
-
-        private KeyInputAction mStealPressKey;
-        private KeyInputAction mStealReleaseKey;
+        private GamePadTriggerInputAction mStealPress;
+        private GamePadTriggerInputAction mStealRelease;
 
         private KeyInputAction mPressIncBonePitch;
         private KeyInputAction mPressDecBonePitch;
@@ -154,11 +154,11 @@ namespace finalProject
 
             mJumpKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.Space);
 
-            mStealPressKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Keys.LeftShift);
-            mStealReleaseKey = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Keys.LeftShift);
+            mStealPressMouse = new MouseButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, InputAction.MouseButton.Left);
+            mStealReleaseMouse = new MouseButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, InputAction.MouseButton.Left);
 
-            mStealPress = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.RightShoulder);
-            mStealRelease = new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, Buttons.RightShoulder);
+            mStealPress = new GamePadTriggerInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, InputAction.GamePadTrigger.Right, GamePadDeadZone.Circular, 0.0f, 0.0f);
+            mStealRelease = new GamePadTriggerInputAction(PlayerIndex.One, InputAction.ButtonAction.Released, InputAction.GamePadTrigger.Right, GamePadDeadZone.Circular, 0.0f, 0.0f);
 
             mPressDecBoneYaw = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.T);
             mPressIncBoneYaw = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Keys.Y);
@@ -201,8 +201,8 @@ namespace finalProject
             mPressPart3.Destroy();
             mPressJump.Destroy();
 
-            mStealPressKey.Destroy();
-            mStealReleaseKey.Destroy();
+            mStealPressMouse.Destroy();
+            mStealReleaseMouse.Destroy();
         }
 
         /// <summary>
@@ -381,7 +381,7 @@ namespace finalProject
                 mCreature.Jump();
             }
 
-            if (mStealPressKey.Active || mStealPress.Active)
+            if (mStealPressMouse.Active || mStealPress.Active)
             {
                 if (player != null)
                 {
@@ -389,7 +389,7 @@ namespace finalProject
                 }
             }
 
-            if (mStealReleaseKey.Active || mStealRelease.Active)
+            if (mStealReleaseMouse.Active || mStealRelease.Active)
             {
                 if (player != null)
                 {
