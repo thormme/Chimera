@@ -141,7 +141,7 @@ namespace finalProject.Parts
             base.InitialCollisionDetected(sender, other, collisionPair);
 
             Console.WriteLine(other.Tag + " " + mRunTimer);
-            if ((other.Tag is CharacterSynchronizer || other.Tag is PhysicsProp)/* && mRunTimer > 0.0f*/)
+            if ((other.Tag is CharacterSynchronizer || other.Tag is PhysicsProp) && mRunTimer > 0.0f)
             {
                 float totalImpulse = 0;
                 foreach (ContactInformation c in collisionPair.Contacts)
