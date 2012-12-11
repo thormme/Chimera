@@ -44,7 +44,7 @@ namespace GameConstructLibrary.Menu
         {
             // Check that mouse is within button.
             if ((Mouse.GetState().X > Bounds.X && Mouse.GetState().X < Bounds.X + Bounds.Width &&
-                Mouse.GetState().Y > Bounds.Y && Mouse.GetState().Y < Bounds.X + Bounds.Height &&
+                Mouse.GetState().Y > Bounds.Y && Mouse.GetState().Y < Bounds.Y + Bounds.Height &&
                 mUseMouse.Active) ||
                 (mUseButton.Active && Selected))
             {
