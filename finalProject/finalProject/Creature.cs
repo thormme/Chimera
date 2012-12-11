@@ -655,18 +655,19 @@ namespace finalProject
             mPartAttachments[slot] = new PartAttachment(part, usedBones);
 
             part.Creature = this;
-
-            mPartRotations = new Matrix[PartAttachments[0].Bones.Count];
-            mBoneUp = new Vector3[PartAttachments[0].Bones.Count];
-            mBoneForward = new Vector3[PartAttachments[0].Bones.Count];
-            mBoneRight = new Vector3[PartAttachments[0].Bones.Count];
-            for (int i = 0; i < PartAttachments[0].Bones.Count; ++i)
-            {
-                mPartRotations[i] = Matrix.Identity;
-                mBoneUp[i] = Vector3.Up;
-                mBoneForward[i] = Vector3.Forward;
-                mBoneRight[i] = Vector3.Right;
-            }
+            
+            //mPartRotations = new Matrix[PartAttachments[0].Bones.Count];
+            //mBoneUp = new Vector3[PartAttachments[0].Bones.Count];
+            //mBoneForward = new Vector3[PartAttachments[0].Bones.Count];
+            //mBoneRight = new Vector3[PartAttachments[0].Bones.Count];
+            //for (int i = 0; i < PartAttachments[0].Bones.Count; ++i)
+            //{
+            //    mPartRotations[i] = Matrix.Identity;
+            //    mBoneUp[i] = Vector3.Up;
+            //    mBoneForward[i] = Vector3.Forward;
+            //    mBoneRight[i] = Vector3.Right;
+            //}
+             
         }
 
         public float CollideDistance(Creature creature)

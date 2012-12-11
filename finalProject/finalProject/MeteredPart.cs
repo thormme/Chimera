@@ -89,6 +89,33 @@ namespace finalProject
             base.Update(time);
         }
 
+        public override void RenderSprite(Rectangle bounds)
+        {
+            Color color;
+            float percentage;
+            if (CooldownTimer >= 0.2f)
+            {
+                color = Color.Black;
+                percentage = 1.0f - (float)(MeterTimer / MeterLength);
+            }
+            else if (CooldownTimer > 0.1f)
+            {
+                color = Color.White;
+                percentage = 1.0f - (float)(CooldownTimer) * 5.0f;
+            }
+            else if (CooldownTimer > 0.0f)
+            {
+                color = Color.White;
+                percentage = (float)(CooldownTimer) * 10.0f;
+            }
+            else
+            {
+                color = Color.Black;
+                percentage = 0.0f;
+            }
+            mSprite.Render(bounds, color, percentage);
+        }
+
         /// <summary>
         /// Called when the part is used and the meter has not run out.
         /// </summary>

@@ -15,6 +15,7 @@ using BEPUphysics.Collidables;
 using FinalProject;
 using System;
 using finalProject.Parts;
+using finalProject.Creatures;
 
 #endregion
 
@@ -41,6 +42,7 @@ namespace finalProject
         
         private int mNumHeightModifyingParts = 0;
 
+        private Sprite mRequirementText = new Sprite("requirements");
         private Sprite mRequirementBoxSprite = new Sprite("requirementBox");
         private Sprite mRequirementSprite = null;
         private Sprite mCheckSprite = new Sprite("check");
@@ -50,6 +52,91 @@ namespace finalProject
             new Sprite("yellowButton"), 
             new Sprite("redButton") 
         };
+
+        #region Tips
+        GameTip mDamaged = new GameTip(
+            new string[] {
+                "You have taken damage.",
+                "Taking additional damage will cause you to lose a part."
+            },
+            10.0f);
+        GameTip mPlayerDied = new GameTip(
+            new string[] {
+                "Taking damage when you have no parts will cause you to die."
+            },
+            10.0f);
+        GameTip mCheckpointEncountered = new GameTip(
+            new string[] {
+                "You have encountered a checkpoint.",
+                "You will respawn at the last checkpoint you touched."
+            },
+            10.0f);
+        GameTip mBearEncountered = new GameTip(
+            new string[] {
+                "You have encountered a bear.",
+                "Be careful, these are beary strong enemies.",
+                "Even the strongest players bearly make it away with their lives.",
+                "Vanquish this foe and you will gain the ability to bear arms.",
+                "You will be able to maul other creatures with your bear hands."
+            },
+            10.0f);
+        GameTip mCheetahEncountered = new GameTip(
+            new string[] {
+                "You have encountred a cheetah.",
+                "Cheetahs are known for their blinding speed."
+            },
+            10.0f);
+        GameTip mCobraEncountered = new GameTip(
+            new string[] {
+                "You have encountered a cobra.",
+                "Cobras are able to charm their foes into a submissive state."
+            },
+            10.0f);
+        GameTip mEagleEncountered = new GameTip(
+            new string[] {
+                "You have encountered an eagle.",
+                "Eagles are able to soar through the sky."
+            },
+            10.0f);
+        GameTip mFrilledLizardEncountered = new GameTip(
+            new string[] {
+                "You have encountered a frill necked lizard.",
+                "Frill necked lizards are able to scare away other creatures.",
+                "Their venom also temporarily disables enemies."
+            },
+            10.0f);
+        GameTip mFrogEncountered = new GameTip(
+            new string[] {
+                "You have encountered a frog.",
+                "Frogs are known for their extremely sticky tongues."
+            },
+            10.0f);
+        GameTip mKangarooEncountered = new GameTip(
+            new string[] {
+                "You have encountered a kangaroo.",
+                "Kangaroos are able to jump extremely high.",
+                "Be careful, if provoked they will attempt to crush you."
+            },
+            10.0f);
+        GameTip mPenguinEncountered = new GameTip(
+            new string[] {
+                "You have encountered a penguin.",
+                "Penguins are able to slide down hills."
+            },
+            10.0f);
+        GameTip mRhinoEncountered = new GameTip(
+            new string[] {
+                "You have encountered a rhino.",
+                "Rhinos will charge foes inflicting great force on anything in their way."
+            },
+            10.0f);
+        GameTip mTurtleEncountered = new GameTip(
+            new string[] {
+                "You have encountered a turtle.",
+                "Turtles are able to hide in their shell to avoid damage."
+            },
+            10.0f);
+        #endregion
 
         #endregion
 
@@ -178,7 +265,7 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
-            : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new VisionSensor(4.0f, 135), new PlayerController(viewPort), 3)
+            : base(position + Vector3.Up * 10.0f, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new VisionSensor(4.0f, 135), new PlayerController(viewPort), 3)
         {
             Forward = facingDirection;
 
@@ -205,12 +292,99 @@ namespace finalProject
             Game1.Camera = Camera;
         }
 
+        public override void  InitialCollisionDetected(EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
+        {
+ 	        base.InitialCollisionDetected(sender, other, collisionPair);
+            Console.WriteLine(other.Tag);
+            if (other.Tag is Checkpoint)
+            {
+                if (!mCheckpointEncountered.Displayed)
+                {
+                    Game1.AddTip(mCheckpointEncountered);
+                }
+            }
+            if (other.Tag is CharacterSynchronizer)
+            {
+                if (((other.Tag as CharacterSynchronizer).body.Tag as Bear) != null)
+                {
+                    if (!mKangarooEncountered.Displayed)
+                    {
+                        Game1.AddTip(mBearEncountered);
+                    }
+                }
+                else if (((other.Tag as CharacterSynchronizer).body.Tag as Cheetah) != null)
+                {
+                    if (!mCheetahEncountered.Displayed)
+                    {
+                        Game1.AddTip(mCheetahEncountered);
+                    }
+                }
+                else if (((other.Tag as CharacterSynchronizer).body.Tag as Cobra) != null)
+                {
+                    if (!mCobraEncountered.Displayed)
+                    {
+                        Game1.AddTip(mCobraEncountered);
+                    }
+                }
+                else if (((other.Tag as CharacterSynchronizer).body.Tag as Eagle) != null)
+                {
+                    if (!mEagleEncountered.Displayed)
+                    {
+                        Game1.AddTip(mEagleEncountered);
+                    }
+                }
+                else if (((other.Tag as CharacterSynchronizer).body.Tag as FrilledLizard) != null)
+                {
+                    if (!mFrilledLizardEncountered.Displayed)
+                    {
+                        Game1.AddTip(mFrilledLizardEncountered);
+                    }
+                }
+                else if (((other.Tag as CharacterSynchronizer).body.Tag as Frog) != null)
+                {
+                    if (!mFrogEncountered.Displayed)
+                    {
+                        Game1.AddTip(mFrogEncountered);
+                    }
+                }
+                else if (((other.Tag as CharacterSynchronizer).body.Tag as Kangaroo) != null)
+                {
+                    if (!mKangarooEncountered.Displayed)
+                    {
+                        Game1.AddTip(mKangarooEncountered);
+                    }
+                }
+                else if (((other.Tag as CharacterSynchronizer).body.Tag as Penguin) != null)
+                {
+                    if (!mPenguinEncountered.Displayed)
+                    {
+                        Game1.AddTip(mPenguinEncountered);
+                    }
+                }
+                else if (((other.Tag as CharacterSynchronizer).body.Tag as Rhino) != null)
+                {
+                    if (!mRhinoEncountered.Displayed)
+                    {
+                        Game1.AddTip(mRhinoEncountered);
+                    }
+                }
+                else if (((other.Tag as CharacterSynchronizer).body.Tag as Turtle) != null)
+                {
+                    if (!mTurtleEncountered.Displayed)
+                    {
+                        Game1.AddTip(mTurtleEncountered);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Removes parts until no parts are remaining.
         /// </summary>
         /// <param name="damage">Amount of damage to apply.</param>
         public override void Damage(int damage, Creature source)
         {
+
             bool die = false;
             if (!Invulnerable)
             {
@@ -240,6 +414,10 @@ namespace finalProject
             if (die)
             {
                 Die();
+                if (!mPlayerDied.Displayed)
+                {
+                    Game1.AddTip(mPlayerDied);
+                }
             }
         }
         
@@ -312,7 +490,7 @@ namespace finalProject
         /// <summary>
         /// Adds part to creature and increases height of body if part modifies height.
         /// </summary>
-        public override void  AddPart(Part part, int slot)
+        public override void AddPart(Part part, int slot)
         {
  	        base.AddPart(part, slot);
 
@@ -359,6 +537,11 @@ namespace finalProject
             //    }
             //}
 
+            if (World.Goal != String.Empty)
+            {
+                mRequirementSprite = new Sprite(World.Goal + "Icon");
+            }
+
             model.Update(gameTime);
 
             StealPartsUpdate(gameTime);
@@ -385,9 +568,32 @@ namespace finalProject
         {
             int width = Game1.Graphics.PreferredBackBufferWidth;
             int height = Game1.Graphics.PreferredBackBufferHeight;
-            Rectangle rect = new Rectangle((int)(width * 0.02f), (int)(height * 0.02f), (int)(0.26f * height), (int)(0.26f * height));
+            Rectangle textRect = new Rectangle((int)(height * 0.04f), (int)(height * 0.02f), (int)(128 * width / 1280), (int)(26 * height / 720));
+            Rectangle boxRect = new Rectangle((int)(height * 0.046f), (int)(height * 0.04f), (int)(0.16f * height), (int)(0.16f * height));
 
-            mRequirementBoxSprite.Render(rect);
+            mRequirementText.Render(textRect);
+            mRequirementBoxSprite.Render(boxRect);
+            if (mRequirementSprite != null)
+            {
+                mRequirementSprite.Render(boxRect);
+            }
+
+            bool retrieved = false;
+            foreach (PartAttachment part in mPartAttachments)
+            {
+                if (part != null)
+                {
+                    if (part.Part.ToString().Split('.')[2] == World.Goal)
+                    {
+                        retrieved = true;
+                    }
+                }
+            }
+
+            if (retrieved)
+            {
+                mCheckSprite.Render(boxRect);
+            }
 
         }
 

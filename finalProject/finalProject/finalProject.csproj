@@ -189,7 +189,7 @@
     <Compile Include="Parts\CheetahLegs.cs" />
     <Compile Include="Parts\TestingLegs.cs" />
     <Compile Include="Parts\TestingWings.cs" />
-    <Compile Include="Parts\MindControlCobraHead.cs" />
+    <Compile Include="Parts\CobraHead.cs" />
     <Compile Include="Parts\FrogHead.cs" />
     <Compile Include="Parts\FrilledLizardHead.cs" />
     <Compile Include="Parts\KangarooLegs.cs" />

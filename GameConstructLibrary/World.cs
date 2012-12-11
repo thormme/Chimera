@@ -25,6 +25,7 @@ namespace GameConstructLibrary
 
         private ModelDrawer mDebugModelDrawer;
 
+        public string Goal = String.Empty;
         public Space Space;
 
         public World(ModelDrawer debugModelDrawer)
@@ -147,9 +148,15 @@ namespace GameConstructLibrary
             List<DummyObject> objects = LevelManager.Load(mapName);
             foreach (DummyObject dummy in objects)
             {
+
                 if (dummy.Type == "Root")
                 {
                     continue;
+                }
+                else if (dummy.Type == "finalProject.GoalPoint, finalProject")
+                {
+                    Goal = dummy.Parameters[1];
+                    Console.WriteLine("Goal is: " + Goal);
                 }
                 Type type = Type.GetType(dummy.Type);
 

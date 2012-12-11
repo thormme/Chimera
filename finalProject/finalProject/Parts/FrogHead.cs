@@ -36,7 +36,7 @@ namespace finalProject.Parts
                     )
                 },
                 false,
-                new Sprite("frogIcon")
+                new Sprite("FrogHeadIcon")
             )
         {
         }

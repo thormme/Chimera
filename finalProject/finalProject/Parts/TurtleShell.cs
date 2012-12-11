@@ -27,7 +27,7 @@ namespace finalProject.Parts
                     )
                 },
                 false,
-                new Sprite("turtleIcon")
+                new Sprite("TurtleShellIcon")
             )
         { }
 

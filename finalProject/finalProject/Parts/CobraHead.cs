@@ -10,7 +10,7 @@ using finalProject.Projectiles;
 
 namespace finalProject.Parts
 {
-    public class MindControlCobraHead : CooldownPart
+    public class CobraHead : CooldownPart
     {
         public bool Active
         {
@@ -22,7 +22,7 @@ namespace finalProject.Parts
 
         private MindControlProjectile projectile;
 
-        public MindControlCobraHead()
+        public CobraHead()
             : base(
                 MindControlProjectile.ControlLength * 2.0f,
                 new Part.SubPart[] {
@@ -40,7 +40,7 @@ namespace finalProject.Parts
                     )
                 },
                 false,
-                new Sprite("cobraIcon")
+                new Sprite("CobraHeadIcon")
             )
         { }
 
