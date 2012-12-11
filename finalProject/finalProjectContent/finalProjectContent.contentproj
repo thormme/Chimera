@@ -639,6 +639,8 @@
     </Compile>
     <Compile Include="textures\sprites\requirement.png">
       <Name>requirement</Name>
+    <Compile Include="textures\sprites\requirements.png">
+      <Name>requirements</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
