@@ -5,28 +5,55 @@ using System.Text;
 using GameConstructLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using GameConstructLibrary.Menu;
+using GraphicsLibrary;
 
 namespace finalProject
 {
-    public class PauseState : IGameState
+    public class PauseState : GameMenu
     {
-        int count = 100;
-        public PauseState()
+        private Game mOwnerGame;
+
+        public PauseState(Game ownerGame)
         {
+            mOwnerGame = ownerGame;
+
+            int width = Game1.Graphics.PreferredBackBufferWidth;
+            int height = Game1.Graphics.PreferredBackBufferHeight;
+            int buttonHeight = (int)(0.1f * height);
+            int buttonWidth = (int)(2 * buttonHeight);
+
+            Add(
+                new Button(
+                    new Rectangle(width / 2 - buttonWidth / 2, height / 2 - buttonHeight, buttonWidth, buttonHeight),
+                    new Sprite("blueButton"),
+                    new Button.ButtonAction(Resume)
+                )
+            );
+            Add(
+                new Button(
+                    new Rectangle(width / 2 - buttonWidth / 2, height / 2 + buttonHeight, buttonWidth, buttonHeight),
+                    new Sprite("redButton"),
+                    new Button.ButtonAction(Quit)
+                )
+            );
         }
 
-        public void Update(GameTime gameTime)
+        private void Resume(Button button)
         {
-            count--;
-            if (count < 0)
-            {
-                Game1.PopState();
-            }
+            InputAction.IsMouseLocked = true;
+            Game1.PopState();
         }
 
-        public void Render()
+        private void Quit(Button button)
         {
-            
+            mOwnerGame.Exit();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            InputAction.IsMouseLocked = false;
+            base.Update(gameTime);
         }
     }
 }

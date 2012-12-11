@@ -31,18 +31,28 @@ namespace finalProject
 
         private InputAction forward;
         private KeyInputAction celShading;
-        private KeyInputAction mouseLock;
-        private KeyInputAction pause = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Pause);
+        private InputAction pause = new CombinedInputAction(
+                new InputAction[]
+                {
+                    new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Pause),
+                    new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Escape),
+                    new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Buttons.Start)
+                },
+                InputAction.ButtonAction.Down
+            );
 
         // DEBUG
         private ModelDrawer DebugModelDrawer;
         private KeyInputAction debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.F1);
         private KeyInputAction debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.OemTilde);
+        private KeyInputAction cheat = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Tab);
         bool debugMode = false;
         // END
 
         public static GraphicsDeviceManager Graphics;
-        SpriteBatch spriteBatch;
+        public static SpriteBatch spriteBatch;
+        private SpriteFont font;
+        public static Queue<string> tips;
 
         private static List<IGameState> mGameStates = new List<IGameState>();
         private static List<IGameState> mGameStateAddQueue = new List<IGameState>();
@@ -55,15 +65,14 @@ namespace finalProject
         public Game1()
         {
             Graphics = new GraphicsDeviceManager(this);
-            Graphics.PreferredBackBufferWidth = 1280;
-            Graphics.PreferredBackBufferHeight = 720;
+            /*Graphics.PreferredBackBufferWidth = 1280;
+            Graphics.PreferredBackBufferHeight = 720;*/
             //Graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
 
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.W);
             celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.F2);
-            mouseLock = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Tab);
 
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
@@ -95,6 +104,8 @@ namespace finalProject
             GraphicsManager.CastingShadows = true;
             GraphicsManager.DebugVisualization = false;
 
+            tips = new Queue<string>();
+
             IntPtr ptr = this.Window.Handle;
             System.Windows.Forms.Form form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(ptr);
             form.Size = new System.Drawing.Size(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
@@ -111,37 +122,40 @@ namespace finalProject
             DebugModelDrawer = new InstancedModelDrawer(this);
             DebugModelDrawer.IsWireframe = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            font = Content.Load<SpriteFont>("font");
             try
             {
-                GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, this.spriteBatch);
+                GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, spriteBatch);
                 CollisionMeshManager.LoadContent(this.Content);
 
                 World world = new World(DebugModelDrawer);
             
-                world.AddLevelFromFile("tree_45", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+                world.AddLevelFromFile("tree", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
                 mGameStates.Add(world);
 
                 GameMenu menu = new GameMenu();
                 Microsoft.Xna.Framework.Rectangle rect = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 200);
-                GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
+                GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
+                GameConstructLibrary.Menu.Button b2 = new GameConstructLibrary.Menu.Button(new Microsoft.Xna.Framework.Rectangle(0, 200, 200, 200), new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
                 menu.Add(button);
+                menu.Add(b2);
 
-                //PushState(menu);
+                PushState(menu);
             }
             catch (Exception e) 
             {
-                //TextWriter tw = new StreamWriter("log.txt");
-                //tw.WriteLine(e.Message);
-                //tw.WriteLine(e.StackTrace);
-                //tw.Close();
+                TextWriter tw = new StreamWriter("log.txt");
+                tw.WriteLine(e.Message);
+                tw.WriteLine(e.StackTrace);
+                tw.Close();
                 throw e;
             }
         }
 
         private void StartGame(GameConstructLibrary.Menu.Button button)
         {
+            InputAction.IsMouseLocked = true;
             PopState();
         }
 
@@ -178,9 +192,8 @@ namespace finalProject
                 GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.Models : GraphicsManager.CelShaded.All;
             }
 
-            if (mouseLock.Active)
+            if (cheat.Active)
             {
-                InputAction.IsMouseLocked = !InputAction.IsMouseLocked;
                 if (mGameStates[mGameStates.Count - 1] is World)
                 {
                     foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
@@ -191,29 +204,34 @@ namespace finalProject
                             player.Damage(100, null);
                             //player.Position = player.SpawnOrigin;
                             int i = 0;
+                            player.AddPart(new EagleWings(), i++);
                             player.AddPart(new RhinoHead(), i++);
-                            player.AddPart(new FrogHead(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new KangarooLegs(), i++);
                             player.AddPart(new FrogHead(), i++);
-                            player.AddPart(new BearArms(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new FrilledLizardHead(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new EagleWings(), i++);
 
-                            (mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
-                            (mGameStates[mGameStates.Count - 1] as World).Add(new Rhino(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
                         }
                     }
                 }
             }
 
+            IsMouseVisible = !InputAction.IsMouseLocked;
+
             FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
 
-            if (pause.Active)
+            if (mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
             {
-                PushState(new PauseState());
+                PopState();
+            }
+            else if (pause.Active)
+            {
+                PushState(new PauseState(this));
             }
 
             // Allows the game to exit
@@ -251,12 +269,27 @@ namespace finalProject
         {
             GraphicsManager.BeginRendering();
 
-            if (mGameStates.Count > 0)
+            /*if (mGameStates.Count > 0)
             {
                 mGameStates[mGameStates.Count - 1].Render();
+            }*/
+            foreach (IGameState state in mGameStates)
+            {
+                state.Render();
             }
 
             GraphicsManager.FinishRendering();
+
+            float tipHeight = 20.0f;
+            spriteBatch.Begin();
+            foreach (string tip in tips)
+            {
+                spriteBatch.DrawString(font, tip, new Vector2(20.0f, tipHeight), Microsoft.Xna.Framework.Color.White);
+                tipHeight += /*font.MeasureString(tip).Y +*/ font.LineSpacing;
+            }
+            spriteBatch.End();
+            tips.Clear();
+
 
             // DEBUG
             if (debugMode)

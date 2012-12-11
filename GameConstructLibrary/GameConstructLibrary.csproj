@@ -141,7 +141,7 @@
     <Compile Include="CharacterController.cs" />
     <Compile Include="CollisionMeshManager.cs" />
     <Compile Include="DummyObject.cs" />
-    <Compile Include="GameState.cs" />
+    <Compile Include="IGameState.cs" />
     <Compile Include="HorizontalMotionConstraint.cs" />
     <Compile Include="IActor.cs" />
     <Compile Include="ICharacterTag.cs" />
@@ -160,7 +160,9 @@
     <Compile Include="LevelManager.cs" />
     <Compile Include="Menu\Button.cs" />
     <Compile Include="Menu\GameMenu.cs" />
+    <Compile Include="Menu\GraphicItem.cs" />
     <Compile Include="Menu\IMenuItem.cs" />
+    <Compile Include="Menu\SelectableItem.cs" />
     <Compile Include="PhysicsObject.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
