@@ -57,6 +57,7 @@ namespace finalProject.Parts
             {
                 Active = true;
                 //Console.WriteLine("used");
+                mCanAnimate = false;
             }
         }
 
@@ -66,6 +67,7 @@ namespace finalProject.Parts
             {
                 Active = false;
                 //Console.WriteLine("stopped");
+                mCanAnimate = true;
             }
         }
 

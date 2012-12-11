@@ -131,6 +131,13 @@ namespace finalProject
             protected set;
         }
 
+        public bool CanAnimate
+        {
+            get { return mCanAnimate; }
+            protected set { mCanAnimate = value; }
+        }
+        protected bool mCanAnimate = true;
+
         public Part(SubPart[] subParts, bool raisesBody, Sprite partSprite)
         {
             SubParts = subParts;
@@ -191,7 +198,10 @@ namespace finalProject
         /// <param name="isSaturated">Whether the animation will loop.</param>
         public virtual void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
         {
-            return;
+            if (CanAnimate)
+            {
+                PlayAnimation(animationName, isSaturated, playOnCreature);
+            }
         }
 
         /// <summary>
@@ -201,16 +211,16 @@ namespace finalProject
         /// <param name="isSaturated">Whether the animation will loop.</param>
         protected virtual void PlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
         {
+            if (playOnCreature)
+            {
+                mCreature.TryPlayAnimation(animationName, isSaturated);
+            }
             foreach (SubPart subPart in SubParts)
             {
                 if (subPart.Renderable is AnimateModel)
                 {
                     (subPart.Renderable as AnimateModel).PlayAnimation(animationName, isSaturated);
                 }
-            }
-            if (playOnCreature)
-            {
-                mCreature.TryPlayAnimation(animationName, isSaturated);
             }
         }
 

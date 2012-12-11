@@ -67,6 +67,7 @@ namespace finalProject.Parts
                 {
                     Stop();
                     PlayAnimation("stand", true, true);
+                    mCanAnimate = true;
                 }
                 else if (mRunTimer < mChargeAnimationTime)
                 {
@@ -98,6 +99,7 @@ namespace finalProject.Parts
             OldSpeed = Creature.CharacterController.HorizontalMotionConstraint.Speed;
             Creature.CharacterController.HorizontalMotionConstraint.Speed = NewSpeed;
             mRunTimer = RunLength;
+            mCanAnimate = false;
         }
 
         protected void Stop()
@@ -109,14 +111,6 @@ namespace finalProject.Parts
 
         public override void FinishUse(Vector3 direction)
         {
-        }
-
-        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
-        {
-            if (mRunTimer < 0.0f && animationName != "jump")
-            {
-                PlayAnimation(animationName, isSaturated, playOnCreature);
-            }
         }
 
         public override void Reset()

@@ -1,0 +1,45 @@
+@0.000000: Output file name: C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\lizard\lizard.X
+@0.000019: kW X-port: 3ds max compatible version 9.00
+@2.629109: Saving node: Body
+@2.637776: Limiting exported UV coordinates to 1 because of available maps.
+@5.040118: 4789 skinned vertices in Body
+@5.060690: Material 0 shader returned effect file name 'null'
+@5.063705: Saving node: HeadCenterCap
+@5.063769: Saving node: Chord2
+@5.063822: Saving node: Chord3
+@5.063875: Saving node: Chord4
+@5.063923: Saving node: Chord5
+@5.063976: Saving node: Chord6
+@5.064023: Saving node: Chord7
+@5.064076: Saving node: Chord8
+@5.064125: Saving node: Chord9
+@5.064176: Saving node: Chord10
+@5.064224: Saving node: ChordCap
+@5.064273: Saving node: LegRearRight1
+@5.064322: Saving node: LegRearRight2
+@5.064370: Saving node: LegRearRight3
+@5.064417: Saving node: LegRearRight4
+@5.064466: Saving node: LegRearRightCap
+@5.064514: Saving node: LegRearLeft1
+@5.064561: Saving node: LegRearLeft2
+@5.064608: Saving node: LegRearLeft3
+@5.064656: Saving node: LegRearLeft4
+@5.064706: Saving node: LegRearLeftCap
+@5.064773: Saving node: LegFrontRight1
+@5.064833: Saving node: LegFrontRight2
+@5.064882: Saving node: LegFrontRight3
+@5.064928: Saving node: LegFrontRight4
+@5.064975: Saving node: LegFrontRightCap
+@5.065024: Saving node: LegFrontLeft1
+@5.065077: Saving node: LegFrontLeft2
+@5.065127: Saving node: LegFrontLeft3
+@5.065174: Saving node: LegFrontLeft4
+@5.065220: Saving node: LegFrontLeftCap
+@5.065292: Saving node: IK_Chain003
+@5.065357: Saving node: IK_Chain004
+@5.065411: Saving node: IK_Chain005
+@5.065462: Saving node: IK_Chain006
+@5.065502: Extracting animation spit.
+@5.457784: Extracting animation stand.
+@5.459168: Extracting animation walk.
+@6.120355: File C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Lizard\lizard_texture.png has same mod time as C:\Users\Josh\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\lizard\lizard_texture.png; not copying.

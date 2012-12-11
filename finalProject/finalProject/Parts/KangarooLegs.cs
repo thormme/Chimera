@@ -86,6 +86,8 @@ namespace finalProject.Parts
                 mJumpStrengthTimer = jumpStrengthTimerStart;
 
                 PlayAnimation("charge", true, true);
+
+                mCanAnimate = false;
             }
             else
             {
@@ -93,6 +95,8 @@ namespace finalProject.Parts
                 mPoundWaitTimer = poundWaitTime;
 
                 PlayAnimation("pound", true, true);
+
+                mCanAnimate = false;
             }
         }
 
@@ -144,6 +148,8 @@ namespace finalProject.Parts
             {
                 (subPart.Renderable as AnimateModel).Update(time);
             }
+
+            mCanAnimate = (!mJumpInUse && !mPoundInUse && Creature.CharacterController.SupportFinder.HasSupport && mResetJump < 0);
         }
 
         public override void FinishUse(Vector3 direction)
@@ -165,14 +171,8 @@ namespace finalProject.Parts
                 Creature.Entity.ApplyLinearImpulse(ref pushForward);
                 
                 PlayAnimation("jump", true, true);
-            }
-        }
 
-        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
-        {
-            if (!mJumpInUse && !mPoundInUse && Creature.CharacterController.SupportFinder.HasSupport)
-            {
-                PlayAnimation(animationName, isSaturated, playOnCreature);
+                mCanAnimate = false;
             }
         }
 

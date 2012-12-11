@@ -101,6 +101,7 @@ namespace finalProject.Parts
             }
 
             mActive = true;
+            mCanAnimate = false;
             mAnimationTimer = AnimationLength;
         }
 
@@ -114,6 +115,7 @@ namespace finalProject.Parts
                 if (mAnimationTimer < 0.0f)
                 {
                     mActive = false;
+                    mCanAnimate = true;
                 }
             }
         }
@@ -121,13 +123,5 @@ namespace finalProject.Parts
         public override void FinishUse(Vector3 direction) { }
 
         public override void Cancel() { }
-
-        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
-        {
-            if (!mActive && animationName != "jump")
-            {
-                PlayAnimation(animationName, isSaturated, playOnCreature);
-            }
-        }
     }
 }

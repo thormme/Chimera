@@ -624,10 +624,14 @@ namespace finalProject
 
         public virtual void TryPlayAnimation(string animationName, bool isSaturated)
         {
-            if (true)
+            foreach (PartAttachment part in mPartAttachments)
             {
-                (mRenderable as AnimateModel).PlayAnimation(animationName, isSaturated);
+                if (part != null && !part.Part.CanAnimate)
+                {
+                    return;
+                }
             }
+            (mRenderable as AnimateModel).PlayAnimation(animationName, isSaturated);
         }
 
         /// <summary>
@@ -744,7 +748,7 @@ namespace finalProject
             if (!Immobilized)
             {
                 CharacterController.Jump();
-                PlayPartAnimation("jump", true);
+                //PlayPartAnimation("jump", true);
             }
         }
 
