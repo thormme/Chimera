@@ -23,7 +23,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(3.0f)
+                        new Vector3(4.0f)
                     )
                 },
                 false,
@@ -35,9 +35,13 @@ namespace finalProject.Parts
         {
             Creature.World.Add(new FrilledLizardVenom(Creature, direction));
             PlayAnimation("spit", true, false);
+            mCanAnimate = false;
         }
 
-        public override void FinishUse(Vector3 direction) { }
+        public override void FinishUse(Vector3 direction)
+        {
+            mCanAnimate = true;
+        }
 
         public override void Cancel() { }
     }

@@ -83,6 +83,7 @@ namespace finalProject.Parts
             {
                 Creature.AddModification(AddCheetahSpeed, RemoveCheetahSpeed);
                 mActive = true;
+                mCanAnimate = false;
                 PlayAnimation("run", false, true);
             }
         }
@@ -93,20 +94,13 @@ namespace finalProject.Parts
             {
                 Creature.RemoveModification(RemoveCheetahSpeed);
                 mActive = false;
+                mCanAnimate = true;
             }
         }
 
         public override void Update(GameTime time)
         {
             base.Update(time);
-        }
-
-        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
-        {
-            if (!mActive && animationName != "jump")
-            {
-                PlayAnimation(animationName, isSaturated, playOnCreature);
-            }
         }
 
         public override void Cancel()

@@ -107,11 +107,13 @@ namespace finalProject.Parts
                 PlayAnimation("flap_air", true, true);
             }
             mGlide = true;
+            mCanAnimate = false;
         }
 
         public override void FinishUse(Vector3 direction)
         {
             mGlide = false;
+            mCanAnimate = true;
         }
 
         public override void Reset()
@@ -123,14 +125,6 @@ namespace finalProject.Parts
         public override void Cancel()
         {
             FinishUse(Creature.Forward);
-        }
-
-        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
-        {
-            if (!mGlide && animationName != "jump")
-            {
-                PlayAnimation(animationName, isSaturated, playOnCreature);
-            }
         }
     }
 }

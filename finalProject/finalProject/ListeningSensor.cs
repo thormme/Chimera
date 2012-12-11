@@ -12,7 +12,7 @@ namespace finalProject
     /// <summary>
     /// Checks listening sensitivity and vision to find which creatures in the radius the sensor actually notices
     /// </summary>
-    public class ListeningSensor : RadialSensor
+    public class ListeningSensor : VisionSensor
     {
         //protected const float ListeningMultiplier = 2.0f;
         private int mListeningSensitivity;
