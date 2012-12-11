@@ -63,7 +63,7 @@ namespace finalProject.Parts
                     )
                 },
                 false,
-                new Sprite("penguinIcon")
+                new Sprite("PenguinLimbsIcon")
             )
         {
             mHasTraction = true;

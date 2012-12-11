@@ -27,7 +27,7 @@ namespace finalProject.Parts
                     )
                 },
                 false,
-                new Sprite("frilledLizardIcon")
+                new Sprite("FrilledLizardHeadIcon")
             )
         { }
 

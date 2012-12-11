@@ -211,7 +211,7 @@ namespace finalProject
                 float distance = /*(float)time.ElapsedGameTime.TotalSeconds * mCreature.Entity.LinearVelocity.Length() * */5.0f + mCreature.CharacterController.BodyRadius;
                 RayCastResult result;
 
-                if (State != AIState.Durdle && Utils.FindWall(mCreature.Position, mCreature.Position, filter, mCreature.World.Space, distance, out result))
+                if (State != AIState.Durdle && ObstacleDetector.FindWall(mCreature.Position, mCreature.Position, filter, mCreature.World.Space, distance, out result))
                 {
                     mMoveDirection.Y = 0;
                     mMoveDirection.Normalize();
@@ -257,8 +257,8 @@ namespace finalProject
 
                 if (State == AIState.Durdle)
                 {
-                    if (Utils.FindWall(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance, out result) ||
-                        Utils.FindCliff(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance))
+                    if (ObstacleDetector.FindWall(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance, out result) ||
+                        ObstacleDetector.FindCliff(mCreature.Position, mMoveDirection, filter, mCreature.World.Space, distance))
                     {
                         dir = Vector2.Zero;
                     }

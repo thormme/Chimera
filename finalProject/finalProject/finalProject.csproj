@@ -189,7 +189,7 @@
     <Compile Include="Parts\CheetahLegs.cs" />
     <Compile Include="Parts\TestingLegs.cs" />
     <Compile Include="Parts\TestingWings.cs" />
-    <Compile Include="Parts\MindControlCobraHead.cs" />
+    <Compile Include="Parts\CobraHead.cs" />
     <Compile Include="Parts\FrogHead.cs" />
     <Compile Include="Parts\FrilledLizardHead.cs" />
     <Compile Include="Parts\KangarooLegs.cs" />
@@ -219,7 +219,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="RadialSensor.cs" />
+    <Compile Include="VisionSensor.cs" />
     <Compile Include="ListeningSensor.cs" />
     <Compile Include="StateTimer.cs" />
     <Compile Include="Triggers\TipTrigger.cs" />

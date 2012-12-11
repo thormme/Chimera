@@ -48,7 +48,7 @@ namespace finalProject.Parts
                     )
                 },
                 false,
-                new Sprite("bearIcon")
+                new Sprite("BearArmsIcon")
             )
         { }
 

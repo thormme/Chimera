@@ -123,7 +123,7 @@ namespace finalProject
             set;
         }
 
-        public RadialSensor Sensor
+        public VisionSensor Sensor
         {
             get;
             protected set;
@@ -549,7 +549,7 @@ namespace finalProject
 
         #region Public Methods
 
-        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, RadialSensor radialSensor, Controller controller, int numParts)
+        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, VisionSensor radialSensor, Controller controller, int numParts)
             : base(renderable, new Cylinder(position, height, radius, mass))
         {
             mHeight = height;
@@ -655,18 +655,19 @@ namespace finalProject
             mPartAttachments[slot] = new PartAttachment(part, usedBones);
 
             part.Creature = this;
-
-            mPartRotations = new Matrix[PartAttachments[0].Bones.Count];
-            mBoneUp = new Vector3[PartAttachments[0].Bones.Count];
-            mBoneForward = new Vector3[PartAttachments[0].Bones.Count];
-            mBoneRight = new Vector3[PartAttachments[0].Bones.Count];
-            for (int i = 0; i < PartAttachments[0].Bones.Count; ++i)
-            {
-                mPartRotations[i] = Matrix.Identity;
-                mBoneUp[i] = Vector3.Up;
-                mBoneForward[i] = Vector3.Forward;
-                mBoneRight[i] = Vector3.Right;
-            }
+            
+            //mPartRotations = new Matrix[PartAttachments[0].Bones.Count];
+            //mBoneUp = new Vector3[PartAttachments[0].Bones.Count];
+            //mBoneForward = new Vector3[PartAttachments[0].Bones.Count];
+            //mBoneRight = new Vector3[PartAttachments[0].Bones.Count];
+            //for (int i = 0; i < PartAttachments[0].Bones.Count; ++i)
+            //{
+            //    mPartRotations[i] = Matrix.Identity;
+            //    mBoneUp[i] = Vector3.Up;
+            //    mBoneForward[i] = Vector3.Forward;
+            //    mBoneRight[i] = Vector3.Right;
+            //}
+             
         }
 
         public float CollideDistance(Creature creature)

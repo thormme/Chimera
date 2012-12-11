@@ -45,7 +45,7 @@ namespace finalProject.Parts
                     )
                 },
                 false,
-                new Sprite("rhinoIcon")
+                new Sprite("RhinoHeadIcon")
             )
         {
         }
@@ -55,15 +55,16 @@ namespace finalProject.Parts
             
             if (mRunTimer > 0.0f)
             {
-                Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
+                Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)) && (!(bfe.Tag is PhysicsProp)));
                 RayCastResult result;
-                if (Utils.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space, 2.0f * Creature.CharacterController.BodyRadius, out result))
+                if (ObstacleDetector.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space, 2.0f * Creature.CharacterController.BodyRadius, out result))
                 //if (Utils.FindCliff(Creature.Position, Creature.Forward, filter, Creature.World.Space, 4.0f * (float)time.ElapsedGameTime.TotalSeconds * Creature.Entity.LinearVelocity.Length() + Creature.CharacterController.BodyRadius))
                 {
                     Creature.Stun();
                     mRunTimer = -1.0f;
                 }
 
+                //Console.WriteLine(mRunTimer);
                 mRunTimer -= time.ElapsedGameTime.TotalSeconds;
                 if (mRunTimer < 0.0f)
                 {
@@ -135,7 +136,7 @@ namespace finalProject.Parts
             base.InitialCollisionDetected(sender, other, collisionPair);
 
             Console.WriteLine(other.Tag + " " + mRunTimer);
-            if ((other.Tag is CharacterSynchronizer || other.Tag is PhysicsProp)/* && mRunTimer > 0.0f*/)
+            if ((other.Tag is CharacterSynchronizer || other.Tag is PhysicsProp) && mRunTimer > 0.0f)
             {
                 float totalImpulse = 0;
                 foreach (ContactInformation c in collisionPair.Contacts)

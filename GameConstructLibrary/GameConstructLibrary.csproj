@@ -163,6 +163,7 @@
     <Compile Include="Menu\GraphicItem.cs" />
     <Compile Include="Menu\IMenuItem.cs" />
     <Compile Include="Menu\SelectableItem.cs" />
+    <Compile Include="ObstacleDetector.cs" />
     <Compile Include="PhysicsObject.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="StepManager.cs" />
     <Compile Include="SupportFinder.cs" />
     <Compile Include="TerrainPhysics.cs" />
+    <Compile Include="GameTip.cs" />
     <Compile Include="VerticalMotionConstraint.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>

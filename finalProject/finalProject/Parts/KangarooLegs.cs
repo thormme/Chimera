@@ -68,7 +68,7 @@ namespace finalProject.Parts
                     )
                 },
                 true,
-                new Sprite("kangarooIcon")
+                new Sprite("KangarooLegsIcon")
             )
         {
         }

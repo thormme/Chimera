@@ -25,7 +25,7 @@ namespace finalProject.Creatures
                 CreatureConstants.CobraListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.CobraSneak,                   // Sneak
                 CreatureConstants.CobraIntimidation,            // Intimidation
-                new MindControlCobraHead()                      // Part
+                new CobraHead()                      // Part
                 )
         {
             Scale = new Vector3(1.0f);

@@ -15,7 +15,7 @@ namespace finalProject
     /// <summary>
     /// A radial sensor used to identify PhysicsObjects near a point, like on a creature.
     /// </summary>
-    public class RadialSensor : Sensor
+    public class VisionSensor : Sensor
     {
         private double mVisionAngle;
 
@@ -42,7 +42,7 @@ namespace finalProject
         /// <param name="radius">
         /// The radius of the RadialSensor's sphere.
         /// </param>
-        public RadialSensor(float radius, float visionAngle)
+        public VisionSensor(float radius, float visionAngle)
             : base(new Sphere(new Vector3(0), radius))
         {
             mCollidingCreatures = new List<Creature>();

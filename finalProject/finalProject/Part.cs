@@ -117,7 +117,7 @@ namespace finalProject
         }
 
         private Creature mCreature;
-        private Sprite mSprite;
+        protected Sprite mSprite;
 
         public SubPart[] SubParts
         {
@@ -186,7 +186,7 @@ namespace finalProject
             }
         }
 
-        public void RenderSprite(Rectangle bounds)
+        public virtual void RenderSprite(Rectangle bounds)
         {
             mSprite.Render(bounds);
         }
