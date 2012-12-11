@@ -130,7 +130,7 @@ namespace finalProject
 
                 World world = new World(DebugModelDrawer);
             
-                world.AddLevelFromFile("trigger_test", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+                world.AddLevelFromFile("tree", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
                 mGameStates.Add(world);
 
@@ -204,13 +204,13 @@ namespace finalProject
                             player.Damage(100, null);
                             //player.Position = player.SpawnOrigin;
                             int i = 0;
+                            player.AddPart(new EagleWings(), i++);
                             player.AddPart(new RhinoHead(), i++);
-                            player.AddPart(new FrogHead(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new KangarooLegs(), i++);
                             player.AddPart(new FrogHead(), i++);
-                            player.AddPart(new BearArms(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new FrilledLizardHead(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new EagleWings(), i++);
