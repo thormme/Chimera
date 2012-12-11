@@ -36,11 +36,13 @@ namespace finalProject
         private const int DamageThreshold = 30;
 
         private const double StealLength = 2.5f;
+        private const double LoseLength = 0.2f;
 
         private bool mStealing = false;
         private Creature mStealTarget = null;
         private double mStealTimer = -1.0f;
         private Part mStolenPart = null;
+        private double mLoseTargetTimer = -1.0f;
         
         private int mNumHeightModifyingParts = 0;
 
@@ -298,6 +300,16 @@ namespace finalProject
             DeactivateStealPart();
         }
 
+        protected void ResetStealTarget()
+        {
+            if (mStealTarget != null)
+            {
+                mStealTarget = null;
+                Console.WriteLine("lost target");
+            }
+            mStealTimer = -1.0f;
+        }
+
         #endregion
 
         #region Public Methods
@@ -312,7 +324,7 @@ namespace finalProject
             CollisionMeshManager.LookupMesh("suckConeCollision", out vertices, out indices);
 
             MobileMesh coneMesh = new MobileMesh(vertices, indices,
-                new AffineTransform(new Vector3(3.0f, 3.0f, 3.0f), Quaternion.Identity, Vector3.Zero), 
+                new AffineTransform(new Vector3(3.0f), Quaternion.Identity, Vector3.Zero), 
                 BEPUphysics.CollisionShapes.MobileMeshSolidity.Clockwise);
 
             mPartStealSensor = new ConeSensor(coneMesh);
@@ -345,7 +357,7 @@ namespace finalProject
             Game1.Camera = Camera;
         }
 
-        public override void  InitialCollisionDetected(EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
+        public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
         {
  	        base.InitialCollisionDetected(sender, other, collisionPair);
             Console.WriteLine(other.Tag);
@@ -470,10 +482,22 @@ namespace finalProject
                 {
                     if (!mPartStealSensor.CollidingCreatures.Contains(mStealTarget))
                     {
-                        mStealTarget = null;
+                        if (mLoseTargetTimer > 0.0f)
+                        {
+                            mLoseTargetTimer -= time.ElapsedGameTime.TotalSeconds;
+                            if (mLoseTargetTimer < 0.0f)
+                            {
+                                ResetStealTarget();
+                            }
+                        }
+                        else
+                        {
+                            mLoseTargetTimer = LoseLength;
+                        }
                     }
                     else
                     {
+                        mLoseTargetTimer = -1.0f;
                         mStealTimer -= time.ElapsedGameTime.TotalSeconds;
                         if (mStealTimer < 0.0f)
                         {
@@ -481,10 +505,9 @@ namespace finalProject
                             if (pa != null && mStealTarget.PartAttachments.Count > 0)
                             {
                                 mStealTarget.RemovePart(pa.Part);
-                                mStealTarget = null;
+                                ResetStealTarget();
                                 mStolenPart = pa.Part;
                                 DeactivateStealPart();
-                                mStealTimer = -1.0f;
                             }
                         }
                     }
@@ -502,6 +525,8 @@ namespace finalProject
                                 mStealTarget = creature;
                                 mStealTimer = StealLength;
                                 creature.Damage(0, this);
+                                Console.WriteLine("found target");
+                                break;
                             }
                         }
                     }
@@ -679,6 +704,7 @@ namespace finalProject
             if (mStealing)
             {
                 mStealing = false;
+                ResetStealTarget();
             }
         }
 
