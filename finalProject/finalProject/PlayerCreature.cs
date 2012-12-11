@@ -42,6 +42,8 @@ namespace finalProject
         
         private int mNumHeightModifyingParts = 0;
 
+        private Part[] mRespawnParts = new Part[3];
+
         private Sprite mRequirementText = new Sprite("requirements");
         private Sprite mRequirementBoxSprite = new Sprite("requirementBox");
         private Sprite mRequirementSprite = null;
@@ -66,9 +68,15 @@ namespace finalProject
             },
             10.0f);
         GameTip mCheckpointEncountered = new GameTip(
-            new string[] {
+        new string[] {
                 "You have encountered a checkpoint.",
                 "You will respawn at the last checkpoint you touched."
+            },
+        10.0f);
+        GameTip mGoalPointEncountered = new GameTip(
+            new string[] {
+                "You have found an extraction point.",
+                "Return here once you have the required part."
             },
             10.0f);
         GameTip mBearEncountered = new GameTip(
@@ -296,84 +304,56 @@ namespace finalProject
         {
  	        base.InitialCollisionDetected(sender, other, collisionPair);
             Console.WriteLine(other.Tag);
+
             if (other.Tag is Checkpoint)
             {
-                if (!mCheckpointEncountered.Displayed)
-                {
-                    Game1.AddTip(mCheckpointEncountered);
-                }
+                Game1.AddTip(mCheckpointEncountered);
+            }
+            if (other.Tag is GoalPoint)
+            {
+                Game1.AddTip(mGoalPointEncountered);
             }
             if (other.Tag is CharacterSynchronizer)
             {
                 if (((other.Tag as CharacterSynchronizer).body.Tag as Bear) != null)
                 {
-                    if (!mKangarooEncountered.Displayed)
-                    {
-                        Game1.AddTip(mBearEncountered);
-                    }
+                    Game1.AddTip(mBearEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Cheetah) != null)
                 {
-                    if (!mCheetahEncountered.Displayed)
-                    {
-                        Game1.AddTip(mCheetahEncountered);
-                    }
+                    Game1.AddTip(mCheetahEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Cobra) != null)
                 {
-                    if (!mCobraEncountered.Displayed)
-                    {
-                        Game1.AddTip(mCobraEncountered);
-                    }
+                    Game1.AddTip(mCobraEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Eagle) != null)
                 {
-                    if (!mEagleEncountered.Displayed)
-                    {
-                        Game1.AddTip(mEagleEncountered);
-                    }
+                    Game1.AddTip(mEagleEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as FrilledLizard) != null)
                 {
-                    if (!mFrilledLizardEncountered.Displayed)
-                    {
-                        Game1.AddTip(mFrilledLizardEncountered);
-                    }
+                    Game1.AddTip(mFrilledLizardEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Frog) != null)
                 {
-                    if (!mFrogEncountered.Displayed)
-                    {
-                        Game1.AddTip(mFrogEncountered);
-                    }
+                    Game1.AddTip(mFrogEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Kangaroo) != null)
                 {
-                    if (!mKangarooEncountered.Displayed)
-                    {
-                        Game1.AddTip(mKangarooEncountered);
-                    }
+                    Game1.AddTip(mKangarooEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Penguin) != null)
                 {
-                    if (!mPenguinEncountered.Displayed)
-                    {
-                        Game1.AddTip(mPenguinEncountered);
-                    }
+                    Game1.AddTip(mPenguinEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Rhino) != null)
                 {
-                    if (!mRhinoEncountered.Displayed)
-                    {
-                        Game1.AddTip(mRhinoEncountered);
-                    }
+                    Game1.AddTip(mRhinoEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Turtle) != null)
                 {
-                    if (!mTurtleEncountered.Displayed)
-                    {
-                        Game1.AddTip(mTurtleEncountered);
-                    }
+                    Game1.AddTip(mTurtleEncountered);
                 }
             }
         }

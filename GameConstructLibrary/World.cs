@@ -156,7 +156,6 @@ namespace GameConstructLibrary
                 else if (dummy.Type == "finalProject.GoalPoint, finalProject")
                 {
                     Goal = dummy.Parameters[1];
-                    Console.WriteLine("Goal is: " + Goal);
                 }
                 Type type = Type.GetType(dummy.Type);
 

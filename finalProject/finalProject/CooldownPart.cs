@@ -49,7 +49,7 @@ namespace finalProject
             if (CooldownTimer >= 0.2f)
             {
                 color = Color.Black;
-                percentage = (float)(CooldownTimer / CooldownLength);
+                percentage = 0.5f + 0.5f * (float)(CooldownTimer / CooldownLength);
             }
             else if (CooldownTimer > 0.1f)
             {
