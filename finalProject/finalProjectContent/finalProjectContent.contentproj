@@ -532,53 +532,53 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\bearIcon.png">
-      <Name>bearIcon</Name>
+    <Compile Include="textures\sprites\BearArmsIcon.png">
+      <Name>BearArmsIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\cheetahIcon.png">
-      <Name>cheetahIcon</Name>
+    <Compile Include="textures\sprites\CheetahLegsIcon.png">
+      <Name>CheetahLegsIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\cobraIcon.png">
-      <Name>cobraIcon</Name>
+    <Compile Include="textures\sprites\CobraHeadIcon.png">
+      <Name>CobraHeadIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\eagleIcon.png">
-      <Name>eagleIcon</Name>
+    <Compile Include="textures\sprites\EagleWingsIcon.png">
+      <Name>EagleWingsIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\frilledLizardIcon.png">
-      <Name>frilledLizardIcon</Name>
+    <Compile Include="textures\sprites\FrilledLizardHeadIcon.png">
+      <Name>FrilledLizardHeadIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\frogIcon.png">
-      <Name>frogIcon</Name>
+    <Compile Include="textures\sprites\FrogHeadIcon.png">
+      <Name>FrogHeadIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\kangarooIcon.png">
-      <Name>kangarooIcon</Name>
+    <Compile Include="textures\sprites\KangarooLegsIcon.png">
+      <Name>KangarooLegsIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\penguinIcon.png">
-      <Name>penguinIcon</Name>
+    <Compile Include="textures\sprites\PenguinLimbsIcon.png">
+      <Name>PenguinLimbsIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\rhinoIcon.png">
-      <Name>rhinoIcon</Name>
+    <Compile Include="textures\sprites\RhinoHeadIcon.png">
+      <Name>RhinoHeadIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\turtleIcon.png">
-      <Name>turtleIcon</Name>
+    <Compile Include="textures\sprites\TurtleShellIcon.png">
+      <Name>TurtleShellIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -594,6 +594,56 @@
     </Compile>
     <Compile Include="textures\sprites\yellowButton.png">
       <Name>yellowButton</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\controls.png">
+      <Name>controls</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\goals.png">
+      <Name>goals</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\instructions.png">
+      <Name>instructions</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\options.png">
+      <Name>options</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\play.png">
+      <Name>play</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\story.png">
+      <Name>story</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\title.png">
+      <Name>title</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\check.png">
+      <Name>check</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\requirements.png">
+      <Name>requirements</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\requirementBox.png">
+      <Name>requirementBox</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -686,6 +736,20 @@
       <Name>kangaroo</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\suckCone\suckCone.X">
+      <Name>suckCone</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\suckCone\suckConeCollision.X">
+      <Name>suckConeCollision</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -45,7 +45,7 @@ namespace finalProject.Parts
                     )
                 },
                 false,
-                new Sprite("rhinoIcon")
+                new Sprite("RhinoHeadIcon")
             )
         {
         }

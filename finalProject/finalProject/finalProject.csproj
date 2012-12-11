@@ -170,6 +170,7 @@
     <Compile Include="AI\RhinoAI.cs" />
     <Compile Include="ChaseCamera.cs" />
     <Compile Include="Checkpoint.cs" />
+    <Compile Include="ConeSensor.cs" />
     <Compile Include="CooldownPart.cs" />
     <Compile Include="CreatureConstants.cs" />
     <Compile Include="Creatures\Bear.cs" />
@@ -189,7 +190,7 @@
     <Compile Include="Parts\CheetahLegs.cs" />
     <Compile Include="Parts\TestingLegs.cs" />
     <Compile Include="Parts\TestingWings.cs" />
-    <Compile Include="Parts\MindControlCobraHead.cs" />
+    <Compile Include="Parts\CobraHead.cs" />
     <Compile Include="Parts\FrogHead.cs" />
     <Compile Include="Parts\FrilledLizardHead.cs" />
     <Compile Include="Parts\KangarooLegs.cs" />

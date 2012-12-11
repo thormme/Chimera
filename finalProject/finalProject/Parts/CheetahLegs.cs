@@ -73,7 +73,7 @@ namespace finalProject.Parts
                     )
                 },
                 true,
-                new Sprite("cheetahIcon")
+                new Sprite("CheetahLegsIcon")
             )
         { }
                 

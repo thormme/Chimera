@@ -12,7 +12,7 @@ namespace finalProject.Parts
     class EagleWings : Part
     {
 
-        private const int flapPower = 300;
+        private const int flapPower = 200;
         private const int numFlaps = 3;
         private const float glideDivider = 2.0f;
 
@@ -52,7 +52,7 @@ namespace finalProject.Parts
                     )
                 },
                 false,
-                new Sprite("eagleIcon")
+                new Sprite("EagleWingsIcon")
             )
         {
             mFlaps = 0;
@@ -101,7 +101,7 @@ namespace finalProject.Parts
             {
                 mFlaps++;
                 mFlapTimer = 0.0f;
-                Vector3 flap = new Vector3(0.0f, 1.0f * flapPower, 0.0f);
+                Vector3 flap = Vector3.Up * flapPower;
                 if (Creature.Entity.LinearVelocity.Y < 0) flap.Y -= Creature.Entity.LinearVelocity.Y;
                 Creature.Entity.ApplyLinearImpulse(ref flap);
                 PlayAnimation("flap_air", true, true);

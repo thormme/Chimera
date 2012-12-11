@@ -243,6 +243,11 @@ namespace FinalProject
         }
         private Vector3 mPosition;
 
+        public Vector3 GetPosition()
+        {
+            return Position;
+        }
+
         /// <summary>
         /// Velocity of camera in world space.
         /// </summary>
@@ -265,7 +270,12 @@ namespace FinalProject
                 return mForward;
             }
         }
-        private Vector3 mForward;
+        private Vector3 mForward = Vector3.Forward;
+
+        public Vector3 GetForward()
+        {
+            return Forward;
+        }
 
         /// <summary>
         /// Direction perpendicular to forward and up in world space.
@@ -277,7 +287,7 @@ namespace FinalProject
                 return mRight;
             }
         }
-        private Vector3 mRight;
+        private Vector3 mRight = Vector3.Right;
 
         /// <summary>
         /// Minimum number of degrees camera can be from the up vector.

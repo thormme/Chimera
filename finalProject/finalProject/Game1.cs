@@ -52,7 +52,7 @@ namespace finalProject
         public static GraphicsDeviceManager Graphics;
         public static SpriteBatch spriteBatch;
         private SpriteFont font;
-        public static Queue<string> tips;
+        public static List<GameTip> Tips;
 
         private static List<IGameState> mGameStates = new List<IGameState>();
         private static List<IGameState> mGameStateAddQueue = new List<IGameState>();
@@ -64,9 +64,10 @@ namespace finalProject
 
         public Game1()
         {
+
             Graphics = new GraphicsDeviceManager(this);
-            /*Graphics.PreferredBackBufferWidth = 1280;
-            Graphics.PreferredBackBufferHeight = 720;*/
+            Graphics.PreferredBackBufferWidth = 1280;
+            Graphics.PreferredBackBufferHeight = 720;
             //Graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
@@ -104,7 +105,7 @@ namespace finalProject
             GraphicsManager.CastingShadows = true;
             GraphicsManager.DebugVisualization = false;
 
-            tips = new Queue<string>();
+            Tips = new List<GameTip>();
 
             IntPtr ptr = this.Window.Handle;
             System.Windows.Forms.Form form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(ptr);
@@ -130,7 +131,7 @@ namespace finalProject
 
                 World world = new World(DebugModelDrawer);
             
-                world.AddLevelFromFile("tree", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+                world.AddLevelFromFile("kangaroo", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
                 mGameStates.Add(world);
                 int width = (int) (Graphics.PreferredBackBufferHeight * .25);
@@ -216,7 +217,7 @@ namespace finalProject
                             int i = 0;
                             player.AddPart(new RhinoHead(), i++);
                             player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new KangarooLegs(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new FrogHead(), i++);
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new CheetahLegs(), i++);
@@ -254,7 +255,7 @@ namespace finalProject
                 mGameStates[mGameStates.Count - 1].Update(gameTime);
             }
 
-            GraphicsManager.Update(Camera);
+            GraphicsManager.Update(Camera, gameTime);
             DebugModelDrawer.Update();
 
             if (mPopQueued)
@@ -290,16 +291,7 @@ namespace finalProject
 
             GraphicsManager.FinishRendering();
 
-            float tipHeight = 20.0f;
-            spriteBatch.Begin();
-            foreach (string tip in tips)
-            {
-                spriteBatch.DrawString(font, tip, new Vector2(20.0f, tipHeight), Microsoft.Xna.Framework.Color.White);
-                tipHeight += /*font.MeasureString(tip).Y +*/ font.LineSpacing;
-            }
-            spriteBatch.End();
-            tips.Clear();
-
+            RenderTips(gameTime);
 
             // DEBUG
             if (debugMode)
@@ -309,6 +301,38 @@ namespace finalProject
             // END
 
             base.Draw(gameTime);
+        }
+
+        private void RenderTips(GameTime gameTime)
+        {
+            int width = Graphics.PreferredBackBufferWidth;
+            int height = Graphics.PreferredBackBufferHeight;
+
+            List<GameTip> expiredTips = new List<GameTip>();
+            float tipHeight = height - 60.0f;
+            spriteBatch.Begin();
+            foreach (GameTip tip in Tips)
+            {
+                tipHeight -= font.LineSpacing * tip.Tips.Length;
+                float lineHeight = 0.0f;
+                foreach (string line in tip.Tips)
+                {
+                    spriteBatch.DrawString(font, line, new Vector2(20.0f, tipHeight + lineHeight), Microsoft.Xna.Framework.Color.White);
+                    lineHeight += font.LineSpacing;
+                }
+                
+                tipHeight -= font.LineSpacing;
+                tip.Time -= (float)(gameTime.ElapsedGameTime.TotalSeconds);
+                if (tip.Time <= 0)
+                {
+                    expiredTips.Add(tip);
+                }
+            }
+            foreach (GameTip expired in expiredTips)
+            {
+                Tips.Remove(expired);
+            }
+            spriteBatch.End();
         }
 
         /// <summary>
@@ -328,6 +352,12 @@ namespace finalProject
         public static void PushState(IGameState gameState)
         {
             mGameStateAddQueue.Add(gameState);
+        }
+
+        public static void AddTip(GameTip tip)
+        {
+            tip.Displayed = true;
+            Tips.Add(tip);
         }
     }
 }

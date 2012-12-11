@@ -68,6 +68,15 @@ Technique CelShade
 	}
 }
 
+Technique NoShade
+{
+	Pass
+	{
+		VertexShader = compile vs_2_0 VS();
+		PixelShader  = compile ps_2_0 NoShadePS();
+	}
+}
+
 Technique Outline
 {
 	Pass
