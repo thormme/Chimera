@@ -40,6 +40,11 @@ namespace MapEditor
         }
         private Vector3 mForward = Vector3.Forward;
 
+        public Vector3 GetForward()
+        {
+            return Forward;
+        }
+
         /// <summary>
         /// Direction perpendicular to forward and up in world space.
         /// </summary>
@@ -107,6 +112,11 @@ namespace MapEditor
             }
         }
         private Vector3 mPosition;
+
+        public Vector3 GetPosition()
+        {
+            return Position;
+        }
 
         public Vector3 Target
         {

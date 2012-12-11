@@ -245,7 +245,7 @@ namespace finalProject
                 mGameStates[mGameStates.Count - 1].Update(gameTime);
             }
 
-            GraphicsManager.Update(Camera);
+            GraphicsManager.Update(Camera, gameTime);
             DebugModelDrawer.Update();
 
             if (mPopQueued)

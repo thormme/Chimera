@@ -42,7 +42,7 @@ VSOutput VS(VSInput vin)
 	output.LightAmount = dot(worldNormal, xDirLightDirection);
 
 	output.ShadowPosition = mul(vin.Position, LightWorldViewProj);
-	output.TexCoord = vin.TexCoord;
+	output.TexCoord = vin.TexCoord + xTextureOffset;
 
 	return output;
 }

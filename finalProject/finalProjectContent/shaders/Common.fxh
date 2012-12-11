@@ -32,6 +32,8 @@ BEGIN_CONSTANTS
 	float3 xOverlayColor;
 	float  xOverlayColorWeight;
 
+	float2 xTextureOffset;
+
 MATRIX_CONSTANTS
 
     float4x4 WorldViewProj                      _vs(c15)          _cb(c0);
