@@ -179,7 +179,7 @@ namespace finalProject
         #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
-            : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new RadialSensor(4.0f, 135), new PlayerController(viewPort), 3)
+            : base(position, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new VisionSensor(4.0f, 135), new PlayerController(viewPort), 3)
         {
 
             Forward = facingDirection;

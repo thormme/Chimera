@@ -55,15 +55,16 @@ namespace finalProject.Parts
             
             if (mRunTimer > 0.0f)
             {
-                Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)));
+                Func<BroadPhaseEntry, bool> filter = (bfe) => ((!(bfe.Tag is Sensor)) && (!(bfe.Tag is CharacterSynchronizer)) && (!(bfe.Tag is PhysicsProp)));
                 RayCastResult result;
-                if (Utils.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space, 2.0f * Creature.CharacterController.BodyRadius, out result))
+                if (ObstacleDetector.FindWall(Creature.Position, Creature.Forward, filter, Creature.World.Space, 2.0f * Creature.CharacterController.BodyRadius, out result))
                 //if (Utils.FindCliff(Creature.Position, Creature.Forward, filter, Creature.World.Space, 4.0f * (float)time.ElapsedGameTime.TotalSeconds * Creature.Entity.LinearVelocity.Length() + Creature.CharacterController.BodyRadius))
                 {
                     Creature.Stun();
                     mRunTimer = -1.0f;
                 }
 
+                //Console.WriteLine(mRunTimer);
                 mRunTimer -= time.ElapsedGameTime.TotalSeconds;
                 if (mRunTimer < 0.0f)
                 {

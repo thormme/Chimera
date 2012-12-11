@@ -204,8 +204,8 @@ namespace finalProject
                             player.Damage(100, null);
                             //player.Position = player.SpawnOrigin;
                             int i = 0;
-                            player.AddPart(new EagleWings(), i++);
                             player.AddPart(new RhinoHead(), i++);
+                            player.AddPart(new EagleWings(), i++);
                             player.AddPart(new KangarooLegs(), i++);
                             player.AddPart(new FrogHead(), i++);
                             player.AddPart(new CheetahLegs(), i++);

@@ -163,6 +163,7 @@
     <Compile Include="Menu\GraphicItem.cs" />
     <Compile Include="Menu\IMenuItem.cs" />
     <Compile Include="Menu\SelectableItem.cs" />
+    <Compile Include="ObstacleDetector.cs" />
     <Compile Include="PhysicsObject.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

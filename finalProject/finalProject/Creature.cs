@@ -123,7 +123,7 @@ namespace finalProject
             set;
         }
 
-        public RadialSensor Sensor
+        public VisionSensor Sensor
         {
             get;
             protected set;
@@ -549,7 +549,7 @@ namespace finalProject
 
         #region Public Methods
 
-        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, RadialSensor radialSensor, Controller controller, int numParts)
+        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, VisionSensor radialSensor, Controller controller, int numParts)
             : base(renderable, new Cylinder(position, height, radius, mass))
         {
             mHeight = height;
