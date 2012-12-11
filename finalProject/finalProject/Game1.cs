@@ -133,13 +133,23 @@ namespace finalProject
                 world.AddLevelFromFile("tree", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
 
                 mGameStates.Add(world);
-
+                int width = (int) (Graphics.PreferredBackBufferHeight * .25);
+                int height = (int) (width * .25);
+                GraphicItem title = new GraphicItem(
+                    new Microsoft.Xna.Framework.Rectangle(
+                        Graphics.PreferredBackBufferWidth / 2 - width,
+                        0,
+                        width,
+                        height
+                    ),
+                    new Sprite("play")
+                );
                 GameMenu menu = new GameMenu();
                 Microsoft.Xna.Framework.Rectangle rect = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 200);
+
                 GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
-                GameConstructLibrary.Menu.Button b2 = new GameConstructLibrary.Menu.Button(new Microsoft.Xna.Framework.Rectangle(0, 200, 200, 200), new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
                 menu.Add(button);
-                menu.Add(b2);
+                menu.Add(title);
 
                 PushState(menu);
             }
