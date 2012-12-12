@@ -236,6 +236,10 @@ namespace finalProject
             if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
             {
                 PopState();
+                if (mGameStates.Count >= 2 && mGameStates[mGameStates.Count - 2] is World)
+                {
+                    InputAction.IsMouseLocked = true;
+                }
             }
             else if (pause.Active)
             {
