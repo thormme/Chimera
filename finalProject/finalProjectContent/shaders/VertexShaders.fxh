@@ -44,6 +44,9 @@ VSOutput VS(VSInput vin)
 	output.ShadowPosition = mul(vin.Position, LightWorldViewProj);
 	output.TexCoord = vin.TexCoord + xTextureOffset;
 
+	//output.ShadowPosition.r = floor(output.ShadowPosition.r / xTexelSize) * xTexelSize;
+	//output.ShadowPosition.g = floor(output.ShadowPosition.g / xTexelSize) * xTexelSize;
+
 	return output;
 }
 

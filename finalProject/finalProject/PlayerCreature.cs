@@ -586,8 +586,8 @@ namespace finalProject
                 rotationIncrease = partStealFraction * 1.5f;
             }
 
-            mSuckModel.HorizontalVelocity = 1.0f + rotationIncrease;
-            mSuckModel.VerticalVelocity = mSuckModel.HorizontalVelocity;
+            mSuckModel.VerticalVelocity = 1.0f + rotationIncrease;
+            mSuckModel.HorizontalVelocity = mSuckModel.VerticalVelocity;
 
             mConeOrientation = Matrix.CreateScale(new Vector3(3.0f, 3.0f, 3.0f));
             mConeOrientation *= Matrix.CreateRotationX(MathHelper.PiOver2);

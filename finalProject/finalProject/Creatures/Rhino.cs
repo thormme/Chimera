@@ -16,7 +16,7 @@ namespace finalProject.Creatures
             : base(
                 position,
                 2.0f,                                           // Height
-                0.75f,                                          // Radius
+                1.5f,                                          // Radius
                 30.0f,                                          // Mass
                 CreatureConstants.RhinoSensitivityRadius,       // Sensitivity Radius
                 new RhinoAI(),                                  // AI

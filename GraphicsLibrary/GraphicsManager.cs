@@ -61,6 +61,7 @@ namespace GraphicsLibrary
         static private int mEdgeIntensity = 1;
         static private int mShadowMapLength = 4096;
         static private int mShadowFarClip = 512;
+        static private float mTexelSize;
 
         static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
         static private char[] mDelimeterChars = {' '};
@@ -822,6 +823,9 @@ namespace GraphicsLibrary
                 effect.Parameters["xOverlayColor"].SetValue(overlayColor);
                 effect.Parameters["xOverlayColorWeight"].SetValue(overlayColorWeight);
 
+                effect.Parameters["xNumShadowBands"].SetValue(techniqueName.Contains("Skinned") ? 2.0f : 3.0f);
+                effect.Parameters["xTexelSize"].SetValue(mTexelSize);
+
                 effect.SpecularColor = new Vector3(0.25f);
                 effect.SpecularPower = 16;
 
@@ -886,6 +890,8 @@ namespace GraphicsLibrary
 
             mTerrainShader.Parameters["xOverlayColor"].SetValue(overlayColor);
             mTerrainShader.Parameters["xOverlayColorWeight"].SetValue(overlayColorWeight);
+
+            mTerrainShader.Parameters["xTexelSize"].SetValue(mTexelSize);
 
             mTerrainShader.SpecularColor = new Vector3(0.25f);
             mTerrainShader.SpecularPower = 16;
@@ -954,7 +960,10 @@ namespace GraphicsLibrary
             BoundingBox lightBox = BoundingBox.CreateFromPoints(frustumCorners);
 
             Vector3 boxSize = lightBox.Max - lightBox.Min;
+            boxSize *= 2.0f;
             Vector3 halfBoxSize = boxSize * 0.5f;
+
+            mTexelSize = boxSize.X / mShadowMapLength;
 
             Vector3 lightPosition = lightBox.Min + halfBoxSize;
             lightPosition.Z = lightBox.Min.Z;
@@ -962,10 +971,8 @@ namespace GraphicsLibrary
             lightPosition = Vector3.Transform(lightPosition, Matrix.Invert(lightRotation));
 
             mLightView = Matrix.CreateLookAt(lightPosition, lightPosition - mLightDirection, Vector3.Up);
-            //mView = mLightView;
 
             mLightProjection = Matrix.CreateOrthographic(boxSize.X, boxSize.Y, -boxSize.Z, boxSize.Z);
-            //mProjection = mLightProjection;
 
             mLightTransform = mLightView * mProjection;
         }

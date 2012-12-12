@@ -68,6 +68,7 @@ namespace finalProject
             Graphics = new GraphicsDeviceManager(this);
             Graphics.PreferredBackBufferWidth = 1280;
             Graphics.PreferredBackBufferHeight = 720;
+            Graphics.PreferMultiSampling = true;
             //Graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
