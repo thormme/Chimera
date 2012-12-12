@@ -59,6 +59,7 @@ namespace finalProject
         private static List<IGameState> mGameStateAddQueue = new List<IGameState>();
         private static int mNumPopQueued = 0;
 
+        public static PlayerCreature Player;
         public static ICamera Camera;
 
         private Sprite mSprite = new Sprite("test_tex");

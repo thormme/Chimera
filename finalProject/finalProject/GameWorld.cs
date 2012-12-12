@@ -37,7 +37,11 @@ namespace finalProject
                 {
                     if (actor is IGameObject)
                     {
-                        if (((actor as IGameObject).Position - Game1.Camera.GetPosition()).Length() < 400)
+                        if (actor is PlayerCreature)
+                        {
+                            actor.Update(gameTime);
+                        }
+                        else if (((actor as IGameObject).Position - Game1.Camera.GetPosition()).Length() < 400)
                         {
                             actor.Update(gameTime);
                         }
@@ -130,7 +134,7 @@ namespace finalProject
             if (obj is PlayerCreature)
             {
                 Player = (obj as PlayerCreature);
-                
+                Game1.Player = (obj as PlayerCreature);
                 /*
                 mCameraEntity = new Sphere(Game1.Camera.GetPosition(), 1.0f);
                 mCameraEntity.CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;
