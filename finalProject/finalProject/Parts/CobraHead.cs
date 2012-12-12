@@ -36,7 +36,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromYawPitchRoll(0, 0, 0),
-                        new Vector3(2.0f)
+                        new Vector3(6.0f)
                     )
                 },
                 false,

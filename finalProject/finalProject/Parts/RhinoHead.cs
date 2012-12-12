@@ -135,7 +135,7 @@ namespace finalProject.Parts
         {
             base.InitialCollisionDetected(sender, other, collisionPair);
 
-            Console.WriteLine(other.Tag + " " + mRunTimer);
+            //Console.WriteLine(other.Tag + " " + mRunTimer);
             if ((other.Tag is CharacterSynchronizer || other.Tag is PhysicsProp) && mRunTimer > 0.0f)
             {
                 float totalImpulse = 0;

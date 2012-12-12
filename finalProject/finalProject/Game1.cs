@@ -204,9 +204,10 @@ namespace finalProject
                             //player.AddPart(new RhinoHead(), i++);
                             player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new EagleWings(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
                             //player.AddPart(new TestingWings(), i++);
                             //player.AddPart(new TestingLegs(), i++);
-                            player.AddPart(new FrogHead(), i++);
+                            //player.AddPart(new FrogHead(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new FrilledLizardHead(), i++);

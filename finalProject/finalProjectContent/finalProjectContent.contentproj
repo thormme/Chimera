@@ -57,6 +57,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="levels\maps\tree_texture.png">
+      <Name>tree_texture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="models\eagle\eagle.X">
       <Name>eagle</Name>
       <Importer>XImporter</Importer>
@@ -474,11 +479,6 @@
     </Compile>
     <Compile Include="levels\maps\kangaroo_texture.tga">
       <Name>kangaroo_texture</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\tree_texture.bmp">
-      <Name>tree_texture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

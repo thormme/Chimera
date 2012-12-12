@@ -15,7 +15,7 @@ namespace finalProject.Parts
                 20.0f,
                 new Part.SubPart[] {
                     new SubPart(
-                        new AnimateModel("lizard_head", "standOpen"),
+                        new AnimateModel("lizard_head", "standClosed"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.HeadCenterCap, 
                             Creature.PartBone.HeadLeftCap,
