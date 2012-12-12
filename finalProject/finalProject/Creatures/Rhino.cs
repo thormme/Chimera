@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Rhino : NonPlayerCreature
     {
-        public Rhino(Vector3 position)
+        public Rhino(Vector3 position, Spawner spawn)
             : base(
                 position,
                 3.0f,                                           // Height
@@ -25,7 +25,8 @@ namespace finalProject.Creatures
                 CreatureConstants.RhinoListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.RhinoSneak,                   // Sneak
                 CreatureConstants.RhinoIntimidation,            // Intimidation
-                new RhinoHead()                                 // Part
+                new RhinoHead(),                                 // Part
+                spawn
                 )
         {
             Scale = new Vector3(2.0f);

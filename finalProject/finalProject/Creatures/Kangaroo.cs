@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Kangaroo : NonPlayerCreature
     {
-        public Kangaroo(Vector3 position)
+        public Kangaroo(Vector3 position, Spawner spawn)
             : base(
                 position,
                 2.5f,                                           // Height
@@ -25,7 +25,8 @@ namespace finalProject.Creatures
                 CreatureConstants.KangarooListeningSensitivity, // Listening Sensitivity
                 CreatureConstants.KangarooSneak,                // Sneak
                 CreatureConstants.KangarooIntimidation,         // Intimidation
-                new KangarooLegs()                              // Part
+                new KangarooLegs(),                              // Part
+                spawn
                 )
         {
             mTip = new GameTip(

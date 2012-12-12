@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Frog : NonPlayerCreature
     {
-        public Frog(Vector3 position)
+        public Frog(Vector3 position, Spawner spawn)
             : base(
                 position,
                 3.0f,                                       // Height
@@ -25,7 +25,8 @@ namespace finalProject.Creatures
                 CreatureConstants.FrogListeningSensitivity, // Listening Sensitivity
                 CreatureConstants.FrogSneak,                // Sneak
                 CreatureConstants.FrogIntimidation,         // Intimidation
-                new FrogHead()                              // Part
+                new FrogHead(),                              // Part
+                spawn
                 )
         {
             Scale = new Vector3(1.0f);

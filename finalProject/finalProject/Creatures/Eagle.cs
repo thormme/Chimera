@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Eagle : NonPlayerCreature
     {
-        public Eagle(Vector3 position)
+        public Eagle(Vector3 position, Spawner spawn)
             : base(
                 position,
                 3.0f,                                       // Height
@@ -25,7 +25,8 @@ namespace finalProject.Creatures
 				CreatureConstants.EagleListeningSensitivity,// Listening Sensitivity
                 CreatureConstants.EagleSneak,               // Sneak
                 CreatureConstants.EagleIntimidation,        // Intimidation
-                new EagleWings()                            // Part
+                new EagleWings(),                            // Part
+                spawn
                 )
         {
             Scale = new Vector3(4.0f);

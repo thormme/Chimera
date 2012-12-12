@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Cheetah : NonPlayerCreature
     {
-        public Cheetah(Vector3 position)
+        public Cheetah(Vector3 position, Spawner spawn)
             : base(
                 position,
                 2.0f,                                           // Height
@@ -25,7 +25,8 @@ namespace finalProject.Creatures
                 CreatureConstants.CheetahListeningSensitivity,  // Listening Sensitivity
                 CreatureConstants.CheetahSneak,                 // Sneak
                 CreatureConstants.CheetahIntimidation,          // Intimidation
-                new CheetahLegs()                               // Part
+                new CheetahLegs(),                               // Part
+                spawn
                 )
         {
             Scale = new Vector3(2.0f);

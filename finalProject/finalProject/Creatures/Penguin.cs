@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Penguin : NonPlayerCreature
     {
-        public Penguin(Vector3 position)
+        public Penguin(Vector3 position, Spawner spawn)
             : base(
                 position,
                 3.0f,                                           // Height
@@ -25,7 +25,8 @@ namespace finalProject.Creatures
                 CreatureConstants.PenguinListeningSensitivity,  // Listening Sensitivity
                 CreatureConstants.PenguinSneak,                 // Sneak
                 CreatureConstants.PenguinIntimidation,          // Intimidation
-                new PenguinLimbs()                              // Part
+                new PenguinLimbs(),                              // Part
+                spawn
                 )
         {
             Scale = new Vector3(1.0f);
