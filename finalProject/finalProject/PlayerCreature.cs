@@ -30,6 +30,8 @@ namespace finalProject
     {
         #region Fields
 
+        private bool mHackStop = true;
+
         private const int NumParts = 3;
 
         private const float mPlayerRadius = 1.0f;
@@ -304,6 +306,7 @@ namespace finalProject
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
             : base(position + Vector3.Up * 10.0f, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new VisionSensor(4.0f, 135), new PlayerController(viewPort), NumParts)
         {
+            Controller.NoControl = true;
             Forward = facingDirection;
 
             Vector3[] vertices;
@@ -346,6 +349,12 @@ namespace finalProject
 
         public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
         {
+            if (mHackStop)
+            {
+                mHackStop = false;
+                Controller.NoControl = false;
+            }
+
  	        base.InitialCollisionDetected(sender, other, collisionPair);
             //Console.WriteLine(other.Tag);
 
@@ -525,6 +534,11 @@ namespace finalProject
         /// <param name="gameTime">Time elapsed since last frame.</param>
         public override void Update(GameTime gameTime)
         {
+            if (mHackStop)
+            {
+                return;
+            }
+
             if ((World as GameWorld).Goal != null)
             {
                 mRequirementSprite = new Sprite((World as GameWorld).Goal.PartType.Name + "Icon");
