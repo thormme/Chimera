@@ -370,7 +370,17 @@ namespace finalProject
 
             if (!NoControl)
             {
-                mCreature.Move(walkDirection, (mCamera.TrackTarget) ? walkDirection : (walkDirection == Vector2.Zero && !(mCreature as PlayerCreature).Stealing ? previousDirection : cameraDirection));
+                Vector2 direction2 = Vector2.Zero;
+                if (mCreature is PlayerCreature && walkDirection == Vector2.Zero && !(mCreature as PlayerCreature).Stealing)
+                {
+                    direction2 = previousDirection;
+                }
+                else
+                {
+                    direction2 = cameraDirection;
+                }
+
+                mCreature.Move(walkDirection, (mCamera.TrackTarget) ? walkDirection : direction2);
             }
         }
 

@@ -80,7 +80,7 @@ namespace finalProject.Projectiles
         {
             if (mRopeLimit != null)
             {
-                mOwner.World.Space.Remove(mRopeLimit);
+                World.Space.Remove(mRopeLimit);
             }
             Unstick();
         }
@@ -97,7 +97,7 @@ namespace finalProject.Projectiles
             Entity.LinearMomentum = Vector3.Zero;
             mRopeLimit = new DistanceLimit(mOwner.Entity, Entity, mOwner.Entity.Position, Entity.Position, 0.0f, (Entity.Position - mOwner.Entity.Position).Length());
             //mRopeLimit.Bounciness = 0.8f;
-            mOwner.World.Space.Add(mRopeLimit);
+            World.Space.Add(mRopeLimit);
         }
          
 

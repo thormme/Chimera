@@ -58,9 +58,11 @@ namespace finalProject.Projectiles
                 ownerController.SetCreature(creature);
                 mControlTimer = ControlLength;
                 owner.Controller = new AIController();
+                owner.Controller.SetCreature(owner);
                 Active = true;
 
-                Position = new Vector3(float.MaxValue);
+                StickToEntity(creature.Entity);
+                //Position = new Vector3(float.MaxValue);
             }
             else
             {
@@ -73,6 +75,7 @@ namespace finalProject.Projectiles
             if (Active)
             {
                 Creature owner = mOwner as Creature;
+                owner.Controller = mOriginalCreature.Controller;
                 mOriginalController.NoControl = false;
                 mOriginalCreature.Controller = mOriginalController;
                 owner.Controller.SetCreature(owner);

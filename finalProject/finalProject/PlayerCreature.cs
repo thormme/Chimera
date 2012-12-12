@@ -373,11 +373,11 @@ namespace finalProject
             {
                 Game1.AddTip(mCheckpointEncountered);
             }
-            if (other.Tag is GoalPoint)
+            else if (other.Tag is GoalPoint)
             {
                 Game1.AddTip(mGoalPointEncountered);
             }
-            if (other.Tag is CharacterSynchronizer)
+            else if (other.Tag is CharacterSynchronizer)
             {
                 if (((other.Tag as CharacterSynchronizer).body.Tag as Bear) != null)
                 {
