@@ -179,7 +179,7 @@ namespace finalProject
             PopState();
 
             GameWorld world = new GameWorld(DebugModelDrawer);
-            world.AddLevelFromFile("kangaroo", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("tree", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
             PushState(world);
 
         }
@@ -384,8 +384,11 @@ namespace finalProject
 
         public static void AddTip(GameTip tip)
         {
-            tip.Displayed = true;
-            Tips.Add(tip);
+            if (!tip.Displayed)
+            {
+                tip.Displayed = true;
+                Tips.Add(tip);
+            }
         }
     }
 }

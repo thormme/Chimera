@@ -639,6 +639,11 @@ namespace finalProject
             (mRenderable as AnimateModel).PlayAnimation(animationName, isSaturated);
         }
 
+        public virtual void AddTip()
+        {
+
+        }
+
         /// <summary>
         /// Attach part to the creature.
         /// </summary>

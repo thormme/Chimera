@@ -42,5 +42,16 @@ namespace finalProject.Creatures
         {
             return Matrix.CreateScale(0.5f);
         }
+
+        public override void AddTip()
+        {
+            Game1.AddTip(new GameTip(
+                new string[] 
+                {
+                    "You have encountered a rhino.",
+                    "Rhinos will charge foes inflicting great force on anything in their way."
+                },
+                10.0f));
+        }
     }
 }

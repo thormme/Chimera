@@ -45,5 +45,16 @@ namespace finalProject.Creatures
         {
             return Matrix.CreateScale(0.5f);
         }
+
+        public override void AddTip()
+        {
+            Game1.AddTip(new GameTip(
+            new string[] 
+            {
+                "You have encountred a cheetah.",
+                "Cheetahs are known for their blinding speed."
+            },
+            10.0f));
+        }
     }
 }

@@ -40,5 +40,15 @@ namespace finalProject.Creatures
             bones.Add(PartBone.ArmRight1Cap);
             return bones;
         }
+        public override void AddTip()
+        {
+            Game1.AddTip(new GameTip(
+                new string[] 
+                {
+                    "You have encountered a penguin.",
+                    "Penguins are able to slide down hills."
+                },
+                10.0f));
+        }
     }
 }
