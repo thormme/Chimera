@@ -43,5 +43,19 @@ namespace finalProject.Creatures
         {
             return Matrix.CreateScale(0.5f);
         }
+
+        public override void AddTip()
+        {
+            Game1.AddTip(new GameTip(
+                new string[] 
+                {
+                    "You have encountered a bear.",
+                    "Be careful, these are beary strong enemies.",
+                    "Even the strongest players bearly make it away with their lives.",
+                    "Vanquish this foe and you will gain the ability to bear arms.",
+                    "You will be able to maul other creatures with your bear hands."
+                },
+                10.0f));
+        }
     }
 }

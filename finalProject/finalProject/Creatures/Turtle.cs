@@ -36,5 +36,16 @@ namespace finalProject.Creatures
             bones.Add(PartBone.Spine1Cap);
             return bones;
         }
+
+        public override void AddTip()
+        {
+            Game1.AddTip(new GameTip(
+                new string[] 
+                {
+                    "You have encountered a turtle.",
+                    "Turtles are able to hide in their shell to avoid damage."
+                },
+                10.0f));
+        }
     }
 }
