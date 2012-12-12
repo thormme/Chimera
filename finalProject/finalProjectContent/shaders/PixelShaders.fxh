@@ -41,12 +41,12 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 
 	if (ComputeShadow(pin.ShadowPosition, false))
 	{
-			color *= 0.5f;
+		color *= 0.5f;
 	}
 
 	if (ComputeShadow(pin.HiResShadowPosition, true))
 	{
-			color *= 0.5f;
+		color *= 0.5f;
 	}
 
 	return color;

@@ -347,7 +347,7 @@ namespace finalProject
         public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
         {
  	        base.InitialCollisionDetected(sender, other, collisionPair);
-            Console.WriteLine(other.Tag);
+            //Console.WriteLine(other.Tag);
 
             if (other.Tag is Checkpoint)
             {
@@ -476,7 +476,7 @@ namespace finalProject
                                 mStealTarget = creature;
                                 mStealTimer = StealLength;
                                 creature.Damage(0, this);
-                                Console.WriteLine("found target");
+                                //Console.WriteLine("found target");
                                 break;
                             }
                         }
