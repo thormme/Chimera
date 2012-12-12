@@ -42,6 +42,7 @@ VSOutput VS(VSInput vin)
 	output.LightAmount = dot(worldNormal, xDirLightDirection);
 
 	output.ShadowPosition = mul(vin.Position, LightWorldViewProj);
+	output.HiResShadowPosition = mul(vin.Position, AnimateLightWorldViewProj);
 	output.TexCoord = vin.TexCoord + xTextureOffset;
 
 	//output.ShadowPosition.r = floor(output.ShadowPosition.r / xTexelSize) * xTexelSize;

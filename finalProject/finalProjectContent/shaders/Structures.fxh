@@ -38,7 +38,8 @@ struct VSOutput
 	float4 Specular       : COLOR1;
 	float2 TexCoord       : TEXCOORD0;
 	float4 ShadowPosition : TEXCOORD1;
-	float  LightAmount    : TEXCOORD2;
+	float4 HiResShadowPosition : TEXCOORD2;
+	float  LightAmount    : TEXCOORD3;
 	float4 PositionPS     : SV_Position;
 };
 
