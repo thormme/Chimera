@@ -84,12 +84,14 @@ namespace finalProject
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, Projectile.ProjectileGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, Sensor.SensorGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, TerrainPhysics.TerrainPhysicsGroup), CollisionRule.NoBroadPhase);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, InvisibleWall.InvisibleWallGroup), CollisionRule.NoBroadPhase);
 
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Projectile.ProjectileGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Sensor.SensorGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Projectile.SensorProjectileGroup), CollisionRule.NoBroadPhase);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, InvisibleWall.InvisibleWallGroup), CollisionRule.NoBroadPhase);
         }
 
         ~Game1()
@@ -200,27 +202,27 @@ namespace finalProject
                             player.Damage(100, null);
                             //player.Position = player.SpawnOrigin;
                             int i = 0;
-                            player.AddPart(new RhinoHead(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new EagleWings(), i++);
+                            //player.AddPart(new RhinoHead(), i++);
+                            player.AddPart(new TestingLegs(), i++);
+                            player.AddPart(new TestingWings(), i++);
                             //player.AddPart(new TestingWings(), i++);
                             //player.AddPart(new TestingLegs(), i++);
-                            //player.AddPart(new FrogHead(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new FrilledLizardHead(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
 
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Cobra(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new FrilledLizard(player.Position + 32.0f * player.Forward + Vector3.Up * 5.0f));
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 28.0f * player.Forward + Vector3.Up * 5.0f));
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Kangaroo(player.Position + 26.0f * player.Forward + Vector3.Up * 5.0f));
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Rhino(player.Position + 24.0f * player.Forward + Vector3.Up * 5.0f));
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 22.0f * player.Forward + Vector3.Up * 5.0f));
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Eagle(player.Position + 20.0f * player.Forward + Vector3.Up * 5.0f));
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Penguin(player.Position + 18.0f * player.Forward + Vector3.Up * 5.0f));
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Frog(player.Position + 16.0f * player.Forward + Vector3.Up * 5.0f));
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Cheetah(player.Position + 14.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 32.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 28.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 26.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 24.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 22.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 20.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 18.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 16.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 14.0f * player.Forward + Vector3.Up * 5.0f, null));
 
                             //(mGameStates[mGameStates.Count - 1] as World).Add(new PhysicsProp("rock1light", player.Position + 14.0f * player.Forward + Vector3.Up * 10.0f, Quaternion.Identity, new Vector3(100.0f), 10.0f));
                         }

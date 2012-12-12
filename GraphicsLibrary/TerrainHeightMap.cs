@@ -27,7 +27,7 @@ namespace GameConstructLibrary
 
         private GraphicsDevice mDevice;
 
-        public struct VertexPositionColorNormal
+        public struct VertexPositionColorTextureNormal
         {
             public Vector3 Position;
             public Vector3 Normal;
@@ -43,8 +43,8 @@ namespace GameConstructLibrary
             );
         }
 
-        VertexPositionColorNormal[] vertices1D;
-        VertexPositionColorNormal[,] vertices2D;
+        VertexPositionColorTextureNormal[] vertices1D;
+        VertexPositionColorTextureNormal[,] vertices2D;
         int[] indices;
 
         private VertexBuffer mVertexBuffer;
@@ -104,8 +104,8 @@ namespace GameConstructLibrary
 
         private void MakeVertices(bool resized)
         {
-            vertices1D = new VertexPositionColorNormal[mWidth * mHeight];
-            vertices2D = new VertexPositionColorNormal[mWidth, mHeight];
+            vertices1D = new VertexPositionColorTextureNormal[mWidth * mHeight];
+            vertices2D = new VertexPositionColorTextureNormal[mWidth, mHeight];
             for (int z = 0; z < mHeight; z++)
             {
                 for (int x = 0; x < mWidth; x++)
@@ -115,6 +115,7 @@ namespace GameConstructLibrary
                     {
                         vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, 0.0f, z - mHeight / 2);
                         vertices1D[x + z * mWidth].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[x + z * mWidth].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                         vertices2D[x, z] = vertices1D[x + z * mWidth];
                     }
                     else // Otherwise create vertices
@@ -122,6 +123,7 @@ namespace GameConstructLibrary
 
                         vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, Utils.GetTexture2DPixelColor(x, z, mMap).R * 256 * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).G * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).B, z - mHeight / 2);
                         vertices1D[x + z * mWidth].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[x + z * mWidth].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                         vertices2D[x, z] = vertices1D[x + z * mWidth];
                     }
                 }
@@ -184,7 +186,7 @@ namespace GameConstructLibrary
 
         private void MakeBuffer()
         {
-            mVertexBuffer = new VertexBuffer(mDevice, VertexPositionColorNormal.VertexDeclaration, vertices1D.Length, BufferUsage.WriteOnly);
+            mVertexBuffer = new VertexBuffer(mDevice, VertexPositionColorTextureNormal.VertexDeclaration, vertices1D.Length, BufferUsage.WriteOnly);
             mVertexBuffer.SetData(vertices1D);
 
             mIndexBuffer = new IndexBuffer(mDevice, typeof(int), indices.Length, BufferUsage.WriteOnly);
@@ -200,8 +202,8 @@ namespace GameConstructLibrary
             mMap.SetData<Microsoft.Xna.Framework.Color>(destinationColorData);
             mWidth = copy.mWidth;
             mHeight = copy.mHeight;
-            vertices1D = new VertexPositionColorNormal[mWidth * mHeight];
-            vertices2D = new VertexPositionColorNormal[mWidth, mHeight];
+            vertices1D = new VertexPositionColorTextureNormal[mWidth * mHeight];
+            vertices2D = new VertexPositionColorTextureNormal[mWidth, mHeight];
             indices = new int[mWidth * mHeight * 6];
             for (int z = 0; z < mHeight; z++)
             {
@@ -283,7 +285,7 @@ namespace GameConstructLibrary
         {
 
             // Build additional grid if smoothing
-            VertexPositionColorNormal[,] original = new VertexPositionColorNormal[size * 2 + 1, size * 2 + 1];
+            VertexPositionColorTextureNormal[,] original = new VertexPositionColorTextureNormal[size * 2 + 1, size * 2 + 1];
             for (int z = (int)position.Z - size; z <= (int)position.Z + size; z++)
             {
                 for (int x = (int)position.X - size; x <= (int)position.X + size; x++)

@@ -39,9 +39,14 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 		}
 	}
 
-	if (ComputeShadow(pin.ShadowPosition))
+	if (ComputeShadow(pin.ShadowPosition, false))
 	{
-			color *= 0.5f;
+		color *= 0.5f;
+	}
+
+	if (ComputeShadow(pin.HiResShadowPosition, true))
+	{
+		color *= 0.5f;
 	}
 
 	return color;
@@ -87,15 +92,14 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
 
-	if (ComputeShadow(pin.ShadowPosition))
+	if (ComputeShadow(pin.ShadowPosition, false))
 	{	
 		color *= 0.5f;
 	}
-	else
+	
+	if (ComputeShadow(pin.HiResShadowPosition, true))
 	{
-		//AddSpecular(color, pin.Specular.rgb);
-    
-		//ApplyFog(color, pin.Specular.w);
+		color *= 0.5f;
 	}
     
     return color;

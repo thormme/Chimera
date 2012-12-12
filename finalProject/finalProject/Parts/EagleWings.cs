@@ -37,7 +37,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(0.0f),
                         Matrix.CreateFromYawPitchRoll(0, 0, 0),
-                        new Vector3(1.0f)
+                        new Vector3(3.0f)
                     ),
                     new SubPart(
                         new AnimateModel("eagle_rightWing", "glide"),
@@ -48,7 +48,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(0.0f),
                         Matrix.CreateFromYawPitchRoll(0, 0, 0),
-                        new Vector3(1.0f)
+                        new Vector3(3.0f)
                     )
                 },
                 false,

@@ -57,6 +57,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="levels\maps\tree_texture.png">
+      <Name>tree_texture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="models\eagle\eagle.X">
       <Name>eagle</Name>
       <Importer>XImporter</Importer>
@@ -102,18 +107,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\default_texture_high.tga">
-      <Name>default_texture_high</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\default_texture_low.tga">
-      <Name>default_texture_low</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\default_texture_medium.tga">
-      <Name>default_texture_medium</Name>
+    <Compile Include="levels\maps\default_texture.tga">
+      <Name>default_texture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -298,27 +293,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\tree_texture_high.tga">
-      <Name>tree_texture_high</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\maps\tree_texture_medium.tga">
-      <Name>tree_texture_medium</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\maps\tree_texture_low.tga">
-      <Name>tree_texture_low</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="models\deadTree\deadTree1.X">
       <Name>deadTree1</Name>
       <Importer>XImporter</Importer>
@@ -383,11 +357,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\leaves\leaftex.png">
-      <Name>leaftex</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="models\cheetah\cheetah_frontLeftLeg.X">
       <Name>cheetah_frontLeftLeg</Name>
       <Importer>XImporter</Importer>
@@ -508,18 +477,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="levels\maps\kangaroo_texture_high.tga">
-      <Name>kangaroo_texture_high</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\kangaroo_texture_medium.tga">
-      <Name>kangaroo_texture_medium</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\kangaroo_texture_low.tga">
-      <Name>kangaroo_texture_low</Name>
+    <Compile Include="levels\maps\kangaroo_texture.tga">
+      <Name>kangaroo_texture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

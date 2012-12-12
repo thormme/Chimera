@@ -11,6 +11,7 @@
 
 DECLARE_TEXTURE(Texture, 0);
 DECLARE_TEXTURE(ShadowMap, 1);
+DECLARE_TEXTURE(HiResShadowMap, 2);
 
 BEGIN_CONSTANTS
 
@@ -41,6 +42,7 @@ MATRIX_CONSTANTS
 
     float4x4 WorldViewProj                      _vs(c15)          _cb(c0);
 	float4x4 LightWorldViewProj;
+	float4x4 AnimateLightWorldViewProj;
 
 END_CONSTANTS
 

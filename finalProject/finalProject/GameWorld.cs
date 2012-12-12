@@ -15,7 +15,6 @@ namespace finalProject
 {
     public class GameWorld : World
     {
-
         public PlayerCreature Player = null;
         public GoalPoint Goal = null;
         private Entity mCameraEntity = null;
@@ -109,6 +108,25 @@ namespace finalProject
                 }
             }
             //}
+        }
+
+        protected override TerrainPhysics LoadTerrain(string mapName, Vector3 position, Quaternion orientation, Vector3 scale)
+        {
+            TerrainPhysics tp = base.LoadTerrain(mapName, position, orientation, scale);
+
+            Vector3 min = tp.StaticCollidable.BoundingBox.Min;
+            Vector3 max = tp.StaticCollidable.BoundingBox.Max;
+            max.Y += 200f;
+
+            List<Box> bounds = new List<Box>();
+            Add(new InvisibleWall(new Vector3(min.X - 10, 0, 0), 20, max.Y - min.Y, max.Z - min.Z));
+            Add(new InvisibleWall(new Vector3(0, min.Y - 10, 0), max.X - min.X, 20, max.Z - min.Z));
+            Add(new InvisibleWall(new Vector3(0, 0, min.Z - 10), max.X - min.X, max.Y - min.Y, 20));
+            Add(new InvisibleWall(new Vector3(max.X + 10, 0, 0), 20, max.Y - min.Y, max.Z - min.Z));
+            Add(new InvisibleWall(new Vector3(0, max.Y + 10, 0), max.X - min.X, 20, max.Z - min.Z));
+            Add(new InvisibleWall(new Vector3(0, 0, max.Z + 10), max.X - min.X, max.Y - min.Y, 20));
+
+            return tp;
         }
 
         protected override void CheckSpecialObject(object obj)

@@ -32,8 +32,10 @@ ColorPair ComputeLights(float3 eyeVector, float3 worldNormal)
 
 float DepthBias = 0.001f;
 
-bool ComputeShadow(float4 shadowMapPosition)
+bool ComputeShadow(float4 shadowMapPosition, bool hiRes)
 {
+	float shadowDepth;
+
 	float2 shadowTexCoord = 0.5 * shadowMapPosition.xy / shadowMapPosition.w + float2(0.5f, 0.5f);
 	shadowTexCoord.y = 1.0f - shadowTexCoord.y;
 
@@ -41,8 +43,15 @@ bool ComputeShadow(float4 shadowMapPosition)
 	{
 		return false;
 	}
-
-	float shadowDepth = SAMPLE_TEXTURE(ShadowMap, shadowTexCoord).r;
+	
+	if (hiRes)
+	{
+		shadowDepth = SAMPLE_TEXTURE(HiResShadowMap, shadowTexCoord).r;
+	}
+	else
+	{
+		shadowDepth = SAMPLE_TEXTURE(ShadowMap, shadowTexCoord).r;
+	}
 
 	float ourDepth = (shadowMapPosition.z / shadowMapPosition.w) - DepthBias;
 

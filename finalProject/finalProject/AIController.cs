@@ -283,7 +283,18 @@ namespace finalProject
         /// Called in update every frame the creature is durdling.
         /// </summary>
         /// <param name="time">The game time.</param>
-        protected virtual void DurdleMoveUpdate(GameTime time) { }
+        protected virtual void DurdleMoveUpdate(GameTime time)
+        {
+            NonPlayerCreature npc = mCreature as NonPlayerCreature;
+            if (npc != null)
+            {
+                Vector3 spawnVector = npc.Spawner.Position - npc.Position;
+                if (spawnVector.Length() > npc.Spawner.SpawnRadius)
+                {
+                    mMoveDirection = Vector3.Normalize(spawnVector);
+                }
+            }
+        }
 
         /// <summary>
         /// Called in update when the durdle wait state begins.

@@ -19,6 +19,7 @@ namespace finalProject.AI
 
         protected override void DurdleMoveUpdate(GameTime time)
         {
+            base.DurdleMoveUpdate(time);
             if (mTimer > 0.0f)
             {
                 if (mTimer > TongueTime)

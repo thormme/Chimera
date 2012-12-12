@@ -9,6 +9,7 @@ using BEPUphysicsDrawer.Models;
 using System.Reflection;
 using BEPUphysics.Collidables;
 using Microsoft.Xna.Framework.Input;
+using BEPUphysics.Entities.Prefabs;
 
 namespace GameConstructLibrary
 {
@@ -175,11 +176,15 @@ namespace GameConstructLibrary
                 }
             }
 
-            TerrainPhysics tf = new TerrainPhysics(mapName, position, orientation, scale);
-            (tf.StaticCollidable as Terrain).Thickness = 5.0f;
-            Add(tf);
+            TerrainPhysics terrain = LoadTerrain(mapName, position, orientation, scale);
+            Add(terrain);
+        }
 
-            Vector3[] corners = tf.StaticCollidable.BoundingBox.GetCorners();
+        protected virtual TerrainPhysics LoadTerrain(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)
+        {
+            TerrainPhysics terrain = new TerrainPhysics(mapName, position, orientation, scale);
+            (terrain.StaticCollidable as Terrain).Thickness = 5.0f;
+            return terrain;
         }
 
         protected virtual void CheckSpecialObject(object obj)
