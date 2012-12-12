@@ -864,6 +864,11 @@ namespace finalProject
                 return;
             }
 
+            if (mRenderable is AnimateModel)
+            {
+                (mRenderable as AnimateModel).Update(gameTime);
+            }
+
             mFlashTimer -= gameTime.ElapsedGameTime.TotalSeconds;
             if (mFlashTimer < 0.0f)
             {

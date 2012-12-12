@@ -21,13 +21,13 @@ namespace finalProject
     {
         string mNextLevel = null;
         bool mLoaded = false;
-        Type mPartType;
+        public Type PartType;
 
         public GoalPoint(Vector3 position, Quaternion orientation, Vector3 scale, string nextLevel, Type partType)
             : base(new InanimateModel("box"), new Cylinder(position, 1f, scale.Length()))
         {
             mNextLevel = nextLevel;
-            mPartType = partType;
+            PartType = partType;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace finalProject
                     bool hasCorrectPart = false;
                     foreach (Creature.PartAttachment partAttachment in (synchronizer.body.Tag as Creature).PartAttachments)
                     {
-                        if (partAttachment != null && partAttachment.Part.GetType() == mPartType)
+                        if (partAttachment != null && partAttachment.Part.GetType() == PartType)
                         {
                             hasCorrectPart = true;
                             break;
@@ -67,7 +67,7 @@ namespace finalProject
                         // TODO: Investigate last frame object additions to next world.
                         World.Clear();
                         // TODO: Make scale globally accessible or modifiable.
-                        World.AddLevelFromFile(mNextLevel, Vector3.Zero, new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
+                        World.AddLevelFromFile(mNextLevel, Vector3.Zero, Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
                     }
                 }
             }

@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 6.0f,                                                   // Mass
                 CreatureConstants.FrilledLizardSensitivityRadius,       // Sensitivity Radius
                 new RangedAI(),                                  // AI
-                new InanimateModel("lizard"),//new AnimateModel("lizard", "stand"),  // Model
+                new AnimateModel("lizard", "stand"),  // Model
                 135,                                                    // Vision Angle
                 CreatureConstants.FrilledLizardListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.FrilledLizardSneak,                   // Sneak
@@ -36,12 +36,6 @@ namespace finalProject.Creatures
             List<PartBone> bones = new List<PartBone>();
             //bones.Add(PartBone.HeadCenterCap);
             return bones;
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            //(mRenderable as AnimateModel).Update(gameTime);
-            base.Update(gameTime);
         }
     }
 }

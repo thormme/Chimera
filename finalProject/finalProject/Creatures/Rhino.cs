@@ -15,8 +15,8 @@ namespace finalProject.Creatures
         public Rhino(Vector3 position)
             : base(
                 position,
-                2.0f,                                           // Height
-                0.75f,                                          // Radius
+                3.0f,                                           // Height
+                1.5f,                                          // Radius
                 30.0f,                                          // Mass
                 CreatureConstants.RhinoSensitivityRadius,       // Sensitivity Radius
                 new RhinoAI(),                                  // AI
@@ -41,12 +41,6 @@ namespace finalProject.Creatures
         protected virtual Matrix GetOptionalPartTransforms()
         {
             return Matrix.CreateScale(0.5f);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            (mRenderable as AnimateModel).Update(gameTime);
-            base.Update(gameTime);
         }
     }
 }

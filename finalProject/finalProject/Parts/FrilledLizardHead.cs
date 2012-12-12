@@ -38,6 +38,18 @@ namespace finalProject.Parts
             mCanAnimate = false;
         }
 
+        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
+        {
+            if (animationName == "stand")
+            {
+                base.TryPlayAnimation("standOpen", isSaturated, playOnCreature);
+            }
+            else if (animationName != "walk")
+            {
+                base.TryPlayAnimation(animationName, isSaturated, playOnCreature);
+            }
+        }
+
         public override void FinishUse(Vector3 direction)
         {
             mCanAnimate = true;

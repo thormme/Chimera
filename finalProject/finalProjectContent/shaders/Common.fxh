@@ -34,6 +34,9 @@ BEGIN_CONSTANTS
 
 	float2 xTextureOffset;
 
+	float  xNumShadowBands;
+	float  xTexelSize;
+
 MATRIX_CONSTANTS
 
     float4x4 WorldViewProj                      _vs(c15)          _cb(c0);

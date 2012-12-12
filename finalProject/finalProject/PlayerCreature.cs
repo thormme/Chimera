@@ -26,7 +26,7 @@ namespace finalProject
     /// <summary>
     /// The creature representing the player character.
     /// </summary>
-    class PlayerCreature : Creature
+    public class PlayerCreature : Creature
     {
         #region Fields
 
@@ -186,7 +186,14 @@ namespace finalProject
         {
             get
             {
-                return (Controller as PlayerController).mCamera;
+                if (Controller is PlayerController)
+                {
+                    return (Controller as PlayerController).mCamera;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -548,7 +555,7 @@ namespace finalProject
 
             if (mNumHeightModifyingParts == 0 && part.Height > 0.0f)
             {
-                this.CharacterController.Body.Height = mHeight + part.Height;
+                CharacterController.Body.Height = mHeight + part.Height;
             }
 
             mNumHeightModifyingParts += (part.Height > 0.0f) ? 1 : 0;
@@ -563,7 +570,7 @@ namespace finalProject
 
             if (mNumHeightModifyingParts != 0 && part.Height > 0.0f)
             {
-                this.CharacterController.Body.Height = mHeight;
+                CharacterController.Body.Height = mHeight;
             }
             mNumHeightModifyingParts -= (part.Height > 0.0f) ? 1 : 0;
         }
@@ -576,9 +583,9 @@ namespace finalProject
         {
             AnimateModel model = mRenderable as AnimateModel;
 
-            if (World.Goal != String.Empty)
+            if ((World as GameWorld).Goal != null)
             {
-                mRequirementSprite = new Sprite(World.Goal + "Icon");
+                mRequirementSprite = new Sprite((World as GameWorld).Goal.PartType.Name + "Icon");
             }
 
             model.Update(gameTime);
@@ -592,18 +599,21 @@ namespace finalProject
                 rotationIncrease = partStealFraction * 1.5f;
             }
 
-            mSuckModel.HorizontalVelocity = 1.0f + rotationIncrease;
-            mSuckModel.VerticalVelocity = mSuckModel.HorizontalVelocity;
+            mSuckModel.VerticalVelocity = 1.0f + rotationIncrease;
+            mSuckModel.HorizontalVelocity = mSuckModel.VerticalVelocity;
 
-            mConeOrientation = Matrix.CreateScale(new Vector3(3.0f, 3.0f, 3.0f));
-            mConeOrientation *= Matrix.CreateRotationX(MathHelper.PiOver2);
-            mConeOrientation *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
+            if (Controller is PlayerController)
+            {
+                mConeOrientation = Matrix.CreateScale(new Vector3(3.0f, 3.0f, 3.0f));
+                mConeOrientation *= Matrix.CreateRotationX(MathHelper.PiOver2);
+                mConeOrientation *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
 
-            mPartStealSensor.Update(gameTime);
+                mPartStealSensor.Update(gameTime);
 
-            mPartStealSensor.Position = Position + Camera.Forward * 6.0f;
-            mPartStealSensor.XNAOrientationMatrix  = Matrix.CreateRotationX(MathHelper.Pi);
-            mPartStealSensor.XNAOrientationMatrix *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
+                mPartStealSensor.Position = Position + Camera.Forward * 6.0f;
+                mPartStealSensor.XNAOrientationMatrix = Matrix.CreateRotationX(MathHelper.Pi);
+                mPartStealSensor.XNAOrientationMatrix *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
+            }
 
             base.Update(gameTime);
         }
@@ -647,7 +657,7 @@ namespace finalProject
             {
                 if (part != null)
                 {
-                    if (part.Part.ToString().Split('.')[2] == World.Goal)
+                    if (part.Part.GetType() == (World as GameWorld).Goal.PartType)
                     {
                         retrieved = true;
                     }
