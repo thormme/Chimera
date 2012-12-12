@@ -16,6 +16,7 @@ namespace finalProject
 {
     public class Checkpoint : PhysicsObject
     {
+
         public Checkpoint(Vector3 position, Quaternion orientation, Vector3 scale)
             : base(new InanimateModel("box"), new Cylinder(position, 1f, scale.Length()))
         { }

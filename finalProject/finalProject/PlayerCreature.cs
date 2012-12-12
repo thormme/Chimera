@@ -36,13 +36,18 @@ namespace finalProject
         private const int DamageThreshold = 30;
 
         private const double StealLength = 2.5f;
+        private const double LoseLength = 0.2f;
 
         private bool mStealing = false;
         private Creature mStealTarget = null;
         private double mStealTimer = -1.0f;
         private Part mStolenPart = null;
+        private double mLoseTargetTimer = -1.0f;
         
         private int mNumHeightModifyingParts = 0;
+
+
+        private Part[] mRespawnParts = new Part[3];
 
         private ConeSensor mPartStealSensor;
         private Matrix mConeOrientation = Matrix.Identity;
@@ -73,9 +78,15 @@ namespace finalProject
             },
             10.0f);
         GameTip mCheckpointEncountered = new GameTip(
-            new string[] {
+        new string[] {
                 "You have encountered a checkpoint.",
                 "You will respawn at the last checkpoint you touched."
+            },
+        10.0f);
+        GameTip mGoalPointEncountered = new GameTip(
+            new string[] {
+                "You have found an extraction point.",
+                "Return here once you have the required part."
             },
             10.0f);
         GameTip mBearEncountered = new GameTip(
@@ -289,6 +300,16 @@ namespace finalProject
             DeactivateStealPart();
         }
 
+        protected void ResetStealTarget()
+        {
+            if (mStealTarget != null)
+            {
+                mStealTarget = null;
+                Console.WriteLine("lost target");
+            }
+            mStealTimer = -1.0f;
+        }
+
         #endregion
 
         #region Public Methods
@@ -303,7 +324,7 @@ namespace finalProject
             CollisionMeshManager.LookupMesh("suckConeCollision", out vertices, out indices);
 
             MobileMesh coneMesh = new MobileMesh(vertices, indices,
-                new AffineTransform(new Vector3(3.0f, 3.0f, 3.0f), Quaternion.Identity, Vector3.Zero), 
+                new AffineTransform(new Vector3(3.0f), Quaternion.Identity, Vector3.Zero), 
                 BEPUphysics.CollisionShapes.MobileMeshSolidity.Clockwise);
 
             mPartStealSensor = new ConeSensor(coneMesh);
@@ -336,88 +357,60 @@ namespace finalProject
             Game1.Camera = Camera;
         }
 
-        public override void  InitialCollisionDetected(EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
+        public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
         {
  	        base.InitialCollisionDetected(sender, other, collisionPair);
             Console.WriteLine(other.Tag);
+
             if (other.Tag is Checkpoint)
             {
-                if (!mCheckpointEncountered.Displayed)
-                {
-                    Game1.AddTip(mCheckpointEncountered);
-                }
+                Game1.AddTip(mCheckpointEncountered);
+            }
+            if (other.Tag is GoalPoint)
+            {
+                Game1.AddTip(mGoalPointEncountered);
             }
             if (other.Tag is CharacterSynchronizer)
             {
                 if (((other.Tag as CharacterSynchronizer).body.Tag as Bear) != null)
                 {
-                    if (!mKangarooEncountered.Displayed)
-                    {
-                        Game1.AddTip(mBearEncountered);
-                    }
+                    Game1.AddTip(mBearEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Cheetah) != null)
                 {
-                    if (!mCheetahEncountered.Displayed)
-                    {
-                        Game1.AddTip(mCheetahEncountered);
-                    }
+                    Game1.AddTip(mCheetahEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Cobra) != null)
                 {
-                    if (!mCobraEncountered.Displayed)
-                    {
-                        Game1.AddTip(mCobraEncountered);
-                    }
+                    Game1.AddTip(mCobraEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Eagle) != null)
                 {
-                    if (!mEagleEncountered.Displayed)
-                    {
-                        Game1.AddTip(mEagleEncountered);
-                    }
+                    Game1.AddTip(mEagleEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as FrilledLizard) != null)
                 {
-                    if (!mFrilledLizardEncountered.Displayed)
-                    {
-                        Game1.AddTip(mFrilledLizardEncountered);
-                    }
+                    Game1.AddTip(mFrilledLizardEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Frog) != null)
                 {
-                    if (!mFrogEncountered.Displayed)
-                    {
-                        Game1.AddTip(mFrogEncountered);
-                    }
+                    Game1.AddTip(mFrogEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Kangaroo) != null)
                 {
-                    if (!mKangarooEncountered.Displayed)
-                    {
-                        Game1.AddTip(mKangarooEncountered);
-                    }
+                    Game1.AddTip(mKangarooEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Penguin) != null)
                 {
-                    if (!mPenguinEncountered.Displayed)
-                    {
-                        Game1.AddTip(mPenguinEncountered);
-                    }
+                    Game1.AddTip(mPenguinEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Rhino) != null)
                 {
-                    if (!mRhinoEncountered.Displayed)
-                    {
-                        Game1.AddTip(mRhinoEncountered);
-                    }
+                    Game1.AddTip(mRhinoEncountered);
                 }
                 else if (((other.Tag as CharacterSynchronizer).body.Tag as Turtle) != null)
                 {
-                    if (!mTurtleEncountered.Displayed)
-                    {
-                        Game1.AddTip(mTurtleEncountered);
-                    }
+                    Game1.AddTip(mTurtleEncountered);
                 }
             }
         }
@@ -489,10 +482,22 @@ namespace finalProject
                 {
                     if (!mPartStealSensor.CollidingCreatures.Contains(mStealTarget))
                     {
-                        mStealTarget = null;
+                        if (mLoseTargetTimer > 0.0f)
+                        {
+                            mLoseTargetTimer -= time.ElapsedGameTime.TotalSeconds;
+                            if (mLoseTargetTimer < 0.0f)
+                            {
+                                ResetStealTarget();
+                            }
+                        }
+                        else
+                        {
+                            mLoseTargetTimer = LoseLength;
+                        }
                     }
                     else
                     {
+                        mLoseTargetTimer = -1.0f;
                         mStealTimer -= time.ElapsedGameTime.TotalSeconds;
                         if (mStealTimer < 0.0f)
                         {
@@ -500,10 +505,9 @@ namespace finalProject
                             if (pa != null && mStealTarget.PartAttachments.Count > 0)
                             {
                                 mStealTarget.RemovePart(pa.Part);
-                                mStealTarget = null;
+                                ResetStealTarget();
                                 mStolenPart = pa.Part;
                                 DeactivateStealPart();
-                                mStealTimer = -1.0f;
                             }
                         }
                     }
@@ -521,6 +525,8 @@ namespace finalProject
                                 mStealTarget = creature;
                                 mStealTimer = StealLength;
                                 creature.Damage(0, this);
+                                Console.WriteLine("found target");
+                                break;
                             }
                         }
                     }
@@ -698,6 +704,7 @@ namespace finalProject
             if (mStealing)
             {
                 mStealing = false;
+                ResetStealTarget();
             }
         }
 
