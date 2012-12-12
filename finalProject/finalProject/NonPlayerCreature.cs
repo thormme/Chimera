@@ -34,6 +34,8 @@ namespace finalProject
             set;
         }
 
+        protected Spawner mSpawner;
+
         public NonPlayerCreature(
             Vector3 position,
             float height,
@@ -46,7 +48,8 @@ namespace finalProject
             int listeningSensitivity,
             int sneak,
             int intimidation,
-            Part part
+            Part part,
+            Spawner spawn
             )
             : base(position, height, radius, mass, renderable, new ListeningSensor(sensitivityRadius, visionAngle, listeningSensitivity), controller, 1)
         {
@@ -55,6 +58,7 @@ namespace finalProject
             Intimidation = intimidation;
             Controller = controller;
             AddPart(part, 0);
+            mSpawner = spawn;
             CharacterController.HorizontalMotionConstraint.Speed = 9.0f;
         }
 

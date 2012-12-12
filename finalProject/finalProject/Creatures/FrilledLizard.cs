@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class FrilledLizard : NonPlayerCreature
     {
-        public FrilledLizard(Vector3 position)
+        public FrilledLizard(Vector3 position, Spawner spawn)
             : base(
                 position,
                 2.0f,                                                   // Height
@@ -25,7 +25,8 @@ namespace finalProject.Creatures
                 CreatureConstants.FrilledLizardListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.FrilledLizardSneak,                   // Sneak
                 CreatureConstants.FrilledLizardIntimidation,            // Intimidation
-                new FrilledLizardHead()                                 // Part
+                new FrilledLizardHead(),                                 // Part
+                spawn
                 )
         {
             Scale = new Vector3(4.0f);

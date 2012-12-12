@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Bear : NonPlayerCreature
     {
-        public Bear(Vector3 position)
+        public Bear(Vector3 position, Spawner spawn)
             : base(
                 position,
                 1.8f,                                       // Height
@@ -25,7 +25,8 @@ namespace finalProject.Creatures
                 CreatureConstants.BearListeningSensitivity, // Listening Sensitivity
                 CreatureConstants.BearSneak,                // Sneak
                 CreatureConstants.BearIntimidation,         // Intimidation
-                new BearArms()                              // Part
+                new BearArms(),                              // Part
+                spawn
                 )
         {
             Scale = new Vector3(2.0f);

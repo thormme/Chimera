@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Cobra : NonPlayerCreature
     {
-        public Cobra(Vector3 position)
+        public Cobra(Vector3 position, Spawner spawn)
             : base(
                 position,
                 3.0f,                                           // Height
@@ -25,7 +25,8 @@ namespace finalProject.Creatures
                 CreatureConstants.CobraListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.CobraSneak,                   // Sneak
                 CreatureConstants.CobraIntimidation,            // Intimidation
-                new CobraHead()                      // Part
+                new CobraHead(),                      // Part
+                spawn
                 )
         {
             Scale = new Vector3(1.0f);
