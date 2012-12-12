@@ -17,15 +17,14 @@ namespace GameConstructLibrary
     /// </summary>
     public class World : IGameState
     {
-        List<IGameObject> mGameObjects;
-        List<IActor> mActors;
+        protected List<IGameObject> mGameObjects;
+        protected List<IActor> mActors;
 
-        List<IGameObject> mUncommittedGameObjectAdditions;
-        List<IGameObject> mUncommittedGameObjectRemovals;
+        protected List<IGameObject> mUncommittedGameObjectAdditions;
+        protected List<IGameObject> mUncommittedGameObjectRemovals;
 
         private ModelDrawer mDebugModelDrawer;
 
-        public string Goal = String.Empty;
         public Space Space;
 
         public World(ModelDrawer debugModelDrawer)
@@ -41,7 +40,7 @@ namespace GameConstructLibrary
             Space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
         }
 
-        private void CommitChanges()
+        protected void CommitChanges()
         {
             for (int i = 0; i < mUncommittedGameObjectAdditions.Count; i++)
             {
@@ -113,7 +112,7 @@ namespace GameConstructLibrary
             }
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             //try
             {
@@ -135,7 +134,7 @@ namespace GameConstructLibrary
         /// <summary>
         /// Renders contents of world.  MUST be called between BeginRendering and FinishRendering.
         /// </summary>
-        public void Render()
+        public virtual void Render()
         {
             foreach (IGameObject gameObject in mGameObjects)
             {
@@ -152,11 +151,7 @@ namespace GameConstructLibrary
                 if (dummy.Type == "Root")
                 {
                     continue;
-                }
-                else if (dummy.Type == "finalProject.GoalPoint, finalProject")
-                {
-                    Goal = dummy.Parameters[1];
-                }
+                }      
                 Type type = Type.GetType(dummy.Type);
 
                 if (type != null)
@@ -174,6 +169,9 @@ namespace GameConstructLibrary
                     {
                         Add(obj as IGameObject);
                     }
+
+                    CheckSpecialObject(obj);
+
                 }
             }
 
@@ -182,6 +180,11 @@ namespace GameConstructLibrary
             Add(tf);
 
             Vector3[] corners = tf.StaticCollidable.BoundingBox.GetCorners();
+        }
+
+        protected virtual void CheckSpecialObject(object obj)
+        {
+
         }
 
         public void Clear()

@@ -184,6 +184,7 @@
     <Compile Include="Creatures\Rhino.cs" />
     <Compile Include="Creatures\Turtle.cs" />
     <Compile Include="DutyCyclePart.cs" />
+    <Compile Include="GameWorld.cs" />
     <Compile Include="GoalPoint.cs" />
     <Compile Include="MeteredPart.cs" />
     <Compile Include="Parts\BearArms.cs" />

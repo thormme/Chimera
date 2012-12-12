@@ -21,13 +21,13 @@ namespace finalProject
     {
         string mNextLevel = null;
         bool mLoaded = false;
-        Type mPartType;
+        public Type PartType;
 
         public GoalPoint(Vector3 position, Quaternion orientation, Vector3 scale, string nextLevel, Type partType)
             : base(new InanimateModel("box"), new Cylinder(position, 1f, scale.Length()))
         {
             mNextLevel = nextLevel;
-            mPartType = partType;
+            PartType = partType;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace finalProject
                     bool hasCorrectPart = false;
                     foreach (Creature.PartAttachment partAttachment in (synchronizer.body.Tag as Creature).PartAttachments)
                     {
-                        if (partAttachment != null && partAttachment.Part.GetType() == mPartType)
+                        if (partAttachment != null && partAttachment.Part.GetType() == PartType)
                         {
                             hasCorrectPart = true;
                             break;

@@ -20,7 +20,7 @@ namespace finalProject.Creatures
                 6.0f,                                                   // Mass
                 CreatureConstants.FrilledLizardSensitivityRadius,       // Sensitivity Radius
                 new RangedAI(),                                  // AI
-                new InanimateModel("lizard"),//new AnimateModel("lizard", "stand"),  // Model
+                new AnimateModel("lizard", "stand"),  // Model
                 135,                                                    // Vision Angle
                 CreatureConstants.FrilledLizardListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.FrilledLizardSneak,                   // Sneak
