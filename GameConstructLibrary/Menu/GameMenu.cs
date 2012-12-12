@@ -64,7 +64,7 @@ namespace GameConstructLibrary.Menu
                 int nextItemIndex = ((currentItemIndex - 1) % mMenuItems.Count() + mMenuItems.Count()) % mMenuItems.Count();
                 while (currentItemIndex != nextItemIndex && !(mMenuItems[nextItemIndex] is SelectableItem))
                 {
-                    nextItemIndex = ((currentItemIndex - 1) % mMenuItems.Count() + mMenuItems.Count()) % mMenuItems.Count();
+                    nextItemIndex = ((nextItemIndex - 1) % mMenuItems.Count() + mMenuItems.Count()) % mMenuItems.Count();
                 }
                 if (mMenuItems[nextItemIndex] is SelectableItem)
                 {

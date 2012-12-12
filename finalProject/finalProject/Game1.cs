@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
+using finalProject.Menus;
 
 namespace finalProject
 {
@@ -145,43 +146,12 @@ namespace finalProject
 
         public void ExitToMenu()
         {
-            for (int i = 0; i < mGameStates.Count - mNumPopQueued; i++)
-            {
-                PopState();
-            }
+            mNumPopQueued = mGameStates.Count;
             mGameStateAddQueue.Clear();
 
-            int width = (int)(Graphics.PreferredBackBufferHeight * .25);
-            int height = (int)(width * .25);
-            GraphicItem title = new GraphicItem(
-                new Microsoft.Xna.Framework.Rectangle(
-                    Graphics.PreferredBackBufferWidth / 2 - width/2,
-                    0,
-                    width,
-                    height
-                ),
-                new Sprite("title")
-            );
-
-            GameMenu menu = new GameMenu();
-            Microsoft.Xna.Framework.Rectangle rect = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 200);
-
-            GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
-            menu.Add(button);
-            menu.Add(title);
+            GameMenu menu = new Menus.MainMenu(this, DebugModelDrawer);
 
             PushState(menu);
-        }
-
-        private void StartGame(GameConstructLibrary.Menu.Button button)
-        {
-            InputAction.IsMouseLocked = true;
-            PopState();
-
-            GameWorld world = new GameWorld(DebugModelDrawer);
-            world.AddLevelFromFile("kangaroo", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
-            PushState(world);
-
         }
 
         /// <summary>
@@ -306,6 +276,8 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+
+            Game1.Graphics.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
             GraphicsManager.BeginRendering();
 
             /*if (mGameStates.Count > 0)
@@ -322,7 +294,7 @@ namespace finalProject
             RenderTips(gameTime);
 
             // DEBUG
-            if (debugMode)
+            if (debugMode && Camera != null)
             {
                 DebugModelDrawer.Draw(Game1.Camera.GetViewTransform(), Game1.Camera.GetProjectionTransform());
             }

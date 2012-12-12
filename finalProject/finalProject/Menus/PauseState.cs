@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using GameConstructLibrary.Menu;
 using GraphicsLibrary;
 
-namespace finalProject
+namespace finalProject.Menus
 {
     public class PauseState : GameMenu
     {
@@ -32,6 +32,13 @@ namespace finalProject
             );
             Add(
                 new Button(
+                    new Rectangle(width / 2 - buttonWidth / 2, height / 2, buttonWidth, buttonHeight),
+                    new Sprite("yellowButton"),
+                    new Button.ButtonAction(Menu)
+                )
+            );
+            Add(
+                new Button(
                     new Rectangle(width / 2 - buttonWidth / 2, height / 2 + buttonHeight, buttonWidth, buttonHeight),
                     new Sprite("redButton"),
                     new Button.ButtonAction(Quit)
@@ -48,6 +55,11 @@ namespace finalProject
         private void Quit(Button button)
         {
             mOwnerGame.Exit();
+        }
+
+        private void Menu(Button button)
+        {
+            (mOwnerGame as Game1).ExitToMenu();
         }
 
         public override void Update(GameTime gameTime)
