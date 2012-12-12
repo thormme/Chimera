@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Penguin : NonPlayerCreature
     {
-        public Penguin(Vector3 position)
+        public Penguin(Vector3 position, Spawner spawn)
             : base(
                 position,
                 3.0f,                                           // Height
@@ -25,10 +25,19 @@ namespace finalProject.Creatures
                 CreatureConstants.PenguinListeningSensitivity,  // Listening Sensitivity
                 CreatureConstants.PenguinSneak,                 // Sneak
                 CreatureConstants.PenguinIntimidation,          // Intimidation
-                new PenguinLimbs()                              // Part
+                new PenguinLimbs(),                              // Part
+                spawn
                 )
         {
             Scale = new Vector3(1.0f);
+
+            mTip = new GameTip(
+                new string[] 
+                {
+                    "You have encountered a penguin.",
+                    "Penguins are able to slide down hills."
+                },
+                10.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -40,5 +49,6 @@ namespace finalProject.Creatures
             bones.Add(PartBone.ArmRight1Cap);
             return bones;
         }
+
     }
 }

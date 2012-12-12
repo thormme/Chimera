@@ -146,6 +146,7 @@
     <Compile Include="IActor.cs" />
     <Compile Include="ICharacterTag.cs" />
     <Compile Include="Input\CombinedInputAction.cs" />
+    <Compile Include="InvisibleWall.cs" />
     <Compile Include="IStaticCollidableOwner.cs" />
     <Compile Include="IEntityOwner.cs" />
     <Compile Include="IGameObject.cs" />

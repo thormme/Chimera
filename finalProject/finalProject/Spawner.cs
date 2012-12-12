@@ -8,7 +8,7 @@ using BEPUphysics;
 
 namespace finalProject
 {
-    class Spawner : IGameObject, IActor
+    public class Spawner : IGameObject, IActor
     {
 
         public World World
@@ -37,6 +37,18 @@ namespace finalProject
 
         private Type mCreatureType;
         private float mSpawnRadius;
+        public float SpawnRadius
+        {
+            get
+            {
+                return mSpawnRadius;
+            }
+
+            protected set
+            {
+                mSpawnRadius = value;
+            }
+        }
         private float mSpawnTime;
         private float mSpawnWait;
         private List<Creature> mCreatures;
@@ -47,10 +59,10 @@ namespace finalProject
             Position = translation;
             XNAOrientationMatrix = Matrix.Identity;
             Scale = scale;
+            mSpawnRadius = scale.Length();
             mCreatureType = Type.GetType("finalProject.Creatures." + parameters[0] + ", finalProject");
-            mSpawnRadius = Convert.ToSingle(parameters[1]);
-            mSpawnWait = Convert.ToSingle(parameters[2]);
-            mMaxSpawned = Convert.ToInt32(parameters[3]);
+            mSpawnWait = Convert.ToSingle(parameters[1]);
+            mMaxSpawned = Convert.ToInt32(parameters[2]);
             Initialize();
         }
 
@@ -121,13 +133,15 @@ namespace finalProject
                                                   creaturePosition.Y + mSpawnRadius, 
                                                   creaturePosition.Z), 
                                       new Vector3(0.0f, -1.0f, 0.0f));
+
                 RayCastResult resultDown;
                 if (World.Space.RayCast(rayDown, 2.0f * mSpawnRadius, out resultDown)) creaturePosition.Y = resultDown.HitData.Location.Y;
                 else creaturePosition.Y = Position.Y;
 
                 // Only parameter for a creature is position
-                object parameters = new object();
-                parameters = resultDown.HitData.Location;
+                object[] parameters = new object[2];
+                parameters[0] = resultDown.HitData.Location;
+                parameters[1] = this;
                 object obj = Activator.CreateInstance(mCreatureType, parameters);
 
                 mCreatures.Add(obj as Creature);

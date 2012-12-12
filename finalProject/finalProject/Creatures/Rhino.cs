@@ -12,10 +12,10 @@ namespace finalProject.Creatures
 {
     public class Rhino : NonPlayerCreature
     {
-        public Rhino(Vector3 position)
+        public Rhino(Vector3 position, Spawner spawn)
             : base(
                 position,
-                2.0f,                                           // Height
+                3.0f,                                           // Height
                 1.5f,                                          // Radius
                 30.0f,                                          // Mass
                 CreatureConstants.RhinoSensitivityRadius,       // Sensitivity Radius
@@ -25,10 +25,19 @@ namespace finalProject.Creatures
                 CreatureConstants.RhinoListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.RhinoSneak,                   // Sneak
                 CreatureConstants.RhinoIntimidation,            // Intimidation
-                new RhinoHead()                                 // Part
+                new RhinoHead(),                                 // Part
+                spawn
                 )
         {
             Scale = new Vector3(2.0f);
+
+            mTip = new GameTip(
+                new string[] 
+                {
+                    "You have encountered a rhino.",
+                    "Rhinos will charge foes inflicting great force on anything in their way."
+                },
+                10.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -42,5 +51,6 @@ namespace finalProject.Creatures
         {
             return Matrix.CreateScale(0.5f);
         }
+
     }
 }

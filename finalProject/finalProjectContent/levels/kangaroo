@@ -85,27 +85,6 @@
     <Height>4050</Height>
   </DummyObject>
   <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock3light</Model>
-    <Parameters />
-    <Position>
-      <X>0.3897248</X>
-      <Y>5000</Y>
-      <Z>-3.0084672</Z>
-    </Position>
-    <Orientation>
-      <X>3.83337069</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>50</X>
-      <Y>10000</Y>
-      <Z>50</Z>
-    </Scale>
-    <Height>5000</Height>
-  </DummyObject>
-  <DummyObject>
     <Type>finalProject.Checkpoint, finalProject</Type>
     <Model>sphere</Model>
     <Parameters />
@@ -128,17 +107,16 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Spawner, finalProject</Type>
-    <Model>kangaroo</Model>
+    <Model>editor</Model>
     <Parameters>
       <string>Kangaroo</string>
-      <string>2</string>
-      <string>0</string>
+      <string>10</string>
       <string>2</string>
     </Parameters>
     <Position>
-      <X>3.08301544</X>
+      <X>4.13332653</X>
       <Y>0</Y>
-      <Z>-6.862768</Z>
+      <Z>-7.06993866</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -146,23 +124,27 @@
       <Z>0</Z>
     </Orientation>
     <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
+      <X>2.5</X>
+      <Y>2000</Y>
+      <Z>2.5</Z>
     </Scale>
     <Height>0</Height>
   </DummyObject>
   <DummyObject>
-    <Type>finalProject.PlayerCreature, finalProject</Type>
-    <Model>playerBean</Model>
-    <Parameters />
+    <Type>finalProject.Spawner, finalProject</Type>
+    <Model>editor</Model>
+    <Parameters>
+      <string>Rhino</string>
+      <string>10</string>
+      <string>1</string>
+    </Parameters>
     <Position>
-      <X>7.677659</X>
-      <Y>0</Y>
-      <Z>-6.952979</Z>
+      <X>-7.673851</X>
+      <Y>14000</Y>
+      <Z>-7.922222</Z>
     </Position>
     <Orientation>
-      <X>4.499998</X>
+      <X>0</X>
       <Y>0</Y>
       <Z>0</Z>
     </Orientation>
@@ -175,20 +157,61 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Spawner, finalProject</Type>
-    <Model>rhino</Model>
+    <Model>editor</Model>
     <Parameters>
-      <string>Rhino</string>
-      <string>1</string>
-      <string>0</string>
+      <string>Kangaroo</string>
+      <string>10</string>
       <string>1</string>
     </Parameters>
     <Position>
-      <X>-5.514596</X>
-      <Y>14000</Y>
-      <Z>-6.553441</Z>
+      <X>0.7811794</X>
+      <Y>12000</Y>
+      <Z>7.386716</Z>
     </Position>
     <Orientation>
       <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>1.25</X>
+      <Y>1000</Y>
+      <Z>1.25</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Checkpoint, finalProject</Type>
+    <Model>sphere</Model>
+    <Parameters />
+    <Position>
+      <X>-5.186664</X>
+      <Y>16000</Y>
+      <Z>1.4694128</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PlayerCreature, finalProject</Type>
+    <Model>playerBean</Model>
+    <Parameters />
+    <Position>
+      <X>8.359274</X>
+      <Y>0</Y>
+      <Z>-7.18557549</Z>
+    </Position>
+    <Orientation>
+      <X>4.86024666</X>
       <Y>0</Y>
       <Z>0</Z>
     </Orientation>
@@ -207,9 +230,9 @@
       <string>RhinoHead</string>
     </Parameters>
     <Position>
-      <X>1.49131346</X>
+      <X>0.8812423</X>
       <Y>0</Y>
-      <Z>-9.009238</Z>
+      <Z>-7.34392262</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -217,9 +240,9 @@
       <Z>0</Z>
     </Orientation>
     <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
     </Scale>
     <Height>0</Height>
   </DummyObject>

@@ -111,10 +111,9 @@ namespace MapEditor
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            GraphicsManager.Update(mCamera);
+            GraphicsManager.Update(mCamera, gameTime);
 
             GameMapEditor.Update(gameTime);
-            
         }
 
         /// <summary>

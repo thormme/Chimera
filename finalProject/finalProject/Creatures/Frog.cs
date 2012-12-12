@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Frog : NonPlayerCreature
     {
-        public Frog(Vector3 position)
+        public Frog(Vector3 position, Spawner spawn)
             : base(
                 position,
                 3.0f,                                       // Height
@@ -25,10 +25,19 @@ namespace finalProject.Creatures
                 CreatureConstants.FrogListeningSensitivity, // Listening Sensitivity
                 CreatureConstants.FrogSneak,                // Sneak
                 CreatureConstants.FrogIntimidation,         // Intimidation
-                new FrogHead()                              // Part
+                new FrogHead(),                              // Part
+                spawn
                 )
         {
             Scale = new Vector3(5.0f);
+
+            mTip = new GameTip(
+                new string[] 
+                {
+                    "You have encountered a frog.",
+                    "Frogs are known for their extremely sticky tongues."
+                },
+                10.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -42,5 +51,6 @@ namespace finalProject.Creatures
         {
             return Matrix.CreateScale(0.5f);
         }
+        
     }
 }

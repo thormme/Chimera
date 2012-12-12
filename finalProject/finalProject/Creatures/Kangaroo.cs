@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Kangaroo : NonPlayerCreature
     {
-        public Kangaroo(Vector3 position)
+        public Kangaroo(Vector3 position, Spawner spawn)
             : base(
                 position,
                 2.5f,                                           // Height
@@ -25,9 +25,18 @@ namespace finalProject.Creatures
                 CreatureConstants.KangarooListeningSensitivity, // Listening Sensitivity
                 CreatureConstants.KangarooSneak,                // Sneak
                 CreatureConstants.KangarooIntimidation,         // Intimidation
-                new KangarooLegs()                              // Part
+                new KangarooLegs(),                              // Part
+                spawn
                 )
         {
+            mTip = new GameTip(
+                new string[] 
+                {
+                    "You have encountered a kangaroo.",
+                    "Kangaroos are able to jump extremely high.",
+                    "Be careful, if provoked they will attempt to crush you."
+                },
+                10.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -42,5 +51,6 @@ namespace finalProject.Creatures
         {
             return Matrix.CreateScale(0.5f);
         }
+
     }
 }

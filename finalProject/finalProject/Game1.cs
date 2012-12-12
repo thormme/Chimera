@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
+using finalProject.Menus;
 
 namespace finalProject
 {
@@ -76,17 +77,20 @@ namespace finalProject
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.W);
             celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.F2);
 
+
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, Projectile.ProjectileGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, Sensor.SensorGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, TerrainPhysics.TerrainPhysicsGroup), CollisionRule.NoBroadPhase);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, InvisibleWall.InvisibleWallGroup), CollisionRule.NoBroadPhase);
 
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Projectile.ProjectileGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Sensor.SensorGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Projectile.SensorProjectileGroup), CollisionRule.NoBroadPhase);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, InvisibleWall.InvisibleWallGroup), CollisionRule.NoBroadPhase);
         }
 
         ~Game1()
@@ -144,43 +148,12 @@ namespace finalProject
 
         public void ExitToMenu()
         {
-            for (int i = 0; i < mGameStates.Count - mNumPopQueued; i++)
-            {
-                PopState();
-            }
+            mNumPopQueued = mGameStates.Count;
             mGameStateAddQueue.Clear();
 
-            int width = (int)(Graphics.PreferredBackBufferHeight * .25);
-            int height = (int)(width * .25);
-            GraphicItem title = new GraphicItem(
-                new Microsoft.Xna.Framework.Rectangle(
-                    Graphics.PreferredBackBufferWidth / 2 - width/2,
-                    0,
-                    width,
-                    height
-                ),
-                new Sprite("title")
-            );
-
-            GameMenu menu = new GameMenu();
-            Microsoft.Xna.Framework.Rectangle rect = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 200);
-
-            GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
-            menu.Add(button);
-            menu.Add(title);
+            GameMenu menu = new Menus.MainMenu(this, DebugModelDrawer);
 
             PushState(menu);
-        }
-
-        private void StartGame(GameConstructLibrary.Menu.Button button)
-        {
-            InputAction.IsMouseLocked = true;
-            PopState();
-
-            World world = new World(DebugModelDrawer);
-            world.AddLevelFromFile("kangaroo", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
-            PushState(world);
-
         }
 
         /// <summary>
@@ -229,17 +202,28 @@ namespace finalProject
                             //player.Position = player.SpawnOrigin;
                             int i = 0;
                             //player.AddPart(new RhinoHead(), i++);
+                            player.AddPart(new CheetahLegs(), i++);
                             player.AddPart(new EagleWings(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
+                            //player.AddPart(new TestingWings(), i++);
+                            //player.AddPart(new TestingLegs(), i++);
                             player.AddPart(new FrogHead(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new CheetahLegs(), i++);
-                            //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new FrilledLizardHead(), i++);
-                            player.AddPart(new PenguinLimbs(), i++);
-                            //player.AddPart(new EagleWings(), i++);
+                            //player.AddPart(new PenguinLimbs(), i++);
 
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Cobra(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new FrilledLizard(player.Position + 32.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 28.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Kangaroo(player.Position + 26.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Rhino(player.Position + 24.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 22.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Eagle(player.Position + 20.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Penguin(player.Position + 18.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Frog(player.Position + 16.0f * player.Forward + Vector3.Up * 5.0f));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Cheetah(player.Position + 14.0f * player.Forward + Vector3.Up * 5.0f));
+
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new PhysicsProp("rock1light", player.Position + 14.0f * player.Forward + Vector3.Up * 10.0f, Quaternion.Identity, new Vector3(100.0f), 10.0f));
                         }
                     }
                 }
@@ -294,6 +278,8 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+
+            Game1.Graphics.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
             GraphicsManager.BeginRendering();
 
             /*if (mGameStates.Count > 0)
@@ -310,7 +296,7 @@ namespace finalProject
             RenderTips(gameTime);
 
             // DEBUG
-            if (debugMode)
+            if (debugMode && Camera != null)
             {
                 DebugModelDrawer.Draw(Game1.Camera.GetViewTransform(), Game1.Camera.GetProjectionTransform());
             }
@@ -372,7 +358,6 @@ namespace finalProject
 
         public static void AddTip(GameTip tip)
         {
-            tip.Displayed = true;
             Tips.Add(tip);
         }
     }

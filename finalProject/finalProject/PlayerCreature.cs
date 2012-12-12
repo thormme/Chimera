@@ -26,7 +26,7 @@ namespace finalProject
     /// <summary>
     /// The creature representing the player character.
     /// </summary>
-    class PlayerCreature : Creature
+    public class PlayerCreature : Creature
     {
         #region Fields
 
@@ -67,18 +67,23 @@ namespace finalProject
 
         #region Tips
         GameTip mDamaged = new GameTip(
-            new string[] {
+            new string[] 
+            {
                 "You have taken damage.",
-                "Taking additional damage will cause you to lose a part."
+                "Taking additional damage will cause you to lose a part.",
+                "Taking damage with no parts will cause you to die."
             },
             10.0f);
         GameTip mPlayerDied = new GameTip(
-            new string[] {
-                "Taking damage when you have no parts will cause you to die."
+            new string[] 
+{
+                "You have died.",
+                "When you die, you return to a checkpoint."
             },
             10.0f);
         GameTip mCheckpointEncountered = new GameTip(
-        new string[] {
+        new string[] 
+{
                 "You have encountered a checkpoint.",
                 "You will respawn at the last checkpoint you touched."
             },
@@ -87,71 +92,6 @@ namespace finalProject
             new string[] {
                 "You have found an extraction point.",
                 "Return here once you have the required part."
-            },
-            10.0f);
-        GameTip mBearEncountered = new GameTip(
-            new string[] {
-                "You have encountered a bear.",
-                "Be careful, these are beary strong enemies.",
-                "Even the strongest players bearly make it away with their lives.",
-                "Vanquish this foe and you will gain the ability to bear arms.",
-                "You will be able to maul other creatures with your bear hands."
-            },
-            10.0f);
-        GameTip mCheetahEncountered = new GameTip(
-            new string[] {
-                "You have encountred a cheetah.",
-                "Cheetahs are known for their blinding speed."
-            },
-            10.0f);
-        GameTip mCobraEncountered = new GameTip(
-            new string[] {
-                "You have encountered a cobra.",
-                "Cobras are able to charm their foes into a submissive state."
-            },
-            10.0f);
-        GameTip mEagleEncountered = new GameTip(
-            new string[] {
-                "You have encountered an eagle.",
-                "Eagles are able to soar through the sky."
-            },
-            10.0f);
-        GameTip mFrilledLizardEncountered = new GameTip(
-            new string[] {
-                "You have encountered a frill necked lizard.",
-                "Frill necked lizards are able to scare away other creatures.",
-                "Their venom also temporarily disables enemies."
-            },
-            10.0f);
-        GameTip mFrogEncountered = new GameTip(
-            new string[] {
-                "You have encountered a frog.",
-                "Frogs are known for their extremely sticky tongues."
-            },
-            10.0f);
-        GameTip mKangarooEncountered = new GameTip(
-            new string[] {
-                "You have encountered a kangaroo.",
-                "Kangaroos are able to jump extremely high.",
-                "Be careful, if provoked they will attempt to crush you."
-            },
-            10.0f);
-        GameTip mPenguinEncountered = new GameTip(
-            new string[] {
-                "You have encountered a penguin.",
-                "Penguins are able to slide down hills."
-            },
-            10.0f);
-        GameTip mRhinoEncountered = new GameTip(
-            new string[] {
-                "You have encountered a rhino.",
-                "Rhinos will charge foes inflicting great force on anything in their way."
-            },
-            10.0f);
-        GameTip mTurtleEncountered = new GameTip(
-            new string[] {
-                "You have encountered a turtle.",
-                "Turtles are able to hide in their shell to avoid damage."
             },
             10.0f);
         #endregion
@@ -186,7 +126,14 @@ namespace finalProject
         {
             get
             {
-                return (Controller as PlayerController).mCamera;
+                if (Controller is PlayerController)
+                {
+                    return (Controller as PlayerController).mCamera;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -366,51 +313,15 @@ namespace finalProject
             {
                 Game1.AddTip(mCheckpointEncountered);
             }
-            if (other.Tag is GoalPoint)
+            else if (other.Tag is GoalPoint)
             {
                 Game1.AddTip(mGoalPointEncountered);
             }
-            if (other.Tag is CharacterSynchronizer)
+            else if (other.Tag is CharacterSynchronizer)
             {
-                if (((other.Tag as CharacterSynchronizer).body.Tag as Bear) != null)
+                if ((other.Tag as CharacterSynchronizer).body.Tag is Creature)
                 {
-                    Game1.AddTip(mBearEncountered);
-                }
-                else if (((other.Tag as CharacterSynchronizer).body.Tag as Cheetah) != null)
-                {
-                    Game1.AddTip(mCheetahEncountered);
-                }
-                else if (((other.Tag as CharacterSynchronizer).body.Tag as Cobra) != null)
-                {
-                    Game1.AddTip(mCobraEncountered);
-                }
-                else if (((other.Tag as CharacterSynchronizer).body.Tag as Eagle) != null)
-                {
-                    Game1.AddTip(mEagleEncountered);
-                }
-                else if (((other.Tag as CharacterSynchronizer).body.Tag as FrilledLizard) != null)
-                {
-                    Game1.AddTip(mFrilledLizardEncountered);
-                }
-                else if (((other.Tag as CharacterSynchronizer).body.Tag as Frog) != null)
-                {
-                    Game1.AddTip(mFrogEncountered);
-                }
-                else if (((other.Tag as CharacterSynchronizer).body.Tag as Kangaroo) != null)
-                {
-                    Game1.AddTip(mKangarooEncountered);
-                }
-                else if (((other.Tag as CharacterSynchronizer).body.Tag as Penguin) != null)
-                {
-                    Game1.AddTip(mPenguinEncountered);
-                }
-                else if (((other.Tag as CharacterSynchronizer).body.Tag as Rhino) != null)
-                {
-                    Game1.AddTip(mRhinoEncountered);
-                }
-                else if (((other.Tag as CharacterSynchronizer).body.Tag as Turtle) != null)
-                {
-                    Game1.AddTip(mTurtleEncountered);
+                    ((other.Tag as CharacterSynchronizer).body.Tag as Creature).AddTip();
                 }
             }
         }
@@ -548,7 +459,7 @@ namespace finalProject
 
             if (mNumHeightModifyingParts == 0 && part.Height > 0.0f)
             {
-                this.CharacterController.Body.Height = mHeight + part.Height;
+                CharacterController.Body.Height = mHeight + part.Height;
             }
 
             mNumHeightModifyingParts += (part.Height > 0.0f) ? 1 : 0;
@@ -563,7 +474,7 @@ namespace finalProject
 
             if (mNumHeightModifyingParts != 0 && part.Height > 0.0f)
             {
-                this.CharacterController.Body.Height = mHeight;
+                CharacterController.Body.Height = mHeight;
             }
             mNumHeightModifyingParts -= (part.Height > 0.0f) ? 1 : 0;
         }
@@ -574,9 +485,9 @@ namespace finalProject
         /// <param name="gameTime">Time elapsed since last frame.</param>
         public override void Update(GameTime gameTime)
         {
-            if (World.Goal != String.Empty)
+            if ((World as GameWorld).Goal != null)
             {
-                mRequirementSprite = new Sprite(World.Goal + "Icon");
+                mRequirementSprite = new Sprite((World as GameWorld).Goal.PartType.Name + "Icon");
             }
 
             StealPartsUpdate(gameTime);
@@ -591,15 +502,18 @@ namespace finalProject
             mSuckModel.VerticalVelocity = 1.0f + rotationIncrease;
             mSuckModel.HorizontalVelocity = mSuckModel.VerticalVelocity;
 
-            mConeOrientation = Matrix.CreateScale(new Vector3(3.0f, 3.0f, 3.0f));
-            mConeOrientation *= Matrix.CreateRotationX(MathHelper.PiOver2);
-            mConeOrientation *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
+            if (Controller is PlayerController)
+            {
+                mConeOrientation = Matrix.CreateScale(new Vector3(3.0f, 3.0f, 3.0f));
+                mConeOrientation *= Matrix.CreateRotationX(MathHelper.PiOver2);
+                mConeOrientation *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
 
-            mPartStealSensor.Update(gameTime);
+                mPartStealSensor.Update(gameTime);
 
-            mPartStealSensor.Position = Position + Camera.Forward * 6.0f;
-            mPartStealSensor.XNAOrientationMatrix  = Matrix.CreateRotationX(MathHelper.Pi);
-            mPartStealSensor.XNAOrientationMatrix *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
+                mPartStealSensor.Position = Position + Camera.Forward * 6.0f;
+                mPartStealSensor.XNAOrientationMatrix = Matrix.CreateRotationX(MathHelper.Pi);
+                mPartStealSensor.XNAOrientationMatrix *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
+            }
 
             base.Update(gameTime);
         }
@@ -643,7 +557,7 @@ namespace finalProject
             {
                 if (part != null)
                 {
-                    if (part.Part.ToString().Split('.')[2] == World.Goal)
+                    if (part.Part.GetType() == (World as GameWorld).Goal.PartType)
                     {
                         retrieved = true;
                     }

@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Eagle : NonPlayerCreature
     {
-        public Eagle(Vector3 position)
+        public Eagle(Vector3 position, Spawner spawn)
             : base(
                 position,
                 3.0f,                                       // Height
@@ -25,10 +25,19 @@ namespace finalProject.Creatures
 				CreatureConstants.EagleListeningSensitivity,// Listening Sensitivity
                 CreatureConstants.EagleSneak,               // Sneak
                 CreatureConstants.EagleIntimidation,        // Intimidation
-                new EagleWings()                            // Part
+                new EagleWings(),                            // Part
+                spawn
                 )
         {
             Scale = new Vector3(4.0f);
+
+            mTip = new GameTip(
+                new string[] 
+                {
+                    "You have encountered an eagle.",
+                    "Eagles are able to soar through the sky."
+                },
+                10.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -38,5 +47,6 @@ namespace finalProject.Creatures
             bones.Add(PartBone.ArmRight1Cap);
             return bones;
         }
+
     }
 }

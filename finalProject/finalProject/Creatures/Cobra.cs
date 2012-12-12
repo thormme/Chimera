@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Cobra : NonPlayerCreature
     {
-        public Cobra(Vector3 position)
+        public Cobra(Vector3 position, Spawner spawn)
             : base(
                 position,
                 3.0f,                                           // Height
@@ -25,10 +25,20 @@ namespace finalProject.Creatures
                 CreatureConstants.CobraListeningSensitivity,    // Listening Sensitivity
                 CreatureConstants.CobraSneak,                   // Sneak
                 CreatureConstants.CobraIntimidation,            // Intimidation
-                new CobraHead()                      // Part
+                new CobraHead(),                      // Part
+                spawn
                 )
         {
             Scale = new Vector3(1.0f);
+
+            new GameTip(
+                new string[] 
+                {
+                    "You have encountered a cobra.",
+                    "Cobras are able to charm their foes into a submissive state."
+                },
+                10.0f);
+
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -42,5 +52,6 @@ namespace finalProject.Creatures
         {
             return Matrix.CreateScale(0.5f);
         }
+        
     }
 }

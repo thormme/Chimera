@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Cheetah : NonPlayerCreature
     {
-        public Cheetah(Vector3 position)
+        public Cheetah(Vector3 position, Spawner spawn)
             : base(
                 position,
                 2.0f,                                           // Height
@@ -25,10 +25,20 @@ namespace finalProject.Creatures
                 CreatureConstants.CheetahListeningSensitivity,  // Listening Sensitivity
                 CreatureConstants.CheetahSneak,                 // Sneak
                 CreatureConstants.CheetahIntimidation,          // Intimidation
-                new CheetahLegs()                               // Part
+                new CheetahLegs(),                               // Part
+                spawn
                 )
         {
             Scale = new Vector3(2.0f);
+
+            mTip = new GameTip(
+                new string[] 
+                {
+                    "You have encountred a cheetah.",
+                    "Cheetahs are known for their blinding speed."
+                },
+                10.0f);
+
         }
 
         protected override List<PartBone> GetUsablePartBones()
