@@ -57,6 +57,7 @@ namespace finalProject.Projectiles
                 creature.Controller = ownerController;
                 ownerController.SetCreature(creature);
                 mControlTimer = ControlLength;
+                owner.Controller = new AIController();
                 Active = true;
 
                 Position = new Vector3(float.MaxValue);

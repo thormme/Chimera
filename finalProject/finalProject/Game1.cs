@@ -204,19 +204,20 @@ namespace finalProject
                         {
                             player.Damage(100, null);
                             //player.Position = player.SpawnOrigin;
-                            int i = 0;
-                            player.AddPart(new RhinoHead(), i++);
-                            player.AddPart(new EagleWings(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new FrogHead(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
-                            player.AddPart(new CheetahLegs(), i++);
+                            //int i = 0;
+                            //player.AddPart(new RhinoHead(), i++);
+                            //player.AddPart(new TestingWings(), i++);
+                            //player.AddPart(new TestingLegs(), i++);
+                            //player.AddPart(new FrogHead(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
                             //player.AddPart(new FrilledLizardHead(), i++);
                             //player.AddPart(new PenguinLimbs(), i++);
                             //player.AddPart(new EagleWings(), i++);
 
-                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Bear(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
+                            (mGameStates[mGameStates.Count - 1] as World).Add(new Cobra(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
+                            (mGameStates[mGameStates.Count - 1] as World).Add(new FrilledLizard(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f));
                         }
                     }
                 }
