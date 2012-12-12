@@ -42,11 +42,5 @@ namespace finalProject.Creatures
         {
             return Matrix.CreateScale(0.5f);
         }
-
-        public override void Update(GameTime gameTime)
-        {
-            (mRenderable as AnimateModel).Update(gameTime);
-            base.Update(gameTime);
-        }
     }
 }

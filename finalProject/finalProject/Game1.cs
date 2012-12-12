@@ -56,7 +56,7 @@ namespace finalProject
 
         private static List<IGameState> mGameStates = new List<IGameState>();
         private static List<IGameState> mGameStateAddQueue = new List<IGameState>();
-        private static bool mPopQueued = false;
+        private static int mNumPopQueued = 0;
 
         public static ICamera Camera;
 
@@ -129,30 +129,7 @@ namespace finalProject
                 GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, spriteBatch);
                 CollisionMeshManager.LoadContent(this.Content);
 
-                World world = new World(DebugModelDrawer);
-            
-                world.AddLevelFromFile("kangaroo", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
-
-                mGameStates.Add(world);
-                int width = (int) (Graphics.PreferredBackBufferHeight * .25);
-                int height = (int) (width * .25);
-                GraphicItem title = new GraphicItem(
-                    new Microsoft.Xna.Framework.Rectangle(
-                        Graphics.PreferredBackBufferWidth / 2 - width,
-                        0,
-                        width,
-                        height
-                    ),
-                    new Sprite("play")
-                );
-                GameMenu menu = new GameMenu();
-                Microsoft.Xna.Framework.Rectangle rect = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 200);
-
-                GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
-                menu.Add(button);
-                menu.Add(title);
-
-                PushState(menu);
+                ExitToMenu();
             }
             catch (Exception e) 
             {
@@ -164,10 +141,45 @@ namespace finalProject
             }
         }
 
+        public void ExitToMenu()
+        {
+            for (int i = 0; i < mGameStates.Count - mNumPopQueued; i++)
+            {
+                PopState();
+            }
+            mGameStateAddQueue.Clear();
+
+            int width = (int)(Graphics.PreferredBackBufferHeight * .25);
+            int height = (int)(width * .25);
+            GraphicItem title = new GraphicItem(
+                new Microsoft.Xna.Framework.Rectangle(
+                    Graphics.PreferredBackBufferWidth / 2 - width/2,
+                    0,
+                    width,
+                    height
+                ),
+                new Sprite("title")
+            );
+
+            GameMenu menu = new GameMenu();
+            Microsoft.Xna.Framework.Rectangle rect = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 200);
+
+            GameConstructLibrary.Menu.Button button = new GameConstructLibrary.Menu.Button(rect, new Sprite("test_tex"), new GameConstructLibrary.Menu.Button.ButtonAction(StartGame));
+            menu.Add(button);
+            menu.Add(title);
+
+            PushState(menu);
+        }
+
         private void StartGame(GameConstructLibrary.Menu.Button button)
         {
             InputAction.IsMouseLocked = true;
             PopState();
+
+            World world = new World(DebugModelDrawer);
+            world.AddLevelFromFile("kangaroo", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+            PushState(world);
+
         }
 
         /// <summary>
@@ -205,7 +217,7 @@ namespace finalProject
 
             if (cheat.Active)
             {
-                if (mGameStates[mGameStates.Count - 1] is World)
+                if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is World)
                 {
                     foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
                     {
@@ -236,7 +248,7 @@ namespace finalProject
 
             FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
 
-            if (mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
+            if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
             {
                 PopState();
             }
@@ -255,12 +267,15 @@ namespace finalProject
                 mGameStates[mGameStates.Count - 1].Update(gameTime);
             }
 
-            GraphicsManager.Update(Camera, gameTime);
+            if (Camera != null)
+            {
+                GraphicsManager.Update(Camera, gameTime);
+            }
             DebugModelDrawer.Update();
 
-            if (mPopQueued)
+            while (mNumPopQueued > 0)
             {
-                mPopQueued = false;
+                mNumPopQueued--;
                 mGameStates.RemoveAt(mGameStates.Count - 1);
             }
             foreach (IGameState gameState in mGameStateAddQueue)
@@ -341,8 +356,8 @@ namespace finalProject
         /// <returns>Currently running state.</returns>
         public static IGameState PopState()
         {
-            mPopQueued = true;
-            return mGameStates[mGameStates.Count - 1];
+            mNumPopQueued++;
+            return mGameStates[mGameStates.Count - mNumPopQueued];
         }
 
         /// <summary>
