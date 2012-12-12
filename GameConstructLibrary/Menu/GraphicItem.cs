@@ -7,7 +7,7 @@ using GraphicsLibrary;
 
 namespace GameConstructLibrary.Menu
 {
-    class GraphicItem : IMenuItem
+    public class GraphicItem : IMenuItem
     {
         public GameMenu Menu { get; set; }
 

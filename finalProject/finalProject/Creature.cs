@@ -145,7 +145,7 @@ namespace finalProject
                         value.Normalize();
                         mForward = value;
                     }
-                    Sensor.Forward = mForward;
+                    SetSensorForward(mForward);
                 }
             }
         }
@@ -442,6 +442,11 @@ namespace finalProject
         #endregion
 
         #region Protected Methods
+
+        protected virtual void SetSensorForward(Vector3 forward)
+        {
+            Sensor.Forward = forward;
+        }
 
         protected virtual void CancelParts()
         {
@@ -859,6 +864,11 @@ namespace finalProject
                 return;
             }
 
+            if (mRenderable is AnimateModel)
+            {
+                (mRenderable as AnimateModel).Update(gameTime);
+            }
+
             mFlashTimer -= gameTime.ElapsedGameTime.TotalSeconds;
             if (mFlashTimer < 0.0f)
             {
@@ -905,7 +915,7 @@ namespace finalProject
             Sensor.Update(gameTime);
             Controller.Update(gameTime, Sensor.CollidingCreatures);
             Sensor.Position = Position;
-            Sensor.Forward = Forward;
+            //Sensor.Forward = Forward;
 
             foreach (PartAttachment p in mPartAttachments)
             {

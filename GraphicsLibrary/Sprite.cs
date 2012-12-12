@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GraphicsLibrary
 {
@@ -12,6 +13,30 @@ namespace GraphicsLibrary
     public class Sprite
     {
         private string mName;
+        private Texture2D mTexture;
+
+        public int Width
+        {
+            get
+            {
+                if (mTexture == null)
+                {
+                    mTexture = GraphicsManager.LookupSprite(mName);
+                }
+                return mTexture.Width;
+            }
+        }
+        public int Height
+        {
+            get
+            {
+                if (mTexture == null)
+                {
+                    mTexture = GraphicsManager.LookupSprite(mName);
+                }
+                return mTexture.Height;
+            }
+        }
 
         /// <summary>
         /// Instantiate new sprite with name of texture in content/textures/.

@@ -17,6 +17,8 @@ namespace finalProject.AI
                 if (mStopTimer > 0.0f)
                 {
                     mStopTimer -= time.ElapsedGameTime.TotalSeconds;
+                    mUsePartDirection.Y = 0;
+                    mUsePartDirection.Normalize();
                     mCreature.Forward = mUsePartDirection;
                     StopMoving();
 

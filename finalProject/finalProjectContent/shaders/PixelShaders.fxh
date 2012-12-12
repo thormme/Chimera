@@ -20,9 +20,28 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 
 	color.rgba -= (color.rgba % discretePallete);
 
-	if (pin.LightAmount <= 0.0f || ComputeShadow(pin.ShadowPosition))
+	if (xNumShadowBands < 2.9f)
 	{
-		color *= 0.5f;
+		if (pin.LightAmount <= 0.0f)
+		{
+			color *= 0.5f;
+		}
+	}
+	else
+	{
+		if (pin.LightAmount <= 0.66f && pin.LightAmount > 0.0f)
+		{
+			color *= 0.75f;
+		}
+		else if (pin.LightAmount <= 0.0f)
+		{
+			color *= 0.5f;
+		}
+	}
+
+	if (ComputeShadow(pin.ShadowPosition))
+	{
+			color *= 0.5f;
 	}
 
 	return color;
@@ -74,9 +93,9 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 	}
 	else
 	{
-		AddSpecular(color, pin.Specular.rgb);
+		//AddSpecular(color, pin.Specular.rgb);
     
-		ApplyFog(color, pin.Specular.w);
+		//ApplyFog(color, pin.Specular.w);
 	}
     
     return color;
@@ -89,7 +108,7 @@ float4 TerrainCelShadePS(VSOutput pin) : SV_Target0
 	float textureWeight = 1.0f - xOverlayColorWeight;
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
-	color.rgba -= (color.rgba % discretePallete);
+	//color.rgba -= (color.rgba % discretePallete);
 
 	return color;
 }

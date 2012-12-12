@@ -67,7 +67,7 @@ namespace finalProject
                         // TODO: Investigate last frame object additions to next world.
                         World.Clear();
                         // TODO: Make scale globally accessible or modifiable.
-                        World.AddLevelFromFile(mNextLevel, Vector3.Zero, new Quaternion(), new Vector3(8.0f, 0.01f, 8.0f));
+                        World.AddLevelFromFile(mNextLevel, Vector3.Zero, Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
                     }
                 }
             }

@@ -37,11 +37,5 @@ namespace finalProject.Creatures
             //bones.Add(PartBone.HeadCenterCap);
             return bones;
         }
-
-        public override void Update(GameTime gameTime)
-        {
-            //(mRenderable as AnimateModel).Update(gameTime);
-            base.Update(gameTime);
-        }
     }
 }
