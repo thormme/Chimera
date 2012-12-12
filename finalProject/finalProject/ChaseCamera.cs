@@ -6,6 +6,7 @@ using BEPUphysics.Collidables;
 using GraphicsLibrary;
 using finalProject;
 using GameConstructLibrary;
+using BEPUphysics.BroadPhaseEntries;
 
 namespace FinalProject
 {
@@ -528,26 +529,24 @@ namespace FinalProject
             mRight = Vector3.Normalize(Vector3.Cross(mUp, mForward));
 
             // Check for intersection with the scene.  Move camera forward if need be.
-            List<BEPUphysics.RayCastResult> results = new List<BEPUphysics.RayCastResult>();
+            BEPUphysics.RayCastResult result = new BEPUphysics.RayCastResult();
+            Func<BroadPhaseEntry, bool> filter = (bfe) => (
+                !(bfe.Tag is Sensor) && 
+                !(bfe.Tag is CharacterSynchronizer) && 
+                !(bfe.Tag is InvisibleWall)
+            );
             float cameraDistance = fullForward.Length();
-            mTargetBody.World.Space.RayCast(new Ray(mLookAt, -fullForward), cameraDistance, results);
+            mPosition = mLookAt - mForward * cameraDistance;
 
-            foreach (BEPUphysics.RayCastResult result in results)
+            if (mTargetBody.World.Space.RayCast(new Ray(mLookAt, -fullForward), cameraDistance, filter, out result))
             {
-                if (result.HitObject as Collidable != mTargetBody.CharacterController.Body.CollisionInformation &&
-                    !(result.HitObject.Tag is Sensor) &&
-                    !(result.HitObject.Tag is CharacterSynchronizer))
+                Vector3 shortenedForward = mLookAt - result.HitData.Location;
+                float distance = shortenedForward.Length();
+                if (0.9f * distance < cameraDistance)
                 {
-                    Vector3 shortenedForward = mLookAt - result.HitData.Location;
-                    float distance = shortenedForward.Length();
-                    if (0.9f * distance < cameraDistance)
-                    {
-                        mPosition = mLookAt - 0.9f * distance * mForward;
-                        break;
-                    }
+                    mPosition = mLookAt - 0.9f * distance * mForward;
                 }
             }
-
             mViewTransform = Matrix.CreateLookAt(mPosition, mLookAt, mUp);
         }
 
