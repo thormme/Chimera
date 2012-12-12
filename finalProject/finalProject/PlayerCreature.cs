@@ -574,14 +574,10 @@ namespace finalProject
         /// <param name="gameTime">Time elapsed since last frame.</param>
         public override void Update(GameTime gameTime)
         {
-            AnimateModel model = mRenderable as AnimateModel;
-
             if (World.Goal != String.Empty)
             {
                 mRequirementSprite = new Sprite(World.Goal + "Icon");
             }
-
-            model.Update(gameTime);
 
             StealPartsUpdate(gameTime);
 

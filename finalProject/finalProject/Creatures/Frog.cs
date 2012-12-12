@@ -28,7 +28,7 @@ namespace finalProject.Creatures
                 new FrogHead()                              // Part
                 )
         {
-            Scale = new Vector3(1.0f);
+            Scale = new Vector3(5.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
