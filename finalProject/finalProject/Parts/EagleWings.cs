@@ -104,6 +104,15 @@ namespace finalProject.Parts
                 Vector3 flap = Vector3.Up * flapPower;
                 if (Creature.Entity.LinearVelocity.Y < 0) flap.Y -= Creature.Entity.LinearVelocity.Y;
                 Creature.Entity.ApplyLinearImpulse(ref flap);
+
+                // Put current velocity into new direction
+                double dir = Math.Atan2(direction.Z, direction.X);
+                float dist = new Vector2(Creature.Entity.LinearVelocity.X, Creature.Entity.LinearVelocity.Z).Length();
+                Creature.Entity.LinearVelocity = new Vector3(
+                    (float)(dist * Math.Cos(dir)),
+                    Creature.Entity.LinearVelocity.Y,
+                    (float)(dist * Math.Sin(dir)));
+
                 PlayAnimation("flap_air", true, true);
             }
             mGlide = true;
