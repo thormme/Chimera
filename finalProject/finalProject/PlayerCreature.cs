@@ -30,6 +30,8 @@ namespace finalProject
     {
         #region Fields
 
+        private const int NumParts = 3;
+
         private const float mPlayerRadius = 1.0f;
         private const int DefaultSneak = 0;
         private const int DefaultIntimidation = 5;
@@ -47,7 +49,7 @@ namespace finalProject
         private int mNumHeightModifyingParts = 0;
 
 
-        private Part[] mRespawnParts = new Part[3];
+        private Part[] mRespawnParts = new Part[NumParts];
 
         private ConeSensor mPartStealSensor;
         private Matrix mConeOrientation = Matrix.Identity;
@@ -57,7 +59,7 @@ namespace finalProject
         private Sprite mRequirementSprite = null;
         private Sprite mCheckSprite = new Sprite("check");
 
-        private Sprite[] mButtonSprites = new Sprite[3] {
+        private Sprite[] mButtonSprites = new Sprite[NumParts] {
             new Sprite("blueButton"), 
             new Sprite("yellowButton"), 
             new Sprite("redButton") 
@@ -165,7 +167,29 @@ namespace finalProject
         /// <summary>
         /// The position that the player will respawn when killed.
         /// </summary>
-        public Vector3 SpawnOrigin;
+        private Vector3 mSpawnOrigin;
+        public Vector3 SpawnOrigin
+        {
+            get
+            {
+                return mSpawnOrigin;
+            }
+            set
+            {
+                mSpawnOrigin = value;
+                for (int slot = 0; slot < NumParts; ++slot)
+                {
+                    if (mPartAttachments[slot] != null)
+                    {
+                        mRespawnParts[slot] = mPartAttachments[slot].Part;
+                    }
+                    else
+                    {
+                        mRespawnParts[slot] = null;
+                    }
+                }
+            }
+        }
 
         public bool FoundPart
         {
@@ -220,26 +244,6 @@ namespace finalProject
             return bones;
         }
 
-        protected void Die()
-        {
-            ////Console.WriteLine("Player died.");
-            Position = SpawnOrigin;
-            mShield = true;
-            Poisoned = false;
-            CancelParts();
-            mSilenced.Reset();
-            mImmobilized.Reset();
-            Move(Vector2.Zero);
-            Entity.LinearMomentum = Vector3.Zero;
-            Entity.LinearVelocity = Vector3.Zero;
-            mShieldRechargeTimer = -1.0f;
-            mPoisonTimer = -1.0f;
-            mInvulnerable.Reset();
-            Invulnerable = true;
-            mInvulnerableTimer = InvulnerableLength;
-            Incapacitated = false;
-        }
-
         protected override void CancelParts()
         {
             base.CancelParts();
@@ -261,8 +265,44 @@ namespace finalProject
 
         #region Public Methods
 
+        public void Die()
+        {
+            ////Console.WriteLine("Player died.");
+            Position = SpawnOrigin;
+            mShield = true;
+            Poisoned = false;
+            CancelParts();
+            mSilenced.Reset();
+            mImmobilized.Reset();
+            Move(Vector2.Zero);
+            Entity.LinearMomentum = Vector3.Zero;
+            Entity.LinearVelocity = Vector3.Zero;
+            mShieldRechargeTimer = -1.0f;
+            mPoisonTimer = -1.0f;
+            mInvulnerable.Reset();
+            Invulnerable = true;
+            mInvulnerableTimer = InvulnerableLength;
+            Incapacitated = false;
+
+            for (int slot = 0; slot < NumParts; ++slot)
+            {
+                if (mPartAttachments[slot] != null)
+                {
+                    RemovePart(mPartAttachments[slot].Part);
+                }
+            }
+
+            for (int slot = 0; slot < NumParts; ++slot)
+            {
+                if (mRespawnParts[slot] != null)
+                {
+                    AddPart(mRespawnParts[slot], slot);
+                }
+            }
+        }
+
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
-            : base(position + Vector3.Up * 10.0f, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new VisionSensor(4.0f, 135), new PlayerController(viewPort), 3)
+            : base(position + Vector3.Up * 10.0f, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new VisionSensor(4.0f, 135), new PlayerController(viewPort), NumParts)
         {
             Forward = facingDirection;
 

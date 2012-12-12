@@ -13,7 +13,8 @@ namespace finalProject.Parts
     {
 
         private const int flapPower = 200;
-        private const int numFlaps = 100;
+        private const int numFlaps = int.MaxValue;
+        private const float glideDivider = 2.0f;
 
         private const double flapWait = 0.0f;
 
@@ -28,7 +29,7 @@ namespace finalProject.Parts
             : base(
                 new Part.SubPart[] {
                     new SubPart(
-                        new AnimateModel("eagle_leftWing", "stand"),
+                        new AnimateModel("eagle_leftWing", "glide"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.ArmLeft1Cap,
                             Creature.PartBone.ArmLeft2Cap,
@@ -36,7 +37,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(0.0f),
                         Matrix.CreateFromYawPitchRoll(0, 0, 0),
-                        new Vector3(1.0f)
+                        new Vector3(3.0f)
                     ),
                     new SubPart(
                         new AnimateModel("eagle_rightWing", "glide"),
@@ -47,14 +48,13 @@ namespace finalProject.Parts
                         },
                         new Vector3(0.0f),
                         Matrix.CreateFromYawPitchRoll(0, 0, 0),
-                        new Vector3(1.0f)
+                        new Vector3(3.0f)
                     )
                 },
                 false,
-                new Sprite("eagleIcon")            
+                new Sprite("EagleWingsIcon")
             )
         {
-            //(mRenderable as AnimateModel).PlayAnimation("Take 001");
             mFlaps = 0;
             mFlapTimer = 0.0f;
         }
@@ -72,7 +72,7 @@ namespace finalProject.Parts
                 }
             }
 
-            if (Creature.CharacterController.SupportFinder.HasSupport)
+            if (Creature.CharacterController.SupportFinder.HasTraction)
             {
                 mFlaps = 0;
                 mGlide = false;
@@ -80,50 +80,60 @@ namespace finalProject.Parts
 
             if (mGlide)
             {
-                Vector3 direction = new Vector3(0.0f, -Creature.Entity.LinearVelocity.Y, 0.0f);
+                Vector3 direction = new Vector3(0.0f, -Creature.Entity.LinearVelocity.Y * (1.0f / glideDivider), 0.0f);
                 Creature.Entity.ApplyLinearImpulse(ref direction);
+                PlayAnimation("glide", true, true);
             }
 
-            foreach (SubPart subPart in SubParts)
-            {
-                AnimateModel wing = subPart.Renderable as AnimateModel;
-                wing.Update(time);
-            }
+            base.Update(time);
         }
 
         public override void Use(Vector3 direction)
         {
-            if (Creature.CharacterController.SupportFinder.HasSupport)
+            if (mFlaps == 0 && Creature.CharacterController.SupportFinder.HasSupport)
             {
                 Creature.CharacterController.JumpSpeed *= 2;
                 Creature.Jump();
                 mReset = ResetFrames;
+                PlayAnimation("flap_air", true, true);
             }
             else if (mFlaps < numFlaps && mFlapTimer > flapWait)
             {
                 mFlaps++;
                 mFlapTimer = 0.0f;
-                Vector3 flap = new Vector3(0.0f, 1.0f * flapPower, 0.0f);
+                Vector3 flap = Vector3.Up * flapPower;
                 if (Creature.Entity.LinearVelocity.Y < 0) flap.Y -= Creature.Entity.LinearVelocity.Y;
                 Creature.Entity.ApplyLinearImpulse(ref flap);
+
+                // Put current velocity into new direction
+                double dir = Math.Atan2(direction.Z, direction.X);
+                float dist = new Vector2(Creature.Entity.LinearVelocity.X, Creature.Entity.LinearVelocity.Z).Length();
+                Creature.Entity.LinearVelocity = new Vector3(
+                    (float)(dist * Math.Cos(dir)),
+                    Creature.Entity.LinearVelocity.Y,
+                    (float)(dist * Math.Sin(dir)));
+
+                PlayAnimation("flap_air", true, true);
             }
             mGlide = true;
+            mCanAnimate = false;
         }
 
         public override void FinishUse(Vector3 direction)
         {
             mGlide = false;
+            mCanAnimate = true;
         }
 
         public override void Reset()
         {
-            mFlaps = 0;
             Cancel();
+            mFlaps = 0;
         }
 
         public override void Cancel()
         {
-            FinishUse(Vector3.Zero);
+            FinishUse(Creature.Forward);
         }
     }
 }
