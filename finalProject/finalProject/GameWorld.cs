@@ -34,16 +34,19 @@ namespace finalProject
 
             foreach (IActor actor in mActors)
             {
-                if (actor is IGameObject)
+                if (Game1.Camera != null)
                 {
-                    if (((actor as IGameObject).Position - Game1.Camera.GetPosition()).Length() < 400)
+                    if (actor is IGameObject)
+                    {
+                        if (((actor as IGameObject).Position - Game1.Camera.GetPosition()).Length() < 400)
+                        {
+                            actor.Update(gameTime);
+                        }
+                    }
+                    else
                     {
                         actor.Update(gameTime);
                     }
-                }
-                else
-                {
-                    actor.Update(gameTime);
                 }
             }
 
@@ -60,6 +63,8 @@ namespace finalProject
         {
             //if (mCameraEntity != null)
             //{
+            if (Game1.Camera != null)
+            {
                 foreach (IGameObject gameObject in mGameObjects)
                 {
                     if (gameObject is Creature)
@@ -76,7 +81,7 @@ namespace finalProject
                     {
                         gameObject.Render();
                     }
-                    
+
                     /*
                     if (gameObject is IEntityOwner)
                     {
@@ -98,6 +103,7 @@ namespace finalProject
                     }
                      */
                 }
+            }
             //}
         }
 
