@@ -384,11 +384,7 @@ namespace finalProject
 
         public static void AddTip(GameTip tip)
         {
-            if (!tip.Displayed)
-            {
-                tip.Displayed = true;
-                Tips.Add(tip);
-            }
+            Tips.Add(tip);
         }
     }
 }

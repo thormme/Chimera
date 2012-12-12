@@ -21,7 +21,7 @@ namespace finalProject.Parts
     {
         private const double RunLength = 2.0f;
         private const float SpeedBoost = 10.0f;
-        protected const float DamageImpulseMultiplier = 270.0f;
+        protected const float DamageImpulseMultiplier = 200.0f;
 
         private double mRunTimer = -1.0f;
         private double mChargeAnimationTime = 5.0f;

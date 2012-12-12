@@ -28,6 +28,13 @@ namespace finalProject.Creatures
                 new TurtleShell()                               // Part
                 )
         {
+            mTip = new GameTip(
+                new string[] 
+                {
+                    "You have encountered a turtle.",
+                    "Turtles are able to hide in their shell to avoid damage."
+                },
+                10.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -37,15 +44,5 @@ namespace finalProject.Creatures
             return bones;
         }
 
-        public override void AddTip()
-        {
-            Game1.AddTip(new GameTip(
-                new string[] 
-                {
-                    "You have encountered a turtle.",
-                    "Turtles are able to hide in their shell to avoid damage."
-                },
-                10.0f));
-        }
     }
 }

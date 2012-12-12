@@ -29,6 +29,14 @@ namespace finalProject.Creatures
                 )
         {
             Scale = new Vector3(4.0f);
+
+            mTip = new GameTip(
+                new string[] 
+                {
+                    "You have encountered an eagle.",
+                    "Eagles are able to soar through the sky."
+                },
+                10.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -37,16 +45,6 @@ namespace finalProject.Creatures
             bones.Add(PartBone.ArmLeft1Cap);
             bones.Add(PartBone.ArmRight1Cap);
             return bones;
-        }
-
-        public override void AddTip()
-        {
-            Game1.AddTip(new GameTip(
-                new string[] {
-                    "You have encountered an eagle.",
-                    "Eagles are able to soar through the sky."
-                },
-                10.0f));
         }
 
     }

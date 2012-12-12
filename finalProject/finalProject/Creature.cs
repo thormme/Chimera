@@ -112,6 +112,8 @@ namespace finalProject
 
         protected List<PartAttachment> mPartAttachments;
         protected List<PartBone> mUnusedPartBones;
+
+        protected GameTip mTip = new GameTip(new string[] {}, 0.0f);
         
         #endregion
 
@@ -639,9 +641,13 @@ namespace finalProject
             (mRenderable as AnimateModel).PlayAnimation(animationName, isSaturated);
         }
 
-        public virtual void AddTip()
+        public void AddTip()
         {
-
+            if (!mTip.Displayed)
+            {
+                mTip.Displayed = true;
+                Game1.AddTip(mTip);
+            }
         }
 
         /// <summary>

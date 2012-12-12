@@ -29,6 +29,16 @@ namespace finalProject.Creatures
                 )
         {
             Scale = new Vector3(4.0f);
+
+            mTip = new GameTip(
+                new string[] 
+                {
+                    "You have encountered a frill necked lizard.",
+                    "Frill necked lizards are able to scare away other creatures.",
+                    "Their venom also temporarily disables enemies."
+                },
+                10.0f);
+
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -37,19 +47,6 @@ namespace finalProject.Creatures
             //bones.Add(PartBone.HeadCenterCap);
             return bones;
         }
-
-        public override void AddTip()
-        {
-            Game1.AddTip(new GameTip(
-                new string[] 
-                {
-                    "You have encountered a frill necked lizard.",
-                    "Frill necked lizards are able to scare away other creatures.",
-                    "Their venom also temporarily disables enemies."
-                },
-                10.0f));
-        }
-
         
     }
 }

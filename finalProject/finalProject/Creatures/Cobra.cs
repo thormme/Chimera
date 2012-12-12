@@ -29,6 +29,15 @@ namespace finalProject.Creatures
                 )
         {
             Scale = new Vector3(1.0f);
+
+            new GameTip(
+                new string[] 
+                {
+                    "You have encountered a cobra.",
+                    "Cobras are able to charm their foes into a submissive state."
+                },
+                10.0f);
+
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -41,17 +50,6 @@ namespace finalProject.Creatures
         protected virtual Matrix GetOptionalPartTransforms()
         {
             return Matrix.CreateScale(0.5f);
-        }
-
-        public override void AddTip()
-        {
-            Game1.AddTip(new GameTip(
-                new string[] 
-                {
-                    "You have encountered a cobra.",
-                    "Cobras are able to charm their foes into a submissive state."
-                },
-                10.0f));
         }
         
     }

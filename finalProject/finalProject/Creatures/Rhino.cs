@@ -29,6 +29,14 @@ namespace finalProject.Creatures
                 )
         {
             Scale = new Vector3(2.0f);
+
+            mTip = new GameTip(
+                new string[] 
+                {
+                    "You have encountered a rhino.",
+                    "Rhinos will charge foes inflicting great force on anything in their way."
+                },
+                10.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -43,15 +51,5 @@ namespace finalProject.Creatures
             return Matrix.CreateScale(0.5f);
         }
 
-        public override void AddTip()
-        {
-            Game1.AddTip(new GameTip(
-                new string[] 
-                {
-                    "You have encountered a rhino.",
-                    "Rhinos will charge foes inflicting great force on anything in their way."
-                },
-                10.0f));
-        }
     }
 }

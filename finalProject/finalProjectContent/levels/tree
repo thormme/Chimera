@@ -3048,7 +3048,7 @@
     </Parameters>
     <Position>
       <X>-37.3629074</X>
-      <Y>20000</Y>
+      <Y>23903.1016</Y>
       <Z>29.952713</Z>
     </Position>
     <Orientation>
@@ -3073,7 +3073,7 @@
     </Parameters>
     <Position>
       <X>-40.40947</X>
-      <Y>22000</Y>
+      <Y>22076.08</Y>
       <Z>-36.03617</Z>
     </Position>
     <Orientation>
@@ -3085,6 +3085,27 @@
       <X>5</X>
       <Y>4000</Y>
       <Z>5</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>deadTree2</Model>
+    <Parameters />
+    <Position>
+      <X>-37.88086</X>
+      <Y>23737.5547</Y>
+      <Z>36.32786</Z>
+    </Position>
+    <Orientation>
+      <X>5.590082</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>150</X>
+      <Y>120000</Y>
+      <Z>150</Z>
     </Scale>
     <Height>0</Height>
   </DummyObject>

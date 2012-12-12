@@ -28,6 +28,14 @@ namespace finalProject.Creatures
                 new KangarooLegs()                              // Part
                 )
         {
+            mTip = new GameTip(
+                new string[] 
+                {
+                    "You have encountered a kangaroo.",
+                    "Kangaroos are able to jump extremely high.",
+                    "Be careful, if provoked they will attempt to crush you."
+                },
+                10.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -43,16 +51,5 @@ namespace finalProject.Creatures
             return Matrix.CreateScale(0.5f);
         }
 
-        public override void AddTip()
-        {
-            Game1.AddTip(new GameTip(
-                new string[] 
-                {
-                    "You have encountered a kangaroo.",
-                    "Kangaroos are able to jump extremely high.",
-                    "Be careful, if provoked they will attempt to crush you."
-                },
-                10.0f));
-        }
     }
 }
