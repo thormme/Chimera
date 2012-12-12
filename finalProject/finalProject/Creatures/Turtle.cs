@@ -12,7 +12,7 @@ namespace finalProject.Creatures
 {
     public class Turtle : NonPlayerCreature
     {
-        public Turtle(Vector3 position)
+        public Turtle(Vector3 position, Spawner spawn)
             : base(
                 position,
                 2.0f,                                           // Height
@@ -25,7 +25,8 @@ namespace finalProject.Creatures
                 CreatureConstants.TurtleListeningSensitivity,   // Listening Sensitivity
                 CreatureConstants.TurtleSneak,                  // Sneak
                 CreatureConstants.TurtleIntimidation,           // Intimidation
-                new TurtleShell()                               // Part
+                new TurtleShell(),                               // Part
+                spawn
                 )
         {
             mTip = new GameTip(
