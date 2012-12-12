@@ -690,7 +690,7 @@ namespace GraphicsLibrary
         /// </summary>
         /// <param name="spriteName"></param>
         /// <returns></returns>
-        static private Texture2D LookupSprite(string spriteName)
+        static public Texture2D LookupSprite(string spriteName)
         {
             Texture2D result;
             if (mUniqueSpriteLibrary.TryGetValue(spriteName, out result))
