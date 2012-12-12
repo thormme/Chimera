@@ -186,6 +186,9 @@
     <Compile Include="DutyCyclePart.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="GoalPoint.cs" />
+    <Compile Include="Menus\ControlsMenu.cs" />
+    <Compile Include="Menus\GoalsMenu.cs" />
+    <Compile Include="Menus\StoryMenu.cs" />
     <Compile Include="Menus\MainMenu.cs" />
     <Compile Include="MeteredPart.cs" />
     <Compile Include="Parts\BearArms.cs" />

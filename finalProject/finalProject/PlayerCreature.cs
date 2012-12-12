@@ -46,7 +46,6 @@ namespace finalProject
         
         private int mNumHeightModifyingParts = 0;
 
-
         private Part[] mRespawnParts = new Part[3];
 
         private ConeSensor mPartStealSensor;
@@ -577,14 +576,25 @@ namespace finalProject
 
         private void RenderAbilities()
         {
+
             int width = Game1.Graphics.PreferredBackBufferWidth;
             int height = Game1.Graphics.PreferredBackBufferHeight;
             int buttonSize = (int)(0.1f * height);
 
+            if (FoundPart)
+            {
+                Sprite black = new Sprite("black");
+                black.Render(new Rectangle((int)(width - height * 0.55f), (int)(height - height * 0.47f), (int)(0.50f * height), (int)(0.42f * height)));
+                Sprite white = new Sprite("white");
+                white.Render(new Rectangle((int)(width - height * 0.54f), (int)(height - height * 0.46f), (int)(0.48f * height), (int)(0.40f * height)));
+                Sprite assign = new Sprite("assign");
+                assign.Render(new Rectangle((int)(width - height * 0.52), (int)(height - height * 0.42f), (int)(0.44f * height), (int)(0.1f * height)));
+            }
+
             Rectangle[] rects = new Rectangle[3] {
-                new Rectangle((int)(width - width * 0.26f), (int)(height - height * 0.2f), buttonSize, buttonSize),
-                new Rectangle((int)(width - width * 0.18f), (int)(height - height * 0.25f), buttonSize, buttonSize),
-                new Rectangle((int)(width - width * 0.10f), (int)(height - height * 0.2f), buttonSize, buttonSize)
+                new Rectangle((int)(width - height * 0.5f), (int)(height - height * 0.2f), buttonSize, buttonSize),
+                new Rectangle((int)(width - height * 0.35f), (int)(height - height * 0.25f), buttonSize, buttonSize),
+                new Rectangle((int)(width - height * 0.2f), (int)(height - height * 0.2f), buttonSize, buttonSize)
             };
 
             mButtonSprites[0].Render(rects[0]);
