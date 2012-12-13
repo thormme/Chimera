@@ -13,6 +13,8 @@ namespace GameConstructLibrary
     /// </summary>
     public class InputAction
     {
+        public static bool Enabled = true;
+
         private static List<InputAction> mInputActionList = new List<InputAction>();
         
         protected static Vector2 mMouseLockedPosition = new Vector2(200, 200);
@@ -138,13 +140,16 @@ namespace GameConstructLibrary
         /// </summary>
         public static void Update()
         {
-            foreach (InputAction inputAction in mInputActionList)
+            if (Enabled)
             {
-                inputAction.StepInputAction();
-            }
-            if (IsMouseLocked)
-            {
-                Mouse.SetPosition((int)mMouseLockedPosition.X, (int)mMouseLockedPosition.Y);
+                foreach (InputAction inputAction in mInputActionList)
+                {
+                    inputAction.StepInputAction();
+                }
+                if (IsMouseLocked)
+                {
+                    Mouse.SetPosition((int)mMouseLockedPosition.X, (int)mMouseLockedPosition.Y);
+                }
             }
         }
     }

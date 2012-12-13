@@ -6,6 +6,7 @@ using GameConstructLibrary;
 using GraphicsLibrary;
 using Microsoft.Xna.Framework;
 using BEPUphysics.Entities.Prefabs;
+using finalProject.Creatures;
 
 namespace finalProject.Projectiles
 {
@@ -46,12 +47,13 @@ namespace finalProject.Projectiles
             if (creature != null && !creature.Incapacitated)
             {
                 Creature owner = mOwner as Creature;
+                creature.Damage(0, owner);
+
                 Controller ownerController = owner.Controller;
 
                 mOriginalController = creature.Controller;
                 mOriginalCreature = creature;
 
-                creature.Damage(0, owner);
                 mOriginalController.NoControl = true;
                 owner.Move(Vector2.Zero);
                 creature.Controller = ownerController;
