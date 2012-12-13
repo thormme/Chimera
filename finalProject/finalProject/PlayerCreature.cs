@@ -193,6 +193,30 @@ namespace finalProject
             }
         }
 
+        private Checkpoint mCheckpoint = null;
+        public Checkpoint Checkpoint
+        {
+            get
+            {
+                return mCheckpoint;
+            }
+            set
+            {
+                mCheckpoint = value;
+                for (int slot = 0; slot < NumParts; ++slot)
+                {
+                    if (mPartAttachments[slot] != null)
+                    {
+                        mRespawnParts[slot] = mPartAttachments[slot].Part;
+                    }
+                    else
+                    {
+                        mRespawnParts[slot] = null;
+                    }
+                }
+            }
+        }
+
         public bool FoundPart
         {
             get
@@ -272,7 +296,7 @@ namespace finalProject
 
         #region Public Methods
 
-        public void Die()
+        public override void Die()
         {
             ////Console.WriteLine("Player died.");
             Position = SpawnOrigin;

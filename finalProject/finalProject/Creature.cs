@@ -106,6 +106,8 @@ namespace finalProject
 
         protected double mPoisonTimer = -1.0f;
 
+        private double mAllowImpulseTimer = 0f;
+
         protected Dictionary<Modification, int> mModifications = new Dictionary<Modification, int>();
 
         protected float mHeight;
@@ -647,6 +649,14 @@ namespace finalProject
             (mRenderable as AnimateModel).PlayAnimation(animationName, isSaturated);
         }
 
+        public abstract void Die();
+
+        public void AllowImpulse()
+        {
+            CharacterController.VerticalMotionConstraint.IsActive = false;
+            mAllowImpulseTimer = .1;
+        }
+
         public virtual void AddTip()
         {
             if (Tip != null)
@@ -934,6 +944,15 @@ namespace finalProject
                 if (mPoisonTimer < 0.0f)
                 {
                     Poisoned = false;
+                }
+            }
+
+            if (mAllowImpulseTimer > 0.0f)
+            {
+                mAllowImpulseTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (mAllowImpulseTimer < 0.0f)
+                {
+                    CharacterController.VerticalMotionConstraint.IsActive = true;
                 }
             }
 

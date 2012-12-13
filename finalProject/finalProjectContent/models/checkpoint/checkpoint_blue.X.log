@@ -1,0 +1,10 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\checkpoint\checkpoint_blue.X
+@0.000027: kW X-port: 3ds max compatible version 9.00
+@1.299233: Saving node: Cylinder001
+@1.301535: Limiting exported UV coordinates to 1 because of available maps.
+@1.315683: Material 0 shader returned effect file name 'null'
+@1.316155: Material 1 shader returned effect file name 'null'
+@1.316409: Material 2 shader returned effect file name 'null'
+@1.324101: File D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Checkpoint\checkpoint_blue_light_texture.png has same mod time as D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\checkpoint\checkpoint_blue_light_texture.png; not copying.
+@1.324521: File D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Checkpoint\checkpoint_dark_texture.png has same mod time as D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\checkpoint\checkpoint_dark_texture.png; not copying.
+@1.325617: File D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\workInProgress\models\Checkpoint\checkpoint_metal_texture.png has same mod time as D:\Documents\GitHub\eecs494FinalProject\finalProject\finalProjectContent\models\checkpoint\checkpoint_metal_texture.png; not copying.

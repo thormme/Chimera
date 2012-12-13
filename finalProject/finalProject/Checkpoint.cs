@@ -16,10 +16,32 @@ namespace finalProject
 {
     public class Checkpoint : PhysicsObject
     {
+        InanimateModel mRedCheckpoint;
+        InanimateModel mBlueCheckpoint;
+
+        ScrollingTransparentModel mRedLight;
+        ScrollingTransparentModel mBlueLight;
+
+        private bool mActiveCheckpoint = false;
+        public bool ActiveCheckpoint
+        {
+            get { return mActiveCheckpoint; }
+            set { mActiveCheckpoint = value; }
+        }
 
         public Checkpoint(Vector3 position, Quaternion orientation, Vector3 scale)
-            : base(new InanimateModel("box"), new Cylinder(position, 1f, scale.Length()))
-        { }
+            : base(new InanimateModel("checkpoint_red"), new Cylinder(position, 1f, scale.Length()))
+        {
+            Scale = new Vector3(2.0f);
+
+            mRedCheckpoint = new InanimateModel("checkpoint_red");
+            mBlueCheckpoint = new InanimateModel("checkpoint_blue");
+            mRedLight = new ScrollingTransparentModel("checkpoint_light_red");
+            mBlueLight = new ScrollingTransparentModel("checkpoint_light_blue");
+
+            mRedLight.HorizontalVelocity = 0.1f;
+            mBlueLight.HorizontalVelocity = 0.1f;
+        }
 
         /// <summary>
         /// Constructor for use by the World level loading.
@@ -41,8 +63,30 @@ namespace finalProject
                 CharacterSynchronizer synchronizer = (other.Tag as CharacterSynchronizer);
                 if (synchronizer.body.Tag is PlayerCreature)
                 {
+                    Checkpoint oldCheckpoint = (synchronizer.body.Tag as PlayerCreature).Checkpoint;
+                    if (oldCheckpoint != null)
+                    {
+                        oldCheckpoint.ActiveCheckpoint = false;
+                    }
+
                     (synchronizer.body.Tag as PlayerCreature).SpawnOrigin = Position;
+                    (synchronizer.body.Tag as PlayerCreature).Checkpoint = this;
+                    mActiveCheckpoint = true;
                 }
+            }
+        }
+
+        public override void  Render()
+        {
+            if (mActiveCheckpoint)
+            {
+                mBlueCheckpoint.Render(Position, XNAOrientationMatrix, Scale);
+                mBlueLight.Render(Position, XNAOrientationMatrix, Scale);
+            }
+            else
+            {
+                mRedCheckpoint.Render(Position, XNAOrientationMatrix, Scale);
+                mRedLight.Render(Position, XNAOrientationMatrix, Scale);
             }
         }
     }

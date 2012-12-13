@@ -86,7 +86,7 @@ namespace finalProject
             }
         }
 
-        protected void Die()
+        public override void Die()
         {
             mImmobilized.Reset();
             Move(Vector2.Zero);
