@@ -803,6 +803,7 @@
     <Content Include="levels\tree">
       <Name>tree</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

@@ -1072,18 +1072,7 @@ namespace GraphicsLibrary
             float xDistance = (x.WorldTransform.Translation - GraphicsManager.CameraPosition).LengthSquared();
             float yDistance = (y.WorldTransform.Translation - GraphicsManager.CameraPosition).LengthSquared();
 
-            if (xDistance < yDistance)
-            {
-                return -1;
-            }
-            else if (xDistance == yDistance)
-            {
-                return 0;
-            }
-            else
-            {
-                return 1;
-            }
+            return xDistance.CompareTo(yDistance);
         }
     }
 }

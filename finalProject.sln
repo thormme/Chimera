@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "finalProject", "finalProject\finalProject\finalProject.csproj", "{099FF29B-954A-4208-A12C-A2121DDFB7E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "chimera", "finalProject\finalProject\chimera.csproj", "{099FF29B-954A-4208-A12C-A2121DDFB7E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "finalProjectContent", "finalProject\finalProjectContent\finalProjectContent.contentproj", "{DDBC472F-F07E-420A-9AD7-31C03422F337}"
 EndProject

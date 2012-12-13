@@ -79,7 +79,7 @@ namespace finalProject
             Graphics.PreferredBackBufferWidth = 1280;
             Graphics.PreferredBackBufferHeight = 720;
             Graphics.PreferMultiSampling = true;
-            //Graphics.ToggleFullScreen();
+            Graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
 
@@ -226,7 +226,8 @@ namespace finalProject
             //        }
             //    }
             //}
-
+            try
+            {
             IsMouseVisible = !InputAction.IsMouseLocked;
 
             FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
@@ -272,6 +273,15 @@ namespace finalProject
             mGameStateAddQueue.Clear();
 
             base.Update(gameTime);
+            }
+            catch (Exception e) 
+            {
+                TextWriter tw = new StreamWriter("log.txt");
+                tw.WriteLine(e.Message);
+                tw.WriteLine(e.StackTrace);
+                tw.Close();
+                throw e;
+            }
         }
 
         /// <summary>
@@ -280,7 +290,8 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-
+            try
+            {
             Game1.Graphics.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
             GraphicsManager.BeginRendering();
 
@@ -305,6 +316,15 @@ namespace finalProject
             // END
 
             base.Draw(gameTime);
+            }
+            catch (Exception e) 
+            {
+                TextWriter tw = new StreamWriter("log.txt");
+                tw.WriteLine(e.Message);
+                tw.WriteLine(e.StackTrace);
+                tw.Close();
+                throw e;
+            }
         }
 
         private void RenderTips(GameTime gameTime)
