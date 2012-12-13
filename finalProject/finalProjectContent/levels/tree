@@ -2524,30 +2524,6 @@
     <Height>0</Height>
   </DummyObject>
   <DummyObject>
-    <Type>finalProject.TipTrigger, finalProject</Type>
-    <Model>box</Model>
-    <Parameters>
-      <string>10</string>
-      <string>Frog Tongue + Kangaroo Pound = Super Swing</string>
-    </Parameters>
-    <Position>
-      <X>15.92622</X>
-      <Y>11000</Y>
-      <Z>31.8448524</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>0.125</X>
-      <Y>1000</Y>
-      <Z>0.125</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
     <Type>finalProject.PhysicsProp, finalProject</Type>
     <Model>rock1light</Model>
     <Parameters>
@@ -2958,6 +2934,29 @@
     <Scale>
       <X>25</X>
       <Y>20000</Y>
+      <Z>25</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.TipTrigger, finalProject</Type>
+    <Model>box</Model>
+    <Parameters>
+      <string>Use left click or right trigger to steal parts from animals.?Hold down the button until the creature dies.?Then assign it to a slot.</string>
+    </Parameters>
+    <Position>
+      <X>-42.87661</X>
+      <Y>0</Y>
+      <Z>-20.01793</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>1.25</X>
+      <Y>1000</Y>
       <Z>25</Z>
     </Scale>
     <Height>0</Height>

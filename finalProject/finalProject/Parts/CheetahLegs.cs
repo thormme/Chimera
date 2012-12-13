@@ -4,11 +4,29 @@ using System.Linq;
 using System.Text;
 using GraphicsLibrary;
 using Microsoft.Xna.Framework;
+using GameConstructLibrary;
 
 namespace finalProject.Parts
 {
     public class CheetahLegs : MeteredPart
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+            {
+                "Using cheetah legs will allow you to sprint for a short time.",
+                "After a few seconds of inactivity they will recharge."
+            },
+            10.0f);
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
+        }
+
         private const float RunGainSpeed = 22.0f;
         private bool mActive = false;
 

@@ -9,8 +9,27 @@ using GameConstructLibrary;
 
 namespace finalProject.Parts
 {
+
     class KangarooLegs : Part
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+                {
+                    "Using kangaroo legs while on the ground will begin charging them.",
+                    "When you stop using them, you will jump into the air.",
+                    "Using them while in the air will cause you to perform a butt slam."
+                },
+            10.0f);
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
+        }
+
         const double maxJumpCharge = 3.0;
         const double jumpStrengthTimerStart = 1.0;
         const double jumpStrength = 3.0;

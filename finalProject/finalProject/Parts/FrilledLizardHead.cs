@@ -5,11 +5,30 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using finalProject.Projectiles;
+using GameConstructLibrary;
 
 namespace finalProject.Parts
 {
     public class FrilledLizardHead : CooldownPart
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+                {
+                    "Using frilled lizard head will spit a projectile.",
+                    "Enemies hit by this projectile will not be able",
+                    "to use abilities for a short period of time."
+                },
+            10.0f);
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
+        }
+
         public FrilledLizardHead()
             : base(
                 20.0f,

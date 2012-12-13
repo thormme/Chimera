@@ -19,6 +19,23 @@ namespace finalProject.Parts
 {
     class RhinoHead : CooldownPart
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+                {
+                    "Using rhino head will cause you to charge forward.",
+                    "Anything hit during your charge will go flying."
+                },
+            10.0f);
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
+        }
+
         private const double RunLength = 2.0f;
         private const float SpeedBoost = 10.0f;
         protected const float DamageImpulseMultiplier = 200.0f;

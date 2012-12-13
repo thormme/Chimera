@@ -91,7 +91,7 @@ namespace finalProject
                 "You have encountered a checkpoint.",
                 "You will respawn at the last checkpoint you touched."
             },
-        10.0f);
+            10.0f);
         GameTip mGoalPointEncountered = new GameTip(
             new string[] {
                 "You have found an extraction point.",
@@ -285,6 +285,11 @@ namespace finalProject
                 Console.WriteLine("lost target");
             }
             mStealTimer = -1.0f;
+        }
+
+        public override void AddTip()
+        {
+            
         }
 
         #endregion
@@ -529,6 +534,8 @@ namespace finalProject
         public override void AddPart(Part part, int slot)
         {
  	        base.AddPart(part, slot);
+
+            part.AddTip();
 
             if (mNumHeightModifyingParts == 0 && part.Height > 0.0f)
             {

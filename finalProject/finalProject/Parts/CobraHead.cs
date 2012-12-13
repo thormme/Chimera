@@ -12,6 +12,23 @@ namespace finalProject.Parts
 {
     public class CobraHead : CooldownPart
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+                {
+                    "Using cobra head will allow you to charm an enemy.",
+                    "They will be under your complete control for the duration."
+                },
+            10.0f);
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
+        }
+
         public bool Active
         {
             get

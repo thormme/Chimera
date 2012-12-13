@@ -12,6 +12,15 @@ namespace finalProject.Creatures
 {
     public class Cheetah : NonPlayerCreature
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+            {
+                "You have encountred a cheetah.",
+                "Cheetahs are known for their blinding speed."
+            },
+            10.0f);
+
         public Cheetah(Vector3 position, Spawner spawn)
             : base(
                 position,
@@ -30,15 +39,6 @@ namespace finalProject.Creatures
                 )
         {
             Scale = new Vector3(2.0f);
-
-            mTip = new GameTip(
-                new string[] 
-                {
-                    "You have encountred a cheetah.",
-                    "Cheetahs are known for their blinding speed."
-                },
-                10.0f);
-
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -49,6 +49,14 @@ namespace finalProject.Creatures
             bones.Add(PartBone.LegFrontRight1Cap);
             bones.Add(PartBone.LegRearRight1Cap);
             return bones;
+        }
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
         }
 
         protected virtual Matrix GetOptionalPartTransforms()

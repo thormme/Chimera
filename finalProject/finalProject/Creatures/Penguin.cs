@@ -12,6 +12,15 @@ namespace finalProject.Creatures
 {
     public class Penguin : NonPlayerCreature
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+            {
+                "You have encountered a penguin.",
+                "Penguins are able to slide down hills."
+            },
+            10.0f);
+
         public Penguin(Vector3 position, Spawner spawn)
             : base(
                 position,
@@ -29,15 +38,7 @@ namespace finalProject.Creatures
                 spawn
                 )
         {
-            Scale = new Vector3(1.0f);
-
-            mTip = new GameTip(
-                new string[] 
-                {
-                    "You have encountered a penguin.",
-                    "Penguins are able to slide down hills."
-                },
-                10.0f);
+            Scale = new Vector3(2.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -48,6 +49,14 @@ namespace finalProject.Creatures
             bones.Add(PartBone.ArmLeft1Cap);
             bones.Add(PartBone.ArmRight1Cap);
             return bones;
+        }
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
         }
 
     }
