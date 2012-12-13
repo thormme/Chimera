@@ -24,7 +24,7 @@ namespace finalProject.Creatures
         public Frog(Vector3 position, Spawner spawn)
             : base(
                 position,
-                3.0f,                                       // Height
+                2.0f,                                       // Height
                 2.0f,                                       // Radius
                 2.0f,                                       // Mass
                 CreatureConstants.FrogSensitivityRadius,    // Sensitivity Radius

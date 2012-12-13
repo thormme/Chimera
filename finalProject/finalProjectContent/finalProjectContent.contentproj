@@ -671,6 +671,16 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="textures\sprites\reticle.png">
+      <Name>reticle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\success.png">
+      <Name>success</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="sounds\sfx\chime.wav">
       <Name>chime</Name>
       <Importer>WavImporter</Importer>

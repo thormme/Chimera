@@ -31,9 +31,9 @@ namespace finalProject.Parts
                             Creature.PartBone.Spine2Cap,
                             Creature.PartBone.Spine3Cap
                         },
-                        new Vector3(),
-                        Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(1.0f)
+                        new Vector3(-0.163362786f, 0.0188495629f, -0.157079622f),
+                        Matrix.CreateFromYawPitchRoll(-0.6702064f, -3.141595f, -1.549852f),
+                        new Vector3(4.0f)
                     )
                 },
                 false,
@@ -66,7 +66,7 @@ namespace finalProject.Parts
             if (!Active && Creature != null)
             {
                 Active = true;
-                //Console.WriteLine("used");
+                Creature.TryPlayAnimation("hide", true);
                 mCanAnimate = false;
             }
         }
@@ -96,7 +96,7 @@ namespace finalProject.Parts
         {
             base.Damage(damage, source);
 
-            if (Active)
+            if (Active && damage > 0)
             {
                 source.Stun();
             }

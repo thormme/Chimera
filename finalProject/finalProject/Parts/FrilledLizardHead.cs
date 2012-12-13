@@ -33,7 +33,7 @@ namespace finalProject.Parts
 
         public FrilledLizardHead()
             : base(
-                20.0f,
+                12.0f,
                 new Part.SubPart[] {
                     new SubPart(
                         new AnimateModel("lizard_head", "standClosed"),

@@ -416,14 +416,12 @@ namespace finalProject
             set
             {
                 mBoneIndex = value;
-                if (mPartAttachments[0] != null)
+                if (mBoneIndex < 0)
                 {
-                    if (mBoneIndex < 0)
-                    {
-                        mBoneIndex += mPartAttachments[0].Bones.Count;
-                    }
-                    mBoneIndex %= mPartAttachments[0].Bones.Count;
+                    mBoneIndex += PartAttachments[0].Part.SubParts.Length;
                 }
+                mBoneIndex %= PartAttachments[0].Part.SubParts.Length;
+                Console.WriteLine(mBoneIndex);
             }
         }
         private int mBoneIndex = 0;
@@ -439,10 +437,10 @@ namespace finalProject
                 for (int i = 0; i < mPartAttachments[0].Bones.Count; ++i)
                 {
                     tw.WriteLine(mPartAttachments[0].Bones[i].ToString());
-                    tw.WriteLine(mPartRotations[i].M11.ToString() + " " + mPartRotations[i].M12.ToString() + " " + mPartRotations[i].M13.ToString() + " " + mPartRotations[i].M14.ToString());
-                    tw.WriteLine(mPartRotations[i].M21.ToString() + " " + mPartRotations[i].M22.ToString() + " " + mPartRotations[i].M23.ToString() + " " + mPartRotations[i].M24.ToString());
-                    tw.WriteLine(mPartRotations[i].M31.ToString() + " " + mPartRotations[i].M32.ToString() + " " + mPartRotations[i].M33.ToString() + " " + mPartRotations[i].M34.ToString());
-                    tw.WriteLine(mPartRotations[i].M41.ToString() + " " + mPartRotations[i].M42.ToString() + " " + mPartRotations[i].M43.ToString() + " " + mPartRotations[i].M44.ToString());
+                    tw.WriteLine(mPartRotations[(int)mPartAttachments[0].Bones[i]].M11.ToString() + " " + mPartRotations[i].M12.ToString() + " " + mPartRotations[i].M13.ToString() + " " + mPartRotations[i].M14.ToString());
+                    tw.WriteLine(mPartRotations[(int)mPartAttachments[0].Bones[i]].M21.ToString() + " " + mPartRotations[i].M22.ToString() + " " + mPartRotations[i].M23.ToString() + " " + mPartRotations[i].M24.ToString());
+                    tw.WriteLine(mPartRotations[(int)mPartAttachments[0].Bones[i]].M31.ToString() + " " + mPartRotations[i].M32.ToString() + " " + mPartRotations[i].M33.ToString() + " " + mPartRotations[i].M34.ToString());
+                    tw.WriteLine(mPartRotations[(int)mPartAttachments[0].Bones[i]].M41.ToString() + " " + mPartRotations[i].M42.ToString() + " " + mPartRotations[i].M43.ToString() + " " + mPartRotations[i].M44.ToString());
                     tw.WriteLine("");
                 }
                 tw.Close();
@@ -488,7 +486,7 @@ namespace finalProject
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
-                        Matrix worldTransform = /* mPartRotations[count] * */(mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
+                        Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
                         partAttachment.Part.SubParts[count].Render(worldTransform, overlayColor, overlayColorWeight, scale);
 
                         count++;
@@ -586,17 +584,6 @@ namespace finalProject
             Controller = controller;
             controller.SetCreature(this);
 
-            if (PartAttachments[0] != null)
-            {
-                for (int i = 0; i < PartAttachments[0].Bones.Count; ++i)
-                {
-                    mPartRotations[i] = Matrix.Identity;
-                    mBoneUp[i] = Vector3.Up;
-                    mBoneForward[i] = Vector3.Forward;
-                    mBoneRight[i] = Vector3.Right;
-                }
-            }
-
             mBoneIndex = 0;
         }
 
@@ -690,11 +677,11 @@ namespace finalProject
             mPartAttachments[slot] = new PartAttachment(part, usedBones);
 
             part.Creature = this;
-            
-            //mPartRotations = new Matrix[PartAttachments[0].Bones.Count];
-            //mBoneUp = new Vector3[PartAttachments[0].Bones.Count];
-            //mBoneForward = new Vector3[PartAttachments[0].Bones.Count];
-            //mBoneRight = new Vector3[PartAttachments[0].Bones.Count];
+
+            //mPartRotations = new Matrix[mPartAttachments[0].Bones.Count];
+            //mBoneUp = new Vector3[mPartAttachments[0].Bones.Count];
+            //mBoneForward = new Vector3[mPartAttachments[0].Bones.Count];
+            //mBoneRight = new Vector3[mPartAttachments[0].Bones.Count];
             //for (int i = 0; i < PartAttachments[0].Bones.Count; ++i)
             //{
             //    mPartRotations[i] = Matrix.Identity;

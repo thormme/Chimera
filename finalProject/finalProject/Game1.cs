@@ -182,22 +182,22 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // DEBUG STUFF
-            if (debug.Active)
-            {
-                debugMode = !debugMode;
-            }
+            //// DEBUG STUFF
+            //if (debug.Active)
+            //{
+            //    debugMode = !debugMode;
+            //}
 
-            if (debugGraphics.Active)
-            {
-                GraphicsManager.DebugVisualization = (GraphicsManager.DebugVisualization) ? false : true;
-            }
-            // END
+            //if (debugGraphics.Active)
+            //{
+            //    GraphicsManager.DebugVisualization = (GraphicsManager.DebugVisualization) ? false : true;
+            //}
+            //// END
 
-            if (celShading.Active)
-            {
-                GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.Models : GraphicsManager.CelShaded.All;
-            }
+            //if (celShading.Active)
+            //{
+            //    GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.Models : GraphicsManager.CelShaded.All;
+            //}
 
             //if (cheat.Active)
             //{

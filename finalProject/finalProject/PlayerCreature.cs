@@ -60,7 +60,7 @@ namespace finalProject
         private Sprite mRequirementBoxSprite = new Sprite("requirementBox");
         private Sprite mRequirementSprite = null;
         private Sprite mCheckSprite = new Sprite("check");
-        private Sprite mReticleSprite = new Sprite("green");
+        private Sprite mReticleSprite = new Sprite("reticle");
 
         private Sprite[] mButtonSprites = new Sprite[NumParts] {
             new Sprite("blueButton"), 
@@ -627,7 +627,7 @@ namespace finalProject
                 rotationIncrease = partStealFraction * 1.5f;
             }
 
-            mSuckModel.VerticalVelocity = 1.0f + rotationIncrease;
+            mSuckModel.VerticalVelocity = 0.5f + rotationIncrease;
             mSuckModel.HorizontalVelocity = mSuckModel.VerticalVelocity;
 
             if (Controller is PlayerController)

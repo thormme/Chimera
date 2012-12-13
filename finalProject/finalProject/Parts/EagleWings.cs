@@ -46,25 +46,25 @@ namespace finalProject.Parts
             : base(
                 new Part.SubPart[] {
                     new SubPart(
-                        new AnimateModel("eagle_leftWing", "glide"),
+                        new AnimateModel("eagle_rightWing", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.ArmLeft1Cap,
                             Creature.PartBone.ArmLeft2Cap,
                             Creature.PartBone.ArmLeft3Cap
                         },
                         new Vector3(0.0f),
-                        Matrix.CreateFromYawPitchRoll(0, 0, 0),
+                        Matrix.CreateFromYawPitchRoll(-3.518587f, 0.6702065f, 0.08377578f),
                         new Vector3(3.0f)
                     ),
                     new SubPart(
-                        new AnimateModel("eagle_rightWing", "glide"),
+                        new AnimateModel("eagle_leftWing", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.ArmRight1Cap,
                             Creature.PartBone.ArmRight2Cap,
                             Creature.PartBone.ArmRight3Cap
                         },
                         new Vector3(0.0f),
-                        Matrix.CreateFromYawPitchRoll(0, 0, 0),
+                        Matrix.CreateFromYawPitchRoll(-3.476699f, -0.2094394f, -2.303835f),
                         new Vector3(3.0f)
                     )
                 },
@@ -112,7 +112,8 @@ namespace finalProject.Parts
                 Creature.CharacterController.JumpSpeed *= 2;
                 Creature.Jump();
                 mReset = ResetFrames;
-                PlayAnimation("flap_air", true, true);
+
+                PlayAnimation("flap_ground", true, true);
             }
             else if (mFlaps < numFlaps && mFlapTimer > flapWait)
             {

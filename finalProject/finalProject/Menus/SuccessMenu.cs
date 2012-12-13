@@ -10,15 +10,16 @@ using GameConstructLibrary;
 
 namespace finalProject.Menus
 {
-    class ControlsMenu : GameMenu
+    class SuccessMenu : GameMenu
     {
+        ModelDrawer mDebugDrawer;
         Game mOwnerGame;
 
-        public ControlsMenu(Game game)
+        public SuccessMenu(Game game)
         {
             mOwnerGame = game;
 
-            Sprite backgroundSprite = new Sprite("blue");
+            Sprite backgroundSprite = new Sprite("green");
             int height = (int)(Game1.Graphics.PreferredBackBufferHeight);
             int width = (int)(Game1.Graphics.PreferredBackBufferWidth);
             int y = 0;
@@ -47,23 +48,23 @@ namespace finalProject.Menus
                 new Button.ButtonAction(Continue)
             );
 
-            Sprite storySprite = new Sprite("controls");
+            Sprite successSprite = new Sprite("success");
             height = (int)(Game1.Graphics.PreferredBackBufferHeight);
-            width = (int)((float)storySprite.Width / (float)storySprite.Height * (float)height);
+            width = (int)((float)successSprite.Width / (float)successSprite.Height * (float)height);
             y = 0;
-            GraphicItem controls = new GraphicItem(
+            GraphicItem success = new GraphicItem(
                 new Microsoft.Xna.Framework.Rectangle(
                     Game1.Graphics.PreferredBackBufferWidth / 2 - width / 2,
                     y,
                     width,
                     height
                 ),
-                storySprite
+                successSprite
             );
 
             Add(background);
             Add(button);
-            Add(controls);
+            Add(success);
         }
 
         private void Continue(Button button)

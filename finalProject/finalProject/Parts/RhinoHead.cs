@@ -47,7 +47,7 @@ namespace finalProject.Parts
 
         public RhinoHead()
             : base(
-                10.0,
+                4.0f,
                 new Part.SubPart[] {
                     new SubPart(
                         new AnimateModel("rhino_head", "stand"),

@@ -11,6 +11,7 @@ using BEPUphysics.NarrowPhaseSystems.Pairs;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Entities.Prefabs;
+using finalProject.Menus;
 
 namespace finalProject
 {
@@ -24,7 +25,7 @@ namespace finalProject
         public Type PartType;
 
         public GoalPoint(Vector3 position, Quaternion orientation, Vector3 scale, string nextLevel, Type partType)
-            : base(new ScrollingTransparentModel("tractorBeam"), new Cylinder(position, 1f, scale.Length()))
+            : base(new ScrollingTransparentModel("tractorBeam"), new Cylinder(position, 1f, scale.Length() * 7.0f))
         {
             mNextLevel = nextLevel;
             PartType = partType;
@@ -76,7 +77,9 @@ namespace finalProject
                         }
                         else
                         {
-                            Game1.Game.ExitToMenu();
+                            InputAction.IsMouseLocked = false;
+                            Game1.PopState();
+                            Game1.PushState(new SuccessMenu(Game1.Game));
                         }
                     }
                 }

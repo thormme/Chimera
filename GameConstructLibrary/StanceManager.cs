@@ -91,10 +91,10 @@ namespace GameConstructLibrary
         {
             this.character = character;
             standingHeight = character.Body.Height;
-            if (crouchingHeight < standingHeight)
-                this.crouchingHeight = StandingHeight * .7f;
-            else
-                throw new Exception("Crouching height must be less than standing height.");
+            //if (crouchingHeight < standingHeight)
+                //this.crouchingHeight = StandingHeight * .7f;
+            //else
+                //throw new Exception("Crouching height must be less than standing height.");
         }
 
         /// <summary>
