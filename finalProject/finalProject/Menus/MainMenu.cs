@@ -91,7 +91,7 @@ namespace finalProject.Menus
             Game1.PopState();
 
             GameWorld world = new GameWorld(mDebugDrawer);
-            world.AddLevelFromFile("stupid cobra", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("tree", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
             Game1.PushState(world);
 
         }

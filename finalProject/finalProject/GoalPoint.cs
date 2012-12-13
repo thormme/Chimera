@@ -25,7 +25,7 @@ namespace finalProject
         public Type PartType;
 
         public GoalPoint(Vector3 position, Quaternion orientation, Vector3 scale, string nextLevel, Type partType)
-            : base(new ScrollingTransparentModel("tractorBeam"), new Cylinder(position, 1f, scale.Length()))
+            : base(new ScrollingTransparentModel("tractorBeam"), new Cylinder(position, 1f, scale.Length() * 7.0f))
         {
             mNextLevel = nextLevel;
             PartType = partType;
