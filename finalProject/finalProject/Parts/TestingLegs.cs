@@ -12,13 +12,23 @@ namespace finalProject.Parts
         private const float RunGainSpeed = 22.0f;
         private bool mActive = false;
 
+        static void AddCheetahSpeed(Creature creature)
+        {
+            creature.CharacterController.HorizontalMotionConstraint.Speed += RunGainSpeed;
+        }
+
+        static void RemoveCheetahSpeed(Creature creature)
+        {
+            creature.CharacterController.HorizontalMotionConstraint.Speed -= RunGainSpeed;
+        }
+
         public TestingLegs()
             : base(
-                100.0f,
+                double.MaxValue,
                 0.0f,
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("cheetah_frontLeftLeg", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegFrontLeft1Cap,
                             Creature.PartBone.LegFrontLeft2Cap,
@@ -26,10 +36,10 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.02f)
+                        new Vector3(3.5f)
                     ),
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("cheetah_frontRightLeg", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegFrontRight1Cap,
                             Creature.PartBone.LegFrontRight2Cap,
@@ -37,10 +47,10 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.02f)
+                        new Vector3(3.5f)
                     ),
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("cheetah_rearLeftLeg", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegRearLeft1Cap,
                             Creature.PartBone.LegRearLeft2Cap,
@@ -48,10 +58,10 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.02f)
+                        new Vector3(4.0f)
                     ),
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new AnimateModel("cheetah_rearRightLeg", "stand"),
                         new Creature.PartBone[] { 
                             Creature.PartBone.LegRearRight1Cap,
                             Creature.PartBone.LegRearRight2Cap,
@@ -59,20 +69,22 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.02f)
+                        new Vector3(4.0f)
                     )
                 },
                 true,
-                new Sprite("cheetahLegs")
+                new Sprite("CheetahLegsIcon")
             )
         { }
-                
+
         protected override void UseMeter(Vector3 direction)
         {
             if (!mActive)
             {
-                Creature.CharacterController.HorizontalMotionConstraint.Speed += RunGainSpeed;
+                Creature.AddModification(AddCheetahSpeed, RemoveCheetahSpeed);
                 mActive = true;
+                mCanAnimate = false;
+                PlayAnimation("run", false, true);
             }
         }
 
@@ -80,9 +92,15 @@ namespace finalProject.Parts
         {
             if (Creature != null && mActive)
             {
-                Creature.CharacterController.HorizontalMotionConstraint.Speed -= RunGainSpeed;
+                Creature.RemoveModification(RemoveCheetahSpeed);
                 mActive = false;
+                mCanAnimate = true;
             }
+        }
+
+        public override void Update(GameTime time)
+        {
+            base.Update(time);
         }
 
         public override void Cancel()

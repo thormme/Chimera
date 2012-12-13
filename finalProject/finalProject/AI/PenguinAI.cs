@@ -25,6 +25,7 @@ namespace finalProject.AI
 
         protected override void DurdleMoveUpdate(GameTime time)
         {
+            base.DurdleMoveUpdate(time);
             Vector3 steepestNormal = Vector3.Zero;
             float mostDegrees = 0.0f;
             foreach (SupportContact support in mCreature.CharacterController.SupportFinder.Supports)

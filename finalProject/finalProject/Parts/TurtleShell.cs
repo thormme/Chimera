@@ -15,7 +15,7 @@ namespace finalProject.Parts
                 3.0f,
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("sphere"),
+                        new InanimateModel("box"),//"sphere"),
                         new Creature.PartBone[] {
                             Creature.PartBone.Spine1Cap,
                             Creature.PartBone.Spine2Cap,

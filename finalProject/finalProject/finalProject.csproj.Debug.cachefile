@@ -93,6 +93,15 @@ Content\textures\sprites\title.xnb
 Content\textures\sprites\check.xnb
 Content\textures\sprites\requirements.xnb
 Content\textures\sprites\requirementBox.xnb
+Content\textures\sprites\blue.xnb
+Content\textures\sprites\chimera.xnb
+Content\textures\sprites\green.xnb
+Content\textures\sprites\paused.xnb
+Content\textures\sprites\quit.xnb
+Content\textures\sprites\red.xnb
+Content\textures\sprites\resume.xnb
+Content\textures\sprites\checkpoint.xnb
+Content\textures\sprites\yellow.xnb
 Content\models\dude\dude_walk.xnb
 Content\models\editor\editor.xnb
 Content\models\primitives\box.xnb
@@ -134,6 +143,10 @@ Content\models\dude\upBodyC_0.xnb
 Content\models\editor\editor_0.xnb
 Content\models\primitives\purple_block_0.xnb
 Content\models\primitives\orange_ball_0.xnb
+Content\textures\sprites\empty.xnb
+Content\textures\sprites\white.xnb
+Content\textures\sprites\black.xnb
+Content\textures\sprites\assign.xnb
 Content\models\bear\bear.tweak
 Content\models\cheetah\cheetah.tweak
 Content\models\cobra\cobra.tweak

@@ -34,7 +34,7 @@ namespace finalProject
             set;
         }
 
-        protected Spawner mSpawner;
+        public Spawner Spawner;
 
         public NonPlayerCreature(
             Vector3 position,
@@ -58,7 +58,7 @@ namespace finalProject
             Intimidation = intimidation;
             Controller = controller;
             AddPart(part, 0);
-            mSpawner = spawn;
+            Spawner = spawn;
             CharacterController.HorizontalMotionConstraint.Speed = 9.0f;
         }
 

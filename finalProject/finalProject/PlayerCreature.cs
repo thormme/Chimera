@@ -30,6 +30,10 @@ namespace finalProject
     {
         #region Fields
 
+        private bool mHackStop = true;
+
+        private const int NumParts = 3;
+
         private const float mPlayerRadius = 1.0f;
         private const int DefaultSneak = 0;
         private const int DefaultIntimidation = 5;
@@ -47,7 +51,7 @@ namespace finalProject
         private int mNumHeightModifyingParts = 0;
 
 
-        private Part[] mRespawnParts = new Part[3];
+        private Part[] mRespawnParts = new Part[NumParts];
 
         private ConeSensor mPartStealSensor;
         private Matrix mConeOrientation = Matrix.Identity;
@@ -57,7 +61,7 @@ namespace finalProject
         private Sprite mRequirementSprite = null;
         private Sprite mCheckSprite = new Sprite("check");
 
-        private Sprite[] mButtonSprites = new Sprite[3] {
+        private Sprite[] mButtonSprites = new Sprite[NumParts] {
             new Sprite("blueButton"), 
             new Sprite("yellowButton"), 
             new Sprite("redButton") 
@@ -165,7 +169,29 @@ namespace finalProject
         /// <summary>
         /// The position that the player will respawn when killed.
         /// </summary>
-        public Vector3 SpawnOrigin;
+        private Vector3 mSpawnOrigin;
+        public Vector3 SpawnOrigin
+        {
+            get
+            {
+                return mSpawnOrigin;
+            }
+            set
+            {
+                mSpawnOrigin = value;
+                for (int slot = 0; slot < NumParts; ++slot)
+                {
+                    if (mPartAttachments[slot] != null)
+                    {
+                        mRespawnParts[slot] = mPartAttachments[slot].Part;
+                    }
+                    else
+                    {
+                        mRespawnParts[slot] = null;
+                    }
+                }
+            }
+        }
 
         public bool FoundPart
         {
@@ -220,7 +246,28 @@ namespace finalProject
             return bones;
         }
 
-        protected void Die()
+        protected override void CancelParts()
+        {
+            base.CancelParts();
+
+            DeactivateStealPart();
+        }
+
+        protected void ResetStealTarget()
+        {
+            if (mStealTarget != null)
+            {
+                mStealTarget = null;
+                Console.WriteLine("lost target");
+            }
+            mStealTimer = -1.0f;
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void Die()
         {
             ////Console.WriteLine("Player died.");
             Position = SpawnOrigin;
@@ -238,32 +285,28 @@ namespace finalProject
             Invulnerable = true;
             mInvulnerableTimer = InvulnerableLength;
             Incapacitated = false;
-        }
 
-        protected override void CancelParts()
-        {
-            base.CancelParts();
-
-            DeactivateStealPart();
-        }
-
-        protected void ResetStealTarget()
-        {
-            if (mStealTarget != null)
+            for (int slot = 0; slot < NumParts; ++slot)
             {
-                mStealTarget = null;
-                //Console.WriteLine("lost target");
+                if (mPartAttachments[slot] != null)
+                {
+                    RemovePart(mPartAttachments[slot].Part);
+                }
             }
-            mStealTimer = -1.0f;
+
+            for (int slot = 0; slot < NumParts; ++slot)
+            {
+                if (mRespawnParts[slot] != null)
+                {
+                    AddPart(mRespawnParts[slot], slot);
+                }
+            }
         }
-
-        #endregion
-
-        #region Public Methods
 
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
-            : base(position + Vector3.Up * 10.0f, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new VisionSensor(4.0f, 135), new PlayerController(viewPort), 3)
+            : base(position + Vector3.Up * 10.0f, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new VisionSensor(4.0f, 135), new PlayerController(viewPort), NumParts)
         {
+            Controller.NoControl = true;
             Forward = facingDirection;
 
             Vector3[] vertices;
@@ -306,6 +349,12 @@ namespace finalProject
 
         public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
         {
+            if (mHackStop)
+            {
+                mHackStop = false;
+                Controller.NoControl = false;
+            }
+
  	        base.InitialCollisionDetected(sender, other, collisionPair);
             //Console.WriteLine(other.Tag);
 
@@ -485,6 +534,11 @@ namespace finalProject
         /// <param name="gameTime">Time elapsed since last frame.</param>
         public override void Update(GameTime gameTime)
         {
+            if (mHackStop)
+            {
+                return;
+            }
+
             if ((World as GameWorld).Goal != null)
             {
                 mRequirementSprite = new Sprite((World as GameWorld).Goal.PartType.Name + "Icon");
@@ -573,14 +627,25 @@ namespace finalProject
 
         private void RenderAbilities()
         {
+
             int width = Game1.Graphics.PreferredBackBufferWidth;
             int height = Game1.Graphics.PreferredBackBufferHeight;
             int buttonSize = (int)(0.1f * height);
 
+            if (FoundPart)
+            {
+                Sprite black = new Sprite("black");
+                black.Render(new Rectangle((int)(width - height * 0.55f), (int)(height - height * 0.47f), (int)(0.50f * height), (int)(0.42f * height)));
+                Sprite white = new Sprite("white");
+                white.Render(new Rectangle((int)(width - height * 0.54f), (int)(height - height * 0.46f), (int)(0.48f * height), (int)(0.40f * height)));
+                Sprite assign = new Sprite("assign");
+                assign.Render(new Rectangle((int)(width - height * 0.52), (int)(height - height * 0.42f), (int)(0.44f * height), (int)(0.1f * height)));
+            }
+
             Rectangle[] rects = new Rectangle[3] {
-                new Rectangle((int)(width - width * 0.26f), (int)(height - height * 0.2f), buttonSize, buttonSize),
-                new Rectangle((int)(width - width * 0.18f), (int)(height - height * 0.25f), buttonSize, buttonSize),
-                new Rectangle((int)(width - width * 0.10f), (int)(height - height * 0.2f), buttonSize, buttonSize)
+                new Rectangle((int)(width - height * 0.5f), (int)(height - height * 0.2f), buttonSize, buttonSize),
+                new Rectangle((int)(width - height * 0.35f), (int)(height - height * 0.25f), buttonSize, buttonSize),
+                new Rectangle((int)(width - height * 0.2f), (int)(height - height * 0.2f), buttonSize, buttonSize)
             };
 
             mButtonSprites[0].Render(rects[0]);
