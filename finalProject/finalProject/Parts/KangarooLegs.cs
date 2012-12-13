@@ -104,7 +104,7 @@ namespace finalProject.Parts
                 mJumpInUse = true;
                 mJumpStrengthTimer = jumpStrengthTimerStart;
 
-                PlayAnimation("charge", true, true);
+                PlayAnimation("charge", true, false);
 
                 mCanAnimate = false;
             }
@@ -189,7 +189,7 @@ namespace finalProject.Parts
                 Vector3 pushForward = Creature.Forward * mJumpMultiplier * forwardJumpForce;
                 Creature.Entity.ApplyLinearImpulse(ref pushForward);
                 
-                PlayAnimation("jump", true, true);
+                PlayAnimation("jump", true, false);
 
                 mCanAnimate = false;
             }

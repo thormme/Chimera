@@ -33,7 +33,7 @@ namespace finalProject.Parts
         protected const double AnimationLength = 1.0f;
         protected double mAnimationTimer = -1.0f;
 
-        protected const float DamageImpulseMultiplier = 70.0f;
+        protected const float DamageImpulseMultiplier = 100.0f;
 
         protected bool mActive = false;
 

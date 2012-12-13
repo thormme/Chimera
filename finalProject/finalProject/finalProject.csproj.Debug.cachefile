@@ -96,6 +96,11 @@ Content\models\bear\bear_leftArm.xnb
 Content\models\cheetah\cheetah.xnb
 Content\models\suckCone\suckCone.xnb
 Content\models\suckCone\suckConeCollision.xnb
+Content\models\tractorBeam\tractorBeam.xnb
+Content\models\checkpoint\checkpoint_blue.xnb
+Content\models\checkpoint\checkpoint_light_blue.xnb
+Content\models\checkpoint\checkpoint_light_red.xnb
+Content\models\checkpoint\checkpoint_red.xnb
 Content\shaders\ConfigurableShader.xnb
 Content\shaders\PostProcessing.xnb
 Content\shaders\DPSFDefaultEffect.xnb
@@ -133,6 +138,13 @@ Content\models\cobra\cobra_texture_0.xnb
 Content\models\penguin\penguin_0.xnb
 Content\models\turtle\Turtle_0.xnb
 Content\models\suckCone\suckCone_texture_0.xnb
+Content\models\tractorBeam\tractorBeam_texture_0.xnb
+Content\models\checkpoint\checkpoint_metal_texture_0.xnb
+Content\models\checkpoint\checkpoint_dark_texture_0.xnb
+Content\models\checkpoint\checkpoint_blue_light_texture_0.xnb
+Content\models\checkpoint\checkpoint_blue_glow_texture_0.xnb
+Content\models\checkpoint\checkpoint_red_glow_texture_0.xnb
+Content\models\checkpoint\checkpoint_red_light_texture_0.xnb
 Content\models\dude\head_0.xnb
 Content\models\dude\jacket_0.xnb
 Content\models\dude\pants_0.xnb
