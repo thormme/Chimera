@@ -29,7 +29,7 @@ namespace finalProject.Creatures
                 spawn
                 )
         {
-            Scale = new Vector3(5.0f);
+            Scale = new Vector3(3.0f);
 
             mTip = new GameTip(
                 new string[] 

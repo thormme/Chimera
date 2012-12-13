@@ -15,7 +15,7 @@ namespace finalProject.Parts
                 3.0f,
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("box"),//"sphere"),
+                        new InanimateModel("turtle_shell"),//"sphere"),
                         new Creature.PartBone[] {
                             Creature.PartBone.Spine1Cap,
                             Creature.PartBone.Spine2Cap,
@@ -23,7 +23,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.02f)
+                        new Vector3(1.0f)
                     )
                 },
                 false,
