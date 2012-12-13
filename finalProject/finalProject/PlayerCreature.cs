@@ -203,17 +203,7 @@ namespace finalProject
             set
             {
                 mCheckpoint = value;
-                for (int slot = 0; slot < NumParts; ++slot)
-                {
-                    if (mPartAttachments[slot] != null)
-                    {
-                        mRespawnParts[slot] = mPartAttachments[slot].Part;
-                    }
-                    else
-                    {
-                        mRespawnParts[slot] = null;
-                    }
-                }
+                SpawnOrigin = mCheckpoint.Position;
             }
         }
 
@@ -294,7 +284,17 @@ namespace finalProject
         public override void Die()
         {
             ////Console.WriteLine("Player died.");
-            Position = SpawnOrigin;
+            if (Checkpoint == null)
+            {
+                Position = SpawnOrigin;
+            }
+            else
+            {
+                Vector3 newPosition = SpawnOrigin;
+                newPosition.Y += (CharacterController.Body.Height + (Checkpoint.Entity as Cylinder).Height) / 2;
+                Position = newPosition;
+            }
+
             mShield = true;
             Poisoned = false;
             CancelParts();
