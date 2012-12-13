@@ -13,7 +13,7 @@ namespace finalProject.AI
     {
         private const float RunRatio = 0.5f;
 
-        public override void Update(GameTime time, List<Creature> collidingCreatures)
+        protected virtual List<Creature> FilterCreatures(List<Creature> collidingCreatures)
         {
             Type type = mCreature.GetType();
             List<Creature> noLikeType = new List<Creature>();
@@ -24,12 +24,17 @@ namespace finalProject.AI
                     noLikeType.Add(creature);
                 }
             }
+            return noLikeType;
+        }
 
-            base.Update(time, noLikeType);
+        public override void Update(GameTime time, List<Creature> collidingCreatures)
+        {
+            List<Creature> filteredCreatures = FilterCreatures(collidingCreatures);
+            base.Update(time, filteredCreatures);
 
             if (mMostIntimidatingCreature != null && mMostIntimidatingCreature.Intimidation > mCreature.Intimidation)
             {
-                foreach (Creature creature in noLikeType)
+                foreach (Creature creature in filteredCreatures)
                 {
                     if (creature.Intimidation > mCreature.Intimidation && mCreature.CollideDistance(creature) < mCreature.Sensor.Radius * RunRatio)
                     {
@@ -58,10 +63,5 @@ namespace finalProject.AI
 
         protected override void FinishUsePart()
         { }
-
-        protected override int ChoosePartSlot()
-        {
-            return Rand.rand.Next(mCreature.PartAttachments.Count);
-        }
     }
 }

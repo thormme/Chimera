@@ -96,7 +96,7 @@ namespace finalProject.Parts
         {
             base.Damage(damage, source);
 
-            if (Active)
+            if (Active && damage > 0)
             {
                 source.Stun();
             }

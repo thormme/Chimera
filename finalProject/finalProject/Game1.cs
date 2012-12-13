@@ -198,33 +198,35 @@ namespace finalProject
                 GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.Models : GraphicsManager.CelShaded.All;
             }
 
-            //if (cheat.Active)
-            //{
-            //    if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is World)
-            //    {
-            //        foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
-            //        {
-            //            PlayerCreature player = entity.Tag as PlayerCreature;
-            //            if (player != null)
-            //            {
-            //                player.Damage(100, null);
+            if (cheat.Active)
+            {
+                if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is World)
+                {
+                    foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
+                    {
+                        PlayerCreature player = entity.Tag as PlayerCreature;
+                        if (player != null)
+                        {
+                            //player.Damage(100, null);
 
-            //                for (int slot = 0; slot < NumParts; ++slot)
-            //                {
-            //                    if (player.PartAttachments[slot] != null)
-            //                    {
-            //                        player.RemovePart(player.PartAttachments[slot].Part);
-            //                    }
-            //                }
+                            for (int slot = 0; slot < NumParts; ++slot)
+                            {
+                                if (player.PartAttachments[slot] != null)
+                                {
+                                    player.RemovePart(player.PartAttachments[slot].Part);
+                                }
+                            }
 
-            //                int i = 0;
-            //                player.AddPart(new TestingLegs(), i++);
-            //                player.AddPart(new TestingWings(), i++);
-            //                player.AddPart(new KangarooLegs(), i++);
-            //            }
-            //        }
-            //    }
-            //}
+                            int i = 0;
+                            player.AddPart(new TestingLegs(), i++);
+                            player.AddPart(new CobraHead(), i++);
+                            player.AddPart(new CobraHead(), i++);
+
+                            
+                        }
+                    }
+                }
+            }
 
             IsMouseVisible = !InputAction.IsMouseLocked;
 

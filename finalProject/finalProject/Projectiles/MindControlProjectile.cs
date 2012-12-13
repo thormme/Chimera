@@ -7,6 +7,7 @@ using GraphicsLibrary;
 using Microsoft.Xna.Framework;
 using BEPUphysics.Entities.Prefabs;
 using finalProject.Creatures;
+using finalProject.AI;
 
 namespace finalProject.Projectiles
 {
@@ -34,7 +35,9 @@ namespace finalProject.Projectiles
             40.0f,
             new Vector3(1.0f)
             )
-        { }
+        {
+            Active = false;
+        }
 
         protected override void Hit(IGameObject gameObject)
         {
@@ -46,6 +49,13 @@ namespace finalProject.Projectiles
             Creature creature = gameObject as Creature;
             if (creature != null && !creature.Incapacitated)
             {
+                if (creature is Cobra ||
+                    !(creature is Cobra) && creature.Controller is CobraAI ||
+                    !(creature is PlayerCreature) && creature.Controller is PlayerController)
+                {
+                    return;
+                }
+
                 Creature owner = mOwner as Creature;
                 creature.Damage(0, owner);
 
