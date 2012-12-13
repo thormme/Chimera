@@ -33,7 +33,7 @@ namespace finalProject.Parts
         protected const double AnimationLength = 1.0f;
         protected double mAnimationTimer = -1.0f;
 
-        protected const float DamageImpulseMultiplier = 270.0f;
+        protected const float DamageImpulseMultiplier = 70.0f;
 
         protected bool mActive = false;
 
@@ -111,7 +111,7 @@ namespace finalProject.Parts
             foreach (Creature creature in targets)
             {
                 Vector3 impulseVector = Vector3.Normalize(creature.Position - Creature.Position);
-                impulseVector.Y = 1.0f;
+                impulseVector.Y = 0.3f;
                 impulseVector.Normalize();
                 impulseVector *= DamageImpulseMultiplier;
                 //creature.Entity.LinearVelocity = impulseVector;

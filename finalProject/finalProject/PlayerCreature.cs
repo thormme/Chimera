@@ -47,9 +47,6 @@ namespace finalProject
         private double mStealTimer = -1.0f;
         private Part mStolenPart = null;
         private double mLoseTargetTimer = -1.0f;
-        
-        private int mNumHeightModifyingParts = 0;
-
 
         private Part[] mRespawnParts = new Part[NumParts];
 
@@ -203,17 +200,7 @@ namespace finalProject
             set
             {
                 mCheckpoint = value;
-                for (int slot = 0; slot < NumParts; ++slot)
-                {
-                    if (mPartAttachments[slot] != null)
-                    {
-                        mRespawnParts[slot] = mPartAttachments[slot].Part;
-                    }
-                    else
-                    {
-                        mRespawnParts[slot] = null;
-                    }
-                }
+                SpawnOrigin = mCheckpoint.Position;
             }
         }
 
@@ -306,7 +293,17 @@ namespace finalProject
         public override void Die()
         {
             ////Console.WriteLine("Player died.");
-            Position = SpawnOrigin;
+            if (Checkpoint == null)
+            {
+                Position = SpawnOrigin;
+            }
+            else
+            {
+                Vector3 newPosition = SpawnOrigin;
+                newPosition.Y += (CharacterController.Body.Height + (Checkpoint.Entity as Cylinder).Height) / 2;
+                Position = newPosition;
+            }
+
             mShield = true;
             Poisoned = false;
             CancelParts();
@@ -541,12 +538,10 @@ namespace finalProject
 
             part.AddTip();
 
-            if (mNumHeightModifyingParts == 0 && part.Height > 0.0f)
+            if (part.Height > CharacterController.Body.Height - mHeight)
             {
                 CharacterController.Body.Height = mHeight + part.Height;
             }
-
-            mNumHeightModifyingParts += (part.Height > 0.0f) ? 1 : 0;
         }
 
         /// <summary>
@@ -556,11 +551,18 @@ namespace finalProject
         {
             base.RemovePart(part);
 
-            if (mNumHeightModifyingParts != 0 && part.Height > 0.0f)
+            if (part.Height > 0.0f)
             {
-                CharacterController.Body.Height = mHeight;
+                float maxHeight = 0f;
+                foreach (PartAttachment partAttachment in mPartAttachments)
+                {
+                    if (partAttachment != null)
+                    {
+                        maxHeight = Math.Max(partAttachment.Part.Height, maxHeight);
+                    }
+                }
+                CharacterController.Body.Height = mHeight + maxHeight;
             }
-            mNumHeightModifyingParts -= (part.Height > 0.0f) ? 1 : 0;
         }
 
         /// <summary>
