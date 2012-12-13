@@ -39,6 +39,7 @@ namespace finalProject.Creatures
                 )
         {
             Scale = new Vector3(2.0f);
+            CharacterController.HorizontalMotionConstraint.Speed = 7.0f;
         }
 
         protected override List<PartBone> GetUsablePartBones()

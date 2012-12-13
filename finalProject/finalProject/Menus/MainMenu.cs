@@ -91,7 +91,7 @@ namespace finalProject.Menus
             Game1.PopState();
 
             GameWorld world = new GameWorld(mDebugDrawer);
-            world.AddLevelFromFile("tree", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("stupid cobra", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
             Game1.PushState(world);
 
         }
@@ -99,7 +99,7 @@ namespace finalProject.Menus
         private void Instructions(Button button)
         {
             Game1.PopState();
-            Game1.PushState(new StoryMenu(mOwnerGame, mDebugDrawer));
+            Game1.PushState(new StoryMenu(mOwnerGame));
         }
 
         private void Quit(Button button)

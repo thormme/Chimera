@@ -11,6 +11,7 @@ using BEPUphysics.NarrowPhaseSystems.Pairs;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Entities.Prefabs;
+using finalProject.Menus;
 
 namespace finalProject
 {
@@ -76,7 +77,9 @@ namespace finalProject
                         }
                         else
                         {
-                            Game1.Game.ExitToMenu();
+                            InputAction.IsMouseLocked = false;
+                            Game1.PopState();
+                            Game1.PushState(new SuccessMenu(Game1.Game));
                         }
                     }
                 }

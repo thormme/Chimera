@@ -10,7 +10,7 @@ using finalProject.Projectiles;
 
 namespace finalProject.Parts
 {
-    public class CobraHead : CooldownPart
+    public class CobraHead : CooldownPart, IRangedPart
     {
 
         public static GameTip mTip = new GameTip(
