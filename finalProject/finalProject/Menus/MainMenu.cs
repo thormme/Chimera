@@ -99,7 +99,7 @@ namespace finalProject.Menus
         private void Instructions(Button button)
         {
             Game1.PopState();
-            Game1.PushState(new StoryMenu(mOwnerGame, mDebugDrawer));
+            Game1.PushState(new StoryMenu(mOwnerGame));
         }
 
         private void Quit(Button button)
