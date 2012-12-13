@@ -2500,30 +2500,6 @@
     <Height>0</Height>
   </DummyObject>
   <DummyObject>
-    <Type>finalProject.GoalPoint, finalProject</Type>
-    <Model>tractorBeam</Model>
-    <Parameters>
-      <string>null</string>
-      <string>PenguinLimbs</string>
-    </Parameters>
-    <Position>
-      <X>42.4704971</X>
-      <Y>0</Y>
-      <Z>-29.00206</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
     <Type>finalProject.Spawner, finalProject</Type>
     <Model>editor</Model>
     <Parameters>
@@ -2617,9 +2593,9 @@
       <Z>0</Z>
     </Orientation>
     <Scale>
-      <X>2.5</X>
-      <Y>2000</Y>
-      <Z>2.5</Z>
+      <X>18.47993</X>
+      <Y>14783.9453</Y>
+      <Z>18.47993</Z>
     </Scale>
     <Height>0</Height>
   </DummyObject>
@@ -2817,9 +2793,9 @@
       <Z>0</Z>
     </Orientation>
     <Scale>
-      <X>5</X>
-      <Y>4000</Y>
-      <Z>5</Z>
+      <X>4.11351347</X>
+      <Y>3290.81079</Y>
+      <Z>4.11351347</Z>
     </Scale>
     <Height>0</Height>
   </DummyObject>
@@ -2842,9 +2818,9 @@
       <Z>0</Z>
     </Orientation>
     <Scale>
-      <X>5</X>
-      <Y>4000</Y>
-      <Z>5</Z>
+      <X>2.651609</X>
+      <Y>2121.287</Y>
+      <Z>2.651609</Z>
     </Scale>
     <Height>0</Height>
   </DummyObject>
@@ -3243,6 +3219,72 @@
       <X>1.25</X>
       <Y>1000</Y>
       <Z>12.5</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.GoalPoint, finalProject</Type>
+    <Model>tractorBeam</Model>
+    <Parameters>
+      <string>null</string>
+      <string>PenguinLimbs</string>
+    </Parameters>
+    <Position>
+      <X>44.66983</X>
+      <Y>0</Y>
+      <Z>-28.8511314</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Checkpoint, finalProject</Type>
+    <Model>checkpoint_red</Model>
+    <Parameters />
+    <Position>
+      <X>13.2639093</X>
+      <Y>11000</Y>
+      <Z>32.0457535</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Checkpoint, finalProject</Type>
+    <Model>checkpoint_red</Model>
+    <Parameters />
+    <Position>
+      <X>8.351261</X>
+      <Y>0</Y>
+      <Z>1.62725425</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
     </Scale>
     <Height>0</Height>
   </DummyObject>

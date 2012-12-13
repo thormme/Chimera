@@ -101,6 +101,7 @@ Content\models\checkpoint\checkpoint_blue.xnb
 Content\models\checkpoint\checkpoint_light_blue.xnb
 Content\models\checkpoint\checkpoint_light_red.xnb
 Content\models\checkpoint\checkpoint_red.xnb
+Content\models\turtle\turtle_shell.xnb
 Content\shaders\ConfigurableShader.xnb
 Content\shaders\PostProcessing.xnb
 Content\shaders\DPSFDefaultEffect.xnb
