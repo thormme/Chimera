@@ -46,7 +46,7 @@ namespace GraphicsLibrary
 
         static private Queue<RenderableDefinition> mRenderQueue = new Queue<RenderableDefinition>();
         static private Queue<SpriteDefinition> mSpriteQueue = new Queue<SpriteDefinition>();
-        static private SortedList<float, RenderableDefinition> mTransparentQueue = new SortedList<float, RenderableDefinition>();
+        static private List<RenderableDefinition> mTransparentQueue = new List<RenderableDefinition>();
 
         static private RenderTarget2D mShadowMap;
         static private RenderTarget2D mAnimateShadowMap;
@@ -334,6 +334,12 @@ namespace GraphicsLibrary
             }
         }
 
+        static public Vector3 CameraPosition
+        {
+            get { return mCameraPosition; }
+            set { mCameraPosition = value; }
+        }
+
         /// <summary>
         /// Updates Projection and View matrices to current view space.
         /// </summary>
@@ -437,9 +443,12 @@ namespace GraphicsLibrary
                     mDevice.BlendState = BlendState.AlphaBlend;
                     mDevice.DepthStencilState = DepthStencilState.DepthRead;
 
+                    RenderableComparer rc = new RenderableComparer();
+
+                    mTransparentQueue.Sort(rc);
                     for (int i = mTransparentQueue.Count - 1; i >= 0; --i)
                     {
-                        DrawRenderableDefinition(mTransparentQueue.Values[i], false, false, false, true);
+                        DrawRenderableDefinition(mTransparentQueue[i], false, false, false, true);
                     }
 
                     cull = new RasterizerState();
@@ -610,7 +619,7 @@ namespace GraphicsLibrary
 
                 worldTransforms.Decompose(out scale, out rotation, out translation);
 
-                mTransparentQueue.Add((translation - mCameraPosition).LengthSquared(), new RenderableDefinition(modelName, true, false, worldTransforms, emptyTransforms, overlayColor, overlayColorWeight, animationRate));
+                mTransparentQueue.Add(new RenderableDefinition(modelName, true, false, worldTransforms, emptyTransforms, overlayColor, overlayColorWeight, animationRate));
             }
             else
             {
@@ -1053,7 +1062,28 @@ namespace GraphicsLibrary
 
             tweakMatrix = new Matrix(M11, M12, M13, M14, M21, M22, M23, M24, M31, M32, M33, M34, M41, M42, M43, M44);
         }
-
         #endregion
+    }
+
+    class RenderableComparer : IComparer<RenderableDefinition>
+    {
+        public int Compare(RenderableDefinition x, RenderableDefinition y)
+        {
+            float xDistance = (x.WorldTransform.Translation - GraphicsManager.CameraPosition).LengthSquared();
+            float yDistance = (y.WorldTransform.Translation - GraphicsManager.CameraPosition).LengthSquared();
+
+            if (xDistance < yDistance)
+            {
+                return -1;
+            }
+            else if (xDistance == yDistance)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
     }
 }
