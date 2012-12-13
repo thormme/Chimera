@@ -28,6 +28,13 @@ namespace finalProject
     /// </summary>
     public class Game1 : Game
     {
+        // TODO: Make this not be the worst thing ever.
+        public static Game1 Game
+        {
+            get;
+            protected set;
+        }
+
         public static int NumParts = 10;
 
         private InputAction forward;
@@ -66,6 +73,7 @@ namespace finalProject
 
         public Game1()
         {
+            Game = this;
 
             Graphics = new GraphicsDeviceManager(this);
             Graphics.PreferredBackBufferWidth = 1280;
