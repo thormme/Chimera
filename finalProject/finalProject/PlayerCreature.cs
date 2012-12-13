@@ -58,7 +58,7 @@ namespace finalProject
         private Sprite mRequirementBoxSprite = new Sprite("requirementBox");
         private Sprite mRequirementSprite = null;
         private Sprite mCheckSprite = new Sprite("check");
-        private Sprite mReticleSprite = new Sprite("green");
+        private Sprite mReticleSprite = new Sprite("reticle");
 
         private Sprite[] mButtonSprites = new Sprite[NumParts] {
             new Sprite("blueButton"), 

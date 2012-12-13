@@ -12,12 +12,10 @@ namespace finalProject.Menus
 {
     class GoalsMenu : GameMenu
     {
-        ModelDrawer mDebugDrawer;
         Game mOwnerGame;
 
-        public GoalsMenu(Game game, ModelDrawer debugModelDrawer)
+        public GoalsMenu(Game game)
         {
-            mDebugDrawer = debugModelDrawer;
             mOwnerGame = game;
 
             Sprite backgroundSprite = new Sprite("yellow");
@@ -71,7 +69,7 @@ namespace finalProject.Menus
         private void Continue(Button button)
         {
             Game1.PopState();
-            Game1.PushState(new ControlsMenu(mOwnerGame, mDebugDrawer));
+            Game1.PushState(new ControlsMenu(mOwnerGame));
         }
 
         public override void Render()

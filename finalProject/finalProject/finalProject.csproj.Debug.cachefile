@@ -42,6 +42,8 @@ Content\textures\sprites\yellow.xnb
 Content\textures\sprites\white.xnb
 Content\textures\sprites\black.xnb
 Content\textures\sprites\assign.xnb
+Content\textures\sprites\reticle.xnb
+Content\textures\sprites\success.xnb
 Content\models\eagle\eagle.xnb
 Content\models\frog\frog.xnb
 Content\models\eagle\eagle_leftWing.xnb
