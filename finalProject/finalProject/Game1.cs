@@ -140,8 +140,9 @@ namespace finalProject
             font = Content.Load<SpriteFont>("font");
             try
             {
-                GraphicsManager.LoadContent(this.Content, Graphics.GraphicsDevice, spriteBatch);
-                CollisionMeshManager.LoadContent(this.Content);
+                GraphicsManager.LoadContent(Content, Graphics.GraphicsDevice, spriteBatch);
+                CollisionMeshManager.LoadContent(Content);
+                SoundManager.LoadContent(Content);
 
                 ExitToMenu();
             }
@@ -220,7 +221,7 @@ namespace finalProject
             //                int i = 0;
             //                player.AddPart(new TestingLegs(), i++);
             //                player.AddPart(new TestingWings(), i++);
-            //                player.AddPart(new KangarooLegs(), i++);
+            //                player.AddPart(new CobraHead(), i++);
             //            }
             //        }
             //    }
@@ -238,7 +239,7 @@ namespace finalProject
                     InputAction.IsMouseLocked = true;
                 }
             }
-            else if (pause.Active)
+            else if (mGameStates.Count > 0 && (mGameStates[mGameStates.Count - 1] is World) && pause.Active)
             {
                 PushState(new PauseState(this));
             }

@@ -18,6 +18,8 @@ using finalProject.Parts;
 using finalProject.Creatures;
 using BEPUphysics.MathExtensions;
 using BEPUphysics.CollisionRuleManagement;
+using Microsoft.Xna.Framework.Audio;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
 
 #endregion
 
@@ -65,6 +67,11 @@ namespace finalProject
             new Sprite("yellowButton"), 
             new Sprite("redButton") 
         };
+
+        public SoundEffectInstance mJumpSound = SoundManager.LookupSound("jump").CreateInstance();
+        public SoundEffectInstance mWalkSound = SoundManager.LookupSound("walking").CreateInstance();
+        public SoundEffectInstance mFallSound = SoundManager.LookupSound("fall").CreateInstance();
+        public SoundEffectInstance mHurtSound = SoundManager.LookupSound("hurt").CreateInstance();
 
         private ScrollingTransparentModel mSuckModel;
 
@@ -393,6 +400,17 @@ namespace finalProject
  	        base.InitialCollisionDetected(sender, other, collisionPair);
             //Console.WriteLine(other.Tag);
 
+            float totalImpulse = 0;
+            foreach (ContactInformation c in collisionPair.Contacts)
+            {
+                totalImpulse += c.NormalImpulse;
+            }
+
+            if (totalImpulse > 150.0f)
+            {
+                mFallSound.Play();
+            }
+
             if (other.Tag is Checkpoint)
             {
                 AddTip(mCheckpointEncountered);
@@ -416,6 +434,7 @@ namespace finalProject
         /// <param name="damage">Amount of damage to apply.</param>
         public override void Damage(int damage, Creature source)
         {
+            mHurtSound.Play();
 
             bool die = false;
             if (!Invulnerable)
@@ -448,6 +467,12 @@ namespace finalProject
                 Die();
                 AddTip(mPlayerDied);
             }
+        }
+
+        public override void Jump()
+        {
+            mJumpSound.Play();
+            base.Jump();
         }
         
         /// <summary>

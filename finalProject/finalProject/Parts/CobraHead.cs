@@ -7,11 +7,13 @@ using GameConstructLibrary;
 using GraphicsLibrary;
 using BEPUphysics.Entities.Prefabs;
 using finalProject.Projectiles;
+using Microsoft.Xna.Framework.Audio;
 
 namespace finalProject.Parts
 {
     public class CobraHead : CooldownPart, IRangedPart
     {
+        private SoundEffect mSpitSound = SoundManager.LookupSound("spit");
 
         public static GameTip mTip = new GameTip(
             new string[] 
@@ -64,6 +66,7 @@ namespace finalProject.Parts
         protected override void UseCooldown(Vector3 direction)
         {
             PlayAnimation("spit", true, false);
+            mSpitSound.Play();
             projectile = new MindControlProjectile(Creature, direction);
             Creature.World.Add(projectile);
         }

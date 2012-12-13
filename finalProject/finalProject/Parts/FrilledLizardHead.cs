@@ -6,11 +6,13 @@ using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using finalProject.Projectiles;
 using GameConstructLibrary;
+using Microsoft.Xna.Framework.Audio;
 
 namespace finalProject.Parts
 {
     public class FrilledLizardHead : CooldownPart, IRangedPart
     {
+        private SoundEffect mSpitSound = SoundManager.LookupSound("spit");
 
         public static GameTip mTip = new GameTip(
             new string[] 
@@ -54,6 +56,7 @@ namespace finalProject.Parts
         {
             Creature.World.Add(new FrilledLizardVenom(Creature, direction));
             PlayAnimation("spit", true, false);
+            mSpitSound.Play();
             mCanAnimate = false;
         }
 

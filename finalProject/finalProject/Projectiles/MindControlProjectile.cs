@@ -28,11 +28,11 @@ namespace finalProject.Projectiles
         public MindControlProjectile(Actor owner, Vector3 direction)
             : base(
             new InanimateModel("box"),
-            new Box(owner.Position, 0.25f, 0.25f, 0.25f, 0.25f),
+            new Box(owner.Position, 0.05f, 0.05f, 0.05f, 0.25f),
             owner,
             direction,
             40.0f,
-            new Vector3(1.0f)
+            new Vector3(0.2f)
             )
         { }
 
