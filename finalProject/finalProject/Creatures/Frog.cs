@@ -12,6 +12,15 @@ namespace finalProject.Creatures
 {
     public class Frog : NonPlayerCreature
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+            {
+                "You have encountered a frog.",
+                "Frogs are known for their extremely sticky tongues."
+            },
+            10.0f);
+
         public Frog(Vector3 position, Spawner spawn)
             : base(
                 position,
@@ -30,14 +39,6 @@ namespace finalProject.Creatures
                 )
         {
             Scale = new Vector3(5.0f);
-
-            mTip = new GameTip(
-                new string[] 
-                {
-                    "You have encountered a frog.",
-                    "Frogs are known for their extremely sticky tongues."
-                },
-                10.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -45,6 +46,14 @@ namespace finalProject.Creatures
             List<PartBone> bones = new List<PartBone>();
             bones.Add(PartBone.HeadCenterCap);
             return bones;
+        }
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
         }
 
         protected virtual Matrix GetOptionalPartTransforms()

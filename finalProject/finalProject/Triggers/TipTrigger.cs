@@ -10,13 +10,13 @@ namespace finalProject
     class TipTrigger : Trigger
     {
 
-        string mTip = String.Empty;
+        GameTip mTip = null;
         bool mDisplay = false;
 
         public TipTrigger(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, string[] parameters) :
-            base(translation, Convert.ToSingle(parameters[0]))
+            base(translation, orientation, scale)
         {
-            mTip = Convert.ToString(parameters[1]);
+            mTip = new GameTip(Convert.ToString(parameters[0]).Split('?'), 10.0f);
         }
 
         public override void OnEnter()
@@ -34,7 +34,11 @@ namespace finalProject
             if (mDisplay)
             {
                 mDisplay = false;
-                Game1.AddTip(new GameTip(new string[] {mTip}, 5.0f));
+                if (!mTip.Displayed)
+                {
+                    mTip.Displayed = true;
+                    Game1.AddTip(mTip);
+                }
             }
         }
 

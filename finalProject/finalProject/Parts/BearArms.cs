@@ -5,11 +5,28 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using System.Drawing;
+using GameConstructLibrary;
 
 namespace finalProject.Parts
 {
     public class BearArms : CooldownPart
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+                {
+                    "Using bear arms will attack creatures in front of you."
+                },
+            10.0f);
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
+        }
+
         protected const int AttackDamage = 1;
         protected const float Range = 0.75f;
 
@@ -19,6 +36,8 @@ namespace finalProject.Parts
         protected const float DamageImpulseMultiplier = 270.0f;
 
         protected bool mActive = false;
+
+
 
         public BearArms()
             : base(
@@ -124,5 +143,6 @@ namespace finalProject.Parts
         public override void FinishUse(Vector3 direction) { }
 
         public override void Cancel() { }
+
     }
 }

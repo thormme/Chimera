@@ -14,9 +14,10 @@ namespace finalProject
     public class Trigger : Sensor
     {
 
-        public Trigger(Vector3 position, float radius) :
-            base(new Sphere(position, radius))
+        public Trigger(Vector3 position, Quaternion orientation, Vector3 scale) :
+            base(new Box(position, scale.X, scale.Y, scale.Z))
         {
+            Entity.Orientation = orientation;
         }
 
         public virtual void OnEnter() {}
