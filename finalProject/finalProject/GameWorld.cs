@@ -27,8 +27,6 @@ namespace finalProject
 
         public override void Update(GameTime gameTime)
         {
-
-            
             Space.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             foreach (IActor actor in mActors)
