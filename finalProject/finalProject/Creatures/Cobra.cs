@@ -15,7 +15,7 @@ namespace finalProject.Creatures
         public Cobra(Vector3 position, Spawner spawn)
             : base(
                 position,
-                3.0f,                                           // Height
+                2.0f,                                           // Height
                 2.0f,                                           // Radius
                 10.0f,                                          // Mass
                 CreatureConstants.CobraSensitivityRadius,       // Sensitivity Radius

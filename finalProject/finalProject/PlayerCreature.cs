@@ -306,7 +306,7 @@ namespace finalProject
         public PlayerCreature(Viewport viewPort, Vector3 position, Vector3 facingDirection)
             : base(position + Vector3.Up * 10.0f, 1.3f, 0.75f, 10.0f, new AnimateModel("playerBean", "stand"), new VisionSensor(4.0f, 135), new PlayerController(viewPort), NumParts)
         {
-            Controller.NoControl = true;
+            InputAction.Enabled = false;
             Forward = facingDirection;
 
             Vector3[] vertices;
@@ -352,7 +352,7 @@ namespace finalProject
             if (mHackStop)
             {
                 mHackStop = false;
-                Controller.NoControl = false;
+                InputAction.Enabled = true;
             }
 
  	        base.InitialCollisionDetected(sender, other, collisionPair);
@@ -534,10 +534,10 @@ namespace finalProject
         /// <param name="gameTime">Time elapsed since last frame.</param>
         public override void Update(GameTime gameTime)
         {
-            if (mHackStop)
-            {
-                return;
-            }
+            //if (mHackStop)
+            //{
+            //    return;
+            //}
 
             if ((World as GameWorld).Goal != null)
             {

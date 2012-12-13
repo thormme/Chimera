@@ -2459,174 +2459,6 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
-    <Model>shrub1</Model>
-    <Parameters />
-    <Position>
-      <X>43.950058</X>
-      <Y>6056.349</Y>
-      <Z>-6.26704836</Z>
-    </Position>
-    <Orientation>
-      <X>4.098981</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>5.11655</X>
-      <Y>4093.24</Y>
-      <Z>5.11655</Z>
-    </Scale>
-    <Height>-20</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
-    <Model>shrub1</Model>
-    <Parameters />
-    <Position>
-      <X>44.1304169</X>
-      <Y>5911.65527</Y>
-      <Z>-5.334875</Z>
-    </Position>
-    <Orientation>
-      <X>5.241808</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>10.9189234</X>
-      <Y>8735.139</Y>
-      <Z>10.9189234</Z>
-    </Scale>
-    <Height>-160</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
-    <Model>shrub1</Model>
-    <Parameters />
-    <Position>
-      <X>32.1974945</X>
-      <Y>5804.12256</Y>
-      <Z>-13.01552</Z>
-    </Position>
-    <Orientation>
-      <X>2.121001</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>25</X>
-      <Y>20000</Y>
-      <Z>25</Z>
-    </Scale>
-    <Height>-240</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
-    <Model>shrub1</Model>
-    <Parameters />
-    <Position>
-      <X>37.79546</X>
-      <Y>5860.829</Y>
-      <Z>-0.286556244</Z>
-    </Position>
-    <Orientation>
-      <X>5.97237158</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>20</X>
-      <Y>16000</Y>
-      <Z>20</Z>
-    </Scale>
-    <Height>-170</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
-    <Model>deadTree2</Model>
-    <Parameters />
-    <Position>
-      <X>44.3092575</X>
-      <Y>6290.15625</Y>
-      <Z>-14.659729</Z>
-    </Position>
-    <Orientation>
-      <X>1.51574636</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>115.836136</X>
-      <Y>92668.9141</Y>
-      <Z>115.836136</Z>
-    </Scale>
-    <Height>-170.000015</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock3light</Model>
-    <Parameters />
-    <Position>
-      <X>43.2626953</X>
-      <Y>6393.811</Y>
-      <Z>-15.6514015</Z>
-    </Position>
-    <Orientation>
-      <X>5.1381073</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>20</X>
-      <Y>16000</Y>
-      <Z>20</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock3light</Model>
-    <Parameters />
-    <Position>
-      <X>30.11246</X>
-      <Y>6364.53857</Y>
-      <Z>-0.540351868</Z>
-    </Position>
-    <Orientation>
-      <X>1.77618837</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>27.8516541</X>
-      <Y>22281.3242</Y>
-      <Z>27.8516541</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock3light</Model>
-    <Parameters />
-    <Position>
-      <X>29.4802265</X>
-      <Y>6397.43066</Y>
-      <Z>-2.02130055</Z>
-    </Position>
-    <Orientation>
-      <X>4.16251659</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>20.4166527</X>
-      <Y>16333.3223</Y>
-      <Z>20.4166527</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Prop, finalProject</Type>
     <Model>leaf</Model>
     <Parameters />
     <Position>
@@ -3048,7 +2880,7 @@
     </Parameters>
     <Position>
       <X>-37.3629074</X>
-      <Y>23903.1016</Y>
+      <Y>23902.5645</Y>
       <Z>29.952713</Z>
     </Position>
     <Orientation>
@@ -3073,7 +2905,7 @@
     </Parameters>
     <Position>
       <X>-40.40947</X>
-      <Y>22076.08</Y>
+      <Y>22075.4648</Y>
       <Z>-36.03617</Z>
     </Position>
     <Orientation>
@@ -3090,22 +2922,43 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
-    <Model>deadTree2</Model>
+    <Model>rock3light</Model>
     <Parameters />
     <Position>
-      <X>-37.88086</X>
-      <Y>23737.5547</Y>
-      <Z>36.32786</Z>
+      <X>43.8676224</X>
+      <Y>6049.164</Y>
+      <Z>-3.59793854</Z>
     </Position>
     <Orientation>
-      <X>5.590082</X>
+      <X>2.35862279</X>
       <Y>0</Y>
       <Z>0</Z>
     </Orientation>
     <Scale>
-      <X>150</X>
-      <Y>120000</Y>
-      <Z>150</Z>
+      <X>50</X>
+      <Y>20000</Y>
+      <Z>50</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock3light</Model>
+    <Parameters />
+    <Position>
+      <X>30.5347137</X>
+      <Y>6069.763</Y>
+      <Z>-11.075655</Z>
+    </Position>
+    <Orientation>
+      <X>5.608115</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>25</X>
+      <Y>20000</Y>
+      <Z>25</Z>
     </Scale>
     <Height>0</Height>
   </DummyObject>

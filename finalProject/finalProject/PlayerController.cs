@@ -244,7 +244,14 @@ namespace finalProject
             float moveForwardDegree = 0.0f;
             if (mMoveForward.Active)
             {
-                mCamera.TrackTarget = !(mCreature as PlayerCreature).Stealing;
+                if (mCreature is PlayerCreature)
+                {
+                    mCamera.TrackTarget = !(mCreature as PlayerCreature).Stealing;
+                }
+                else
+                {
+                    mCamera.TrackTarget = true;
+                }
                 rotationRate = MathHelper.Pi;
 
                 moveForwardActive = true;
@@ -263,7 +270,14 @@ namespace finalProject
             float moveRightDegree = 0.0f;
             if (mMoveRight.Active)
             {
-                mCamera.TrackTarget = !(mCreature as PlayerCreature).Stealing;
+                if (mCreature is PlayerCreature)
+                {
+                    mCamera.TrackTarget = !(mCreature as PlayerCreature).Stealing;
+                }
+                else
+                {
+                    mCamera.TrackTarget = true;
+                }
                 rotationRate = MathHelper.Pi;
 
                 moveRightActive = true;
