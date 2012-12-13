@@ -783,6 +783,11 @@ namespace finalProject
         /// </summary>
         public virtual void Move(Vector2 direction, Vector2 facing)
         {
+            if (float.IsNaN(facing.X) || float.IsNaN(facing.Y))
+            {
+                facing = new Vector2(0.0f, -1.0f);
+            }
+
             if (!Immobilized)
             {
                 CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
