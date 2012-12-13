@@ -590,7 +590,7 @@ namespace finalProject
                 rotationIncrease = partStealFraction * 1.5f;
             }
 
-            mSuckModel.VerticalVelocity = 1.0f + rotationIncrease;
+            mSuckModel.VerticalVelocity = 0.5f + rotationIncrease;
             mSuckModel.HorizontalVelocity = mSuckModel.VerticalVelocity;
 
             if (Controller is PlayerController)

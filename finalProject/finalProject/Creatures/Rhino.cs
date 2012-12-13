@@ -24,7 +24,7 @@ namespace finalProject.Creatures
         public Rhino(Vector3 position, Spawner spawn)
             : base(
                 position,
-                3.0f,                                           // Height
+                4.0f,                                           // Height
                 1.5f,                                          // Radius
                 30.0f,                                          // Mass
                 CreatureConstants.RhinoSensitivityRadius,       // Sensitivity Radius

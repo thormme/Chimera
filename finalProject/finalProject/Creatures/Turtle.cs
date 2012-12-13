@@ -24,7 +24,7 @@ namespace finalProject.Creatures
         public Turtle(Vector3 position, Spawner spawn)
             : base(
                 position,
-                2.0f,                                           // Height
+                1.0f,                                           // Height
                 2.0f,                                           // Radius
                 6.0f,                                           // Mass
                 CreatureConstants.TurtleSensitivityRadius,      // Sensitivity Radius
@@ -38,7 +38,7 @@ namespace finalProject.Creatures
                 spawn
                 )
         {
-
+            Scale = new Vector3(3.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
