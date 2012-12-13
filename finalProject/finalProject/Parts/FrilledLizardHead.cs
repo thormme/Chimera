@@ -9,7 +9,7 @@ using GameConstructLibrary;
 
 namespace finalProject.Parts
 {
-    public class FrilledLizardHead : CooldownPart
+    public class FrilledLizardHead : CooldownPart, IRangedPart
     {
 
         public static GameTip mTip = new GameTip(

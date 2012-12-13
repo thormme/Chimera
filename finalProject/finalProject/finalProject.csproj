@@ -187,6 +187,7 @@
     <Compile Include="DutyCyclePart.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="GoalPoint.cs" />
+    <Compile Include="IRangedPart.cs" />
     <Compile Include="Menus\ControlsMenu.cs" />
     <Compile Include="Menus\GoalsMenu.cs" />
     <Compile Include="Menus\StoryMenu.cs" />
