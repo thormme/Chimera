@@ -4,11 +4,21 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
+using GameConstructLibrary;
 
 namespace finalProject.Parts
 {
     public class TurtleShell : MeteredPart
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+                {
+                    "Using turtle shell will cause you to become",
+                    "invulnerable for a short period of time."
+                },
+            10.0f);
+
         public TurtleShell()
             : base(
                 3.0f,

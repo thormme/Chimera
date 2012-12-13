@@ -123,7 +123,7 @@ namespace finalProject.Menus
         private void Checkpoint(Button button)
         {
             InputAction.IsMouseLocked = true;
-            Game1.Player.Damage(10, null);
+            Game1.Player.Die();
             Game1.PopState();
         }
 

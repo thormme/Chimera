@@ -47,9 +47,6 @@ namespace finalProject
         private double mStealTimer = -1.0f;
         private Part mStolenPart = null;
         private double mLoseTargetTimer = -1.0f;
-        
-        private int mNumHeightModifyingParts = 0;
-
 
         private Part[] mRespawnParts = new Part[NumParts];
 
@@ -91,7 +88,7 @@ namespace finalProject
                 "You have encountered a checkpoint.",
                 "You will respawn at the last checkpoint you touched."
             },
-        10.0f);
+            10.0f);
         GameTip mGoalPointEncountered = new GameTip(
             new string[] {
                 "You have found an extraction point.",
@@ -285,6 +282,11 @@ namespace finalProject
                 Console.WriteLine("lost target");
             }
             mStealTimer = -1.0f;
+        }
+
+        public override void AddTip()
+        {
+            
         }
 
         #endregion
@@ -530,12 +532,12 @@ namespace finalProject
         {
  	        base.AddPart(part, slot);
 
-            if (mNumHeightModifyingParts == 0 && part.Height > 0.0f)
+            part.AddTip();
+
+            if (part.Height > CharacterController.Body.Height - mHeight)
             {
                 CharacterController.Body.Height = mHeight + part.Height;
             }
-
-            mNumHeightModifyingParts += (part.Height > 0.0f) ? 1 : 0;
         }
 
         /// <summary>
@@ -545,11 +547,18 @@ namespace finalProject
         {
             base.RemovePart(part);
 
-            if (mNumHeightModifyingParts != 0 && part.Height > 0.0f)
+            if (part.Height > 0.0f)
             {
-                CharacterController.Body.Height = mHeight;
+                float maxHeight = 0f;
+                foreach (PartAttachment partAttachment in mPartAttachments)
+                {
+                    if (partAttachment != null)
+                    {
+                        maxHeight = Math.Max(partAttachment.Part.Height, maxHeight);
+                    }
+                }
+                CharacterController.Body.Height = mHeight + maxHeight;
             }
-            mNumHeightModifyingParts -= (part.Height > 0.0f) ? 1 : 0;
         }
 
         /// <summary>

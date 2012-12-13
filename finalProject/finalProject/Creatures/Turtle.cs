@@ -12,6 +12,15 @@ namespace finalProject.Creatures
 {
     public class Turtle : NonPlayerCreature
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+            {
+                "You have encountered a turtle.",
+                "Turtles are able to hide in their shell to avoid damage."
+            },
+            10.0f);
+
         public Turtle(Vector3 position, Spawner spawn)
             : base(
                 position,
@@ -29,13 +38,7 @@ namespace finalProject.Creatures
                 spawn
                 )
         {
-            mTip = new GameTip(
-                new string[] 
-                {
-                    "You have encountered a turtle.",
-                    "Turtles are able to hide in their shell to avoid damage."
-                },
-                10.0f);
+
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -43,6 +46,14 @@ namespace finalProject.Creatures
             List<PartBone> bones = new List<PartBone>();
             bones.Add(PartBone.Spine1Cap);
             return bones;
+        }
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
         }
 
     }
