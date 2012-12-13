@@ -114,15 +114,16 @@ namespace finalProject
 
             Vector3 min = tp.StaticCollidable.BoundingBox.Min;
             Vector3 max = tp.StaticCollidable.BoundingBox.Max;
+            min.Y -= 200f;
             max.Y += 200f;
 
             List<Box> bounds = new List<Box>();
-            Add(new InvisibleWall(new Vector3(min.X - 10, 0, 0), 20, max.Y - min.Y, max.Z - min.Z));
-            Add(new InvisibleWall(new Vector3(0, min.Y - 10, 0), max.X - min.X, 20, max.Z - min.Z));
-            Add(new InvisibleWall(new Vector3(0, 0, min.Z - 10), max.X - min.X, max.Y - min.Y, 20));
-            Add(new InvisibleWall(new Vector3(max.X + 10, 0, 0), 20, max.Y - min.Y, max.Z - min.Z));
-            Add(new InvisibleWall(new Vector3(0, max.Y + 10, 0), max.X - min.X, 20, max.Z - min.Z));
-            Add(new InvisibleWall(new Vector3(0, 0, max.Z + 10), max.X - min.X, max.Y - min.Y, 20));
+            Add(new InvisibleWall(new Vector3(min.X - 10, 0, 0), 20, max.Y - min.Y + 40, max.Z - min.Z + 40));
+            Add(new DeathZone(new Vector3(0, min.Y - 10, 0), max.X - min.X + 40, 20, max.Z - min.Z + 40));
+            Add(new InvisibleWall(new Vector3(0, 0, min.Z - 10), max.X - min.X + 40, max.Y - min.Y + 40, 20));
+            Add(new InvisibleWall(new Vector3(max.X + 10, 0, 0), 20, max.Y - min.Y + 40, max.Z - min.Z + 40));
+            Add(new InvisibleWall(new Vector3(0, max.Y + 10, 0), max.X - min.X + 40, 20, max.Z - min.Z + 40));
+            Add(new InvisibleWall(new Vector3(0, 0, max.Z + 10), max.X - min.X + 40, max.Y - min.Y + 40, 20));
 
             return tp;
         }

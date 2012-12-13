@@ -59,7 +59,6 @@ namespace finalProject
         private static List<IGameState> mGameStateAddQueue = new List<IGameState>();
         private static int mNumPopQueued = 0;
 
-        public static float LoadTime;
         public static PlayerCreature Player;
         public static ICamera Camera;
 
@@ -174,112 +173,108 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
-            if (LoadTime > 0.0f)
+            // DEBUG STUFF
+            if (debug.Active)
             {
-                LoadTime -= (float)(gameTime.ElapsedGameTime.TotalSeconds);
+                debugMode = !debugMode;
             }
-            else
+
+            if (debugGraphics.Active)
             {
-                // DEBUG STUFF
-                if (debug.Active)
-                {
-                    debugMode = !debugMode;
-                }
+                GraphicsManager.DebugVisualization = (GraphicsManager.DebugVisualization) ? false : true;
+            }
+            // END
 
-                if (debugGraphics.Active)
-                {
-                    GraphicsManager.DebugVisualization = (GraphicsManager.DebugVisualization) ? false : true;
-                }
-                // END
+            if (celShading.Active)
+            {
+                GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.Models : GraphicsManager.CelShaded.All;
+            }
 
-                if (celShading.Active)
+            if (cheat.Active)
+            {
+                if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is World)
                 {
-                    GraphicsManager.CelShading = (GraphicsManager.CelShading == GraphicsManager.CelShaded.All) ? GraphicsManager.CelShaded.Models : GraphicsManager.CelShaded.All;
-                }
-
-                if (cheat.Active)
-                {
-                    if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is World)
+                    foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
                     {
-                        foreach (Entity entity in (mGameStates[mGameStates.Count - 1] as World).Space.Entities)
+                        PlayerCreature player = entity.Tag as PlayerCreature;
+                        if (player != null)
                         {
-                            PlayerCreature player = entity.Tag as PlayerCreature;
-                            if (player != null)
-                            {
-                                player.Damage(100, null);
-                                //player.Position = player.SpawnOrigin;
-                                int i = 0;
-                                //player.AddPart(new RhinoHead(), i++);
-                                player.AddPart(new TestingLegs(), i++);
-                                player.AddPart(new TestingWings(), i++);
-                                //player.AddPart(new TestingWings(), i++);
-                                //player.AddPart(new TestingLegs(), i++);
-                                player.AddPart(new KangarooLegs(), i++);
-                                //player.AddPart(new CheetahLegs(), i++);
-                                //player.AddPart(new CheetahLegs(), i++);
-                                //player.AddPart(new FrilledLizardHead(), i++);
-                                //player.AddPart(new PenguinLimbs(), i++);
+                            player.Damage(100, null);
+                            //player.Position = player.SpawnOrigin;
+                            int i = 0;
+                            //player.AddPart(new RhinoHead(), i++);
+                            player.AddPart(new TestingLegs(), i++);
+                            player.AddPart(new TestingWings(), i++);
+                            //player.AddPart(new TestingWings(), i++);
+                            //player.AddPart(new TestingLegs(), i++);
+                            player.AddPart(new KangarooLegs(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
+                            //player.AddPart(new CheetahLegs(), i++);
+                            //player.AddPart(new FrilledLizardHead(), i++);
+                            //player.AddPart(new PenguinLimbs(), i++);
 
-                                //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f, null));
-                                //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 32.0f * player.Forward + Vector3.Up * 5.0f, null));
-                                //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 28.0f * player.Forward + Vector3.Up * 5.0f, null));
-                                //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 26.0f * player.Forward + Vector3.Up * 5.0f, null));
-                                //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 24.0f * player.Forward + Vector3.Up * 5.0f, null));
-                                //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 22.0f * player.Forward + Vector3.Up * 5.0f, null));
-                                //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 20.0f * player.Forward + Vector3.Up * 5.0f, null));
-                                //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 18.0f * player.Forward + Vector3.Up * 5.0f, null));
-                                //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 16.0f * player.Forward + Vector3.Up * 5.0f, null));
-                                //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 14.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 30.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 32.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 28.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 26.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 24.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 22.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 20.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 18.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 16.0f * player.Forward + Vector3.Up * 5.0f, null));
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new Turtle(player.Position + 14.0f * player.Forward + Vector3.Up * 5.0f, null));
 
-                                //(mGameStates[mGameStates.Count - 1] as World).Add(new PhysicsProp("rock1light", player.Position + 14.0f * player.Forward + Vector3.Up * 10.0f, Quaternion.Identity, new Vector3(100.0f), 10.0f));
-                            }
+                            //(mGameStates[mGameStates.Count - 1] as World).Add(new PhysicsProp("rock1light", player.Position + 14.0f * player.Forward + Vector3.Up * 10.0f, Quaternion.Identity, new Vector3(100.0f), 10.0f));
                         }
                     }
                 }
-
-                IsMouseVisible = !InputAction.IsMouseLocked;
-
-                FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
-
-                if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
-                {
-                    PopState();
-                }
-                else if (pause.Active)
-                {
-                    PushState(new PauseState(this));
-                }
-
-                // Allows the game to exit
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
-                    this.Exit();
-
-                InputAction.Update();
-                if (mGameStates.Count > 0)
-                {
-                    mGameStates[mGameStates.Count - 1].Update(gameTime);
-                }
-
-                if (Camera != null)
-                {
-                    GraphicsManager.Update(Camera, gameTime);
-                }
-                DebugModelDrawer.Update();
-
-                while (mNumPopQueued > 0)
-                {
-                    mNumPopQueued--;
-                    mGameStates.RemoveAt(mGameStates.Count - 1);
-                }
-                foreach (IGameState gameState in mGameStateAddQueue)
-                {
-                    mGameStates.Add(gameState);
-                }
-                mGameStateAddQueue.Clear();
-
-                base.Update(gameTime);
             }
+
+            IsMouseVisible = !InputAction.IsMouseLocked;
+
+            FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
+
+            if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
+            {
+                PopState();
+                if (mGameStates.Count >= 2 && mGameStates[mGameStates.Count - 2] is World)
+                {
+                    InputAction.IsMouseLocked = true;
+                }
+            }
+            else if (pause.Active)
+            {
+                PushState(new PauseState(this));
+            }
+
+            // Allows the game to exit
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                this.Exit();
+
+            InputAction.Update();
+            if (mGameStates.Count > 0)
+            {
+                mGameStates[mGameStates.Count - 1].Update(gameTime);
+            }
+
+            if (Camera != null)
+            {
+                GraphicsManager.Update(Camera, gameTime);
+            }
+            DebugModelDrawer.Update();
+
+            while (mNumPopQueued > 0)
+            {
+                mNumPopQueued--;
+                mGameStates.RemoveAt(mGameStates.Count - 1);
+            }
+            foreach (IGameState gameState in mGameStateAddQueue)
+            {
+                mGameStates.Add(gameState);
+            }
+            mGameStateAddQueue.Clear();
+
+            base.Update(gameTime);
         }
 
         /// <summary>

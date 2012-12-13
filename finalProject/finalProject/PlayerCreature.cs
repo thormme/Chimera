@@ -291,7 +291,7 @@ namespace finalProject
 
         #region Public Methods
 
-        public void Die()
+        public override void Die()
         {
             ////Console.WriteLine("Player died.");
             Position = SpawnOrigin;
