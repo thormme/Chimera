@@ -287,9 +287,16 @@ namespace finalProject
             mStealTimer = -1.0f;
         }
 
-        public override void AddTip()
+        public void AddTip(GameTip tip)
         {
-            
+            if (tip != null)
+            {
+                if (!tip.Displayed)
+                {
+                    tip.Displayed = true;
+                    Game1.AddTip(tip);
+                }
+            }
         }
 
         #endregion
@@ -389,11 +396,11 @@ namespace finalProject
 
             if (other.Tag is Checkpoint)
             {
-                Game1.AddTip(mCheckpointEncountered);
+                AddTip(mCheckpointEncountered);
             }
             else if (other.Tag is GoalPoint)
             {
-                Game1.AddTip(mGoalPointEncountered);
+                AddTip(mGoalPointEncountered);
             }
             else if (other.Tag is CharacterSynchronizer)
             {
@@ -440,10 +447,7 @@ namespace finalProject
             if (die)
             {
                 Die();
-                if (!mPlayerDied.Displayed)
-                {
-                    Game1.AddTip(mPlayerDied);
-                }
+                AddTip(mPlayerDied);
             }
         }
         

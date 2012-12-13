@@ -783,7 +783,7 @@
     <Parameters />
     <Position>
       <X>-46.2805328</X>
-      <Y>21470</Y>
+      <Y>21990</Y>
       <Z>-13.9130478</Z>
     </Position>
     <Orientation>
@@ -796,7 +796,7 @@
       <Y>12672.1436</Y>
       <Z>47.5205345</Z>
     </Scale>
-    <Height>21470</Height>
+    <Height>21990</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
@@ -2501,7 +2501,7 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.GoalPoint, finalProject</Type>
-    <Model>box</Model>
+    <Model>tractorBeam</Model>
     <Parameters>
       <string>null</string>
       <string>PenguinLimbs</string>
@@ -2522,29 +2522,6 @@
       <Z>1.25</Z>
     </Scale>
     <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.PhysicsProp, finalProject</Type>
-    <Model>rock1light</Model>
-    <Parameters>
-      <string>4</string>
-    </Parameters>
-    <Position>
-      <X>-36.0088348</X>
-      <Y>1000</Y>
-      <Z>-12.6590776</Z>
-    </Position>
-    <Orientation>
-      <X>2.19433641</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>12.5</X>
-      <Y>10000</Y>
-      <Z>12.5</Z>
-    </Scale>
-    <Height>1000</Height>
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Spawner, finalProject</Type>
@@ -2725,31 +2702,6 @@
     <Type>finalProject.Spawner, finalProject</Type>
     <Model>editor</Model>
     <Parameters>
-      <string>Cobra</string>
-      <string>10</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>38.09816</X>
-      <Y>5935.266</Y>
-      <Z>-8.462418</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>5</X>
-      <Y>4000</Y>
-      <Z>5</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>editor</Model>
-    <Parameters>
       <string>FrilledLizard</string>
       <string>10</string>
       <string>1</string>
@@ -2777,7 +2729,7 @@
     <Parameters>
       <string>Frog</string>
       <string>10</string>
-      <string>2</string>
+      <string>1</string>
     </Parameters>
     <Position>
       <X>37.8433</X>
@@ -2802,7 +2754,7 @@
     <Parameters>
       <string>Frog</string>
       <string>10</string>
-      <string>2</string>
+      <string>1</string>
     </Parameters>
     <Position>
       <X>30.8159618</X>
@@ -2827,7 +2779,7 @@
     <Parameters>
       <string>Turtle</string>
       <string>10</string>
-      <string>2</string>
+      <string>1</string>
     </Parameters>
     <Position>
       <X>36.69777</X>
@@ -2958,6 +2910,339 @@
       <X>1.25</X>
       <Y>1000</Y>
       <Z>25</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Checkpoint, finalProject</Type>
+    <Model>checkpoint_red</Model>
+    <Parameters />
+    <Position>
+      <X>38.1452332</X>
+      <Y>11000</Y>
+      <Z>13.1087551</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Checkpoint, finalProject</Type>
+    <Model>checkpoint_red</Model>
+    <Parameters />
+    <Position>
+      <X>-11.5794449</X>
+      <Y>20000</Y>
+      <Z>29.5764389</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Checkpoint, finalProject</Type>
+    <Model>checkpoint_red</Model>
+    <Parameters />
+    <Position>
+      <X>-7.369603</X>
+      <Y>12906.1953</Y>
+      <Z>7.85140038</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>5200</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Checkpoint, finalProject</Type>
+    <Model>checkpoint_red</Model>
+    <Parameters />
+    <Position>
+      <X>-48.3693848</X>
+      <Y>24000</Y>
+      <Z>-24.8106766</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Checkpoint, finalProject</Type>
+    <Model>checkpoint_red</Model>
+    <Parameters />
+    <Position>
+      <X>-42.6942062</X>
+      <Y>23000</Y>
+      <Z>5.62604952</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Checkpoint, finalProject</Type>
+    <Model>checkpoint_red</Model>
+    <Parameters />
+    <Position>
+      <X>-4.75787449</X>
+      <Y>7848.8833</Y>
+      <Z>10.1994963</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>0.125</X>
+      <Y>100</Y>
+      <Z>0.125</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters>
+      <string>10</string>
+    </Parameters>
+    <Position>
+      <X>-10.993741</X>
+      <Y>7375.40674</Y>
+      <Z>15.3515863</Z>
+    </Position>
+    <Orientation>
+      <X>3.358891</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>11.2496557</X>
+      <Y>8999.725</Y>
+      <Z>11.2496557</Z>
+    </Scale>
+    <Height>390</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters>
+      <string>10</string>
+    </Parameters>
+    <Position>
+      <X>-12.2879391</X>
+      <Y>7387.31445</Y>
+      <Z>15.0446358</Z>
+    </Position>
+    <Orientation>
+      <X>0.0287216455</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>12.3609018</X>
+      <Y>9888.722</Y>
+      <Z>12.3609018</Z>
+    </Scale>
+    <Height>390</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters>
+      <string>10</string>
+    </Parameters>
+    <Position>
+      <X>-20.4598637</X>
+      <Y>5362.4624</Y>
+      <Z>5.005122</Z>
+    </Position>
+    <Orientation>
+      <X>3.405244</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>17.0733013</X>
+      <Y>13658.6416</Y>
+      <Z>17.0733013</Z>
+    </Scale>
+    <Height>320</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters>
+      <string>10</string>
+    </Parameters>
+    <Position>
+      <X>-38.1163025</X>
+      <Y>330</Y>
+      <Z>-19.58501</Z>
+    </Position>
+    <Orientation>
+      <X>4.993218</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>11.8064671</X>
+      <Y>9445.174</Y>
+      <Z>11.8064671</Z>
+    </Scale>
+    <Height>330</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters>
+      <string>10</string>
+    </Parameters>
+    <Position>
+      <X>-28.8492661</X>
+      <Y>24490</Y>
+      <Z>-47.48489</Z>
+    </Position>
+    <Orientation>
+      <X>5.502962</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>12.5</X>
+      <Y>10000</Y>
+      <Z>12.5</Z>
+    </Scale>
+    <Height>490</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters>
+      <string>10</string>
+    </Parameters>
+    <Position>
+      <X>-29.533165</X>
+      <Y>24630</Y>
+      <Z>-46.12784</Z>
+    </Position>
+    <Orientation>
+      <X>1.44786823</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>25</X>
+      <Y>20000</Y>
+      <Z>25</Z>
+    </Scale>
+    <Height>630</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.PhysicsProp, finalProject</Type>
+    <Model>rock1light</Model>
+    <Parameters>
+      <string>20</string>
+    </Parameters>
+    <Position>
+      <X>-22.4723988</X>
+      <Y>25360.5547</Y>
+      <Z>38.7386932</Z>
+    </Position>
+    <Orientation>
+      <X>3.30185151</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>25</X>
+      <Y>20000</Y>
+      <Z>25</Z>
+    </Scale>
+    <Height>680</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.TipTrigger, finalProject</Type>
+    <Model>box</Model>
+    <Parameters>
+      <string>Try grappling to the branch with frog tongue.?Then jump off and use kangaroo pound.?This will result in a super swing!?Try and get to the platform over there!</string>
+    </Parameters>
+    <Position>
+      <X>15.7475834</X>
+      <Y>11000</Y>
+      <Z>30.7760887</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>3.69363785</X>
+      <Y>2954.9104</Y>
+      <Z>3.69363785</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.TipTrigger, finalProject</Type>
+    <Model>box</Model>
+    <Parameters>
+      <string>Try using penguin limbs to slide down!</string>
+    </Parameters>
+    <Position>
+      <X>-27.3229046</X>
+      <Y>24000</Y>
+      <Z>-49.49287</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>1.25</X>
+      <Y>1000</Y>
+      <Z>12.5</Z>
     </Scale>
     <Height>0</Height>
   </DummyObject>
