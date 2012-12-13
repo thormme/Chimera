@@ -181,6 +181,7 @@ namespace finalProject.Parts
                 if (other.Tag is CharacterSynchronizer)
                 {
                     ((other.Tag as CharacterSynchronizer).body.Tag as Creature).Damage(damage, Creature);
+                    ((other.Tag as CharacterSynchronizer).body.Tag as Creature).AllowImpulse();
                 }
             }
         }

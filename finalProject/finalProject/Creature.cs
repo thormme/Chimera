@@ -106,6 +106,8 @@ namespace finalProject
 
         protected double mPoisonTimer = -1.0f;
 
+        private double mAllowImpulseTimer = 0f;
+
         protected Dictionary<Modification, int> mModifications = new Dictionary<Modification, int>();
 
         protected float mHeight;
@@ -643,6 +645,12 @@ namespace finalProject
 
         public abstract void Die();
 
+        public void AllowImpulse()
+        {
+            CharacterController.VerticalMotionConstraint.IsActive = false;
+            mAllowImpulseTimer = .1;
+        }
+
         public void AddTip()
         {
             if (!mTip.Displayed)
@@ -927,6 +935,15 @@ namespace finalProject
                 if (mPoisonTimer < 0.0f)
                 {
                     Poisoned = false;
+                }
+            }
+
+            if (mAllowImpulseTimer > 0.0f)
+            {
+                mAllowImpulseTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (mAllowImpulseTimer < 0.0f)
+                {
+                    CharacterController.VerticalMotionConstraint.IsActive = true;
                 }
             }
 

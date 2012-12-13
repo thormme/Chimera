@@ -97,6 +97,7 @@ namespace finalProject.Parts
                 impulseVector *= DamageImpulseMultiplier;
                 //creature.Entity.LinearVelocity = impulseVector;
                 creature.Entity.ApplyLinearImpulse(ref impulseVector);
+                creature.AllowImpulse();
 
                 creature.Damage(AttackDamage, Creature);
             }
