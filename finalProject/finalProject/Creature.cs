@@ -641,6 +641,8 @@ namespace finalProject
             (mRenderable as AnimateModel).PlayAnimation(animationName, isSaturated);
         }
 
+        public abstract void Die();
+
         public void AddTip()
         {
             if (!mTip.Displayed)

@@ -41,7 +41,7 @@ namespace GameConstructLibrary.Menu
             new InputAction[]
             {
                 new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Up),
-                new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.Y, Microsoft.Xna.Framework.Input.GamePadDeadZone.None, -.5f, 2.0f),
+                new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.Y, Microsoft.Xna.Framework.Input.GamePadDeadZone.None, -2.0f, .5f),
                 new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Buttons.DPadUp)
             },
             InputAction.ButtonAction.Down
@@ -50,7 +50,7 @@ namespace GameConstructLibrary.Menu
             new InputAction[]
             {
                 new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Down),
-                new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.Y, Microsoft.Xna.Framework.Input.GamePadDeadZone.None, -2.0f, .5f),
+                new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.Y, Microsoft.Xna.Framework.Input.GamePadDeadZone.None, -.5f, 2.0f),
                 new GamePadButtonInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Buttons.DPadDown)
             },
             InputAction.ButtonAction.Down
