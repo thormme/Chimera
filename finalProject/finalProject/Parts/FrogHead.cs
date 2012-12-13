@@ -14,7 +14,7 @@ using BEPUphysics.BroadPhaseEntries;
 
 namespace finalProject.Parts
 {
-    class FrogHead : Part
+    class FrogHead : Part, IRangedPart
     {
 
         public static GameTip mTip = new GameTip(

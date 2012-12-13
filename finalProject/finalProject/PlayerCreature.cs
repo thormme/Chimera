@@ -31,6 +31,7 @@ namespace finalProject
         #region Fields
 
         private bool mHackStop = true;
+        private bool mRenderReticle = false;
 
         private const int NumParts = 3;
 
@@ -57,6 +58,7 @@ namespace finalProject
         private Sprite mRequirementBoxSprite = new Sprite("requirementBox");
         private Sprite mRequirementSprite = null;
         private Sprite mCheckSprite = new Sprite("check");
+        private Sprite mReticleSprite = new Sprite("green");
 
         private Sprite[] mButtonSprites = new Sprite[NumParts] {
             new Sprite("blueButton"), 
@@ -538,6 +540,11 @@ namespace finalProject
             {
                 CharacterController.Body.Height = mHeight + part.Height;
             }
+
+            if (part is IRangedPart)
+            {
+                mRenderReticle = true;
+            }
         }
 
         /// <summary>
@@ -550,11 +557,16 @@ namespace finalProject
             if (part.Height > 0.0f)
             {
                 float maxHeight = 0f;
+                mRenderReticle = false;
                 foreach (PartAttachment partAttachment in mPartAttachments)
                 {
                     if (partAttachment != null)
                     {
                         maxHeight = Math.Max(partAttachment.Part.Height, maxHeight);
+                        if (partAttachment.Part is IRangedPart)
+                        {
+                            mRenderReticle = true;
+                        }
                     }
                 }
                 CharacterController.Body.Height = mHeight + maxHeight;
@@ -621,8 +633,25 @@ namespace finalProject
             }
 
             base.Render();
+            RenderReticle();
             RenderRequirement();
             RenderAbilities();
+        }
+
+        private void RenderReticle()
+        {
+            if (mRenderReticle == true)
+            {
+                int width = (int)(Game1.Graphics.PreferredBackBufferWidth * .05);
+                int height = width;
+                Rectangle bounds = new Rectangle(
+                    (int)Game1.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    (int)Game1.Graphics.PreferredBackBufferHeight / 2 - height / 2,
+                    width,
+                    height
+                );
+                mReticleSprite.Render(bounds);
+            }
         }
 
         private void RenderRequirement()
