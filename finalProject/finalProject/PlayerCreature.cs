@@ -200,17 +200,7 @@ namespace finalProject
             set
             {
                 mCheckpoint = value;
-                for (int slot = 0; slot < NumParts; ++slot)
-                {
-                    if (mPartAttachments[slot] != null)
-                    {
-                        mRespawnParts[slot] = mPartAttachments[slot].Part;
-                    }
-                    else
-                    {
-                        mRespawnParts[slot] = null;
-                    }
-                }
+                SpawnOrigin = mCheckpoint.Position;
             }
         }
 
@@ -284,9 +274,16 @@ namespace finalProject
             mStealTimer = -1.0f;
         }
 
-        public override void AddTip()
+        public void AddTip(GameTip tip)
         {
-            
+            if (tip != null)
+            {
+                if (!tip.Displayed)
+                {
+                    tip.Displayed = true;
+                    Game1.AddTip(tip);
+                }
+            }
         }
 
         #endregion
@@ -296,7 +293,17 @@ namespace finalProject
         public override void Die()
         {
             ////Console.WriteLine("Player died.");
-            Position = SpawnOrigin;
+            if (Checkpoint == null)
+            {
+                Position = SpawnOrigin;
+            }
+            else
+            {
+                Vector3 newPosition = SpawnOrigin;
+                newPosition.Y += (CharacterController.Body.Height + (Checkpoint.Entity as Cylinder).Height) / 2;
+                Position = newPosition;
+            }
+
             mShield = true;
             Poisoned = false;
             CancelParts();
@@ -386,11 +393,11 @@ namespace finalProject
 
             if (other.Tag is Checkpoint)
             {
-                Game1.AddTip(mCheckpointEncountered);
+                AddTip(mCheckpointEncountered);
             }
             else if (other.Tag is GoalPoint)
             {
-                Game1.AddTip(mGoalPointEncountered);
+                AddTip(mGoalPointEncountered);
             }
             else if (other.Tag is CharacterSynchronizer)
             {
@@ -437,10 +444,7 @@ namespace finalProject
             if (die)
             {
                 Die();
-                if (!mPlayerDied.Displayed)
-                {
-                    Game1.AddTip(mPlayerDied);
-                }
+                AddTip(mPlayerDied);
             }
         }
         
