@@ -24,10 +24,13 @@ namespace finalProject
         public Type PartType;
 
         public GoalPoint(Vector3 position, Quaternion orientation, Vector3 scale, string nextLevel, Type partType)
-            : base(new InanimateModel("box"), new Cylinder(position, 1f, scale.Length()))
+            : base(new ScrollingTransparentModel("tractorBeam"), new Cylinder(position, 1f, scale.Length()))
         {
             mNextLevel = nextLevel;
             PartType = partType;
+            Scale = new Vector3(1.0f, 5.0f, 1.0f);
+            (mRenderable as ScrollingTransparentModel).HorizontalVelocity = 0.1f;
+            (mRenderable as ScrollingTransparentModel).VerticalVelocity = 0.0f;
         }
 
         /// <summary>
