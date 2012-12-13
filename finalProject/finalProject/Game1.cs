@@ -29,6 +29,13 @@ namespace finalProject
     public class Game1 : Game
     {
         public static int NumParts = 3;
+        
+        // TODO: Make this not be the worst thing ever.
+        public static Game1 Game
+        {
+            get;
+            protected set;
+        }
 
         private InputAction forward;
         private KeyInputAction celShading;
@@ -66,6 +73,7 @@ namespace finalProject
 
         public Game1()
         {
+            Game = this;
 
             Graphics = new GraphicsDeviceManager(this);
             Graphics.PreferredBackBufferWidth = 1280;

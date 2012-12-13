@@ -44,5 +44,16 @@ namespace GameConstructLibrary
             reader.Close();
             return objects;
         }
+
+        /// <summary>
+        /// Check whether a level exists.
+        /// </summary>
+        /// <param name="file">The level name.</param>
+        /// <returns>True if the level exists.</returns>
+        public static bool Exists(string file)
+        {
+            FileInfo meshFile = new FileInfo("Content\\" + "levels/" + file);
+            return meshFile.Exists;
+        }
     }
 }

@@ -43,5 +43,10 @@ namespace finalProject
 
             return bones;
         }
+
+        public override void AddTip()
+        {
+            
+        }
     }
 }

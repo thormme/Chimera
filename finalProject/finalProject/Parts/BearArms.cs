@@ -5,20 +5,39 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using System.Drawing;
+using GameConstructLibrary;
 
 namespace finalProject.Parts
 {
     public class BearArms : CooldownPart
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+                {
+                    "Using bear arms will attack creatures in front of you."
+                },
+            10.0f);
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
+        }
+
         protected const int AttackDamage = 1;
         protected const float Range = 0.75f;
 
         protected const double AnimationLength = 1.0f;
         protected double mAnimationTimer = -1.0f;
 
-        protected const float DamageImpulseMultiplier = 270.0f;
+        protected const float DamageImpulseMultiplier = 70.0f;
 
         protected bool mActive = false;
+
+
 
         public BearArms()
             : base(
@@ -92,11 +111,12 @@ namespace finalProject.Parts
             foreach (Creature creature in targets)
             {
                 Vector3 impulseVector = Vector3.Normalize(creature.Position - Creature.Position);
-                impulseVector.Y = 1.0f;
+                impulseVector.Y = 0.3f;
                 impulseVector.Normalize();
                 impulseVector *= DamageImpulseMultiplier;
                 //creature.Entity.LinearVelocity = impulseVector;
                 creature.Entity.ApplyLinearImpulse(ref impulseVector);
+                creature.AllowImpulse();
 
                 creature.Damage(AttackDamage, Creature);
             }
@@ -124,5 +144,6 @@ namespace finalProject.Parts
         public override void FinishUse(Vector3 direction) { }
 
         public override void Cancel() { }
+
     }
 }

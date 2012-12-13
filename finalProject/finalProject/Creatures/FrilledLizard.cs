@@ -12,6 +12,15 @@ namespace finalProject.Creatures
 {
     public class FrilledLizard : NonPlayerCreature
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+            {
+                "You have encountered a frill necked lizard.",
+                "Their venom will temporarily disables enemies."
+            },
+            10.0f);
+
         public FrilledLizard(Vector3 position, Spawner spawn)
             : base(
                 position,
@@ -30,16 +39,6 @@ namespace finalProject.Creatures
                 )
         {
             Scale = new Vector3(4.0f);
-
-            mTip = new GameTip(
-                new string[] 
-                {
-                    "You have encountered a frill necked lizard.",
-                    "Frill necked lizards are able to scare away other creatures.",
-                    "Their venom also temporarily disables enemies."
-                },
-                10.0f);
-
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -47,6 +46,14 @@ namespace finalProject.Creatures
             List<PartBone> bones = new List<PartBone>();
             bones.Add(PartBone.HeadCenterCap);
             return bones;
+        }
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
         }
         
     }

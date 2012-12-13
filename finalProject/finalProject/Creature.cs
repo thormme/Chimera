@@ -106,14 +106,14 @@ namespace finalProject
 
         protected double mPoisonTimer = -1.0f;
 
+        private double mAllowImpulseTimer = 0f;
+
         protected Dictionary<Modification, int> mModifications = new Dictionary<Modification, int>();
 
         protected float mHeight;
 
         protected List<PartAttachment> mPartAttachments;
         protected List<PartBone> mUnusedPartBones;
-
-        protected GameTip mTip = new GameTip(new string[] {}, 0.0f);
         
         #endregion
 
@@ -310,6 +310,14 @@ namespace finalProject
                 }
 
                 mPoisoned = value;
+            }
+        }
+
+        protected virtual GameTip Tip
+        {
+            get
+            {
+                return null;
             }
         }
 
@@ -643,12 +651,21 @@ namespace finalProject
 
         public abstract void Die();
 
-        public void AddTip()
+        public void AllowImpulse()
         {
-            if (!mTip.Displayed)
+            CharacterController.VerticalMotionConstraint.IsActive = false;
+            mAllowImpulseTimer = .1;
+        }
+
+        public virtual void AddTip()
+        {
+            if (Tip != null)
             {
-                mTip.Displayed = true;
-                Game1.AddTip(mTip);
+                if (!Tip.Displayed)
+                {
+                    Tip.Displayed = true;
+                    Game1.AddTip(Tip);
+                }
             }
         }
 
@@ -927,6 +944,15 @@ namespace finalProject
                 if (mPoisonTimer < 0.0f)
                 {
                     Poisoned = false;
+                }
+            }
+
+            if (mAllowImpulseTimer > 0.0f)
+            {
+                mAllowImpulseTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (mAllowImpulseTimer < 0.0f)
+                {
+                    CharacterController.VerticalMotionConstraint.IsActive = true;
                 }
             }
 

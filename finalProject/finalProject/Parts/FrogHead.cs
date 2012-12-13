@@ -17,6 +17,23 @@ namespace finalProject.Parts
     class FrogHead : Part
     {
 
+        public static GameTip mTip = new GameTip(
+            new string[] 
+                {
+                    "Using frog head will shoot out your tongue.",
+                    "Your tongue will stick to anything it hits",
+                    "creating a rope between you and the object."
+                },
+            10.0f);
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
+        }
+
         private const float tongueLength = 500.0f;
         private FrogTongue mTongue;
 

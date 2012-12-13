@@ -19,9 +19,26 @@ namespace finalProject.Parts
 {
     class RhinoHead : CooldownPart
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+                {
+                    "Using rhino head will cause you to charge forward.",
+                    "Anything hit during your charge will go flying."
+                },
+            10.0f);
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
+        }
+
         private const double RunLength = 2.0f;
         private const float SpeedBoost = 10.0f;
-        protected const float DamageImpulseMultiplier = 200.0f;
+        protected const float DamageImpulseMultiplier = 125.0f;
 
         private double mRunTimer = -1.0f;
         private double mChargeAnimationTime = 5.0f;
@@ -173,7 +190,7 @@ namespace finalProject.Parts
                     impulseVector = Vector3.Normalize(impulseDirection);
                 }
 
-                impulseVector.Y = 1.0f;
+                impulseVector.Y = 0.45f;
                 impulseVector.Normalize();
                 impulseVector *= damage * DamageImpulseMultiplier;
                 hitEntity.ApplyLinearImpulse(ref impulseVector);
@@ -181,6 +198,7 @@ namespace finalProject.Parts
                 if (other.Tag is CharacterSynchronizer)
                 {
                     ((other.Tag as CharacterSynchronizer).body.Tag as Creature).Damage(damage, Creature);
+                    ((other.Tag as CharacterSynchronizer).body.Tag as Creature).AllowImpulse();
                 }
             }
         }

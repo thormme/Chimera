@@ -12,6 +12,18 @@ namespace finalProject.Creatures
 {
     public class Bear : NonPlayerCreature
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+            {
+                "You have encountered a bear.",
+                "Be careful, these are beary strong enemies.",
+                "Even the strongest players bearly make it away with their lives.",
+                "Vanquish this foe and you will gain the ability to bear arms.",
+                "You will be able to maul other creatures with your bear hands."
+            },
+            10.0f);
+
         public Bear(Vector3 position, Spawner spawn)
             : base(
                 position,
@@ -30,17 +42,6 @@ namespace finalProject.Creatures
                 )
         {
             Scale = new Vector3(2.0f);
-
-            mTip = new GameTip(
-                new string[] 
-                {
-                    "You have encountered a bear.",
-                    "Be careful, these are beary strong enemies.",
-                    "Even the strongest players bearly make it away with their lives.",
-                    "Vanquish this foe and you will gain the ability to bear arms.",
-                    "You will be able to maul other creatures with your bear hands."
-                },
-                10.0f);
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -54,6 +55,14 @@ namespace finalProject.Creatures
         protected virtual Matrix GetOptionalPartTransforms()
         {
             return Matrix.CreateScale(0.5f);
+        }
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
         }
 
     }

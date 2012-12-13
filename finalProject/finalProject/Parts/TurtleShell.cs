@@ -4,18 +4,28 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
+using GameConstructLibrary;
 
 namespace finalProject.Parts
 {
     public class TurtleShell : MeteredPart
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+                {
+                    "Using turtle shell will cause you to become",
+                    "invulnerable for a short period of time."
+                },
+            10.0f);
+
         public TurtleShell()
             : base(
                 3.0f,
                 3.0f,
                 new Part.SubPart[] {
                     new SubPart(
-                        new InanimateModel("box"),//"sphere"),
+                        new InanimateModel("turtle_shell"),//"sphere"),
                         new Creature.PartBone[] {
                             Creature.PartBone.Spine1Cap,
                             Creature.PartBone.Spine2Cap,
@@ -23,7 +33,7 @@ namespace finalProject.Parts
                         },
                         new Vector3(),
                         Matrix.CreateFromQuaternion(new Quaternion()),
-                        new Vector3(0.02f)
+                        new Vector3(1.0f)
                     )
                 },
                 false,

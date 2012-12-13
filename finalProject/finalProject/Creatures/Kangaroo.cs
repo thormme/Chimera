@@ -12,6 +12,16 @@ namespace finalProject.Creatures
 {
     public class Kangaroo : NonPlayerCreature
     {
+
+        public static GameTip mTip = new GameTip(
+            new string[] 
+            {
+                "You have encountered a kangaroo.",
+                "Kangaroos are able to jump extremely high.",
+                "Be careful, if provoked they will attempt to crush you."
+            },
+            10.0f);
+
         public Kangaroo(Vector3 position, Spawner spawn)
             : base(
                 position,
@@ -29,14 +39,7 @@ namespace finalProject.Creatures
                 spawn
                 )
         {
-            mTip = new GameTip(
-                new string[] 
-                {
-                    "You have encountered a kangaroo.",
-                    "Kangaroos are able to jump extremely high.",
-                    "Be careful, if provoked they will attempt to crush you."
-                },
-                10.0f);
+            
         }
 
         protected override List<PartBone> GetUsablePartBones()
@@ -45,6 +48,14 @@ namespace finalProject.Creatures
             bones.Add(PartBone.LegRearLeft1Cap);
             bones.Add(PartBone.LegRearRight1Cap);
             return bones;
+        }
+
+        protected override GameTip Tip
+        {
+            get
+            {
+                return mTip;
+            }
         }
 
         protected virtual Matrix GetOptionalPartTransforms()
