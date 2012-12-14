@@ -150,6 +150,12 @@
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Nuclex.Input">
+      <HintPath>libraries\nuclex\xna-4.0-x86\Nuclex.Input.dll</HintPath>
+    </Reference>
+    <Reference Include="Nuclex.UserInterface">
+      <HintPath>libraries\nuclex\xna-4.0-x86\Nuclex.UserInterface.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -185,6 +191,7 @@
     <Compile Include="Creatures\Rhino.cs" />
     <Compile Include="Creatures\Turtle.cs" />
     <Compile Include="DeathZone.cs" />
+    <Compile Include="DebugConsole.cs" />
     <Compile Include="DutyCyclePart.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="GoalPoint.cs" />

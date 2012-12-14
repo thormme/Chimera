@@ -20,6 +20,8 @@ using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using finalProject.Menus;
+using Nuclex.Input;
+using Nuclex.UserInterface;
 
 namespace finalProject
 {
@@ -54,7 +56,12 @@ namespace finalProject
         private KeyInputAction debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.F1);
         private KeyInputAction debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.OemTilde);
         private KeyInputAction cheat = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Tab);
+        private static InputAction enterConsoleCommand = new KeyInputAction(Microsoft.Xna.Framework.PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Enter);
         bool debugMode = false;
+
+        private Nuclex.UserInterface.Screen mDebugScreen;
+        private GuiManager mDebugGUI;
+        private InputManager mDebugInput;
         // END
 
         public static GraphicsDeviceManager Graphics;
@@ -74,18 +81,34 @@ namespace finalProject
         public Game1()
         {
             Game = this;
-
             Graphics = new GraphicsDeviceManager(this);
             Graphics.PreferredBackBufferWidth = 1280;
             Graphics.PreferredBackBufferHeight = 720;
             Graphics.PreferMultiSampling = true;
-            Graphics.ToggleFullScreen();
+            //Graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
 
             forward = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.W);
             celShading = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.F2);
 
+            // DEBUG
+            mDebugScreen = new Nuclex.UserInterface.Screen(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
+            mDebugGUI = new GuiManager(Services);
+            mDebugGUI.Screen = mDebugScreen;
+            DebugConsole debugConsole = new DebugConsole();
+            mDebugScreen.Desktop.Children.Add(debugConsole);
+            mDebugInput = new InputManager(Services, Window.Handle);
+
+            Components.Add(mDebugInput);
+            Components.Add(mDebugGUI);
+            mDebugGUI.DrawOrder = 1000;
+
+            mDebugScreen.FocusedControl = DebugConsole.ConsoleInput;
+            DebugConsole.AddCommand("exit", new DebugConsole.ConsoleCommand(ExitConsoleCommand));
+            DebugConsole.AddCommand("wireframe", new DebugConsole.ConsoleCommand(WireframeConsoleCommand));
+            DebugConsole.Hide();
+            // END
 
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Sensor.SensorGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
@@ -182,17 +205,29 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            //// DEBUG STUFF
-            //if (debug.Active)
-            //{
-            //    debugMode = !debugMode;
-            //}
+            // DEBUG STUFF
+            if (DebugConsole.IsVisible && enterConsoleCommand.Active)
+            {
+                DebugConsole.RunEnteredCommand();
+            }
+            if (debug.Active)
+            {
+                if (DebugConsole.IsVisible)
+                {
+                    DebugConsole.Hide();
+                }
+                else
+                {
+                    DebugConsole.Show();
+                    mDebugScreen.FocusedControl = DebugConsole.ConsoleInput;
+                }
+            }
 
             //if (debugGraphics.Active)
             //{
             //    GraphicsManager.DebugVisualization = (GraphicsManager.DebugVisualization) ? false : true;
             //}
-            //// END
+            // END
 
             //if (celShading.Active)
             //{
@@ -228,51 +263,51 @@ namespace finalProject
             //}
             try
             {
-            IsMouseVisible = !InputAction.IsMouseLocked;
+                IsMouseVisible = !InputAction.IsMouseLocked;
 
-            FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
+                FinalProject.ChaseCamera camera = Camera as FinalProject.ChaseCamera;
 
-            if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
-            {
-                PopState();
-                if (mGameStates.Count >= 2 && mGameStates[mGameStates.Count - 2] is World)
+                if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
                 {
-                    InputAction.IsMouseLocked = true;
+                    PopState();
+                    if (mGameStates.Count >= 2 && mGameStates[mGameStates.Count - 2] is World)
+                    {
+                        InputAction.IsMouseLocked = true;
+                    }
                 }
-            }
-            else if (mGameStates.Count > 0 && (mGameStates[mGameStates.Count - 1] is World) && pause.Active)
-            {
-                PushState(new PauseState(this));
-            }
+                else if (mGameStates.Count > 0 && (mGameStates[mGameStates.Count - 1] is World) && pause.Active)
+                {
+                    PushState(new PauseState(this));
+                }
 
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
-                this.Exit();
+                // Allows the game to exit
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                    this.Exit();
 
-            InputAction.Update();
-            if (mGameStates.Count > 0)
-            {
-                mGameStates[mGameStates.Count - 1].Update(gameTime);
-            }
+                InputAction.Update();
+                if (mGameStates.Count > 0)
+                {
+                    mGameStates[mGameStates.Count - 1].Update(gameTime);
+                }
 
-            if (Camera != null)
-            {
-                GraphicsManager.Update(Camera, gameTime);
-            }
-            DebugModelDrawer.Update();
+                if (Camera != null)
+                {
+                    GraphicsManager.Update(Camera, gameTime);
+                }
+                DebugModelDrawer.Update();
 
-            while (mNumPopQueued > 0)
-            {
-                mNumPopQueued--;
-                mGameStates.RemoveAt(mGameStates.Count - 1);
-            }
-            foreach (IGameState gameState in mGameStateAddQueue)
-            {
-                mGameStates.Add(gameState);
-            }
-            mGameStateAddQueue.Clear();
+                while (mNumPopQueued > 0)
+                {
+                    mNumPopQueued--;
+                    mGameStates.RemoveAt(mGameStates.Count - 1);
+                }
+                foreach (IGameState gameState in mGameStateAddQueue)
+                {
+                    mGameStates.Add(gameState);
+                }
+                mGameStateAddQueue.Clear();
 
-            base.Update(gameTime);
+                base.Update(gameTime);
             }
             catch (Exception e) 
             {
@@ -292,30 +327,30 @@ namespace finalProject
         {
             try
             {
-            Game1.Graphics.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
-            GraphicsManager.BeginRendering();
+                Game1.Graphics.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
+                GraphicsManager.BeginRendering();
 
-            /*if (mGameStates.Count > 0)
-            {
-                mGameStates[mGameStates.Count - 1].Render();
-            }*/
-            foreach (IGameState state in mGameStates)
-            {
-                state.Render();
-            }
+                /*if (mGameStates.Count > 0)
+                {
+                    mGameStates[mGameStates.Count - 1].Render();
+                }*/
+                foreach (IGameState state in mGameStates)
+                {
+                    state.Render();
+                }
 
-            GraphicsManager.FinishRendering();
+                GraphicsManager.FinishRendering();
 
-            RenderTips(gameTime);
+                RenderTips(gameTime);
 
-            // DEBUG
-            if (debugMode && Camera != null)
-            {
-                DebugModelDrawer.Draw(Game1.Camera.GetViewTransform(), Game1.Camera.GetProjectionTransform());
-            }
-            // END
+                // DEBUG
+                if (debugMode && Camera != null)
+                {
+                    DebugModelDrawer.Draw(Game1.Camera.GetViewTransform(), Game1.Camera.GetProjectionTransform());
+                }
+                // END
 
-            base.Draw(gameTime);
+                base.Draw(gameTime);
             }
             catch (Exception e) 
             {
@@ -382,5 +417,18 @@ namespace finalProject
         {
             Tips.Add(tip);
         }
+
+        #region ConsoleCommands
+
+        private void ExitConsoleCommand(List<string> parameters)
+        {
+            Exit();
+        }
+        private void WireframeConsoleCommand(List<string> parameters)
+        {
+            debugMode = !debugMode;
+        }
+
+        #endregion
     }
 }
