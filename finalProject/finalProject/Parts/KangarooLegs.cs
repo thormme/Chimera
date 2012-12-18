@@ -36,7 +36,7 @@ namespace finalProject.Parts
         const float forwardJumpForce = 30f;
         const float poundForce = 320f;
         const double poundWaitTime = .5;
-        const int poundDamage = 2;
+        const int poundDamage = 1;
 
         bool mJumpInUse = false;
         bool mPoundInUse = false;

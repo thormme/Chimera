@@ -23,7 +23,7 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock1dark</Model>
+    <Model>rock4</Model>
     <Parameters />
     <Position>
       <X>-1.98425674</X>
@@ -44,7 +44,7 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock1dark</Model>
+    <Model>rock4</Model>
     <Parameters />
     <Position>
       <X>-0.826089263</X>
@@ -65,7 +65,7 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock1dark</Model>
+    <Model>rock4</Model>
     <Parameters />
     <Position>
       <X>0.16584447</X>
@@ -86,7 +86,7 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock1dark</Model>
+    <Model>rock4</Model>
     <Parameters />
     <Position>
       <X>1.11793113</X>
@@ -107,7 +107,7 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock1dark</Model>
+    <Model>rock4</Model>
     <Parameters />
     <Position>
       <X>2.19585752</X>
@@ -128,7 +128,7 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock1dark</Model>
+    <Model>rock4</Model>
     <Parameters />
     <Position>
       <X>3.01936245</X>
@@ -149,7 +149,7 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock1dark</Model>
+    <Model>rock4</Model>
     <Parameters />
     <Position>
       <X>3.98066425</X>
@@ -170,7 +170,7 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock1dark</Model>
+    <Model>rock4</Model>
     <Parameters />
     <Position>
       <X>4.61698246</X>
@@ -1745,7 +1745,7 @@
   </DummyObject>
   <DummyObject>
     <Type>finalProject.Prop, finalProject</Type>
-    <Model>rock1dark</Model>
+    <Model>rock4</Model>
     <Parameters />
     <Position>
       <X>38.4031372</X>
@@ -2629,7 +2629,7 @@
     <Model>editor</Model>
     <Parameters>
       <string>Bear</string>
-      <string>10</string>
+      <string>50</string>
       <string>1</string>
     </Parameters>
     <Position>
@@ -3529,6 +3529,157 @@
       <X>32.3415146</X>
       <Y>6314.667</Y>
       <Z>-7.2626543</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>1.25</X>
+      <Y>1000</Y>
+      <Z>1.25</Z>
+    </Scale>
+    <Height>0</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock4</Model>
+    <Parameters />
+    <Position>
+      <X>22.8525352</X>
+      <Y>6500</Y>
+      <Z>-14.5962677</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>56.25</X>
+      <Y>45000</Y>
+      <Z>56.25</Z>
+    </Scale>
+    <Height>6500</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock4</Model>
+    <Parameters />
+    <Position>
+      <X>18.28679</X>
+      <Y>7500</Y>
+      <Z>-17.118824</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>56.25</X>
+      <Y>45000</Y>
+      <Z>56.25</Z>
+    </Scale>
+    <Height>7500</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock4</Model>
+    <Parameters />
+    <Position>
+      <X>12.4290781</X>
+      <Y>8200</Y>
+      <Z>-17.8591881</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>56.25</X>
+      <Y>45000</Y>
+      <Z>56.25</Z>
+    </Scale>
+    <Height>8200</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock4</Model>
+    <Parameters />
+    <Position>
+      <X>6.11939335</X>
+      <Y>8838.916</Y>
+      <Z>-14.639576</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>56.25</X>
+      <Y>45000</Y>
+      <Z>56.25</Z>
+    </Scale>
+    <Height>8800</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock4</Model>
+    <Parameters />
+    <Position>
+      <X>2.327939</X>
+      <Y>9801.361</Y>
+      <Z>-9.670562</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>56.25</X>
+      <Y>45000</Y>
+      <Z>56.25</Z>
+    </Scale>
+    <Height>8800</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Prop, finalProject</Type>
+    <Model>rock4</Model>
+    <Parameters />
+    <Position>
+      <X>-0.24166584</X>
+      <Y>11077.6494</Y>
+      <Z>-6.09343338</Z>
+    </Position>
+    <Orientation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Orientation>
+    <Scale>
+      <X>56.25</X>
+      <Y>45000</Y>
+      <Z>56.25</Z>
+    </Scale>
+    <Height>10000</Height>
+  </DummyObject>
+  <DummyObject>
+    <Type>finalProject.Spawner, finalProject</Type>
+    <Model>editor</Model>
+    <Parameters>
+      <string>Kangaroo</string>
+      <string>10</string>
+      <string>1</string>
+    </Parameters>
+    <Position>
+      <X>40.95333</X>
+      <Y>6106.51855</Y>
+      <Z>-0.428916931</Z>
     </Position>
     <Orientation>
       <X>0</X>

@@ -42,7 +42,7 @@ namespace finalProject
         private const int DefaultIntimidation = 5;
         private const int DamageThreshold = 30;
 
-        private const double StealLength = 2.5f;
+        private const double StealLength = 1.0f;
         private const double LoseLength = 0.2f;
 
         private bool mStealing = false;
@@ -356,14 +356,15 @@ namespace finalProject
             CollisionMeshManager.LookupMesh("suckConeCollision", out vertices, out indices);
 
             MobileMesh coneMesh = new MobileMesh(vertices, indices,
-                new AffineTransform(new Vector3(3.0f), Quaternion.Identity, Vector3.Zero), 
+                new AffineTransform(new Vector3(3.0f, 3.0f, 5.0f), Quaternion.Identity, Vector3.Zero), 
                 BEPUphysics.CollisionShapes.MobileMeshSolidity.Clockwise);
 
             mPartStealSensor = new ConeSensor(coneMesh);
             CollisionRules.AddRule(Entity, mPartStealSensor.Entity, CollisionRule.NoBroadPhase);
 
-            CharacterController.JumpSpeed *= 1.6f;
-            CharacterController.JumpForceFactor *= 1.6f;
+            CharacterController.HorizontalMotionConstraint.Speed *= 1.6f;
+            CharacterController.JumpSpeed *= 2.2f;
+            CharacterController.JumpForceFactor *= 2.2f;
 
             Intimidation = DefaultIntimidation;
             Sneak = DefaultSneak;
@@ -632,15 +633,15 @@ namespace finalProject
 
             if (Controller is PlayerController)
             {
-                mConeOrientation = Matrix.CreateScale(new Vector3(3.0f, 3.0f, 3.0f));
+                mConeOrientation = Matrix.CreateScale(new Vector3(3.0f, 5.0f, 3.0f));
                 mConeOrientation *= Matrix.CreateRotationX(MathHelper.PiOver2);
-                mConeOrientation *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
+                mConeOrientation *= Matrix.CreateWorld(Position + Camera.Forward * 10.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
 
                 mPartStealSensor.Update(gameTime);
 
-                mPartStealSensor.Position = Position + Camera.Forward * 6.0f;
+                mPartStealSensor.Position = Position + Camera.Forward * 10.0f;
                 mPartStealSensor.XNAOrientationMatrix = Matrix.CreateRotationX(MathHelper.Pi);
-                mPartStealSensor.XNAOrientationMatrix *= Matrix.CreateWorld(Position + Camera.Forward * 6.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
+                mPartStealSensor.XNAOrientationMatrix *= Matrix.CreateWorld(Position + Camera.Forward * 10.0f, Camera.Forward, Vector3.Cross(Camera.Right, Camera.Forward));
             }
 
             base.Update(gameTime);
