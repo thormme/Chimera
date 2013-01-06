@@ -101,7 +101,7 @@ namespace finalProject.Parts
                 Creature.AddModification(AddCheetahSpeed, RemoveCheetahSpeed);
                 mActive = true;
                 mCanAnimate = false;
-                PlayAnimation("run", false, true);
+                PlayAnimation("run", true, true);
             }
         }
 

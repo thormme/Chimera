@@ -15,10 +15,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace finalProject
 {
+    /// <summary>
+    /// A movable prop with physics.
+    /// </summary>
     public class PhysicsProp : PhysicsObject
     {
         Vector3 mCorrectionTranslate;
 
+        /// <summary>
+        /// Constructs a new entity for use by the constructor.
+        /// </summary>
+        /// <param name="modelName">The name of the Prop's model.</param>
+        /// <param name="translation">The position.</param>
+        /// <param name="orientation">The orientation.</param>
+        /// <param name="scale">The amount to scale the prop by.</param>
+        /// <param name="mass">The mass of the prop.</param>
+        /// <returns>The entity to be passed into the PhysicsObject constructor.</returns>
         private static Entity CreateEntity(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, float mass)
         {
             Vector3[] vertices;
@@ -35,6 +47,14 @@ namespace finalProject
             //return new MobileMesh(vertices, indices, new AffineTransform(scale, orientation, translation), MobileMeshSolidity.Solid, mass);
         }
 
+        /// <summary>
+        /// Constructs a new PhysicsProp.
+        /// </summary>
+        /// <param name="modelName">The name of the Prop's model.</param>
+        /// <param name="translation">The position.</param>
+        /// <param name="orientation">The orientation.</param>
+        /// <param name="scale">The amount to scale the prop by.</param>
+        /// <param name="mass">The mass of the prop.</param>
         public PhysicsProp(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, float mass)
             : base(new InanimateModel(modelName), CreateEntity(modelName, translation, orientation, scale, mass))
         {
@@ -44,7 +64,7 @@ namespace finalProject
             Scale = scale;
         }
 
-                /// <summary>
+        /// <summary>
         /// Constructor for use by the World level loading.
         /// </summary>
         /// <param name="modelName">Name of the model.</param>
@@ -57,6 +77,9 @@ namespace finalProject
         {
         }
 
+        /// <summary>
+        /// Render the PhysicsProp.
+        /// </summary>
         public override void Render()
         {
             mRenderable.Render(Matrix.CreateScale(Scale) * Matrix.CreateTranslation(-mCorrectionTranslate) * XNAOrientationMatrix * Matrix.CreateTranslation(Position));

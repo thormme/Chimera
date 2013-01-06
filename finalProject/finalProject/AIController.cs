@@ -15,14 +15,14 @@ namespace finalProject
     /// </summary>
     public enum DurdleState
     {
-        Idol,
+        Idle,
         Move,
         Wait
     }
 
     public enum AIState
     {
-        Idol,
+        Idle,
         Stop,
         Durdle,
         FollowPosition,
@@ -68,7 +68,7 @@ namespace finalProject
 
         public AIController()
         {
-            mDurdleTimer = new StateTimer<DurdleState>(DurdleState.Idol);
+            mDurdleTimer = new StateTimer<DurdleState>(DurdleState.Idle);
             ResetAIState();
         }
 
@@ -451,8 +451,8 @@ namespace finalProject
         /// </summary>
         protected virtual void ResetAIState()
         {
-            State = AIState.Idol;
-            mDurdleTimer.State = DurdleState.Idol;
+            State = AIState.Idle;
+            mDurdleTimer.State = DurdleState.Idle;
             mDurdleTimer.ResetNewState();
             mTargetCreature = null;
             mFollowPosition = false;

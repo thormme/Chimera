@@ -35,12 +35,22 @@ namespace GameConstructLibrary
             mActors = new List<IActor>();
             Space = new Space();
 
+            // Add the optimal number of threads for physics.
+            // TODO: Add correct cores for Xbox.
+            for (int i = 0; i < System.Environment.ProcessorCount; i++)
+            {
+                Space.ThreadManager.AddThread();
+            }
+
             mUncommittedGameObjectAdditions = new List<IGameObject>();
             mUncommittedGameObjectRemovals = new List<IGameObject>();
 
             Space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
         }
 
+        /// <summary>
+        /// Commit all queued additions and removals to/from the World.
+        /// </summary>
         protected void CommitChanges()
         {
             for (int i = 0; i < mUncommittedGameObjectAdditions.Count; i++)
@@ -89,6 +99,10 @@ namespace GameConstructLibrary
             mUncommittedGameObjectRemovals.Clear();
         }
 
+        /// <summary>
+        /// Queue an object for addition to the World.
+        /// </summary>
+        /// <param name="gameObject">The IGameObject to add.</param>
         public void Add(IGameObject gameObject)
         {
             if (gameObject == null)
@@ -101,6 +115,10 @@ namespace GameConstructLibrary
             }
         }
 
+        /// <summary>
+        /// Queue an object for removal from the World.
+        /// </summary>
+        /// <param name="gameObject">The IGameObject to remove.</param>
         public void Remove(IGameObject gameObject)
         {
             if (gameObject == null)
@@ -113,6 +131,11 @@ namespace GameConstructLibrary
             }
         }
 
+        /// <summary>
+        /// Update the World, Space, and Actors.
+        /// Called every frame.
+        /// </summary>
+        /// <param name="gameTime">The current game time.</param>
         public virtual void Update(GameTime gameTime)
         {
             //try

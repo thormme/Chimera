@@ -16,7 +16,7 @@ using finalProject.Menus;
 namespace finalProject
 {
     /// <summary>
-    /// The goal for that the player must reach.
+    /// The goal that the player must reach.
     /// </summary>
     public class GoalPoint : PhysicsObject
     {
@@ -24,6 +24,17 @@ namespace finalProject
         bool mLoaded = false;
         public Type PartType;
 
+        /// <summary>
+        /// Constructs a new GoalPoint.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="orientation">The orientation.</param>
+        /// <param name="scale">The amount to scale by.</param>
+        /// <param name="nextLevel">
+        /// The name of the next level to load.
+        /// An invalid name will return to the Main menu.
+        /// </param>
+        /// <param name="partType">The part required to pass the level.</param>
         public GoalPoint(Vector3 position, Quaternion orientation, Vector3 scale, string nextLevel, Type partType)
             : base(new ScrollingTransparentModel("tractorBeam"), new Cylinder(position, 1f, scale.Length() * 7.0f))
         {

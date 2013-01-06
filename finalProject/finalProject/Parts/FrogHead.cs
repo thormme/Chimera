@@ -72,7 +72,7 @@ namespace finalProject.Parts
 
         public override void Use(Vector3 direction)
         {
-            PlayAnimation("tongue", true, false);
+            PlayAnimation("tongue", false, false);
             mTongue = new FrogTongue(Creature, direction);
             Creature.World.Add(mTongue);
             mCanAnimate = false;

@@ -123,6 +123,8 @@ namespace GraphicsLibrary
         /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
         /// <param name="worldRotation">Rotation matrix of the object.</param>
         /// <param name="worldScale">Scale along each axis of the object.</param>
+        /// <param name="overlayColor">Color with which to modify the object.</param>
+        /// <param name="overlayColorWeight">Amount to colorify the object. 0-none 1-full</param>
         public void Render(Vector3 worldPosition, Matrix worldRotation, Vector3 worldScale, Color overlayColor, float overlayColorWeight)
         {
             Matrix worldTransforms = Matrix.CreateScale(worldScale);
@@ -137,7 +139,7 @@ namespace GraphicsLibrary
         /// <summary>
         /// Draws the IRenderable using the given world transform.
         /// </summary>
-        /// <param name="worldTransform">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="worldTransform">The object's world transform.</param>
         public void Render(Matrix worldTransform)
         {
             Draw(worldTransform, mDefaultOverlayColor, mDefaultOverlayWeight);
@@ -147,6 +149,8 @@ namespace GraphicsLibrary
         /// Draws the IRenderable using the given world transform.
         /// </summary>
         /// <param name="worldTransform">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="overlayColor">Color with which to modify the object.</param>
+        /// <param name="overlayColorWeight">Amount to colorify the object. 0-none 1-full</param>
         public void Render(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
             Draw(worldTransform, overlayColor, overlayColorWeight);
@@ -154,6 +158,12 @@ namespace GraphicsLibrary
 
         ///////////////////////////// Internal functions /////////////////////////////
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="worldTransform">The object's world transform.</param>
+        /// <param name="overlayColor">Color with which to modify the object.</param>
+        /// <param name="overlayColorWeight">Amount to colorify the object. 0-none 1-full</param>
         abstract protected void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight);
     }
 }

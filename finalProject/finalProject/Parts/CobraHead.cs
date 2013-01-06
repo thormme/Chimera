@@ -65,7 +65,7 @@ namespace finalProject.Parts
 
         protected override void UseCooldown(Vector3 direction)
         {
-            PlayAnimation("spit", true, false);
+            PlayAnimation("spit", false, false);
             mSpitSound.Play();
             projectile = new MindControlProjectile(Creature, direction);
             Creature.World.Add(projectile);

@@ -86,12 +86,12 @@ namespace finalProject.Parts
                 if (mRunTimer < 0.0f)
                 {
                     Stop();
-                    PlayAnimation("stand", true, true);
+                    PlayAnimation("stand", false, true);
                     mCanAnimate = true;
                 }
                 else if (mRunTimer < mChargeAnimationTime)
                 {
-                    PlayAnimation("charge", false, true);
+                    PlayAnimation("charge", true, true);
                 }
             }
 

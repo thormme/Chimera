@@ -547,13 +547,13 @@ namespace finalProject
             return partBones;
         }
 
-        protected void PlayPartAnimation(string animation, bool isSaturating)
+        protected void PlayPartAnimation(string animation, bool loop)
         {
             foreach (PartAttachment pa in mPartAttachments)
             {
                 if (pa != null)
                 {
-                    pa.Part.TryPlayAnimation(animation, isSaturating, false);
+                    pa.Part.TryPlayAnimation(animation, loop, false);
                 }
             }
         }
@@ -561,13 +561,24 @@ namespace finalProject
         #endregion
 
         #region Public Methods
-
-        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, VisionSensor radialSensor, Controller controller, int numParts)
+        
+        /// <summary>
+        /// Construct a new Creature.
+        /// </summary>
+        /// <param name="position">The position of the Creature.</param>
+        /// <param name="height">The height of the collision object.</param>
+        /// <param name="radius">The radius of the collision object.</param>
+        /// <param name="mass">The mass of the Creature.</param>
+        /// <param name="renderable">The Creaure's renderable.</param>
+        /// <param name="visionSensor">A sensor defining the Creature's field of view.</param>
+        /// <param name="controller">The controller for this Creature, its brain.</param>
+        /// <param name="numParts">The number of parts this Creature supports.</param>
+        public Creature(Vector3 position, float height, float radius, float mass, Renderable renderable, VisionSensor visionSensor, Controller controller, int numParts)
             : base(renderable, new Cylinder(position, height, radius, mass))
         {
             mHeight = height;
 
-            Sensor = radialSensor;
+            Sensor = visionSensor;
             CollisionRules.AddRule(Entity, Sensor.Entity, CollisionRule.NoBroadPhase);
             Forward = new Vector3(0.0f, 0.0f, -1.0f);
             mPartAttachments = new List<PartAttachment>(numParts);
@@ -587,6 +598,9 @@ namespace finalProject
             mBoneIndex = 0;
         }
 
+        /// <summary>
+        /// Render the creature and its parts.
+        /// </summary>
         public override void Render()
         {
             Color color = Color.Black;
@@ -624,7 +638,12 @@ namespace finalProject
             RenderParts(color, weight);
         }
 
-        public virtual void TryPlayAnimation(string animationName, bool isSaturated)
+        /// <summary>
+        /// Try to play an animation if it is available.
+        /// </summary>
+        /// <param name="animationName">The name of the animation to be played must be in a file named model_animation.</param>
+        /// <param name="loop">Whether the animation will loop.</param>
+        public virtual void TryPlayAnimation(string animationName, bool loop)
         {
             foreach (PartAttachment part in mPartAttachments)
             {
@@ -633,7 +652,7 @@ namespace finalProject
                     return;
                 }
             }
-            (mRenderable as AnimateModel).PlayAnimation(animationName, isSaturated);
+            (mRenderable as AnimateModel).PlayAnimation(animationName, loop);
         }
 
         public abstract void Die();
@@ -799,13 +818,13 @@ namespace finalProject
                 CharacterController.HorizontalMotionConstraint.MovementDirection = direction;
                 if (direction != Vector2.Zero)
                 {
-                    TryPlayAnimation("walk", false);
-                    PlayPartAnimation("walk", false);
+                    TryPlayAnimation("walk", true);
+                    PlayPartAnimation("walk", true);
                 }
                 else
                 {
-                    TryPlayAnimation("stand", true);
-                    PlayPartAnimation("stand", true);
+                    TryPlayAnimation("stand", false);
+                    PlayPartAnimation("stand", false);
                 }
                 Forward = new Vector3(facing.X, 0.0f, facing.Y);
             }

@@ -15,7 +15,7 @@ namespace finalProject.AI
         {
             base.Update(time, collidingCreatures);
 
-            FrilledLizardHead part = mCreature.PartAttachments[ChoosePartSlot()].Part as FrilledLizardHead;
+            //FrilledLizardHead part = mCreature.PartAttachments[ChoosePartSlot()].Part as FrilledLizardHead;
 
             bool noTarget = mTargetCreature == null || (mCreature.Position - mTargetCreature.Position).Length() > mCreature.Sensor.Radius;
             int intimidation = mCreature.Intimidation;//part.Active ? mCreature.Intimidation - FrilledLizardHead.IntimidationIncrease : mCreature.Intimidation;

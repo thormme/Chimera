@@ -55,20 +55,20 @@ namespace finalProject.Parts
         protected override void UseCooldown(Vector3 direction)
         {
             Creature.World.Add(new FrilledLizardVenom(Creature, direction));
-            PlayAnimation("spit", true, false);
+            PlayAnimation("spit", false, false);
             mSpitSound.Play();
             mCanAnimate = false;
         }
 
-        public override void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
+        public override void TryPlayAnimation(string animationName, bool loop, bool playOnCreature)
         {
             if (animationName == "stand")
             {
-                base.TryPlayAnimation("standOpen", isSaturated, playOnCreature);
+                base.TryPlayAnimation("standOpen", loop, playOnCreature);
             }
             else if (animationName != "walk")
             {
-                base.TryPlayAnimation(animationName, isSaturated, playOnCreature);
+                base.TryPlayAnimation(animationName, loop, playOnCreature);
             }
         }
 

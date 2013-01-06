@@ -12,7 +12,7 @@ using BEPUphysics.NarrowPhaseSystems.Pairs;
 using finalProject.Parts;
 using finalProject.AI;
 
-namespace finalProject
+namespace finalProject.Creatures
 {
     public class DummyCreature : NonPlayerCreature
     {

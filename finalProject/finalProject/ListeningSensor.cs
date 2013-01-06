@@ -18,11 +18,11 @@ namespace finalProject
         private int mListeningSensitivity;
 
         /// <summary>
-        /// 
+        /// Constructs a new ListeningSensor.
         /// </summary>
-        /// <param name="radius"></param>
-        /// <param name="visionAngle"></param>
-        /// <param name="listeningSensitivity"></param>
+        /// <param name="radius">The distance at which other Creatures can be seen.</param>
+        /// <param name="visionAngle">The field of view that where Creatures are seen.</param>
+        /// <param name="listeningSensitivity">The distance at which other Creatures can be heard.</param>
         public ListeningSensor(
             float radius,
             float visionAngle,

@@ -83,7 +83,8 @@ namespace GraphicsLibrary
         /// Begins playing the animation with name animationName.
         /// </summary>
         /// <param name="animationName">Name of the current animation.</param>
-        public void PlayAnimation(string animationName, bool isSaturated)
+        /// <param name="loop">Whether the animation will loop.</param>
+        public void PlayAnimation(string animationName, bool loop)
         {
             if (animationName != mAnimationName)
             {
@@ -95,7 +96,7 @@ namespace GraphicsLibrary
                     throw new Exception(animationName + " is not a valid animation for " + mModelName);
                 }
 
-                AnimationPlayer.StartClip(clip, isSaturated);
+                AnimationPlayer.StartClip(clip, loop);
             }
         }
 

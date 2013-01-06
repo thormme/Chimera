@@ -107,7 +107,7 @@ namespace finalProject.Parts
                 base.Reset();
             }
 
-            PlayAnimation("attack", true, false);
+            PlayAnimation("attack", false, false);
             foreach (Creature creature in targets)
             {
                 Vector3 impulseVector = Vector3.Normalize(creature.Position - Creature.Position);

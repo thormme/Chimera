@@ -17,7 +17,6 @@ namespace finalProject
     {
         public PlayerCreature Player = null;
         public GoalPoint Goal = null;
-        private Entity mCameraEntity = null;
 
         public GameWorld(ModelDrawer debugModelDrawer) :
             base(debugModelDrawer)
@@ -33,6 +32,7 @@ namespace finalProject
             {
                 if (Game1.Camera != null)
                 {
+                    // Don't update actors which are far from the camera.
                     if (actor is IGameObject)
                     {
                         if (actor is PlayerCreature)
@@ -52,12 +52,6 @@ namespace finalProject
             }
 
             CommitChanges();
-            
-            if (mCameraEntity != null)
-            {
-                mCameraEntity.Position = Game1.Camera.GetPosition();
-            }
-            
         }
 
         public override void Render()
@@ -68,6 +62,7 @@ namespace finalProject
             {
                 foreach (IGameObject gameObject in mGameObjects)
                 {
+                    // Don't render Creatures that are far away.
                     if (gameObject is Creature)
                     {
                         if ((gameObject.Position - Game1.Camera.GetPosition()).Length() < 200.0f)

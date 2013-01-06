@@ -14,7 +14,7 @@ namespace finalProject
             set;
         }
 
-        private T mIdolState;
+        private T mIdleState;
 
         private bool mLoop;
         public void Loop()
@@ -47,15 +47,15 @@ namespace finalProject
             }
         }
 
-        public StateTimer(T idolState)
+        public StateTimer(T idleState)
         {
-            mIdolState = idolState;
+            mIdleState = idleState;
             Reset();
         }
 
         public void Reset()
         {
-            mState = mIdolState;
+            mState = mIdleState;
             ResetNewState();
             Stop();
         }
@@ -70,7 +70,7 @@ namespace finalProject
         {
             int i = (int)(object)mState;
             mState = (T)(object)((1 + i) % (Enum.GetNames(typeof(T))).Length);
-            if (mLoop && (int)(object)mState == (int)(object)mIdolState)
+            if (mLoop && (int)(object)mState == (int)(object)mIdleState)
             {
                 Next();
             }

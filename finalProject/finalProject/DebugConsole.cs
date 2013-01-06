@@ -8,6 +8,9 @@ using GameConstructLibrary;
 
 namespace finalProject
 {
+    /// <summary>
+    /// Console used to inout debug commands.
+    /// </summary>
     public class DebugConsole : WindowControl
     {
         public delegate void ConsoleCommand(List<string> parameters);
@@ -21,7 +24,10 @@ namespace finalProject
         }
 
         public static InputControl ConsoleInput = new InputControl();
-
+        
+        /// <summary>
+        /// Construct a new DebugConsole.
+        /// </summary>
         public DebugConsole()
         {
             ConsoleInput.Text = "";
@@ -31,16 +37,30 @@ namespace finalProject
             Bounds.Top = new UniScalar(-100);
         }
 
+        /// <summary>
+        /// Add a new command to the console.
+        /// </summary>
+        /// <param name="commandName">The string used to invoke the command.</param>
+        /// <param name="command">The command that should be invoked.</param>
         public static void AddCommand(string commandName, ConsoleCommand command)
         {
             mCommands.Add(commandName, command);
         }
 
+        /// <summary>
+        /// Remove a command from the console.
+        /// </summary>
+        /// <param name="commandName">The name of the command.</param>
         public static void RemoveCommand(string commandName)
         {
             mCommands.Remove(commandName);
         }
 
+        /// <summary>
+        /// Run a particular command with given parameters.
+        /// </summary>
+        /// <param name="commandName">The name of the command.</param>
+        /// <param name="parameters">The parameters as a list of strings.</param>
         public static void CallCommand(string commandName, List<string> parameters)
         {
             if (mCommands.ContainsKey(commandName))
@@ -49,12 +69,18 @@ namespace finalProject
             }
         }
 
+        /// <summary>
+        /// Hide the console.
+        /// </summary>
         public static void Hide()
         {
             ConsoleInput.Bounds.Location = new UniVector(0, -100);
             ConsoleInput.Enabled = false;
         }
-
+        
+        /// <summary>
+        /// Show the console.
+        /// </summary>
         public static void Show()
         {
             ConsoleInput.Bounds.Location = new UniVector(0, 100);
@@ -62,6 +88,9 @@ namespace finalProject
             ConsoleInput.Text = "";
         }
 
+        /// <summary>
+        /// Run the command currently entered in the console.
+        /// </summary>
         public static void RunEnteredCommand()
         {
             string[] lines = ConsoleInput.Text.Split(new char[] { '\r', '\n' });

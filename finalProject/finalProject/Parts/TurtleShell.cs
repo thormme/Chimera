@@ -66,7 +66,7 @@ namespace finalProject.Parts
             if (!Active && Creature != null)
             {
                 Active = true;
-                Creature.TryPlayAnimation("hide", true);
+                Creature.TryPlayAnimation("hide", false);
                 mCanAnimate = false;
             }
         }

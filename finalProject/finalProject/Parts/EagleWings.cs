@@ -99,7 +99,7 @@ namespace finalProject.Parts
             {
                 Vector3 direction = new Vector3(0.0f, -Creature.Entity.LinearVelocity.Y * (1.0f / glideDivider), 0.0f);
                 Creature.Entity.ApplyLinearImpulse(ref direction);
-                PlayAnimation("glide", true, true);
+                PlayAnimation("glide", false, true);
             }
 
             base.Update(time);
@@ -113,7 +113,7 @@ namespace finalProject.Parts
                 Creature.Jump();
                 mReset = ResetFrames;
 
-                PlayAnimation("flap_ground", true, true);
+                PlayAnimation("flap_ground", false, true);
             }
             else if (mFlaps < numFlaps && mFlapTimer > flapWait)
             {
@@ -131,7 +131,7 @@ namespace finalProject.Parts
                     Creature.Entity.LinearVelocity.Y,
                     (float)(dist * Math.Sin(dir)));
 
-                PlayAnimation("flap_air", true, true);
+                PlayAnimation("flap_air", false, true);
             }
             mGlide = true;
             mCanAnimate = false;

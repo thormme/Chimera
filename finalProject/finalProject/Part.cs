@@ -108,6 +108,13 @@ namespace finalProject
                 Scale = scale;
             }
 
+            /// <summary>
+            /// Render the SubPart.
+            /// </summary>
+            /// <param name="worldTransform">The SubPart's world transform.</param>
+            /// <param name="color">Color with which to modify the object.</param>
+            /// <param name="weight">Amount to colorify the object. 0-none 1-full</param>
+            /// <param name="scale">Whether to render using the scale associated with this SubPart.</param>
             public void Render(Matrix worldTransform, Color color, float weight, bool scale)
             {
                 Matrix transform = Orientation * (scale ? Matrix.CreateScale(Scale) : Matrix.Identity) * Matrix.CreateTranslation(Position) * worldTransform;
@@ -146,6 +153,12 @@ namespace finalProject
         }
         protected bool mCanAnimate = true;
 
+        /// <summary>
+        /// Constructs a new Part.
+        /// </summary>
+        /// <param name="subParts">The array of SubParts this part contains.</param>
+        /// <param name="raisesBody">Whether this part should raise the associated Creature off of the ground.</param>
+        /// <param name="partSprite">The GUI sprite used to indicate this Part.</param>
         public Part(SubPart[] subParts, bool raisesBody, Sprite partSprite)
         {
             SubParts = subParts;
@@ -153,6 +166,10 @@ namespace finalProject
             mSprite = partSprite;
         }
 
+        /// <summary>
+        /// The Creature which currently owns this part.
+        /// If not owned may be null.
+        /// </summary>
         public virtual Creature Creature
         {
             protected get
@@ -162,7 +179,8 @@ namespace finalProject
             set
             {
                 if (mCreature != null) 
-                    {Reset();
+                {
+                    Reset();
                 }
                 mCreature = value;
             }
@@ -206,21 +224,26 @@ namespace finalProject
             }
         }
 
+        /// <summary>
+        /// Render the GUI element associated with this Part.
+        /// </summary>
+        /// <param name="bounds">The bounds that the sprite should be rendered within.</param>
         public virtual void RenderSprite(Rectangle bounds)
         {
             mSprite.Render(bounds);
         }
 
         /// <summary>
-        /// Trys to set the animation being played by parts.  Will fail if part state is not appropriate.
+        /// Tries to set the animation being played by parts.  Will fail if part state is not appropriate.
         /// </summary>
         /// <param name="animationName">The name of the animation to be played must be in a file named model_animation.</param>
-        /// <param name="isSaturated">Whether the animation will loop.</param>
-        public virtual void TryPlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
+        /// <param name="loop">Whether the animation will loop.</param>
+        /// <param name="playOnCreature">Whether to attempt to play the animation on the associated creature.</param>
+        public virtual void TryPlayAnimation(string animationName, bool loop, bool playOnCreature)
         {
             if (CanAnimate)
             {
-                PlayAnimation(animationName, isSaturated, playOnCreature);
+                PlayAnimation(animationName, loop, playOnCreature);
             }
         }
 
@@ -228,18 +251,19 @@ namespace finalProject
         /// Sets the animation being played by parts.
         /// </summary>
         /// <param name="animationName">The name of the animation to be played must be in a file named model_animation.</param>
-        /// <param name="isSaturated">Whether the animation will loop.</param>
-        protected virtual void PlayAnimation(string animationName, bool isSaturated, bool playOnCreature)
+        /// <param name="loop">Whether the animation will loop.</param>
+        /// <param name="playOnCreature">Whether to attempt to play the animation on the associated creature.</param>
+        protected virtual void PlayAnimation(string animationName, bool loop, bool playOnCreature)
         {
             if (playOnCreature)
             {
-                mCreature.TryPlayAnimation(animationName, isSaturated);
+                mCreature.TryPlayAnimation(animationName, loop);
             }
             foreach (SubPart subPart in SubParts)
             {
                 if (subPart.Renderable is AnimateModel)
                 {
-                    (subPart.Renderable as AnimateModel).PlayAnimation(animationName, isSaturated);
+                    (subPart.Renderable as AnimateModel).PlayAnimation(animationName, loop);
                 }
             }
         }
@@ -263,11 +287,13 @@ namespace finalProject
         abstract public void FinishUse(Vector3 direction);
 
         /// <summary>
+        /// Resets internal state.
         /// Called when the Creature is set.
         /// </summary>
         abstract public void Reset();
 
         /// <summary>
+        /// Cancels part use without resetting internal state.
         /// Called when the creature is put into a state where it cannot use parts.
         /// </summary>
         abstract public void Cancel();

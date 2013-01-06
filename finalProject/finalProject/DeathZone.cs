@@ -12,8 +12,18 @@ using BEPUphysics.Entities.Prefabs;
 
 namespace finalProject
 {
+    /// <summary>
+    /// Kills Creatures when touched.
+    /// </summary>
     public class DeathZone : Sensor
     {
+        /// <summary>
+        /// Constructs a new DeathZone.
+        /// </summary>
+        /// <param name="position">The center of the DeathZone.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="length">The length.</param>
         public DeathZone(Vector3 position, float width, float height, float length)
             : base(CreateEntity(position, width, height, length))
         {

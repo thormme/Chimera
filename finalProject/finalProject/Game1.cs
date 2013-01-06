@@ -395,7 +395,7 @@ namespace finalProject
         }
 
         /// <summary>
-        /// Queue the current state fro removal.
+        /// Queue the current state for removal.
         /// </summary>
         /// <returns>Currently running state.</returns>
         public static IGameState PopState()

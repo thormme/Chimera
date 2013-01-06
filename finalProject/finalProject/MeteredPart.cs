@@ -7,6 +7,11 @@ using GraphicsLibrary;
 
 namespace finalProject
 {
+    /// <summary>
+    /// A type of part whos use is limited with a meter and cooldown.
+    /// The meter counts down when being used.
+    /// After ceasing to use the part for a set cooldown the meter is reset to full.
+    /// </summary>
     public abstract class MeteredPart : Part
     {
         private bool mUsing = false;
@@ -34,12 +39,24 @@ namespace finalProject
             get;
             set;
         }
-
+        
+        /// <summary>
+        /// Whether the part is ready to be used.
+        /// </summary>
+        /// <returns>True if the meter timer has not run out. False if it has.</returns>
         protected bool IsReady()
         {
             return MeterTimer >= 0.0f;
         }
 
+        /// <summary>
+        /// Constructs a new MeteredPart.
+        /// </summary>
+        /// <param name="meterLength">How long the part can be used before recharging.</param>
+        /// <param name="cooldownLength">The length of time that must be waited before the meter will reset.</param>
+        /// <param name="subParts">The array of SubParts this part contains.</param>
+        /// <param name="raisesBody">Whether this part should raise the associated Creature off of the ground.</param>
+        /// <param name="partSprite">The GUI sprite used to indicate this Part.</param>
         public MeteredPart(double meterLength, double cooldownLength, finalProject.Part.SubPart[] subParts, bool raisesBody, Sprite partSprite)
             : base(subParts, raisesBody, partSprite)
         {

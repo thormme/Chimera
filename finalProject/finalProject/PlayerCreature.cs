@@ -647,11 +647,11 @@ namespace finalProject
             base.Update(gameTime);
         }
 
-        public override void TryPlayAnimation(string animationName, bool isSaturated)
+        public override void TryPlayAnimation(string animationName, bool loop)
         {
             if (animationName == "walk" || animationName == "stand" || animationName == "jump")
             {
-                base.TryPlayAnimation(animationName, isSaturated);
+                base.TryPlayAnimation(animationName, loop);
             }
         }
 

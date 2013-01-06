@@ -40,7 +40,7 @@ namespace GraphicsLibrary
         SkinningData skinningDataValue;
 
         // Whether or not animation loops.
-        private bool mIsSaturated;
+        private bool mWillLoop;
 
         #endregion
 
@@ -64,12 +64,12 @@ namespace GraphicsLibrary
         /// <summary>
         /// Starts decoding the specified animation clip.
         /// </summary>
-        public void StartClip(AnimationClip clip, bool isSaturated)
+        public void StartClip(AnimationClip clip, bool loop)
         {
             if (clip == null)
                 throw new ArgumentNullException("clip");
 
-            mIsSaturated = isSaturated;
+            mWillLoop = loop;
 
             currentClipValue = clip;
             currentTimeValue = TimeSpan.Zero;
@@ -109,7 +109,7 @@ namespace GraphicsLibrary
                 // If we reached the end, loop back to the start.
                 while (time > currentClipValue.Duration)
                 {
-                    if (mIsSaturated)
+                    if (!mWillLoop)
                     {
                         time = currentClipValue.Duration;
                     }
