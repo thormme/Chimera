@@ -186,7 +186,7 @@ namespace GameConstructLibrary
 
         private void MakeBuffer()
         {
-            mVertexBuffer = new VertexBuffer(mDevice, VertexPositionColorTextureNormal.VertexDeclaration, vertices1D.Length, BufferUsage.WriteOnly);
+            mVertexBuffer = new VertexBuffer(mDevice, VertexPositionColorTextureNormal.VertexDeclaration, vertices1D.Length, BufferUsage.None);
             mVertexBuffer.SetData(vertices1D);
 
             mIndexBuffer = new IndexBuffer(mDevice, typeof(int), indices.Length, BufferUsage.WriteOnly);

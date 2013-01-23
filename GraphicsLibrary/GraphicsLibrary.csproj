@@ -141,9 +141,11 @@
     <Compile Include="AnimationPlayer.cs" />
     <Compile Include="Billboard.cs" />
     <Compile Include="BillboardDefinition.cs" />
+    <Compile Include="CascadedShadowMap.cs" />
     <Compile Include="DirectoryManager.cs" />
     <Compile Include="ICamera.cs" />
     <Compile Include="InanimateModel.cs" />
+    <Compile Include="Light.cs" />
     <Compile Include="Renderable.cs" />
     <Compile Include="GraphicsManager.cs" />
     <Compile Include="KeyFrame.cs" />

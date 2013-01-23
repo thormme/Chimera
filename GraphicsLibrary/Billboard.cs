@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace GraphicsLibrary
 {
     public class Billboard : Renderable
     {
         private string mName;
+
+        public BoundingBox BoundingBox
+        {
+            get { return mBoundingBox; }
+        }
+        private BoundingBox mBoundingBox;
 
         public float Width
         {

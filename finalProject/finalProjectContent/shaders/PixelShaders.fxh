@@ -39,17 +39,13 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 		}
 	}
 
-	if (ComputeShadow(pin.ShadowPosition, false))
-	{
-		color *= 0.5f;
-	}
-
-	if (ComputeShadow(pin.HiResShadowPosition, true))
+	if (IsInShadow(pin.ShadowCoord))
 	{
 		color *= 0.5f;
 	}
 
 	return color;
+	//return IsInShadow(pin.Shadow);
 }
 
 sampler NoShade_Sampler = sampler_state
@@ -92,15 +88,11 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
 
-	if (ComputeShadow(pin.ShadowPosition, false))
+	if (IsInShadow(pin.ShadowCoord))
 	{	
 		color *= 0.5f;
 	}
-	
-	if (ComputeShadow(pin.HiResShadowPosition, true))
-	{
-		color *= 0.5f;
-	}
+	//return IsInShadow(pin.Shadow);
     
     return color;
 }

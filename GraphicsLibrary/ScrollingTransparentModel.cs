@@ -8,6 +8,12 @@ namespace GraphicsLibrary
     {
         private string mModelName;
 
+        public BoundingBox BoundingBox
+        {
+            get { return mBoundingBox; }
+        }
+        private BoundingBox mBoundingBox;
+
         public float HorizontalVelocity
         {
             get { return mScrollVelocity.X; }
@@ -30,11 +36,12 @@ namespace GraphicsLibrary
         public ScrollingTransparentModel(string modelName)
         {
             mModelName = modelName;
+            mBoundingBox = GraphicsManager.BuildModelBoundingBox(mModelName);
         }
 
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            GraphicsManager.RenderTransparentModel(mModelName, worldTransform, overlayColor, overlayColorWeight, ScrollVelocity);
+            GraphicsManager.RenderTransparentModel(mModelName, worldTransform, mBoundingBox, overlayColor, overlayColorWeight, ScrollVelocity);
         }
     }
 }

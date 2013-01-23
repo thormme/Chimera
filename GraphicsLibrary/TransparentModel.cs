@@ -7,14 +7,21 @@ namespace GraphicsLibrary
     {
         private string mModelName;
 
+        public BoundingBox BoundingBox
+        {
+            get { return mBoundingBox; }
+        }
+        private BoundingBox mBoundingBox;
+
         public TransparentModel(string modelName)
         {
             mModelName = modelName;
+            mBoundingBox = GraphicsManager.BuildModelBoundingBox(mModelName);
         }
 
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            GraphicsManager.RenderTransparentModel(mModelName, worldTransform, overlayColor, overlayColorWeight, Vector2.Zero);
+            GraphicsManager.RenderTransparentModel(mModelName, worldTransform, mBoundingBox, overlayColor, overlayColorWeight, Vector2.Zero);
         }
     }
 }

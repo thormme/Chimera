@@ -7,7 +7,8 @@
 
 #include "Macros.fxh"
 
-#define SKINNED_EFFECT_MAX_BONES   72
+#define SKINNED_EFFECT_MAX_BONES   64
+#define MAX_CASCADE_COUNT          4
 
 DECLARE_TEXTURE(Texture, 0);
 DECLARE_TEXTURE(ShadowMap, 1);
@@ -38,11 +39,18 @@ BEGIN_CONSTANTS
 	float  xNumShadowBands;
 	float  xTexelSize;
 
+	float xCascadeCount;
+	float4 xCascadeBufferBounds[MAX_CASCADE_COUNT];
+
 MATRIX_CONSTANTS
 
     float4x4 WorldViewProj                      _vs(c15)          _cb(c0);
 	float4x4 LightWorldViewProj;
 	float4x4 AnimateLightWorldViewProj;
+	float4x4 xLightView;
+	float4x4 xLightProjection;
+	float4x4 xLightProjections[MAX_CASCADE_COUNT];
+	float4   xCascadeColors[MAX_CASCADE_COUNT];
 
 END_CONSTANTS
 

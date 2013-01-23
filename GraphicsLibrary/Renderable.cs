@@ -14,6 +14,8 @@ namespace GraphicsLibrary
 
         ///////////////////////////////// Interface //////////////////////////////////
 
+        public BoundingBox BoundingBox { get; set; }
+
         /// <summary>
         /// Draws the IRenderable object at worldPosition using default scale and orientation.
         /// </summary>
@@ -31,8 +33,6 @@ namespace GraphicsLibrary
         {
             Render(worldPosition, mDefaultWorldView, mDefaultWorldScale, overlayColor, overlayColorWeight);
         }
-
-
 
         /// <summary>
         /// Draws the IRenderable at worldPosition facing worldViewDirection using default scale.
@@ -53,8 +53,6 @@ namespace GraphicsLibrary
         {
             Render(worldPosition, worldViewDirection, mDefaultWorldScale, overlayColor, overlayColorWeight);
         }
-
-
 
         /// <summary>
         /// Draws the IRenderable at worldPositions facing worldViewDirection, and scaled to worldScale.
@@ -78,8 +76,6 @@ namespace GraphicsLibrary
             Draw(Matrix.CreateScale(worldScale) * Matrix.CreateWorld(worldPosition, worldViewDirection, Vector3.Up), overlayColor, overlayColorWeight);
         }
 
-
-
         /// <summary>
         /// Draws the IRenderable at worldPositions facing worldRotation using default scale.
         /// </summary>
@@ -99,8 +95,6 @@ namespace GraphicsLibrary
         {
             Render(worldPosition, worldRotation, mDefaultWorldScale, overlayColor, overlayColorWeight);
         }
-
-
 
         /// <summary>
         /// Draws the IRenderable at worldPositions facing worldRotation, and scaled to worldScale.
@@ -133,8 +127,6 @@ namespace GraphicsLibrary
 
             Draw(worldTransforms, overlayColor, overlayColorWeight);
         }
-
-
 
         /// <summary>
         /// Draws the IRenderable using the given world transform.

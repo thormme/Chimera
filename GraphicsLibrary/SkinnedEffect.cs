@@ -37,7 +37,7 @@ namespace GraphicsLibrary
 
         public bool CastingShadow = false;
 
-        public const int MaxBones = 72;
+        public const int MaxBones = 64;
 
         #region Effect Parameters
 

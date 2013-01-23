@@ -2,7 +2,7 @@
 
 namespace GraphicsLibrary
 {
-    class RenderableDefinition
+    public class RenderableDefinition
     {
         private string mName;
         public string Name
@@ -63,6 +63,11 @@ namespace GraphicsLibrary
             mOverlayColor = overlayColor.ToVector3();
             mOverlayColorWeight = overlayColorWeight;
             mAnimationRate = animationRate;
+        }
+
+        public void Draw(bool isShadow)
+        {
+
         }
     }
 }

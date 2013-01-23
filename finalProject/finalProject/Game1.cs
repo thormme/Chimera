@@ -56,6 +56,10 @@ namespace finalProject
         private KeyInputAction debugGraphics = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.F1);
         private KeyInputAction debug = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.OemTilde);
         private KeyInputAction cheat = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Tab);
+        private KeyInputAction sunUp = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Down);
+        private KeyInputAction sunDown = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Up);
+        private KeyInputAction sunLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Left);
+        private KeyInputAction sunRight = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Right);
         private static InputAction enterConsoleCommand = new KeyInputAction(Microsoft.Xna.Framework.PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Enter);
         bool debugMode = false;
 
@@ -106,7 +110,8 @@ namespace finalProject
 
             mDebugScreen.FocusedControl = DebugConsole.ConsoleInput;
             DebugConsole.AddCommand("exit", new DebugConsole.ConsoleCommand(ExitConsoleCommand));
-            DebugConsole.AddCommand("wireframe", new DebugConsole.ConsoleCommand(WireframeConsoleCommand));
+            DebugConsole.AddCommand("resizeShadowCascade", new DebugConsole.ConsoleCommand(ResizeShadowCascadesCommand));
+            DebugConsole.AddCommand("debug", new DebugConsole.ConsoleCommand(WireframeConsoleCommand));
             DebugConsole.Hide();
             // END
 
@@ -205,6 +210,10 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            float up = sunUp.Active && sunDown.Active ? 0.0f : (sunUp.Active ? 10.0f : (sunDown.Active ? -10.0f : 0.0f));
+            float left = sunLeft.Active && sunRight.Active ? 0.0f : (sunLeft.Active ? 10.0f : (sunRight.Active ? -10.0f : 0.0f));
+            GraphicsManager.DirectionalLight.Position += new Vector3(up, 0, left);
+
             // DEBUG STUFF
             if (DebugConsole.IsVisible && enterConsoleCommand.Active)
             {
@@ -325,9 +334,10 @@ namespace finalProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            try
-            {
+            //try
+            //{
                 Game1.Graphics.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
+
                 GraphicsManager.BeginRendering();
 
                 /*if (mGameStates.Count > 0)
@@ -351,15 +361,15 @@ namespace finalProject
                 // END
 
                 base.Draw(gameTime);
-            }
-            catch (Exception e) 
-            {
-                TextWriter tw = new StreamWriter("log.txt");
-                tw.WriteLine(e.Message);
-                tw.WriteLine(e.StackTrace);
-                tw.Close();
-                throw e;
-            }
+            //}
+            //catch (Exception e) 
+            //{
+            //    TextWriter tw = new StreamWriter("log.txt");
+            //    tw.WriteLine(e.Message);
+            //    tw.WriteLine(e.StackTrace);
+            //    tw.Close();
+            //    throw e;
+            //}
         }
 
         private void RenderTips(GameTime gameTime)
@@ -426,7 +436,16 @@ namespace finalProject
         }
         private void WireframeConsoleCommand(List<string> parameters)
         {
-            debugMode = !debugMode;
+            //debugMode = !debugMode;
+            GraphicsManager.DebugVisualization = !GraphicsManager.DebugVisualization;
+        }
+
+        private void ResizeShadowCascadesCommand(List<string> parameters)
+        {
+            if (parameters.Count < 2)
+            {
+                return;
+            }
         }
 
         #endregion
