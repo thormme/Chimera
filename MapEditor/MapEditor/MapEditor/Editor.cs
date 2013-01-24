@@ -26,7 +26,6 @@ namespace MapEditor
         SpriteBatch mSpriteBatch;
 
         private FPSCamera mCamera;
-        private Dialog mReminder;
 
         public Editor()
         {
@@ -38,7 +37,7 @@ namespace MapEditor
             mGraphics.PreferredBackBufferHeight = 640;
 
             GameMapEditor.Input = new InputManager(Services, Window.Handle);
-            GameMapEditor.GUI = new GuiManager(Services); ;
+            GameMapEditor.GUI = new GuiManager(Services);
 
             Components.Add(GameMapEditor.Input);
             Components.Add(GameMapEditor.GUI);

@@ -45,7 +45,7 @@ namespace GameConstructLibrary
             mUncommittedGameObjectAdditions = new List<IGameObject>();
             mUncommittedGameObjectRemovals = new List<IGameObject>();
 
-            Space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
+            Space.ForceUpdater.Gravity = new Vector3(0, -9.81f * 2.0f, 0);
         }
 
         /// <summary>
