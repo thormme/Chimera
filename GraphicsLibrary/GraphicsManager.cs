@@ -17,25 +17,16 @@ namespace GraphicsLibrary
         static private Matrix mView;
         static private Matrix mProjection;
 
-        static private BoundingFrustum mCameraFrustum = new BoundingFrustum(Matrix.Identity);
-
-        static private Matrix mLightView;
-        static private Matrix mAnimateLightView;
-        static private Matrix mLightProjection;
-        static private Matrix mAnimateLightProjection;
-        static private Matrix mLightTransform;
-        static private Matrix mAnimateLightTransform;
-
         static private Effect mConfigurableShader;
         static private Effect mPostProcessShader;
+
+        static public SkinnedEffect TerrainShader
+        {
+            get { return mTerrainShader; }
+        }
         static private SkinnedEffect mTerrainShader;
 
-        static private Vector3 mLightDirection;
-        static private Vector3 mLightDiffuseColor;
-        static private Vector3 mLightSpecularColor;
-        static private Vector3 mLightAmbientColor;
-
-        static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string,Model>();
+        static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string, Model>();
         static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
         static private Dictionary<string, Dictionary<string, Matrix>> mUniqueModelBoneLibrary = new Dictionary<string, Dictionary<string, Matrix>>();
         static private Dictionary<string, Texture2D> mUniqueSpriteLibrary = new Dictionary<string, Texture2D>();
@@ -48,14 +39,28 @@ namespace GraphicsLibrary
         static private Queue<SpriteDefinition> mSpriteQueue = new Queue<SpriteDefinition>();
         static private List<RenderableDefinition> mTransparentQueue = new List<RenderableDefinition>();
 
-        static private RenderTarget2D mShadowMap;
-        static private RenderTarget2D mAnimateShadowMap;
+        static private Light mDirectionalLight;
+        static public Light DirectionalLight
+        {
+            get { return mDirectionalLight; }
+            set { mDirectionalLight = value; }
+        }
+
+        static private CascadedShadowMap mShadowMap;
+
         static private RenderTarget2D mSceneBuffer;
         static private RenderTarget2D mNormalDepthBuffer;
         static private RenderTarget2D mOutlineBuffer;
         static private RenderTarget2D mCompositeBuffer;
 
-        static private Vector3 mCameraPosition;
+        static private ICamera mCamera;
+        static public ICamera Camera
+        {
+            get { return mCamera; }
+        }
+
+        static private Vector3 mMinSceneExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+        static private Vector3 mMaxSceneExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
         static private bool mCanRender = false;
 
@@ -69,7 +74,7 @@ namespace GraphicsLibrary
         static private float mTexelSize;
 
         static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
-        static private char[] mDelimeterChars = {' '};
+        static private char[] mDelimeterChars = { ' ' };
 
         #endregion
 
@@ -87,7 +92,7 @@ namespace GraphicsLibrary
         static public CelShaded CelShading
         {
             get { return mCelShading; }
-            set { mCelShading = value; } 
+            set { mCelShading = value; }
         }
 
         static private bool mCastingShadows = true;
@@ -132,17 +137,19 @@ namespace GraphicsLibrary
             mTerrainShader = new SkinnedEffect(mConfigurableShader);
 
             // Create buffers.
-            mShadowMap = new RenderTarget2D(device, mShadowMapLength, mShadowMapLength, false, SurfaceFormat.Single, DepthFormat.Depth24);
-            mAnimateShadowMap = new RenderTarget2D(device, mAnimateShadowMapLength, mAnimateShadowMapLength, false, SurfaceFormat.Single, DepthFormat.Depth24);
+            mShadowMap = new CascadedShadowMap(device, 1, 4096);
+
             mSceneBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
             mNormalDepthBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
             mOutlineBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
             mCompositeBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
-            mLightDiffuseColor = new Vector3(1, 0.9607844f, 0.8078432f);
-            mLightSpecularColor = new Vector3(1, 0.9607844f, 0.8078432f);
-            mLightAmbientColor = new Vector3(0.05333332f, 0.09882354f, 0.1819608f);
-            mLightDirection = new Vector3(-0.3333333f, 0.6666667f, 0.6666667f);
+            mDirectionalLight = new Light(
+                new Vector3(-0.3333333f, -1.0f, 0.33333333f), // Direction
+                new Vector3(0.05333332f, 0.09882354f, 0.1819608f), // Ambient Color
+                new Vector3(1, 0.9607844f, 0.8078432f),            // Diffuse Color
+                new Vector3(1, 0.9607844f, 0.8078432f)             // Specular Color
+                );
 
             // Load models.
             DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "models");
@@ -293,7 +300,7 @@ namespace GraphicsLibrary
                 {
                     continue;
                 }
-                
+
                 Texture2D terrain = content.Load<Texture2D>("levels/maps/" + terrainName);
                 TerrainHeightMap heightMap = new TerrainHeightMap(terrain, mDevice);
 
@@ -312,7 +319,7 @@ namespace GraphicsLibrary
                 }
                 mUniqueTerrainLibrary.Add(terrainName, newTerrain);
             }
-            
+
             // Load sprites.
             dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/sprites/");
             if (!dir.Exists)
@@ -334,12 +341,6 @@ namespace GraphicsLibrary
             }
         }
 
-        static public Vector3 CameraPosition
-        {
-            get { return mCameraPosition; }
-            set { mCameraPosition = value; }
-        }
-
         /// <summary>
         /// Updates Projection and View matrices to current view space.
         /// </summary>
@@ -348,21 +349,9 @@ namespace GraphicsLibrary
         {
             mTimeElapsed = (float)gameTime.TotalGameTime.TotalSeconds;
 
-            mView = camera.GetViewTransform();           
-            mProjection = camera.GetProjectionTransform();
-
-            mCameraPosition = camera.GetPosition();
-            mCameraFrustum.Matrix = mView * camera.GetProjectionTransform();
-
-            BuildLightTransform(true);
-
-            float oldFarPlane = camera.GetFarPlaneDistance();
-            camera.SetFarPlaneDistance(mAnimateShadowFarClip);
-            mCameraFrustum.Matrix = mView * camera.GetProjectionTransform();
-            
-            BuildLightTransform(false);
-
-            camera.SetFarPlaneDistance(oldFarPlane);
+            mCamera = camera;
+            mView = mCamera.GetViewTransform();
+            mProjection = mCamera.GetProjectionTransform();
         }
 
         /// <summary>
@@ -375,7 +364,7 @@ namespace GraphicsLibrary
             mTransparentQueue.Clear();
             mCanRender = true;
         }
-        
+
         /// <summary>
         /// Renders to the screen all Renderables drawn between BeginRendering and FinishRendering.
         /// </summary>
@@ -386,31 +375,13 @@ namespace GraphicsLibrary
             mDevice.SamplerStates[1] = SamplerState.PointClamp;
             mDevice.SamplerStates[2] = SamplerState.PointClamp;
 
-            if (CastingShadows)
+            if (CastingShadows && mCamera != null)
             {
-                // Draw Shadow Map of inanimate models.
-                mDevice.SetRenderTarget(mShadowMap);
-                mDevice.Clear(Color.White);
+                mShadowMap.GenerateCascades(mCamera, mDirectionalLight, new BoundingBox(mMinSceneExtent, mMaxSceneExtent));
+                mShadowMap.WriteShadowsToBuffer(mRenderQueue);
 
-                foreach (RenderableDefinition renderable in mRenderQueue)
-                {
-                    if (!renderable.IsSkinned)
-                    {
-                        DrawRenderableDefinition(renderable, true, false, false, false);
-                    }
-                }
-
-                // Draw Shadow Map of animate models.
-                mDevice.SetRenderTarget(mAnimateShadowMap);
-                mDevice.Clear(Color.White);
-
-                foreach (RenderableDefinition renderable in mRenderQueue)
-                {
-                    if (renderable.IsSkinned)
-                    {
-                        DrawRenderableDefinition(renderable, true, true, false, false);
-                    }
-                }
+                mMinSceneExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+                mMaxSceneExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
             }
 
             if (CelShading != CelShaded.None)
@@ -471,12 +442,12 @@ namespace GraphicsLibrary
                 if (DebugVisualization)
                 {
                     mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
-                    mSpriteBatch.Draw(mShadowMap, new Rectangle(0, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
+                    mSpriteBatch.Draw(mShadowMap.Buffer, new Rectangle(0, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
                     mSpriteBatch.End();
 
-                    mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
-                    mSpriteBatch.Draw(mAnimateShadowMap, new Rectangle(mSceneBuffer.Width / 2, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
-                    mSpriteBatch.End();
+                    //mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+                    //mSpriteBatch.Draw(mAnimateShadowMap, new Rectangle(mSceneBuffer.Width / 2, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
+                    //mSpriteBatch.End();
 
                     mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
                     mSpriteBatch.Draw(mOutlineBuffer, new Rectangle(0, mSceneBuffer.Height / 2, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
@@ -571,11 +542,12 @@ namespace GraphicsLibrary
         /// <param name="modelName">Name of model stored in database.</param>
         /// <param name="boneTransforms">State of rigged skeleton for current frame</param>
         /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
-        static public void RenderSkinnedModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, Color overlayColor, float overlayColorWeight)
+        static public void RenderSkinnedModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, BoundingBox boundingBox, Color overlayColor, float overlayColorWeight)
         {
             if (mCanRender)
             {
                 mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, true, worldTransforms, boneTransforms, overlayColor, overlayColorWeight, Vector2.Zero));
+                UpdateSceneExtents(boundingBox, worldTransforms);
             }
             else
             {
@@ -588,13 +560,15 @@ namespace GraphicsLibrary
         /// </summary>
         /// <param name="modelName">Name of model stored in database.</param>
         /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
-        static public void RenderUnskinnedModel(string modelName, Matrix worldTransforms, Color overlayColor, float overlayColorWeight)
+        static public void RenderUnskinnedModel(string modelName, Matrix worldTransforms, BoundingBox boundingBox, Color overlayColor, float overlayColorWeight)
         {
             if (mCanRender)
             {
                 Matrix[] emptyTransforms = new Matrix[1];
                 emptyTransforms[0] = Matrix.Identity;
                 mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, false, worldTransforms, emptyTransforms, overlayColor, overlayColorWeight, Vector2.Zero));
+
+                UpdateSceneExtents(boundingBox, worldTransforms);
             }
             else
             {
@@ -607,7 +581,7 @@ namespace GraphicsLibrary
         /// </summary>
         /// /// <param name="modelName">Name of model stored in database.</param>
         /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
-        static public void RenderTransparentModel(string modelName, Matrix worldTransforms, Color overlayColor, float overlayColorWeight, Vector2 animationRate)
+        static public void RenderTransparentModel(string modelName, Matrix worldTransforms, BoundingBox boundingBox, Color overlayColor, float overlayColorWeight, Vector2 animationRate)
         {
             if (mCanRender)
             {
@@ -632,11 +606,12 @@ namespace GraphicsLibrary
         /// </summary>
         /// <param name="terrainName">Name of terrain stored in database.</param>
         /// <param name="worldTransforms">Position, orientation, and scale of terrain in world space.</param>
-        static public void RenderTerrain(string terrainName, Matrix worldTransforms, Color overlayColor, float overlayColorWeight)
+        static public void RenderTerrain(string terrainName, Matrix worldTransforms, BoundingBox boundingBox, Color overlayColor, float overlayColorWeight)
         {
             if (mCanRender)
             {
                 mRenderQueue.Enqueue(new RenderableDefinition(terrainName, false, false, worldTransforms, null, overlayColor, overlayColorWeight, Vector2.Zero));
+                UpdateSceneExtents(boundingBox, worldTransforms);
             }
             else
             {
@@ -660,6 +635,34 @@ namespace GraphicsLibrary
             }
         }
 
+        public static BoundingBox BuildModelBoundingBox(string modelName)
+        {
+            Vector3 minExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            Vector3 maxExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+            foreach (ModelMesh mesh in LookupModel(modelName).Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    BoundVertexBuffer(ref minExtent, ref maxExtent, part.VertexBuffer, part.NumVertices);
+                }
+            }
+
+            return new BoundingBox(minExtent, maxExtent);
+        }
+
+        public static BoundingBox BuildTerrainBoundingBox(string terrainName)
+        {
+            Vector3 minExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            Vector3 maxExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+            TerrainHeightMap terrain = LookupTerrain(terrainName).Terrain;
+
+            BoundVertexBuffer(ref minExtent, ref maxExtent, terrain.VertexBuffer, terrain.NumVertices);
+
+            return new BoundingBox(minExtent, maxExtent);
+        }
+
         #endregion
 
         ///////////////////////////// Internal functions /////////////////////////////
@@ -681,7 +684,7 @@ namespace GraphicsLibrary
         /// <summary>
         /// Retrieves model from database.  Throws KeyNotFoundException if modelName does not exist in database.
         /// </summary>
-        static private Model LookupModel(string modelName)
+        static public Model LookupModel(string modelName)
         {
             Model result;
             if (mUniqueModelLibrary.TryGetValue(modelName, out result))
@@ -746,28 +749,21 @@ namespace GraphicsLibrary
 
             foreach (ModelMesh mesh in model.Meshes)
             {
-                if (isShadow)
+                string techniqueName;
+                if (isOutline)
                 {
-                    CastShadowMesh(mesh, (isSkinned) ? "SkinnedShadowCast" : "ShadowCast", boneTransforms, worldTransforms, hiResShadow);
+                    techniqueName = (isSkinned) ? "SkinnedNormalDepthShade" : "NormalDepthShade";
+                }
+                else if (CelShading == CelShaded.Models || CelShading == CelShaded.All)
+                {
+                    techniqueName = (isSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "CelShade";
                 }
                 else
                 {
-                    string techniqueName;
-                    if (isOutline)
-                    {
-                        techniqueName = (isSkinned) ? "SkinnedNormalDepthShade" : "NormalDepthShade";
-                    }
-                    else if (CelShading == CelShaded.Models || CelShading == CelShaded.All)
-                    {
-                        techniqueName = (isSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "CelShade";
-                    }
-                    else
-                    {
-                        techniqueName = (isSkinned) ? "SkinnedPhong" : (hasTransparency) ? "NoShade" : "Phong";
-                    }
-
-                    DrawMesh(mesh, techniqueName, boneTransforms, worldTransforms, animationRate, overlayColor, overlayColorWeight);
+                    techniqueName = (isSkinned) ? "SkinnedPhong" : (hasTransparency) ? "NoShade" : "Phong";
                 }
+
+                DrawMesh(mesh, techniqueName, boneTransforms, worldTransforms, animationRate, overlayColor, overlayColorWeight);
             }
         }
 
@@ -778,40 +774,8 @@ namespace GraphicsLibrary
         {
             TerrainDescription heightmap = LookupTerrain(terrainName);
 
-            mDevice.Indices = heightmap.Terrain.IndexBuffer;
-            mDevice.SetVertexBuffer(heightmap.Terrain.VertexBuffer);
-
-            if (isShadow)
-            {
-                CastShadowTerrain(heightmap, worldTransforms, hiResShadow);
-            }
-            else
-            {
-                string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "TerrainCelShade" : "Phong");
-                DrawTerrainHeightMap(heightmap, techniqueName, worldTransforms, overlayColor, overlayColorWeight);
-            }
-        }
-
-        /// <summary>
-        /// Sets all effects for current mesh and renders to shadow map.
-        /// </summary>
-        static private void CastShadowMesh(ModelMesh mesh, string techniqueName, Matrix[] boneTransforms, Matrix worldTransforms, bool hiRes)
-        {
-            bool skinned = techniqueName.Contains("Skinned");
-
-            foreach (SkinnedEffect effect in mesh.Effects)
-            {
-                effect.LightView = (hiRes) ? mAnimateLightView : mLightView;
-                effect.LightProjection = (hiRes) ? mAnimateLightProjection : mLightProjection;
-
-                effect.CurrentTechnique = effect.Techniques[techniqueName];
-
-                effect.SetBoneTransforms(boneTransforms);
-
-                effect.World = worldTransforms;
-            }
-
-            mesh.Draw();
+            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "TerrainCelShade" : "Phong");
+            DrawTerrainHeightMap(heightmap, techniqueName, worldTransforms, overlayColor, overlayColorWeight);
         }
 
         /// <summary>
@@ -825,8 +789,7 @@ namespace GraphicsLibrary
 
                 if (CastingShadows)
                 {
-                    effect.Parameters["ShadowMap"].SetValue(mShadowMap);
-                    effect.Parameters["HiResShadowMap"].SetValue(mAnimateShadowMap);
+                    effect.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
                 }
 
                 effect.SetBoneTransforms(boneTransforms);
@@ -834,16 +797,19 @@ namespace GraphicsLibrary
                 effect.View = mView;
                 effect.Projection = mProjection;
 
-                effect.LightView = mLightView;
-                effect.LightProjection = mLightProjection;
+                effect.LightView = mShadowMap.LightView;
+                effect.LightProjection = mShadowMap.LightProjection;
 
-                mTerrainShader.AnimateLightView = mAnimateLightView;
-                mTerrainShader.AnimateLightProjection = mAnimateLightProjection;
+                //effect.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
+                //effect.Parameters["xLightView"].SetValue(mShadowMap.LightView);
+                //effect.Parameters["xLightProjection"].SetValue(mShadowMap.LightProjection);
+                //effect.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
+                //effect.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
 
-                effect.Parameters["xDirLightDirection"].SetValue(mLightDirection);
-                effect.Parameters["xDirLightDiffuseColor"].SetValue(mLightDiffuseColor);
-                effect.Parameters["xDirLightSpecularColor"].SetValue(mLightSpecularColor);
-                effect.Parameters["xDirLightAmbientColor"].SetValue(mLightAmbientColor);
+                effect.Parameters["xDirLightDirection"].SetValue(mDirectionalLight.Direction);
+                effect.Parameters["xDirLightDiffuseColor"].SetValue(mDirectionalLight.DiffuseColor);
+                effect.Parameters["xDirLightSpecularColor"].SetValue(mDirectionalLight.SpecularColor);
+                effect.Parameters["xDirLightAmbientColor"].SetValue(mDirectionalLight.AmbientColor);
 
                 effect.Parameters["xOverlayColor"].SetValue(overlayColor);
                 effect.Parameters["xOverlayColorWeight"].SetValue(overlayColorWeight);
@@ -869,53 +835,36 @@ namespace GraphicsLibrary
         }
 
         /// <summary>
-        /// Sets effect for current terrain and renders to shadow map.
-        /// </summary>
-        static private void CastShadowTerrain(TerrainDescription heightMap, Matrix worldTransforms, bool hiRes)
-        {
-            mTerrainShader.World = worldTransforms;
-
-            mTerrainShader.LightView = (hiRes) ? mAnimateLightView : mLightView;
-            mTerrainShader.LightProjection = (hiRes) ? mAnimateLightProjection : mLightProjection;
-
-            mTerrainShader.CurrentTechnique = mTerrainShader.Techniques["ShadowCast"];
-            mTerrainShader.CurrentTechnique.Passes[0].Apply();
-
-            mDevice.DrawIndexedPrimitives(
-                PrimitiveType.TriangleList,
-                0,
-                0,
-                heightMap.Terrain.NumVertices,
-                0,
-                heightMap.Terrain.NumIndices / 3);
-        }
-
-        /// <summary>
         /// Sets effect for current terrain and renders to screen.
         /// </summary>
         static private void DrawTerrainHeightMap(TerrainDescription heightMap, string techniqueName, Matrix worldTransforms, Vector3 overlayColor, float overlayColorWeight)
         {
+            mDevice.Indices = heightMap.Terrain.IndexBuffer;
+            mDevice.SetVertexBuffer(heightMap.Terrain.VertexBuffer);
+
             mTerrainShader.Texture = heightMap.Texture;
 
             if (CastingShadows)
             {
-                mTerrainShader.Parameters["ShadowMap"].SetValue(mShadowMap);
-                mTerrainShader.Parameters["HiResShadowMap"].SetValue(mAnimateShadowMap);
+                mTerrainShader.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
             }
+
+            //mTerrainShader.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
+            //mTerrainShader.Parameters["xLightView"].SetValue(mShadowMap.LightView);
+            //mTerrainShader.Parameters["xLightProjection"].SetValue(mShadowMap.LightProjection);
+            //mTerrainShader.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
+            //mTerrainShader.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
 
             mTerrainShader.View = mView;
             mTerrainShader.Projection = mProjection;
 
-            mTerrainShader.LightView = mLightView;
-            mTerrainShader.LightProjection = mLightProjection;
+            TerrainShader.LightView = mShadowMap.LightView;
+            TerrainShader.LightProjection = mShadowMap.LightProjection;
 
-            mTerrainShader.AnimateLightView = mAnimateLightView;
-            mTerrainShader.AnimateLightProjection = mAnimateLightProjection;
-
-            mTerrainShader.Parameters["xDirLightDirection"].SetValue(mLightDirection);
-            mTerrainShader.Parameters["xDirLightDiffuseColor"].SetValue(mLightDiffuseColor);
-            mTerrainShader.Parameters["xDirLightSpecularColor"].SetValue(mLightSpecularColor);
-            mTerrainShader.Parameters["xDirLightAmbientColor"].SetValue(mLightAmbientColor);
+            mTerrainShader.Parameters["xDirLightDirection"].SetValue(mDirectionalLight.Direction);
+            mTerrainShader.Parameters["xDirLightDiffuseColor"].SetValue(mDirectionalLight.DiffuseColor);
+            mTerrainShader.Parameters["xDirLightSpecularColor"].SetValue(mDirectionalLight.SpecularColor);
+            mTerrainShader.Parameters["xDirLightAmbientColor"].SetValue(mDirectionalLight.AmbientColor);
 
             mTerrainShader.Parameters["xOverlayColor"].SetValue(overlayColor);
             mTerrainShader.Parameters["xOverlayColorWeight"].SetValue(overlayColorWeight);
@@ -975,43 +924,43 @@ namespace GraphicsLibrary
         /// <returns></returns>
         static private void BuildLightTransform(bool resizeShadowMap)
         {
-            Matrix lightRotation = Matrix.CreateLookAt(Vector3.Zero, -mLightDirection, Vector3.Up);
+            //Matrix lightRotation = Matrix.CreateLookAt(Vector3.Zero, -mLightDirection, Vector3.Up);
 
-            // Get the corners of the frustum
-            Vector3[] frustumCorners = mCameraFrustum.GetCorners();
+            //// Get the corners of the frustum
+            //Vector3[] frustumCorners = mCameraFrustum.GetCorners();
 
-            // Transform corners of frustum in to light space.
-            for (int i = 0; i < frustumCorners.Length; ++i )
-            {
-                frustumCorners[i] = Vector3.Transform(frustumCorners[i], lightRotation);
-            }
+            //// Transform corners of frustum in to light space.
+            //for (int i = 0; i < frustumCorners.Length; ++i )
+            //{
+            //    frustumCorners[i] = Vector3.Transform(frustumCorners[i], lightRotation);
+            //}
 
-            BoundingBox lightBox = BoundingBox.CreateFromPoints(frustumCorners);
+            //BoundingBox lightBox = BoundingBox.CreateFromPoints(frustumCorners);
 
-            Vector3 boxSize = lightBox.Max - lightBox.Min;
-            if (resizeShadowMap)
-            {
-                boxSize *= 2.0f;
-            }
-            Vector3 halfBoxSize = boxSize * 0.5f;
+            //Vector3 boxSize = lightBox.Max - lightBox.Min;
+            //if (resizeShadowMap)
+            //{
+            //    boxSize *= 2.0f;
+            //}
+            //Vector3 halfBoxSize = boxSize * 0.5f;
 
-            mTexelSize = boxSize.X / mShadowMapLength;
+            //mTexelSize = boxSize.X / mShadowMapLength;
 
-            Vector3 lightPosition = lightBox.Min + halfBoxSize;
-            lightPosition.Z = lightBox.Min.Z;
+            //Vector3 lightPosition = lightBox.Min + halfBoxSize;
+            //lightPosition.Z = lightBox.Min.Z;
 
-            lightPosition = Vector3.Transform(lightPosition, Matrix.Invert(lightRotation));
+            //lightPosition = Vector3.Transform(lightPosition, Matrix.Invert(lightRotation));
 
-            if (resizeShadowMap)
-            {
-                mLightView = Matrix.CreateLookAt(lightPosition, lightPosition - mLightDirection, Vector3.Up);
-                mLightProjection = Matrix.CreateOrthographic(boxSize.X, boxSize.Y, -boxSize.Z, boxSize.Z);
-            }
-            else
-            {
-                mAnimateLightView = Matrix.CreateLookAt(lightPosition, lightPosition - mLightDirection, Vector3.Up);
-                mAnimateLightProjection = Matrix.CreateOrthographic(boxSize.X, boxSize.Y, -boxSize.Z, boxSize.Z);
-            }
+            //if (resizeShadowMap)
+            //{
+            //    mLightView = Matrix.CreateLookAt(lightPosition, lightPosition - mLightDirection, Vector3.Up);
+            //    mLightProjection = Matrix.CreateOrthographic(boxSize.X, boxSize.Y, -boxSize.Z, boxSize.Z);
+            //}
+            //else
+            //{
+            //    mAnimateLightView = Matrix.CreateLookAt(lightPosition, lightPosition - mLightDirection, Vector3.Up);
+            //    mAnimateLightProjection = Matrix.CreateOrthographic(boxSize.X, boxSize.Y, -boxSize.Z, boxSize.Z);
+            //}
         }
 
         /// <summary>
@@ -1062,6 +1011,30 @@ namespace GraphicsLibrary
 
             tweakMatrix = new Matrix(M11, M12, M13, M14, M21, M22, M23, M24, M31, M32, M33, M34, M41, M42, M43, M44);
         }
+
+        static private void BoundVertexBuffer(ref Vector3 min, ref Vector3 max, VertexBuffer vertexBuffer, int vertexCount)
+        {
+            int vertexStride = vertexBuffer.VertexDeclaration.VertexStride;
+            int vertexBufferSize = vertexCount * vertexStride;
+
+            float[] vertexData = new float[vertexBufferSize / sizeof(float)];
+            vertexBuffer.GetData<float>(vertexData);
+
+            for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
+            {
+                Vector3 localPosition = new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]);
+
+                min = Vector3.Min(min, localPosition);
+                max = Vector3.Max(max, localPosition);
+            }
+        }
+
+        static private void UpdateSceneExtents(BoundingBox boundingBox, Matrix worldTransform)
+        {
+            mMinSceneExtent = Vector3.Min(mMinSceneExtent, Vector3.Transform(boundingBox.Min, worldTransform));
+            mMaxSceneExtent = Vector3.Max(mMaxSceneExtent, Vector3.Transform(boundingBox.Max, worldTransform));
+        }
+
         #endregion
     }
 
@@ -1069,8 +1042,8 @@ namespace GraphicsLibrary
     {
         public int Compare(RenderableDefinition x, RenderableDefinition y)
         {
-            float xDistance = (x.WorldTransform.Translation - GraphicsManager.CameraPosition).LengthSquared();
-            float yDistance = (y.WorldTransform.Translation - GraphicsManager.CameraPosition).LengthSquared();
+            float xDistance = (x.WorldTransform.Translation - GraphicsManager.Camera.GetPosition()).LengthSquared();
+            float yDistance = (y.WorldTransform.Translation - GraphicsManager.Camera.GetPosition()).LengthSquared();
 
             return xDistance.CompareTo(yDistance);
         }

@@ -13,6 +13,12 @@ namespace GraphicsLibrary
     {
         #region Fields
 
+        public BoundingBox BoundingBox
+        {
+            get { return mBoundingBox; }
+        }
+        private BoundingBox mBoundingBox;
+
         private string          mModelName;
         private string          mAnimationName;
         private AnimationPlayer mAnimationPlayer;
@@ -62,6 +68,8 @@ namespace GraphicsLibrary
             mAnimationPlayer = new AnimationPlayer(mSkinningData);
 
             PlayAnimation(defaultAnimation, false);
+
+            mBoundingBox = GraphicsManager.BuildModelBoundingBox(mModelName);
         }
 
         /// <summary>
@@ -116,7 +124,7 @@ namespace GraphicsLibrary
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
             Matrix[] skinTransforms = AnimationPlayer.GetSkinTransforms();
-            GraphicsManager.RenderSkinnedModel(mModelName, skinTransforms, worldTransform, overlayColor, overlayColorWeight);
+            GraphicsManager.RenderSkinnedModel(mModelName, skinTransforms, worldTransform, mBoundingBox, overlayColor, overlayColorWeight);
         }
 
         #endregion
