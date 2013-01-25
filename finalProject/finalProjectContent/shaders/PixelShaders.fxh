@@ -39,10 +39,16 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 		}
 	}
 
-	//return IsInShadow(pin.Shadow);
-	if (IsInShadow(pin.Shadow))
+	ShadowPixel shadowPixel = ComputeShadow(pin.Shadow);
+
+	if (shadowPixel.InShadow == true)
 	{
 		color *= 0.5f;
+	}
+
+	if (xVisualizeCascades == true)
+	{
+		color = (color + shadowPixel.Color) / 2.0f;
 	}
 
 	return color;
@@ -88,10 +94,16 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
 
-	//return IsInShadow(pin.Shadow);
-	if (IsInShadow(pin.Shadow))
-	{	
+	ShadowPixel shadowPixel = ComputeShadow(pin.Shadow);
+
+	if (shadowPixel.InShadow == true)
+	{
 		color *= 0.5f;
+	}
+
+	if (xVisualizeCascades == true)
+	{
+		color = (color + shadowPixel.Color) / 2.0f;
 	}
 	 
     return color;
@@ -104,7 +116,6 @@ float4 TerrainCelShadePS(VSOutput pin) : SV_Target0
 	float textureWeight = 1.0f - xOverlayColorWeight;
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
-	//color.rgba -= (color.rgba % discretePallete);
 
 	return color;
 }

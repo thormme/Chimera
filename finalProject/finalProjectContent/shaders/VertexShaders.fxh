@@ -2,12 +2,6 @@ float4x4 lightViewProjection;
 
 ShadowVSOutput ShadowCastVS(float4 Position: POSITION)
 {
-	//ShadowVSOutput output;
-
-	//output.PositionPS = mul(Position, LightWorldViewProj);
-	//output.Depth = output.PositionPS.z / output.PositionPS.w;
-
-	//return output;
 	ShadowVSOutput output;
 
 	float4 worldPosition = mul(Position, World);
@@ -49,7 +43,6 @@ VSOutput VS(VSInput vin)
 
 	output.LightAmount = dot(worldNormal, -xDirLightDirection);
 
-	//output.ShadowCoord = mul(vin.Position, LightWorldViewProj);
 	output.Shadow = GetShadowData(pos_ws);
 	output.TexCoord = vin.TexCoord + xTextureOffset;
 

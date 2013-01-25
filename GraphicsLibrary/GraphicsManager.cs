@@ -106,6 +106,12 @@ namespace GraphicsLibrary
             set { mCastingShadows = value; }
         }
 
+        static public bool VisualizeCascades
+        {
+            get { return mShadowMap.VisualizeCascades; }
+            set { mShadowMap.VisualizeCascades = value; }
+        }
+
         /// <summary>
         /// Renders scene in debug mode.
         /// </summary>
@@ -800,6 +806,7 @@ namespace GraphicsLibrary
                 effect.LightView = mShadowMap.LightView;
                 effect.LightProjection = mShadowMap.LightProjection;
 
+                effect.Parameters["xVisualizeCascades"].SetValue(mShadowMap.VisualizeCascades);
                 effect.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
                 effect.Parameters["xLightView"].SetValue(mShadowMap.LightView);
                 effect.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
@@ -849,6 +856,7 @@ namespace GraphicsLibrary
                 mTerrainShader.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
             }
 
+            mTerrainShader.Parameters["xVisualizeCascades"].SetValue(mShadowMap.VisualizeCascades);
             mTerrainShader.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
             mTerrainShader.Parameters["xLightView"].SetValue(mShadowMap.LightView);
             mTerrainShader.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
@@ -893,13 +901,13 @@ namespace GraphicsLibrary
         /// </summary>
         static private void ApplyPostProcessing()
         {
-        //    mPostProcessShader.Parameters["EdgeWidth"].SetValue(mEdgeWidth);
-        //    mPostProcessShader.Parameters["EdgeIntensity"].SetValue(mEdgeIntensity);
-        //    mPostProcessShader.Parameters["ScreenResolution"].SetValue(new Vector2(mSceneBuffer.Width, mSceneBuffer.Height));
-        //    mPostProcessShader.Parameters["NormalDepthTexture"].SetValue(mNormalDepthBuffer);
-        //    mPostProcessShader.Parameters["SceneTexture"].SetValue(mSceneBuffer);
+            mPostProcessShader.Parameters["EdgeWidth"].SetValue(mEdgeWidth);
+            mPostProcessShader.Parameters["EdgeIntensity"].SetValue(mEdgeIntensity);
+            mPostProcessShader.Parameters["ScreenResolution"].SetValue(new Vector2(mSceneBuffer.Width, mSceneBuffer.Height));
+            mPostProcessShader.Parameters["NormalDepthTexture"].SetValue(mNormalDepthBuffer);
+            mPostProcessShader.Parameters["SceneTexture"].SetValue(mSceneBuffer);
 
-        //    mPostProcessShader.CurrentTechnique = mPostProcessShader.Techniques["EdgeDetect"];
+            mPostProcessShader.CurrentTechnique = mPostProcessShader.Techniques["EdgeDetect"];
 
             mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, mPostProcessShader);
             mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width, mSceneBuffer.Height), Color.White);

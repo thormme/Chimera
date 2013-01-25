@@ -67,6 +67,13 @@ namespace GraphicsLibrary
             }
         }
 
+        public bool VisualizeCascades
+        {
+            get { return mVisualizeCascades; }
+            set { mVisualizeCascades = value; }
+        }
+        private bool mVisualizeCascades = false;
+
         private List<Cascade> mCascadeContainer = new List<Cascade>();
 
         #endregion

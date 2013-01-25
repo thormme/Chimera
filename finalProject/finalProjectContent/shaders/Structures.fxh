@@ -11,6 +11,12 @@ struct ShadowData
 	float4 LightSpaceDepth_0_3;
 };
 
+struct ShadowPixel
+{
+	bool   InShadow;
+	float4 Color;
+};
+
 struct ShadowSplitData
 {
 	float2 TexCoords;

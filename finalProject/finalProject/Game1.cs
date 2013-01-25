@@ -113,6 +113,7 @@ namespace finalProject
             DebugConsole.AddCommand("resizeShadowCascade", new DebugConsole.ConsoleCommand(ResizeShadowCascadesCommand));
             DebugConsole.AddCommand("wireframe", new DebugConsole.ConsoleCommand(WireframeConsoleCommand));
             DebugConsole.AddCommand("debug", new DebugConsole.ConsoleCommand(DebugConsoleCommand));
+            DebugConsole.AddCommand("visualizeCascades", new DebugConsole.ConsoleCommand(VisualizeCascadesCommand));
             DebugConsole.Hide();
             // END
 
@@ -451,6 +452,11 @@ namespace finalProject
             {
                 return;
             }
+        }
+
+        private void VisualizeCascadesCommand(List<string> parameters)
+        {
+            GraphicsManager.VisualizeCascades = !GraphicsManager.VisualizeCascades;
         }
 
         #endregion
