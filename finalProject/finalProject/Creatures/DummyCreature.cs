@@ -17,7 +17,7 @@ namespace finalProject.Creatures
     public class DummyCreature : NonPlayerCreature
     {
         public DummyCreature(Vector3 position, Spawner spawn)
-            : base(position, 2.0f, 4.0f, 10.0f, 30.0f, new PassiveAI(), new InanimateModel("box"), 135, 100, 10, 5, new BearArms(), spawn)
+            : base(position, 2.0f, 4.0f, 10.0f, 30.0f, new PassiveAI(), new InanimateModel("box"), 135, 100, 10, 5, new EagleWings(), spawn)
         {
             //(mRenderable as AnimateModel).PlayAnimation("Take 001");
             Scale = new Vector3(1.0f);

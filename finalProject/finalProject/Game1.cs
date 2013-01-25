@@ -111,7 +111,8 @@ namespace finalProject
             mDebugScreen.FocusedControl = DebugConsole.ConsoleInput;
             DebugConsole.AddCommand("exit", new DebugConsole.ConsoleCommand(ExitConsoleCommand));
             DebugConsole.AddCommand("resizeShadowCascade", new DebugConsole.ConsoleCommand(ResizeShadowCascadesCommand));
-            DebugConsole.AddCommand("debug", new DebugConsole.ConsoleCommand(WireframeConsoleCommand));
+            DebugConsole.AddCommand("wireframe", new DebugConsole.ConsoleCommand(WireframeConsoleCommand));
+            DebugConsole.AddCommand("debug", new DebugConsole.ConsoleCommand(DebugConsoleCommand));
             DebugConsole.Hide();
             // END
 
@@ -436,7 +437,11 @@ namespace finalProject
         }
         private void WireframeConsoleCommand(List<string> parameters)
         {
-            //debugMode = !debugMode;
+            debugMode = !debugMode;
+        }
+
+        private void DebugConsoleCommand(List<string> parameters)
+        {
             GraphicsManager.DebugVisualization = !GraphicsManager.DebugVisualization;
         }
 
