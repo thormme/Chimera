@@ -202,18 +202,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\lizard\lizard.X">
-      <Name>lizard</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\lizard\lizard_head.X">
-      <Name>lizard_head</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="models\rock\rock1dark.X">
       <Name>rock1dark</Name>
       <Importer>XImporter</Importer>
@@ -350,11 +338,6 @@
       <Processor>AnimateModelProcessor</Processor>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="models\bear\bear_rightArm.X">
-      <Name>bear_rightArm</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="models\cheetah\cheetah_frontLeftLeg.X">
@@ -374,18 +357,6 @@
     </Compile>
     <Compile Include="models\cheetah\cheetah_rearRightLeg.X">
       <Name>cheetah_rearRightLeg</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\cobra\cobra.X">
-      <Name>cobra</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-    <Compile Include="models\cobra\cobra_head.X">
-      <Name>cobra_head</Name>
       <Importer>XImporter</Importer>
       <Processor>AnimateModelProcessor</Processor>
     </Compile>
@@ -420,27 +391,6 @@
     </Compile>
     <Compile Include="models\penguin\penguin_rightFoot.X">
       <Name>penguin_rightFoot</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\turtle\turtle.X">
-      <Name>turtle</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\bear\bear.X">
-      <Name>bear</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimateModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\bear\bear_leftArm.X">
-      <Name>bear_leftArm</Name>
       <Importer>XImporter</Importer>
       <Processor>AnimateModelProcessor</Processor>
     </Compile>
@@ -487,10 +437,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Content Include="models\bear\bear.tweak">
-      <Name>bear</Name>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Compile Include="textures\sprites\test_tex.png">
       <Name>test_tex</Name>
       <Importer>TextureImporter</Importer>
@@ -729,12 +675,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="models\cobra\cobra.tweak">
-      <Name>cobra</Name>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="models\eagle\eagle.tweak">
       <Name>eagle</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -749,12 +689,6 @@
   <ItemGroup>
     <Content Include="models\kangaroo\kangaroo.tweak">
       <Name>kangaroo</Name>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="models\lizard\lizard.tweak">
-      <Name>lizard</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -774,12 +708,6 @@
     <Content Include="models\rhino\rhino.tweak">
       <Name>rhino</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="models\turtle\turtle.tweak">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Name>turtle</Name>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -851,13 +779,6 @@
     </Compile>
     <Compile Include="models\checkpoint\checkpoint_red.X">
       <Name>checkpoint_red</Name>
-      <Importer>XImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="models\turtle\turtle_shell.X">
-      <Name>turtle_shell</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

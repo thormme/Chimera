@@ -2628,31 +2628,6 @@
     <Type>finalProject.Spawner, finalProject</Type>
     <Model>editor</Model>
     <Parameters>
-      <string>Bear</string>
-      <string>50</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>33.156456</X>
-      <Y>0</Y>
-      <Z>7.50977564</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>2.5</X>
-      <Y>2000</Y>
-      <Z>2.5</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>editor</Model>
-    <Parameters>
       <string>Cheetah</string>
       <string>10</string>
       <string>1</string>
@@ -2661,31 +2636,6 @@
       <X>28.7488976</X>
       <Y>0</Y>
       <Z>9.327142</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>5</X>
-      <Y>4000</Y>
-      <Z>5</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>editor</Model>
-    <Parameters>
-      <string>FrilledLizard</string>
-      <string>10</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>39.2840157</X>
-      <Y>6154.12</Y>
-      <Z>-10.2325954</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -2736,31 +2686,6 @@
       <X>30.8159618</X>
       <Y>10000</Y>
       <Z>36.3561172</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>5</X>
-      <Y>4000</Y>
-      <Z>5</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>editor</Model>
-    <Parameters>
-      <string>Turtle</string>
-      <string>10</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>36.69777</X>
-      <Y>10000</Y>
-      <Z>33.21159</Z>
     </Position>
     <Orientation>
       <X>0</X>
@@ -3504,31 +3429,6 @@
       <X>-44.046875</X>
       <Y>23086.3223</Y>
       <Z>42.324337</Z>
-    </Position>
-    <Orientation>
-      <X>0</X>
-      <Y>0</Y>
-      <Z>0</Z>
-    </Orientation>
-    <Scale>
-      <X>1.25</X>
-      <Y>1000</Y>
-      <Z>1.25</Z>
-    </Scale>
-    <Height>0</Height>
-  </DummyObject>
-  <DummyObject>
-    <Type>finalProject.Spawner, finalProject</Type>
-    <Model>editor</Model>
-    <Parameters>
-      <string>Cobra</string>
-      <string>10</string>
-      <string>1</string>
-    </Parameters>
-    <Position>
-      <X>32.3415146</X>
-      <Y>6314.667</Y>
-      <Z>-7.2626543</Z>
     </Position>
     <Orientation>
       <X>0</X>
