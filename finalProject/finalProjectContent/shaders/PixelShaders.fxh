@@ -45,7 +45,6 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 	}
 
 	return color;
-	//return IsInShadow(pin.Shadow);
 }
 
 sampler NoShade_Sampler = sampler_state
@@ -92,8 +91,7 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 	{	
 		color *= 0.5f;
 	}
-	//return IsInShadow(pin.Shadow);
-    
+	 
     return color;
 }
 

@@ -209,19 +209,30 @@ namespace GraphicsLibrary
             //lightPosition.Z = viewBoundingBox.Min.Z;
             //light.Position = Vector3.Transform(lightPosition, Matrix.Invert(lightRotation));
 
-            mLightView = Matrix.CreateLookAt(light.Position, light.Position + light.Direction, Vector3.Up);
+            mLightView = Matrix.CreateLookAt(camera.Position, camera.Position + light.Direction, Vector3.Up);
 
             Vector3[] sceneCorners = sceneAABB.GetCorners();
             Vector3.Transform(sceneCorners, ref mLightView, sceneCorners);
             BoundingBox lightSpaceSceneAABB = BoundingBox.CreateFromPoints(sceneCorners);
 
+            float maxCameraDistance = camera.GetFarPlaneDistance() - camera.GetNearPlaneDistance();
+            Vector3 cameraPosition = Vector3.Transform(camera.Position, mLightView);
+
+            float cascadeDistance = maxCameraDistance * 0.1f;
+            float farCascadeDistance = maxCameraDistance * 0.2f;
+
+            Matrix frustumProjection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.GetNearPlaneDistance() + cascadeDistance, camera.GetNearPlaneDistance() + farCascadeDistance);
+            Vector3[] frustumCorners = new BoundingFrustum(camera.GetViewTransform() * frustumProjection).GetCorners();
+            Vector3.Transform(frustumCorners, ref mLightView, frustumCorners);
+            BoundingBox frustumBounds = BoundingBox.CreateFromPoints(frustumCorners);
+
             mLightProjection = Matrix.CreateOrthographicOffCenter(
-                lightSpaceSceneAABB.Min.X, 
-                lightSpaceSceneAABB.Max.X, 
-                lightSpaceSceneAABB.Min.Y, 
-                lightSpaceSceneAABB.Max.Y, 
-                lightSpaceSceneAABB.Min.Z, 
-                lightSpaceSceneAABB.Max.Z
+                lightSpaceSceneAABB.Min.X,
+                lightSpaceSceneAABB.Max.X,
+                lightSpaceSceneAABB.Min.Y,
+                lightSpaceSceneAABB.Max.Y,
+                -lightSpaceSceneAABB.Max.Z,
+                -lightSpaceSceneAABB.Min.Z
                 );
             //float cameraViewDistance = camera.GetFarPlaneDistance() - camera.GetNearPlaneDistance();
 

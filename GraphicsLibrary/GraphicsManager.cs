@@ -137,7 +137,7 @@ namespace GraphicsLibrary
             mTerrainShader = new SkinnedEffect(mConfigurableShader);
 
             // Create buffers.
-            mShadowMap = new CascadedShadowMap(device, 1, 4096);
+            mShadowMap = new CascadedShadowMap(device, 1, 2048);
 
             mSceneBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
             mNormalDepthBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
@@ -893,13 +893,13 @@ namespace GraphicsLibrary
         /// </summary>
         static private void ApplyPostProcessing()
         {
-            mPostProcessShader.Parameters["EdgeWidth"].SetValue(mEdgeWidth);
-            mPostProcessShader.Parameters["EdgeIntensity"].SetValue(mEdgeIntensity);
-            mPostProcessShader.Parameters["ScreenResolution"].SetValue(new Vector2(mSceneBuffer.Width, mSceneBuffer.Height));
-            mPostProcessShader.Parameters["NormalDepthTexture"].SetValue(mNormalDepthBuffer);
-            mPostProcessShader.Parameters["SceneTexture"].SetValue(mSceneBuffer);
+        //    mPostProcessShader.Parameters["EdgeWidth"].SetValue(mEdgeWidth);
+        //    mPostProcessShader.Parameters["EdgeIntensity"].SetValue(mEdgeIntensity);
+        //    mPostProcessShader.Parameters["ScreenResolution"].SetValue(new Vector2(mSceneBuffer.Width, mSceneBuffer.Height));
+        //    mPostProcessShader.Parameters["NormalDepthTexture"].SetValue(mNormalDepthBuffer);
+        //    mPostProcessShader.Parameters["SceneTexture"].SetValue(mSceneBuffer);
 
-            mPostProcessShader.CurrentTechnique = mPostProcessShader.Techniques["EdgeDetect"];
+        //    mPostProcessShader.CurrentTechnique = mPostProcessShader.Techniques["EdgeDetect"];
 
             mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, mPostProcessShader);
             mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width, mSceneBuffer.Height), Color.White);
@@ -1042,8 +1042,8 @@ namespace GraphicsLibrary
     {
         public int Compare(RenderableDefinition x, RenderableDefinition y)
         {
-            float xDistance = (x.WorldTransform.Translation - GraphicsManager.Camera.GetPosition()).LengthSquared();
-            float yDistance = (y.WorldTransform.Translation - GraphicsManager.Camera.GetPosition()).LengthSquared();
+            float xDistance = (x.WorldTransform.Translation - GraphicsManager.Camera.Position).LengthSquared();
+            float yDistance = (y.WorldTransform.Translation - GraphicsManager.Camera.Position).LengthSquared();
 
             return xDistance.CompareTo(yDistance);
         }

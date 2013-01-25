@@ -39,7 +39,7 @@ namespace finalProject
                         {
                             actor.Update(gameTime);
                         }
-                        else if (((actor as IGameObject).Position - Game1.Camera.GetPosition()).Length() < 400)
+                        else if (((actor as IGameObject).Position - Game1.Camera.Position).Length() < 400)
                         {
                             actor.Update(gameTime);
                         }
@@ -65,9 +65,9 @@ namespace finalProject
                     // Don't render Creatures that are far away.
                     if (gameObject is Creature)
                     {
-                        if ((gameObject.Position - Game1.Camera.GetPosition()).Length() < 200.0f)
+                        if ((gameObject.Position - Game1.Camera.Position).Length() < 200.0f)
                         {
-                            if (Vector3.Dot(Game1.Camera.GetForward(), gameObject.Position - Game1.Camera.GetPosition()) >= 0)
+                            if (Vector3.Dot(Game1.Camera.Forward, gameObject.Position - Game1.Camera.Position) >= 0)
                             {
                                 gameObject.Render();
                             }
