@@ -442,28 +442,13 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\BearArmsIcon.png">
-      <Name>BearArmsIcon</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="textures\sprites\CheetahLegsIcon.png">
       <Name>CheetahLegsIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\sprites\CobraHeadIcon.png">
-      <Name>CobraHeadIcon</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="textures\sprites\EagleWingsIcon.png">
       <Name>EagleWingsIcon</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="textures\sprites\FrilledLizardHeadIcon.png">
-      <Name>FrilledLizardHeadIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -484,11 +469,6 @@
     </Compile>
     <Compile Include="textures\sprites\RhinoHeadIcon.png">
       <Name>RhinoHeadIcon</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="textures\sprites\TurtleShellIcon.png">
-      <Name>TurtleShellIcon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
