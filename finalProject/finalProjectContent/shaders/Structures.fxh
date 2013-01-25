@@ -54,8 +54,8 @@ struct VSOutput
 	float2     TexCoord    : TEXCOORD0;
 	float      LightAmount : TEXCOORD1;
 	float4     PositionPS  : SV_Position;
-	float4     ShadowCoord : TEXCOORD2;
-	//ShadowData Shadow      : TEXCOORD2;
+	//float4     ShadowCoord : TEXCOORD2;
+	ShadowData Shadow      : TEXCOORD2;
 };
 
 struct OutlineVSOutput

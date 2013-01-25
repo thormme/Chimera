@@ -94,28 +94,28 @@ ShadowSplitData GetSplitData(ShadowData shadowData)
 	return result;
 }
 
-bool IsInShadow(float4 shadowMapPosition)
+bool IsInShadow(ShadowData shadowData)
 {
-	float2 shadowTexCoord = 0.5 * shadowMapPosition.xy / shadowMapPosition.w + float2(0.5f, 0.5f);
-	shadowTexCoord.y = 1.0f - shadowTexCoord.y;
+	//float2 shadowTexCoord = 0.5 * shadowMapPosition.xy / shadowMapPosition.w + float2(0.5f, 0.5f);
+	//shadowTexCoord.y = 1.0f - shadowTexCoord.y;
 
-	if (shadowTexCoord.x < 0.0 || shadowTexCoord.x > 1.0 || shadowTexCoord.y < 0.0 || shadowTexCoord.y > 1.0)
-	{
-		return false;
-	}
+	//if (shadowTexCoord.x < 0.0 || shadowTexCoord.x > 1.0 || shadowTexCoord.y < 0.0 || shadowTexCoord.y > 1.0)
+	//{
+	//	return false;
+	//}
 
-	float shadowDepth = SAMPLE_TEXTURE(ShadowMap, shadowTexCoord).r;
-	float ourDepth = (shadowMapPosition.z / shadowMapPosition.w) - DepthBias;
+	//float shadowDepth = SAMPLE_TEXTURE(ShadowMap, shadowTexCoord).r;
+	//float ourDepth = (shadowMapPosition.z / shadowMapPosition.w) - DepthBias;
 
-	return (shadowDepth < ourDepth);
+	//return (shadowDepth < ourDepth);
 
-	//ShadowSplitData splitData = GetSplitData(shadowData);
-	//float shadowDepth = SAMPLE_TEXTURE(ShadowMap, splitData.TexCoords).r;
+	ShadowSplitData splitData = GetSplitData(shadowData);
+	float shadowDepth = SAMPLE_TEXTURE(ShadowMap, splitData.TexCoords).r;
 
 	//return splitData.Color;
 	//if (splitData.SplitIndex == xCascadeCount)
 	//{
 	//	return false;
 	//}
-	//return (shadowDepth < splitData.LightSpaceDepth);
+	return (shadowDepth < splitData.LightSpaceDepth);
 }

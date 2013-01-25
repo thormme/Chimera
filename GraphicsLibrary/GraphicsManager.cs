@@ -137,7 +137,7 @@ namespace GraphicsLibrary
             mTerrainShader = new SkinnedEffect(mConfigurableShader);
 
             // Create buffers.
-            mShadowMap = new CascadedShadowMap(device, 1, 2048);
+            mShadowMap = new CascadedShadowMap(device, 2048);
 
             mSceneBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
             mNormalDepthBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
@@ -800,11 +800,11 @@ namespace GraphicsLibrary
                 effect.LightView = mShadowMap.LightView;
                 effect.LightProjection = mShadowMap.LightProjection;
 
-                //effect.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
-                //effect.Parameters["xLightView"].SetValue(mShadowMap.LightView);
-                //effect.Parameters["xLightProjection"].SetValue(mShadowMap.LightProjection);
-                //effect.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
-                //effect.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
+                effect.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
+                effect.Parameters["xLightView"].SetValue(mShadowMap.LightView);
+                effect.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
+                effect.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
+                effect.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
 
                 effect.Parameters["xDirLightDirection"].SetValue(mDirectionalLight.Direction);
                 effect.Parameters["xDirLightDiffuseColor"].SetValue(mDirectionalLight.DiffuseColor);
@@ -849,11 +849,11 @@ namespace GraphicsLibrary
                 mTerrainShader.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
             }
 
-            //mTerrainShader.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
-            //mTerrainShader.Parameters["xLightView"].SetValue(mShadowMap.LightView);
-            //mTerrainShader.Parameters["xLightProjection"].SetValue(mShadowMap.LightProjection);
-            //mTerrainShader.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
-            //mTerrainShader.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
+            mTerrainShader.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
+            mTerrainShader.Parameters["xLightView"].SetValue(mShadowMap.LightView);
+            mTerrainShader.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
+            mTerrainShader.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
+            mTerrainShader.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
 
             mTerrainShader.View = mView;
             mTerrainShader.Projection = mProjection;

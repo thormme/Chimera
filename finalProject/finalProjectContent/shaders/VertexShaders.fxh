@@ -2,20 +2,20 @@ float4x4 lightViewProjection;
 
 ShadowVSOutput ShadowCastVS(float4 Position: POSITION)
 {
-	ShadowVSOutput output;
-
-	output.PositionPS = mul(Position, LightWorldViewProj);
-	output.Depth = output.PositionPS.z / output.PositionPS.w;
-
-	return output;
 	//ShadowVSOutput output;
 
-	//float4 worldPosition = mul(Position, World);
-	//float4 worldPositionView = mul(worldPosition, xLightView);
-	//output.PositionPS = mul(worldPositionView, xLightProjection);
+	//output.PositionPS = mul(Position, LightWorldViewProj);
 	//output.Depth = output.PositionPS.z / output.PositionPS.w;
 
 	//return output;
+	ShadowVSOutput output;
+
+	float4 worldPosition = mul(Position, World);
+	float4 worldPositionView = mul(worldPosition, xLightView);
+	output.PositionPS = mul(worldPositionView, xLightProjection);
+	output.Depth = output.PositionPS.z / output.PositionPS.w;
+
+	return output;
 }
 
 NormalDepthVSOutput NormalDepthVS(VSInput vin)
@@ -49,8 +49,8 @@ VSOutput VS(VSInput vin)
 
 	output.LightAmount = dot(worldNormal, -xDirLightDirection);
 
-	output.ShadowCoord = mul(vin.Position, LightWorldViewProj);
-	//output.Shadow = GetShadowData(pos_ws);
+	//output.ShadowCoord = mul(vin.Position, LightWorldViewProj);
+	output.Shadow = GetShadowData(pos_ws);
 	output.TexCoord = vin.TexCoord + xTextureOffset;
 
 	return output;

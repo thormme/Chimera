@@ -39,7 +39,8 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 		}
 	}
 
-	if (IsInShadow(pin.ShadowCoord))
+	//return IsInShadow(pin.Shadow);
+	if (IsInShadow(pin.Shadow))
 	{
 		color *= 0.5f;
 	}
@@ -87,7 +88,8 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
 
-	if (IsInShadow(pin.ShadowCoord))
+	//return IsInShadow(pin.Shadow);
+	if (IsInShadow(pin.Shadow))
 	{	
 		color *= 0.5f;
 	}

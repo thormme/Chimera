@@ -29,15 +29,14 @@ namespace GraphicsLibrary
 
         public int CascadeCount
         {
-            get { return mCascadeCount; }
-            set { ResizeShadowBuffer(value, mCascadeResolution); }
+            get { return 4; }
         }
         private int mCascadeCount = 0;
 
         public int CascadeResolution
         {
             get { return mCascadeResolution; }
-            set { ResizeShadowBuffer(mCascadeCount, value); }
+            set { ResizeShadowBuffer(value); }
         }
         private int mCascadeResolution = 0;
 
@@ -74,38 +73,40 @@ namespace GraphicsLibrary
 
         #region Private Shadow Buffer Methods
 
-        private void ResizeShadowBuffer(int cascadeCount, int cascadeResolution)
+        private void ResizeShadowBuffer(int cascadeResolution)
         {
-            if (cascadeResolution > MAX_BUFFER_HEIGHT || cascadeCount * cascadeResolution > MAX_BUFFER_WIDTH || cascadeCount < 0)
+            int cascadeHalfCount = 2;
+
+            if (cascadeHalfCount * cascadeResolution > MAX_BUFFER_HEIGHT || cascadeHalfCount * cascadeResolution > MAX_BUFFER_WIDTH)
             {
-                string resizeErrorMessage = cascadeCount == mCascadeCount ? "Cascade Resolution is too high" : "Cascade Count is too high";
+                string resizeErrorMessage = "Cascade Resolution is too high";
                 throw new Exception(resizeErrorMessage);
             }
 
-            if (cascadeCount != mCascadeCount)
+            if ((cascadeHalfCount * 2) != mCascadeCount)
             {
-                mCascadeCount = cascadeCount;
+                mCascadeCount = cascadeHalfCount * 2;
                 ResizeCascadeContainer();
             }
             
             mCascadeResolution = cascadeResolution;
 
             mShadowBuffer = new RenderTarget2D(
-                mGraphicsDevice,                      // Hardware abstraction to render from.
-                mCascadeCount * mCascadeResolution,   // Buffer width.
-                mCascadeResolution,                   // Buffer height.
-                false,                                // No MipMapping.
-                SurfaceFormat.Single,                 // Single precision floating point values in buffer.
-                DepthFormat.Depth24Stencil8,          // Precisions of accompanying depth buffer.
-                0,                                    // No Multisampling (0x MSAA).
-                RenderTargetUsage.DiscardContents     // Clear buffer upon binding to graphics device.
+                mGraphicsDevice,                        // Hardware abstraction to render from.
+                mCascadeCount / 2 * mCascadeResolution, // Buffer width.
+                mCascadeCount / 2 * mCascadeResolution, // Buffer height.
+                false,                                  // No MipMapping.
+                SurfaceFormat.Single,                   // Single precision floating point values in buffer.
+                DepthFormat.Depth24Stencil8,            // Precisions of accompanying depth buffer.
+                0,                                      // No Multisampling (0x MSAA).
+                RenderTargetUsage.DiscardContents       // Clear buffer upon binding to graphics device.
                 );
         }
 
         private void ResizeCascadeContainer()
         {
-            int[] nearPercentages = {  -1, -10, -30, -60  };
-            int[] farPercentages  = { -10, -30, -60, -100 };
+            float[] nearPercentages = { 0.0f, 0.01f, 0.1f, 0.5f };
+            float[] farPercentages  = { 0.01f, 0.1f, 0.5f, 1.0f };
             Color[] colorBands = { 
                                       new Color(1.0f, 0.0f, 0.0f, 1.0f), 
                                       new Color(0.0f, 1.0f, 0.0f, 1.0f), 
@@ -177,7 +178,8 @@ namespace GraphicsLibrary
                 Matrix[] lightProjections = new Matrix[mCascadeCount];
                 for (int iCascadeCount = 0; iCascadeCount < mCascadeCount; iCascadeCount++)
                 {
-                    lightProjections[iCascadeCount] = mCascadeContainer[iCascadeCount].ProjectionTransform;
+                    lightProjections[iCascadeCount] = mCascadeContainer[iCascadeCount].ProjectionTransform * 
+                                                        mCascadeContainer[iCascadeCount].TileTransform;
                 }
                 return lightProjections;
             }
@@ -187,28 +189,14 @@ namespace GraphicsLibrary
 
         #region Public Interface
 
-        public CascadedShadowMap(GraphicsDevice graphicsDevice, int cascadeCount, int cascadeResolution)
+        public CascadedShadowMap(GraphicsDevice graphicsDevice, int cascadeResolution)
         {
             GraphicsDevice = graphicsDevice;
-            ResizeShadowBuffer(cascadeCount, cascadeResolution);
+            ResizeShadowBuffer(cascadeResolution);
         }
 
         public void GenerateCascades(ICamera camera, Light light, BoundingBox sceneAABB)
         {
-            //Matrix lightRotation = Matrix.CreateLookAt(Vector3.Zero, -light.Direction, Vector3.Up);
-
-            //BoundingFrustum viewFrustum = new BoundingFrustum(camera.GetViewTransform() * camera.GetProjectionTransform());
-            //Vector3[] viewFrustumCorners = viewFrustum.GetCorners();
-            //Matrix viewTransform = camera.GetViewTransform();
-            //Vector3.Transform(viewFrustumCorners, ref viewTransform, viewFrustumCorners);
-
-            //BoundingBox viewBoundingBox = BoundingBox.CreateFromPoints(viewFrustumCorners);
-            //Vector3 halfBoxSize = (viewBoundingBox.Max - viewBoundingBox.Min) / 2.0f;
-
-            //Vector3 lightPosition = viewBoundingBox.Min + halfBoxSize;
-            //lightPosition.Z = viewBoundingBox.Min.Z;
-            //light.Position = Vector3.Transform(lightPosition, Matrix.Invert(lightRotation));
-
             mLightView = Matrix.CreateLookAt(camera.Position, camera.Position + light.Direction, Vector3.Up);
 
             Vector3[] sceneCorners = sceneAABB.GetCorners();
@@ -218,74 +206,64 @@ namespace GraphicsLibrary
             float maxCameraDistance = camera.GetFarPlaneDistance() - camera.GetNearPlaneDistance();
             Vector3 cameraPosition = Vector3.Transform(camera.Position, mLightView);
 
-            float cascadeDistance = maxCameraDistance * 0.1f;
-            float farCascadeDistance = maxCameraDistance * 0.2f;
+            for (int iCascadeCount = 0; iCascadeCount < mCascadeCount; iCascadeCount++)
+            {
+                Cascade cascade = mCascadeContainer[iCascadeCount];
 
-            Matrix frustumProjection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.GetNearPlaneDistance() + cascadeDistance, camera.GetNearPlaneDistance() + farCascadeDistance);
-            Vector3[] frustumCorners = new BoundingFrustum(camera.GetViewTransform() * frustumProjection).GetCorners();
-            Vector3.Transform(frustumCorners, ref mLightView, frustumCorners);
-            BoundingBox frustumBounds = BoundingBox.CreateFromPoints(frustumCorners);
+                if (iCascadeCount == mCascadeCount - 1)
+                {
+                    cascade.ProjectionTransform = Matrix.CreateOrthographicOffCenter(
+                        lightSpaceSceneAABB.Min.X,
+                        lightSpaceSceneAABB.Max.X,
+                        lightSpaceSceneAABB.Min.Y,
+                        lightSpaceSceneAABB.Max.Y,
+                        -lightSpaceSceneAABB.Max.Z,
+                        -lightSpaceSceneAABB.Min.Z
+                    );
+                }
+                else
+                {
+                    float farCascadeDistance = maxCameraDistance * cascade.FarPlanePercentage;
 
-            mLightProjection = Matrix.CreateOrthographicOffCenter(
-                lightSpaceSceneAABB.Min.X,
-                lightSpaceSceneAABB.Max.X,
-                lightSpaceSceneAABB.Min.Y,
-                lightSpaceSceneAABB.Max.Y,
-                -lightSpaceSceneAABB.Max.Z,
-                -lightSpaceSceneAABB.Min.Z
+                    Matrix frustumProjection = Matrix.CreatePerspectiveFieldOfView(
+                        camera.FieldOfView,
+                        camera.AspectRatio,
+                        camera.GetNearPlaneDistance(),
+                        camera.GetNearPlaneDistance() + farCascadeDistance
+                        );
+
+                    Vector3[] frustumCorners = new BoundingFrustum(camera.GetViewTransform() * frustumProjection).GetCorners();
+                    Vector3.Transform(frustumCorners, ref mLightView, frustumCorners);
+                    BoundingBox frustumBounds = BoundingBox.CreateFromPoints(frustumCorners);
+
+                    cascade.ProjectionTransform = Matrix.CreateOrthographicOffCenter(
+                        frustumBounds.Min.X,
+                        frustumBounds.Max.X,
+                        frustumBounds.Min.Y,
+                        frustumBounds.Max.Y,
+                        -lightSpaceSceneAABB.Max.Z,
+                        -lightSpaceSceneAABB.Min.Z
+                    );
+                }
+
+                int tileX = iCascadeCount % 2;
+                int tileY = iCascadeCount / 2;
+
+                float bufferBorder = 3.0f / (float)mCascadeResolution;
+
+                cascade.BufferBounds = new Vector4(
+                    0.5f * tileX + bufferBorder,
+                    0.5f * tileX + 0.5f - bufferBorder,
+                    0.5f * tileY + bufferBorder,
+                    0.5f * tileY + 0.5f - bufferBorder
                 );
-            //float cameraViewDistance = camera.GetFarPlaneDistance() - camera.GetNearPlaneDistance();
 
-            //for (int iCascadeCount = 0; iCascadeCount < mCascadeCount; iCascadeCount++)
-            //{
-            //    Cascade cascade = mCascadeContainer[iCascadeCount];
-
-            //    float nearFrustumSplit = (float)cascade.NearPlanePercentage / 100.0f/* * cameraViewDistance*/;
-            //    float farFrustumSplit = (float)cascade.FarPlanePercentage / 100.0f/* * cameraViewDistance*/;
-
-            //    Vector3[] cascadeFrustumCorners = new Vector3[viewFrustumCorners.Length];
-            //    for (int i = 0; i < 8; i++)
-            //    {
-            //        if (i < 4)
-            //        {
-            //            cascadeFrustumCorners[i] = viewFrustumCorners[i + 4] * nearFrustumSplit;
-            //        }
-            //        else
-            //        {
-            //            cascadeFrustumCorners[i] = viewFrustumCorners[i] * farFrustumSplit;
-            //        }
-            //    }
-
-                //List<Vector3> cascadeCorners = SplitViewFrustum(nearFrustumSplit, farFrustumSplit, camera.GetViewTransform(), camera.GetProjectionTransform());
-                //Vector3[] lightSpaceCascadeCorners = new Vector3[cascadeCorners.Count];
-                //Vector3.Transform(cascadeCorners.ToArray(), ref mLightView, lightSpaceCascadeCorners);
-
-                //Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-                //Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-                //foreach (Vector3 corner in lightSpaceCascadeCorners)
-                //{
-                //    min = Vector3.Min(min, corner);
-                //    max = Vector3.Max(max, corner);
-                //}
-
-                //cascade.ProjectionTransform = Matrix.CreateOrthographicOffCenter(
-                //    min.X,
-                //    max.X,
-                //    min.Y,
-                //    max.Y,
-                //    -lightSpaceSceneAABB.Max.Z,
-                //    -lightSpaceSceneAABB.Min.Z
-                //    );
-
-                //float cascadeFraction = 1.0f / (float)mCascadeCount;
-                //float bufferBorder = 3.0f / ((float)mCascadeCount * (float)mCascadeResolution);
-
-                //cascade.BufferBounds = new Vector4(
-                //    cascadeFraction * iCascadeCount + bufferBorder, 
-                //    cascadeFraction * iCascadeCount + cascadeFraction - bufferBorder,
-                //    0.0f,
-                //    1.0f - bufferBorder);
-            //}
+                Matrix tileTransform = Matrix.Identity;
+                tileTransform.M11 = 0.25f;
+                tileTransform.M22 = -0.25f;
+                tileTransform.Translation = new Vector3(0.25f + tileX * 0.5f, 0.25f + tileY * 0.5f, 0);
+                cascade.TileTransform = tileTransform;
+            }
         }
 
         public void WriteShadowsToBuffer(Queue<RenderableDefinition> renderables)
@@ -299,24 +277,28 @@ namespace GraphicsLibrary
             mGraphicsDevice.SetRenderTarget(mShadowBuffer);
             mGraphicsDevice.Clear(Color.White);
 
-            //for (int iCascadeCount = 0; iCascadeCount < mCascadeCount; iCascadeCount++)
-            //{
-                //Viewport cascadeViewport = new Viewport(iCascadeCount * mCascadeResolution, 0, mCascadeResolution, mCascadeResolution);
+            for (int iCascadeCount = 0; iCascadeCount < mCascadeCount; iCascadeCount++)
+            {
+                Viewport cascadeViewport = new Viewport(
+                    (iCascadeCount % 2) * mCascadeResolution, 
+                    (iCascadeCount / 2) * mCascadeResolution, 
+                    mCascadeResolution, mCascadeResolution
+                );
 
-                //mGraphicsDevice.Viewport = cascadeViewport;
+                mGraphicsDevice.Viewport = cascadeViewport;
 
                 foreach (RenderableDefinition renderable in renderables)
                 {
                     if (renderable.IsModel)
                     {
-                        WriteModelShadowToBuffer(renderable, mLightProjection);
+                        WriteModelShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);
                     }
                     else
                     {
-                        WriteTerrainShadowToBuffer(renderable, mLightProjection);
+                        WriteTerrainShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);
                     }
                 }
-            //}
+            }
         }
 
         #endregion
@@ -331,8 +313,8 @@ namespace GraphicsLibrary
             {
                 foreach (SkinnedEffect effect in mesh.Effects)
                 {
-                    effect.LightView = mLightView;
-                    effect.LightProjection = cascadeProjection;
+                    effect.Parameters["xLightView"].SetValue(mLightView);
+                    effect.Parameters["xLightProjection"].SetValue(cascadeProjection);
 
                     effect.CurrentTechnique = effect.Techniques[renderable.IsSkinned ? "SkinnedShadowCast" : "ShadowCast"];
 
@@ -351,8 +333,8 @@ namespace GraphicsLibrary
 
             GraphicsManager.TerrainShader.World = renderable.WorldTransform;
 
-            GraphicsManager.TerrainShader.LightView = mLightView;
-            GraphicsManager.TerrainShader.LightProjection = cascadeProjection;
+            GraphicsManager.TerrainShader.Parameters["xLightView"].SetValue(mLightView);
+            GraphicsManager.TerrainShader.Parameters["xLightProjection"].SetValue(cascadeProjection);
 
             GraphicsManager.TerrainShader.CurrentTechnique = GraphicsManager.TerrainShader.Techniques["ShadowCast"];
             GraphicsManager.TerrainShader.CurrentTechnique.Passes[0].Apply();
@@ -370,13 +352,14 @@ namespace GraphicsLibrary
 
         internal class Cascade
         {
-            public int NearPlanePercentage { get; set; }
-            public int FarPlanePercentage { get; set; }
+            public float NearPlanePercentage { get; set; }
+            public float FarPlanePercentage { get; set; }
             public Matrix ProjectionTransform { get; set; }
+            public Matrix TileTransform { get; set; }
             public Vector4 BufferBounds { get; set; }
             public Color Color { get; set; }
 
-            public Cascade(int nearPercentage, int farPercentage, Color color)
+            public Cascade(float nearPercentage, float farPercentage, Color color)
             {
                 NearPlanePercentage = nearPercentage;
                 FarPlanePercentage = farPercentage;
