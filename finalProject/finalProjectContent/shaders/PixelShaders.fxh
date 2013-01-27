@@ -18,33 +18,29 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
 
-	color.rgba -= (color.rgba % discretePallete);
+	//color.rgba -= (color.rgba % discretePallete);
 
-	if (xNumShadowBands < 2.9f)
-	{
-		if (pin.LightAmount <= 0.0f)
-		{
-			color *= 0.5f;
-		}
-	}
-	else
-	{
-		if (pin.LightAmount <= 0.66f && pin.LightAmount > 0.0f)
-		{
-			color *= 0.75f;
-		}
-		else if (pin.LightAmount <= 0.0f)
-		{
-			color *= 0.5f;
-		}
-	}
+	const float A = 0.3f;
+	const float B = 0.6f;
+	const float C = 1.0f;
 
 	ShadowPixel shadowPixel = ComputeShadow(pin.Shadow);
 
-	if (shadowPixel.InShadow == true)
+	float lightAmount;
+	if (/*shadowPixel.InShadow || */pin.LightAmount < A)
 	{
-		color *= 0.5f;
+		lightAmount = A;
 	}
+	else if (pin.LightAmount < B)
+	{
+		lightAmount = B;
+	}
+	else
+	{
+		lightAmount = C;
+	}
+
+	color *= lightAmount;
 
 	if (xVisualizeCascades == true)
 	{
@@ -98,7 +94,7 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 
 	if (shadowPixel.InShadow == true)
 	{
-		color *= 0.5f;
+		color *= 0.3f;
 	}
 
 	if (xVisualizeCascades == true)

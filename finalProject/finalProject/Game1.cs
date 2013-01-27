@@ -114,6 +114,8 @@ namespace finalProject
             DebugConsole.AddCommand("wireframe", new DebugConsole.ConsoleCommand(WireframeConsoleCommand));
             DebugConsole.AddCommand("debug", new DebugConsole.ConsoleCommand(DebugConsoleCommand));
             DebugConsole.AddCommand("visualizeCascades", new DebugConsole.ConsoleCommand(VisualizeCascadesCommand));
+            DebugConsole.AddCommand("celShading", new DebugConsole.ConsoleCommand(CelShadingCommand));
+            DebugConsole.AddCommand("outlining", new DebugConsole.ConsoleCommand(OutliningCommand));
             DebugConsole.Hide();
             // END
 
@@ -457,6 +459,52 @@ namespace finalProject
         private void VisualizeCascadesCommand(List<string> parameters)
         {
             GraphicsManager.VisualizeCascades = !GraphicsManager.VisualizeCascades;
+        }
+
+        private void CelShadingCommand(List<string> parameters)
+        {
+            if (parameters.Count > 0)
+            {
+                if (parameters[0].ToLower() == "all")
+                {
+                    GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
+                }
+                else if (parameters[0].ToLower() == "none")
+                {
+                    GraphicsManager.CelShading = GraphicsManager.CelShaded.None;
+                }
+                else if (parameters[0].ToLower() == "models")
+                {
+                    GraphicsManager.CelShading = GraphicsManager.CelShaded.Models;
+                }
+                else if (parameters[0].ToLower() == "terrain")
+                {
+                    GraphicsManager.CelShading = GraphicsManager.CelShaded.Terrain;
+                }
+                else if (parameters[0].ToLower() == "animatemodels")
+                {
+                    GraphicsManager.CelShading = GraphicsManager.CelShaded.AnimateModels;
+                }
+            }
+        }
+
+        private void OutliningCommand(List<string> parameters)
+        {
+            if (parameters.Count > 0)
+            {
+                if (parameters[0].ToLower() == "all")
+                {
+                    GraphicsManager.Outlining = GraphicsManager.Outlines.All;
+                }
+                else if (parameters[0].ToLower() == "none")
+                {
+                    GraphicsManager.Outlining = GraphicsManager.Outlines.None;
+                }
+                else if (parameters[0].ToLower() == "animatemodels")
+                {
+                    GraphicsManager.Outlining = GraphicsManager.Outlines.AnimateModels;
+                }
+            }
         }
 
         #endregion

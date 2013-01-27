@@ -82,9 +82,9 @@ namespace GraphicsLibrary
 
         #region Puplic Properties
 
-        public enum CelShaded { All, Models, Terrain, None };
+        public enum CelShaded { All, Models, AnimateModels, Terrain, None };
 
-        static private CelShaded mCelShading = CelShaded.All;
+        static private CelShaded mCelShading = CelShaded.AnimateModels;
 
         /// <summary>
         /// Sets the render state to Cel Shading or Phong shading.
@@ -93,6 +93,15 @@ namespace GraphicsLibrary
         {
             get { return mCelShading; }
             set { mCelShading = value; }
+        }
+
+        public enum Outlines { All, AnimateModels, None };
+
+        static private Outlines mOutlining = Outlines.AnimateModels;
+        static public Outlines Outlining
+        {
+            get { return mOutlining; }
+            set { mOutlining = value; }
         }
 
         static private bool mCastingShadows = true;
@@ -398,7 +407,11 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
-                    DrawRenderableDefinition(renderable, false, false, true, false);
+                    if (mOutlining == Outlines.AnimateModels && renderable.IsSkinned ||
+                        mOutlining == Outlines.All)
+                    {
+                        DrawRenderableDefinition(renderable, false, false, true, false);
+                    }
                 }
 
                 // Draw Scene to Texture.
@@ -409,6 +422,7 @@ namespace GraphicsLibrary
                 {
                     DrawRenderableDefinition(renderable, false, false, false, false);
                 }
+
 
                 // Draw semi transparent renderables to texture.
                 if (mTransparentQueue.Count > 0)
@@ -764,6 +778,10 @@ namespace GraphicsLibrary
                 {
                     techniqueName = (isSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "CelShade";
                 }
+                else if (CelShading == CelShaded.AnimateModels)
+                {
+                    techniqueName = (isSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "Phong";
+                }
                 else
                 {
                     techniqueName = (isSkinned) ? "SkinnedPhong" : (hasTransparency) ? "NoShade" : "Phong";
@@ -780,7 +798,7 @@ namespace GraphicsLibrary
         {
             TerrainDescription heightmap = LookupTerrain(terrainName);
 
-            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "TerrainCelShade" : "Phong");
+            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "CelShade" : "Phong");
             DrawTerrainHeightMap(heightmap, techniqueName, worldTransforms, overlayColor, overlayColorWeight);
         }
 
