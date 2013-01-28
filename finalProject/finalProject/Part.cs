@@ -123,15 +123,13 @@ namespace finalProject
 
         }
 
-        protected virtual GameTip Tip
-        {
-            get
-            {
-                return null;
-            }
-        }
-
         private Creature mCreature;
+
+        public Sprite Icon
+        {
+            get;
+            protected set;
+        }
         protected Sprite mSprite;
 
         public SubPart[] SubParts
@@ -208,18 +206,6 @@ namespace finalProject
                     {
                         (subPart.Renderable as AnimateModel).Update(time);
                     }
-                }
-            }
-        }
-
-        public virtual void AddTip()
-        {
-            if (Tip != null)
-            {
-                if (!Tip.Displayed)
-                {
-                    Tip.Displayed = true;
-                    Game1.AddTip(Tip);
                 }
             }
         }

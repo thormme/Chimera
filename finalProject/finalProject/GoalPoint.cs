@@ -89,8 +89,8 @@ namespace finalProject
                         else
                         {
                             InputAction.IsMouseLocked = false;
-                            Game1.PopState();
-                            Game1.PushState(new SuccessMenu(Game1.Game));
+                            ChimeraGame.PopState();
+                            ChimeraGame.PushState(new SuccessMenu(ChimeraGame.Game));
                         }
                     }
                 }

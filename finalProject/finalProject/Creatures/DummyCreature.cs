@@ -44,9 +44,5 @@ namespace finalProject.Creatures
             return bones;
         }
 
-        public override void AddTip()
-        {
-            
-        }
     }
 }

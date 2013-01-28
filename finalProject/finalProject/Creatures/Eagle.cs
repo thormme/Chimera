@@ -13,14 +13,6 @@ namespace finalProject.Creatures
     public class Eagle : NonPlayerCreature
     {
 
-        public static GameTip mTip = new GameTip(
-            new string[] 
-            {
-                "You have encountered an eagle.",
-                "Eagles are able to soar through the sky."
-            },
-            10.0f); 
-
         public Eagle(Vector3 position, Spawner spawn)
             : base(
                 position,
@@ -47,14 +39,6 @@ namespace finalProject.Creatures
             bones.Add(PartBone.ArmLeft1Cap);
             bones.Add(PartBone.ArmRight1Cap);
             return bones;
-        }
-
-        protected override GameTip Tip
-        {
-            get
-            {
-                return mTip;
-            }
         }
 
     }

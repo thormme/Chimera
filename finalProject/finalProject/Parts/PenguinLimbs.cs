@@ -12,21 +12,6 @@ namespace finalProject.Parts
     class PenguinLimbs : Part
     {
 
-        public static GameTip mTip = new GameTip(
-            new string[] 
-                {
-                    "Using penguin limbs will allow you to slide down hills."
-                },
-            10.0f);
-
-        protected override GameTip Tip
-        {
-            get
-            {
-                return mTip;
-            }
-        }
-
         private const float speed = 10.0f;
         private bool mHasTraction;
 

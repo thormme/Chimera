@@ -13,14 +13,6 @@ namespace finalProject.Creatures
     public class Penguin : NonPlayerCreature
     {
 
-        public static GameTip mTip = new GameTip(
-            new string[] 
-            {
-                "You have encountered a penguin.",
-                "Penguins are able to slide down hills."
-            },
-            10.0f);
-
         public Penguin(Vector3 position, Spawner spawn)
             : base(
                 position,
@@ -50,14 +42,5 @@ namespace finalProject.Creatures
             bones.Add(PartBone.ArmRight1Cap);
             return bones;
         }
-
-        protected override GameTip Tip
-        {
-            get
-            {
-                return mTip;
-            }
-        }
-
     }
 }

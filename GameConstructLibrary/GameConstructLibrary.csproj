@@ -176,7 +176,6 @@
     <Compile Include="StepManager.cs" />
     <Compile Include="SupportFinder.cs" />
     <Compile Include="TerrainPhysics.cs" />
-    <Compile Include="GameTip.cs" />
     <Compile Include="VerticalMotionConstraint.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>

@@ -75,37 +75,6 @@ namespace finalProject
 
         private ScrollingTransparentModel mSuckModel;
 
-        #region Tips
-        GameTip mDamaged = new GameTip(
-            new string[] 
-            {
-                "You have taken damage.",
-                "Taking additional damage will cause you to lose a part.",
-                "Taking damage with no parts will cause you to die."
-            },
-            10.0f);
-        GameTip mPlayerDied = new GameTip(
-            new string[] 
-{
-                "You have died.",
-                "When you die, you return to a checkpoint."
-            },
-            10.0f);
-        GameTip mCheckpointEncountered = new GameTip(
-        new string[] 
-{
-                "You have encountered a checkpoint.",
-                "You will respawn at the last checkpoint you touched."
-            },
-            10.0f);
-        GameTip mGoalPointEncountered = new GameTip(
-            new string[] {
-                "You have found an extraction point.",
-                "Return here once you have the required part."
-            },
-            10.0f);
-        #endregion
-
         #endregion
 
         #region Public Properties
@@ -167,6 +136,12 @@ namespace finalProject
         }
 
         public override int Intimidation
+        {
+            get;
+            set;
+        }
+
+        public PlayerInfo Info
         {
             get;
             set;
@@ -283,18 +258,6 @@ namespace finalProject
             mStealTimer = -1.0f;
         }
 
-        public void AddTip(GameTip tip)
-        {
-            if (tip != null)
-            {
-                if (!tip.Displayed)
-                {
-                    tip.Displayed = true;
-                    Game1.AddTip(tip);
-                }
-            }
-        }
-
         #endregion
 
         #region Public Methods
@@ -368,6 +331,7 @@ namespace finalProject
 
             Intimidation = DefaultIntimidation;
             Sneak = DefaultSneak;
+            Info = new PlayerInfo();
 
             SpawnOrigin = position;
 
@@ -385,9 +349,9 @@ namespace finalProject
         /// <param name="scale">The amount to scale by.</param>
         /// <param name="extraParameters">Extra parameters.</param>
         public PlayerCreature(String modelName, Vector3 translation, Quaternion orientation, Vector3 scale, string[] extraParameters)
-            : this(Game1.Graphics.GraphicsDevice.Viewport, translation, Matrix.CreateFromQuaternion(orientation).Forward)
+            : this(ChimeraGame.Graphics.GraphicsDevice.Viewport, translation, Matrix.CreateFromQuaternion(orientation).Forward)
         {
-            Game1.Camera = Camera;
+            ChimeraGame.Camera = Camera;
         }
 
         public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
@@ -412,21 +376,6 @@ namespace finalProject
                 mFallSound.Play();
             }
 
-            if (other.Tag is Checkpoint)
-            {
-                AddTip(mCheckpointEncountered);
-            }
-            else if (other.Tag is GoalPoint)
-            {
-                AddTip(mGoalPointEncountered);
-            }
-            else if (other.Tag is CharacterSynchronizer)
-            {
-                if ((other.Tag as CharacterSynchronizer).body.Tag is Creature)
-                {
-                    ((other.Tag as CharacterSynchronizer).body.Tag as Creature).AddTip();
-                }
-            }
         }
 
         /// <summary>
@@ -463,11 +412,6 @@ namespace finalProject
             
             base.Damage(damage, source);
 
-            if (die)
-            {
-                Die();
-                AddTip(mPlayerDied);
-            }
         }
 
         public override void Jump()
@@ -563,8 +507,6 @@ namespace finalProject
         public override void AddPart(Part part, int slot)
         {
  	        base.AddPart(part, slot);
-
-            part.AddTip();
 
             if (part.Height > CharacterController.Body.Height - mHeight)
             {
@@ -672,11 +614,11 @@ namespace finalProject
         {
             if (mRenderReticle == true)
             {
-                int width = (int)(Game1.Graphics.PreferredBackBufferWidth * .05);
+                int width = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth * .05);
                 int height = width;
                 Rectangle bounds = new Rectangle(
-                    (int)Game1.Graphics.PreferredBackBufferWidth / 2 - width / 2,
-                    (int)Game1.Graphics.PreferredBackBufferHeight / 2 - height / 2,
+                    (int)ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    (int)ChimeraGame.Graphics.PreferredBackBufferHeight / 2 - height / 2,
                     width,
                     height
                 );
@@ -686,8 +628,8 @@ namespace finalProject
 
         private void RenderRequirement()
         {
-            int width = Game1.Graphics.PreferredBackBufferWidth;
-            int height = Game1.Graphics.PreferredBackBufferHeight;
+            int width = ChimeraGame.Graphics.PreferredBackBufferWidth;
+            int height = ChimeraGame.Graphics.PreferredBackBufferHeight;
             Rectangle textRect = new Rectangle((int)(height * 0.04f), (int)(height * 0.02f), (int)(128 * width / 1280), (int)(26 * height / 720));
             Rectangle boxRect = new Rectangle((int)(height * 0.046f), (int)(height * 0.04f), (int)(0.16f * height), (int)(0.16f * height));
 
@@ -720,8 +662,8 @@ namespace finalProject
         private void RenderAbilities()
         {
 
-            int width = Game1.Graphics.PreferredBackBufferWidth;
-            int height = Game1.Graphics.PreferredBackBufferHeight;
+            int width = ChimeraGame.Graphics.PreferredBackBufferWidth;
+            int height = ChimeraGame.Graphics.PreferredBackBufferHeight;
             int buttonSize = (int)(0.1f * height);
 
             if (FoundPart)

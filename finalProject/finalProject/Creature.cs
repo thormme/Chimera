@@ -313,14 +313,6 @@ namespace finalProject
             }
         }
 
-        protected virtual GameTip Tip
-        {
-            get
-            {
-                return null;
-            }
-        }
-
         #endregion
 
         #region Bone Transform Tweaking
@@ -661,18 +653,6 @@ namespace finalProject
         {
             CharacterController.VerticalMotionConstraint.IsActive = false;
             mAllowImpulseTimer = .1;
-        }
-
-        public virtual void AddTip()
-        {
-            if (Tip != null)
-            {
-                if (!Tip.Displayed)
-                {
-                    Tip.Displayed = true;
-                    Game1.AddTip(Tip);
-                }
-            }
         }
 
         /// <summary>

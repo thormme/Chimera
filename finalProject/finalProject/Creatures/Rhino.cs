@@ -13,14 +13,6 @@ namespace finalProject.Creatures
     public class Rhino : NonPlayerCreature
     {
 
-        public static GameTip mTip = new GameTip(
-                new string[] 
-                {
-                    "You have encountered a rhino.",
-                    "Rhinos will charge foes inflicting great force on anything in their way."
-                },
-                10.0f);
-
         public Rhino(Vector3 position, Spawner spawn)
             : base(
                 position,
@@ -46,14 +38,6 @@ namespace finalProject.Creatures
             List<PartBone> bones = new List<PartBone>();
             bones.Add(PartBone.HeadCenterCap);
             return bones;
-        }
-
-        protected override GameTip Tip
-        {
-            get
-            {
-                return mTip;
-            }
         }
 
         protected virtual Matrix GetOptionalPartTransforms()

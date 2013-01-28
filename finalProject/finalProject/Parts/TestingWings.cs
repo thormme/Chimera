@@ -12,21 +12,6 @@ namespace finalProject.Parts
     class TestingWings : Part
     {
 
-        public static GameTip mTip = new GameTip(
-            new string[] 
-                {
-                    "Testing Wings"
-                },
-            10.0f);
-
-        protected override GameTip Tip
-        {
-            get
-            {
-                return mTip;
-            }
-        }
-
         private const int flapPower = 200;
         private const int numFlaps = int.MaxValue;
         private const float glideDivider = 2.0f;

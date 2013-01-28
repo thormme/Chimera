@@ -30,7 +30,7 @@ namespace finalProject
 
             foreach (IActor actor in mActors)
             {
-                if (Game1.Camera != null)
+                if (ChimeraGame.Camera != null)
                 {
                     // Don't update actors which are far from the camera.
                     if (actor is IGameObject)
@@ -39,7 +39,7 @@ namespace finalProject
                         {
                             actor.Update(gameTime);
                         }
-                        else if (((actor as IGameObject).Position - Game1.Camera.Position).Length() < 400)
+                        else if (((actor as IGameObject).Position - ChimeraGame.Camera.Position).Length() < 400)
                         {
                             actor.Update(gameTime);
                         }
@@ -58,16 +58,16 @@ namespace finalProject
         {
             //if (mCameraEntity != null)
             //{
-            if (Game1.Camera != null)
+            if (ChimeraGame.Camera != null)
             {
                 foreach (IGameObject gameObject in mGameObjects)
                 {
                     // Don't render Creatures that are far away.
                     if (gameObject is Creature)
                     {
-                        if ((gameObject.Position - Game1.Camera.Position).Length() < 200.0f)
+                        if ((gameObject.Position - ChimeraGame.Camera.Position).Length() < 200.0f)
                         {
-                            if (Vector3.Dot(Game1.Camera.Forward, gameObject.Position - Game1.Camera.Position) >= 0)
+                            if (Vector3.Dot(ChimeraGame.Camera.Forward, gameObject.Position - ChimeraGame.Camera.Position) >= 0)
                             {
                                 gameObject.Render();
                             }
@@ -128,7 +128,7 @@ namespace finalProject
             if (obj is PlayerCreature)
             {
                 Player = (obj as PlayerCreature);
-                Game1.Player = (obj as PlayerCreature);
+                ChimeraGame.Player = (obj as PlayerCreature);
                 /*
                 mCameraEntity = new Sphere(Game1.Camera.GetPosition(), 1.0f);
                 mCameraEntity.CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;

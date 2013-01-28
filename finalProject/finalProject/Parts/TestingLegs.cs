@@ -11,21 +11,6 @@ namespace finalProject.Parts
     public class TestingLegs : MeteredPart
     {
 
-        public static GameTip mTip = new GameTip(
-            new string[] 
-                {
-                    "Testing Legs"
-                },
-            10.0f);
-
-        protected override GameTip Tip
-        {
-            get
-            {
-                return mTip;
-            }
-        }
-
         private const float RunGainSpeed = 22.0f;
         private bool mActive = false;
 

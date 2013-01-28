@@ -26,12 +26,12 @@ namespace finalProject.Menus
             */
 
             Sprite pausedSprite = new Sprite("paused");
-            int height = (int)(Game1.Graphics.PreferredBackBufferHeight * .25);
+            int height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .25);
             int width = (int)((float)pausedSprite.Width / (float)pausedSprite.Height * (float)height);
-            int y = (int)(Game1.Graphics.PreferredBackBufferHeight * .1);
+            int y = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .1);
             GraphicItem paused = new GraphicItem(
                 new Microsoft.Xna.Framework.Rectangle(
-                    Game1.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
                     y,
                     width,
                     height
@@ -40,12 +40,12 @@ namespace finalProject.Menus
             );
 
             Sprite resumeSprite = new Sprite("resume");
-            height = (int)(Game1.Graphics.PreferredBackBufferHeight * .12);
+            height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .12);
             width = (int)((float)resumeSprite.Width / (float)resumeSprite.Height * (float)height);
-            y = (int)(Game1.Graphics.PreferredBackBufferHeight * .32);
+            y = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .32);
             Button resume = new Button(
                 new Microsoft.Xna.Framework.Rectangle(
-                    Game1.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
                     y + height,
                     width,
                     height
@@ -55,12 +55,12 @@ namespace finalProject.Menus
             );
 
             Sprite checkpointSprite = new Sprite("checkpoint");
-            height = (int)(Game1.Graphics.PreferredBackBufferHeight * .15);
+            height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .15);
             width = (int)((float)checkpointSprite.Width / (float)checkpointSprite.Height * (float)height);
-            y = (int)(Game1.Graphics.PreferredBackBufferHeight * .47);
+            y = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .47);
             Button checkpoint = new Button(
                 new Microsoft.Xna.Framework.Rectangle(
-                    Game1.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
                     y + height,
                     width,
                     height
@@ -70,12 +70,12 @@ namespace finalProject.Menus
             );
 
             Sprite quitSprite = new Sprite("quit");
-            height = (int)(Game1.Graphics.PreferredBackBufferHeight * .14);
+            height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .14);
             width = (int)((float)quitSprite.Width / (float)quitSprite.Height * (float)height);
-            y = (int)(Game1.Graphics.PreferredBackBufferHeight * .64);
+            y = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .64);
             Button quit = new Button(
                 new Microsoft.Xna.Framework.Rectangle(
-                    Game1.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
                     y + height,
                     width,
                     height
@@ -117,19 +117,19 @@ namespace finalProject.Menus
         private void Resume(Button button)
         {
             InputAction.IsMouseLocked = true;
-            Game1.PopState();
+            ChimeraGame.PopState();
         }
 
         private void Checkpoint(Button button)
         {
             InputAction.IsMouseLocked = true;
-            Game1.Player.Die();
-            Game1.PopState();
+            ChimeraGame.Player.Die();
+            ChimeraGame.PopState();
         }
 
         private void Menu(Button button)
         {
-            (mOwnerGame as Game1).ExitToMenu();
+            (mOwnerGame as ChimeraGame).ExitToMenu();
         }
 
         public override void Update(GameTime gameTime)

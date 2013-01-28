@@ -12,23 +12,6 @@ namespace finalProject.Parts
     class EagleWings : Part
     {
 
-        public static GameTip mTip = new GameTip(
-            new string[] 
-                {
-                    "Using eagle wings will boost you in the air.",
-                    "Holding the button after flapping will allow you to glide.",
-                    "You get a limited number of flaps."
-                },
-            10.0f);
-
-        protected override GameTip Tip
-        {
-            get
-            {
-                return mTip;
-            }
-        }
-
         private const int flapPower = 200;
         private const int numFlaps = 3;
         private const float glideDivider = 2.0f;

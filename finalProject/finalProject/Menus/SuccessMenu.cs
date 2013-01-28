@@ -20,12 +20,12 @@ namespace finalProject.Menus
             mOwnerGame = game;
 
             Sprite backgroundSprite = new Sprite("green");
-            int height = (int)(Game1.Graphics.PreferredBackBufferHeight);
-            int width = (int)(Game1.Graphics.PreferredBackBufferWidth);
+            int height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight);
+            int width = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth);
             int y = 0;
             GraphicItem background = new GraphicItem(
                 new Microsoft.Xna.Framework.Rectangle(
-                    Game1.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
                     y,
                     width,
                     height
@@ -34,12 +34,12 @@ namespace finalProject.Menus
             );
 
             Sprite buttonSprite = new Sprite("empty");
-            height = (int)(Game1.Graphics.PreferredBackBufferHeight);
-            width = (int)(Game1.Graphics.PreferredBackBufferWidth);
+            height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight);
+            width = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth);
             y = 0;
             Button button = new Button(
                 new Microsoft.Xna.Framework.Rectangle(
-                    Game1.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
                     y,
                     width,
                     height
@@ -49,12 +49,12 @@ namespace finalProject.Menus
             );
 
             Sprite successSprite = new Sprite("success");
-            height = (int)(Game1.Graphics.PreferredBackBufferHeight);
+            height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight);
             width = (int)((float)successSprite.Width / (float)successSprite.Height * (float)height);
             y = 0;
             GraphicItem success = new GraphicItem(
                 new Microsoft.Xna.Framework.Rectangle(
-                    Game1.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
                     y,
                     width,
                     height
@@ -69,8 +69,8 @@ namespace finalProject.Menus
 
         private void Continue(Button button)
         {
-            Game1.PopState();
-            Game1.Game.ExitToMenu();
+            ChimeraGame.PopState();
+            ChimeraGame.Game.ExitToMenu();
         }
 
         public override void Render()
