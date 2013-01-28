@@ -53,6 +53,8 @@ namespace GraphicsLibrary
         static private RenderTarget2D mOutlineBuffer;
         static private RenderTarget2D mCompositeBuffer;
 
+        static private Texture2D mSkyTexture;
+
         static private ICamera mCamera;
         static public ICamera Camera
         {
@@ -165,6 +167,8 @@ namespace GraphicsLibrary
                 new Vector3(1, 0.9607844f, 0.8078432f),            // Diffuse Color
                 new Vector3(1, 0.9607844f, 0.8078432f)             // Specular Color
                 );
+
+            mSkyTexture = content.Load<Texture2D>("textures/sprites/sky");
 
             // Load models.
             DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "models");
@@ -389,6 +393,8 @@ namespace GraphicsLibrary
             mDevice.DepthStencilState = DepthStencilState.Default;
             mDevice.SamplerStates[1] = SamplerState.PointClamp;
             mDevice.SamplerStates[2] = SamplerState.PointClamp;
+
+            mDevice.DepthStencilState = DepthStencilState.Default;
 
             if (CastingShadows && mCamera != null)
             {
