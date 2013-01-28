@@ -27,7 +27,7 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 	ShadowPixel shadowPixel = ComputeShadow(pin.Shadow);
 
 	float lightAmount;
-	if (/*shadowPixel.InShadow || */pin.LightAmount < A)
+	if (shadowPixel.InShadow || pin.LightAmount < A)
 	{
 		lightAmount = A;
 	}
