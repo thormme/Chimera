@@ -18,30 +18,33 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
 
-	color.rgba -= (color.rgba % discretePallete);
+	//color.rgba -= (color.rgba % discretePallete);
 
-	if (xNumShadowBands < 2.9f)
+	const float A = 0.3f;
+	const float B = 0.6f;
+	const float C = 1.0f;
+
+	ShadowPixel shadowPixel = ComputeShadow(pin.Shadow);
+
+	float lightAmount;
+	if (/*shadowPixel.InShadow || */pin.LightAmount < A)
 	{
-		if (pin.LightAmount <= 0.0f)
-		{
-			color *= 0.5f;
-		}
+		lightAmount = A;
+	}
+	else if (pin.LightAmount < B)
+	{
+		lightAmount = B;
 	}
 	else
 	{
-		if (pin.LightAmount <= 0.66f && pin.LightAmount > 0.0f)
-		{
-			color *= 0.75f;
-		}
-		else if (pin.LightAmount <= 0.0f)
-		{
-			color *= 0.5f;
-		}
+		lightAmount = C;
 	}
 
-	if (IsInShadow(pin.ShadowCoord))
+	color *= lightAmount;
+
+	if (xVisualizeCascades == true)
 	{
-		color *= 0.5f;
+		color = (color + shadowPixel.Color) / 2.0f;
 	}
 
 	return color;
@@ -87,9 +90,16 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
 
-	if (IsInShadow(pin.ShadowCoord))
-	{	
-		color *= 0.5f;
+	ShadowPixel shadowPixel = ComputeShadow(pin.Shadow);
+
+	if (shadowPixel.InShadow == true)
+	{
+		color *= 0.3f;
+	}
+
+	if (xVisualizeCascades == true)
+	{
+		color = (color + shadowPixel.Color) / 2.0f;
 	}
 	 
     return color;
@@ -102,7 +112,6 @@ float4 TerrainCelShadePS(VSOutput pin) : SV_Target0
 	float textureWeight = 1.0f - xOverlayColorWeight;
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
-	//color.rgba -= (color.rgba % discretePallete);
 
 	return color;
 }

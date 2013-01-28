@@ -94,28 +94,13 @@ ShadowSplitData GetSplitData(ShadowData shadowData)
 	return result;
 }
 
-bool IsInShadow(float4 shadowMapPosition)
+ShadowPixel ComputeShadow(ShadowData shadowData)
 {
-	float2 shadowTexCoord = 0.5 * shadowMapPosition.xy / shadowMapPosition.w + float2(0.5f, 0.5f);
-	shadowTexCoord.y = 1.0f - shadowTexCoord.y;
+	ShadowSplitData splitData = GetSplitData(shadowData);
+	float shadowDepth = SAMPLE_TEXTURE(ShadowMap, splitData.TexCoords).r;
 
-	if (shadowTexCoord.x < 0.0 || shadowTexCoord.x > 1.0 || shadowTexCoord.y < 0.0 || shadowTexCoord.y > 1.0)
-	{
-		return false;
-	}
-
-	float shadowDepth = SAMPLE_TEXTURE(ShadowMap, shadowTexCoord).r;
-	float ourDepth = (shadowMapPosition.z / shadowMapPosition.w) - DepthBias;
-
-	return (shadowDepth < ourDepth);
-
-	//ShadowSplitData splitData = GetSplitData(shadowData);
-	//float shadowDepth = SAMPLE_TEXTURE(ShadowMap, splitData.TexCoords).r;
-
-	//return splitData.Color;
-	//if (splitData.SplitIndex == xCascadeCount)
-	//{
-	//	return false;
-	//}
-	//return (shadowDepth < splitData.LightSpaceDepth);
+	ShadowPixel shadowPixel;
+	shadowPixel.InShadow = shadowDepth < splitData.LightSpaceDepth;
+	shadowPixel.Color = splitData.Color;
+	return shadowPixel;
 }

@@ -39,6 +39,7 @@ BEGIN_CONSTANTS
 	float  xNumShadowBands;
 	float  xTexelSize;
 
+	bool  xVisualizeCascades;
 	float xCascadeCount;
 	float4 xCascadeBufferBounds[MAX_CASCADE_COUNT];
 

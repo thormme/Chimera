@@ -82,9 +82,9 @@ namespace GraphicsLibrary
 
         #region Puplic Properties
 
-        public enum CelShaded { All, Models, Terrain, None };
+        public enum CelShaded { All, Models, AnimateModels, Terrain, None };
 
-        static private CelShaded mCelShading = CelShaded.All;
+        static private CelShaded mCelShading = CelShaded.AnimateModels;
 
         /// <summary>
         /// Sets the render state to Cel Shading or Phong shading.
@@ -93,6 +93,15 @@ namespace GraphicsLibrary
         {
             get { return mCelShading; }
             set { mCelShading = value; }
+        }
+
+        public enum Outlines { All, AnimateModels, None };
+
+        static private Outlines mOutlining = Outlines.AnimateModels;
+        static public Outlines Outlining
+        {
+            get { return mOutlining; }
+            set { mOutlining = value; }
         }
 
         static private bool mCastingShadows = true;
@@ -104,6 +113,12 @@ namespace GraphicsLibrary
         {
             get { return mCastingShadows; }
             set { mCastingShadows = value; }
+        }
+
+        static public bool VisualizeCascades
+        {
+            get { return mShadowMap.VisualizeCascades; }
+            set { mShadowMap.VisualizeCascades = value; }
         }
 
         /// <summary>
@@ -137,7 +152,7 @@ namespace GraphicsLibrary
             mTerrainShader = new SkinnedEffect(mConfigurableShader);
 
             // Create buffers.
-            mShadowMap = new CascadedShadowMap(device, 1, 2048);
+            mShadowMap = new CascadedShadowMap(device, 2048);
 
             mSceneBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
             mNormalDepthBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
@@ -392,7 +407,11 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
-                    DrawRenderableDefinition(renderable, false, false, true, false);
+                    if (mOutlining == Outlines.AnimateModels && renderable.IsSkinned ||
+                        mOutlining == Outlines.All)
+                    {
+                        DrawRenderableDefinition(renderable, false, false, true, false);
+                    }
                 }
 
                 // Draw Scene to Texture.
@@ -403,6 +422,7 @@ namespace GraphicsLibrary
                 {
                     DrawRenderableDefinition(renderable, false, false, false, false);
                 }
+
 
                 // Draw semi transparent renderables to texture.
                 if (mTransparentQueue.Count > 0)
@@ -758,6 +778,10 @@ namespace GraphicsLibrary
                 {
                     techniqueName = (isSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "CelShade";
                 }
+                else if (CelShading == CelShaded.AnimateModels)
+                {
+                    techniqueName = (isSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "Phong";
+                }
                 else
                 {
                     techniqueName = (isSkinned) ? "SkinnedPhong" : (hasTransparency) ? "NoShade" : "Phong";
@@ -774,7 +798,7 @@ namespace GraphicsLibrary
         {
             TerrainDescription heightmap = LookupTerrain(terrainName);
 
-            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "TerrainCelShade" : "Phong");
+            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "CelShade" : "Phong");
             DrawTerrainHeightMap(heightmap, techniqueName, worldTransforms, overlayColor, overlayColorWeight);
         }
 
@@ -800,11 +824,12 @@ namespace GraphicsLibrary
                 effect.LightView = mShadowMap.LightView;
                 effect.LightProjection = mShadowMap.LightProjection;
 
-                //effect.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
-                //effect.Parameters["xLightView"].SetValue(mShadowMap.LightView);
-                //effect.Parameters["xLightProjection"].SetValue(mShadowMap.LightProjection);
-                //effect.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
-                //effect.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
+                effect.Parameters["xVisualizeCascades"].SetValue(mShadowMap.VisualizeCascades);
+                effect.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
+                effect.Parameters["xLightView"].SetValue(mShadowMap.LightView);
+                effect.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
+                effect.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
+                effect.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
 
                 effect.Parameters["xDirLightDirection"].SetValue(mDirectionalLight.Direction);
                 effect.Parameters["xDirLightDiffuseColor"].SetValue(mDirectionalLight.DiffuseColor);
@@ -849,11 +874,12 @@ namespace GraphicsLibrary
                 mTerrainShader.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
             }
 
-            //mTerrainShader.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
-            //mTerrainShader.Parameters["xLightView"].SetValue(mShadowMap.LightView);
-            //mTerrainShader.Parameters["xLightProjection"].SetValue(mShadowMap.LightProjection);
-            //mTerrainShader.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
-            //mTerrainShader.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
+            mTerrainShader.Parameters["xVisualizeCascades"].SetValue(mShadowMap.VisualizeCascades);
+            mTerrainShader.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
+            mTerrainShader.Parameters["xLightView"].SetValue(mShadowMap.LightView);
+            mTerrainShader.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
+            mTerrainShader.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
+            mTerrainShader.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
 
             mTerrainShader.View = mView;
             mTerrainShader.Projection = mProjection;
@@ -893,13 +919,13 @@ namespace GraphicsLibrary
         /// </summary>
         static private void ApplyPostProcessing()
         {
-        //    mPostProcessShader.Parameters["EdgeWidth"].SetValue(mEdgeWidth);
-        //    mPostProcessShader.Parameters["EdgeIntensity"].SetValue(mEdgeIntensity);
-        //    mPostProcessShader.Parameters["ScreenResolution"].SetValue(new Vector2(mSceneBuffer.Width, mSceneBuffer.Height));
-        //    mPostProcessShader.Parameters["NormalDepthTexture"].SetValue(mNormalDepthBuffer);
-        //    mPostProcessShader.Parameters["SceneTexture"].SetValue(mSceneBuffer);
+            mPostProcessShader.Parameters["EdgeWidth"].SetValue(mEdgeWidth);
+            mPostProcessShader.Parameters["EdgeIntensity"].SetValue(mEdgeIntensity);
+            mPostProcessShader.Parameters["ScreenResolution"].SetValue(new Vector2(mSceneBuffer.Width, mSceneBuffer.Height));
+            mPostProcessShader.Parameters["NormalDepthTexture"].SetValue(mNormalDepthBuffer);
+            mPostProcessShader.Parameters["SceneTexture"].SetValue(mSceneBuffer);
 
-        //    mPostProcessShader.CurrentTechnique = mPostProcessShader.Techniques["EdgeDetect"];
+            mPostProcessShader.CurrentTechnique = mPostProcessShader.Techniques["EdgeDetect"];
 
             mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, mPostProcessShader);
             mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width, mSceneBuffer.Height), Color.White);
