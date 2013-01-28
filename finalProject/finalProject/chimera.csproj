@@ -191,6 +191,7 @@
     <Compile Include="GoalPoint.cs" />
     <Compile Include="IRangedPart.cs" />
     <Compile Include="Menus\ControlsMenu.cs" />
+    <Compile Include="Menus\PlayerPartsMenu.cs" />
     <Compile Include="Menus\SuccessMenu.cs" />
     <Compile Include="Menus\GoalsMenu.cs" />
     <Compile Include="Menus\StoryMenu.cs" />
