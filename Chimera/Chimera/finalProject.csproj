@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{099FF29B-954A-4208-A12C-A2121DDFB7E9}</ProjectGuid>
+    <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Chimera</RootNamespace>
+    <AssemblyName>Chimera</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
+    <XnaPlatform>Windows</XnaPlatform>
+    <XnaProfile>HiDef</XnaProfile>
+    <XnaCrossPlatformGroupID>de3bd24a-24f7-4d27-80cd-40df93ed9310</XnaCrossPlatformGroupID>
+    <XnaOutputType>Game</XnaOutputType>
+    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <Thumbnail>GameThumbnail.png</Thumbnail>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\Projects\School\EECS494\Chimera\Beta\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>8</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\x86\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+    <XnaCompressContent>false</XnaCompressContent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+    <XnaCompressContent>true</XnaCompressContent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MapEditor|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\MapEditor\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\x86\Debug\Chimera.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MapEditor Release|x86'">
+    <OutputPath>bin\x86\MapEditor Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\x86\Release\Chimera.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>AC26A5CDDBF3EE0B4799B309F1EDD34422E3C373</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Chimera_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BEPUphysics">
+      <HintPath>libraries\bepu\x86\Release\BEPUphysics.dll</HintPath>
+    </Reference>
+    <Reference Include="BEPUphysicsDrawer">
+      <HintPath>libraries\bepu\x86\Release\BEPUphysicsDrawer.dll</HintPath>
+    </Reference>
+    <Reference Include="DPSF, Version=2.3.0.0, Culture=neutral, PublicKeyToken=32c832bfa7326ee2, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libraries\DPSF\x86\DPSF.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Xact, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Avatar, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Net, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Storage, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mscorlib">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AIController.cs" />
+    <Compile Include="AI\AggressiveAI.cs" />
+    <Compile Include="AI\ActivationAI.cs" />
+    <Compile Include="AI\CobraAI.cs" />
+    <Compile Include="AI\FrogAI.cs" />
+    <Compile Include="AI\RangedAI.cs" />
+    <Compile Include="AI\EagleAI.cs" />
+    <Compile Include="AI\OverConfidenceAI.cs" />
+    <Compile Include="AI\KangarooAI.cs" />
+    <Compile Include="AI\PassiveAI.cs" />
+    <Compile Include="AI\PenguinAI.cs" />
+    <Compile Include="AI\RhinoAI.cs" />
+    <Compile Include="ChaseCamera.cs" />
+    <Compile Include="Checkpoint.cs" />
+    <Compile Include="ConeSensor.cs" />
+    <Compile Include="CooldownPart.cs" />
+    <Compile Include="CreatureConstants.cs" />
+    <Compile Include="Creatures\Bear.cs" />
+    <Compile Include="Creatures\Cheetah.cs" />
+    <Compile Include="Creatures\Cobra.cs" />
+    <Compile Include="Creatures\Eagle.cs" />
+    <Compile Include="Creatures\FrilledLizard.cs" />
+    <Compile Include="Creatures\Frog.cs" />
+    <Compile Include="Creatures\Kangaroo.cs" />
+    <Compile Include="Creatures\Penguin.cs" />
+    <Compile Include="Creatures\Rhino.cs" />
+    <Compile Include="Creatures\Turtle.cs" />
+    <Compile Include="DeathZone.cs" />
+    <Compile Include="DutyCyclePart.cs" />
+    <Compile Include="GameWorld.cs" />
+    <Compile Include="GoalPoint.cs" />
+    <Compile Include="IRangedPart.cs" />
+    <Compile Include="Menus\ControlsMenu.cs" />
+    <Compile Include="Menus\SuccessMenu.cs" />
+    <Compile Include="Menus\GoalsMenu.cs" />
+    <Compile Include="Menus\StoryMenu.cs" />
+    <Compile Include="Menus\MainMenu.cs" />
+    <Compile Include="MeteredPart.cs" />
+    <Compile Include="Parts\BearArms.cs" />
+    <Compile Include="Parts\CheetahLegs.cs" />
+    <Compile Include="Parts\TestingLegs.cs" />
+    <Compile Include="Parts\TestingWings.cs" />
+    <Compile Include="Parts\CobraHead.cs" />
+    <Compile Include="Parts\FrogHead.cs" />
+    <Compile Include="Parts\FrilledLizardHead.cs" />
+    <Compile Include="Parts\KangarooLegs.cs" />
+    <Compile Include="Parts\EagleWings.cs" />
+    <Compile Include="Parts\PenguinLimbs.cs" />
+    <Compile Include="Parts\RhinoHead.cs" />
+    <Compile Include="Parts\TurtleShell.cs" />
+    <Compile Include="Menus\PauseState.cs" />
+    <Compile Include="PhysicsProp.cs" />
+    <Compile Include="PlayerInfo.cs" />
+    <Compile Include="Projectiles\FrilledLizardVenom.cs" />
+    <Compile Include="Projectiles\FrogTongue.cs" />
+    <Compile Include="Projectiles\MindControlProjectile.cs" />
+    <Compile Include="Prop.cs" />
+    <Compile Include="Spawner.cs" />
+    <Compile Include="ClosestPhysicsObject.cs" />
+    <Compile Include="Controller.cs" />
+    <Compile Include="Creature.cs" />
+    <Compile Include="DummyController.cs" />
+    <Compile Include="Creatures\DummyCreature.cs" />
+    <Compile Include="DummyPart.cs" />
+    <Compile Include="IntimidationAI.cs" />
+    <Compile Include="NonPlayerCreature.cs" />
+    <Compile Include="Part.cs" />
+    <Compile Include="PlayerController.cs" />
+    <Compile Include="PlayerCreature.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="VisionSensor.cs" />
+    <Compile Include="ListeningSensor.cs" />
+    <Compile Include="StateTimer.cs" />
+    <Compile Include="Triggers\TipTrigger.cs" />
+    <Compile Include="Trigger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Game.ico" />
+    <Content Include="GameThumbnail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GameConstructLibrary\GameConstructLibrary.csproj">
+      <Project>{EBF58AE6-887D-480A-B693-4DCB2C02CB8D}</Project>
+      <Name>GameConstructLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GraphicsLibrary\GraphicsLibrary.csproj">
+      <Project>{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}</Project>
+      <Name>GraphicsLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utility\Utility.csproj">
+      <Project>{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChimeraContent\ChimeraContent.contentproj">
+      <Name>ChimeraContent %28Content%29</Name>
+      <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{DDBC472F-F07E-420A-9AD7-31C03422F337}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Xna.Framework.4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft XNA Framework Redistributable 4.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Chimera_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
+  <!--
+      To modify your build process, add your task inside one of the targets below and uncomment it. 
+      Other similar extension points exist, see Microsoft.Common.targets.
+      <Target Name="BeforeBuild">
+      </Target>
+      <Target Name="AfterBuild">
+      </Target>
+    -->
+</Project>

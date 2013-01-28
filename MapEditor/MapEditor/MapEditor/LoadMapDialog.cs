@@ -87,7 +87,7 @@ namespace MapEditor
         private void PopulateList()
         {
             
-            DirectoryInfo di = new DirectoryInfo(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/");
+            DirectoryInfo di = new DirectoryInfo(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/");
             FileInfo[] levels = di.GetFiles("*");
             foreach (FileInfo level in levels)
             {

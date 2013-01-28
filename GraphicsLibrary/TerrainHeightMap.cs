@@ -419,7 +419,7 @@ namespace GameConstructLibrary
             }
 
             // Redefine bitmap for permissions purposes
-            bmp.Save(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/maps/" + file + ".bmp");
+            bmp.Save(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/maps/" + file + ".bmp");
         }
     }
 }

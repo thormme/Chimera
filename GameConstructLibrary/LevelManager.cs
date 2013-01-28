@@ -21,7 +21,7 @@ namespace GameConstructLibrary
             root.ElementName = "object";
             root.IsNullable = true;
 
-            StreamWriter writer = new StreamWriter(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/levels/" + file);
+            StreamWriter writer = new StreamWriter(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/" + file);
 
             XmlSerializer serializer = new XmlSerializer(typeof(List<DummyObject>), root);
             serializer.Serialize(writer, objects);

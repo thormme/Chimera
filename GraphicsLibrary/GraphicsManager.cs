@@ -75,7 +75,7 @@ namespace GraphicsLibrary
         static private int mAnimateShadowFarClip = 64;
         static private float mTexelSize;
 
-        static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
+        static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "Chimera/ChimeraContent/";
         static private char[] mDelimeterChars = { ' ' };
 
         #endregion

@@ -1,0 +1,5 @@
+Chimera.Spawner, Chimera
+editor
+string Creature
+float Timer
+int Max Spawned

@@ -1,0 +1,37 @@
+@0.000000: Output file name: C:\Users\Josh\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\cobra\cobra.X
+@0.000025: kW X-port: 3ds max compatible version 9.00
+@43.886683: Saving node: cobra
+@43.887959: Limiting exported UV coordinates to 1 because of available maps.
+@43.953924: 698 skinned vertices in cobra
+@43.957892: Material 0 shader returned effect file name 'null'
+@43.958689: Saving node: HeadCenterCap
+@43.958750: Saving node: Bone009
+@43.958829: Saving node: Bone010
+@43.958875: Saving node: Bone011
+@43.958937: Saving node: Bone012
+@43.958985: Saving node: Bone013
+@43.959031: Saving node: Bone014
+@43.959074: Saving node: Bone015
+@43.959118: Saving node: Bone016
+@43.959160: Saving node: Bone017
+@43.959204: Saving node: Bone018
+@43.959246: Saving node: Bone019
+@43.959291: Saving node: Bone020
+@43.959333: Saving node: Bone021
+@43.959377: Saving node: Bone022
+@43.959423: Saving node: Bone023
+@43.959466: Saving node: Bone024
+@43.959516: Saving node: IK_Chain001
+@43.959598: Saving node: SplineIKNode001
+@43.959642: Saving node: Point001
+@43.959680: Saving node: Point002
+@43.959718: Saving node: Point003
+@43.959760: Saving node: Point004
+@43.959798: Saving node: Point005
+@43.959835: Saving node: Point006
+@43.959873: Saving node: Point007
+@43.959910: Saving node: Point008
+@43.959947: Extracting animation spit.
+@43.962219: Extracting animation stand.
+@43.963582: Extracting animation walk.
+@45.899428: File C:\Users\Josh\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\workInProgress\models\Cobra\cobra_texture.png has same mod time as C:\Users\Josh\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\cobra\cobra_texture.png; not copying.

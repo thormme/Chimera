@@ -1,0 +1,20 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\kangaroo\kangaroo_leftLeg.X
+@0.000032: kW X-port: 3ds max compatible version 9.00
+@3.425873: Saving node: LeftLeg
+@3.429978: Limiting exported UV coordinates to 1 because of available maps.
+@3.796387: 1368 skinned vertices in LeftLeg
+@3.800703: Material 0 shader returned effect file name 'null'
+@3.802183: Saving node: LegLeft1
+@3.802256: Saving node: LegLeft2
+@3.802317: Saving node: LegLeft3
+@3.802381: Saving node: LegLeft4
+@3.802437: Saving node: LegLeft5
+@3.802496: Saving node: LegLeftCap
+@3.802575: Saving node: IK_Chain007
+@3.802634: Saving node: IK_Chain008
+@3.802685: Extracting animation charge.
+@3.853876: Extracting animation jump.
+@3.865628: Extracting animation pound.
+@3.879861: Extracting animation walk.
+@3.915872: Extracting animation stand.
+@3.959061: File D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\workInProgress\models\Kangaroo\kangaroo_texture.png has same mod time as D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\kangaroo\kangaroo_texture.png; not copying.

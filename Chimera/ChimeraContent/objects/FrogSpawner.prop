@@ -1,0 +1,6 @@
+Chimera.Spawner, Chimera
+frog
+string Creature
+float Radius
+float Timer
+int Max Spawned

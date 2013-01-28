@@ -1,0 +1,10 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\checkpoint\checkpoint_red.X
+@0.000070: kW X-port: 3ds max compatible version 9.00
+@0.678896: Saving node: Cylinder001
+@0.680475: Limiting exported UV coordinates to 1 because of available maps.
+@0.689296: Material 0 shader returned effect file name 'null'
+@0.689564: Material 1 shader returned effect file name 'null'
+@0.689771: Material 2 shader returned effect file name 'null'
+@0.693658: File D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\workInProgress\models\Checkpoint\checkpoint_dark_texture.png has same mod time as D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\checkpoint\checkpoint_dark_texture.png; not copying.
+@0.693729: File D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\workInProgress\models\Checkpoint\checkpoint_metal_texture.png has same mod time as D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\checkpoint\checkpoint_metal_texture.png; not copying.
+@0.693794: Copying file D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\workInProgress\models\Checkpoint\checkpoint_red_light_texture.png to D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\checkpoint\checkpoint_red_light_texture.png.

@@ -1,0 +1,42 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\rhino\rhino.X
+@0.000036: kW X-port: 3ds max compatible version 9.00
+@13.265674: Saving node: Body
+@13.273318: Limiting exported UV coordinates to 1 because of available maps.
+@14.192759: 2677 skinned vertices in Body
+@14.206360: Material 0 shader returned effect file name 'null'
+@14.208964: Saving node: IK_Chain002
+@14.209044: Saving node: IK_Chain003
+@14.209120: Saving node: Chord1
+@14.209182: Saving node: Chord2
+@14.209242: Saving node: Chord3
+@14.209300: Saving node: Chord4
+@14.209360: Saving node: Chord5
+@14.209417: Saving node: ChordCap
+@14.209477: Saving node: LegRearRight1
+@14.209533: Saving node: LegRearRight2
+@14.209591: Saving node: LegRearRight3
+@14.209649: Saving node: LegRearRight4
+@14.209712: Saving node: LegRearRightCap
+@14.209769: Saving node: LegRearLeft1
+@14.209826: Saving node: LegRearLeft2
+@14.209892: Saving node: LegRearLeft3
+@14.209949: Saving node: LegRearLeft4
+@14.210008: Saving node: LegRearLeftCap
+@14.210068: Saving node: LegFrontRight1
+@14.210124: Saving node: LegFrontRight2
+@14.210179: Saving node: LegFrontRight3
+@14.210235: Saving node: LegFrontRight4
+@14.210294: Saving node: LegFrontRightCap
+@14.210352: Saving node: LegFrontLeft1
+@14.210407: Saving node: LegFrontLeft2
+@14.210463: Saving node: LegFrontLeft3
+@14.210519: Saving node: LegFrontLeft4
+@14.210576: Saving node: LegFrontLeftCap
+@14.210702: Saving node: HeadCenter
+@14.210763: Saving node: HeadCenterCap
+@14.210827: Saving node: IK_Chain004
+@14.210972: Saving node: IK_Chain005
+@14.211027: Extracting animation charge.
+@14.582493: Extracting animation walk.
+@14.957317: Extracting animation stand.
+@15.038789: File D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\workInProgress\models\Rhino\rhino_texture.png has same mod time as D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\rhino\rhino_texture.png; not copying.

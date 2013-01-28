@@ -1,0 +1,10 @@
+@0.000001: Output file name: C:\Projects\School\EECS494\Chimera\Chimera\ChimeraContent\models\cactus\cactus2.X
+@0.000029: kW X-port: 3ds max compatible version 9.00
+@2.242312: Saving node: default
+@2.243851: Limiting exported UV coordinates to 1 because of available maps.
+@2.284594: Material 0 shader returned effect file name 'null'
+@2.289943: Saving node: cactus
+@2.292925: Limiting exported UV coordinates to 1 because of available maps.
+@2.353802: Material 0 shader returned effect file name 'null'
+@2.382326: Not copying cactus1tex.png as the destination is the same as the source.
+@2.382342: Not copying cactus2tex.png as the destination is the same as the source.

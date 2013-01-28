@@ -180,7 +180,7 @@ namespace MapEditor
         private void PopulateList()
         {
 
-            DirectoryInfo di = new DirectoryInfo(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/objects/");
+            DirectoryInfo di = new DirectoryInfo(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/objects/");
             FileInfo[] objects = di.GetFiles("*");
             foreach (FileInfo obj in objects)
             {
@@ -191,7 +191,7 @@ namespace MapEditor
                 try
                 {
 
-                    string[] data = System.IO.File.ReadAllLines(DirectoryManager.GetRoot() + "finalProject/finalProjectContent/objects/" + obj.Name);
+                    string[] data = System.IO.File.ReadAllLines(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/objects/" + obj.Name);
 
                     temp.Type = data[0];
                     temp.Model = data[1];

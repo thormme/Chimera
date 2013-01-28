@@ -95,13 +95,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BEPUphysics">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\bepu\x86\Release\BEPUphysics.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\bepu\x86\Release\BEPUphysics.dll</HintPath>
     </Reference>
     <Reference Include="BEPUphysicsDrawer">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\bepu\x86\Release\BEPUphysicsDrawer.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\bepu\x86\Release\BEPUphysicsDrawer.dll</HintPath>
     </Reference>
     <Reference Include="LzmaSharp">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\LzmaSharp.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\LzmaSharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
@@ -134,58 +134,58 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="NMock.StrongNamed">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\NMock.StrongNamed.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\NMock.StrongNamed.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Audio">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Audio.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Audio.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Fonts">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Fonts.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Fonts.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Fonts.Content.TrueTypeImporter">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Fonts.Content.TrueTypeImporter.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Fonts.Content.TrueTypeImporter.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Game">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Game.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Game.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Game.ContentCompressor">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Game.ContentCompressor.exe</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Game.ContentCompressor.exe</HintPath>
     </Reference>
     <Reference Include="Nuclex.Geometry">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Geometry.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Geometry.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Graphics">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Graphics.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Graphics.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Graphics.SpecialEffects">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Graphics.SpecialEffects.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Graphics.SpecialEffects.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Input">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Input.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Input.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Math">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Math.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Math.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Networking">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Networking.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Networking.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Support">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Support.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Support.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Testing.Xna">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Testing.Xna.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Testing.Xna.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.UserInterface">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.UserInterface.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.UserInterface.dll</HintPath>
     </Reference>
     <Reference Include="Nuclex.Windows.Forms">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\Nuclex.Windows.Forms.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\Nuclex.Windows.Forms.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX.DirectInput">
-      <HintPath>..\..\..\finalProject\finalProject\libraries\nuclex\xna-4.0-x86\SlimDX.DirectInput.dll</HintPath>
+      <HintPath>..\..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\SlimDX.DirectInput.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>False</Private>
@@ -228,9 +228,9 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\finalProject\finalProjectContent\finalProjectContent.contentproj">
+    <ProjectReference Include="..\..\..\Chimera\ChimeraContent\ChimeraContent.contentproj">
       <Project>{DDBC472F-F07E-420A-9AD7-31C03422F337}</Project>
-      <Name>finalProjectContent %28Content%29</Name>
+      <Name>ChimeraContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
     <ProjectReference Include="..\..\..\GameConstructLibrary\GameConstructLibrary.csproj">

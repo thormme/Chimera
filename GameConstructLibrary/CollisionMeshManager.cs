@@ -14,7 +14,7 @@ namespace GameConstructLibrary
 {
     public static class CollisionMeshManager
     {
-        static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "finalProject/finalProjectContent/";
+        static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "Chimera/ChimeraContent/";
         static private string mModelDirectory = mBASE_DIRECTORY + "models/";
 
         static private Dictionary<string, InstancedMeshShape> mUniqueMeshLibrary = new Dictionary<string, InstancedMeshShape>();

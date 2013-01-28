@@ -1,0 +1,13 @@
+@0.000000: Output file name: C:\Users\Josh\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\penguin\penguin_leftFoot.X
+@0.000021: kW X-port: 3ds max compatible version 9.00
+@1.044093: Saving node: LeftLeg
+@1.045311: Limiting exported UV coordinates to 1 because of available maps.
+@1.145314: 736 skinned vertices in LeftLeg
+@1.147477: Material 0 shader returned effect file name 'null'
+@1.148298: Saving node: footLeft1
+@1.148360: Saving node: footLeft2
+@1.148420: Saving node: footLeftCap
+@1.148461: Extracting animation slide.
+@1.149227: Extracting animation stand.
+@1.149299: Extracting animation walk.
+@1.167109: File C:\Users\Josh\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\workInProgress\models\Penguin\penguin.png has same mod time as C:\Users\Josh\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\penguin\penguin.png; not copying.

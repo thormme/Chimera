@@ -1,0 +1,36 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\kangaroo\kangaroo.X
+@0.000037: kW X-port: 3ds max compatible version 9.00
+@2.978313: Saving node: Body
+@2.999780: Limiting exported UV coordinates to 1 because of available maps.
+@8.391207: 6770 skinned vertices in Body
+@8.416988: Material 0 shader returned effect file name 'null'
+@8.422489: Saving node: Spine1
+@8.422579: Saving node: Spine2
+@8.422643: Saving node: Spine3
+@8.422709: Saving node: Tail1
+@8.422769: Saving node: Tail2
+@8.422829: Saving node: Tail3
+@8.422887: Saving node: Tail4
+@8.422948: Saving node: Tail5
+@8.423008: Saving node: TailCap
+@8.423068: Saving node: Head
+@8.423135: Saving node: HeadCap
+@8.423198: Saving node: RightArmUpper
+@8.423268: Saving node: RightArmLower
+@8.423328: Saving node: RightArmCap
+@8.423387: Saving node: LeftArmUpper
+@8.423446: Saving node: LeftArmLower
+@8.423505: Saving node: LeftArmCap
+@8.423567: Saving node: LegRearFront1
+@8.423634: Saving node: LegRearLeft1Cap
+@8.423694: Saving node: LegRearRight1
+@8.423758: Saving node: LegRearRight1Cap
+@8.423828: Saving node: IK_Chain002
+@8.423889: Saving node: IK_Chain003
+@8.423953: Saving node: IK_Chain004
+@8.424007: Extracting animation charge.
+@8.759791: Extracting animation jump.
+@8.822472: Extracting animation pound.
+@8.915879: Extracting animation walk.
+@9.068468: Extracting animation stand.
+@9.270712: File D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\workInProgress\models\Kangaroo\kangaroo_texture.png has same mod time as D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\kangaroo\kangaroo_texture.png; not copying.

@@ -1,0 +1,12 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\rhino\rhino_head.X
+@0.000039: kW X-port: 3ds max compatible version 9.00
+@1.373251: Saving node: Head
+@1.384979: Limiting exported UV coordinates to 1 because of available maps.
+@3.164162: 3777 skinned vertices in Head
+@3.172173: Material 0 shader returned effect file name 'null'
+@3.175522: Saving node: head
+@3.175724: Saving node: headCap
+@3.175791: Extracting animation charge.
+@3.176457: Extracting animation walk.
+@3.177338: Extracting animation stand.
+@3.284151: File D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\workInProgress\models\Rhino\rhino_texture.png has same mod time as D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\rhino\rhino_texture.png; not copying.

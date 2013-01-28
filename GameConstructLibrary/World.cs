@@ -168,10 +168,10 @@ namespace GameConstructLibrary
 
         public void AddLevelFromFile(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)
         {
+
             List<DummyObject> objects = LevelManager.Load(mapName);
             foreach (DummyObject dummy in objects)
             {
-
                 if (dummy.Type == "Root")
                 {
                     continue;

@@ -1,0 +1,6 @@
+Chimera.Spawner, Chimera
+kangaroo
+string Creature
+float Radius
+float Timer
+int Max Spawned

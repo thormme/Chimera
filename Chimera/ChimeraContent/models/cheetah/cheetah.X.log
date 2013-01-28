@@ -1,0 +1,32 @@
+@0.000000: Output file name: C:\Users\Josh\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\cheetah\cheetah.X
+@0.000020: kW X-port: 3ds max compatible version 9.00
+@33.768716: Saving node: cheetah
+@33.775949: Limiting exported UV coordinates to 1 because of available maps.
+@35.584114: 4388 skinned vertices in cheetah
+@35.600830: Material 0 shader returned effect file name 'null'
+@35.603529: Saving node: Chord1
+@35.603600: Saving node: Chord2
+@35.603662: Saving node: Chord3
+@35.603710: Saving node: Chord4
+@35.603756: Saving node: Tail1
+@35.603802: Saving node: Tail2
+@35.603846: Saving node: Tail3
+@35.603891: Saving node: Tail4
+@35.603936: Saving node: Tail5
+@35.603981: Saving node: Tail6
+@35.604025: Saving node: Tail7
+@35.604073: Saving node: Tail8
+@35.604118: Saving node: Tail9
+@35.604163: Saving node: TailCap
+@35.604212: Saving node: LegRearLeft1Cap
+@35.604260: Saving node: LegRearRight1Cap
+@35.604305: Saving node: Neck
+@35.604350: Saving node: Head
+@35.604396: Saving node: HeadCap
+@35.604441: Saving node: LegFrontRight1Cap
+@35.604487: Saving node: LegFrontLeft1Cap
+@35.604542: Saving node: IK_Chain001
+@35.604580: Extracting animation run.
+@35.688829: Extracting animation stand.
+@35.689256: Extracting animation walk.
+@35.876160: File C:\Users\Josh\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\workInProgress\models\Cheetah\cheetah_texture.png has same mod time as C:\Users\Josh\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\cheetah\cheetah_texture.png; not copying.

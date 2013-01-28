@@ -1,0 +1,15 @@
+@0.000000: Output file name: D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\eagle\eagle_rightWing.X
+@0.000037: kW X-port: 3ds max compatible version 9.00
+@1.246514: Saving node: WingRight
+@1.247748: Limiting exported UV coordinates to 1 because of available maps.
+@1.291954: 419 skinned vertices in WingRight
+@1.293357: Material 0 shader returned effect file name 'null'
+@1.296695: Saving node: WingRight1
+@1.296772: Saving node: WingRight2
+@1.296834: Saving node: WingRightCap
+@1.296888: Extracting animation flap_air.
+@1.298078: Extracting animation glide.
+@1.298181: Extracting animation flap_ground.
+@1.300242: Extracting animation walk.
+@1.301393: Extracting animation stand.
+@1.315221: File D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\workInProgress\models\Eagle\eagle_texture.png has same mod time as D:\Documents\GitHub\eecs494Chimera\Chimera\ChimeraContent\models\eagle\eagle_texture.png; not copying.
