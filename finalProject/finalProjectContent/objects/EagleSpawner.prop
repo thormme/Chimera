@@ -1,6 +1,0 @@
-finalProject.Spawner, finalProject
-eagle
-string Creature
-float Radius
-float Timer
-int Max Spawned

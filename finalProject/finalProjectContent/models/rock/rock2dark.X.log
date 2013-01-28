@@ -1,6 +1,0 @@
-@0.000001: Output file name: C:\Projects\School\EECS494\finalProject\finalProject\finalProjectContent\models\rock\rock2dark.X
-@0.000028: kW X-port: 3ds max compatible version 9.00
-@53.689129: Saving node: default
-@53.689790: Limiting exported UV coordinates to 1 because of available maps.
-@53.697138: Material 0 shader returned effect file name 'null'
-@53.786602: Not copying rock2tex.png as the destination is the same as the source.

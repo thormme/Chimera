@@ -1,6 +1,0 @@
-@0.000001: Output file name: C:\Projects\School\EECS494\finalProject\finalProject\finalProjectContent\models\rock\rock3light.X
-@0.000029: kW X-port: 3ds max compatible version 9.00
-@2.367172: Saving node: default
-@2.367519: Limiting exported UV coordinates to 1 because of available maps.
-@2.372122: Material 0 shader returned effect file name 'null'
-@2.376103: Not copying rock3tex2.png as the destination is the same as the source.
