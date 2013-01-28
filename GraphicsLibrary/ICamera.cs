@@ -8,15 +8,30 @@ namespace GraphicsLibrary
 {
     public interface ICamera
     {
-        /// <summary>
-        /// Position of camera in world space.
-        /// </summary>
-        Vector3 GetPosition();
+        Vector3 Position
+        {
+            get;
+        }
 
-        /// <summary>
-        /// Direction camera is facing in world space.
-        /// </summary>
-        Vector3 GetForward();
+        Vector3 Forward
+        {
+            get;
+        }
+
+        Vector3 Right
+        {
+            get;
+        }
+
+        float AspectRatio
+        {
+            get;
+        }
+
+        float FieldOfView
+        {
+            get;
+        }
 
         /// <summary>
         /// Transformation of vector in to camera space.

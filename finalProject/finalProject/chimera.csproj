@@ -169,7 +169,6 @@
     <Compile Include="AI\FrogAI.cs" />
     <Compile Include="AI\RangedAI.cs" />
     <Compile Include="AI\EagleAI.cs" />
-    <Compile Include="AI\OverConfidenceAI.cs" />
     <Compile Include="AI\KangarooAI.cs" />
     <Compile Include="AI\PassiveAI.cs" />
     <Compile Include="AI\PenguinAI.cs" />
@@ -192,6 +191,7 @@
     <Compile Include="GoalPoint.cs" />
     <Compile Include="IRangedPart.cs" />
     <Compile Include="Menus\ControlsMenu.cs" />
+    <Compile Include="Menus\PlayerPartsMenu.cs" />
     <Compile Include="Menus\SuccessMenu.cs" />
     <Compile Include="Menus\GoalsMenu.cs" />
     <Compile Include="Menus\StoryMenu.cs" />
