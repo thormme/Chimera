@@ -61,6 +61,8 @@ namespace Chimera
         private KeyInputAction sunLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Left);
         private KeyInputAction sunRight = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Right);
         private static InputAction enterConsoleCommand = new KeyInputAction(Microsoft.Xna.Framework.PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Enter);
+        private static InputAction previousConsoleCommand = new KeyInputAction(Microsoft.Xna.Framework.PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Up);
+        private static InputAction nextConsoleCommand = new KeyInputAction(Microsoft.Xna.Framework.PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Down);
         bool debugMode = false;
 
         private Nuclex.UserInterface.Screen mDebugScreen;
@@ -226,6 +228,14 @@ namespace Chimera
             if (DebugConsole.IsVisible && enterConsoleCommand.Active)
             {
                 DebugConsole.RunEnteredCommand();
+            } 
+            if (DebugConsole.IsVisible && nextConsoleCommand.Active)
+            {
+                DebugConsole.NavigateToNextCommand();
+            }
+            if (DebugConsole.IsVisible && previousConsoleCommand.Active)
+            {
+                DebugConsole.NavigateToPreviousCommand();
             }
             if (debug.Active)
             {

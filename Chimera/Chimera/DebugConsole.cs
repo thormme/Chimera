@@ -9,7 +9,7 @@ using GameConstructLibrary;
 namespace Chimera
 {
     /// <summary>
-    /// Console used to inout debug commands.
+    /// Console used to input debug commands.
     /// </summary>
     public class DebugConsole : WindowControl
     {
@@ -24,6 +24,9 @@ namespace Chimera
         }
 
         public static InputControl ConsoleInput = new InputControl();
+
+        private static List<string> mCommandHistory = new List<string>();
+        private static int mCommandHistoryIndex = 0;
         
         /// <summary>
         /// Construct a new DebugConsole.
@@ -31,6 +34,7 @@ namespace Chimera
         public DebugConsole()
         {
             ConsoleInput.Text = "";
+            mCommandHistory.Add("");
             ConsoleInput.Bounds = new UniRectangle(120.0f, 40.0f, 140.0f, 30.0f);
             Children.Add(ConsoleInput);
             Bounds.Size = new UniVector(0, 0);
@@ -96,7 +100,10 @@ namespace Chimera
             string[] lines = ConsoleInput.Text.Split(new char[] { '\r', '\n' });
             if (lines.Length > 0)
             {
+                // Trim command to text before and newlines
                 ConsoleInput.Text = lines[0];
+                // Add command to history
+                mCommandHistory.Add(lines[0]);
                 string[] commandArgs = ConsoleInput.Text.Split(new char[] { ' ' });
                 if (commandArgs.Length > 0)
                 {
@@ -113,7 +120,26 @@ namespace Chimera
                     CallCommand(commandArgs[0], parameters);
                 }
                 ConsoleInput.Text = "";
+                mCommandHistoryIndex = mCommandHistory.Count - 1;
             }
+        }
+
+        /// <summary>
+        /// Navigates to the previously entered command, if any.
+        /// </summary>
+        public static void NavigateToPreviousCommand()
+        {
+            int newCommandIndex = mCommandHistoryIndex > 0 ? mCommandHistoryIndex - 1 : mCommandHistoryIndex;
+            ConsoleInput.Text = mCommandHistory[mCommandHistoryIndex];
+        }
+
+        /// <summary>
+        /// Navigates to the command entered after the current, if any.
+        /// </summary>
+        public static void NavigateToNextCommand()
+        {
+            int newCommandIndex = mCommandHistoryIndex < mCommandHistory.Count - 1 ? mCommandHistoryIndex + 1 : mCommandHistoryIndex;
+            ConsoleInput.Text = mCommandHistory[mCommandHistoryIndex];
         }
     }
 }
