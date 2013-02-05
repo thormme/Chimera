@@ -283,7 +283,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Chimera_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Triggers\" />
