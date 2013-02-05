@@ -173,7 +173,6 @@
     <Compile Include="AI\PassiveAI.cs" />
     <Compile Include="AI\PenguinAI.cs" />
     <Compile Include="AI\RhinoAI.cs" />
-    <Compile Include="ChaseCamera.cs" />
     <Compile Include="Checkpoint.cs" />
     <Compile Include="ConeSensor.cs" />
     <Compile Include="CooldownPart.cs" />

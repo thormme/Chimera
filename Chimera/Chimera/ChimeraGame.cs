@@ -252,7 +252,7 @@ namespace Chimera
             {
                 IsMouseVisible = !InputAction.IsMouseLocked;
 
-                Chimera.ChaseCamera camera = Camera as Chimera.ChaseCamera;
+                ChaseCamera camera = Camera as ChaseCamera;
 
                 if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
                 {

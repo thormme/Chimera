@@ -10,6 +10,7 @@ using GraphicsLibrary;
 using Microsoft.Xna.Framework;
 using GameConstructLibrary;
 using Microsoft.Xna.Framework.Input;
+using Utility;
 
 namespace MapEditor
 {
@@ -20,7 +21,7 @@ namespace MapEditor
     public static class GameMapEditor
     {
 
-        public static Vector3 MapScale = new Vector3(8.0f, 0.01f, 8.0f);
+        public static Vector3 MapScale = Utils.WorldScale;
 
         public static InputManager Input;
         public static GuiManager GUI;
