@@ -287,8 +287,8 @@ namespace GraphicsLibrary
             for (int iCascadeCount = 0; iCascadeCount < mCascadeCount; iCascadeCount++)
             {
                 Viewport cascadeViewport = new Viewport(
-                    (iCascadeCount % 2) * mCascadeResolution, 
-                    (iCascadeCount / 2) * mCascadeResolution, 
+                    (iCascadeCount % 2) * mCascadeResolution,
+                    (iCascadeCount / 2) * mCascadeResolution,
                     mCascadeResolution, mCascadeResolution
                 );
 
@@ -302,7 +302,7 @@ namespace GraphicsLibrary
                     }
                     else
                     {
-                        WriteTerrainShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);
+                        //WriteTerrainShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);
                     }
                 }
             }
