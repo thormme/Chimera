@@ -232,10 +232,12 @@ namespace Chimera
             if (DebugConsole.IsVisible && nextConsoleCommand.Active)
             {
                 DebugConsole.NavigateToNextCommand();
+                mDebugScreen.FocusedControl = DebugConsole.ConsoleInput;
             }
             if (DebugConsole.IsVisible && previousConsoleCommand.Active)
             {
                 DebugConsole.NavigateToPreviousCommand();
+                mDebugScreen.FocusedControl = DebugConsole.ConsoleInput;
             }
             if (debug.Active)
             {
