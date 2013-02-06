@@ -302,7 +302,7 @@ namespace GraphicsLibrary
                     }
                     else
                     {
-                        //WriteTerrainShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);
+                        WriteTerrainShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);
                     }
                 }
             }
@@ -337,6 +337,9 @@ namespace GraphicsLibrary
         private void WriteTerrainShadowToBuffer(RenderableDefinition renderable, Matrix cascadeProjection)
         {
             TerrainHeightMap terrain = GraphicsManager.LookupTerrainHeightMap(renderable.Name);
+
+            mGraphicsDevice.Indices = terrain.IndexBuffer;
+            mGraphicsDevice.SetVertexBuffer(terrain.VertexBuffer);
 
             GraphicsManager.TerrainShader.World = renderable.WorldTransform;
 

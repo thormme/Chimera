@@ -30,8 +30,6 @@ ColorPair ComputeLights(float3 eyeVector, float3 worldNormal)
     return result;
 }
 
-float DepthBias = 0.001f;
-
 ShadowData GetShadowData(float4 worldPosition)
 {
 	ShadowData result;
@@ -94,13 +92,16 @@ ShadowSplitData GetSplitData(ShadowData shadowData)
 	return result;
 }
 
-ShadowPixel ComputeShadow(ShadowData shadowData)
+ShadowPixel ComputeShadow(ShadowData shadowData, float lightAmount)
 {
 	ShadowSplitData splitData = GetSplitData(shadowData);
 	float shadowDepth = SAMPLE_TEXTURE(ShadowMap, splitData.TexCoords).r;
 
+	float bias = 0.005*tan(acos(lightAmount));
+	bias = clamp(bias, 0, 0.01);
+
 	ShadowPixel shadowPixel;
-	shadowPixel.InShadow = shadowDepth < splitData.LightSpaceDepth;
+	shadowPixel.InShadow = shadowDepth < splitData.LightSpaceDepth - bias;
 	shadowPixel.Color = splitData.Color;
 	return shadowPixel;
 }
