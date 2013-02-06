@@ -422,23 +422,23 @@ namespace Chimera
         {
             if (parameters.Count > 0)
             {
-                if (parameters[0].ToLower() == "all")
+                if (parameters[0].ToLower().Contains("all"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
                 }
-                else if (parameters[0].ToLower() == "none")
+                else if (parameters[0].ToLower().Contains("none"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.None;
                 }
-                else if (parameters[0].ToLower() == "models")
+                else if (parameters[0].ToLower().Contains("models"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.Models;
                 }
-                else if (parameters[0].ToLower() == "terrain")
+                else if (parameters[0].ToLower().Contains("terrain"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.Terrain;
                 }
-                else if (parameters[0].ToLower() == "animatemodels")
+                else if (parameters[0].ToLower().Contains("animatemodels"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.AnimateModels;
                 }
@@ -449,15 +449,15 @@ namespace Chimera
         {
             if (parameters.Count > 0)
             {
-                if (parameters[0].ToLower() == "all")
+                if (parameters[0].ToLower().Contains("all"))
                 {
                     GraphicsManager.Outlining = GraphicsManager.Outlines.All;
                 }
-                else if (parameters[0].ToLower() == "none")
+                else if (parameters[0].ToLower().Contains("none"))
                 {
                     GraphicsManager.Outlining = GraphicsManager.Outlines.None;
                 }
-                else if (parameters[0].ToLower() == "animatemodels")
+                else if (parameters[0].ToLower().Contains("animatemodels"))
                 {
                     GraphicsManager.Outlining = GraphicsManager.Outlines.AnimateModels;
                 }
