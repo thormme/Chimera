@@ -4,11 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using BEPUphysics.Collidables;
 using GraphicsLibrary;
-using Chimera;
 using GameConstructLibrary;
 using BEPUphysics.BroadPhaseEntries;
 
-namespace Chimera
+namespace GameConstructLibrary
 {
     /// <summary>
     /// 
@@ -68,18 +67,18 @@ namespace Chimera
         /// <summary>
         /// Physical representation of target.
         /// </summary>
-        public Creature TargetBody
+        public World World
         {
             get
             {
-                return mTargetBody;
+                return mWorld;
             }
             set
             {
-                mTargetBody = value;
+                mWorld = value;
             }
         }
-        private Creature mTargetBody;
+        private World mWorld;
 
         #endregion
 
@@ -528,13 +527,16 @@ namespace Chimera
             float cameraDistance = fullForward.Length();
             mPosition = mLookAt - mForward * cameraDistance;
 
-            if (mTargetBody.World.Space.RayCast(new Ray(mLookAt, -fullForward), cameraDistance, filter, out result))
+            if (World != null)
             {
-                Vector3 shortenedForward = mLookAt - result.HitData.Location;
-                float distance = shortenedForward.Length();
-                if (0.9f * distance < cameraDistance)
+                if (World.Space.RayCast(new Ray(mLookAt, -fullForward), cameraDistance, filter, out result))
                 {
-                    mPosition = mLookAt - 0.9f * distance * mForward;
+                    Vector3 shortenedForward = mLookAt - result.HitData.Location;
+                    float distance = shortenedForward.Length();
+                    if (0.9f * distance < cameraDistance)
+                    {
+                        mPosition = mLookAt - 0.9f * distance * mForward;
+                    }
                 }
             }
             mViewTransform = Matrix.CreateLookAt(mPosition, mLookAt, mUp);

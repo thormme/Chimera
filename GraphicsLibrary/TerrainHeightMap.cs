@@ -19,8 +19,6 @@ namespace GameConstructLibrary
     public class TerrainHeightMap
     {
 
-        private Vector3 scale = new Vector3(8.0f, 0.01f, 8.0f);
-
         private Texture2D mMap;
         private int mWidth;
         private int mHeight;
@@ -226,11 +224,11 @@ namespace GameConstructLibrary
         public void ModifyVertices(Vector3 position, int size, int intensity, bool feather, bool set, bool inverse, bool smooth, bool flatten)
         {
 
-            intensity = (int)(intensity / scale.Y);
+            intensity = (int)(intensity / Utils.WorldScale.Y);
 
             // Adjust for the rendered location of the terrain
-            position.X /= scale.X;
-            position.Z /= scale.Z;
+            position.X /= Utils.WorldScale.X;
+            position.Z /= Utils.WorldScale.Z;
             position.X += mWidth / 2;
             position.Z += mHeight / 2;
 

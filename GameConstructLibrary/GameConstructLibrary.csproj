@@ -139,8 +139,10 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="CharacterController.cs" />
+    <Compile Include="ChaseCamera.cs" />
     <Compile Include="CollisionMeshManager.cs" />
     <Compile Include="DummyObject.cs" />
+    <Compile Include="FPSCamera.cs" />
     <Compile Include="IGameState.cs" />
     <Compile Include="HorizontalMotionConstraint.cs" />
     <Compile Include="IActor.cs" />

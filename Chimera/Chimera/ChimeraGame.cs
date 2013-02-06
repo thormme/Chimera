@@ -160,8 +160,6 @@ namespace Chimera
             System.Windows.Forms.Form form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(ptr);
             form.Size = new System.Drawing.Size(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
 
-
-
             base.Initialize();
         }
 
@@ -232,10 +230,12 @@ namespace Chimera
             if (DebugConsole.IsVisible && nextConsoleCommand.Active)
             {
                 DebugConsole.NavigateToNextCommand();
+                mDebugScreen.FocusedControl = DebugConsole.ConsoleInput;
             }
             if (DebugConsole.IsVisible && previousConsoleCommand.Active)
             {
                 DebugConsole.NavigateToPreviousCommand();
+                mDebugScreen.FocusedControl = DebugConsole.ConsoleInput;
             }
             if (debug.Active)
             {
@@ -254,7 +254,7 @@ namespace Chimera
             {
                 IsMouseVisible = !InputAction.IsMouseLocked;
 
-                Chimera.ChaseCamera camera = Camera as Chimera.ChaseCamera;
+                ChaseCamera camera = Camera as ChaseCamera;
 
                 if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
                 {

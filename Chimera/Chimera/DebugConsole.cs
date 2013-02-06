@@ -97,13 +97,13 @@ namespace Chimera
         /// </summary>
         public static void RunEnteredCommand()
         {
-            string[] lines = ConsoleInput.Text.Split(new char[] { '\r', '\n' });
-            if (lines.Length > 0)
+            string command = ConsoleInput.Text.Replace("\n", "");
+            if (command.Length > 0)
             {
                 // Trim command to text before and newlines
-                ConsoleInput.Text = lines[0];
+                ConsoleInput.Text = command;
                 // Add command to history
-                mCommandHistory.Add(lines[0]);
+                mCommandHistory.Insert(mCommandHistory.Count - 1, command);
                 string[] commandArgs = ConsoleInput.Text.Split(new char[] { ' ' });
                 if (commandArgs.Length > 0)
                 {
@@ -129,7 +129,7 @@ namespace Chimera
         /// </summary>
         public static void NavigateToPreviousCommand()
         {
-            int newCommandIndex = mCommandHistoryIndex > 0 ? mCommandHistoryIndex - 1 : mCommandHistoryIndex;
+            mCommandHistoryIndex = mCommandHistoryIndex > 0 ? mCommandHistoryIndex - 1 : mCommandHistoryIndex;
             ConsoleInput.Text = mCommandHistory[mCommandHistoryIndex];
         }
 
@@ -138,7 +138,7 @@ namespace Chimera
         /// </summary>
         public static void NavigateToNextCommand()
         {
-            int newCommandIndex = mCommandHistoryIndex < mCommandHistory.Count - 1 ? mCommandHistoryIndex + 1 : mCommandHistoryIndex;
+            mCommandHistoryIndex = mCommandHistoryIndex < mCommandHistory.Count - 1 ? mCommandHistoryIndex + 1 : mCommandHistoryIndex;
             ConsoleInput.Text = mCommandHistory[mCommandHistoryIndex];
         }
     }
