@@ -97,7 +97,7 @@ namespace Chimera
         /// </summary>
         public static void RunEnteredCommand()
         {
-            string command = ConsoleInput.Text.Replace("\n", "");
+            string command = ConsoleInput.Text.Replace("\n", "").Replace("\r", "");
             if (command.Length > 0)
             {
                 // Trim command to text before and newlines
