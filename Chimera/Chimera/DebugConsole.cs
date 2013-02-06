@@ -97,13 +97,13 @@ namespace Chimera
         /// </summary>
         public static void RunEnteredCommand()
         {
-            string[] lines = ConsoleInput.Text.Split(new char[] { '\r', '\n' });
-            if (lines.Length > 0)
+            string command = ConsoleInput.Text.Replace("\n", "");
+            if (command.Length > 0)
             {
                 // Trim command to text before and newlines
-                ConsoleInput.Text = lines[0];
+                ConsoleInput.Text = command;
                 // Add command to history
-                mCommandHistory.Insert(mCommandHistory.Count - 1, lines[0]);
+                mCommandHistory.Insert(mCommandHistory.Count - 1, command);
                 string[] commandArgs = ConsoleInput.Text.Split(new char[] { ' ' });
                 if (commandArgs.Length > 0)
                 {
