@@ -13,6 +13,7 @@ using Nuclex.UserInterface;
 using GameConstructLibrary;
 using GraphicsLibrary;
 using BEPUphysics;
+using System.Windows.Forms;
 
 namespace MapEditor
 {
@@ -60,9 +61,10 @@ namespace MapEditor
             GraphicsManager.CelShading = GraphicsManager.CelShaded.Models;
             GraphicsManager.CastingShadows = true;
 
+            GameMapEditor.GameWindowForm = Control.FromHandle(this.Window.Handle) as Form;
             GameMapEditor.Viewport = GraphicsDevice.Viewport;
 
-            GameMapEditor.Screen = new Screen(GameMapEditor.Viewport.Width, GameMapEditor.Viewport.Height);
+            GameMapEditor.Screen = new Nuclex.UserInterface.Screen(GameMapEditor.Viewport.Width, GameMapEditor.Viewport.Height);
             GameMapEditor.GUI.Screen = GameMapEditor.Screen;
 
             mCamera = new FPSCamera(GameMapEditor.Viewport);
@@ -107,7 +109,7 @@ namespace MapEditor
             base.Update(gameTime);
 
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 this.Exit();
 
             GraphicsManager.Update(mCamera, gameTime);
