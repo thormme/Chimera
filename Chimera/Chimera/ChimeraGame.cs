@@ -276,7 +276,14 @@ namespace Chimera
                 InputAction.Update();
                 if (mGameStates.Count > 0)
                 {
-                    mGameStates[mGameStates.Count - 1].Update(gameTime);
+                    IGameState gameState = mGameStates[mGameStates.Count - 1];
+
+                    gameState.Update(gameTime);
+                    
+                    if (gameState is Chimera.GameWorld && camera != null)
+                    {
+                        camera.World = gameState as World;
+                    }
                 }
 
                 if (Camera != null)

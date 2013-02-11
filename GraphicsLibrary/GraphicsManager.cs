@@ -393,8 +393,12 @@ namespace GraphicsLibrary
             mDevice.DepthStencilState = DepthStencilState.Default;
             mDevice.SamplerStates[1] = SamplerState.PointClamp;
             mDevice.SamplerStates[2] = SamplerState.PointClamp;
-
             mDevice.DepthStencilState = DepthStencilState.Default;
+
+            RasterizerState cull = new RasterizerState();
+            cull.CullMode = CullMode.CullCounterClockwiseFace;
+
+            mDevice.RasterizerState = cull;
 
             if (CastingShadows && mCamera != null)
             {
@@ -433,7 +437,7 @@ namespace GraphicsLibrary
                 // Draw semi transparent renderables to texture.
                 if (mTransparentQueue.Count > 0)
                 {
-                    RasterizerState cull = new RasterizerState();
+                    cull = new RasterizerState();
                     cull.CullMode = CullMode.None;
                     mDevice.RasterizerState = cull;
 

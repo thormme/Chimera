@@ -112,8 +112,8 @@ namespace GraphicsLibrary
 
         private void ResizeCascadeContainer()
         {
-            float[] nearPercentages = { 0.0f, 0.01f, 0.1f, 0.5f };
-            float[] farPercentages  = { 0.01f, 0.1f, 0.5f, 1.0f };
+            float[] nearPercentages = { 0.0f, 0.02f, 0.06f, 0.3f };
+            float[] farPercentages  = { 0.02f, 0.06f, 0.3f, 1.0f };
             Color[] colorBands = { 
                                       new Color(1.0f, 0.0f, 0.0f, 1.0f), 
                                       new Color(0.0f, 1.0f, 0.0f, 1.0f), 
