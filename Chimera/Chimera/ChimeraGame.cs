@@ -273,7 +273,10 @@ namespace Chimera
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                     this.Exit();
 
-                InputAction.Update();
+                if (IsActive)
+                {
+                    InputAction.Update();
+                }
                 if (mGameStates.Count > 0)
                 {
                     IGameState gameState = mGameStates[mGameStates.Count - 1];
