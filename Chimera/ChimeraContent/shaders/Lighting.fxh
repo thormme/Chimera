@@ -10,6 +10,8 @@ float3 xDirLightDiffuseColor;
 float3 xDirLightSpecularColor;
 float3 xDirLightAmbientColor;
 
+float depthBias[] = { 0.0001, 0.001, 0.005, 0.005 };
+
 ColorPair ComputeLights(float3 eyeVector, float3 worldNormal)
 {
 	float3 halfVectors = normalize(eyeVector + xDirLightDirection);
@@ -29,8 +31,6 @@ ColorPair ComputeLights(float3 eyeVector, float3 worldNormal)
 
     return result;
 }
-
-float DepthBias = 0.001f;
 
 ShadowData GetShadowData(float4 worldPosition)
 {
@@ -94,13 +94,13 @@ ShadowSplitData GetSplitData(ShadowData shadowData)
 	return result;
 }
 
-ShadowPixel ComputeShadow(ShadowData shadowData)
+ShadowPixel ComputeShadow(ShadowData shadowData, float lightAmount)
 {
 	ShadowSplitData splitData = GetSplitData(shadowData);
 	float shadowDepth = SAMPLE_TEXTURE(ShadowMap, splitData.TexCoords).r;
 
 	ShadowPixel shadowPixel;
-	shadowPixel.InShadow = shadowDepth < splitData.LightSpaceDepth;
+	shadowPixel.InShadow = shadowDepth < splitData.LightSpaceDepth - depthBias[splitData.SplitIndex];
 	shadowPixel.Color = splitData.Color;
 	return shadowPixel;
 }

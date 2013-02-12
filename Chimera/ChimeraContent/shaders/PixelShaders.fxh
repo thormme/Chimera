@@ -24,7 +24,7 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 	const float B = 0.6f;
 	const float C = 1.0f;
 
-	ShadowPixel shadowPixel = ComputeShadow(pin.Shadow);
+	ShadowPixel shadowPixel = ComputeShadow(pin.Shadow, pin.LightAmount);
 
 	float lightAmount;
 	if (shadowPixel.InShadow || pin.LightAmount < A)
@@ -90,7 +90,7 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
 
-	ShadowPixel shadowPixel = ComputeShadow(pin.Shadow);
+	ShadowPixel shadowPixel = ComputeShadow(pin.Shadow, pin.LightAmount);
 
 	if (shadowPixel.InShadow == true)
 	{

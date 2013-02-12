@@ -780,6 +780,29 @@
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\Common.fxh">
+      <Name>Common</Name>
+    </None>
+    <None Include="shaders\Lighting.fxh">
+      <Name>Lighting</Name>
+    </None>
+    <None Include="shaders\Macros.fxh">
+      <Name>Macros</Name>
+    </None>
+    <None Include="shaders\PixelShaders.fxh">
+      <Name>PixelShaders</Name>
+    </None>
+    <None Include="shaders\Skinning.fxh">
+      <Name>Skinning</Name>
+    </None>
+    <None Include="shaders\Structures.fxh">
+      <Name>Structures</Name>
+    </None>
+    <None Include="shaders\VertexShaders.fxh">
+      <Name>VertexShaders</Name>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

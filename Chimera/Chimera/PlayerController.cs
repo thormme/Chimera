@@ -225,7 +225,6 @@ namespace Chimera
         public override void SetCreature(Creature creature)
         {
             base.SetCreature(creature);
-            mCamera.World = mCreature.World;
         }
         #endregion
 

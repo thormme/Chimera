@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using GameConstructLibrary;
 using Microsoft.Xna.Framework.Input;
 using Utility;
+using System.Windows.Forms;
 
 namespace MapEditor
 {
@@ -26,7 +27,8 @@ namespace MapEditor
         public static InputManager Input;
         public static GuiManager GUI;
 
-        public static Screen Screen;
+        public static Nuclex.UserInterface.Screen Screen;
+        public static Form GameWindowForm;
         public static Viewport Viewport;
         public static FPSCamera Camera;
 
@@ -37,7 +39,7 @@ namespace MapEditor
         public static ParametersDialog Parameters = new ParametersDialog(new List<string>());
 
         public static Boolean Displayed;
-        public static Dialog Reminder;
+        public static Form Reminder;
 
         public static Boolean Placeable;
 
@@ -94,10 +96,7 @@ namespace MapEditor
             Selected = new List<DummyObject>();
 
             // Create reminder dialog
-            Displayed = true;
-            Reminder = new HotkeyDialog();
-            Screen.Desktop.Children.Add(Reminder);
-
+            ToggleReminder();
         }
 
         public static void ToggleState(States state)
@@ -164,9 +163,23 @@ namespace MapEditor
 
         public static void ToggleReminder()
         {
-            if (Displayed) Reminder.Hide();
-            else Reminder.Show();
-            Displayed = !Displayed;
+            if (Reminder != null && Reminder.IsHandleCreated)
+            {
+                if (Reminder.Visible)
+                {
+                    Reminder.Hide();
+                }
+                else
+                {
+                    Reminder.Show();
+                }
+            }
+            else
+            {
+                Reminder = new HotkeyForm();
+                Reminder.Show();
+                Reminder.Location = GameWindowForm.PointToScreen(new System.Drawing.Point(Viewport.Bounds.Width, 0));
+            }
         }
 
         public static void Pressed()

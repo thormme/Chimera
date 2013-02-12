@@ -273,10 +273,20 @@ namespace Chimera
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                     this.Exit();
 
-                InputAction.Update();
+                if (IsActive)
+                {
+                    InputAction.Update();
+                }
                 if (mGameStates.Count > 0)
                 {
-                    mGameStates[mGameStates.Count - 1].Update(gameTime);
+                    IGameState gameState = mGameStates[mGameStates.Count - 1];
+
+                    gameState.Update(gameTime);
+                    
+                    if (gameState is Chimera.GameWorld && camera != null)
+                    {
+                        camera.World = gameState as World;
+                    }
                 }
 
                 if (Camera != null)
@@ -422,23 +432,23 @@ namespace Chimera
         {
             if (parameters.Count > 0)
             {
-                if (parameters[0].ToLower() == "all")
+                if (parameters[0].ToLower().Contains("all"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
                 }
-                else if (parameters[0].ToLower() == "none")
+                else if (parameters[0].ToLower().Contains("none"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.None;
                 }
-                else if (parameters[0].ToLower() == "models")
+                else if (parameters[0].ToLower().Contains("models"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.Models;
                 }
-                else if (parameters[0].ToLower() == "terrain")
+                else if (parameters[0].ToLower().Contains("terrain"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.Terrain;
                 }
-                else if (parameters[0].ToLower() == "animatemodels")
+                else if (parameters[0].ToLower().Contains("animatemodels"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.AnimateModels;
                 }
@@ -449,15 +459,15 @@ namespace Chimera
         {
             if (parameters.Count > 0)
             {
-                if (parameters[0].ToLower() == "all")
+                if (parameters[0].ToLower().Contains("all"))
                 {
                     GraphicsManager.Outlining = GraphicsManager.Outlines.All;
                 }
-                else if (parameters[0].ToLower() == "none")
+                else if (parameters[0].ToLower().Contains("none"))
                 {
                     GraphicsManager.Outlining = GraphicsManager.Outlines.None;
                 }
-                else if (parameters[0].ToLower() == "animatemodels")
+                else if (parameters[0].ToLower().Contains("animatemodels"))
                 {
                     GraphicsManager.Outlining = GraphicsManager.Outlines.AnimateModels;
                 }
