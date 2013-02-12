@@ -172,8 +172,6 @@ namespace MapEditor
         public static void Pressed()
         {
 
-            
-
             MouseState mouse = Mouse.GetState();
 
             if (mouse.X <= Parameters.Bounds.Left.Offset || mouse.X >= Parameters.Bounds.Right.Offset ||

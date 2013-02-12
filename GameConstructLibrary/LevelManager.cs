@@ -15,20 +15,20 @@ namespace GameConstructLibrary
     /// </summary>
     public static class LevelManager
     {
-        public static void Save(string file, List<DummyObject> objects)
+        public static void Save(string fileName, List<DummyObject> objects)
         {
             XmlRootAttribute root = new XmlRootAttribute();
             root.ElementName = "object";
             root.IsNullable = true;
 
-            StreamWriter writer = new StreamWriter(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/" + file);
+            StreamWriter writer = new StreamWriter(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/" + fileName);
 
             XmlSerializer serializer = new XmlSerializer(typeof(List<DummyObject>), root);
             serializer.Serialize(writer, objects);
             writer.Close();
         }
 
-        public static List<DummyObject> Load(string file)
+        public static List<DummyObject> Load(string fileName)
         {
             XmlRootAttribute root = new XmlRootAttribute();
             root.ElementName = "object";
@@ -36,7 +36,7 @@ namespace GameConstructLibrary
 
             List<DummyObject> objects = new List<DummyObject>();
 
-            StreamReader reader = new StreamReader("Content\\" + "levels/" + file);
+            StreamReader reader = new StreamReader("Content\\" + "levels/" + fileName);
             XmlSerializer deserializer = new XmlSerializer(typeof(List<DummyObject>), root);
 
             objects = (List<DummyObject>)deserializer.Deserialize(reader);

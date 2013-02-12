@@ -398,7 +398,7 @@ namespace GameConstructLibrary
 
         }
 
-        public void Save(string file)
+        public void Save(string fileName)
         {
 
             Bitmap bmp = new Bitmap(mMap.Width, mMap.Height);
@@ -417,7 +417,7 @@ namespace GameConstructLibrary
             }
 
             // Redefine bitmap for permissions purposes
-            bmp.Save(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/maps/" + file + ".bmp");
+            bmp.Save(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/maps/" + fileName + ".bmp");
         }
     }
 }

@@ -247,7 +247,6 @@ namespace MapEditor
                 mTerrainPhysics.StaticCollidable.RayCast(ray, length, out result);
                 obj.Position = result.Location;
             }
-            
 
         }
 
