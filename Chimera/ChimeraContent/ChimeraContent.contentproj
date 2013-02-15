@@ -781,6 +781,174 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="objects\BearSpawner.prop">
+      <Name>BearSpawner</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Box.prop">
+      <Name>Box</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Cactus1S.prop">
+      <Name>Cactus1S</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Cactus2S.prop">
+      <Name>Cactus2S</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Cactus3S.prop">
+      <Name>Cactus3S</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Checkpoint.prop">
+      <Name>Checkpoint</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\CheetahSpawner.prop">
+      <Name>CheetahSpawner</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\CobraSpawner.prop">
+      <Name>CobraSpawner</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\DeadTree1S.prop">
+      <Name>DeadTree1S</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\DeadTree2S.prop">
+      <Name>DeadTree2S</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Dude.prop">
+      <Name>Dude</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\EagleSpawner.prop">
+      <Name>EagleSpawner</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\FrogSpawner.prop">
+      <Name>FrogSpawner</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\GoalPoint.prop">
+      <Name>GoalPoint</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\KangarooSpawner.prop">
+      <Name>KangarooSpawner</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\LeafP.prop">
+      <Name>LeafP</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\LeafS.prop">
+      <Name>LeafS</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\LizardSpawner.prop">
+      <Name>LizardSpawner</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\PenguinSpawner.prop">
+      <Name>PenguinSpawner</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\PlayerStart.prop">
+      <Name>PlayerStart</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\RhinoSpawner.prop">
+      <Name>RhinoSpawner</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock1DarkP.prop">
+      <Name>Rock1DarkP</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock1DarkS.prop">
+      <Name>Rock1DarkS</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock1LightP.prop">
+      <Name>Rock1LightP</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock1LightS.prop">
+      <Name>Rock1LightS</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock2DarkP.prop">
+      <Name>Rock2DarkP</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock2DarkS.prop">
+      <Name>Rock2DarkS</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock2LightP.prop">
+      <Name>Rock2LightP</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock2LightS.prop">
+      <Name>Rock2LightS</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock3DarkP.prop">
+      <Name>Rock3DarkP</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock3DarkS.prop">
+      <Name>Rock3DarkS</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock3LightP.prop">
+      <Name>Rock3LightP</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Rock3LightS.prop">
+      <Name>Rock3LightS</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\rock4.prop">
+      <Name>rock4</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Shrub1S.prop">
+      <Name>Shrub1S</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Shrub2S.prop">
+      <Name>Shrub2S</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Spawner.prop">
+      <Name>Spawner</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\TipTrigger.prop">
+      <Name>TipTrigger</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Tree1S.prop">
+      <Name>Tree1S</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Tree2S.prop">
+      <Name>Tree2S</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\Tree3S.prop">
+      <Name>Tree3S</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\TurtleSpawner.prop">
+      <Name>TurtleSpawner</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="shaders\Common.fxh">
       <Name>Common</Name>
     </None>
