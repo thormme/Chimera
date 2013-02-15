@@ -13,7 +13,7 @@ namespace GraphicsLibrary
     {
         #region Fields
 
-        public BoundingBox BoundingBox
+        public new BoundingBox BoundingBox
         {
             get { return mBoundingBox; }
         }
