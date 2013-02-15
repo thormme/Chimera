@@ -8,8 +8,6 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Nuclex.Input;
-using Nuclex.UserInterface;
 using GraphicsLibrary;
 using GameConstructLibrary;
 using WorldEditor.Dialogs;
@@ -26,9 +24,6 @@ namespace WorldEditor
 
         private FPSCamera mCamera = null;
         private WorldEditor mWorldEditor = null;
-
-        private InputManager mInputManager = null;
-        private GuiManager mGUIManager = null;
 
         public Editor()
         {
@@ -67,14 +62,7 @@ namespace WorldEditor
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
 
             GraphicsManager.LoadContent(Content, mGraphics.GraphicsDevice, mSpriteBatch);
-
-            mInputManager = new InputManager(Services, Window.Handle);
-            mGUIManager = new GuiManager(Services);
-            mGUIManager.DrawOrder = 1000;
-
-            Screen screen = new Screen(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            mGUIManager.Screen = screen;
-            mWorldEditor = new WorldEditor(screen, mInputManager, mGUIManager, mCamera);
+            mWorldEditor = new WorldEditor(GraphicsDevice.Viewport, mCamera);
 
         }
 
@@ -113,7 +101,7 @@ namespace WorldEditor
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             GraphicsManager.BeginRendering();
-            //WorldEditor.Draw();
+            mWorldEditor.Draw();
             GraphicsManager.FinishRendering();
 
             base.Draw(gameTime);
