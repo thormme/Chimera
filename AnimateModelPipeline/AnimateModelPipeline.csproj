@@ -82,9 +82,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GraphicsLibrary\GraphicsLibrary.csproj">
-      <Project>{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}</Project>
-      <Name>GraphicsLibrary</Name>
+    <ProjectReference Include="..\AnimationUtilities\AnimationUtilities.csproj">
+      <Project>{A2B93EFB-0D0C-455B-B1BB-176C336EE60D}</Project>
+      <Name>AnimationUtilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

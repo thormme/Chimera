@@ -172,7 +172,7 @@ namespace Chimera
             DebugModelDrawer = new InstancedModelDrawer(this);
             DebugModelDrawer.IsWireframe = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = Content.Load<SpriteFont>("font");
+            //font = Content.Load<SpriteFont>("font");
             try
             {
                 GraphicsManager.LoadContent(Content, Graphics.GraphicsDevice, spriteBatch);

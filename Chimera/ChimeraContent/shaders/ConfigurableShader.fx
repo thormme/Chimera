@@ -104,6 +104,15 @@ Technique TerrainCelShade
 	}
 }
 
+Technique TerrainPhong
+{
+	Pass
+	{
+		VertexShader = compile vs_3_0 VS();
+		PixelShader  = compile ps_3_0 TerrainPhongPS();
+	}
+}
+
 Technique NormalDepthShade
 {
 	Pass

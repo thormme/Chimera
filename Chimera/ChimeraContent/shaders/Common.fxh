@@ -10,9 +10,13 @@
 #define SKINNED_EFFECT_MAX_BONES   64
 #define MAX_CASCADE_COUNT          4
 
-DECLARE_TEXTURE(Texture, 0);
-DECLARE_TEXTURE(ShadowMap, 1);
-DECLARE_TEXTURE(HiResShadowMap, 2);
+DECLARE_TEXTURE(Texture,      0);
+DECLARE_TEXTURE(ShadowMap,    1);
+DECLARE_TEXTURE(AlphaMap,     2);
+DECLARE_TEXTURE(RedTexture,   3);
+DECLARE_TEXTURE(GreenTexture, 4);
+DECLARE_TEXTURE(BlueTexture,  5);
+DECLARE_TEXTURE(BaseTexture, 6);
 
 BEGIN_CONSTANTS
 
