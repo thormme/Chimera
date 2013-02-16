@@ -1,6 +1,6 @@
 ﻿namespace WorldEditor.Dialogs
 {
-    partial class Save
+    partial class SaveForm
     {
         /// <summary>
         /// Required designer variable.

@@ -192,7 +192,9 @@ namespace WorldEditor
 
         private void SaveHandler(object sender, EventArgs e)
         {
-            new Save();
+            SaveForm save = new SaveForm();
+            save.Show();
+            save.Location = new System.Drawing.Point(80, 80);
         }
 
         private void LoadHandler(object sender, EventArgs e)

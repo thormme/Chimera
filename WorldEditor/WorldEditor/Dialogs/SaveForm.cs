@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace WorldEditor.Dialogs
 {
-    public partial class Save : Form
+    public partial class SaveForm : Form
     {
-        public Save()
+        public SaveForm()
         {
             InitializeComponent();
         }
