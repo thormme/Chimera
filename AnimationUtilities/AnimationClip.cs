@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
-namespace GraphicsLibrary
+namespace AnimationUtilities
 {
     /// <summary>
     /// An animation clip is the runtime equivalent of the

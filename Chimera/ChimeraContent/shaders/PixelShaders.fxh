@@ -8,17 +8,28 @@ float4 NormalDepthPS(float4 color : COLOR0) : COLOR0
 	return color;
 }
 
-float discretePallete = 0.1f;
-
-float4 CelShadePS(VSOutput pin) : SV_Target0
+float4 CompositeTerrainTexture(float2 texCoord)
 {
-	float4 color = SAMPLE_TEXTURE(Texture, pin.TexCoord);
+	float4 textureWeights    = SAMPLE_TEXTURE(AlphaMap,     texCoord       );
+	float4 baseTextureColor  = SAMPLE_TEXTURE(BaseTexture,  texCoord * 8.0f);
+	float4 redTextureColor   = SAMPLE_TEXTURE(RedTexture,   texCoord * 8.0f);
+	float4 greenTextureColor = SAMPLE_TEXTURE(GreenTexture, texCoord * 8.0f);
+	float4 blueTextureColor  = SAMPLE_TEXTURE(BlueTexture,  texCoord * 8.0f);
+
+	float4 baseRedComp = textureWeights.r * redTextureColor + (1.0 - textureWeights.r) * baseTextureColor;
+	float4 baseRedGreenComp = textureWeights.g * greenTextureColor + (1.0 - textureWeights.g) * baseRedComp;
+	float4 baseRedGreenBlueComp = textureWeights.b * blueTextureColor + (1.0 - textureWeights.b) * baseRedGreenComp;
+
+	return baseRedGreenBlueComp;
+}
+
+float4 CelShadePSHelper(VSOutput pin, float4 textureColor)
+{
+	float4 color = textureColor;
 
 	float textureWeight = 1.0f - xOverlayColorWeight;
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
-
-	//color.rgba -= (color.rgba % discretePallete);
 
 	const float A = 0.3f;
 	const float B = 0.6f;
@@ -50,36 +61,22 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 	return color;
 }
 
-sampler NoShade_Sampler = sampler_state
+float4 CelShadePS(VSOutput pin) : SV_Target0
 {
-	texture = <Texture>;
-	magfilter = LINEAR;
-	minfilter = LINEAR;
-	mipfilter = LINEAR;
-	AddressU = wrap;
-	AddressV = wrap;
-};
+	float4 color = SAMPLE_TEXTURE(Texture, pin.TexCoord);
 
-float4 NoShadePS(VSOutput pin) : SV_Target0
-{
-	float4 color = tex2D(NoShade_Sampler, pin.TexCoord);
-
-	float textureWeight = 1.0f - xOverlayColorWeight;
-	color.rgb *= textureWeight;
-	color.rgb += xOverlayColorWeight * xOverlayColor;
-
-	return color;
+	return CelShadePSHelper(pin, color);
 }
 
-float4 OutlinePS(OutlineVSOutput pin) : SV_Target0
+float4 TerrainCelShadePS(VSOutput pin) : SV_Target0
 {
-	return float4(0.0, 0.0, 0.0, 1.0);
+	return CelShadePSHelper(pin, CompositeTerrainTexture(pin.TexCoord));
 }
 
-float4 PhongPS(VSOutput pin) : SV_Target0
+float4 PhongPSHelper(VSOutput pin, float4 textureColor)
 {
-	float4 diffuseColor = SAMPLE_TEXTURE(Texture, pin.TexCoord);
-		
+	float4 diffuseColor = textureColor;
+
 	float diffuseIntensity = saturate(pin.LightAmount);
 		
 	float4 diffuse = diffuseIntensity * diffuseColor;
@@ -105,13 +102,40 @@ float4 PhongPS(VSOutput pin) : SV_Target0
     return color;
 }
 
-float4 TerrainCelShadePS(VSOutput pin) : SV_Target0
+float4 PhongPS(VSOutput pin) : SV_Target0
 {
-	float4 color = PhongPS(pin);
+	float4 color = SAMPLE_TEXTURE(Texture, pin.TexCoord);
+		
+	return PhongPSHelper(pin, color);
+}
+
+float4 TerrainPhongPS(VSOutput pin) : SV_Target0
+{
+	return PhongPSHelper(pin, CompositeTerrainTexture(pin.TexCoord));
+}
+
+sampler NoShade_Sampler = sampler_state
+{
+	texture = <Texture>;
+	magfilter = LINEAR;
+	minfilter = LINEAR;
+	mipfilter = LINEAR;
+	AddressU = wrap;
+	AddressV = wrap;
+};
+
+float4 NoShadePS(VSOutput pin) : SV_Target0
+{
+	float4 color = tex2D(NoShade_Sampler, pin.TexCoord);
 
 	float textureWeight = 1.0f - xOverlayColorWeight;
 	color.rgb *= textureWeight;
 	color.rgb += xOverlayColorWeight * xOverlayColor;
 
 	return color;
+}
+
+float4 OutlinePS(OutlineVSOutput pin) : SV_Target0
+{
+	return float4(0.0, 0.0, 0.0, 1.0);
 }
