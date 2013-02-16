@@ -22,6 +22,18 @@ namespace WorldEditor
         private Controls mControls = null;
 
         private TerrainHeightMap mHeightMap = null;
+
+        public TerrainPhysics Terrain
+        {
+            get
+            {
+                return mTerrainPhysics;
+            }
+            private set
+            {
+                mTerrainPhysics = value;
+            }
+        }
         private TerrainPhysics mTerrainPhysics = null;
 
         private List<DummyObject> mDummies = new List<DummyObject>();
@@ -58,6 +70,17 @@ namespace WorldEditor
 
         }
 
+        public void AddObject(DummyObject dummyObject)
+        {
+            mDummies.Add(dummyObject);
+            Console.WriteLine(dummyObject.Position);
+        }
+
+        public void RemoveObject(DummyObject dummyObject)
+        {
+            mDummies.Remove(dummyObject);
+        }
+
         public void LinkHeightMap()
         {
             GraphicsManager.LookupTerrainHeightMap(mName).FixHeightMap(mHeightMap);
@@ -68,16 +91,6 @@ namespace WorldEditor
         {
             mHeightMap.ModifyVertices(Vector3.Zero, 10, 10, false, false, mControls.Inverse.Active, mControls.Smooth.Active, mControls.Flatten.Active);
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
-        }
-
-        public void AddObject(DummyObject obj)
-        {
-            mDummies.Add(obj);
-        }
-
-        public void RemoveObject(DummyObject obj)
-        {
-            mDummies.Remove(obj);
         }
 
         public void Save(string fileName)
@@ -124,12 +137,26 @@ namespace WorldEditor
 
         public void Update(GameTime gameTime)
         {
+
             foreach (DummyObject obj in mDummies)
             {
-                Ray ray = new Ray(new Vector3(obj.Position.X, float.MaxValue / 2.0f, obj.Position.Z), -Vector3.Up);
+                Ray ray = new Ray(new Vector3(obj.Position.X, mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f, obj.Position.Z), -Vector3.Up);
                 RayHit result;
-                mTerrainPhysics.StaticCollidable.RayCast(ray, float.MaxValue, out result);
+                mTerrainPhysics.StaticCollidable.RayCast(ray, (mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f) - (mTerrainPhysics.StaticCollidable.BoundingBox.Min.Y - 200.0f), out result);
                 obj.Position = result.Location;
+            }
+        }
+
+        public void Draw()
+        {
+            mTerrainPhysics.Render();
+            foreach (DummyObject dummy in mDummies)
+            {
+                InanimateModel model = new InanimateModel(dummy.Model);
+                model.Render(
+                    new Vector3(dummy.Position.X, dummy.Position.Y + dummy.Height * Utils.WorldScale.Y, dummy.Position.Z),
+                    Matrix.CreateFromYawPitchRoll(dummy.Orientation.X, dummy.Orientation.Y, dummy.Orientation.Z),
+                    dummy.Scale);
             }
         }
 

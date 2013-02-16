@@ -11,7 +11,7 @@ namespace WorldEditor
     public class Controls
     {
 
-        public MouseState State = Mouse.GetState();
+        public MouseState MouseState = Mouse.GetState();
 
         public KeyInputAction Forward = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.W);
         public KeyInputAction Backward = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.S);
@@ -48,7 +48,7 @@ namespace WorldEditor
         {
             
             InputAction.Update();
-            State = Mouse.GetState();
+            MouseState = Mouse.GetState();
 
         }
 

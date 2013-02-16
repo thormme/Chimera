@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using GameConstructLibrary;
+using BEPUphysics;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace WorldEditor
 {
@@ -13,6 +15,7 @@ namespace WorldEditor
         private const float Speed = 0.5f;
         private const float Sensitivity = 0.1f;
 
+        private Viewport mViewport = new Viewport();
         private FPSCamera mCamera = null;
         private Controls mControls = null;
         private Vector2 mDragPoint = Vector2.Zero;
@@ -20,17 +23,19 @@ namespace WorldEditor
         private Vector3 mMovement = Vector3.Zero;
         private Vector3 mDirection = Vector3.Zero;
 
-        public Entity(Controls controls, FPSCamera camera)
+        public Entity(Viewport viewport, Controls controls, FPSCamera camera)
         {
+            mViewport = viewport;
             mControls = controls;
             mCamera = camera;
         }
 
-        public void Update(GameTime gameTime)
+        public bool Update(GameTime gameTime, DummyWorld dummyWorld, DummyObject dummyObject)
         {
             UpdateMovement();
             UpdateDirection();
             UpdateCamera(gameTime);
+            return UpdatePicking(dummyWorld, dummyObject);
         }
 
         private void UpdateMovement()
@@ -47,8 +52,8 @@ namespace WorldEditor
             }
             else if (mControls.RightHold.Active)
             {
-                mDirection.X = -MathHelper.ToRadians((mControls.State.X - mDragPoint.X) * Sensitivity);
-                mDirection.Y = MathHelper.ToRadians((mControls.State.Y - mDragPoint.Y) * Sensitivity);
+                mDirection.X = -MathHelper.ToRadians((mControls.MouseState.X - mDragPoint.X) * Sensitivity);
+                mDirection.Y = MathHelper.ToRadians((mControls.MouseState.Y - mDragPoint.Y) * Sensitivity);
                 UpdateDragPoint();
             }
             else if (mControls.RightReleased.Active)
@@ -65,8 +70,33 @@ namespace WorldEditor
 
         private void UpdateDragPoint()
         {
-            mDragPoint.X = mControls.State.X;
-            mDragPoint.Y = mControls.State.Y;
+            mDragPoint.X = mControls.MouseState.X;
+            mDragPoint.Y = mControls.MouseState.Y;
+        }
+
+        private bool UpdatePicking(DummyWorld dummyWorld, DummyObject dummyObject)
+        {
+
+            Vector3 nearScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 0.0f);
+            Vector3 farScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 1.0f);
+            Vector3 nearWorld = mViewport.Unproject(nearScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
+            Vector3 farWorld = mViewport.Unproject(farScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
+            Vector3 projectionDirection = (farWorld - nearWorld);
+            projectionDirection.Normalize();
+            Ray ray = new Ray(mCamera.Position, projectionDirection);
+            RayHit result;
+
+            if (dummyWorld.Terrain.StaticCollidable.RayCast(ray, 2000.0f, out result))
+            {
+                dummyObject.Position = result.Location;
+                return true;
+            }
+            else
+            {
+                dummyObject.Position = Vector3.Zero;
+                return false;
+            }
+
         }
 
     }
