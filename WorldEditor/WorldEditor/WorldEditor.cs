@@ -118,6 +118,11 @@ namespace WorldEditor
             mEditorForm.Show();
             mEditorForm.Location = new System.Drawing.Point(80, 80);
 
+            MenuStrip editMenu = (mEditorForm.Controls["MenuStrip"] as MenuStrip);
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["NewMenu"].Click += NewHandler;
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveMenu"].Click += SaveHandler;
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["LoadMenu"].Click += LoadHandler;
+
             TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
 
             editModes.SelectedIndexChanged += EditHandler;
@@ -177,6 +182,21 @@ namespace WorldEditor
             {
                 (editModes.Controls["Textures"].Controls["TextureList"] as ListBox).Items.Add(texture.Key);
             }
+
+        }
+
+        private void NewHandler(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void SaveHandler(object sender, EventArgs e)
+        {
+            new Save();
+        }
+
+        private void LoadHandler(object sender, EventArgs e)
+        {
 
         }
 

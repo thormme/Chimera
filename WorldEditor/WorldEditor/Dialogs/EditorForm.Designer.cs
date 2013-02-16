@@ -48,11 +48,18 @@
             this.TextureRadiusField = new System.Windows.Forms.TextBox();
             this.TextureList = new System.Windows.Forms.ListBox();
             this.Picture = new System.Windows.Forms.PictureBox();
+            this.MenuStrip = new System.Windows.Forms.MenuStrip();
+            this.File = new System.Windows.Forms.ToolStripMenuItem();
+            this.NewMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.LoadMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.Edit = new System.Windows.Forms.ToolStripMenuItem();
             this.EditTabs.SuspendLayout();
             this.Objects.SuspendLayout();
             this.Heights.SuspendLayout();
             this.Textures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
+            this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // EditTabs
@@ -61,10 +68,10 @@
             this.EditTabs.Controls.Add(this.Objects);
             this.EditTabs.Controls.Add(this.Heights);
             this.EditTabs.Controls.Add(this.Textures);
-            this.EditTabs.Location = new System.Drawing.Point(12, 12);
+            this.EditTabs.Location = new System.Drawing.Point(12, 38);
             this.EditTabs.Name = "EditTabs";
             this.EditTabs.SelectedIndex = 0;
-            this.EditTabs.Size = new System.Drawing.Size(198, 383);
+            this.EditTabs.Size = new System.Drawing.Size(198, 357);
             this.EditTabs.TabIndex = 3;
             // 
             // Objects
@@ -73,7 +80,7 @@
             this.Objects.Location = new System.Drawing.Point(4, 22);
             this.Objects.Name = "Objects";
             this.Objects.Padding = new System.Windows.Forms.Padding(3);
-            this.Objects.Size = new System.Drawing.Size(190, 357);
+            this.Objects.Size = new System.Drawing.Size(190, 331);
             this.Objects.TabIndex = 3;
             this.Objects.Text = "Objects";
             this.Objects.UseVisualStyleBackColor = true;
@@ -83,7 +90,7 @@
             this.ObjectList.FormattingEnabled = true;
             this.ObjectList.Location = new System.Drawing.Point(16, 21);
             this.ObjectList.Name = "ObjectList";
-            this.ObjectList.Size = new System.Drawing.Size(154, 316);
+            this.ObjectList.Size = new System.Drawing.Size(154, 290);
             this.ObjectList.TabIndex = 0;
             // 
             // Heights
@@ -100,7 +107,7 @@
             this.Heights.Location = new System.Drawing.Point(4, 22);
             this.Heights.Name = "Heights";
             this.Heights.Padding = new System.Windows.Forms.Padding(3);
-            this.Heights.Size = new System.Drawing.Size(190, 357);
+            this.Heights.Size = new System.Drawing.Size(190, 331);
             this.Heights.TabIndex = 1;
             this.Heights.Text = "Heights";
             this.Heights.UseVisualStyleBackColor = true;
@@ -201,7 +208,7 @@
             this.Textures.Location = new System.Drawing.Point(4, 22);
             this.Textures.Name = "Textures";
             this.Textures.Padding = new System.Windows.Forms.Padding(3);
-            this.Textures.Size = new System.Drawing.Size(190, 357);
+            this.Textures.Size = new System.Drawing.Size(190, 331);
             this.Textures.TabIndex = 2;
             this.Textures.Text = "Textures";
             this.Textures.UseVisualStyleBackColor = true;
@@ -246,25 +253,74 @@
             this.TextureList.FormattingEnabled = true;
             this.TextureList.Location = new System.Drawing.Point(15, 80);
             this.TextureList.Name = "TextureList";
-            this.TextureList.Size = new System.Drawing.Size(160, 82);
+            this.TextureList.Size = new System.Drawing.Size(160, 56);
             this.TextureList.TabIndex = 1;
             // 
             // Picture
             // 
             this.Picture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.Picture.Location = new System.Drawing.Point(15, 179);
+            this.Picture.Location = new System.Drawing.Point(15, 154);
             this.Picture.Name = "Picture";
             this.Picture.Size = new System.Drawing.Size(160, 160);
             this.Picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.Picture.TabIndex = 0;
             this.Picture.TabStop = false;
             // 
+            // MenuStrip
+            // 
+            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.File,
+            this.Edit});
+            this.MenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.MenuStrip.Name = "MenuStrip";
+            this.MenuStrip.Size = new System.Drawing.Size(222, 24);
+            this.MenuStrip.TabIndex = 4;
+            this.MenuStrip.Text = "menuStrip1";
+            // 
+            // File
+            // 
+            this.File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NewMenu,
+            this.SaveMenu,
+            this.LoadMenu});
+            this.File.Name = "File";
+            this.File.Size = new System.Drawing.Size(37, 20);
+            this.File.Text = "File";
+            // 
+            // NewMenu
+            // 
+            this.NewMenu.Name = "NewMenu";
+            this.NewMenu.Size = new System.Drawing.Size(152, 22);
+            this.NewMenu.Text = "New";
+            // 
+            // SaveMenu
+            // 
+            this.SaveMenu.Name = "SaveMenu";
+            this.SaveMenu.Size = new System.Drawing.Size(152, 22);
+            this.SaveMenu.Text = "Save";
+            // 
+            // LoadMenu
+            // 
+            this.LoadMenu.Name = "LoadMenu";
+            this.LoadMenu.Size = new System.Drawing.Size(152, 22);
+            this.LoadMenu.Text = "Load";
+            // 
+            // Edit
+            // 
+            this.Edit.Name = "Edit";
+            this.Edit.Size = new System.Drawing.Size(39, 20);
+            this.Edit.Text = "Edit";
+            // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(222, 407);
+            this.ControlBox = false;
             this.Controls.Add(this.EditTabs);
+            this.Controls.Add(this.MenuStrip);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "EditorForm";
             this.Text = "Editor Menu";
             this.TopMost = true;
@@ -276,7 +332,10 @@
             this.Textures.ResumeLayout(false);
             this.Textures.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();
+            this.MenuStrip.ResumeLayout(false);
+            this.MenuStrip.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -302,5 +361,11 @@
         private System.Windows.Forms.TextBox TextureRadiusField;
         private System.Windows.Forms.ListBox TextureList;
         private System.Windows.Forms.PictureBox Picture;
+        private System.Windows.Forms.MenuStrip MenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem File;
+        private System.Windows.Forms.ToolStripMenuItem NewMenu;
+        private System.Windows.Forms.ToolStripMenuItem SaveMenu;
+        private System.Windows.Forms.ToolStripMenuItem LoadMenu;
+        private System.Windows.Forms.ToolStripMenuItem Edit;
     }
 }

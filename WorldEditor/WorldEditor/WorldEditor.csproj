@@ -137,6 +137,12 @@
     <Compile Include="Dialogs\ObjectParametersForm.Designer.cs">
       <DependentUpon>ObjectParametersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\Save.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Save.Designer.cs">
+      <DependentUpon>Save.cs</DependentUpon>
+    </Compile>
     <Compile Include="DummyWorld.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="Entity.cs" />
@@ -201,6 +207,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ObjectParametersForm.resx">
       <DependentUpon>ObjectParametersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\Save.resx">
+      <DependentUpon>Save.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
