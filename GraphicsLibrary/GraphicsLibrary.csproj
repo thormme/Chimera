@@ -160,6 +160,7 @@
     <Compile Include="TerrainHeightMap.cs" />
     <Compile Include="TerrainRenderable.cs" />
     <Compile Include="SuckParticleSystem.cs" />
+    <Compile Include="TextureMap.cs" />
     <Compile Include="TransparentModel.cs" />
   </ItemGroup>
   <ItemGroup>

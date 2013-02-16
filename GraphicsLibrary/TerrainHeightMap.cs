@@ -221,7 +221,7 @@ namespace GameConstructLibrary
             MakeBuffer();
         }
 
-        public void ModifyVertices(Vector3 position, int size, int intensity, bool feather, bool set, bool inverse, bool smooth, bool flatten)
+        public void ModifyVertices(Vector3 position, int radius, int intensity, bool set, bool invert, bool feather, bool flatten, bool smooth)
         {
 
             intensity = (int)(intensity / Utils.WorldScale.Y);
@@ -233,24 +233,24 @@ namespace GameConstructLibrary
             position.Z += mHeight / 2;
 
             // Correct for inverse
-            if (inverse)
+            if (invert)
             {
                 intensity = -intensity;
             }
 
-            if (smooth) SmoothVertices(position, size);
-            else if (flatten) FlattenVertices(position, size);
+            if (smooth) SmoothVertices(position, radius);
+            else if (flatten) FlattenVertices(position, radius);
             else
             {
 
                 // Build smaller grid for modifying heights
-                for (int z = (int)position.Z - size; z <= (int)position.Z + size; z++)
+                for (int z = (int)position.Z - radius; z <= (int)position.Z + radius; z++)
                 {
-                    for (int x = (int)position.X - size; x <= (int)position.X + size; x++)
+                    for (int x = (int)position.X - radius; x <= (int)position.X + radius; x++)
                     {
                         if (x < 0 || x >= mWidth || z < 0 || z >= mHeight) continue;
                         int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
-                        if (distance < size)
+                        if (distance < radius)
                         {
 
                             if (set) vertices2D[x, z].Position.Y = intensity;
@@ -258,7 +258,7 @@ namespace GameConstructLibrary
                             {
                                 float intensityModifier;
 
-                                if (feather) intensityModifier = (float)Math.Log(size - distance) / size;
+                                if (feather) intensityModifier = (float)Math.Log(radius - distance) / radius;
                                 else intensityModifier = 1.0f;
 
                                 vertices2D[x, z].Position.Y += intensity * intensityModifier;
@@ -416,7 +416,6 @@ namespace GameConstructLibrary
                 }
             }
 
-            // Redefine bitmap for permissions purposes
             bmp.Save(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/maps/" + fileName + ".bmp");
         }
     }

@@ -22,6 +22,7 @@ namespace WorldEditor
         private Controls mControls = null;
 
         private TerrainHeightMap mHeightMap = null;
+        private TextureMap mTextureMap = null;
 
         public TerrainPhysics Terrain
         {
@@ -48,6 +49,9 @@ namespace WorldEditor
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
             mHeightMap.Resize(width, height);
 
+            mTextureMap = new TextureMap(GraphicsManager.LookupSprite(mName + "_texture"), GraphicsManager.Device);
+            mTextureMap.Resize(width, height);
+
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
         }
@@ -60,8 +64,9 @@ namespace WorldEditor
             mControls = copy.mControls;
 
             mHeightMap = new TerrainHeightMap(copy.mHeightMap);
+            mTextureMap = new TextureMap(copy.mTextureMap);
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
-            
+
             mDummies = new List<DummyObject>();
             foreach (DummyObject obj in copy.mDummies)
             {
@@ -73,7 +78,6 @@ namespace WorldEditor
         public void AddObject(DummyObject dummyObject)
         {
             mDummies.Add(dummyObject);
-            Console.WriteLine(dummyObject.Position);
         }
 
         public void RemoveObject(DummyObject dummyObject)
@@ -87,16 +91,22 @@ namespace WorldEditor
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
         }
 
-        public void ModifyHeightMap()
+        public void ModifyHeightMap(Vector3 position, int radius, int intensity, bool feather, bool set, bool inverse, bool smooth, bool flatten)
         {
-            mHeightMap.ModifyVertices(Vector3.Zero, 10, 10, false, false, mControls.Inverse.Active, mControls.Smooth.Active, mControls.Flatten.Active);
+            mHeightMap.ModifyVertices(position, radius, intensity, feather, set, inverse, smooth, flatten);
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
+        }
+
+        public void ModifyTextureMap(Vector3 position, string texture, int radius, float alpha)
+        {
+            mTextureMap.ModifyVertices(position, texture, radius, alpha);
         }
 
         public void Save(string fileName)
         {
             
             mHeightMap.Save(fileName);
+            mTextureMap.Save(fileName);
 
             UnscaleObjects();
             LevelManager.Save(fileName, mDummies);
@@ -110,6 +120,7 @@ namespace WorldEditor
             mName = fileName;
 
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
+            mTextureMap = new TextureMap(GraphicsManager.LookupSprite(mName + "_texture"), GraphicsManager.Device);
             mTerrainPhysics = new TerrainPhysics(fileName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
             mDummies = LevelManager.Load(mName);

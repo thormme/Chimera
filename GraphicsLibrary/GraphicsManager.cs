@@ -29,7 +29,7 @@ namespace GraphicsLibrary
         static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string, Model>();
         static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
         static private Dictionary<string, Dictionary<string, Matrix>> mUniqueModelBoneLibrary = new Dictionary<string, Dictionary<string, Matrix>>();
-        static private Dictionary<string, Texture2D> mUniqueSpriteLibrary = new Dictionary<string, Texture2D>();
+        static private Dictionary<string, Texture2D> mUniqueTextureLibrary = new Dictionary<string, Texture2D>();
         static private Dictionary<string, Dictionary<int, Texture2D>> mUniqueAnimateTextureLibrary = new Dictionary<string, Dictionary<int, Texture2D>>();
 
         static private GraphicsDevice mDevice;
@@ -132,6 +132,42 @@ namespace GraphicsLibrary
             set { mDebugVisualization = value; }
         }
         static private bool mDebugVisualization = false;
+
+        static public GraphicsDevice Device
+        {
+            get
+            {
+                return mDevice;
+            }
+            private set
+            {
+                mDevice = value;
+            }
+        }
+
+        static public Dictionary<string, Model> ModelLibrary
+        {
+            get
+            {
+                return mUniqueModelLibrary;
+            }
+            private set
+            {
+                mUniqueModelLibrary = value;
+            }
+        }
+
+        static public Dictionary<string, Texture2D> TextureLibrary
+        {
+            get
+            {
+                return mUniqueTextureLibrary;
+            }
+            private set
+            {
+                mUniqueTextureLibrary = value;
+            }
+        }
 
         #endregion
 
@@ -339,7 +375,26 @@ namespace GraphicsLibrary
                 mUniqueTerrainLibrary.Add(terrainName, newTerrain);
             }
 
-            // Load sprites.
+            // Load textures.
+            dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/maps/");
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException("Could not find textures/maps/ directory in content.");
+            }
+
+            FileInfo[] mapFiles = dir.GetFiles("*");
+            foreach (FileInfo file in mapFiles)
+            {
+                string mapName = Path.GetFileNameWithoutExtension(file.Name);
+                Texture2D map = content.Load<Texture2D>("textures/maps/" + mapName);
+
+                if (mUniqueTextureLibrary.ContainsKey(mapName))
+                {
+                    throw new Exception("Duplicate map key: " + mapName);
+                }
+                mUniqueTextureLibrary.Add(mapName, map);
+            }
+
             dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/sprites/");
             if (!dir.Exists)
             {
@@ -352,11 +407,11 @@ namespace GraphicsLibrary
                 string spriteName = Path.GetFileNameWithoutExtension(file.Name);
                 Texture2D sprite = content.Load<Texture2D>("textures/sprites/" + spriteName);
 
-                if (mUniqueSpriteLibrary.ContainsKey(spriteName))
+                if (mUniqueTextureLibrary.ContainsKey(spriteName))
                 {
                     throw new Exception("Duplicate sprite key: " + spriteName);
                 }
-                mUniqueSpriteLibrary.Add(spriteName, sprite);
+                mUniqueTextureLibrary.Add(spriteName, sprite);
             }
         }
 
@@ -745,7 +800,7 @@ namespace GraphicsLibrary
         static public Texture2D LookupSprite(string spriteName)
         {
             Texture2D result;
-            if (mUniqueSpriteLibrary.TryGetValue(spriteName, out result))
+            if (mUniqueTextureLibrary.TryGetValue(spriteName, out result))
             {
                 return result;
             }
