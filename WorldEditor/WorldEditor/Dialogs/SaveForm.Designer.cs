@@ -31,12 +31,16 @@
             this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
-            // Save
+            // SaveFileDialog
+            // 
+            this.SaveFileDialog.CreatePrompt = true;
+            // 
+            // SaveForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Name = "Save";
+            this.ClientSize = new System.Drawing.Size(320, 234);
+            this.Name = "SaveForm";
             this.Text = "Save";
             this.ResumeLayout(false);
 
