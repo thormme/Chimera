@@ -68,7 +68,6 @@ namespace GameConstructLibrary
             {
                 for (int x = 0; x < mWidth; x++)
                 {
-
                     if (resized) // If resized rebuild map
                     {
                         vertices[x * mWidth + z] = new Microsoft.Xna.Framework.Color(0.0f, 0.0f, 0.0f, 1.0f);

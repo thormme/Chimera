@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -192,9 +192,7 @@ namespace WorldEditor
 
         private void SaveHandler(object sender, EventArgs e)
         {
-            SaveForm save = new SaveForm();
-            save.Show();
-            save.Location = new System.Drawing.Point(80, 80);
+            new SaveForm();
         }
 
         private void LoadHandler(object sender, EventArgs e)
