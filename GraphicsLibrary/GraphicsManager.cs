@@ -364,7 +364,11 @@ namespace GraphicsLibrary
                     terrainTexture = content.Load<Texture2D>("levels/maps/" + inputTextureName);
                 }
 
-                TerrainDescription newTerrain = new TerrainDescription(heightMap, terrainTexture);
+                TerrainDescription newTerrain = new TerrainDescription(
+                    heightMap, 
+                    terrainTexture, 
+                    new string[4] {"snowTexture", "grassTexture", "dirtTexture", "waterTexture"}
+                    );
                 if (mUniqueTerrainLibrary.ContainsKey(terrainName))
                 {
                     throw new Exception("Duplicate terrain key: " + terrainName);
@@ -595,6 +599,26 @@ namespace GraphicsLibrary
                 return result.Terrain;
             }
             throw new KeyNotFoundException("Unable to find terrain key: " + terrainName);
+        }
+
+        static public Texture2D LookupTerrainTexture(string terrainName)
+        {
+            TerrainDescription result;
+            if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
+            {
+                return result.Texture;
+            }
+            throw new KeyNotFoundException("Unable to find texture for terrain key: " + terrainName);
+        }
+
+        static public string[] LookupTerrainTextureNames(string terrainName)
+        {
+            TerrainDescription result;
+            if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
+            {
+                return result.TextureNames;
+            }
+            throw new KeyNotFoundException("Unable to find texture names for terrain key: " + terrainName);
         }
 
         /// <summary>
@@ -928,10 +952,10 @@ namespace GraphicsLibrary
             mDevice.SetVertexBuffer(heightMap.Terrain.VertexBuffer);
 
             mTerrainShader.Parameters["AlphaMap"].SetValue(heightMap.Texture);
-            mTerrainShader.Parameters["RedTexture"].SetValue(LookupSprite("dirtTexture"));
-            mTerrainShader.Parameters["GreenTexture"].SetValue(LookupSprite("grassTexture"));
-            mTerrainShader.Parameters["BlueTexture"].SetValue(LookupSprite("waterTexture"));
-            mTerrainShader.Parameters["BaseTexture"].SetValue(LookupSprite("snowTexture"));
+            mTerrainShader.Parameters["BlackTexture"].SetValue(LookupSprite(heightMap.TextureNames[0]));
+            mTerrainShader.Parameters["RedTexture"].SetValue(LookupSprite(heightMap.TextureNames[1]));
+            mTerrainShader.Parameters["GreenTexture"].SetValue(LookupSprite(heightMap.TextureNames[2]));
+            mTerrainShader.Parameters["BlueTexture"].SetValue(LookupSprite(heightMap.TextureNames[3]));
 
             if (CastingShadows)
             {

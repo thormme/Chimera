@@ -27,25 +27,27 @@ namespace GameConstructLibrary
         private int mHeight = 0;
 
         private int mBootTexture = 0;
-        private string[] mTextures = new string[4];
+        private string[] mTextures;
 
-        Microsoft.Xna.Framework.Color[,] vertices;
+        Microsoft.Xna.Framework.Color[] vertices;
 
         public TextureMap(int width, int height, GraphicsDevice device)
         {
             mDevice = device;
             mMap = new Texture2D(device, width, height);
+            mTextures = new string[4];
             mWidth = mMap.Width;
             mHeight = mMap.Height;
             LoadData(true);
         }
 
-        public TextureMap(Texture2D heightTexture, GraphicsDevice device)
+        public TextureMap(Texture2D heightTexture, string[] textureNames, GraphicsDevice device)
         {
             mDevice = device;
             mMap = heightTexture;
             mWidth = mMap.Width;
             mHeight = mMap.Height;
+            mTextures = textureNames;
             LoadData(false);
         }
 
@@ -61,7 +63,7 @@ namespace GameConstructLibrary
 
         private void MakeVertices(bool resized)
         {
-            vertices = new Microsoft.Xna.Framework.Color[mWidth, mHeight];
+            vertices = new Microsoft.Xna.Framework.Color[mWidth * mHeight];
             for (int z = 0; z < mHeight; z++)
             {
                 for (int x = 0; x < mWidth; x++)
@@ -69,11 +71,11 @@ namespace GameConstructLibrary
 
                     if (resized) // If resized rebuild map
                     {
-                        vertices[x, z] = new Microsoft.Xna.Framework.Color(0.0f, 0.0f, 0.0f, 0.0f);
+                        vertices[x * mWidth + z] = new Microsoft.Xna.Framework.Color(0.0f, 0.0f, 0.0f, 1.0f);
                     }
                     else // Otherwise create vertices
                     {
-                        vertices[x, z] = Utils.GetTexture2DPixelColor(x, z, mMap);
+                        vertices[x * mWidth + z] = Utils.GetTexture2DPixelColor(x, z, mMap);
                     }
                 }
             }
@@ -88,18 +90,21 @@ namespace GameConstructLibrary
             mMap.SetData<Microsoft.Xna.Framework.Color>(destinationColorData);
             mWidth = copy.mWidth;
             mHeight = copy.mHeight;
-            vertices = new Microsoft.Xna.Framework.Color[mWidth, mHeight];
+            vertices = new Microsoft.Xna.Framework.Color[mWidth * mHeight];
             for (int z = 0; z < mHeight; z++)
             {
                 for (int x = 0; x < mWidth; x++)
                 {
-                    vertices[x, z] = copy.vertices[x, z];
+                    vertices[x * mWidth + z] = copy.vertices[x * mWidth + z];
                 }
             }
         }
 
         public void ModifyVertices(Vector3 position, string texture, int radius, float alpha)
         {
+            radius *= 10;
+
+            Console.WriteLine("cursor at: " + position);
             if (!mTextures.Contains(texture))
             {
                 
@@ -110,8 +115,13 @@ namespace GameConstructLibrary
                 {
                     mBootTexture = 0;
                 }
-
             }
+
+            // Adjust for the rendered location of the terrain
+            position.X /= (Utils.WorldScale.X * 0.1f);
+            position.Z /= (Utils.WorldScale.Z * 0.1f);
+            position.X += mWidth / 2;
+            position.Z += mHeight / 2;
 
             for (int z = (int)position.Z - radius; z <= (int)position.Z + radius; z++)
             {
@@ -123,23 +133,28 @@ namespace GameConstructLibrary
                     {
                         if (mTextures[0] == texture)
                         {
-                            vertices[x, z] = Microsoft.Xna.Framework.Color.Black;
+                            vertices[z * mWidth + x] = Microsoft.Xna.Framework.Color.Black;
                         }
                         else if (mTextures[1] == texture)
                         {
-                            vertices[x, z] = Microsoft.Xna.Framework.Color.Red;
+                            vertices[z * mWidth + x] = Microsoft.Xna.Framework.Color.Red;
                         }
                         else if (mTextures[2] == texture)
                         {
-                            vertices[x, z] = Microsoft.Xna.Framework.Color.Green;
+                            vertices[z * mWidth + x] = new Microsoft.Xna.Framework.Color(0, 255, 0, 255);
                         }
                         else if (mTextures[3] == texture)
                         {
-                            vertices[x, z] = Microsoft.Xna.Framework.Color.Blue;
+                            vertices[z * mWidth + x] = Microsoft.Xna.Framework.Color.Blue;
                         }
                     }
                 }
             }
+            if (Object.ReferenceEquals(mMap, GraphicsManager.LookupTerrainTexture("default")))
+            {
+                Console.WriteLine("textures are the same");
+            }
+            mMap.SetData(vertices);
         }
 
         public void Resize(int width, int height)
@@ -175,7 +190,7 @@ namespace GameConstructLibrary
             {
                 for (int x = 0; x < mWidth; x++)
                 {
-                    bmp.SetPixel(x, z, System.Drawing.Color.FromArgb(vertices[x, z].R, vertices[x, z].G, vertices[x, z].B, vertices[x, z].A));
+                    bmp.SetPixel(x, z, System.Drawing.Color.FromArgb(vertices[x * mWidth + z].R, vertices[x * mWidth + z].G, vertices[x * mWidth + z].B, vertices[x * mWidth + z].A));
                 }
             }
 

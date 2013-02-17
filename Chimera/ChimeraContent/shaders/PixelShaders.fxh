@@ -11,16 +11,16 @@ float4 NormalDepthPS(float4 color : COLOR0) : COLOR0
 float4 CompositeTerrainTexture(float2 texCoord)
 {
 	float4 textureWeights    = SAMPLE_TEXTURE(AlphaMap,     texCoord       );
-	float4 baseTextureColor  = SAMPLE_TEXTURE(BaseTexture,  texCoord * 8.0f);
+	float4 blackTextureColor = SAMPLE_TEXTURE(BlackTexture, texCoord * 8.0f);
 	float4 redTextureColor   = SAMPLE_TEXTURE(RedTexture,   texCoord * 8.0f);
 	float4 greenTextureColor = SAMPLE_TEXTURE(GreenTexture, texCoord * 8.0f);
 	float4 blueTextureColor  = SAMPLE_TEXTURE(BlueTexture,  texCoord * 8.0f);
 
-	float4 baseRedComp = textureWeights.r * redTextureColor + (1.0 - textureWeights.r) * baseTextureColor;
-	float4 baseRedGreenComp = textureWeights.g * greenTextureColor + (1.0 - textureWeights.g) * baseRedComp;
-	float4 baseRedGreenBlueComp = textureWeights.b * blueTextureColor + (1.0 - textureWeights.b) * baseRedGreenComp;
+	float4 blackRedComp          = textureWeights.r * redTextureColor   + (1.0 - textureWeights.r) * blackTextureColor;
+	float4 blackRedGreenComp     = textureWeights.g * greenTextureColor + (1.0 - textureWeights.g) * blackRedComp;
+	float4 blackRedGreenBlueComp = textureWeights.b * blueTextureColor  + (1.0 - textureWeights.b) * blackRedGreenComp;
 
-	return baseRedGreenBlueComp;
+	return blackRedGreenBlueComp;
 }
 
 float4 CelShadePSHelper(VSOutput pin, float4 textureColor)
