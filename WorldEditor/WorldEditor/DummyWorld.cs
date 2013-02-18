@@ -49,7 +49,7 @@ namespace WorldEditor
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
             mHeightMap.Resize(width, height);
 
-            mTextureMap = new TextureMap(GraphicsManager.LookupTerrainTexture(mName), GraphicsManager.LookupTerrainTextureNames(mName), GraphicsManager.Device);
+            mTextureMap = new TextureMap(GraphicsManager.LookupTerrainAlphaMaps(mName), GraphicsManager.LookupTerrainTextureNames(mName), GraphicsManager.Device);
 
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
@@ -98,7 +98,7 @@ namespace WorldEditor
 
         public void ModifyTextureMap(Vector3 position, string texture, int radius, float alpha)
         {
-            mTextureMap.ModifyVertices(position, texture, radius, alpha);
+            mTextureMap.ModifyTexelWeights(position, texture, radius, alpha);
         }
 
         public void Save(string fileName)
@@ -119,7 +119,7 @@ namespace WorldEditor
             mName = fileName;
 
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
-            mTextureMap = new TextureMap(GraphicsManager.LookupTerrainTexture(mName), GraphicsManager.LookupTerrainTextureNames(mName), GraphicsManager.Device);
+            mTextureMap = new TextureMap(GraphicsManager.LookupTerrainAlphaMaps(mName), GraphicsManager.LookupTerrainTextureNames(mName), GraphicsManager.Device);
             mTerrainPhysics = new TerrainPhysics(fileName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
             mDummies = LevelManager.Load(mName);

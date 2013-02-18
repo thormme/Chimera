@@ -18,35 +18,32 @@ namespace GameConstructLibrary
 
     public class TextureMap
     {
-
         private GraphicsDevice mDevice = null;
 
-        private Texture2D mMap = null;
+        private List<Texture2D> mAlphaMaps = new List<Texture2D>();
+        private List<Microsoft.Xna.Framework.Color[]> texelWeights = new List<Microsoft.Xna.Framework.Color[]>();
+        private List<string> mTextures;
 
         private int mWidth = 0;
         private int mHeight = 0;
 
-        private int mBootTexture = 0;
-        private string[] mTextures;
-
-        Microsoft.Xna.Framework.Color[] vertices;
-
         public TextureMap(int width, int height, GraphicsDevice device)
         {
             mDevice = device;
-            mMap = new Texture2D(device, width, height);
-            mTextures = new string[4];
-            mWidth = mMap.Width;
-            mHeight = mMap.Height;
+            mAlphaMaps.Add(new Texture2D(device, width, height));
+            mTextures = new List<string>();
+            mTextures.Add("default_terrain_detail");
+            mWidth = width;
+            mHeight = height;
             LoadData(true);
         }
 
-        public TextureMap(Texture2D heightTexture, string[] textureNames, GraphicsDevice device)
+        public TextureMap(List<Texture2D> alphaMaps, List<string> textureNames, GraphicsDevice device)
         {
             mDevice = device;
-            mMap = heightTexture;
-            mWidth = mMap.Width;
-            mHeight = mMap.Height;
+            mAlphaMaps = alphaMaps;
+            mWidth = alphaMaps[0].Width;
+            mHeight = alphaMaps[0].Height;
             mTextures = textureNames;
             LoadData(false);
         }
@@ -58,23 +55,26 @@ namespace GameConstructLibrary
 
         public void LoadData(bool resized)
         {
-            MakeVertices(resized);
+            ConstructTexelWeights(resized);
         }
 
-        private void MakeVertices(bool resized)
+        private void ConstructTexelWeights(bool resized)
         {
-            vertices = new Microsoft.Xna.Framework.Color[mWidth * mHeight];
-            for (int z = 0; z < mHeight; z++)
+            for (int i = 0; i < mAlphaMaps.Count; i++)
             {
-                for (int x = 0; x < mWidth; x++)
+                texelWeights.Add(new Microsoft.Xna.Framework.Color[mWidth * mHeight]);
+                for (int z = 0; z < mHeight; z++)
                 {
-                    if (resized) // If resized rebuild map
+                    for (int x = 0; x < mWidth; x++)
                     {
-                        vertices[x * mWidth + z] = new Microsoft.Xna.Framework.Color(0.0f, 0.0f, 0.0f, 1.0f);
-                    }
-                    else // Otherwise create vertices
-                    {
-                        vertices[x * mWidth + z] = Utils.GetTexture2DPixelColor(x, z, mMap);
+                        if (resized) // If resized rebuild map
+                        {
+                            texelWeights[i][x * mWidth + z] = new Microsoft.Xna.Framework.Color(0.0f, 0.0f, 0.0f, 1.0f);
+                        }
+                        else // Otherwise create vertices
+                        {
+                            texelWeights[i][x * mWidth + z] = Utils.GetTexture2DPixelColor(x, z, mAlphaMaps[i]);
+                        }
                     }
                 }
             }
@@ -83,36 +83,45 @@ namespace GameConstructLibrary
         public void FixTextureMap(TextureMap copy)
         {
             mDevice = copy.mDevice;
-            mMap = new Texture2D(copy.mMap.GraphicsDevice, copy.mWidth, copy.mHeight);
-            Microsoft.Xna.Framework.Color[] destinationColorData = new Microsoft.Xna.Framework.Color[copy.mWidth * copy.mHeight];
-            copy.mMap.GetData<Microsoft.Xna.Framework.Color>(destinationColorData);
-            mMap.SetData<Microsoft.Xna.Framework.Color>(destinationColorData);
             mWidth = copy.mWidth;
             mHeight = copy.mHeight;
-            vertices = new Microsoft.Xna.Framework.Color[mWidth * mHeight];
-            for (int z = 0; z < mHeight; z++)
+
+            mAlphaMaps.Clear();
+            for (int i = 0; i < copy.mAlphaMaps.Count; i++)
             {
-                for (int x = 0; x < mWidth; x++)
+                mAlphaMaps.Add(new Texture2D(mDevice, mWidth, mHeight));
+                Microsoft.Xna.Framework.Color[] destinationColorData = new Microsoft.Xna.Framework.Color[mWidth * mHeight];
+                copy.mAlphaMaps[i].GetData<Microsoft.Xna.Framework.Color>(destinationColorData);
+                mAlphaMaps[i].SetData<Microsoft.Xna.Framework.Color>(destinationColorData);
+            }
+
+            texelWeights.Clear();
+            for (int i = 0; i < copy.texelWeights.Count; i++)
+            {
+                texelWeights.Add(new Microsoft.Xna.Framework.Color[mWidth * mHeight]);
+                for (int z = 0; z < mHeight; z++)
                 {
-                    vertices[x * mWidth + z] = copy.vertices[x * mWidth + z];
+                    for (int x = 0; x < mWidth; x++)
+                    {
+                        texelWeights[i][x * mWidth + z] = copy.texelWeights[i][x * mWidth + z];
+                    }
                 }
             }
         }
 
-        public void ModifyVertices(Vector3 position, string texture, int radius, float alpha)
+        public void ModifyTexelWeights(Vector3 position, string texture, int radius, float alpha)
         {
             radius *= 10;
 
             Console.WriteLine("cursor at: " + position);
             if (!mTextures.Contains(texture))
             {
-                
-                mTextures[mBootTexture] = texture;
-
-                mBootTexture++;
-                if (mBootTexture > 3)
+                int oldLength = mTextures.Count;
+                mTextures.Add(texture);
+                if (oldLength % 3 > mTextures.Count % 3)
                 {
-                    mBootTexture = 0;
+                    mAlphaMaps.Add(new Texture2D(GraphicsManager.Device, mWidth, mHeight));
+                    texelWeights.Add(new Microsoft.Xna.Framework.Color[mWidth * mHeight]);
                 }
             }
 
@@ -122,6 +131,9 @@ namespace GameConstructLibrary
             position.X += mWidth / 2;
             position.Z += mHeight / 2;
 
+            int alphaMapIndex = mTextures.IndexOf(texture) / 3;
+
+            int dirtyMaps = -1;
             for (int z = (int)position.Z - radius; z <= (int)position.Z + radius; z++)
             {
                 for (int x = (int)position.X - radius; x <= (int)position.X + radius; x++)
@@ -130,66 +142,97 @@ namespace GameConstructLibrary
                     int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
                     if (distance < radius)
                     {
-                        if (mTextures[0] == texture)
+                        for (int j = alphaMapIndex + 1; j < mAlphaMaps.Count; j++)
                         {
-                            vertices[z * mWidth + x] = Microsoft.Xna.Framework.Color.Black;
+                            if (dirtyMaps < 0 && texelWeights[j][z * mWidth + x] != Microsoft.Xna.Framework.Color.Black)
+                            {
+                                dirtyMaps = j;
+                            }
+                            texelWeights[j][z * mWidth + x] = new Microsoft.Xna.Framework.Color(0.0f, 0.0f, 0.0f, 1.0f);
                         }
-                        else if (mTextures[1] == texture)
+
+                        int colorIndex = mTextures.IndexOf(texture) % 3;
+                        switch (colorIndex)
                         {
-                            vertices[z * mWidth + x] = Microsoft.Xna.Framework.Color.Red;
-                        }
-                        else if (mTextures[2] == texture)
-                        {
-                            vertices[z * mWidth + x] = new Microsoft.Xna.Framework.Color(0, 255, 0, 255);
-                        }
-                        else if (mTextures[3] == texture)
-                        {
-                            vertices[z * mWidth + x] = Microsoft.Xna.Framework.Color.Blue;
+                            case 0:
+                                texelWeights[alphaMapIndex][z * mWidth + x].R = 255;
+                                texelWeights[alphaMapIndex][z * mWidth + x].G = 0;
+                                texelWeights[alphaMapIndex][z * mWidth + x].B = 0;
+                                break;
+                            case 1:
+                                texelWeights[alphaMapIndex][z * mWidth + x].G = 255;
+                                texelWeights[alphaMapIndex][z * mWidth + x].B = 0;
+                                break;
+                            case 2:
+                                texelWeights[alphaMapIndex][z * mWidth + x].B = 255;
+                                break;
                         }
                     }
                 }
             }
-            mMap.SetData(vertices);
+            mAlphaMaps[alphaMapIndex].SetData(texelWeights[alphaMapIndex]);
+
+            if (dirtyMaps >= 0)
+            {
+                for (int i = 0; i < mAlphaMaps.Count; i++)
+                {
+                    mAlphaMaps[i].SetData(texelWeights[i]);
+                }
+            }
         }
 
         public void Resize(int width, int height)
         {
-
             mWidth = width;
             mHeight = height;
 
             Microsoft.Xna.Framework.Rectangle sourceRectangle = new Microsoft.Xna.Framework.Rectangle(0, 0, mWidth, mHeight);
             Microsoft.Xna.Framework.Color[] retrievedColor = new Microsoft.Xna.Framework.Color[mWidth * mHeight];
 
-            mMap.GetData<Microsoft.Xna.Framework.Color>(
-                0,
-                sourceRectangle,
-                retrievedColor,
-                0,
-                mWidth * mHeight);
+            for (int i = 0; i < mAlphaMaps.Count; i++)
+            {
+                mAlphaMaps[i].GetData<Microsoft.Xna.Framework.Color>(
+                    0,
+                    sourceRectangle,
+                    retrievedColor,
+                    0,
+                    mWidth * mHeight);
 
-            mMap = new Texture2D(mDevice, mWidth, mHeight);
-            mMap.SetData<Microsoft.Xna.Framework.Color>(retrievedColor);
+                mAlphaMaps[i] = new Texture2D(mDevice, mWidth, mHeight);
+                mAlphaMaps[i].SetData<Microsoft.Xna.Framework.Color>(retrievedColor);
+            }
 
             LoadData(true);
-
         }
 
         public void Save(string fileName)
         {
+            //for (int i = 0; i < texelWeights.Count; i++)
+            //{
+            //    Bitmap bmp = new Bitmap(mWidth, mHeight);
 
-            Bitmap bmp = new Bitmap(mMap.Width, mMap.Height);
+            //     Update mMap with modifications
+            //    for (int z = 0; z < mHeight; z++)
+            //    {
+            //        for (int x = 0; x < mWidth; x++)
+            //        {
+            //            bmp.SetPixel(x, z, System.Drawing.Color.FromArgb(texelWeights[i][x * mWidth + z].R, texelWeights[i][x * mWidth + z].G, texelWeights[i][x * mWidth + z].B, texelWeights[i][x * mWidth + z].A));
+            //        }
+            //    }
+            //    bmp.Save(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/textures/sprites/" + fileName + "_alphamap_" + i + ".bmp");
+            //}
 
-            // Update mMap with modifications
-            for (int z = 0; z < mHeight; z++)
-            {
-                for (int x = 0; x < mWidth; x++)
-                {
-                    bmp.SetPixel(x, z, System.Drawing.Color.FromArgb(vertices[x * mWidth + z].R, vertices[x * mWidth + z].G, vertices[x * mWidth + z].B, vertices[x * mWidth + z].A));
-                }
-            }
+            //Texture2D terrainComposite = GraphicsManager.LookupTerrainTexture(mName);
 
-            bmp.Save(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/textures/sprites/" + fileName + "_texture" + ".bmp");
+            //Bitmap composite = new Bitmap(mWidth, mHeight);
+            //for (int z = 0; z < mHeight; z++)
+            //{
+            //    for (int x = 0; x < mWidth; x++)
+            //    {
+            //        composite.SetPixel(x, z, terrainComposite.
+            //    }
+            //}
+            //composite.Save(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/maps/" + fileName + "_texture.bmp");
         }
     }
 }

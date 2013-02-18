@@ -130,7 +130,7 @@ namespace GameConstructLibrary
                     // top side
                     if (z == 0)
                     {
-                        vertices1D[mHeight * mWidth + x].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + x].Position = new Vector3(xLocation, -5000.0f, zLocation);
                         vertices1D[mHeight * mWidth + x].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                         vertices1D[mHeight * mWidth + x].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                     }
@@ -138,7 +138,7 @@ namespace GameConstructLibrary
                     // bottom side
                     if (z == mHeight - 1)
                     {
-                        vertices1D[mHeight * mWidth + mWidth + x].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + mWidth + x].Position = new Vector3(xLocation, -5000.0f, zLocation);
                         vertices1D[mHeight * mWidth + mWidth + x].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                         vertices1D[mHeight * mWidth + mWidth + x].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                     }
@@ -146,7 +146,7 @@ namespace GameConstructLibrary
                     // left side
                     if (x == 0)
                     {
-                        vertices1D[mHeight * mWidth + 2 * mWidth + z].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + 2 * mWidth + z].Position = new Vector3(xLocation, -5000.0f, zLocation);
                         vertices1D[mHeight * mWidth + 2 * mWidth + z].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                         vertices1D[mHeight * mWidth + 2 * mWidth + z].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                     }
@@ -154,7 +154,7 @@ namespace GameConstructLibrary
                     // right side
                     if (x == mWidth - 1)
                     {
-                        vertices1D[mHeight * mWidth + 2 * mWidth + mHeight + z].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + 2 * mWidth + mHeight + z].Position = new Vector3(xLocation, -5000.0f, zLocation);
                         vertices1D[mHeight * mWidth + 2 * mWidth + mHeight + z].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                         vertices1D[mHeight * mWidth + 2 * mWidth + mHeight + z].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                     }

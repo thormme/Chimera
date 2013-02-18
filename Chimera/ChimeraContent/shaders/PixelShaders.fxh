@@ -8,19 +8,23 @@ float4 NormalDepthPS(float4 color : COLOR0) : COLOR0
 	return color;
 }
 
-float4 CompositeTerrainTexture(float2 texCoord)
+float4 CompositeTerrainTexturePS(float2 texCoord : TEXCOORD0) : COLOR0
 {
+	float4 baseColor         = SAMPLE_TEXTURE(Texture,      texCoord       );
 	float4 textureWeights    = SAMPLE_TEXTURE(AlphaMap,     texCoord       );
-	float4 blackTextureColor = SAMPLE_TEXTURE(BlackTexture, texCoord * 8.0f);
 	float4 redTextureColor   = SAMPLE_TEXTURE(RedTexture,   texCoord * 8.0f);
 	float4 greenTextureColor = SAMPLE_TEXTURE(GreenTexture, texCoord * 8.0f);
 	float4 blueTextureColor  = SAMPLE_TEXTURE(BlueTexture,  texCoord * 8.0f);
 
-	float4 blackRedComp          = textureWeights.r * redTextureColor   + (1.0 - textureWeights.r) * blackTextureColor;
-	float4 blackRedGreenComp     = textureWeights.g * greenTextureColor + (1.0 - textureWeights.g) * blackRedComp;
-	float4 blackRedGreenBlueComp = textureWeights.b * blueTextureColor  + (1.0 - textureWeights.b) * blackRedGreenComp;
+	textureWeights.r *= redTextureColor.a;
+	textureWeights.g *= greenTextureColor.a;
+	textureWeights.b *= blueTextureColor.a;
 
-	return blackRedGreenBlueComp;
+	float4 baseRedComp          = textureWeights.r * redTextureColor   + (1.0 - textureWeights.r) * baseColor;
+	float4 baseRedGreenComp     = textureWeights.g * greenTextureColor + (1.0 - textureWeights.g) * baseRedComp;
+	float4 baseRedGreenBlueComp = textureWeights.b * blueTextureColor  + (1.0 - textureWeights.b) * baseRedGreenComp;
+
+	return float4(baseRedGreenBlueComp.rgb, 1.0f);
 }
 
 float4 CelShadePSHelper(VSOutput pin, float4 textureColor)
@@ -68,11 +72,6 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 	return CelShadePSHelper(pin, color);
 }
 
-float4 TerrainCelShadePS(VSOutput pin) : SV_Target0
-{
-	return CelShadePSHelper(pin, CompositeTerrainTexture(pin.TexCoord));
-}
-
 float4 PhongPSHelper(VSOutput pin, float4 textureColor)
 {
 	float4 diffuseColor = textureColor;
@@ -107,11 +106,6 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 	float4 color = SAMPLE_TEXTURE(Texture, pin.TexCoord);
 		
 	return PhongPSHelper(pin, color);
-}
-
-float4 TerrainPhongPS(VSOutput pin) : SV_Target0
-{
-	return PhongPSHelper(pin, CompositeTerrainTexture(pin.TexCoord));
 }
 
 sampler NoShade_Sampler = sampler_state
