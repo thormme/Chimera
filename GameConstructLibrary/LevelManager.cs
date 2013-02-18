@@ -15,28 +15,34 @@ namespace GameConstructLibrary
     /// </summary>
     public static class LevelManager
     {
-        public static void Save(string fileName, List<DummyObject> objects)
+        public static void Save(string path, List<DummyObject> objects)
         {
+
+            path += "/Objects";
+
             XmlRootAttribute root = new XmlRootAttribute();
             root.ElementName = "object";
             root.IsNullable = true;
 
-            StreamWriter writer = new StreamWriter(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/" + fileName);
+            StreamWriter writer = new StreamWriter(path);
 
             XmlSerializer serializer = new XmlSerializer(typeof(List<DummyObject>), root);
             serializer.Serialize(writer, objects);
             writer.Close();
         }
 
-        public static List<DummyObject> Load(string fileName)
+        public static List<DummyObject> Load(string path)
         {
+
+            path += "/Objects";
+
             XmlRootAttribute root = new XmlRootAttribute();
             root.ElementName = "object";
             root.IsNullable = true;
 
             List<DummyObject> objects = new List<DummyObject>();
 
-            StreamReader reader = new StreamReader("Content\\" + "levels/" + fileName);
+            StreamReader reader = new StreamReader(path);
             XmlSerializer deserializer = new XmlSerializer(typeof(List<DummyObject>), root);
 
             objects = (List<DummyObject>)deserializer.Deserialize(reader);
@@ -52,7 +58,7 @@ namespace GameConstructLibrary
         /// <returns>True if the level exists.</returns>
         public static bool Exists(string file)
         {
-            FileInfo meshFile = new FileInfo("Content\\" + "levels/" + file);
+            FileInfo meshFile = new FileInfo("Content/" + "levels/" + file);
             return meshFile.Exists;
         }
     }

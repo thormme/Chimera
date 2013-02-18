@@ -20,6 +20,7 @@ namespace Utility
     {
 
         public static Vector3 WorldScale = new Vector3(8.0f, 0.01f, 8.0f);
+        public static int AlphaMapScale = 10;
 
         public static Matrix GetMatrixFromLookAtVector(Vector3 lookAt)
         {

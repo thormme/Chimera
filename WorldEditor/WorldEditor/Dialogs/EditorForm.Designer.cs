@@ -50,7 +50,6 @@
             this.Picture = new System.Windows.Forms.PictureBox();
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.File = new System.Windows.Forms.ToolStripMenuItem();
-            this.NewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.LoadMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.Edit = new System.Windows.Forms.ToolStripMenuItem();
@@ -280,18 +279,11 @@
             // File
             // 
             this.File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewMenu,
             this.SaveMenu,
             this.LoadMenu});
             this.File.Name = "File";
             this.File.Size = new System.Drawing.Size(37, 20);
             this.File.Text = "File";
-            // 
-            // NewMenu
-            // 
-            this.NewMenu.Name = "NewMenu";
-            this.NewMenu.Size = new System.Drawing.Size(152, 22);
-            this.NewMenu.Text = "New";
             // 
             // SaveMenu
             // 
@@ -363,7 +355,6 @@
         private System.Windows.Forms.PictureBox Picture;
         private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem File;
-        private System.Windows.Forms.ToolStripMenuItem NewMenu;
         private System.Windows.Forms.ToolStripMenuItem SaveMenu;
         private System.Windows.Forms.ToolStripMenuItem LoadMenu;
         private System.Windows.Forms.ToolStripMenuItem Edit;

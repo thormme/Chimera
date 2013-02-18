@@ -78,7 +78,7 @@ namespace WorldEditor
         public WorldEditor(Viewport viewport, FPSCamera camera)
         {
             mCamera = camera;
-            mDummyWorld = new DummyWorld(mControls, DefaultWidth, DefaultHeight);
+            mDummyWorld = new DummyWorld(mControls);
             mEntity = new Entity(viewport, mControls, mCamera);
             CreateEditorForm();
         }
@@ -119,7 +119,6 @@ namespace WorldEditor
             mEditorForm.Location = new System.Drawing.Point(80, 80);
 
             MenuStrip editMenu = (mEditorForm.Controls["MenuStrip"] as MenuStrip);
-            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["NewMenu"].Click += NewHandler;
             (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveMenu"].Click += SaveHandler;
             (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["LoadMenu"].Click += LoadHandler;
 
@@ -185,14 +184,15 @@ namespace WorldEditor
 
         }
 
-        private void NewHandler(object sender, EventArgs e)
-        {
-            
-        }
-
         private void SaveHandler(object sender, EventArgs e)
         {
-            new SaveForm();
+            SaveFileDialog saveDialog = new SaveFileDialog();
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                mDummyWorld.Save(saveDialog.FileName);
+            }
+
         }
 
         private void LoadHandler(object sender, EventArgs e)
