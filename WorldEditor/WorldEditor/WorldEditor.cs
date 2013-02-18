@@ -47,10 +47,10 @@ namespace WorldEditor
         #endregion
 
         //Dialog for the world editor.
-        public Form mEditorForm = new EditorForm();
+        public EditorForm mEditorForm = new EditorForm();
 
         //Dialog for object parameters.
-        public Form mObjectParametersForm = new ObjectParametersForm();
+        public ObjectParametersForm mObjectParametersForm = new ObjectParametersForm();
 
         private FPSCamera mCamera = null;
 
@@ -230,10 +230,11 @@ namespace WorldEditor
 
         private void SwitchToEdit()
         {
-            mDummyObject.Model = "editor";
-            mDummyObject.Position = Vector3.Zero;
-            mDummyObject.Orientation = Vector3.Up;
-            mDummyObject.Scale = Vector3.One;
+            // TODO: possibly create new object here.
+            mCursorObject.Model = "editor";
+            mCursorObject.Position = Vector3.Zero;
+            mCursorObject.Orientation = Vector3.Up;
+            mCursorObject.Scale = Vector3.One;
         }
 
         private void SelectNewObjectHandler(object sender, EventArgs e)
@@ -252,29 +253,27 @@ namespace WorldEditor
 
         private void SetObjectPropertiesToForm(DummyObject dummyObject)
         {
-            float X = (float)(mObjectParametersForm.Controls["PositionX"] as NumericUpDown).Value;
-            float Y = (float)(mObjectParametersForm.Controls["PositionY"] as NumericUpDown).Value;
-            float Z = (float)(mObjectParametersForm.Controls["PositionZ"] as NumericUpDown).Value;
+            float X = (float)mObjectParametersForm.PositionX.Value;
+            float Y = (float)mObjectParametersForm.PositionY.Value;
+            float Z = (float)mObjectParametersForm.PositionZ.Value;
             dummyObject.Position = new Vector3(X, Y, Z);
 
-            float Roll = (float)(mObjectParametersForm.Controls["Roll"] as NumericUpDown).Value;
-            float Pitch = (float)(mObjectParametersForm.Controls["Pitch"] as NumericUpDown).Value;
-            float Yaw = (float)(mObjectParametersForm.Controls["Yaw"] as NumericUpDown).Value;
+            float Roll = (float)mObjectParametersForm.Roll.Value;
+            float Pitch = (float)mObjectParametersForm.Pitch.Value;
+            float Yaw = (float)mObjectParametersForm.Yaw.Value;
             dummyObject.Orientation = new Vector3(Roll, Pitch, Yaw);
 
-            float ScaleX = (float)(mObjectParametersForm.Controls["ScaleX"] as NumericUpDown).Value;
-            float ScaleY = (float)(mObjectParametersForm.Controls["ScaleY"] as NumericUpDown).Value;
-            float ScaleZ = (float)(mObjectParametersForm.Controls["ScaleZ"] as NumericUpDown).Value;
+            float ScaleX = (float)mObjectParametersForm.ScaleX.Value;
+            float ScaleY = (float)mObjectParametersForm.ScaleY.Value;
+            float ScaleZ = (float)mObjectParametersForm.ScaleZ.Value;
             dummyObject.Orientation = new Vector3(ScaleX, ScaleY, ScaleZ);
 
-            dummyObject.Height = (float)(mObjectParametersForm.Controls["Height"] as NumericUpDown).Value;
+            dummyObject.Height = (float)mObjectParametersForm.Height.Value;
         }
 
         private void TextureHandler(object sender, EventArgs e)
         {
-            TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
-
-            Texture2D texture = GraphicsManager.LookupSprite((editModes.Controls["Textures"].Controls["TextureList"] as ListBox).SelectedItem.ToString());
+            Texture2D texture = GraphicsManager.LookupSprite(mEditorForm.TextureList.SelectedItem.ToString());
 
             byte[] textureData = new byte[4 * texture.Width * texture.Height];
             texture.GetData<byte>(textureData);
@@ -293,7 +292,7 @@ namespace WorldEditor
             System.Runtime.InteropServices.Marshal.Copy(textureData, 0, safePtr, textureData.Length);
             bmp.UnlockBits(bmpData);
 
-            (editModes.Controls["Textures"].Controls["Picture"] as PictureBox).Image = bmp;
+            mEditorForm.Picture.Image = bmp;
 
         }
 
@@ -301,12 +300,11 @@ namespace WorldEditor
 
         private void PerformActions()
         {
-            TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
             if (mControls.LeftPressed.Active)
             {
                 if (mPlaceable)
                 {
-                    if (editModes.SelectedTab == editModes.Controls["Objects"])
+                    if (mEditorForm.EditTabs.SelectedTab == mEditorForm.Objects)
                     {
                         //AddState(mDummyWorld);
                         mCursorObject = null;
@@ -317,26 +315,26 @@ namespace WorldEditor
             {
                 if (mPlaceable)
                 {
-                    if (editModes.SelectedTab == editModes.Controls["Heights"])
+                    if (mEditorForm.EditTabs.SelectedTab == mEditorForm.Heights)
                     {
 
                         try
                         {
 
-                            int radius = Convert.ToInt32((editModes.SelectedTab.Controls["HeightRadiusField"] as TextBox).Text);
-                            int intensity = Convert.ToInt32((editModes.SelectedTab.Controls["HeightIntensityField"] as TextBox).Text);
+                            int radius = Convert.ToInt32(mEditorForm.HeightRadiusField.Text);
+                            int intensity = Convert.ToInt32(mEditorForm.HeightIntensityField.Text);
 
-                            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * radius);
+                            mCursorObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * radius);
 
                             mDummyWorld.ModifyHeightMap(
-                                mDummyObject.Position, 
+                                mCursorObject.Position, 
                                 radius,
                                 intensity,
-                                (editModes.SelectedTab.Controls["SetBox"] as CheckBox).Checked,
-                                (editModes.SelectedTab.Controls["InvertBox"] as CheckBox).Checked,
-                                (editModes.SelectedTab.Controls["FeatherBox"] as CheckBox).Checked,
-                                (editModes.SelectedTab.Controls["FlattenBox"] as CheckBox).Checked,
-                                (editModes.SelectedTab.Controls["SmoothBox"] as CheckBox).Checked);
+                                mEditorForm.SetBox.Checked,
+                                mEditorForm.InvertBox.Checked,
+                                mEditorForm.FeatherBox.Checked,
+                                mEditorForm.FlattenBox.Checked,
+                                mEditorForm.SmoothBox.Checked);
 
                         }
                         catch (SystemException)
@@ -345,19 +343,19 @@ namespace WorldEditor
                         }
 
                     }
-                    else if (editModes.SelectedTab == editModes.Controls["Textures"])
+                    else if (mEditorForm.EditTabs.SelectedTab == mEditorForm.Textures)
                     {
                         try
                         {
                             
-                            int radius = Convert.ToInt32((editModes.SelectedTab.Controls["TextureRadiusField"] as TextBox).Text);
-                            float alpha = Convert.ToSingle((editModes.SelectedTab.Controls["TextureAlphaField"] as TextBox).Text);
+                            int radius = Convert.ToInt32(mEditorForm.TextureRadiusField.Text);
+                            float alpha = Convert.ToSingle(mEditorForm.TextureAlphaField.Text);
 
-                            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * radius);
+                            mCursorObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * radius);
 
                             mDummyWorld.ModifyTextureMap(
-                                mDummyObject.Position,
-                                (editModes.SelectedTab.Controls["TextureList"] as ListBox).SelectedItem.ToString(),
+                                mCursorObject.Position,
+                                mEditorForm.TextureList.SelectedItem.ToString(),
                                 radius,
                                 alpha);
                             

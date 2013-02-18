@@ -16,5 +16,19 @@ namespace WorldEditor.Dialogs
             InitializeComponent();
         }
 
+        private void Floating_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBox).Checked)
+            {
+                PositionY.Enabled = false;
+                Height.Enabled = true;
+            }
+            else
+            {
+                PositionY.Enabled = true;
+                Height.Enabled = false;
+            }
+        }
+
     }
 }

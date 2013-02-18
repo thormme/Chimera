@@ -288,13 +288,13 @@
             // SaveMenu
             // 
             this.SaveMenu.Name = "SaveMenu";
-            this.SaveMenu.Size = new System.Drawing.Size(152, 22);
+            this.SaveMenu.Size = new System.Drawing.Size(100, 22);
             this.SaveMenu.Text = "Save";
             // 
             // LoadMenu
             // 
             this.LoadMenu.Name = "LoadMenu";
-            this.LoadMenu.Size = new System.Drawing.Size(152, 22);
+            this.LoadMenu.Size = new System.Drawing.Size(100, 22);
             this.LoadMenu.Text = "Load";
             // 
             // Edit
@@ -332,30 +332,30 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl EditTabs;
-        private System.Windows.Forms.TabPage Heights;
-        private System.Windows.Forms.TabPage Textures;
-        private System.Windows.Forms.TabPage Objects;
-        private System.Windows.Forms.TextBox HeightRadiusField;
-        private System.Windows.Forms.TextBox HeightIntensityField;
-        private System.Windows.Forms.CheckBox SmoothBox;
-        private System.Windows.Forms.CheckBox FlattenBox;
-        private System.Windows.Forms.CheckBox InvertBox;
-        private System.Windows.Forms.CheckBox FeatherBox;
-        private System.Windows.Forms.CheckBox SetBox;
         private System.Windows.Forms.Label HeightIntensityLabel;
         private System.Windows.Forms.Label HeightRadiusLabel;
-        private System.Windows.Forms.ListBox ObjectList;
         private System.Windows.Forms.Label TextureAlphaLabel;
         private System.Windows.Forms.Label TextureRadiusLabel;
-        private System.Windows.Forms.TextBox TextureAlphaField;
-        private System.Windows.Forms.TextBox TextureRadiusField;
-        private System.Windows.Forms.ListBox TextureList;
-        private System.Windows.Forms.PictureBox Picture;
         private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem File;
         private System.Windows.Forms.ToolStripMenuItem SaveMenu;
         private System.Windows.Forms.ToolStripMenuItem LoadMenu;
         private System.Windows.Forms.ToolStripMenuItem Edit;
+        public System.Windows.Forms.TabControl EditTabs;
+        public System.Windows.Forms.TextBox HeightRadiusField;
+        public System.Windows.Forms.TextBox HeightIntensityField;
+        public System.Windows.Forms.CheckBox SmoothBox;
+        public System.Windows.Forms.CheckBox FlattenBox;
+        public System.Windows.Forms.CheckBox InvertBox;
+        public System.Windows.Forms.CheckBox FeatherBox;
+        public System.Windows.Forms.CheckBox SetBox;
+        public System.Windows.Forms.ListBox ObjectList;
+        public System.Windows.Forms.TextBox TextureAlphaField;
+        public System.Windows.Forms.TextBox TextureRadiusField;
+        public System.Windows.Forms.ListBox TextureList;
+        public System.Windows.Forms.PictureBox Picture;
+        public System.Windows.Forms.TabPage Heights;
+        public System.Windows.Forms.TabPage Textures;
+        public System.Windows.Forms.TabPage Objects;
     }
 }

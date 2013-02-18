@@ -272,6 +272,7 @@
             // Height
             // 
             this.Height.DecimalPlaces = 2;
+            this.Height.Enabled = false;
             this.Height.Location = new System.Drawing.Point(105, 129);
             this.Height.Maximum = new decimal(new int[] {
             10000,
@@ -314,6 +315,7 @@
             this.Floating.TabIndex = 15;
             this.Floating.Text = "Floating";
             this.Floating.UseVisualStyleBackColor = true;
+            this.Floating.CheckedChanged += new System.EventHandler(this.Floating_CheckedChanged);
             // 
             // Create
             // 
@@ -385,24 +387,24 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox Physical;
         private System.Windows.Forms.Label PositionLabel;
         private System.Windows.Forms.Label OrientationLabel;
         private System.Windows.Forms.Label ScaleLabel;
         private System.Windows.Forms.Label HeightLabel;
-        private System.Windows.Forms.NumericUpDown PositionX;
-        private System.Windows.Forms.NumericUpDown PositionZ;
-        private System.Windows.Forms.NumericUpDown Yaw;
-        private System.Windows.Forms.NumericUpDown Pitch;
-        private System.Windows.Forms.NumericUpDown Roll;
-        private System.Windows.Forms.NumericUpDown ScaleX;
-        private System.Windows.Forms.NumericUpDown ScaleY;
-        private System.Windows.Forms.NumericUpDown ScaleZ;
-        private System.Windows.Forms.NumericUpDown Height;
-        private System.Windows.Forms.NumericUpDown PositionY;
-        private System.Windows.Forms.CheckBox Floating;
-        private System.Windows.Forms.Button Create;
-        private System.Windows.Forms.Button Place;
-        private System.Windows.Forms.Button CreatePlace;
+        public System.Windows.Forms.CheckBox Physical;
+        public System.Windows.Forms.NumericUpDown PositionX;
+        public System.Windows.Forms.NumericUpDown PositionZ;
+        public System.Windows.Forms.NumericUpDown Yaw;
+        public System.Windows.Forms.NumericUpDown Pitch;
+        public System.Windows.Forms.NumericUpDown Roll;
+        public System.Windows.Forms.NumericUpDown ScaleX;
+        public System.Windows.Forms.NumericUpDown ScaleY;
+        public System.Windows.Forms.NumericUpDown ScaleZ;
+        public System.Windows.Forms.NumericUpDown Height;
+        public System.Windows.Forms.NumericUpDown PositionY;
+        public System.Windows.Forms.CheckBox Floating;
+        public System.Windows.Forms.Button Create;
+        public System.Windows.Forms.Button Place;
+        public System.Windows.Forms.Button CreatePlace;
     }
 }
