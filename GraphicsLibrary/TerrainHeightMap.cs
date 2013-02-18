@@ -102,16 +102,18 @@ namespace GameConstructLibrary
 
         private void MakeVertices(bool resized)
         {
-            vertices1D = new VertexPositionColorTextureNormal[mWidth * mHeight];
+            vertices1D = new VertexPositionColorTextureNormal[mWidth * mHeight + 2 * mWidth + 2 * mHeight];
             vertices2D = new VertexPositionColorTextureNormal[mWidth, mHeight];
             for (int z = 0; z < mHeight; z++)
             {
                 for (int x = 0; x < mWidth; x++)
                 {
+                    int xLocation = x - mWidth / 2;
+                    int zLocation = z - mHeight / 2;
 
                     if (resized) // If resized rebuild map
                     {
-                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, 0.0f, z - mHeight / 2);
+                        vertices1D[x + z * mWidth].Position = new Vector3(xLocation, 0.0f, zLocation);
                         vertices1D[x + z * mWidth].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                         vertices1D[x + z * mWidth].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                         vertices2D[x, z] = vertices1D[x + z * mWidth];
@@ -119,10 +121,42 @@ namespace GameConstructLibrary
                     else // Otherwise create vertices
                     {
 
-                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, Utils.GetTexture2DPixelColor(x, z, mMap).R * 256 * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).G * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).B, z - mHeight / 2);
+                        vertices1D[x + z * mWidth].Position = new Vector3(xLocation, Utils.GetTexture2DPixelColor(x, z, mMap).R * 256 * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).G * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).B, zLocation);
                         vertices1D[x + z * mWidth].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                         vertices1D[x + z * mWidth].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                         vertices2D[x, z] = vertices1D[x + z * mWidth];
+                    }
+
+                    // top side
+                    if (z == 0)
+                    {
+                        vertices1D[mHeight * mWidth + x].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + x].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[mHeight * mWidth + x].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
+                    }
+
+                    // bottom side
+                    if (z == mHeight - 1)
+                    {
+                        vertices1D[mHeight * mWidth + mWidth + x].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + mWidth + x].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[mHeight * mWidth + mWidth + x].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
+                    }
+
+                    // left side
+                    if (x == 0)
+                    {
+                        vertices1D[mHeight * mWidth + 2 * mWidth + z].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + 2 * mWidth + z].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[mHeight * mWidth + 2 * mWidth + z].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
+                    }
+
+                    // right side
+                    if (x == mWidth - 1)
+                    {
+                        vertices1D[mHeight * mWidth + 2 * mWidth + mHeight + z].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + 2 * mWidth + mHeight + z].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[mHeight * mWidth + 2 * mWidth + mHeight + z].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                     }
                 }
             }
@@ -130,7 +164,7 @@ namespace GameConstructLibrary
 
         private void MakeIndices()
         {
-            indices = new int[(mWidth - 1) * (mHeight - 1) * 6];
+            indices = new int[((mWidth - 1) * (mHeight - 1) + 2 * (mWidth - 1 + mHeight - 1)) * 6];
             int counter = 0;
             for (int z = 0; z < mHeight - 1; z++)
             {
@@ -151,6 +185,61 @@ namespace GameConstructLibrary
                     indices[counter++] = lowerRight;
                     indices[counter++] = topRight;
                 }
+            }
+
+            // Create top and bottom sides.
+            for (int x = 0; x < mWidth - 1; x++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    int xIndex = j == 0 ? mWidth - 1 - x : x;
+                    int zIndex = j * (mHeight - 1);
+
+                    int topLeft = xIndex + zIndex * mWidth;
+                    int lowerLeft = mWidth * mHeight + xIndex + j * mWidth;
+                    int topRight = j == 0 ? topLeft - 1 : topLeft + 1;
+                    int lowerRight = j == 0 ? lowerLeft - 1 : lowerLeft + 1;
+
+                    int i = 0;
+
+                    // First triangle.
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = topLeft;
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = topRight;
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = lowerRight;
+
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = topLeft;
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = lowerRight;
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = lowerLeft;
+                }
+                counter += 6;
+            }
+            counter += 6 * (mWidth - 1);
+
+            // Create left and right sides.
+            for (int z = 0; z < mHeight - 1; z++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    int xIndex = j * (mWidth - 1);
+                    int zIndex = j == 0 ? z : mHeight - 1 - z;
+
+                    int topLeft = xIndex + zIndex * mWidth;
+                    int lowerLeft = mWidth * mHeight + 2 * mWidth + zIndex + j * mHeight;
+                    int topRight = j == 0 ? topLeft + mWidth : topLeft - mWidth;
+                    int lowerRight = j == 0 ? lowerLeft + 1 : lowerLeft - 1;
+
+                    int i = 0;
+
+                    // First triangle.
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = topLeft;
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = topRight;
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = lowerRight;
+
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = topLeft;
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = lowerRight;
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = lowerLeft;
+                }
+                counter += 6;
             }
         }
 
@@ -200,9 +289,9 @@ namespace GameConstructLibrary
             mMap.SetData<Microsoft.Xna.Framework.Color>(destinationColorData);
             mWidth = copy.mWidth;
             mHeight = copy.mHeight;
-            vertices1D = new VertexPositionColorTextureNormal[mWidth * mHeight];
+            vertices1D = new VertexPositionColorTextureNormal[mWidth * mHeight + 2 * mWidth + 2 * mHeight];
             vertices2D = new VertexPositionColorTextureNormal[mWidth, mHeight];
-            indices = new int[mWidth * mHeight * 6];
+            indices = new int[((mWidth - 1) * (mHeight - 1) + 2 * (mWidth - 1 + mHeight - 1)) * 6];
             for (int z = 0; z < mHeight; z++)
             {
                 for (int x = 0; x < mWidth; x++)
@@ -210,6 +299,11 @@ namespace GameConstructLibrary
                     vertices1D[x + z * mWidth] = copy.vertices1D[x + z * mWidth];
                     vertices2D[x, z] = copy.vertices2D[x, z];
                 }
+            }
+
+            for (int i = 0; i < 2 * mWidth + 2 * mHeight; i++)
+            {
+                vertices1D[mWidth * mHeight + i] = copy.vertices1D[mWidth * mHeight + i];
             }
 
             for (int count = 0; count < copy.indices.Length; count++)

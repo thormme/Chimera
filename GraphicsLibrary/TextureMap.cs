@@ -149,10 +149,6 @@ namespace GameConstructLibrary
                     }
                 }
             }
-            if (Object.ReferenceEquals(mMap, GraphicsManager.LookupTerrainTexture("default")))
-            {
-                Console.WriteLine("textures are the same");
-            }
             mMap.SetData(vertices);
         }
 

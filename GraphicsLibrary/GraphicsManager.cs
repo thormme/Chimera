@@ -601,6 +601,9 @@ namespace GraphicsLibrary
             throw new KeyNotFoundException("Unable to find terrain key: " + terrainName);
         }
 
+        /// <summary>
+        /// Retrieves texture of terrain from database.  Throws KeyNotFoundException if terrainName does not exist in database.
+        /// </summary>
         static public Texture2D LookupTerrainTexture(string terrainName)
         {
             TerrainDescription result;
@@ -611,6 +614,9 @@ namespace GraphicsLibrary
             throw new KeyNotFoundException("Unable to find texture for terrain key: " + terrainName);
         }
 
+        /// <summary>
+        /// Retrieves names of textures applied to terrain from database.  Throws KeyNotFoundException if terrainName does not exist in database.
+        /// </summary>
         static public string[] LookupTerrainTextureNames(string terrainName)
         {
             TerrainDescription result;
