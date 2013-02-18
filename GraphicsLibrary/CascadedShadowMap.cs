@@ -318,7 +318,7 @@ namespace GraphicsLibrary
 
             foreach (ModelMesh mesh in model.Meshes)
             {
-                foreach (SkinnedEffect effect in mesh.Effects)
+                foreach (AnimationUtilities.SkinnedEffect effect in mesh.Effects)
                 {
                     effect.Parameters["xLightView"].SetValue(mLightView);
                     effect.Parameters["xLightProjection"].SetValue(cascadeProjection);

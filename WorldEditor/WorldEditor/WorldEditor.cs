@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +23,7 @@ namespace WorldEditor
         private const string ContentPath = "Content";
         private const string ModelsPath = "models";
         private const string ObjectsPath = "objects";
+        private const string MapTexturesPath = "textures/maps";
 
         private const int DefaultWidth = 100;
         private const int DefaultHeight = 100;
@@ -55,6 +56,9 @@ namespace WorldEditor
 
         //Stores all placeable objects.
         private Dictionary<string, DummyObject> mObjects = new Dictionary<string, DummyObject>();
+
+        //Stores all useable textures.
+        private Dictionary<string, Texture2D> mTextures = new Dictionary<string, Texture2D>();
         
         //Object that will be drawn at the cursor in object tab.
         private DummyObject mCursorObject = new DummyObject();
@@ -74,7 +78,7 @@ namespace WorldEditor
         public WorldEditor(Viewport viewport, FPSCamera camera)
         {
             mCamera = camera;
-            mDummyWorld = new DummyWorld(mControls, DefaultWidth, DefaultHeight);
+            mDummyWorld = new DummyWorld(mControls);
             mEntity = new Entity(viewport, mControls, mCamera);
             CreateEditorForm();
         }
@@ -121,30 +125,30 @@ namespace WorldEditor
             mEditorForm.Show();
             mEditorForm.Location = new System.Drawing.Point(80, 80);
 
+            MenuStrip editMenu = (mEditorForm.Controls["MenuStrip"] as MenuStrip);
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveMenu"].Click += SaveHandler;
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["LoadMenu"].Click += LoadHandler;
+
             TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
 
             editModes.SelectedIndexChanged += EditHandler;
+
             (editModes.Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedIndexChanged += SelectNewObjectHandler;
             (mObjectParametersForm.Controls["Create"] as Button).Click += CreateObjectButtonHandler;
+            (editModes.Controls["Textures"].Controls["TextureList"] as ListBox).SelectedIndexChanged += TextureHandler;
 
-            DirectoryInfo baseDirectory = new DirectoryInfo(ContentPath + "/" + ModelsPath + "/");
-            DirectoryInfo[] subDirectories = baseDirectory.GetDirectories();
-            foreach (DirectoryInfo subDirectory in subDirectories)
+            foreach (var model in GraphicsManager.ModelLibrary)
             {
-                FileInfo[] models = subDirectory.GetFiles("*.xnb");
-                foreach (FileInfo model in models)
-                {
-                    DummyObject tempObject = new DummyObject();
-                    tempObject.Type = "Chimera.Prop";
-                    tempObject.Model = Path.GetFileNameWithoutExtension(model.Name);
-                    tempObject.Parameters = null;
-                    tempObject.Position = Vector3.Zero;
-                    tempObject.Orientation = Vector3.Up;
-                    tempObject.Scale = Vector3.One;
-                    tempObject.Height = 0.0f;
-                    mObjects.Add(tempObject.Model, tempObject);
-                    (editModes.Controls["Objects"].Controls["ObjectList"] as ListBox).Items.Add(tempObject.Model);
-                }
+                DummyObject tempObject = new DummyObject();
+                tempObject.Type = "Chimera.Prop";
+                tempObject.Model = model.Key;
+                tempObject.Parameters = null;
+                tempObject.Position = Vector3.Zero;
+                tempObject.Orientation = Vector3.Up;
+                tempObject.Scale = Vector3.One;
+                tempObject.Height = 0.0f;
+                mObjects.Add(tempObject.Model, tempObject);
+                (editModes.Controls["Objects"].Controls["ObjectList"] as ListBox).Items.Add(tempObject.Model);
             }
 
             FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
@@ -181,6 +185,28 @@ namespace WorldEditor
                     Console.WriteLine("Formatting error in object: " + file.Name + ".");
                 }
             }
+
+            foreach (var texture in GraphicsManager.TextureLibrary)
+            {
+                (editModes.Controls["Textures"].Controls["TextureList"] as ListBox).Items.Add(texture.Key);
+            }
+
+        }
+
+        private void SaveHandler(object sender, EventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                mDummyWorld.Save(saveDialog.FileName);
+            }
+
+        }
+
+        private void LoadHandler(object sender, EventArgs e)
+        {
+
         }
 
         private void EditHandler(object sender, EventArgs e)
@@ -193,11 +219,21 @@ namespace WorldEditor
             else if (editModes.SelectedTab == editModes.Controls["Heights"])
             {
                 mObjectParametersForm.Hide();
+                SwitchToEdit();
             }
             else if (editModes.SelectedTab == editModes.Controls["Textures"])
             {
                 mObjectParametersForm.Hide();
+                SwitchToEdit();
             }
+        }
+
+        private void SwitchToEdit()
+        {
+            mDummyObject.Model = "editor";
+            mDummyObject.Position = Vector3.Zero;
+            mDummyObject.Orientation = Vector3.Up;
+            mDummyObject.Scale = Vector3.One;
         }
 
         private void SelectNewObjectHandler(object sender, EventArgs e)
@@ -234,6 +270,33 @@ namespace WorldEditor
             dummyObject.Height = (float)(mObjectParametersForm.Controls["Height"] as NumericUpDown).Value;
         }
 
+        private void TextureHandler(object sender, EventArgs e)
+        {
+            TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
+
+            Texture2D texture = GraphicsManager.LookupSprite((editModes.Controls["Textures"].Controls["TextureList"] as ListBox).SelectedItem.ToString());
+
+            byte[] textureData = new byte[4 * texture.Width * texture.Height];
+            texture.GetData<byte>(textureData);
+
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(
+                texture.Width, 
+                texture.Height, 
+                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            System.Drawing.Imaging.BitmapData bmpData = bmp.LockBits(
+               new System.Drawing.Rectangle(0, 0, texture.Width, texture.Height), 
+               System.Drawing.Imaging.ImageLockMode.WriteOnly,
+               System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            IntPtr safePtr = bmpData.Scan0;
+            System.Runtime.InteropServices.Marshal.Copy(textureData, 0, safePtr, textureData.Length);
+            bmp.UnlockBits(bmpData);
+
+            (editModes.Controls["Textures"].Controls["Picture"] as PictureBox).Image = bmp;
+
+        }
+
         #endregion
 
         private void PerformActions()
@@ -256,11 +319,53 @@ namespace WorldEditor
                 {
                     if (editModes.SelectedTab == editModes.Controls["Heights"])
                     {
-                        mDummyWorld.ModifyHeightMap();
+
+                        try
+                        {
+
+                            int radius = Convert.ToInt32((editModes.SelectedTab.Controls["HeightRadiusField"] as TextBox).Text);
+                            int intensity = Convert.ToInt32((editModes.SelectedTab.Controls["HeightIntensityField"] as TextBox).Text);
+
+                            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * radius);
+
+                            mDummyWorld.ModifyHeightMap(
+                                mDummyObject.Position, 
+                                radius,
+                                intensity,
+                                (editModes.SelectedTab.Controls["SetBox"] as CheckBox).Checked,
+                                (editModes.SelectedTab.Controls["InvertBox"] as CheckBox).Checked,
+                                (editModes.SelectedTab.Controls["FeatherBox"] as CheckBox).Checked,
+                                (editModes.SelectedTab.Controls["FlattenBox"] as CheckBox).Checked,
+                                (editModes.SelectedTab.Controls["SmoothBox"] as CheckBox).Checked);
+
+                        }
+                        catch (SystemException)
+                        {
+                            Console.WriteLine("Invalid input.");
+                        }
+
                     }
                     else if (editModes.SelectedTab == editModes.Controls["Textures"])
                     {
-                        mDummyWorld.ModifyHeightMap();
+                        try
+                        {
+                            
+                            int radius = Convert.ToInt32((editModes.SelectedTab.Controls["TextureRadiusField"] as TextBox).Text);
+                            float alpha = Convert.ToSingle((editModes.SelectedTab.Controls["TextureAlphaField"] as TextBox).Text);
+
+                            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * radius);
+
+                            mDummyWorld.ModifyTextureMap(
+                                mDummyObject.Position,
+                                (editModes.SelectedTab.Controls["TextureList"] as ListBox).SelectedItem.ToString(),
+                                radius,
+                                alpha);
+                            
+                        }
+                        catch (SystemException)
+                        {
+                            Console.WriteLine("Invalid input.");
+                        }
                     }
                 }
             }

@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
-namespace GraphicsLibrary
+namespace AnimationUtilities
 {
     /// <summary>
     /// Describes the position of a single bone at a single point in time.

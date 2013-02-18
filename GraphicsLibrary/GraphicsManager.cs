@@ -1,3 +1,4 @@
+using AnimationUtilities;
 using GameConstructLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -20,16 +21,16 @@ namespace GraphicsLibrary
         static private Effect mConfigurableShader;
         static private Effect mPostProcessShader;
 
-        static public SkinnedEffect TerrainShader
+        static public AnimationUtilities.SkinnedEffect TerrainShader
         {
             get { return mTerrainShader; }
         }
-        static private SkinnedEffect mTerrainShader;
+        static private AnimationUtilities.SkinnedEffect mTerrainShader;
 
         static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string, Model>();
         static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
         static private Dictionary<string, Dictionary<string, Matrix>> mUniqueModelBoneLibrary = new Dictionary<string, Dictionary<string, Matrix>>();
-        static private Dictionary<string, Texture2D> mUniqueSpriteLibrary = new Dictionary<string, Texture2D>();
+        static private Dictionary<string, Texture2D> mUniqueTextureLibrary = new Dictionary<string, Texture2D>();
         static private Dictionary<string, Dictionary<int, Texture2D>> mUniqueAnimateTextureLibrary = new Dictionary<string, Dictionary<int, Texture2D>>();
 
         static private GraphicsDevice mDevice;
@@ -70,10 +71,6 @@ namespace GraphicsLibrary
 
         static private int mEdgeWidth = 1;
         static private int mEdgeIntensity = 1;
-        static private int mShadowMapLength = 4096;
-        static private int mAnimateShadowMapLength = 1024;
-        static private int mAnimateShadowFarClip = 64;
-        static private float mTexelSize;
 
         static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "Chimera/ChimeraContent/";
         static private char[] mDelimeterChars = { ' ' };
@@ -133,6 +130,42 @@ namespace GraphicsLibrary
         }
         static private bool mDebugVisualization = false;
 
+        static public GraphicsDevice Device
+        {
+            get
+            {
+                return mDevice;
+            }
+            private set
+            {
+                mDevice = value;
+            }
+        }
+
+        static public Dictionary<string, Model> ModelLibrary
+        {
+            get
+            {
+                return mUniqueModelLibrary;
+            }
+            private set
+            {
+                mUniqueModelLibrary = value;
+            }
+        }
+
+        static public Dictionary<string, Texture2D> TextureLibrary
+        {
+            get
+            {
+                return mUniqueTextureLibrary;
+            }
+            private set
+            {
+                mUniqueTextureLibrary = value;
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -151,7 +184,7 @@ namespace GraphicsLibrary
             // Load shaders.
             mConfigurableShader = content.Load<Effect>("shaders/ConfigurableShader");
             mPostProcessShader = content.Load<Effect>("shaders/PostProcessing");
-            mTerrainShader = new SkinnedEffect(mConfigurableShader);
+            mTerrainShader = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
 
             // Create buffers.
             mShadowMap = new CascadedShadowMap(device, 2048);
@@ -215,7 +248,7 @@ namespace GraphicsLibrary
                                     Microsoft.Xna.Framework.Graphics.SkinnedEffect skinnedEffect = part.Effect as Microsoft.Xna.Framework.Graphics.SkinnedEffect;
                                     if (skinnedEffect != null)
                                     {
-                                        SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
+                                        AnimationUtilities.SkinnedEffect newEffect = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
                                         newEffect.CopyFromSkinnedEffect(skinnedEffect);
 
                                         part.Effect = newEffect;
@@ -225,7 +258,7 @@ namespace GraphicsLibrary
                                         Microsoft.Xna.Framework.Graphics.BasicEffect basicEffect = part.Effect as Microsoft.Xna.Framework.Graphics.BasicEffect;
                                         if (basicEffect != null)
                                         {
-                                            SkinnedEffect newEffect = new SkinnedEffect(mConfigurableShader);
+                                            AnimationUtilities.SkinnedEffect newEffect = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
                                             newEffect.CopyFromBasicEffect(basicEffect);
 
                                             part.Effect = newEffect;
@@ -331,7 +364,11 @@ namespace GraphicsLibrary
                     terrainTexture = content.Load<Texture2D>("levels/maps/" + inputTextureName);
                 }
 
-                TerrainDescription newTerrain = new TerrainDescription(heightMap, terrainTexture);
+                TerrainDescription newTerrain = new TerrainDescription(
+                    heightMap, 
+                    terrainTexture, 
+                    new string[4] {"snowTexture", "grassTexture", "dirtTexture", "waterTexture"}
+                    );
                 if (mUniqueTerrainLibrary.ContainsKey(terrainName))
                 {
                     throw new Exception("Duplicate terrain key: " + terrainName);
@@ -339,7 +376,26 @@ namespace GraphicsLibrary
                 mUniqueTerrainLibrary.Add(terrainName, newTerrain);
             }
 
-            // Load sprites.
+            // Load textures.
+            dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/maps/");
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException("Could not find textures/maps/ directory in content.");
+            }
+
+            FileInfo[] mapFiles = dir.GetFiles("*");
+            foreach (FileInfo file in mapFiles)
+            {
+                string mapName = Path.GetFileNameWithoutExtension(file.Name);
+                Texture2D map = content.Load<Texture2D>("textures/maps/" + mapName);
+
+                if (mUniqueTextureLibrary.ContainsKey(mapName))
+                {
+                    throw new Exception("Duplicate map key: " + mapName);
+                }
+                mUniqueTextureLibrary.Add(mapName, map);
+            }
+
             dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/sprites/");
             if (!dir.Exists)
             {
@@ -352,11 +408,11 @@ namespace GraphicsLibrary
                 string spriteName = Path.GetFileNameWithoutExtension(file.Name);
                 Texture2D sprite = content.Load<Texture2D>("textures/sprites/" + spriteName);
 
-                if (mUniqueSpriteLibrary.ContainsKey(spriteName))
+                if (mUniqueTextureLibrary.ContainsKey(spriteName))
                 {
                     throw new Exception("Duplicate sprite key: " + spriteName);
                 }
-                mUniqueSpriteLibrary.Add(spriteName, sprite);
+                mUniqueTextureLibrary.Add(spriteName, sprite);
             }
         }
 
@@ -392,7 +448,6 @@ namespace GraphicsLibrary
             mDevice.BlendState = BlendState.Opaque;
             mDevice.DepthStencilState = DepthStencilState.Default;
             mDevice.SamplerStates[1] = SamplerState.PointClamp;
-            mDevice.SamplerStates[2] = SamplerState.PointClamp;
             mDevice.DepthStencilState = DepthStencilState.Default;
 
             RasterizerState cull = new RasterizerState();
@@ -544,6 +599,32 @@ namespace GraphicsLibrary
                 return result.Terrain;
             }
             throw new KeyNotFoundException("Unable to find terrain key: " + terrainName);
+        }
+
+        /// <summary>
+        /// Retrieves texture of terrain from database.  Throws KeyNotFoundException if terrainName does not exist in database.
+        /// </summary>
+        static public Texture2D LookupTerrainTexture(string terrainName)
+        {
+            TerrainDescription result;
+            if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
+            {
+                return result.Texture;
+            }
+            throw new KeyNotFoundException("Unable to find texture for terrain key: " + terrainName);
+        }
+
+        /// <summary>
+        /// Retrieves names of textures applied to terrain from database.  Throws KeyNotFoundException if terrainName does not exist in database.
+        /// </summary>
+        static public string[] LookupTerrainTextureNames(string terrainName)
+        {
+            TerrainDescription result;
+            if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
+            {
+                return result.TextureNames;
+            }
+            throw new KeyNotFoundException("Unable to find texture names for terrain key: " + terrainName);
         }
 
         /// <summary>
@@ -745,7 +826,7 @@ namespace GraphicsLibrary
         static public Texture2D LookupSprite(string spriteName)
         {
             Texture2D result;
-            if (mUniqueSpriteLibrary.TryGetValue(spriteName, out result))
+            if (mUniqueTextureLibrary.TryGetValue(spriteName, out result))
             {
                 return result;
             }
@@ -808,7 +889,7 @@ namespace GraphicsLibrary
         {
             TerrainDescription heightmap = LookupTerrain(terrainName);
 
-            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "CelShade" : "Phong");
+            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "TerrainCelShade" : "TerrainPhong");
             DrawTerrainHeightMap(heightmap, techniqueName, worldTransforms, overlayColor, overlayColorWeight);
         }
 
@@ -817,7 +898,7 @@ namespace GraphicsLibrary
         /// </summary>
         static private void DrawMesh(ModelMesh mesh, string techniqueName, Matrix[] boneTransforms, Matrix worldTransforms, Vector2 animationRate, Vector3 overlayColor, float overlayColorWeight)
         {
-            foreach (SkinnedEffect effect in mesh.Effects)
+            foreach (AnimationUtilities.SkinnedEffect effect in mesh.Effects)
             {
                 effect.CurrentTechnique = effect.Techniques[techniqueName];
 
@@ -850,7 +931,6 @@ namespace GraphicsLibrary
                 effect.Parameters["xOverlayColorWeight"].SetValue(overlayColorWeight);
 
                 effect.Parameters["xNumShadowBands"].SetValue(techniqueName.Contains("Skinned") ? 2.0f : 3.0f);
-                effect.Parameters["xTexelSize"].SetValue(mTexelSize);
 
                 effect.SpecularColor = new Vector3(0.25f);
                 effect.SpecularPower = 16;
@@ -877,7 +957,11 @@ namespace GraphicsLibrary
             mDevice.Indices = heightMap.Terrain.IndexBuffer;
             mDevice.SetVertexBuffer(heightMap.Terrain.VertexBuffer);
 
-            mTerrainShader.Texture = heightMap.Texture;
+            mTerrainShader.Parameters["AlphaMap"].SetValue(heightMap.Texture);
+            mTerrainShader.Parameters["BlackTexture"].SetValue(LookupSprite(heightMap.TextureNames[0]));
+            mTerrainShader.Parameters["RedTexture"].SetValue(LookupSprite(heightMap.TextureNames[1]));
+            mTerrainShader.Parameters["GreenTexture"].SetValue(LookupSprite(heightMap.TextureNames[2]));
+            mTerrainShader.Parameters["BlueTexture"].SetValue(LookupSprite(heightMap.TextureNames[3]));
 
             if (CastingShadows)
             {
@@ -904,8 +988,6 @@ namespace GraphicsLibrary
 
             mTerrainShader.Parameters["xOverlayColor"].SetValue(overlayColor);
             mTerrainShader.Parameters["xOverlayColorWeight"].SetValue(overlayColorWeight);
-
-            mTerrainShader.Parameters["xTexelSize"].SetValue(mTexelSize);
 
             mTerrainShader.SpecularColor = new Vector3(0.25f);
             mTerrainShader.SpecularPower = 16;
@@ -952,51 +1034,6 @@ namespace GraphicsLibrary
             mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, mPostProcessShader);
             mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width, mSceneBuffer.Height), Color.White);
             mSpriteBatch.End();
-        }
-
-        /// <summary>
-        /// Builds out the transformation matrix for light source.
-        /// </summary>
-        /// <returns></returns>
-        static private void BuildLightTransform(bool resizeShadowMap)
-        {
-            //Matrix lightRotation = Matrix.CreateLookAt(Vector3.Zero, -mLightDirection, Vector3.Up);
-
-            //// Get the corners of the frustum
-            //Vector3[] frustumCorners = mCameraFrustum.GetCorners();
-
-            //// Transform corners of frustum in to light space.
-            //for (int i = 0; i < frustumCorners.Length; ++i )
-            //{
-            //    frustumCorners[i] = Vector3.Transform(frustumCorners[i], lightRotation);
-            //}
-
-            //BoundingBox lightBox = BoundingBox.CreateFromPoints(frustumCorners);
-
-            //Vector3 boxSize = lightBox.Max - lightBox.Min;
-            //if (resizeShadowMap)
-            //{
-            //    boxSize *= 2.0f;
-            //}
-            //Vector3 halfBoxSize = boxSize * 0.5f;
-
-            //mTexelSize = boxSize.X / mShadowMapLength;
-
-            //Vector3 lightPosition = lightBox.Min + halfBoxSize;
-            //lightPosition.Z = lightBox.Min.Z;
-
-            //lightPosition = Vector3.Transform(lightPosition, Matrix.Invert(lightRotation));
-
-            //if (resizeShadowMap)
-            //{
-            //    mLightView = Matrix.CreateLookAt(lightPosition, lightPosition - mLightDirection, Vector3.Up);
-            //    mLightProjection = Matrix.CreateOrthographic(boxSize.X, boxSize.Y, -boxSize.Z, boxSize.Z);
-            //}
-            //else
-            //{
-            //    mAnimateLightView = Matrix.CreateLookAt(lightPosition, lightPosition - mLightDirection, Vector3.Up);
-            //    mAnimateLightProjection = Matrix.CreateOrthographic(boxSize.X, boxSize.Y, -boxSize.Z, boxSize.Z);
-            //}
         }
 
         /// <summary>

@@ -20,11 +20,18 @@ namespace GraphicsLibrary
             set { this.mTexture = value; }
         }
 
-        public TerrainDescription(TerrainHeightMap terrain, Texture2D texture)
+        private string[] mTextureNames;
+        public string[] TextureNames
         {
-            this.mTerrain = terrain;
+            get { return this.mTextureNames; }
+            set { this.mTextureNames = value; }
+        }
 
-            mTexture = texture;
+        public TerrainDescription(TerrainHeightMap terrain, Texture2D texture, string[] textureNames)
+        {
+            this.mTerrain      = terrain;
+            this.mTexture      = texture;
+            this.mTextureNames = textureNames;
         }
     }
 }

@@ -20,7 +20,31 @@ namespace GameConstructLibrary
     {
 
         private Texture2D mMap;
+
+        public int Width
+        {
+            get
+            {
+                return mWidth;
+            }
+            private set
+            {
+                mWidth = value;
+            }
+        }
         private int mWidth;
+
+        public int Height
+        {
+            get
+            {
+                return mHeight;
+            }
+            private set
+            {
+                mHeight = value;
+            }
+        }
         private int mHeight;
 
         private GraphicsDevice mDevice;
@@ -69,6 +93,7 @@ namespace GameConstructLibrary
             get { return this.indices.Length; }
         }
 
+        /*
         public TerrainHeightMap(int width, int height, GraphicsDevice device)
         {
             mDevice = device;
@@ -76,7 +101,7 @@ namespace GameConstructLibrary
             mWidth = mMap.Width;
             mHeight = mMap.Height;
             LoadData(true);
-        }
+        }*/
 
         public TerrainHeightMap(Texture2D heightTexture, GraphicsDevice device)
         {
@@ -102,16 +127,18 @@ namespace GameConstructLibrary
 
         private void MakeVertices(bool resized)
         {
-            vertices1D = new VertexPositionColorTextureNormal[mWidth * mHeight];
+            vertices1D = new VertexPositionColorTextureNormal[mWidth * mHeight + 2 * mWidth + 2 * mHeight];
             vertices2D = new VertexPositionColorTextureNormal[mWidth, mHeight];
             for (int z = 0; z < mHeight; z++)
             {
                 for (int x = 0; x < mWidth; x++)
                 {
+                    int xLocation = x - mWidth / 2;
+                    int zLocation = z - mHeight / 2;
 
                     if (resized) // If resized rebuild map
                     {
-                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, 0.0f, z - mHeight / 2);
+                        vertices1D[x + z * mWidth].Position = new Vector3(xLocation, 0.0f, zLocation);
                         vertices1D[x + z * mWidth].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                         vertices1D[x + z * mWidth].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                         vertices2D[x, z] = vertices1D[x + z * mWidth];
@@ -119,10 +146,42 @@ namespace GameConstructLibrary
                     else // Otherwise create vertices
                     {
 
-                        vertices1D[x + z * mWidth].Position = new Vector3(x - mWidth / 2, Utils.GetTexture2DPixelColor(x, z, mMap).R * 256 * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).G * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).B, z - mHeight / 2);
+                        vertices1D[x + z * mWidth].Position = new Vector3(xLocation, Utils.GetTexture2DPixelColor(x, z, mMap).R * 256 * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).G * 256 + Utils.GetTexture2DPixelColor(x, z, mMap).B, zLocation);
                         vertices1D[x + z * mWidth].Color = Microsoft.Xna.Framework.Color.BurlyWood;
                         vertices1D[x + z * mWidth].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                         vertices2D[x, z] = vertices1D[x + z * mWidth];
+                    }
+
+                    // top side
+                    if (z == 0)
+                    {
+                        vertices1D[mHeight * mWidth + x].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + x].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[mHeight * mWidth + x].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
+                    }
+
+                    // bottom side
+                    if (z == mHeight - 1)
+                    {
+                        vertices1D[mHeight * mWidth + mWidth + x].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + mWidth + x].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[mHeight * mWidth + mWidth + x].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
+                    }
+
+                    // left side
+                    if (x == 0)
+                    {
+                        vertices1D[mHeight * mWidth + 2 * mWidth + z].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + 2 * mWidth + z].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[mHeight * mWidth + 2 * mWidth + z].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
+                    }
+
+                    // right side
+                    if (x == mWidth - 1)
+                    {
+                        vertices1D[mHeight * mWidth + 2 * mWidth + mHeight + z].Position = new Vector3(xLocation, 0.0f, zLocation);
+                        vertices1D[mHeight * mWidth + 2 * mWidth + mHeight + z].Color = Microsoft.Xna.Framework.Color.BurlyWood;
+                        vertices1D[mHeight * mWidth + 2 * mWidth + mHeight + z].TexCoord = new Vector2((float)x / (float)mWidth, (float)z / (float)mHeight);
                     }
                 }
             }
@@ -130,7 +189,7 @@ namespace GameConstructLibrary
 
         private void MakeIndices()
         {
-            indices = new int[(mWidth - 1) * (mHeight - 1) * 6];
+            indices = new int[((mWidth - 1) * (mHeight - 1) + 2 * (mWidth - 1 + mHeight - 1)) * 6];
             int counter = 0;
             for (int z = 0; z < mHeight - 1; z++)
             {
@@ -151,6 +210,61 @@ namespace GameConstructLibrary
                     indices[counter++] = lowerRight;
                     indices[counter++] = topRight;
                 }
+            }
+
+            // Create top and bottom sides.
+            for (int x = 0; x < mWidth - 1; x++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    int xIndex = j == 0 ? mWidth - 1 - x : x;
+                    int zIndex = j * (mHeight - 1);
+
+                    int topLeft = xIndex + zIndex * mWidth;
+                    int lowerLeft = mWidth * mHeight + xIndex + j * mWidth;
+                    int topRight = j == 0 ? topLeft - 1 : topLeft + 1;
+                    int lowerRight = j == 0 ? lowerLeft - 1 : lowerLeft + 1;
+
+                    int i = 0;
+
+                    // First triangle.
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = topLeft;
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = topRight;
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = lowerRight;
+
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = topLeft;
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = lowerRight;
+                    indices[counter + j * (mWidth - 1) * 6 + i++] = lowerLeft;
+                }
+                counter += 6;
+            }
+            counter += 6 * (mWidth - 1);
+
+            // Create left and right sides.
+            for (int z = 0; z < mHeight - 1; z++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    int xIndex = j * (mWidth - 1);
+                    int zIndex = j == 0 ? z : mHeight - 1 - z;
+
+                    int topLeft = xIndex + zIndex * mWidth;
+                    int lowerLeft = mWidth * mHeight + 2 * mWidth + zIndex + j * mHeight;
+                    int topRight = j == 0 ? topLeft + mWidth : topLeft - mWidth;
+                    int lowerRight = j == 0 ? lowerLeft + 1 : lowerLeft - 1;
+
+                    int i = 0;
+
+                    // First triangle.
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = topLeft;
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = topRight;
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = lowerRight;
+
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = topLeft;
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = lowerRight;
+                    indices[counter + j * (mHeight - 1) * 6 + i++] = lowerLeft;
+                }
+                counter += 6;
             }
         }
 
@@ -200,9 +314,9 @@ namespace GameConstructLibrary
             mMap.SetData<Microsoft.Xna.Framework.Color>(destinationColorData);
             mWidth = copy.mWidth;
             mHeight = copy.mHeight;
-            vertices1D = new VertexPositionColorTextureNormal[mWidth * mHeight];
+            vertices1D = new VertexPositionColorTextureNormal[mWidth * mHeight + 2 * mWidth + 2 * mHeight];
             vertices2D = new VertexPositionColorTextureNormal[mWidth, mHeight];
-            indices = new int[mWidth * mHeight * 6];
+            indices = new int[((mWidth - 1) * (mHeight - 1) + 2 * (mWidth - 1 + mHeight - 1)) * 6];
             for (int z = 0; z < mHeight; z++)
             {
                 for (int x = 0; x < mWidth; x++)
@@ -210,6 +324,11 @@ namespace GameConstructLibrary
                     vertices1D[x + z * mWidth] = copy.vertices1D[x + z * mWidth];
                     vertices2D[x, z] = copy.vertices2D[x, z];
                 }
+            }
+
+            for (int i = 0; i < 2 * mWidth + 2 * mHeight; i++)
+            {
+                vertices1D[mWidth * mHeight + i] = copy.vertices1D[mWidth * mHeight + i];
             }
 
             for (int count = 0; count < copy.indices.Length; count++)
@@ -221,7 +340,7 @@ namespace GameConstructLibrary
             MakeBuffer();
         }
 
-        public void ModifyVertices(Vector3 position, int size, int intensity, bool feather, bool set, bool inverse, bool smooth, bool flatten)
+        public void ModifyVertices(Vector3 position, int radius, int intensity, bool set, bool invert, bool feather, bool flatten, bool smooth)
         {
 
             intensity = (int)(intensity / Utils.WorldScale.Y);
@@ -233,24 +352,24 @@ namespace GameConstructLibrary
             position.Z += mHeight / 2;
 
             // Correct for inverse
-            if (inverse)
+            if (invert)
             {
                 intensity = -intensity;
             }
 
-            if (smooth) SmoothVertices(position, size);
-            else if (flatten) FlattenVertices(position, size);
+            if (smooth) SmoothVertices(position, radius);
+            else if (flatten) FlattenVertices(position, radius);
             else
             {
 
                 // Build smaller grid for modifying heights
-                for (int z = (int)position.Z - size; z <= (int)position.Z + size; z++)
+                for (int z = (int)position.Z - radius; z <= (int)position.Z + radius; z++)
                 {
-                    for (int x = (int)position.X - size; x <= (int)position.X + size; x++)
+                    for (int x = (int)position.X - radius; x <= (int)position.X + radius; x++)
                     {
                         if (x < 0 || x >= mWidth || z < 0 || z >= mHeight) continue;
                         int distance = (int)Math.Sqrt(Math.Pow((x - position.X), 2) + Math.Pow((z - position.Z), 2));
-                        if (distance < size)
+                        if (distance < radius)
                         {
 
                             if (set) vertices2D[x, z].Position.Y = intensity;
@@ -258,7 +377,7 @@ namespace GameConstructLibrary
                             {
                                 float intensityModifier;
 
-                                if (feather) intensityModifier = (float)Math.Log(size - distance) / size;
+                                if (feather) intensityModifier = (float)Math.Log(radius - distance) / radius;
                                 else intensityModifier = 1.0f;
 
                                 vertices2D[x, z].Position.Y += intensity * intensityModifier;
@@ -375,30 +494,7 @@ namespace GameConstructLibrary
             return heights;
         }
 
-        public void Resize(int width, int height)
-        {
-
-            mWidth = width;
-            mHeight = height;
-
-            Microsoft.Xna.Framework.Rectangle sourceRectangle = new Microsoft.Xna.Framework.Rectangle(0, 0, mWidth, mHeight);
-            Microsoft.Xna.Framework.Color[] retrievedColor = new Microsoft.Xna.Framework.Color[mWidth * mHeight];
-
-            mMap.GetData<Microsoft.Xna.Framework.Color>(
-                0,
-                sourceRectangle,
-                retrievedColor,
-                0,
-                mWidth * mHeight);
-
-            mMap = new Texture2D(mDevice, mWidth, mHeight);
-            mMap.SetData<Microsoft.Xna.Framework.Color>(retrievedColor);
-
-            LoadData(true);
-
-        }
-
-        public void Save(string fileName)
+        public void Save(string path)
         {
 
             Bitmap bmp = new Bitmap(mMap.Width, mMap.Height);
@@ -416,8 +512,7 @@ namespace GameConstructLibrary
                 }
             }
 
-            // Redefine bitmap for permissions purposes
-            bmp.Save(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/maps/" + fileName + ".bmp");
+            bmp.Save(path + "/" + "HeightMap" + ".bmp");
         }
     }
 }
