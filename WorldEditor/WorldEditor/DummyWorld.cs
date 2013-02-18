@@ -19,8 +19,6 @@ namespace WorldEditor
 
         private string mName = String.Empty;
 
-        private Controls mControls = null;
-
         private TerrainHeightMap mHeightMap = null;
         private TextureMap mTextureMap = null;
 
@@ -39,17 +37,16 @@ namespace WorldEditor
 
         private List<DummyObject> mDummies = new List<DummyObject>();
 
-        public DummyWorld(Controls controls, int width, int height)
+        public DummyWorld(Controls controls)
         {
             
             mName = "default";
 
-            mControls = controls;
-
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
-            mHeightMap.Resize(width, height);
-
-            mTextureMap = new TextureMap(GraphicsManager.LookupTerrainAlphaMaps(mName), GraphicsManager.LookupTerrainTextureNames(mName), GraphicsManager.Device);
+            mTextureMap = new TextureMap(
+                GraphicsManager.LookupTerrainAlphaMaps(mName), 
+                GraphicsManager.LookupTerrainTextureNames(mName), 
+                GraphicsManager.Device);
 
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
@@ -59,8 +56,6 @@ namespace WorldEditor
         {
             
             mName = copy.mName;
-
-            mControls = copy.mControls;
 
             mHeightMap = new TerrainHeightMap(copy.mHeightMap);
             mTextureMap = new TextureMap(copy.mTextureMap);
@@ -101,26 +96,27 @@ namespace WorldEditor
             mTextureMap.ModifyTexelWeights(position, texture, radius, alpha);
         }
 
-        public void Save(string fileName)
+        public void Save(string path)
         {
-            
-            mHeightMap.Save(fileName);
-            mTextureMap.Save(fileName);
+
+            System.IO.Directory.CreateDirectory(path);
+
+            mHeightMap.Save(path);
+            mTextureMap.Save(path);
 
             UnscaleObjects();
-            LevelManager.Save(fileName, mDummies);
+            LevelManager.Save(path, mDummies);
             ScaleObjects();
 
         }
 
-        public void Load(string fileName)
+        public void Open(string path)
         {
-
-            mName = fileName;
+            mName = path;
 
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
             mTextureMap = new TextureMap(GraphicsManager.LookupTerrainAlphaMaps(mName), GraphicsManager.LookupTerrainTextureNames(mName), GraphicsManager.Device);
-            mTerrainPhysics = new TerrainPhysics(fileName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
+            mTerrainPhysics = new TerrainPhysics(path, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
             mDummies = LevelManager.Load(mName);
             ScaleObjects();

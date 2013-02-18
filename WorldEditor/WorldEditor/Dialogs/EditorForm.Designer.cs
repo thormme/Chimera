@@ -32,6 +32,8 @@
             this.Objects = new System.Windows.Forms.TabPage();
             this.ObjectList = new System.Windows.Forms.ListBox();
             this.Heights = new System.Windows.Forms.TabPage();
+            this.HeightIntensityField = new System.Windows.Forms.NumericUpDown();
+            this.HeightRadiusField = new System.Windows.Forms.NumericUpDown();
             this.HeightIntensityLabel = new System.Windows.Forms.Label();
             this.HeightRadiusLabel = new System.Windows.Forms.Label();
             this.SmoothBox = new System.Windows.Forms.CheckBox();
@@ -39,25 +41,26 @@
             this.InvertBox = new System.Windows.Forms.CheckBox();
             this.FeatherBox = new System.Windows.Forms.CheckBox();
             this.SetBox = new System.Windows.Forms.CheckBox();
-            this.HeightIntensityField = new System.Windows.Forms.TextBox();
-            this.HeightRadiusField = new System.Windows.Forms.TextBox();
             this.Textures = new System.Windows.Forms.TabPage();
+            this.TextureAlphaField = new System.Windows.Forms.NumericUpDown();
+            this.TextureRadiusField = new System.Windows.Forms.NumericUpDown();
             this.TextureAlphaLabel = new System.Windows.Forms.Label();
             this.TextureRadiusLabel = new System.Windows.Forms.Label();
-            this.TextureAlphaField = new System.Windows.Forms.TextBox();
-            this.TextureRadiusField = new System.Windows.Forms.TextBox();
             this.TextureList = new System.Windows.Forms.ListBox();
             this.Picture = new System.Windows.Forms.PictureBox();
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.File = new System.Windows.Forms.ToolStripMenuItem();
-            this.NewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.LoadMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.Edit = new System.Windows.Forms.ToolStripMenuItem();
             this.EditTabs.SuspendLayout();
             this.Objects.SuspendLayout();
             this.Heights.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.HeightIntensityField)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HeightRadiusField)).BeginInit();
             this.Textures.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TextureAlphaField)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TextureRadiusField)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
             this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -95,6 +98,8 @@
             // 
             // Heights
             // 
+            this.Heights.Controls.Add(this.HeightIntensityField);
+            this.Heights.Controls.Add(this.HeightRadiusField);
             this.Heights.Controls.Add(this.HeightIntensityLabel);
             this.Heights.Controls.Add(this.HeightRadiusLabel);
             this.Heights.Controls.Add(this.SmoothBox);
@@ -102,8 +107,6 @@
             this.Heights.Controls.Add(this.InvertBox);
             this.Heights.Controls.Add(this.FeatherBox);
             this.Heights.Controls.Add(this.SetBox);
-            this.Heights.Controls.Add(this.HeightIntensityField);
-            this.Heights.Controls.Add(this.HeightRadiusField);
             this.Heights.Location = new System.Drawing.Point(4, 22);
             this.Heights.Name = "Heights";
             this.Heights.Padding = new System.Windows.Forms.Padding(3);
@@ -111,6 +114,30 @@
             this.Heights.TabIndex = 1;
             this.Heights.Text = "Heights";
             this.Heights.UseVisualStyleBackColor = true;
+            // 
+            // HeightIntensityField
+            // 
+            this.HeightIntensityField.Location = new System.Drawing.Point(57, 41);
+            this.HeightIntensityField.Name = "HeightIntensityField";
+            this.HeightIntensityField.Size = new System.Drawing.Size(60, 20);
+            this.HeightIntensityField.TabIndex = 14;
+            this.HeightIntensityField.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // HeightRadiusField
+            // 
+            this.HeightRadiusField.Location = new System.Drawing.Point(57, 15);
+            this.HeightRadiusField.Name = "HeightRadiusField";
+            this.HeightRadiusField.Size = new System.Drawing.Size(60, 20);
+            this.HeightRadiusField.TabIndex = 13;
+            this.HeightRadiusField.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // HeightIntensityLabel
             // 
@@ -181,28 +208,12 @@
             this.SetBox.Text = "Set";
             this.SetBox.UseVisualStyleBackColor = true;
             // 
-            // HeightIntensityField
-            // 
-            this.HeightIntensityField.Location = new System.Drawing.Point(57, 41);
-            this.HeightIntensityField.Name = "HeightIntensityField";
-            this.HeightIntensityField.Size = new System.Drawing.Size(60, 20);
-            this.HeightIntensityField.TabIndex = 3;
-            this.HeightIntensityField.Text = "10";
-            // 
-            // HeightRadiusField
-            // 
-            this.HeightRadiusField.Location = new System.Drawing.Point(57, 15);
-            this.HeightRadiusField.Name = "HeightRadiusField";
-            this.HeightRadiusField.Size = new System.Drawing.Size(60, 20);
-            this.HeightRadiusField.TabIndex = 0;
-            this.HeightRadiusField.Text = "10";
-            // 
             // Textures
             // 
-            this.Textures.Controls.Add(this.TextureAlphaLabel);
-            this.Textures.Controls.Add(this.TextureRadiusLabel);
             this.Textures.Controls.Add(this.TextureAlphaField);
             this.Textures.Controls.Add(this.TextureRadiusField);
+            this.Textures.Controls.Add(this.TextureAlphaLabel);
+            this.Textures.Controls.Add(this.TextureRadiusLabel);
             this.Textures.Controls.Add(this.TextureList);
             this.Textures.Controls.Add(this.Picture);
             this.Textures.Location = new System.Drawing.Point(4, 22);
@@ -213,14 +224,38 @@
             this.Textures.Text = "Textures";
             this.Textures.UseVisualStyleBackColor = true;
             // 
+            // TextureAlphaField
+            // 
+            this.TextureAlphaField.Location = new System.Drawing.Point(57, 41);
+            this.TextureAlphaField.Name = "TextureAlphaField";
+            this.TextureAlphaField.Size = new System.Drawing.Size(60, 20);
+            this.TextureAlphaField.TabIndex = 18;
+            this.TextureAlphaField.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // TextureRadiusField
+            // 
+            this.TextureRadiusField.Location = new System.Drawing.Point(57, 15);
+            this.TextureRadiusField.Name = "TextureRadiusField";
+            this.TextureRadiusField.Size = new System.Drawing.Size(60, 20);
+            this.TextureRadiusField.TabIndex = 17;
+            this.TextureRadiusField.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
             // TextureAlphaLabel
             // 
             this.TextureAlphaLabel.AutoSize = true;
-            this.TextureAlphaLabel.Location = new System.Drawing.Point(19, 44);
+            this.TextureAlphaLabel.Location = new System.Drawing.Point(8, 44);
             this.TextureAlphaLabel.Name = "TextureAlphaLabel";
-            this.TextureAlphaLabel.Size = new System.Drawing.Size(37, 13);
+            this.TextureAlphaLabel.Size = new System.Drawing.Size(48, 13);
             this.TextureAlphaLabel.TabIndex = 16;
-            this.TextureAlphaLabel.Text = "Alpha:";
+            this.TextureAlphaLabel.Text = "Alpha %:";
             this.TextureAlphaLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // TextureRadiusLabel
@@ -231,22 +266,6 @@
             this.TextureRadiusLabel.Size = new System.Drawing.Size(43, 13);
             this.TextureRadiusLabel.TabIndex = 15;
             this.TextureRadiusLabel.Text = "Radius:";
-            // 
-            // TextureAlphaField
-            // 
-            this.TextureAlphaField.Location = new System.Drawing.Point(57, 41);
-            this.TextureAlphaField.Name = "TextureAlphaField";
-            this.TextureAlphaField.Size = new System.Drawing.Size(60, 20);
-            this.TextureAlphaField.TabIndex = 14;
-            this.TextureAlphaField.Text = "1.0";
-            // 
-            // TextureRadiusField
-            // 
-            this.TextureRadiusField.Location = new System.Drawing.Point(57, 15);
-            this.TextureRadiusField.Name = "TextureRadiusField";
-            this.TextureRadiusField.Size = new System.Drawing.Size(60, 20);
-            this.TextureRadiusField.TabIndex = 13;
-            this.TextureRadiusField.Text = "10";
             // 
             // TextureList
             // 
@@ -280,30 +299,23 @@
             // File
             // 
             this.File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewMenu,
             this.SaveMenu,
-            this.LoadMenu});
+            this.OpenMenu});
             this.File.Name = "File";
             this.File.Size = new System.Drawing.Size(37, 20);
             this.File.Text = "File";
             // 
-            // NewMenu
-            // 
-            this.NewMenu.Name = "NewMenu";
-            this.NewMenu.Size = new System.Drawing.Size(152, 22);
-            this.NewMenu.Text = "New";
-            // 
             // SaveMenu
             // 
             this.SaveMenu.Name = "SaveMenu";
-            this.SaveMenu.Size = new System.Drawing.Size(152, 22);
+            this.SaveMenu.Size = new System.Drawing.Size(103, 22);
             this.SaveMenu.Text = "Save";
             // 
-            // LoadMenu
+            // OpenMenu
             // 
-            this.LoadMenu.Name = "LoadMenu";
-            this.LoadMenu.Size = new System.Drawing.Size(152, 22);
-            this.LoadMenu.Text = "Load";
+            this.OpenMenu.Name = "OpenMenu";
+            this.OpenMenu.Size = new System.Drawing.Size(103, 22);
+            this.OpenMenu.Text = "Open";
             // 
             // Edit
             // 
@@ -329,8 +341,12 @@
             this.Objects.ResumeLayout(false);
             this.Heights.ResumeLayout(false);
             this.Heights.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.HeightIntensityField)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HeightRadiusField)).EndInit();
             this.Textures.ResumeLayout(false);
             this.Textures.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TextureAlphaField)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TextureRadiusField)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
@@ -345,8 +361,6 @@
         private System.Windows.Forms.TabPage Heights;
         private System.Windows.Forms.TabPage Textures;
         private System.Windows.Forms.TabPage Objects;
-        private System.Windows.Forms.TextBox HeightRadiusField;
-        private System.Windows.Forms.TextBox HeightIntensityField;
         private System.Windows.Forms.CheckBox SmoothBox;
         private System.Windows.Forms.CheckBox FlattenBox;
         private System.Windows.Forms.CheckBox InvertBox;
@@ -357,15 +371,16 @@
         private System.Windows.Forms.ListBox ObjectList;
         private System.Windows.Forms.Label TextureAlphaLabel;
         private System.Windows.Forms.Label TextureRadiusLabel;
-        private System.Windows.Forms.TextBox TextureAlphaField;
-        private System.Windows.Forms.TextBox TextureRadiusField;
         private System.Windows.Forms.ListBox TextureList;
         private System.Windows.Forms.PictureBox Picture;
         private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem File;
-        private System.Windows.Forms.ToolStripMenuItem NewMenu;
         private System.Windows.Forms.ToolStripMenuItem SaveMenu;
-        private System.Windows.Forms.ToolStripMenuItem LoadMenu;
+        private System.Windows.Forms.ToolStripMenuItem OpenMenu;
         private System.Windows.Forms.ToolStripMenuItem Edit;
+        private System.Windows.Forms.NumericUpDown HeightIntensityField;
+        private System.Windows.Forms.NumericUpDown HeightRadiusField;
+        private System.Windows.Forms.NumericUpDown TextureRadiusField;
+        private System.Windows.Forms.NumericUpDown TextureAlphaField;
     }
 }

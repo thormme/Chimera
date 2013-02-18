@@ -20,7 +20,31 @@ namespace GameConstructLibrary
     {
 
         private Texture2D mMap;
+
+        public int Width
+        {
+            get
+            {
+                return mWidth;
+            }
+            private set
+            {
+                mWidth = value;
+            }
+        }
         private int mWidth;
+
+        public int Height
+        {
+            get
+            {
+                return mHeight;
+            }
+            private set
+            {
+                mHeight = value;
+            }
+        }
         private int mHeight;
 
         private GraphicsDevice mDevice;
@@ -69,6 +93,7 @@ namespace GameConstructLibrary
             get { return this.indices.Length; }
         }
 
+        /*
         public TerrainHeightMap(int width, int height, GraphicsDevice device)
         {
             mDevice = device;
@@ -76,7 +101,7 @@ namespace GameConstructLibrary
             mWidth = mMap.Width;
             mHeight = mMap.Height;
             LoadData(true);
-        }
+        }*/
 
         public TerrainHeightMap(Texture2D heightTexture, GraphicsDevice device)
         {
@@ -469,30 +494,7 @@ namespace GameConstructLibrary
             return heights;
         }
 
-        public void Resize(int width, int height)
-        {
-
-            mWidth = width;
-            mHeight = height;
-
-            Microsoft.Xna.Framework.Rectangle sourceRectangle = new Microsoft.Xna.Framework.Rectangle(0, 0, mWidth, mHeight);
-            Microsoft.Xna.Framework.Color[] retrievedColor = new Microsoft.Xna.Framework.Color[mWidth * mHeight];
-
-            mMap.GetData<Microsoft.Xna.Framework.Color>(
-                0,
-                sourceRectangle,
-                retrievedColor,
-                0,
-                mWidth * mHeight);
-
-            mMap = new Texture2D(mDevice, mWidth, mHeight);
-            mMap.SetData<Microsoft.Xna.Framework.Color>(retrievedColor);
-
-            LoadData(true);
-
-        }
-
-        public void Save(string fileName)
+        public void Save(string path)
         {
 
             Bitmap bmp = new Bitmap(mMap.Width, mMap.Height);
@@ -510,7 +512,7 @@ namespace GameConstructLibrary
                 }
             }
 
-            bmp.Save(DirectoryManager.GetRoot() + "Chimera/ChimeraContent/levels/maps/" + fileName + ".bmp");
+            bmp.Save(path + "/" + "HeightMap" + ".bmp");
         }
     }
 }
