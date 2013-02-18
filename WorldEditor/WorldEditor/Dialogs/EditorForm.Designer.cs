@@ -200,7 +200,6 @@
             this.Controls.Add(this.EditTabs);
             this.Name = "EditorForm";
             this.Text = "Editor Menu";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.EditorMenu_Load);
             this.EditTabs.ResumeLayout(false);
             this.Objects.ResumeLayout(false);

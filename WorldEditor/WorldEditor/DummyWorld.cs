@@ -73,7 +73,6 @@ namespace WorldEditor
         public void AddObject(DummyObject dummyObject)
         {
             mDummies.Add(dummyObject);
-            Console.WriteLine(dummyObject.Position);
         }
 
         public void RemoveObject(DummyObject dummyObject)
@@ -152,11 +151,7 @@ namespace WorldEditor
             mTerrainPhysics.Render();
             foreach (DummyObject dummy in mDummies)
             {
-                InanimateModel model = new InanimateModel(dummy.Model);
-                model.Render(
-                    new Vector3(dummy.Position.X, dummy.Position.Y + dummy.Height * Utils.WorldScale.Y, dummy.Position.Z),
-                    Matrix.CreateFromYawPitchRoll(dummy.Orientation.X, dummy.Orientation.Y, dummy.Orientation.Z),
-                    dummy.Scale);
+                dummy.Draw();
             }
         }
 

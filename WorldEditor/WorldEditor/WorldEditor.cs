@@ -57,7 +57,7 @@ namespace WorldEditor
         private Dictionary<string, DummyObject> mObjects = new Dictionary<string, DummyObject>();
         
         //Object that will be drawn at the cursor in object tab.
-        private DummyObject mDummyObject = new DummyObject();
+        private DummyObject mCursorObject = new DummyObject();
 
         //Determines whether or not you are able to place an object/modify heights or textures.
         private bool mPlaceable;
@@ -83,7 +83,15 @@ namespace WorldEditor
         {
             mControls.Update(gameTime);
             mDummyWorld.Update(gameTime);
-            mPlaceable = mEntity.Update(gameTime, mDummyWorld, mDummyObject);
+            mEntity.Update(gameTime);
+
+            Vector3? pickingPosition = mEntity.GetPickingLocation(mDummyWorld);
+            if (pickingPosition != null && mCursorObject != null)
+            {
+                mCursorObject.Position = pickingPosition.Value;
+            }
+            mPlaceable = pickingPosition.HasValue;
+
             PerformActions();
         }
 
@@ -94,11 +102,10 @@ namespace WorldEditor
             {
                 try
                 {
-                    InanimateModel tempModel = new InanimateModel(mDummyObject.Model);
-                    tempModel.Render(
-                        new Vector3(mDummyObject.Position.X, mDummyObject.Position.Y + mDummyObject.Height * Utils.WorldScale.Y, mDummyObject.Position.Z),
-                        Matrix.CreateFromYawPitchRoll(mDummyObject.Orientation.X, mDummyObject.Orientation.Y, mDummyObject.Orientation.Z),
-                        mDummyObject.Scale);
+                    if (mCursorObject != null)
+                    {
+                        mCursorObject.Draw();
+                    }
                 }
                 catch (SystemException)
                 {
@@ -117,7 +124,8 @@ namespace WorldEditor
             TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
 
             editModes.SelectedIndexChanged += EditHandler;
-            (editModes.Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedIndexChanged += ObjectHandler;
+            (editModes.Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedIndexChanged += SelectNewObjectHandler;
+            (mObjectParametersForm.Controls["Create"] as Button).Click += CreateObjectButtonHandler;
 
             DirectoryInfo baseDirectory = new DirectoryInfo(ContentPath + "/" + ModelsPath + "/");
             DirectoryInfo[] subDirectories = baseDirectory.GetDirectories();
@@ -192,10 +200,38 @@ namespace WorldEditor
             }
         }
 
-        private void ObjectHandler(object sender, EventArgs e)
+        private void SelectNewObjectHandler(object sender, EventArgs e)
         {
-            mDummyObject = mObjects[(sender as ListBox).SelectedItem.ToString()];
             mObjectParametersForm.Show();
+        }
+
+        private void CreateObjectButtonHandler(object sender, EventArgs e)
+        {
+            AddState(mDummyWorld);
+            mSelectedObjects.Clear();
+            mSelectedObjects.Add(new DummyObject(mObjects[(mEditorForm.Controls["EditTabs"].Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedItem.ToString()]));
+            SetObjectPropertiesToForm(mSelectedObjects[0]);
+            mDummyWorld.AddObject(mSelectedObjects[0]);
+        }
+
+        private void SetObjectPropertiesToForm(DummyObject dummyObject)
+        {
+            float X = (float)(mObjectParametersForm.Controls["PositionX"] as NumericUpDown).Value;
+            float Y = (float)(mObjectParametersForm.Controls["PositionY"] as NumericUpDown).Value;
+            float Z = (float)(mObjectParametersForm.Controls["PositionZ"] as NumericUpDown).Value;
+            dummyObject.Position = new Vector3(X, Y, Z);
+
+            float Roll = (float)(mObjectParametersForm.Controls["Roll"] as NumericUpDown).Value;
+            float Pitch = (float)(mObjectParametersForm.Controls["Pitch"] as NumericUpDown).Value;
+            float Yaw = (float)(mObjectParametersForm.Controls["Yaw"] as NumericUpDown).Value;
+            dummyObject.Orientation = new Vector3(Roll, Pitch, Yaw);
+
+            float ScaleX = (float)(mObjectParametersForm.Controls["ScaleX"] as NumericUpDown).Value;
+            float ScaleY = (float)(mObjectParametersForm.Controls["ScaleY"] as NumericUpDown).Value;
+            float ScaleZ = (float)(mObjectParametersForm.Controls["ScaleZ"] as NumericUpDown).Value;
+            dummyObject.Orientation = new Vector3(ScaleX, ScaleY, ScaleZ);
+
+            dummyObject.Height = (float)(mObjectParametersForm.Controls["Height"] as NumericUpDown).Value;
         }
 
         #endregion
@@ -207,11 +243,10 @@ namespace WorldEditor
             {
                 if (mPlaceable)
                 {
-                    AddState(mDummyWorld);
                     if (editModes.SelectedTab == editModes.Controls["Objects"])
                     {
-                        Console.WriteLine(mDummyObject.Position);
-                        mDummyWorld.AddObject(new DummyObject(mDummyObject));
+                        //AddState(mDummyWorld);
+                        mCursorObject = null;
                     }
                 }
             }

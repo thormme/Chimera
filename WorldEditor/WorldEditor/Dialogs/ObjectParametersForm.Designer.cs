@@ -28,33 +28,46 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.PhysicalBox = new System.Windows.Forms.CheckBox();
+            this.Physical = new System.Windows.Forms.CheckBox();
             this.PositionLabel = new System.Windows.Forms.Label();
             this.OrientationLabel = new System.Windows.Forms.Label();
             this.ScaleLabel = new System.Windows.Forms.Label();
             this.HeightLabel = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.PositionX = new System.Windows.Forms.NumericUpDown();
+            this.PositionZ = new System.Windows.Forms.NumericUpDown();
+            this.Yaw = new System.Windows.Forms.NumericUpDown();
+            this.Pitch = new System.Windows.Forms.NumericUpDown();
+            this.Roll = new System.Windows.Forms.NumericUpDown();
+            this.ScaleX = new System.Windows.Forms.NumericUpDown();
+            this.ScaleY = new System.Windows.Forms.NumericUpDown();
+            this.ScaleZ = new System.Windows.Forms.NumericUpDown();
+            this.Height = new System.Windows.Forms.NumericUpDown();
+            this.PositionY = new System.Windows.Forms.NumericUpDown();
+            this.Floating = new System.Windows.Forms.CheckBox();
+            this.Create = new System.Windows.Forms.Button();
+            this.Place = new System.Windows.Forms.Button();
+            this.CreatePlace = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.PositionX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PositionZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Yaw)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Pitch)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Roll)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Height)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PositionY)).BeginInit();
             this.SuspendLayout();
             // 
-            // PhysicalBox
+            // Physical
             // 
-            this.PhysicalBox.AutoSize = true;
-            this.PhysicalBox.Location = new System.Drawing.Point(16, 21);
-            this.PhysicalBox.Name = "PhysicalBox";
-            this.PhysicalBox.Size = new System.Drawing.Size(65, 17);
-            this.PhysicalBox.TabIndex = 0;
-            this.PhysicalBox.Text = "Physical";
-            this.PhysicalBox.UseVisualStyleBackColor = true;
+            this.Physical.AutoSize = true;
+            this.Physical.Location = new System.Drawing.Point(16, 21);
+            this.Physical.Name = "Physical";
+            this.Physical.Size = new System.Drawing.Size(65, 17);
+            this.Physical.TabIndex = 0;
+            this.Physical.Text = "Physical";
+            this.Physical.UseVisualStyleBackColor = true;
             // 
             // PositionLabel
             // 
@@ -92,119 +105,279 @@
             this.HeightLabel.TabIndex = 4;
             this.HeightLabel.Text = "Height:";
             // 
-            // textBox1
+            // PositionX
             // 
-            this.textBox1.Location = new System.Drawing.Point(105, 50);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(40, 20);
-            this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "0";
+            this.PositionX.DecimalPlaces = 2;
+            this.PositionX.Location = new System.Drawing.Point(105, 50);
+            this.PositionX.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.PositionX.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.PositionX.Name = "PositionX";
+            this.PositionX.Size = new System.Drawing.Size(60, 20);
+            this.PositionX.TabIndex = 5;
             // 
-            // textBox3
+            // PositionZ
             // 
-            this.textBox3.Location = new System.Drawing.Point(197, 50);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(40, 20);
-            this.textBox3.TabIndex = 7;
-            this.textBox3.Text = "0";
+            this.PositionZ.DecimalPlaces = 2;
+            this.PositionZ.Location = new System.Drawing.Point(237, 50);
+            this.PositionZ.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.PositionZ.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.PositionZ.Name = "PositionZ";
+            this.PositionZ.Size = new System.Drawing.Size(60, 20);
+            this.PositionZ.TabIndex = 7;
             // 
-            // textBox4
+            // Yaw
             // 
-            this.textBox4.Location = new System.Drawing.Point(105, 76);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(40, 20);
-            this.textBox4.TabIndex = 8;
-            this.textBox4.Text = "0";
+            this.Yaw.DecimalPlaces = 2;
+            this.Yaw.Location = new System.Drawing.Point(105, 76);
+            this.Yaw.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.Yaw.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.Yaw.Name = "Yaw";
+            this.Yaw.Size = new System.Drawing.Size(60, 20);
+            this.Yaw.TabIndex = 8;
             // 
-            // textBox5
+            // Pitch
             // 
-            this.textBox5.Location = new System.Drawing.Point(151, 76);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(40, 20);
-            this.textBox5.TabIndex = 9;
-            this.textBox5.Text = "1";
+            this.Pitch.DecimalPlaces = 2;
+            this.Pitch.Location = new System.Drawing.Point(171, 76);
+            this.Pitch.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.Pitch.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.Pitch.Name = "Pitch";
+            this.Pitch.Size = new System.Drawing.Size(60, 20);
+            this.Pitch.TabIndex = 9;
+            this.Pitch.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
-            // textBox6
+            // Roll
             // 
-            this.textBox6.Location = new System.Drawing.Point(197, 76);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(40, 20);
-            this.textBox6.TabIndex = 10;
-            this.textBox6.Text = "0";
+            this.Roll.DecimalPlaces = 2;
+            this.Roll.Location = new System.Drawing.Point(237, 76);
+            this.Roll.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.Roll.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.Roll.Name = "Roll";
+            this.Roll.Size = new System.Drawing.Size(60, 20);
+            this.Roll.TabIndex = 10;
             // 
-            // textBox7
+            // ScaleX
             // 
-            this.textBox7.Location = new System.Drawing.Point(105, 102);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(40, 20);
-            this.textBox7.TabIndex = 11;
-            this.textBox7.Text = "1";
+            this.ScaleX.DecimalPlaces = 2;
+            this.ScaleX.Location = new System.Drawing.Point(105, 102);
+            this.ScaleX.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.ScaleX.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.ScaleX.Name = "ScaleX";
+            this.ScaleX.Size = new System.Drawing.Size(60, 20);
+            this.ScaleX.TabIndex = 11;
+            this.ScaleX.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
-            // textBox8
+            // ScaleY
             // 
-            this.textBox8.Location = new System.Drawing.Point(151, 103);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(40, 20);
-            this.textBox8.TabIndex = 12;
-            this.textBox8.Text = "1";
+            this.ScaleY.DecimalPlaces = 2;
+            this.ScaleY.Location = new System.Drawing.Point(171, 103);
+            this.ScaleY.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.ScaleY.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.ScaleY.Name = "ScaleY";
+            this.ScaleY.Size = new System.Drawing.Size(60, 20);
+            this.ScaleY.TabIndex = 12;
+            this.ScaleY.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
-            // textBox9
+            // ScaleZ
             // 
-            this.textBox9.Location = new System.Drawing.Point(197, 102);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(40, 20);
-            this.textBox9.TabIndex = 13;
-            this.textBox9.Text = "1";
+            this.ScaleZ.DecimalPlaces = 2;
+            this.ScaleZ.Location = new System.Drawing.Point(237, 102);
+            this.ScaleZ.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.ScaleZ.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.ScaleZ.Name = "ScaleZ";
+            this.ScaleZ.Size = new System.Drawing.Size(60, 20);
+            this.ScaleZ.TabIndex = 13;
+            this.ScaleZ.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
-            // textBox10
+            // Height
             // 
-            this.textBox10.Location = new System.Drawing.Point(105, 129);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(40, 20);
-            this.textBox10.TabIndex = 14;
-            this.textBox10.Text = "0";
+            this.Height.DecimalPlaces = 2;
+            this.Height.Location = new System.Drawing.Point(105, 129);
+            this.Height.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.Height.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.Height.Name = "Height";
+            this.Height.Size = new System.Drawing.Size(60, 20);
+            this.Height.TabIndex = 14;
             // 
-            // textBox2
+            // PositionY
             // 
-            this.textBox2.Location = new System.Drawing.Point(151, 50);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(40, 20);
-            this.textBox2.TabIndex = 6;
-            this.textBox2.Text = "0";
+            this.PositionY.DecimalPlaces = 2;
+            this.PositionY.Location = new System.Drawing.Point(171, 50);
+            this.PositionY.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.PositionY.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.PositionY.Name = "PositionY";
+            this.PositionY.Size = new System.Drawing.Size(60, 20);
+            this.PositionY.TabIndex = 6;
             // 
-            // checkBox1
+            // Floating
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(151, 132);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(63, 17);
-            this.checkBox1.TabIndex = 15;
-            this.checkBox1.Text = "Floating";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.Floating.AutoSize = true;
+            this.Floating.Location = new System.Drawing.Point(171, 132);
+            this.Floating.Name = "Floating";
+            this.Floating.Size = new System.Drawing.Size(63, 17);
+            this.Floating.TabIndex = 15;
+            this.Floating.Text = "Floating";
+            this.Floating.UseVisualStyleBackColor = true;
+            // 
+            // Create
+            // 
+            this.Create.Location = new System.Drawing.Point(16, 171);
+            this.Create.Name = "Create";
+            this.Create.Size = new System.Drawing.Size(75, 23);
+            this.Create.TabIndex = 16;
+            this.Create.Text = "Create";
+            this.Create.UseVisualStyleBackColor = true;
+            // 
+            // Place
+            // 
+            this.Place.Location = new System.Drawing.Point(105, 170);
+            this.Place.Name = "Place";
+            this.Place.Size = new System.Drawing.Size(75, 23);
+            this.Place.TabIndex = 17;
+            this.Place.Text = "Place";
+            this.Place.UseVisualStyleBackColor = true;
+            // 
+            // CreatePlace
+            // 
+            this.CreatePlace.Location = new System.Drawing.Point(197, 170);
+            this.CreatePlace.Name = "CreatePlace";
+            this.CreatePlace.Size = new System.Drawing.Size(111, 23);
+            this.CreatePlace.TabIndex = 18;
+            this.CreatePlace.Text = "Create and Place";
+            this.CreatePlace.UseVisualStyleBackColor = true;
             // 
             // ObjectParametersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(320, 185);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.textBox10);
-            this.Controls.Add(this.textBox9);
-            this.Controls.Add(this.textBox8);
-            this.Controls.Add(this.textBox7);
-            this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.ClientSize = new System.Drawing.Size(320, 206);
+            this.Controls.Add(this.CreatePlace);
+            this.Controls.Add(this.Place);
+            this.Controls.Add(this.Create);
+            this.Controls.Add(this.Floating);
+            this.Controls.Add(this.Height);
+            this.Controls.Add(this.ScaleZ);
+            this.Controls.Add(this.ScaleY);
+            this.Controls.Add(this.ScaleX);
+            this.Controls.Add(this.Roll);
+            this.Controls.Add(this.Pitch);
+            this.Controls.Add(this.Yaw);
+            this.Controls.Add(this.PositionZ);
+            this.Controls.Add(this.PositionY);
+            this.Controls.Add(this.PositionX);
             this.Controls.Add(this.HeightLabel);
             this.Controls.Add(this.ScaleLabel);
             this.Controls.Add(this.OrientationLabel);
             this.Controls.Add(this.PositionLabel);
-            this.Controls.Add(this.PhysicalBox);
+            this.Controls.Add(this.Physical);
             this.Name = "ObjectParametersForm";
             this.Text = "Object Parameters Menu";
+            ((System.ComponentModel.ISupportInitialize)(this.PositionX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PositionZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Yaw)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Pitch)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Roll)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Height)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PositionY)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,21 +385,24 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox PhysicalBox;
+        private System.Windows.Forms.CheckBox Physical;
         private System.Windows.Forms.Label PositionLabel;
         private System.Windows.Forms.Label OrientationLabel;
         private System.Windows.Forms.Label ScaleLabel;
         private System.Windows.Forms.Label HeightLabel;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox10;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.NumericUpDown PositionX;
+        private System.Windows.Forms.NumericUpDown PositionZ;
+        private System.Windows.Forms.NumericUpDown Yaw;
+        private System.Windows.Forms.NumericUpDown Pitch;
+        private System.Windows.Forms.NumericUpDown Roll;
+        private System.Windows.Forms.NumericUpDown ScaleX;
+        private System.Windows.Forms.NumericUpDown ScaleY;
+        private System.Windows.Forms.NumericUpDown ScaleZ;
+        private System.Windows.Forms.NumericUpDown Height;
+        private System.Windows.Forms.NumericUpDown PositionY;
+        private System.Windows.Forms.CheckBox Floating;
+        private System.Windows.Forms.Button Create;
+        private System.Windows.Forms.Button Place;
+        private System.Windows.Forms.Button CreatePlace;
     }
 }
