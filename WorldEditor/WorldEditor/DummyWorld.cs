@@ -19,8 +19,6 @@ namespace WorldEditor
 
         private string mName = String.Empty;
 
-        private Controls mControls = null;
-
         private TerrainHeightMap mHeightMap = null;
         //private TextureMap mTextureMap = null;
 
@@ -44,8 +42,6 @@ namespace WorldEditor
             
             mName = "default";
 
-            mControls = controls;
-
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
             /*mTextureMap = new TextureMap(
                 GraphicsManager.LookupTerrainTextures(mName), 
@@ -60,8 +56,6 @@ namespace WorldEditor
         {
             
             mName = copy.mName;
-
-            mControls = copy.mControls;
 
             mHeightMap = new TerrainHeightMap(copy.mHeightMap);
             //mTextureMap = new TextureMap(copy.mTextureMap);
@@ -116,7 +110,7 @@ namespace WorldEditor
 
         }
 
-        public void Load(string path)
+        public void Open(string path)
         {
 
             mName = path;

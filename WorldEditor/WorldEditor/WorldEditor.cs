@@ -120,13 +120,16 @@ namespace WorldEditor
 
             MenuStrip editMenu = (mEditorForm.Controls["MenuStrip"] as MenuStrip);
             (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveMenu"].Click += SaveHandler;
-            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["LoadMenu"].Click += LoadHandler;
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["OpenMenu"].Click += OpenHandler;
 
             TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
 
             editModes.SelectedIndexChanged += EditHandler;
             (editModes.Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedIndexChanged += ObjectHandler;
             (editModes.Controls["Textures"].Controls["TextureList"] as ListBox).SelectedIndexChanged += TextureHandler;
+
+            (editModes.Controls["Heights"].Controls["HeightRadiusField"] as NumericUpDown).ValueChanged += SelectionHandler;
+            (editModes.Controls["Textures"].Controls["TextureRadiusField"] as NumericUpDown).ValueChanged += SelectionHandler;
 
             foreach (var model in GraphicsManager.ModelLibrary)
             {
@@ -195,8 +198,14 @@ namespace WorldEditor
 
         }
 
-        private void LoadHandler(object sender, EventArgs e)
+        private void OpenHandler(object sender, EventArgs e)
         {
+            OpenFileDialog openDialog = new OpenFileDialog();
+
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                mDummyWorld.Open(openDialog.FileName);
+            }
 
         }
 
@@ -260,6 +269,11 @@ namespace WorldEditor
 
         }
 
+        private void SelectionHandler(object sender, EventArgs e)
+        {
+            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * (int)(sender as NumericUpDown).Value);
+        }
+
         #endregion
 
         private void PerformActions()
@@ -286,15 +300,10 @@ namespace WorldEditor
                         try
                         {
 
-                            int radius = Convert.ToInt32((editModes.SelectedTab.Controls["HeightRadiusField"] as TextBox).Text);
-                            int intensity = Convert.ToInt32((editModes.SelectedTab.Controls["HeightIntensityField"] as TextBox).Text);
-
-                            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * radius);
-
                             mDummyWorld.ModifyHeightMap(
-                                mDummyObject.Position, 
-                                radius,
-                                intensity,
+                                mDummyObject.Position,
+                                (int)(editModes.SelectedTab.Controls["HeightRadiusField"] as NumericUpDown).Value,
+                                (int)(editModes.SelectedTab.Controls["HeightIntensityField"] as NumericUpDown).Value,
                                 (editModes.SelectedTab.Controls["SetBox"] as CheckBox).Checked,
                                 (editModes.SelectedTab.Controls["InvertBox"] as CheckBox).Checked,
                                 (editModes.SelectedTab.Controls["FeatherBox"] as CheckBox).Checked,
@@ -312,17 +321,12 @@ namespace WorldEditor
                     {
                         try
                         {
-                            
-                            int radius = Convert.ToInt32((editModes.SelectedTab.Controls["TextureRadiusField"] as TextBox).Text);
-                            float alpha = Convert.ToSingle((editModes.SelectedTab.Controls["TextureAlphaField"] as TextBox).Text);
-
-                            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * radius);
 
                             mDummyWorld.ModifyTextureMap(
                                 mDummyObject.Position,
                                 (editModes.SelectedTab.Controls["TextureList"] as ListBox).SelectedItem.ToString(),
-                                radius,
-                                alpha);
+                                (int)(editModes.SelectedTab.Controls["TextureRadiusField"] as NumericUpDown).Value,
+                                (int)(editModes.SelectedTab.Controls["TextureAlphaField"] as NumericUpDown).Value);
                             
                         }
                         catch (SystemException)
