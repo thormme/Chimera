@@ -644,6 +644,14 @@ namespace GraphicsLibrary
         }
 
         /// <summary>
+        /// Retrieves composite terrain texture.
+        /// </summary>
+        static public Texture2D LookupTerrainTexture(string terrainName)
+        {
+            return LookupTerrain(terrainName).Texture;
+        }
+
+        /// <summary>
         /// Retrieves Tweaked orientation transform matrix for specific bone on an AnimateModel.
         /// </summary>
         static public Matrix LookupTweakedBoneOrientation(string modelName, string boneName)
