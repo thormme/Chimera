@@ -660,7 +660,7 @@
     </Compile>
     <Compile Include="textures\maps\default_texture.bmp">
       <Name>default_texture</Name>
-	</Compile>
+    </Compile>
     <Compile Include="textures\sprites\grassTexture.png">
       <Name>grassTexture</Name>
       <Importer>TextureImporter</Importer>
@@ -678,6 +678,11 @@
     </Compile>
     <Compile Include="textures\sprites\waterTexture.png">
       <Name>waterTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\default_terrain_detail.png">
+      <Name>default_terrain_detail</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

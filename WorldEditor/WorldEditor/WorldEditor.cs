@@ -127,7 +127,7 @@ namespace WorldEditor
 
             MenuStrip editMenu = (mEditorForm.Controls["MenuStrip"] as MenuStrip);
             (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveMenu"].Click += SaveHandler;
-            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["LoadMenu"].Click += LoadHandler;
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["OpenMenu"].Click += OpenHandler;
 
             TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
 
@@ -136,6 +136,9 @@ namespace WorldEditor
             (editModes.Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedIndexChanged += SelectNewObjectHandler;
             (mObjectParametersForm.Controls["Create"] as Button).Click += CreateObjectButtonHandler;
             (editModes.Controls["Textures"].Controls["TextureList"] as ListBox).SelectedIndexChanged += TextureHandler;
+
+            (editModes.Controls["Heights"].Controls["HeightRadiusField"] as NumericUpDown).ValueChanged += SelectionHandler;
+            (editModes.Controls["Textures"].Controls["TextureRadiusField"] as NumericUpDown).ValueChanged += SelectionHandler;
 
             foreach (var model in GraphicsManager.ModelLibrary)
             {
@@ -204,8 +207,14 @@ namespace WorldEditor
 
         }
 
-        private void LoadHandler(object sender, EventArgs e)
+        private void OpenHandler(object sender, EventArgs e)
         {
+            OpenFileDialog openDialog = new OpenFileDialog();
+
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                mDummyWorld.Open(openDialog.FileName);
+            }
 
         }
 
@@ -294,6 +303,11 @@ namespace WorldEditor
 
             mEditorForm.Picture.Image = bmp;
 
+        }
+
+        private void SelectionHandler(object sender, EventArgs e)
+        {
+            mCursorObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * (int)(sender as NumericUpDown).Value);
         }
 
         #endregion

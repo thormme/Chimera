@@ -42,7 +42,8 @@ namespace WorldEditor
         /// </summary>
         protected override void Initialize()
         {
-            GraphicsManager.CelShading = GraphicsManager.CelShaded.Models;
+            GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
+            GraphicsManager.Outlining = GraphicsManager.Outlines.All;
             GraphicsManager.CastingShadows = true;
 
             mCamera = new FPSCamera(GraphicsDevice.Viewport);

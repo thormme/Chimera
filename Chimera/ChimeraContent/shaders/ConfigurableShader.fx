@@ -95,29 +95,19 @@ Technique Phong
 	}
 }
 
-Technique TerrainCelShade
-{
-	Pass
-	{
-		VertexShader = compile vs_3_0 VS();
-		PixelShader  = compile ps_3_0 TerrainCelShadePS();
-	}
-}
-
-Technique TerrainPhong
-{
-	Pass
-	{
-		VertexShader = compile vs_3_0 VS();
-		PixelShader  = compile ps_3_0 TerrainPhongPS();
-	}
-}
-
 Technique NormalDepthShade
 {
 	Pass
 	{
 		VertexShader = compile vs_3_0 NormalDepthVS();
 		PixelShader  = compile ps_3_0 NormalDepthPS();
+	}
+}
+
+Technique CompositeTerrainTexture
+{
+	Pass
+	{
+		PixelShader = compile ps_2_0 CompositeTerrainTexturePS();
 	}
 }

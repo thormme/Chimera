@@ -13,10 +13,9 @@
 DECLARE_TEXTURE(Texture,      0);
 DECLARE_TEXTURE(ShadowMap,    1);
 DECLARE_TEXTURE(AlphaMap,     2);
-DECLARE_TEXTURE(BlackTexture, 3);
-DECLARE_TEXTURE(RedTexture,   4);
-DECLARE_TEXTURE(GreenTexture, 5);
-DECLARE_TEXTURE(BlueTexture,  6);
+DECLARE_TEXTURE(RedTexture,   3);
+DECLARE_TEXTURE(GreenTexture, 4);
+DECLARE_TEXTURE(BlueTexture,  5);
 
 BEGIN_CONSTANTS
 

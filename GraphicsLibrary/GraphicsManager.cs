@@ -53,6 +53,7 @@ namespace GraphicsLibrary
         static private RenderTarget2D mNormalDepthBuffer;
         static private RenderTarget2D mOutlineBuffer;
         static private RenderTarget2D mCompositeBuffer;
+        static private RenderTarget2D[] mTerrainTextureComposites;
 
         static private Texture2D mSkyTexture;
 
@@ -83,7 +84,7 @@ namespace GraphicsLibrary
 
         public enum CelShaded { All, Models, AnimateModels, Terrain, None };
 
-        static private CelShaded mCelShading = CelShaded.AnimateModels;
+        static private CelShaded mCelShading = CelShaded.All;
 
         /// <summary>
         /// Sets the render state to Cel Shading or Phong shading.
@@ -193,6 +194,8 @@ namespace GraphicsLibrary
             mNormalDepthBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
             mOutlineBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
             mCompositeBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mTerrainTextureComposites = new RenderTarget2D[] { new RenderTarget2D(device, 1024, 1024),
+                                                               new RenderTarget2D(device, 1024, 1024) };
 
             mDirectionalLight = new Light(
                 new Vector3(-0.3333333f, -1.0f, 0.33333333f), // Direction
@@ -366,9 +369,13 @@ namespace GraphicsLibrary
 
                 TerrainDescription newTerrain = new TerrainDescription(
                     heightMap, 
-                    terrainTexture, 
-                    new string[4] {"snowTexture", "grassTexture", "dirtTexture", "waterTexture"}
+                    new List<Texture2D>(), 
+                    new List<string>()
                     );
+
+                newTerrain.TextureNames.Add("default_terrain_detail");
+                newTerrain.AlphaMaps.Add(terrainTexture);
+
                 if (mUniqueTerrainLibrary.ContainsKey(terrainName))
                 {
                     throw new Exception("Duplicate terrain key: " + terrainName);
@@ -448,7 +455,16 @@ namespace GraphicsLibrary
             mDevice.BlendState = BlendState.Opaque;
             mDevice.DepthStencilState = DepthStencilState.Default;
             mDevice.SamplerStates[1] = SamplerState.PointClamp;
-            mDevice.DepthStencilState = DepthStencilState.Default;
+
+            // Composite Terrain Texture
+            foreach (RenderableDefinition renderable in mRenderQueue)
+            {
+                if (!renderable.IsModel)
+                {
+                    CompositeTerrainTexture(renderable.Name);
+                    continue;
+                }
+            }
 
             RasterizerState cull = new RasterizerState();
             cull.CullMode = CullMode.CullCounterClockwiseFace;
@@ -604,12 +620,12 @@ namespace GraphicsLibrary
         /// <summary>
         /// Retrieves texture of terrain from database.  Throws KeyNotFoundException if terrainName does not exist in database.
         /// </summary>
-        static public Texture2D LookupTerrainTexture(string terrainName)
+        static public List<Texture2D> LookupTerrainAlphaMaps(string terrainName)
         {
             TerrainDescription result;
             if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
             {
-                return result.Texture;
+                return result.AlphaMaps;
             }
             throw new KeyNotFoundException("Unable to find texture for terrain key: " + terrainName);
         }
@@ -617,7 +633,7 @@ namespace GraphicsLibrary
         /// <summary>
         /// Retrieves names of textures applied to terrain from database.  Throws KeyNotFoundException if terrainName does not exist in database.
         /// </summary>
-        static public string[] LookupTerrainTextureNames(string terrainName)
+        static public List<string> LookupTerrainTextureNames(string terrainName)
         {
             TerrainDescription result;
             if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
@@ -889,7 +905,7 @@ namespace GraphicsLibrary
         {
             TerrainDescription heightmap = LookupTerrain(terrainName);
 
-            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "TerrainCelShade" : "TerrainPhong");
+            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "CelShade" : "Phong");
             DrawTerrainHeightMap(heightmap, techniqueName, worldTransforms, overlayColor, overlayColorWeight);
         }
 
@@ -949,19 +965,59 @@ namespace GraphicsLibrary
             mesh.Draw();
         }
 
+        static private void CompositeTerrainTexture(string name)
+        {
+            string[] textureParameters = { "RedTexture", "GreenTexture", "BlueTexture" };
+            TerrainDescription terrain = LookupTerrain(name);
+
+            mTerrainShader.CurrentTechnique = mTerrainShader.Techniques["CompositeTerrainTexture"];
+
+            int i = 0;
+            for (; i < terrain.TextureNames.Count; i += 3)
+            {
+                mDevice.SetRenderTarget(mTerrainTextureComposites[((i / 3) + 1) % 2]);
+                mDevice.Clear(Color.White);
+
+                mTerrainShader.Texture = mTerrainTextureComposites[(i / 3) % 2];
+
+                if (terrain.AlphaMaps.Count > i / 3)
+                {
+                    mTerrainShader.Parameters["AlphaMap"].SetValue(terrain.AlphaMaps[i / 3]);
+                }
+
+                if (terrain.TextureNames.Count > i)
+                {
+                    mTerrainShader.Parameters[textureParameters[i % 3]].SetValue(LookupSprite(terrain.TextureNames[i]));
+                }
+
+                if (terrain.TextureNames.Count > i + 1)
+                {
+                    mTerrainShader.Parameters[textureParameters[(i + 1) % 3]].SetValue(LookupSprite(terrain.TextureNames[i + 1]));
+                }
+
+                if (terrain.TextureNames.Count > i + 2)
+                {
+                    mTerrainShader.Parameters[textureParameters[(i + 2) % 3]].SetValue(LookupSprite(terrain.TextureNames[i + 2]));
+                }
+
+                mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, mTerrainShader);
+                mSpriteBatch.Draw(mTerrainTextureComposites[(i / 3) % 2], new Rectangle(0, 0, mTerrainTextureComposites[(i / 3) % 2].Width, mTerrainTextureComposites[(i / 3) % 2].Height), Color.White);
+                mSpriteBatch.End();
+            }
+
+            terrain.Texture = mTerrainTextureComposites[(i / 3) % 2];
+        }
+
         /// <summary>
         /// Sets effect for current terrain and renders to screen.
         /// </summary>
         static private void DrawTerrainHeightMap(TerrainDescription heightMap, string techniqueName, Matrix worldTransforms, Vector3 overlayColor, float overlayColorWeight)
         {
+
             mDevice.Indices = heightMap.Terrain.IndexBuffer;
             mDevice.SetVertexBuffer(heightMap.Terrain.VertexBuffer);
 
-            mTerrainShader.Parameters["AlphaMap"].SetValue(heightMap.Texture);
-            mTerrainShader.Parameters["BlackTexture"].SetValue(LookupSprite(heightMap.TextureNames[0]));
-            mTerrainShader.Parameters["RedTexture"].SetValue(LookupSprite(heightMap.TextureNames[1]));
-            mTerrainShader.Parameters["GreenTexture"].SetValue(LookupSprite(heightMap.TextureNames[2]));
-            mTerrainShader.Parameters["BlueTexture"].SetValue(LookupSprite(heightMap.TextureNames[3]));
+            mTerrainShader.Texture = heightMap.Texture;
 
             if (CastingShadows)
             {
