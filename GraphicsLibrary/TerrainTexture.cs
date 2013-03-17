@@ -203,6 +203,18 @@ namespace GameConstructLibrary
         {
             mTexels = new Color[mHeight * mWidth];
             alphaMap.GetData(mTexels);
+
+            for (int i = 0; i < mTexels.Length; ++i)
+            {
+                if (mTexels[i].A == 255)
+                {
+                    mTexels[i].A = 0;
+                }
+                else
+                {
+                    mTexels[i].A = (byte)((float)mTexels[i].A / 254.0f * 255.0f);
+                }
+            }
         }
 
         /// <summary>
@@ -466,7 +478,15 @@ namespace GameConstructLibrary
         public MemoryStream ExportTextureToStream()
         {
             Texture2D compositeTexture = new Texture2D(mDevice, mWidth, mHeight);
-            compositeTexture.SetData(mTexels);
+
+            Color[] preMultipliedAlphaTexels = new Color[mTexels.Length];
+            for (int i = 0; i < mTexels.Length; ++i)
+            {
+                byte preMultipliedAlpha = (byte)((float)mTexels[i].A / 255.0f * 254.0f);
+                preMultipliedAlphaTexels[i] = new Color(mTexels[i].R, mTexels[i].G, mTexels[i].B, preMultipliedAlpha == 0 ? 255 : preMultipliedAlpha);
+            }
+
+            compositeTexture.SetData(preMultipliedAlphaTexels);
 
             MemoryStream ms = new MemoryStream();
 
