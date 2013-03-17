@@ -8,7 +8,7 @@ namespace GraphicsLibrary
     {
         private string mTerrainName;
 
-        public BoundingBox BoundingBox
+        public new BoundingBox BoundingBox
         {
             get { return mBoundingBox; }
         }

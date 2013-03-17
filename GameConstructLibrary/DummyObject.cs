@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using GraphicsLibrary;
+using Utility;
 
 namespace GameConstructLibrary
 {
@@ -30,6 +32,15 @@ namespace GameConstructLibrary
             Orientation = copy.Orientation;
             Scale = copy.Scale;
             Height = copy.Height;
+        }
+
+        public void Draw()
+        {
+            InanimateModel tempModel = new InanimateModel(Model);
+            tempModel.Render(
+                new Vector3(Position.X, Position.Y + Height * Utils.WorldScale.Y, Position.Z),
+                Matrix.CreateFromYawPitchRoll(Orientation.X, Orientation.Y, Orientation.Z),
+                Scale);
         }
 
     }

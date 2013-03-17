@@ -7,7 +7,7 @@ namespace GraphicsLibrary
     {
         private string mModelName;
 
-        public BoundingBox BoundingBox
+        public new BoundingBox BoundingBox
         {
             get { return mBoundingBox; }
         }

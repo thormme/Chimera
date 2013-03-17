@@ -30,12 +30,11 @@ namespace WorldEditor
             mCamera = camera;
         }
 
-        public bool Update(GameTime gameTime, DummyWorld dummyWorld, DummyObject dummyObject)
+        public void Update(GameTime gameTime)
         {
             UpdateMovement();
             UpdateDirection();
             UpdateCamera(gameTime);
-            return UpdatePicking(dummyWorld, dummyObject);
         }
 
         private void UpdateMovement()
@@ -74,7 +73,7 @@ namespace WorldEditor
             mDragPoint.Y = mControls.MouseState.Y;
         }
 
-        private bool UpdatePicking(DummyWorld dummyWorld, DummyObject dummyObject)
+        public Nullable<Vector3> GetPickingLocation(DummyWorld dummyWorld)
         {
 
             Vector3 nearScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 0.0f);
@@ -88,14 +87,11 @@ namespace WorldEditor
 
             if (dummyWorld.Terrain.StaticCollidable.RayCast(ray, 2000.0f, out result))
             {
-                dummyObject.Position = result.Location;
-                Console.WriteLine(dummyObject.Position);
-                return true;
+                return result.Location;
             }
             else
             {
-                dummyObject.Position = Vector3.Zero;
-                return false;
+                return null;
             }
 
         }

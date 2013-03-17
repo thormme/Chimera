@@ -50,12 +50,12 @@ namespace WorldEditor
         private string mFilePath = null;
 
         //Dialog for the world editor.
-        public Form mEditorForm = new EditorForm();
+        public EditorForm mEditorForm = new EditorForm();
 
         //Dialog for object parameters.
-        public Form mObjectParametersForm = new ObjectParametersForm();
+        public ObjectParametersForm mObjectParametersForm = new ObjectParametersForm();
 
-        public Form mTextureSelectionForm = new TextureSelectionForm();
+        public TextureSelectionForm mTextureSelectionForm = new TextureSelectionForm();
 
         public bool Closed = false;
 
@@ -68,7 +68,7 @@ namespace WorldEditor
         private Dictionary<string, Texture2D> mTextures = new Dictionary<string, Texture2D>();
         
         //Object that will be drawn at the cursor in object tab.
-        private DummyObject mDummyObject = new DummyObject();
+        private DummyObject mCursorObject = new DummyObject();
 
         //Determines whether or not you are able to place an object/modify heights or textures.
         private bool mPlaceable;
@@ -94,14 +94,23 @@ namespace WorldEditor
         {
             mControls.Update(gameTime);
             mDummyWorld.Update(gameTime);
+
             if (mDummyWorld.Name == null)
             {
                 mPlaceable = false;
             }
             else
             {
-                mPlaceable = mEntity.Update(gameTime, mDummyWorld, mDummyObject);
+            mEntity.Update(gameTime);
+
+            Vector3? pickingPosition = mEntity.GetPickingLocation(mDummyWorld);
+            if (pickingPosition != null && mCursorObject != null)
+            {
+                mCursorObject.Position = pickingPosition.Value;
             }
+            mPlaceable = pickingPosition.HasValue;
+            }
+
             PerformActions();
         }
 
@@ -110,11 +119,17 @@ namespace WorldEditor
             mDummyWorld.Draw();
             if (mPlaceable)
             {
-                TransparentModel tempModel = new TransparentModel(mDummyObject.Model);
-                tempModel.Render(
-                    new Vector3(mDummyObject.Position.X, mDummyObject.Position.Y + mDummyObject.Height * Utils.WorldScale.Y, mDummyObject.Position.Z),
-                    Matrix.CreateFromYawPitchRoll(mDummyObject.Orientation.X, mDummyObject.Orientation.Y, mDummyObject.Orientation.Z),
-                    mDummyObject.Scale);
+                try
+                {
+                    if (mCursorObject != null)
+                    {
+                        mCursorObject.Draw();
+                    }
+                }
+                catch (SystemException)
+                {
+                    Console.WriteLine("Not a valid model file.");
+                }
             }
         }
 
@@ -304,21 +319,50 @@ namespace WorldEditor
 
         private void SwitchToEdit()
         {
-            mDummyObject.Model = "editor";
-            mDummyObject.Position = Vector3.Zero;
-            mDummyObject.Orientation = Vector3.Up;
-            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * (mEditorForm as EditorForm).Size);
+            // TODO: possibly create new object here.
+            mCursorObject.Model = "editor";
+            mCursorObject.Position = Vector3.Zero;
+            mCursorObject.Orientation = Vector3.Up;
+            mCursorObject.Scale = Vector3.One;
         }
 
-        private void ObjectHandler(object sender, EventArgs e)
+        private void SelectNewObjectHandler(object sender, EventArgs e)
         {
-            mDummyObject = mObjects[(sender as ListBox).SelectedItem.ToString()];
             mObjectParametersForm.Show();
+        }
+
+        private void CreateObjectButtonHandler(object sender, EventArgs e)
+        {
+            AddState(mDummyWorld);
+            mSelectedObjects.Clear();
+            mSelectedObjects.Add(new DummyObject(mObjects[(mEditorForm.Controls["EditTabs"].Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedItem.ToString()]));
+            SetObjectPropertiesToForm(mSelectedObjects[0]);
+            mDummyWorld.AddObject(mSelectedObjects[0]);
+        }
+
+        private void SetObjectPropertiesToForm(DummyObject dummyObject)
+        {
+            float X = (float)mObjectParametersForm.PositionX.Value;
+            float Y = (float)mObjectParametersForm.PositionY.Value;
+            float Z = (float)mObjectParametersForm.PositionZ.Value;
+            dummyObject.Position = new Vector3(X, Y, Z);
+
+            float Roll = (float)mObjectParametersForm.Roll.Value;
+            float Pitch = (float)mObjectParametersForm.Pitch.Value;
+            float Yaw = (float)mObjectParametersForm.Yaw.Value;
+            dummyObject.Orientation = new Vector3(Roll, Pitch, Yaw);
+
+            float ScaleX = (float)mObjectParametersForm.ScaleX.Value;
+            float ScaleY = (float)mObjectParametersForm.ScaleY.Value;
+            float ScaleZ = (float)mObjectParametersForm.ScaleZ.Value;
+            dummyObject.Orientation = new Vector3(ScaleX, ScaleY, ScaleZ);
+
+            dummyObject.Height = (float)mObjectParametersForm.Height.Value;
         }
 
         private void TextureHandler(object sender, EventArgs e)
         {
-            Texture2D texture = GraphicsManager.LookupSprite(((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).SelectedItem.ToString());
+            Texture2D texture = GraphicsManager.LookupSprite(mTextureSelectionForm.TextureList.SelectedItem.ToString());
 
             MemoryStream ms = new MemoryStream();
 
@@ -335,7 +379,7 @@ namespace WorldEditor
 
         private void SelectionHandler(object sender, EventArgs e)
         {
-            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * (mEditorForm as EditorForm).Size);
+            mCursorObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * (int)(sender as NumericUpDown).Value);
         }
 
         #endregion
@@ -349,7 +393,7 @@ namespace WorldEditor
                 if (mPlaceable && form.Mode == EditorForm.EditorMode.OBJECTS)
                 {
                     AddState(mDummyWorld);
-                    mDummyWorld.AddObject(new DummyObject(mDummyObject));
+                    mDummyWorld.AddObject(new DummyObject(mCursorObject));
                 }
             }
             else if (mControls.LeftHold.Active)
@@ -361,7 +405,7 @@ namespace WorldEditor
                         case EditorForm.EditorMode.HEIGHTMAP:
                         {
                             float strength = form.Strength * 10.0f;
-                            mDummyWorld.ModifyHeightMap(mDummyObject.Position, form.Size, strength, form.HeightMapBrush, form.HeightMapTool);
+                            mDummyWorld.ModifyHeightMap(mCursorObject.Position, form.Size, strength, form.HeightMapBrush, form.HeightMapTool);
                             break;
                         }
                         case EditorForm.EditorMode.PAINTING:
@@ -369,7 +413,7 @@ namespace WorldEditor
                             float alpha = form.Strength / 100.0f;
                             GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
                             string textureName = ((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).SelectedItem.ToString();
-                            mDummyWorld.ModifyTextureMap(mDummyObject.Position, textureName, form.Size, alpha, form.PaintingBrush, form.PaintingTool, layer);
+                            mDummyWorld.ModifyTextureMap(mCursorObject.Position, textureName, form.Size, alpha, form.PaintingBrush, form.PaintingTool, layer);
                             break;
                         }
                     }
