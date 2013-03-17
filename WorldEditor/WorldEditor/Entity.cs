@@ -89,6 +89,7 @@ namespace WorldEditor
             if (dummyWorld.Terrain.StaticCollidable.RayCast(ray, 2000.0f, out result))
             {
                 dummyObject.Position = result.Location;
+                Console.WriteLine(dummyObject.Position);
                 return true;
             }
             else

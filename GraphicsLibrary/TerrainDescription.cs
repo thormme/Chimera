@@ -13,33 +13,17 @@ namespace GraphicsLibrary
             set { this.mTerrain = value; }
         }
 
-        private List<Texture2D> mAlphaMaps;
-        public List<Texture2D> AlphaMaps
-        {
-            get { return this.mAlphaMaps; }
-            set { this.mAlphaMaps = value; }
-        }
-
-        private Texture2D mTexture;
-        public Texture2D Texture
+        private TerrainTexture mTexture;
+        public TerrainTexture Texture
         {
             get { return this.mTexture; }
             set { this.mTexture = value; }
         }
 
-        private List<string> mTextureNames;
-        public List<string> TextureNames
+        public TerrainDescription(TerrainHeightMap terrain, TerrainTexture texture)
         {
-            get { return this.mTextureNames; }
-            set { this.mTextureNames = value; }
-        }
-
-        public TerrainDescription(TerrainHeightMap terrain, List<Texture2D> alphaMaps, List<string> textureNames)
-        {
-            this.mTerrain      = terrain;
-            this.mAlphaMaps    = alphaMaps;
-            this.mTextureNames = textureNames;
-            this.mTexture      = null;
+            this.mTerrain = terrain;
+            this.mTexture = texture;
         }
     }
 }

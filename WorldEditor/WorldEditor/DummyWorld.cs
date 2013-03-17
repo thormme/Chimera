@@ -7,6 +7,8 @@ using GraphicsLibrary;
 using Microsoft.Xna.Framework;
 using Utility;
 using BEPUphysics;
+using WorldEditor.Dialogs;
+using System.IO;
 
 namespace WorldEditor
 {
@@ -17,10 +19,14 @@ namespace WorldEditor
         private const float ScaleSpeed = 1.05f;
         private const float RotateSpeed = 0.1f;
 
+        public String Name
+        {
+            get { return mName; }
+        }
         private string mName = String.Empty;
 
         private TerrainHeightMap mHeightMap = null;
-        private TextureMap mTextureMap = null;
+        private TerrainTexture mTextureMap = null;
 
         public TerrainPhysics Terrain
         {
@@ -39,26 +45,18 @@ namespace WorldEditor
 
         public DummyWorld(Controls controls)
         {
-            
-            mName = "default";
-
-            mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
-            mTextureMap = new TextureMap(
-                GraphicsManager.LookupTerrainAlphaMaps(mName), 
-                GraphicsManager.LookupTerrainTextureNames(mName), 
-                GraphicsManager.Device);
-
-            mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
-
+            mName = null;
+            mHeightMap = null;
+            mTextureMap = null;
+            mTerrainPhysics = null;
         }
 
         public DummyWorld(DummyWorld copy)
         {
-            
             mName = copy.mName;
 
-            mHeightMap = new TerrainHeightMap(copy.mHeightMap);
-            mTextureMap = new TextureMap(copy.mTextureMap);
+            //mHeightMap = new TerrainHeightMap(copy.mHeightMap);
+            //mTextureMap = new TerrainTexture(copy.mTextureMap);
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
             mDummies = new List<DummyObject>();
@@ -66,7 +64,6 @@ namespace WorldEditor
             {
                 mDummies.Add(new DummyObject(obj));
             }
-
         }
 
         public void AddObject(DummyObject dummyObject)
@@ -81,46 +78,93 @@ namespace WorldEditor
 
         public void LinkHeightMap()
         {
-            GraphicsManager.LookupTerrainHeightMap(mName).FixHeightMap(mHeightMap);
             mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
+            mTextureMap = GraphicsManager.LookupTerrainTexture(mName);
         }
 
-        public void ModifyHeightMap(Vector3 position, int radius, int intensity, bool feather, bool set, bool inverse, bool smooth, bool flatten)
+        public void ModifyHeightMap(Vector3 position, float radius, float intensity, EditorForm.Brushes brush, EditorForm.HeightMapTools tool)
         {
-            mHeightMap.ModifyVertices(position, radius, intensity, feather, set, inverse, smooth, flatten);
+            mHeightMap.IsFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+
+            mHeightMap.IsBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+
+            switch (tool)
+            {
+                case EditorForm.HeightMapTools.SET:
+                    mHeightMap.SetTerrain(new Vector2(position.X, position.Z), radius, intensity);
+                    break;
+                case EditorForm.HeightMapTools.SMOOTH:
+                    mHeightMap.SmoothTerrain(new Vector2(position.X, position.Z), radius);
+                    break;
+                case EditorForm.HeightMapTools.FLATTEN:
+                    mHeightMap.FlattenTerrain(new Vector2(position.X, position.Z), radius);
+                    break;
+                case EditorForm.HeightMapTools.LOWER:
+                    mHeightMap.LowerTerrain(new Vector2(position.X, position.Z), radius, intensity);
+                    break;
+                case EditorForm.HeightMapTools.RAISE:
+                    mHeightMap.RaiseTerrain(new Vector2(position.X, position.Z), radius, intensity);
+                    break;
+            }
+
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
         }
 
-        public void ModifyTextureMap(Vector3 position, string texture, int radius, float alpha)
+        public void ModifyTextureMap(Vector3 position, string texture, float radius, float alpha, EditorForm.Brushes brush, EditorForm.PaintingTools tool, GameConstructLibrary.TerrainTexture.TextureLayer layer)
         {
-            mTextureMap.ModifyTexelWeights(position, texture, radius, alpha);
+            mTextureMap.IsFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+
+            mTextureMap.IsBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+
+            switch (tool)
+            {
+                case EditorForm.PaintingTools.BRUSH:
+                    mTextureMap.PaintTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture);
+                    break;
+                case EditorForm.PaintingTools.ERASER:
+                    mTextureMap.EraseTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture);
+                    break;
+            }
         }
 
-        public void Save(string path)
+        public void Save(string filePath)
         {
+            FileInfo fileInfo = new FileInfo(filePath);
+            LevelFileLoader.SaveLevelToFile(fileInfo);
+            GraphicsManager.UpdateTerrain(fileInfo, ref mName);
 
-            System.IO.Directory.CreateDirectory(path);
-
-            mHeightMap.Save(path);
-            mTextureMap.Save(path);
-
-            UnscaleObjects();
-            LevelManager.Save(path, mDummies);
-            ScaleObjects();
-
+            //UnscaleObjects();
+            //LevelManager.Save(path, mDummies);
+            //ScaleObjects();
         }
 
-        public void Open(string path)
+        public void Open(FileInfo fileInfo)
         {
-            mName = path;
+            mName = fileInfo.Name;
 
-            mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
-            mTextureMap = new TextureMap(GraphicsManager.LookupTerrainAlphaMaps(mName), GraphicsManager.LookupTerrainTextureNames(mName), GraphicsManager.Device);
-            mTerrainPhysics = new TerrainPhysics(path, Vector3.Zero, new Quaternion(), Utils.WorldScale);
+            mHeightMap = LevelFileLoader.LoadHeightMapFromFile(fileInfo);
+            mTextureMap = LevelFileLoader.LoadTextureFromFile(fileInfo);
 
-            mDummies = LevelManager.Load(mName);
+            GraphicsManager.AddTerrain(fileInfo, mHeightMap, mTextureMap);
+
+            mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
+
+            mDummies = LevelFileLoader.LoadObjectsFromFile(fileInfo);
             ScaleObjects();
+        }
 
+        public void New()
+        {
+            mName = LevelFileLoader.GenerateBlankLevel(100, 100, 2700, 2700, 9, 9, "default_terrain_detail");
+
+            FileInfo fileInfo = new FileInfo(mName);
+
+            mHeightMap = LevelFileLoader.LoadHeightMapFromFile(fileInfo);
+            mTextureMap = LevelFileLoader.LoadTextureFromFile(fileInfo);
+
+            GraphicsManager.AddTerrain(fileInfo, mHeightMap, mTextureMap);
+
+            mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
         }
 
         private void UnscaleObjects()
@@ -143,26 +187,35 @@ namespace WorldEditor
 
         public void Update(GameTime gameTime)
         {
-
-            foreach (DummyObject obj in mDummies)
+            if (mDummies != null)
             {
-                Ray ray = new Ray(new Vector3(obj.Position.X, mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f, obj.Position.Z), -Vector3.Up);
-                RayHit result;
-                mTerrainPhysics.StaticCollidable.RayCast(ray, (mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f) - (mTerrainPhysics.StaticCollidable.BoundingBox.Min.Y - 200.0f), out result);
-                obj.Position = result.Location;
+                foreach (DummyObject obj in mDummies)
+                {
+                    Ray ray = new Ray(new Vector3(obj.Position.X, mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f, obj.Position.Z), -Vector3.Up);
+                    RayHit result;
+                    mTerrainPhysics.StaticCollidable.RayCast(ray, (mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f) - (mTerrainPhysics.StaticCollidable.BoundingBox.Min.Y - 200.0f), out result);
+                    obj.Position = result.Location;
+                }
             }
         }
 
         public void Draw()
         {
-            mTerrainPhysics.Render();
-            foreach (DummyObject dummy in mDummies)
+            if (mTerrainPhysics != null)
             {
-                InanimateModel model = new InanimateModel(dummy.Model);
-                model.Render(
-                    new Vector3(dummy.Position.X, dummy.Position.Y + dummy.Height * Utils.WorldScale.Y, dummy.Position.Z),
-                    Matrix.CreateFromYawPitchRoll(dummy.Orientation.X, dummy.Orientation.Y, dummy.Orientation.Z),
-                    dummy.Scale);
+                mTerrainPhysics.Render();
+            }
+
+            if (mDummies != null)
+            {
+                foreach (DummyObject dummy in mDummies)
+                {
+                    InanimateModel model = new InanimateModel(dummy.Model);
+                    model.Render(
+                        new Vector3(dummy.Position.X, dummy.Position.Y + dummy.Height * Utils.WorldScale.Y, dummy.Position.Z),
+                        Matrix.CreateFromYawPitchRoll(dummy.Orientation.X, dummy.Orientation.Y, dummy.Orientation.Z),
+                        dummy.Scale);
+                }
             }
         }
 

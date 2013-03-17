@@ -16,6 +16,7 @@ DECLARE_TEXTURE(AlphaMap,     2);
 DECLARE_TEXTURE(RedTexture,   3);
 DECLARE_TEXTURE(GreenTexture, 4);
 DECLARE_TEXTURE(BlueTexture,  5);
+DECLARE_TEXTURE(AlphaTexture, 6);
 
 BEGIN_CONSTANTS
 
@@ -40,7 +41,6 @@ BEGIN_CONSTANTS
 	float2 xTextureOffset;
 
 	float  xNumShadowBands;
-	float  xTexelSize;
 
 	bool  xVisualizeCascades;
 	float xCascadeCount;

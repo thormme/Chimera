@@ -57,11 +57,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\tree_texture.png">
-      <Name>tree_texture</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="models\eagle\eagle.X">
       <Name>eagle</Name>
       <Importer>XImporter</Importer>
@@ -107,24 +102,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\default_texture.tga">
-      <Name>default_texture</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="shaders\PostProcessing.fx">
       <Name>PostProcessing</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="levels\maps\default.bmp">
-      <Name>default</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -417,21 +398,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levels\maps\tree.bmp">
-      <Name>tree</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\kangaroo.bmp">
-      <Name>kangaroo</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="levels\maps\kangaroo_texture.tga">
-      <Name>kangaroo_texture</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="textures\sprites\empty.png">
       <Name>empty</Name>
       <Importer>TextureImporter</Importer>
@@ -724,12 +690,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="levels\default">
-      <Name>default</Name>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="textures\billboards\" />
   </ItemGroup>
   <ItemGroup>
@@ -739,19 +699,6 @@
       <Processor>FontDescriptionProcessor</Processor>
       <SubType>Designer</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="levels\tree">
-      <Name>tree</Name>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="levels\kangaroo">
-      <Name>kangaroo</Name>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="models\suckCone\suckCone.X">

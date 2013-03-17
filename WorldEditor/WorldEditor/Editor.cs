@@ -1,3 +1,5 @@
+#define MAP_EDITOR
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,7 @@ using Microsoft.Xna.Framework.Media;
 using GraphicsLibrary;
 using GameConstructLibrary;
 using WorldEditor.Dialogs;
+using System.Windows.Forms;
 
 namespace WorldEditor
 {
@@ -32,6 +35,8 @@ namespace WorldEditor
             mGraphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+            Form windowForm = (Form)Form.FromHandle(Window.Handle);
+            windowForm.ControlBox = false;
         }
 
         /// <summary>
@@ -47,7 +52,7 @@ namespace WorldEditor
             GraphicsManager.CastingShadows = true;
 
             mCamera = new FPSCamera(GraphicsDevice.Viewport);
-            mCamera.Position = new Vector3(0, 140, -100);
+            mCamera.Position = new Vector3(0, 1400, -1000);
             mCamera.Target = new Vector3(0, 100, 0);
 
             base.Initialize();
@@ -84,11 +89,16 @@ namespace WorldEditor
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 this.Exit();
 
             GraphicsManager.Update(mCamera, gameTime);
             mWorldEditor.Update(gameTime);
+
+            if (mWorldEditor.Closed)
+            {
+                Exit();
+            }
 
             base.Update(gameTime);
         }

@@ -8,7 +8,6 @@ namespace GameConstructLibrary
 {
     public class DummyObject
     {
-
         public string Type { get; set; }
         public string Model { get; set; }
         public string[] Parameters { get; set; }

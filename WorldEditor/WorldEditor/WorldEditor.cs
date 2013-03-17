@@ -46,11 +46,18 @@ namespace WorldEditor
         private List<DummyObject> mSelectedObjects = new List<DummyObject>();
         #endregion
 
+        private string mName = null;
+        private string mFilePath = null;
+
         //Dialog for the world editor.
         public Form mEditorForm = new EditorForm();
 
         //Dialog for object parameters.
         public Form mObjectParametersForm = new ObjectParametersForm();
+
+        public Form mTextureSelectionForm = new TextureSelectionForm();
+
+        public bool Closed = false;
 
         private FPSCamera mCamera = null;
 
@@ -87,7 +94,14 @@ namespace WorldEditor
         {
             mControls.Update(gameTime);
             mDummyWorld.Update(gameTime);
-            mPlaceable = mEntity.Update(gameTime, mDummyWorld, mDummyObject);
+            if (mDummyWorld.Name == null)
+            {
+                mPlaceable = false;
+            }
+            else
+            {
+                mPlaceable = mEntity.Update(gameTime, mDummyWorld, mDummyObject);
+            }
             PerformActions();
         }
 
@@ -96,18 +110,11 @@ namespace WorldEditor
             mDummyWorld.Draw();
             if (mPlaceable)
             {
-                try
-                {
-                    TransparentModel tempModel = new TransparentModel(mDummyObject.Model);
-                    tempModel.Render(
-                        new Vector3(mDummyObject.Position.X, mDummyObject.Position.Y + mDummyObject.Height * Utils.WorldScale.Y, mDummyObject.Position.Z),
-                        Matrix.CreateFromYawPitchRoll(mDummyObject.Orientation.X, mDummyObject.Orientation.Y, mDummyObject.Orientation.Z),
-                        mDummyObject.Scale);
-                }
-                catch (SystemException)
-                {
-                    Console.WriteLine("Not a valid model file.");
-                }
+                TransparentModel tempModel = new TransparentModel(mDummyObject.Model);
+                tempModel.Render(
+                    new Vector3(mDummyObject.Position.X, mDummyObject.Position.Y + mDummyObject.Height * Utils.WorldScale.Y, mDummyObject.Position.Z),
+                    Matrix.CreateFromYawPitchRoll(mDummyObject.Orientation.X, mDummyObject.Orientation.Y, mDummyObject.Orientation.Z),
+                    mDummyObject.Scale);
             }
         }
 
@@ -118,18 +125,32 @@ namespace WorldEditor
             mEditorForm.Show();
             mEditorForm.Location = new System.Drawing.Point(80, 80);
 
+            (mEditorForm as EditorForm).FormClosing += CloseHandler;
+
+            mTextureSelectionForm.Hide();
+            mTextureSelectionForm.Location = new System.Drawing.Point(80, 80);
+
             MenuStrip editMenu = (mEditorForm.Controls["MenuStrip"] as MenuStrip);
-            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveMenu"].Click += SaveHandler;
-            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["OpenMenu"].Click += OpenHandler;
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["NewMenu"].Click    += NewHandler;
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveMenu"].Click   += SaveHandler;
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveAsMenu"].Click += SaveAsHandler;
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["OpenMenu"].Click   += OpenHandler;
 
             TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
 
-            editModes.SelectedIndexChanged += EditHandler;
-            (editModes.Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedIndexChanged += ObjectHandler;
-            (editModes.Controls["Textures"].Controls["TextureList"] as ListBox).SelectedIndexChanged += TextureHandler;
+            ((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).SelectedIndexChanged += TextureHandler;
 
-            (editModes.Controls["Heights"].Controls["HeightRadiusField"] as NumericUpDown).ValueChanged += SelectionHandler;
-            (editModes.Controls["Textures"].Controls["TextureRadiusField"] as NumericUpDown).ValueChanged += SelectionHandler;
+            (mEditorForm as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseTextureForm);
+            (mEditorForm as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
+
+            (mEditorForm as EditorForm).PaintModeButton.Click += new System.EventHandler(this.OpenTextureForm);
+            (mEditorForm as EditorForm).PaintModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
+
+            (mEditorForm as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.CloseTextureForm);
+            (mEditorForm as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.OpenObjectParameterForm);
+
+            (mEditorForm as EditorForm).SizeUpDown.ValueChanged += SelectionHandler;
+            (mEditorForm as EditorForm).StrengthUpDown.ValueChanged += SelectionHandler;
 
             foreach (var model in GraphicsManager.ModelLibrary)
             {
@@ -142,7 +163,7 @@ namespace WorldEditor
                 tempObject.Scale = Vector3.One;
                 tempObject.Height = 0.0f;
                 mObjects.Add(tempObject.Model, tempObject);
-                (editModes.Controls["Objects"].Controls["ObjectList"] as ListBox).Items.Add(tempObject.Model);
+                ((mEditorForm as EditorForm).ObjectList as ListBox).Items.Add(tempObject.Model);
             }
 
             FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
@@ -182,18 +203,66 @@ namespace WorldEditor
 
             foreach (var texture in GraphicsManager.TextureLibrary)
             {
-                (editModes.Controls["Textures"].Controls["TextureList"] as ListBox).Items.Add(texture.Key);
+                ((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).Items.Add(texture.Key);
             }
 
+            SwitchToEdit();
+        }
+
+        private void CloseHandler(object sender, EventArgs e)
+        {
+            this.Closed = true;
+        }
+
+        private void OpenTextureForm(object sender, EventArgs e)
+        {
+            mTextureSelectionForm.Show();
+        }
+
+        private void CloseTextureForm(object sender, EventArgs e)
+        {
+            mTextureSelectionForm.Hide();
+        }
+
+        private void OpenObjectParameterForm(object sender, EventArgs e)
+        {
+            mObjectParametersForm.Show();
+        }
+
+        private void CloseObjectParameterForm(object sender, EventArgs e)
+        {
+            mObjectParametersForm.Hide();
+        }
+
+        private void NewHandler(object sender, EventArgs e)
+        {
+            mDummyWorld.New();
         }
 
         private void SaveHandler(object sender, EventArgs e)
         {
+            if (mFilePath == null)
+            {
+                SaveAsHandler(sender, e);
+                return;
+            }
+
+            mDummyWorld.Save(mFilePath);
+        }
+
+        private void SaveAsHandler(object sender, EventArgs e)
+        {
             SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.AddExtension = true;
+            saveDialog.Filter = "Level Files | *.lvl";
+            saveDialog.DefaultExt = ".lvl";
 
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
                 mDummyWorld.Save(saveDialog.FileName);
+                FileInfo fileInfo = new FileInfo(saveDialog.FileName);
+                mName = fileInfo.Name;
+                mFilePath = fileInfo.FullName;
             }
 
         }
@@ -201,10 +270,15 @@ namespace WorldEditor
         private void OpenHandler(object sender, EventArgs e)
         {
             OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.AddExtension = true;
+            openDialog.Filter = "Level Files | *.lvl";
+            openDialog.DefaultExt = ".lvl";
 
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
-                mDummyWorld.Open(openDialog.FileName);
+                FileInfo fileInfo = new FileInfo(openDialog.FileName);
+                mDummyWorld.Open(fileInfo);
+                mName = fileInfo.Name;
             }
 
         }
@@ -233,7 +307,7 @@ namespace WorldEditor
             mDummyObject.Model = "editor";
             mDummyObject.Position = Vector3.Zero;
             mDummyObject.Orientation = Vector3.Up;
-            mDummyObject.Scale = Vector3.One;
+            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * (mEditorForm as EditorForm).Size);
         }
 
         private void ObjectHandler(object sender, EventArgs e)
@@ -244,94 +318,59 @@ namespace WorldEditor
 
         private void TextureHandler(object sender, EventArgs e)
         {
-            TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
+            Texture2D texture = GraphicsManager.LookupSprite(((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).SelectedItem.ToString());
 
-            Texture2D texture = GraphicsManager.LookupSprite((editModes.Controls["Textures"].Controls["TextureList"] as ListBox).SelectedItem.ToString());
+            MemoryStream ms = new MemoryStream();
 
-            byte[] textureData = new byte[4 * texture.Width * texture.Height];
-            texture.GetData<byte>(textureData);
+            texture.SaveAsPng(ms, texture.Width, texture.Height);
 
-            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(
-                texture.Width, 
-                texture.Height, 
-                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            ms.Seek(0, SeekOrigin.Begin);
 
-            System.Drawing.Imaging.BitmapData bmpData = bmp.LockBits(
-               new System.Drawing.Rectangle(0, 0, texture.Width, texture.Height), 
-               System.Drawing.Imaging.ImageLockMode.WriteOnly,
-               System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            System.Drawing.Image bmp = System.Drawing.Bitmap.FromStream(ms);
 
-            IntPtr safePtr = bmpData.Scan0;
-            System.Runtime.InteropServices.Marshal.Copy(textureData, 0, safePtr, textureData.Length);
-            bmp.UnlockBits(bmpData);
-
-            (editModes.Controls["Textures"].Controls["Picture"] as PictureBox).Image = bmp;
-
+            ms.Close();
+            ms = null;
+            ((mTextureSelectionForm as TextureSelectionForm).TexturePreview as PictureBox).Image = bmp;
         }
 
         private void SelectionHandler(object sender, EventArgs e)
         {
-            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * (int)(sender as NumericUpDown).Value);
+            mDummyObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * (mEditorForm as EditorForm).Size);
         }
 
         #endregion
 
         private void PerformActions()
         {
+            EditorForm form = mEditorForm as EditorForm;
             TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
             if (mControls.LeftPressed.Active)
             {
-                if (mPlaceable)
+                if (mPlaceable && form.Mode == EditorForm.EditorMode.OBJECTS)
                 {
                     AddState(mDummyWorld);
-                    if (editModes.SelectedTab == editModes.Controls["Objects"])
-                    {
-                        mDummyWorld.AddObject(new DummyObject(mDummyObject));
-                    }
+                    mDummyWorld.AddObject(new DummyObject(mDummyObject));
                 }
             }
             else if (mControls.LeftHold.Active)
             {
                 if (mPlaceable)
                 {
-                    if (editModes.SelectedTab == editModes.Controls["Heights"])
+                    switch(form.Mode)
                     {
-
-                        try
+                        case EditorForm.EditorMode.HEIGHTMAP:
                         {
-
-                            mDummyWorld.ModifyHeightMap(
-                                mDummyObject.Position,
-                                (int)(editModes.SelectedTab.Controls["HeightRadiusField"] as NumericUpDown).Value,
-                                (int)(editModes.SelectedTab.Controls["HeightIntensityField"] as NumericUpDown).Value,
-                                (editModes.SelectedTab.Controls["SetBox"] as CheckBox).Checked,
-                                (editModes.SelectedTab.Controls["InvertBox"] as CheckBox).Checked,
-                                (editModes.SelectedTab.Controls["FeatherBox"] as CheckBox).Checked,
-                                (editModes.SelectedTab.Controls["FlattenBox"] as CheckBox).Checked,
-                                (editModes.SelectedTab.Controls["SmoothBox"] as CheckBox).Checked);
-
+                            float strength = form.Strength * 10.0f;
+                            mDummyWorld.ModifyHeightMap(mDummyObject.Position, form.Size, strength, form.HeightMapBrush, form.HeightMapTool);
+                            break;
                         }
-                        catch (SystemException)
+                        case EditorForm.EditorMode.PAINTING:
                         {
-                            Console.WriteLine("Invalid input.");
-                        }
-
-                    }
-                    else if (editModes.SelectedTab == editModes.Controls["Textures"])
-                    {
-                        try
-                        {
-
-                            mDummyWorld.ModifyTextureMap(
-                                mDummyObject.Position,
-                                (editModes.SelectedTab.Controls["TextureList"] as ListBox).SelectedItem.ToString(),
-                                (int)(editModes.SelectedTab.Controls["TextureRadiusField"] as NumericUpDown).Value,
-                                (int)(editModes.SelectedTab.Controls["TextureAlphaField"] as NumericUpDown).Value);
-                            
-                        }
-                        catch (SystemException)
-                        {
-                            Console.WriteLine("Invalid input.");
+                            float alpha = form.Strength / 100.0f;
+                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
+                            string textureName = ((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).SelectedItem.ToString();
+                            mDummyWorld.ModifyTextureMap(mDummyObject.Position, textureName, form.Size, alpha, form.PaintingBrush, form.PaintingTool, layer);
+                            break;
                         }
                     }
                 }
@@ -349,24 +388,24 @@ namespace WorldEditor
         public void AddState(DummyWorld state)
         {
             
-            if (mUndoRedoCurrentState == mUndoLimit)
-            {
-                mUndoLimit = mUndoRedoCurrentState + 1;
-            }
+            //if (mUndoRedoCurrentState == mUndoLimit)
+            //{
+            //    mUndoLimit = mUndoRedoCurrentState + 1;
+            //}
 
-            if (mUndoLimit >= NumUndoRedoStates)
-            {
-                mUndoLimit = 0;
-            }
+            //if (mUndoLimit >= NumUndoRedoStates)
+            //{
+            //    mUndoLimit = 0;
+            //}
 
-            mUndoRedoStates[mUndoRedoCurrentState] = new DummyWorld(state);
-            mUndoRedoCurrentState++;
-            mRedoLimit = mUndoRedoCurrentState;
+            //mUndoRedoStates[mUndoRedoCurrentState] = new DummyWorld(state);
+            //mUndoRedoCurrentState++;
+            //mRedoLimit = mUndoRedoCurrentState;
 
-            if (mUndoRedoCurrentState >= NumUndoRedoStates)
-            {
-                mUndoRedoCurrentState = 0;
-            }
+            //if (mUndoRedoCurrentState >= NumUndoRedoStates)
+            //{
+            //    mUndoRedoCurrentState = 0;
+            //}
 
         }
 

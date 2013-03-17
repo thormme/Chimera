@@ -42,7 +42,7 @@ namespace GameConstructLibrary
 
             List<DummyObject> objects = new List<DummyObject>();
 
-            StreamReader reader = new StreamReader(path);
+            StreamReader reader = new StreamReader("Content/levels/" + path);
             XmlSerializer deserializer = new XmlSerializer(typeof(List<DummyObject>), root);
 
             objects = (List<DummyObject>)deserializer.Deserialize(reader);

@@ -10,6 +10,7 @@ using System.Reflection;
 using BEPUphysics.Collidables;
 using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Entities.Prefabs;
+using System.IO;
 
 namespace GameConstructLibrary
 {
@@ -168,8 +169,15 @@ namespace GameConstructLibrary
 
         public void AddLevelFromFile(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)
         {
+            if (!mapName.Contains(".lvl"))
+            {
+                mapName += ".lvl";
+            }
 
-            List<DummyObject> objects = LevelManager.Load(mapName);
+            FileInfo fileInfo = new FileInfo(mapName);
+            List<DummyObject> objects = LevelFileLoader.LoadObjectsFromFile(fileInfo);
+            GraphicsManager.AddTerrain(fileInfo, LevelFileLoader.LoadHeightMapFromFile(fileInfo), LevelFileLoader.LoadTextureFromFile(fileInfo));
+
             foreach (DummyObject dummy in objects)
             {
                 if (dummy.Type == "Root")

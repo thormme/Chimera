@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace GraphicsLibrary
 {
@@ -53,7 +55,7 @@ namespace GraphicsLibrary
         static private RenderTarget2D mNormalDepthBuffer;
         static private RenderTarget2D mOutlineBuffer;
         static private RenderTarget2D mCompositeBuffer;
-        static private RenderTarget2D[] mTerrainTextureComposites;
+        static private List<RenderTarget2D>[,] mTerrainTextureComposites;
 
         static private Texture2D mSkyTexture;
 
@@ -169,6 +171,14 @@ namespace GraphicsLibrary
 
         #endregion
 
+        #region Constants
+
+        const int MAX_TEXTURE_LAYERS = 5;
+
+        static string[] LAYER_TEXTURE_NAMES = new string[] { "Texture", "RedTexture", "GreenTexture", "BlueTexture", "AlphaTexture" };
+
+        #endregion
+
         #region Public Methods
 
         /// <summary>
@@ -178,249 +188,14 @@ namespace GraphicsLibrary
         static public void LoadContent(ContentManager content, GraphicsDevice device, SpriteBatch spriteBatch)
         {
             mDevice = device;
-            var pp = device.PresentationParameters;
-
             mSpriteBatch = spriteBatch;
 
-            // Load shaders.
-            mConfigurableShader = content.Load<Effect>("shaders/ConfigurableShader");
-            mPostProcessShader = content.Load<Effect>("shaders/PostProcessing");
-            mTerrainShader = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
-
-            // Create buffers.
-            mShadowMap = new CascadedShadowMap(device, 2048);
-
-            mSceneBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
-            mNormalDepthBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
-            mOutlineBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
-            mCompositeBuffer = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
-            mTerrainTextureComposites = new RenderTarget2D[] { new RenderTarget2D(device, 1024, 1024),
-                                                               new RenderTarget2D(device, 1024, 1024) };
-
-            mDirectionalLight = new Light(
-                new Vector3(-0.3333333f, -1.0f, 0.33333333f), // Direction
-                new Vector3(0.05333332f, 0.09882354f, 0.1819608f), // Ambient Color
-                new Vector3(1, 0.9607844f, 0.8078432f),            // Diffuse Color
-                new Vector3(1, 0.9607844f, 0.8078432f)             // Specular Color
-                );
-
-            mSkyTexture = content.Load<Texture2D>("textures/sprites/sky");
-
-            // Load models.
-            DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "models");
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException("Could not find models directory \n" + dir.FullName + "\nin content.");
-            }
-
-            DirectoryInfo[] subDirs = dir.GetDirectories();
-            foreach (DirectoryInfo subDir in subDirs)
-            {
-                string subDirName = subDir.Name;
-
-                FileInfo[] files = subDir.GetFiles("*.xnb");
-                foreach (FileInfo file in files)
-                {
-                    try
-                    {
-                        string textureKey = "_animate_texture_";
-                        string modelName = Path.GetFileNameWithoutExtension(file.Name);
-                        if (modelName.Contains(textureKey))
-                        {
-                            Texture2D texture = content.Load<Texture2D>("models/" + subDirName + "/" + modelName);
-
-                            string[] nameParts = modelName.Split(new char[] { '_' });
-
-                            Dictionary<int, Texture2D> animateTextures;
-                            if (!mUniqueAnimateTextureLibrary.TryGetValue(nameParts[0], out animateTextures))
-                            {
-                                animateTextures = new Dictionary<int, Texture2D>();
-                                mUniqueAnimateTextureLibrary.Add(nameParts[0], animateTextures);
-                            }
-
-                            animateTextures.Add(Int32.Parse(nameParts[3]), texture);
-                        }
-                        else
-                        {
-                            Model input = content.Load<Model>("models/" + subDirName + "/" + modelName);
-
-                            foreach (ModelMesh mesh in input.Meshes)
-                            {
-                                foreach (ModelMeshPart part in mesh.MeshParts)
-                                {
-                                    Microsoft.Xna.Framework.Graphics.SkinnedEffect skinnedEffect = part.Effect as Microsoft.Xna.Framework.Graphics.SkinnedEffect;
-                                    if (skinnedEffect != null)
-                                    {
-                                        AnimationUtilities.SkinnedEffect newEffect = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
-                                        newEffect.CopyFromSkinnedEffect(skinnedEffect);
-
-                                        part.Effect = newEffect;
-                                    }
-                                    else
-                                    {
-                                        Microsoft.Xna.Framework.Graphics.BasicEffect basicEffect = part.Effect as Microsoft.Xna.Framework.Graphics.BasicEffect;
-                                        if (basicEffect != null)
-                                        {
-                                            AnimationUtilities.SkinnedEffect newEffect = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
-                                            newEffect.CopyFromBasicEffect(basicEffect);
-
-                                            part.Effect = newEffect;
-                                        }
-                                    }
-                                }
-                            }
-
-                            AddModel(modelName, input);
-                        }
-                    }
-                    catch { }
-                }
-
-                // Parse Bone Orientation Tweak File and store in library.
-                FileInfo[] tweakOrientationFiles = subDir.GetFiles("*.tweak");
-                foreach (FileInfo file in tweakOrientationFiles)
-                {
-                    Dictionary<string, Matrix> tweakLibrary = new Dictionary<string, Matrix>();
-                    TextReader tr = new StreamReader(file.DirectoryName + "\\" + file.Name);
-
-                    int count = int.Parse(tr.ReadLine());
-                    string blank = tr.ReadLine();
-
-                    for (int i = 0; i < count; ++i)
-                    {
-                        Matrix tweakMatrix;
-                        string boneName;
-                        ParseTweakFile(tr, out boneName, out tweakMatrix);
-
-                        tweakLibrary.Add(boneName, tweakMatrix);
-                    }
-                    tr.Close();
-
-                    mUniqueModelBoneLibrary.Add(Path.GetFileNameWithoutExtension(file.Name), tweakLibrary);
-                }
-
-                FileInfo[] tweakModifierFiles = subDir.GetFiles("*.modtweak");
-                foreach (FileInfo file in tweakModifierFiles)
-                {
-                    TextReader tr = new StreamReader(file.DirectoryName + "\\" + file.Name);
-                    int count = int.Parse(tr.ReadLine());
-                    string blank = tr.ReadLine();
-
-                    Dictionary<string, Matrix> tweakLibrary;
-                    if (mUniqueModelBoneLibrary.TryGetValue(Path.GetFileNameWithoutExtension(file.Name), out tweakLibrary))
-                    {
-                        TextWriter tw = new StreamWriter("playerBeanPartOrientations.txt");
-
-                        tw.WriteLine(count);
-                        tw.WriteLine("");
-
-                        for (int i = 0; i < count; ++i)
-                        {
-                            Matrix modifyMatrix;
-                            string boneName;
-                            ParseTweakFile(tr, out boneName, out modifyMatrix);
-
-                            Matrix storedMatrix;
-                            if (tweakLibrary.TryGetValue(boneName, out storedMatrix))
-                            {
-                                storedMatrix = modifyMatrix * storedMatrix;
-                                tweakLibrary[boneName] = storedMatrix;
-                            }
-
-                            tw.WriteLine(boneName);
-                            tw.WriteLine(storedMatrix.M11.ToString() + " " + storedMatrix.M12.ToString() + " " + storedMatrix.M13.ToString() + " " + storedMatrix.M14.ToString());
-                            tw.WriteLine(storedMatrix.M21.ToString() + " " + storedMatrix.M22.ToString() + " " + storedMatrix.M23.ToString() + " " + storedMatrix.M24.ToString());
-                            tw.WriteLine(storedMatrix.M31.ToString() + " " + storedMatrix.M32.ToString() + " " + storedMatrix.M33.ToString() + " " + storedMatrix.M34.ToString());
-                            tw.WriteLine(storedMatrix.M41.ToString() + " " + storedMatrix.M42.ToString() + " " + storedMatrix.M43.ToString() + " " + storedMatrix.M44.ToString());
-                            tw.WriteLine("");
-                        }
-                        tw.Close();
-                    }
-                }
-            }
-
-            // Load terrain.
-            dir = new DirectoryInfo(content.RootDirectory + "\\" + "levels/maps/");
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException("Could not find levels/maps directory in content.");
-            }
-
-            FileInfo[] terrainFiles = dir.GetFiles("*");
-            foreach (FileInfo file in terrainFiles)
-            {
-                string terrainName = Path.GetFileNameWithoutExtension(file.Name);
-
-                if (terrainName.Contains("_texture"))
-                {
-                    continue;
-                }
-
-                Texture2D terrain = content.Load<Texture2D>("levels/maps/" + terrainName);
-                TerrainHeightMap heightMap = new TerrainHeightMap(terrain, mDevice);
-
-                FileInfo[] textureFiles = dir.GetFiles(terrainName + "_texture.*");
-                Texture2D terrainTexture = null;
-                if (textureFiles.Length > 0)
-                {
-                    string inputTextureName = Path.GetFileNameWithoutExtension(textureFiles[0].Name);
-                    terrainTexture = content.Load<Texture2D>("levels/maps/" + inputTextureName);
-                }
-
-                TerrainDescription newTerrain = new TerrainDescription(
-                    heightMap, 
-                    new List<Texture2D>(), 
-                    new List<string>()
-                    );
-
-                newTerrain.TextureNames.Add("default_terrain_detail");
-                newTerrain.AlphaMaps.Add(terrainTexture);
-
-                if (mUniqueTerrainLibrary.ContainsKey(terrainName))
-                {
-                    throw new Exception("Duplicate terrain key: " + terrainName);
-                }
-                mUniqueTerrainLibrary.Add(terrainName, newTerrain);
-            }
-
-            // Load textures.
-            dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/maps/");
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException("Could not find textures/maps/ directory in content.");
-            }
-
-            FileInfo[] mapFiles = dir.GetFiles("*");
-            foreach (FileInfo file in mapFiles)
-            {
-                string mapName = Path.GetFileNameWithoutExtension(file.Name);
-                Texture2D map = content.Load<Texture2D>("textures/maps/" + mapName);
-
-                if (mUniqueTextureLibrary.ContainsKey(mapName))
-                {
-                    throw new Exception("Duplicate map key: " + mapName);
-                }
-                mUniqueTextureLibrary.Add(mapName, map);
-            }
-
-            dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/sprites/");
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException("Could not find textures/sprites/ directory in content.");
-            }
-
-            FileInfo[] spriteFiles = dir.GetFiles("*");
-            foreach (FileInfo file in spriteFiles)
-            {
-                string spriteName = Path.GetFileNameWithoutExtension(file.Name);
-                Texture2D sprite = content.Load<Texture2D>("textures/sprites/" + spriteName);
-
-                if (mUniqueTextureLibrary.ContainsKey(spriteName))
-                {
-                    throw new Exception("Duplicate sprite key: " + spriteName);
-                }
-                mUniqueTextureLibrary.Add(spriteName, sprite);
-            }
+            CreateBuffers();
+            CreateLightsAndShadows();
+            LoadShaders(content);
+            LoadModels(content);
+            LoadSprites(content);
+            //LoadTerrain(content);
         }
 
         /// <summary>
@@ -456,18 +231,9 @@ namespace GraphicsLibrary
             mDevice.DepthStencilState = DepthStencilState.Default;
             mDevice.SamplerStates[1] = SamplerState.PointClamp;
 
-            // Composite Terrain Texture
-            foreach (RenderableDefinition renderable in mRenderQueue)
-            {
-                if (!renderable.IsModel)
-                {
-                    CompositeTerrainTexture(renderable.Name);
-                    continue;
-                }
-            }
-
             RasterizerState cull = new RasterizerState();
             cull.CullMode = CullMode.CullCounterClockwiseFace;
+            //cull.FillMode = FillMode.WireFrame;
 
             mDevice.RasterizerState = cull;
 
@@ -609,44 +375,10 @@ namespace GraphicsLibrary
         /// </summary>
         static public TerrainHeightMap LookupTerrainHeightMap(string terrainName)
         {
-            TerrainDescription result;
-            if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
-            {
-                return result.Terrain;
-            }
-            throw new KeyNotFoundException("Unable to find terrain key: " + terrainName);
+            return LookupTerrain(terrainName).Terrain;
         }
 
-        /// <summary>
-        /// Retrieves texture of terrain from database.  Throws KeyNotFoundException if terrainName does not exist in database.
-        /// </summary>
-        static public List<Texture2D> LookupTerrainAlphaMaps(string terrainName)
-        {
-            TerrainDescription result;
-            if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
-            {
-                return result.AlphaMaps;
-            }
-            throw new KeyNotFoundException("Unable to find texture for terrain key: " + terrainName);
-        }
-
-        /// <summary>
-        /// Retrieves names of textures applied to terrain from database.  Throws KeyNotFoundException if terrainName does not exist in database.
-        /// </summary>
-        static public List<string> LookupTerrainTextureNames(string terrainName)
-        {
-            TerrainDescription result;
-            if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
-            {
-                return result.TextureNames;
-            }
-            throw new KeyNotFoundException("Unable to find texture names for terrain key: " + terrainName);
-        }
-
-        /// <summary>
-        /// Retrieves composite terrain texture.
-        /// </summary>
-        static public Texture2D LookupTerrainTexture(string terrainName)
+        static public TerrainTexture LookupTerrainTexture(string terrainName)
         {
             return LookupTerrain(terrainName).Texture;
         }
@@ -793,9 +525,37 @@ namespace GraphicsLibrary
 
             TerrainHeightMap terrain = LookupTerrain(terrainName).Terrain;
 
-            BoundVertexBuffer(ref minExtent, ref maxExtent, terrain.VertexBuffer, terrain.NumVertices);
+            //BoundVertexBuffer(ref minExtent, ref maxExtent, terrain.VertexBuffer, terrain.NumVertices);
 
             return new BoundingBox(minExtent, maxExtent);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="level"></param>
+        public static void AddTerrain(FileInfo level, TerrainHeightMap heightMap, TerrainTexture texture)
+        {
+            if (mUniqueTerrainLibrary.ContainsKey(level.Name))
+            {
+                mUniqueTerrainLibrary.Remove(level.Name);
+            }
+
+            mUniqueTerrainLibrary.Add(level.Name, new TerrainDescription(heightMap, texture));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="savePath"></param>
+        /// <param name="levelName"></param>
+        public static void UpdateTerrain(FileInfo savePath, ref string levelName)
+        {
+            if (!mUniqueTerrainLibrary.ContainsKey(savePath.Name))
+            {
+                mUniqueTerrainLibrary.Add(savePath.Name, mUniqueTerrainLibrary[levelName]);
+                levelName = savePath.Name;
+            }
         }
 
         #endregion
@@ -803,6 +563,226 @@ namespace GraphicsLibrary
         ///////////////////////////// Internal functions /////////////////////////////
 
         #region Helper Methods
+
+        /// <summary>
+        /// Instantiates rendertargets written to by graphics device.
+        /// </summary>
+        static private void CreateBuffers()
+        {
+            var pp = mDevice.PresentationParameters;
+
+            mCompositeBuffer          = new RenderTarget2D(mDevice, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mNormalDepthBuffer        = new RenderTarget2D(mDevice, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mOutlineBuffer            = new RenderTarget2D(mDevice, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mSceneBuffer              = new RenderTarget2D(mDevice, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
+        }
+
+        /// <summary>
+        /// Instantiates scene light sources and shadow manager.
+        /// </summary>
+        static private void CreateLightsAndShadows()
+        {
+            mDirectionalLight = new Light(
+                new Vector3(-0.3333333f, -1.0f, 0.33333333f), // Direction
+                new Vector3(0.05333332f, 0.09882354f, 0.1819608f), // Ambient Color
+                new Vector3(1, 0.9607844f, 0.8078432f),            // Diffuse Color
+                new Vector3(1, 0.9607844f, 0.8078432f)             // Specular Color
+                );
+
+            mShadowMap = new CascadedShadowMap(mDevice, 2048);
+        }
+
+        /// <summary>
+        /// Reads all models in from content directory and stores them in modelLibrary.
+        /// </summary>
+        static private void LoadModels(ContentManager content)
+        {
+            DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "models");
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException("Could not find models directory \n" + dir.FullName + "\nin content.");
+            }
+
+            DirectoryInfo[] subDirs = dir.GetDirectories();
+            foreach (DirectoryInfo subDir in subDirs)
+            {
+                string subDirName = subDir.Name;
+
+                FileInfo[] files = subDir.GetFiles("*.xnb");
+                foreach (FileInfo file in files)
+                {
+                    try
+                    {
+                        string textureKey = "_animate_texture_";
+                        string modelName = Path.GetFileNameWithoutExtension(file.Name);
+                        if (modelName.Contains(textureKey))
+                        {
+                            Texture2D texture = content.Load<Texture2D>("models/" + subDirName + "/" + modelName);
+
+                            string[] nameParts = modelName.Split(new char[] { '_' });
+
+                            Dictionary<int, Texture2D> animateTextures;
+                            if (!mUniqueAnimateTextureLibrary.TryGetValue(nameParts[0], out animateTextures))
+                            {
+                                animateTextures = new Dictionary<int, Texture2D>();
+                                mUniqueAnimateTextureLibrary.Add(nameParts[0], animateTextures);
+                            }
+
+                            animateTextures.Add(Int32.Parse(nameParts[3]), texture);
+                        }
+                        else
+                        {
+                            Model input = content.Load<Model>("models/" + subDirName + "/" + modelName);
+
+                            foreach (ModelMesh mesh in input.Meshes)
+                            {
+                                foreach (ModelMeshPart part in mesh.MeshParts)
+                                {
+                                    Microsoft.Xna.Framework.Graphics.SkinnedEffect skinnedEffect = part.Effect as Microsoft.Xna.Framework.Graphics.SkinnedEffect;
+                                    if (skinnedEffect != null)
+                                    {
+                                        AnimationUtilities.SkinnedEffect newEffect = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
+                                        newEffect.CopyFromSkinnedEffect(skinnedEffect);
+
+                                        part.Effect = newEffect;
+                                    }
+                                    else
+                                    {
+                                        Microsoft.Xna.Framework.Graphics.BasicEffect basicEffect = part.Effect as Microsoft.Xna.Framework.Graphics.BasicEffect;
+                                        if (basicEffect != null)
+                                        {
+                                            AnimationUtilities.SkinnedEffect newEffect = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
+                                            newEffect.CopyFromBasicEffect(basicEffect);
+
+                                            part.Effect = newEffect;
+                                        }
+                                    }
+                                }
+                            }
+
+                            AddModel(modelName, input);
+                        }
+                    }
+                    catch { }
+                }
+
+                // Parse Bone Orientation Tweak File and store in library.
+                FileInfo[] tweakOrientationFiles = subDir.GetFiles("*.tweak");
+                foreach (FileInfo file in tweakOrientationFiles)
+                {
+                    Dictionary<string, Matrix> tweakLibrary = new Dictionary<string, Matrix>();
+                    TextReader tr = new StreamReader(file.DirectoryName + "\\" + file.Name);
+
+                    int count = int.Parse(tr.ReadLine());
+                    string blank = tr.ReadLine();
+
+                    for (int i = 0; i < count; ++i)
+                    {
+                        Matrix tweakMatrix;
+                        string boneName;
+                        ParseTweakFile(tr, out boneName, out tweakMatrix);
+
+                        tweakLibrary.Add(boneName, tweakMatrix);
+                    }
+                    tr.Close();
+
+                    mUniqueModelBoneLibrary.Add(Path.GetFileNameWithoutExtension(file.Name), tweakLibrary);
+                }
+
+                FileInfo[] tweakModifierFiles = subDir.GetFiles("*.modtweak");
+                foreach (FileInfo file in tweakModifierFiles)
+                {
+                    TextReader tr = new StreamReader(file.DirectoryName + "\\" + file.Name);
+                    int count = int.Parse(tr.ReadLine());
+                    string blank = tr.ReadLine();
+
+                    Dictionary<string, Matrix> tweakLibrary;
+                    if (mUniqueModelBoneLibrary.TryGetValue(Path.GetFileNameWithoutExtension(file.Name), out tweakLibrary))
+                    {
+                        TextWriter tw = new StreamWriter("playerBeanPartOrientations.txt");
+
+                        tw.WriteLine(count);
+                        tw.WriteLine("");
+
+                        for (int i = 0; i < count; ++i)
+                        {
+                            Matrix modifyMatrix;
+                            string boneName;
+                            ParseTweakFile(tr, out boneName, out modifyMatrix);
+
+                            Matrix storedMatrix;
+                            if (tweakLibrary.TryGetValue(boneName, out storedMatrix))
+                            {
+                                storedMatrix = modifyMatrix * storedMatrix;
+                                tweakLibrary[boneName] = storedMatrix;
+                            }
+
+                            tw.WriteLine(boneName);
+                            tw.WriteLine(storedMatrix.M11.ToString() + " " + storedMatrix.M12.ToString() + " " + storedMatrix.M13.ToString() + " " + storedMatrix.M14.ToString());
+                            tw.WriteLine(storedMatrix.M21.ToString() + " " + storedMatrix.M22.ToString() + " " + storedMatrix.M23.ToString() + " " + storedMatrix.M24.ToString());
+                            tw.WriteLine(storedMatrix.M31.ToString() + " " + storedMatrix.M32.ToString() + " " + storedMatrix.M33.ToString() + " " + storedMatrix.M34.ToString());
+                            tw.WriteLine(storedMatrix.M41.ToString() + " " + storedMatrix.M42.ToString() + " " + storedMatrix.M43.ToString() + " " + storedMatrix.M44.ToString());
+                            tw.WriteLine("");
+                        }
+                        tw.Close();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets up pipeline for executing shaders.
+        /// </summary>
+        static private void LoadShaders(ContentManager content)
+        {
+            mConfigurableShader = content.Load<Effect>("shaders/ConfigurableShader");
+            mPostProcessShader = content.Load<Effect>("shaders/PostProcessing");
+            mTerrainShader = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
+        }
+
+        /// <summary>
+        /// Reads sprites in from content directory and stores them in spriteLibrary.
+        /// </summary>
+        static private void LoadSprites(ContentManager content)
+        {
+            DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/maps/");
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException("Could not find textures/maps/ directory in content.");
+            }
+
+            FileInfo[] mapFiles = dir.GetFiles("*");
+            foreach (FileInfo file in mapFiles)
+            {
+                string mapName = Path.GetFileNameWithoutExtension(file.Name);
+                Texture2D map = content.Load<Texture2D>("textures/maps/" + mapName);
+
+                if (mUniqueTextureLibrary.ContainsKey(mapName))
+                {
+                    throw new Exception("Duplicate map key: " + mapName);
+                }
+                mUniqueTextureLibrary.Add(mapName, map);
+            }
+
+            dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/sprites/");
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException("Could not find textures/sprites/ directory in content.");
+            }
+
+            FileInfo[] spriteFiles = dir.GetFiles("*");
+            foreach (FileInfo file in spriteFiles)
+            {
+                string spriteName = Path.GetFileNameWithoutExtension(file.Name);
+                Texture2D sprite = content.Load<Texture2D>("textures/sprites/" + spriteName);
+
+                if (mUniqueTextureLibrary.ContainsKey(spriteName))
+                {
+                    throw new Exception("Duplicate sprite key: " + spriteName);
+                }
+                mUniqueTextureLibrary.Add(spriteName, sprite);
+            }
+        }
 
         /// <summary>
         /// Inserts new model in to model container.  Throws Exception on duplicate key.
@@ -913,7 +893,7 @@ namespace GraphicsLibrary
         {
             TerrainDescription heightmap = LookupTerrain(terrainName);
 
-            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "CelShade" : "Phong");
+            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "TerrainCelShade" : "TerrainPhong");
             DrawTerrainHeightMap(heightmap, techniqueName, worldTransforms, overlayColor, overlayColorWeight);
         }
 
@@ -973,59 +953,12 @@ namespace GraphicsLibrary
             mesh.Draw();
         }
 
-        static private void CompositeTerrainTexture(string name)
-        {
-            string[] textureParameters = { "RedTexture", "GreenTexture", "BlueTexture" };
-            TerrainDescription terrain = LookupTerrain(name);
-
-            mTerrainShader.CurrentTechnique = mTerrainShader.Techniques["CompositeTerrainTexture"];
-
-            int i = 0;
-            for (; i < terrain.TextureNames.Count; i += 3)
-            {
-                mDevice.SetRenderTarget(mTerrainTextureComposites[((i / 3) + 1) % 2]);
-                mDevice.Clear(Color.White);
-
-                mTerrainShader.Texture = mTerrainTextureComposites[(i / 3) % 2];
-
-                if (terrain.AlphaMaps.Count > i / 3)
-                {
-                    mTerrainShader.Parameters["AlphaMap"].SetValue(terrain.AlphaMaps[i / 3]);
-                }
-
-                if (terrain.TextureNames.Count > i)
-                {
-                    mTerrainShader.Parameters[textureParameters[i % 3]].SetValue(LookupSprite(terrain.TextureNames[i]));
-                }
-
-                if (terrain.TextureNames.Count > i + 1)
-                {
-                    mTerrainShader.Parameters[textureParameters[(i + 1) % 3]].SetValue(LookupSprite(terrain.TextureNames[i + 1]));
-                }
-
-                if (terrain.TextureNames.Count > i + 2)
-                {
-                    mTerrainShader.Parameters[textureParameters[(i + 2) % 3]].SetValue(LookupSprite(terrain.TextureNames[i + 2]));
-                }
-
-                mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, mTerrainShader);
-                mSpriteBatch.Draw(mTerrainTextureComposites[(i / 3) % 2], new Rectangle(0, 0, mTerrainTextureComposites[(i / 3) % 2].Width, mTerrainTextureComposites[(i / 3) % 2].Height), Color.White);
-                mSpriteBatch.End();
-            }
-
-            terrain.Texture = mTerrainTextureComposites[(i / 3) % 2];
-        }
-
         /// <summary>
         /// Sets effect for current terrain and renders to screen.
         /// </summary>
         static private void DrawTerrainHeightMap(TerrainDescription heightMap, string techniqueName, Matrix worldTransforms, Vector3 overlayColor, float overlayColorWeight)
         {
-
-            mDevice.Indices = heightMap.Terrain.IndexBuffer;
-            mDevice.SetVertexBuffer(heightMap.Terrain.VertexBuffer);
-
-            mTerrainShader.Texture = heightMap.Texture;
+            mDevice.SamplerStates[0] = SamplerState.LinearClamp;
 
             if (CastingShadows)
             {
@@ -1059,15 +992,56 @@ namespace GraphicsLibrary
             mTerrainShader.World = worldTransforms;
 
             mTerrainShader.CurrentTechnique = mTerrainShader.Techniques[techniqueName];
-            mTerrainShader.CurrentTechnique.Passes[0].Apply();
 
-            mDevice.DrawIndexedPrimitives(
-                PrimitiveType.TriangleList,
-                0,
-                0,
-                heightMap.Terrain.NumVertices,
-                0,
-                heightMap.Terrain.NumIndices / 3);
+            for (int chunkCol = 0; chunkCol < heightMap.Terrain.NumChunksHorizontal; chunkCol++)
+            {
+                for (int chunkRow = 0; chunkRow < heightMap.Terrain.NumChunksVertical; chunkRow++)
+                {
+                    //if (!heightMap.BoundingBoxes[chunkCol, chunkRow].Intersects(viewFrustum.BoundingBox))
+                    //{
+                    //    // Hey, it looks like you.
+                    //    // Just tried to draw me.
+                    //    // But I'm not on screen.
+                    //    // So cull me, maybe?
+                    //    continue;
+                    //}
+
+                    mTerrainShader.Parameters["AlphaMap"].SetValue(heightMap.Texture.TextureBuffers[chunkRow, chunkCol]);
+
+                    for (int i = 0; i < MAX_TEXTURE_LAYERS; ++i)
+                    {
+                        string detailTextureName = heightMap.Texture.DetailTextureNames[chunkRow, chunkCol, i];
+
+                        if (detailTextureName != null)
+                        {
+                            mTerrainShader.Parameters[LAYER_TEXTURE_NAMES[i]].SetValue(LookupSprite(detailTextureName));
+                        }
+                    }
+
+                    VertexBuffer vertexBuffer = heightMap.Terrain.VertexBuffers[chunkRow, chunkCol];
+                    IndexBuffer indexBuffer = heightMap.Terrain.IndexBuffers[chunkRow, chunkCol];
+
+                    mDevice.SetVertexBuffer(vertexBuffer);
+                    mDevice.Indices = indexBuffer;
+
+                    mTerrainShader.CurrentTechnique.Passes[0].Apply();
+
+                    mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
+                }
+            }
+
+            for (int edgeChunkIndex = 0; edgeChunkIndex < 4; ++edgeChunkIndex)
+            {
+                VertexBuffer vertexBuffer = heightMap.Terrain.EdgeVertexBuffers[edgeChunkIndex];
+                IndexBuffer indexBuffer = heightMap.Terrain.EdgeIndexBuffers[edgeChunkIndex];
+
+                mDevice.SetVertexBuffer(vertexBuffer);
+                mDevice.Indices = indexBuffer;
+
+                mTerrainShader.CurrentTechnique.Passes[0].Apply();
+
+                mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
+            }
         }
 
         /// <summary>

@@ -338,9 +338,6 @@ namespace GraphicsLibrary
         {
             TerrainHeightMap terrain = GraphicsManager.LookupTerrainHeightMap(renderable.Name);
 
-            mGraphicsDevice.Indices = terrain.IndexBuffer;
-            mGraphicsDevice.SetVertexBuffer(terrain.VertexBuffer);
-
             GraphicsManager.TerrainShader.World = renderable.WorldTransform;
 
             GraphicsManager.TerrainShader.Parameters["xLightView"].SetValue(mLightView);
@@ -349,13 +346,28 @@ namespace GraphicsLibrary
             GraphicsManager.TerrainShader.CurrentTechnique = GraphicsManager.TerrainShader.Techniques["ShadowCast"];
             GraphicsManager.TerrainShader.CurrentTechnique.Passes[0].Apply();
 
-            mGraphicsDevice.DrawIndexedPrimitives(
-                PrimitiveType.TriangleList,
-                0,
-                0,
-                terrain.NumVertices,
-                0,
-                terrain.NumIndices / 3);
+            int numCols = GraphicsManager.LookupTerrainHeightMap(renderable.Name).NumChunksHorizontal;
+            int numRows = GraphicsManager.LookupTerrainHeightMap(renderable.Name).NumChunksVertical;
+
+            for (int col = 0; col < numCols; col++)
+            {
+                for (int row = 0; row < numRows; row++)
+                {
+                    VertexBuffer vertexBuffer = terrain.VertexBuffers[row, col];
+                    IndexBuffer indexBuffer = terrain.IndexBuffers[row, col];
+
+                    mGraphicsDevice.SetVertexBuffer(vertexBuffer);
+                    mGraphicsDevice.Indices = indexBuffer;
+
+                    mGraphicsDevice.DrawIndexedPrimitives(
+                        PrimitiveType.TriangleList,
+                        0,
+                        0,
+                        vertexBuffer.VertexCount,
+                        0,
+                        indexBuffer.IndexCount / 3);
+                }
+            }
         }
 
         #endregion

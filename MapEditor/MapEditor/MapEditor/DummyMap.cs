@@ -222,7 +222,7 @@ namespace MapEditor
             mTerrainPhysics = new TerrainPhysics(file, new Vector3(0, 0, 0), new Quaternion(), GameMapEditor.MapScale);
 
            // Load the rest of the level
-            mDummies = LevelManager.Load(file);
+            mDummies = LevelFileLoader.LoadObjectsFromFile(new FileInfo(file));
 
             foreach (DummyObject obj in mDummies)
             {
