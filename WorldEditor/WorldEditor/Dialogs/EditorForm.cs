@@ -55,59 +55,59 @@ namespace WorldEditor.Dialogs
 
         #region Images
 
-        Image heightMapBackground = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\heightmap_background.png");
-        Image paintingBackground = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\painting_background.png");
+        Image heightMapBackground = Image.FromFile(@"Artwork/heightmap_background.png");
+        Image paintingBackground = Image.FromFile(@"Artwork/painting_background.png");
 
-        Image heightmapModeButtonIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\heightmap_icon.png");
-        Image heightmapModeButtonSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\heightmap_icon_selected.png");
+        Image heightmapModeButtonIcon = Image.FromFile(@"Artwork/heightmap_icon.png");
+        Image heightmapModeButtonSelectedIcon = Image.FromFile(@"Artwork/heightmap_icon_selected.png");
 
-        Image paintingModeButtonIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\painting_icon.png");
-        Image paintingModeButtonSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\painting_icon_selected.png");
+        Image paintingModeButtonIcon = Image.FromFile(@"Artwork/painting_icon.png");
+        Image paintingModeButtonSelectedIcon = Image.FromFile(@"Artwork/painting_icon_selected.png");
 
-        Image objectModeButtonIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\object_icon.png");
-        Image objectModeButtonSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\object_icon_selected.png");
+        Image objectModeButtonIcon = Image.FromFile(@"Artwork/object_icon.png");
+        Image objectModeButtonSelectedIcon = Image.FromFile(@"Artwork/object_icon_selected.png");
 
-        Image circleBrushIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\circle_brush_icon.png");
-        Image circleBrushSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\circle_brush_icon_selected.png");
+        Image circleBrushIcon = Image.FromFile(@"Artwork/circle_brush_icon.png");
+        Image circleBrushSelectedIcon = Image.FromFile(@"Artwork/circle_brush_icon_selected.png");
 
-        Image circleFeatheredBrushIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\circle_brush_feathered_icon.png");
-        Image circleFeatheredBrushSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\circle_brush_feathered_icon_selected.png");
+        Image circleFeatheredBrushIcon = Image.FromFile(@"Artwork/circle_brush_feathered_icon.png");
+        Image circleFeatheredBrushSelectedIcon = Image.FromFile(@"Artwork/circle_brush_feathered_icon_selected.png");
 
-        Image blockBrushIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\block_brush_icon.png");
-        Image blockBrushSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\block_brush_icon_selected.png");
+        Image blockBrushIcon = Image.FromFile(@"Artwork/block_brush_icon.png");
+        Image blockBrushSelectedIcon = Image.FromFile(@"Artwork/block_brush_icon_selected.png");
 
-        Image blockFeatheredBrushIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\block_brush_feathered_icon.png");
-        Image blockFeatheredBrushSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\block_brush_feathered_icon_selected.png");
+        Image blockFeatheredBrushIcon = Image.FromFile(@"Artwork/block_brush_feathered_icon.png");
+        Image blockFeatheredBrushSelectedIcon = Image.FromFile(@"Artwork/block_brush_feathered_icon_selected.png");
 
-        Image raiseTerrainIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\raise_terrain_icon.png");
-        Image raiseTerrainSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\raise_terrain_icon_selected.png");
+        Image raiseTerrainIcon = Image.FromFile(@"Artwork/raise_terrain_icon.png");
+        Image raiseTerrainSelectedIcon = Image.FromFile(@"Artwork/raise_terrain_icon_selected.png");
 
-        Image lowerTerrainIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\lower_terrain_icon.png");
-        Image lowerTerrainSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\lower_terrain_icon_selected.png");
+        Image lowerTerrainIcon = Image.FromFile(@"Artwork/lower_terrain_icon.png");
+        Image lowerTerrainSelectedIcon = Image.FromFile(@"Artwork/lower_terrain_icon_selected.png");
 
-        Image setTerrainIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\set_terrain_icon.png");
-        Image setTerrainSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\set_terrain_icon_selected.png");
+        Image setTerrainIcon = Image.FromFile(@"Artwork/set_terrain_icon.png");
+        Image setTerrainSelectedIcon = Image.FromFile(@"Artwork/set_terrain_icon_selected.png");
 
-        Image smoothTerrainIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\smooth_terrain_icon.png");
-        Image smoothTerrainSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\smooth_terrain_icon_selected.png");
+        Image smoothTerrainIcon = Image.FromFile(@"Artwork/smooth_terrain_icon.png");
+        Image smoothTerrainSelectedIcon = Image.FromFile(@"Artwork/smooth_terrain_icon_selected.png");
 
-        Image flattenTerrainIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\flatten_terrain_icon.png");
-        Image flattenTerrainSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\flatten_terrain_icon_selected.png");
+        Image flattenTerrainIcon = Image.FromFile(@"Artwork/flatten_terrain_icon.png");
+        Image flattenTerrainSelectedIcon = Image.FromFile(@"Artwork/flatten_terrain_icon_selected.png");
 
-        Image layerBackgroundIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\layer_background_icon.png");
-        Image layerBackgroundSelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\layer_background_icon_selected.png");
+        Image layerBackgroundIcon = Image.FromFile(@"Artwork/layer_background_icon.png");
+        Image layerBackgroundSelectedIcon = Image.FromFile(@"Artwork/layer_background_icon_selected.png");
 
-        Image layer1Icon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\layer_1_icon.png");
-        Image layer1SelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\layer_1_icon_selected.png");
+        Image layer1Icon = Image.FromFile(@"Artwork/layer_1_icon.png");
+        Image layer1SelectedIcon = Image.FromFile(@"Artwork/layer_1_icon_selected.png");
 
-        Image layer2Icon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\layer_2_icon.png");
-        Image layer2SelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\layer_2_icon_selected.png");
+        Image layer2Icon = Image.FromFile(@"Artwork/layer_2_icon.png");
+        Image layer2SelectedIcon = Image.FromFile(@"Artwork/layer_2_icon_selected.png");
 
-        Image layer3Icon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\layer_3_icon.png");
-        Image layer3SelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\layer_3_icon_selected.png");
+        Image layer3Icon = Image.FromFile(@"Artwork/layer_3_icon.png");
+        Image layer3SelectedIcon = Image.FromFile(@"Artwork/layer_3_icon_selected.png");
 
-        Image layer4Icon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\layer_4_icon.png");
-        Image layer4SelectedIcon = Image.FromFile(@"D:\Users\Josh\My Documents\GitHub\eecs494FinalProject\WorldEditor\WorldEditor\Artwork\layer_4_icon_selected.png");
+        Image layer4Icon = Image.FromFile(@"Artwork/layer_4_icon.png");
+        Image layer4SelectedIcon = Image.FromFile(@"Artwork/layer_4_icon_selected.png");
 
         #endregion
 

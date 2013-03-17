@@ -945,10 +945,6 @@
     <None Include="shaders\VertexShaders.fxh">
       <Name>VertexShaders</Name>
     </None>
-    <None Include="tree.lvl">
-      <Name>tree</Name>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

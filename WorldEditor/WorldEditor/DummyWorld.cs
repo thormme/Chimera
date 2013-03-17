@@ -130,12 +130,10 @@ namespace WorldEditor
         public void Save(string filePath)
         {
             FileInfo fileInfo = new FileInfo(filePath);
+            UnscaleObjects();
             LevelFileLoader.SaveLevelToFile(fileInfo);
+            ScaleObjects();
             GraphicsManager.UpdateTerrain(fileInfo, ref mName);
-
-            //UnscaleObjects();
-            //LevelManager.Save(path, mDummies);
-            //ScaleObjects();
         }
 
         public void Open(FileInfo fileInfo)

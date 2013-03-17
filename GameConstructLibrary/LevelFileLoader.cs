@@ -166,7 +166,7 @@ namespace GameConstructLibrary
 
             mLastLoadedTerrainDescription = new TerrainDescription(heightMap, texture);
 
-            string name = "PROCEDURALLY_GENERATED_DEFAULT_LEVEL";
+            string name = "PROCEDURALLY_GENERATED_DEFAULT_LEVEL.lvl";
             mLastLoadedLevelName = name;
 
             return name;
