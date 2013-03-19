@@ -68,6 +68,14 @@ namespace GraphicsLibrary
         static private Vector3 mMinSceneExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
         static private Vector3 mMaxSceneExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
+        static public float BoundingBoxHypotenuse
+        {
+            get
+            {
+                return (mMaxSceneExtent - mMinSceneExtent).Length();
+            }
+        }
+
         static private bool mCanRender = false;
 
         static private float mTimeElapsed = 0.0f;

@@ -209,6 +209,9 @@ namespace GameConstructLibrary
 
             TerrainPhysics terrain = LoadTerrain(mapName, position, orientation, scale);
             Add(terrain);
+
+            SkyDome skydome = new SkyDome("default");
+            Add(skydome);
         }
 
         protected virtual TerrainPhysics LoadTerrain(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)

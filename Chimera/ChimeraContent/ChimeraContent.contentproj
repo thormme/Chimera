@@ -766,6 +766,11 @@
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
+    <Compile Include="models\skyDome\skyDome.FBX">
+      <Name>skyDome</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <None Include="objects\BearSpawner.prop">
       <Name>BearSpawner</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

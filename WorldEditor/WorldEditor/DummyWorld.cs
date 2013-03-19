@@ -27,6 +27,7 @@ namespace WorldEditor
 
         private TerrainHeightMap mHeightMap = null;
         private TerrainTexture mTextureMap = null;
+        private SkyDome mSkyDome = null;
 
         public TerrainPhysics Terrain
         {
@@ -163,6 +164,9 @@ namespace WorldEditor
             GraphicsManager.AddTerrain(fileInfo, mHeightMap, mTextureMap);
 
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
+
+            mSkyDome = new SkyDome("default");
+            mSkyDome.Scale = new Vector3(40, 40, 40);
         }
 
         private void UnscaleObjects()
@@ -202,6 +206,11 @@ namespace WorldEditor
             if (mTerrainPhysics != null)
             {
                 mTerrainPhysics.Render();
+            }
+
+            if (mSkyDome != null)
+            {
+                mSkyDome.Render();
             }
 
             if (mDummies != null)
