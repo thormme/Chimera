@@ -31,8 +31,8 @@ VSOutput VS(VSInput vin)
 {
 	VSOutput output;
 
-	float4 pos_ws = mul(vin.Position, World);
-    float3 eyeVector = normalize(EyePosition - pos_ws.xyz);
+	output.PositionWS = mul(vin.Position, World);
+    float3 eyeVector = normalize(EyePosition - output.PositionWS.xyz);
     float3 worldNormal = normalize(mul(vin.Normal, WorldInverseTranspose));
 
     ColorPair lightResult = ComputeLights(eyeVector, worldNormal);
@@ -43,7 +43,7 @@ VSOutput VS(VSInput vin)
 
 	output.LightAmount = dot(worldNormal, -xDirLightDirection);
 
-	output.Shadow = GetShadowData(pos_ws);
+	output.Shadow = GetShadowData(output.PositionWS);
 	output.TexCoord = vin.TexCoord + xTextureOffset;
 
 	return output;

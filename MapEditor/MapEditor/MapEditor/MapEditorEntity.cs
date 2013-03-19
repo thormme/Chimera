@@ -62,7 +62,7 @@ namespace MapEditor
             mDummy.Model = "editor";
             mDummy.Position = new Vector3(0.0f, 0.0f, 0.0f);
             mDummy.Scale = new Vector3(1.0f, 1.0f, 1.0f);
-            mDummy.Orientation = new Vector3(0.0f, 0.0f, 0.0f);
+            mDummy.YawPitchRoll = new Vector3(0.0f, 0.0f, 0.0f);
 
         }
 
@@ -148,7 +148,7 @@ namespace MapEditor
         public void Render()
         {
             InanimateModel temp = new InanimateModel(mDummy.Model);
-            temp.Render(new Vector3(mDummy.Position.X, mDummy.Position.Y + mDummy.Height * GameMapEditor.MapScale.Y, mDummy.Position.Z), Matrix.CreateFromYawPitchRoll(mDummy.Orientation.X, mDummy.Orientation.Y, mDummy.Orientation.Z), mDummy.Scale);
+            temp.Render(new Vector3(mDummy.Position.X, mDummy.Position.Y + mDummy.Height * GameMapEditor.MapScale.Y, mDummy.Position.Z), Matrix.CreateFromYawPitchRoll(mDummy.YawPitchRoll.X, mDummy.YawPitchRoll.Y, mDummy.YawPitchRoll.Z), mDummy.Scale);
         }
 
     }

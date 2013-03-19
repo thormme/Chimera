@@ -119,7 +119,7 @@ namespace MapEditor
             if (GameMapEditor.RandomOrientation)
             {
                 float randomOrientation = Convert.ToSingle(Rand.rand.NextDouble() * 2 * Math.PI);
-                temp.Orientation = new Vector3(randomOrientation, temp.Orientation.Y, temp.Orientation.Z);
+                temp.YawPitchRoll = new Vector3(randomOrientation, temp.YawPitchRoll.Y, temp.YawPitchRoll.Z);
             }
 
             temp.Scale *= (float)(1.0f + (Rand.rand.NextDouble() * 2 * GameMapEditor.RandomScale) - GameMapEditor.RandomScale);
@@ -184,8 +184,8 @@ namespace MapEditor
         {
             foreach (DummyObject obj in selected)
             {
-                if (direction) obj.Orientation = new Vector3(obj.Orientation.X + rotateSpeed, obj.Orientation.Y, obj.Orientation.Z);
-                else obj.Orientation = new Vector3(obj.Orientation.X - rotateSpeed, obj.Orientation.Y, obj.Orientation.Z);
+                if (direction) obj.YawPitchRoll = new Vector3(obj.YawPitchRoll.X + rotateSpeed, obj.YawPitchRoll.Y, obj.YawPitchRoll.Z);
+                else obj.YawPitchRoll = new Vector3(obj.YawPitchRoll.X - rotateSpeed, obj.YawPitchRoll.Y, obj.YawPitchRoll.Z);
             }
         }
 
@@ -257,7 +257,7 @@ namespace MapEditor
             {
                 InanimateModel model = new InanimateModel(obj.Model);
                 model.Render(new Vector3(obj.Position.X, obj.Position.Y + obj.Height * GameMapEditor.MapScale.Y, obj.Position.Z), 
-                                         Matrix.CreateFromYawPitchRoll(obj.Orientation.X, obj.Orientation.Y, obj.Orientation.Z), 
+                                         Matrix.CreateFromYawPitchRoll(obj.YawPitchRoll.X, obj.YawPitchRoll.Y, obj.YawPitchRoll.Z), 
                                          obj.Scale);
             }
         }

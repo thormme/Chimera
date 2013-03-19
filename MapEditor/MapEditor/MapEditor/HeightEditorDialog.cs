@@ -180,7 +180,7 @@ namespace MapEditor
                 DummyObject temp = new DummyObject();
                 temp.Model = "editor";
                 temp.Position = Vector3.Zero;
-                temp.Orientation = Vector3.Zero;
+                temp.YawPitchRoll = Vector3.Zero;
                 temp.Scale = new Vector3(Convert.ToInt32(mSizeInput.Text) * GameMapEditor.MapScale.X, Convert.ToInt32(mSizeInput.Text) * GameMapEditor.MapScale.Y /*(GameMapEditor.MapScale.X + GameMapEditor.MapScale.Z) / 2*/, Convert.ToInt32(mSizeInput.Text) * GameMapEditor.MapScale.Z);
                 GameMapEditor.Entity.SetModel(temp);
 

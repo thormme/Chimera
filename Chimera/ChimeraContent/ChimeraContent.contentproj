@@ -756,6 +756,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="models\cursor\blockCursor.X">
+      <Name>blockCursor</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\cursor\circleCursor.X">
+      <Name>circleCursor</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <None Include="objects\BearSpawner.prop">
       <Name>BearSpawner</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

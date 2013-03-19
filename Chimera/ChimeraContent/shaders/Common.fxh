@@ -46,6 +46,11 @@ BEGIN_CONSTANTS
 	float xCascadeCount;
 	float4 xCascadeBufferBounds[MAX_CASCADE_COUNT];
 
+	uint xDrawCursor;
+	float3 xCursorPosition;
+	float xCursorInnerRadius;
+	float xCursorOuterRadius;
+
 MATRIX_CONSTANTS
 
     float4x4 WorldViewProj                      _vs(c15)          _cb(c0);

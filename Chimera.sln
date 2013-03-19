@@ -165,7 +165,6 @@ Global
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug|Xbox 360.Build.0 = Debug|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.MapEditor Debug|Any CPU.ActiveCfg = MapEditor|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.MapEditor Debug|Mixed Platforms.ActiveCfg = MapEditor|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.MapEditor Debug|Mixed Platforms.Build.0 = MapEditor|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.MapEditor Debug|x86.ActiveCfg = MapEditor|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.MapEditor Debug|x86.Build.0 = MapEditor|x86
 		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.MapEditor Debug|Xbox 360.ActiveCfg = MapEditor Release|x86

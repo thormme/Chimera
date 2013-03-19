@@ -169,6 +169,36 @@ namespace GraphicsLibrary
             }
         }
 
+        public enum CursorShape { NONE, CIRCLE, BLOCK };
+
+        static public CursorShape DrawCursor
+        {
+            get { return mDrawCursor; }
+            set { mDrawCursor = value; }
+        }
+        static private CursorShape mDrawCursor;
+
+        static public Vector3 CursorPosition
+        {
+            get { return mCursorPosition; }
+            set { mCursorPosition = value; }
+        }
+        static private Vector3 mCursorPosition;
+
+        static public float CursorInnerRadius
+        {
+            get { return mCursorInnerRadius; }
+            set { mCursorInnerRadius = value; }
+        }
+        static private float mCursorInnerRadius;
+
+        static public float CursorOuterRadius
+        {
+            get { return mCursorOuterRadius; }
+            set { mCursorOuterRadius = value; }
+        }
+        static private float mCursorOuterRadius;
+
         #endregion
 
         #region Constants
@@ -963,6 +993,15 @@ namespace GraphicsLibrary
             if (CastingShadows)
             {
                 mTerrainShader.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
+            }
+
+            mTerrainShader.Parameters["xDrawCursor"].SetValue((int)mDrawCursor);
+
+            if (mDrawCursor != CursorShape.NONE)
+            {
+                mTerrainShader.Parameters["xCursorPosition"].SetValue(mCursorPosition);
+                mTerrainShader.Parameters["xCursorInnerRadius"].SetValue(mCursorInnerRadius);
+                mTerrainShader.Parameters["xCursorOuterRadius"].SetValue(mCursorOuterRadius);
             }
 
             mTerrainShader.Parameters["xVisualizeCascades"].SetValue(mShadowMap.VisualizeCascades);

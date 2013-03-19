@@ -313,9 +313,12 @@ namespace GameConstructLibrary
 
         #region Texel Modification Helpers
 
-        private Color CompositeBrushColor(Color baseColor, Color newColor)
+        private void CompositeBrushColor(ref Color result, TextureLayer layer, float baseWeight, float newWeight)
         {
-            return new Color(baseColor.R + newColor.R, baseColor.G + newColor.G, baseColor.B + newColor.B, baseColor.A + newColor.A);
+            result.R = (byte)(result.R * baseWeight + FULL_OPACITY_PALETTE[(int)layer].R * newWeight);
+            result.G = (byte)(result.G * baseWeight + FULL_OPACITY_PALETTE[(int)layer].G * newWeight);
+            result.B = (byte)(result.B * baseWeight + FULL_OPACITY_PALETTE[(int)layer].B * newWeight);
+            result.A = (byte)(result.A * baseWeight + FULL_OPACITY_PALETTE[(int)layer].A * newWeight);
         }
 
         private delegate void Brush(int u, int v, float distance, float radius, float alpha, TextureLayer layer);
@@ -329,18 +332,12 @@ namespace GameConstructLibrary
         /// <param name="radiusTextureLayer"></param>
         private void SolidBrush(int u, int v, float distance, float radius, float alpha, TextureLayer layer)
         {
-            Color newComposite = FULL_OPACITY_PALETTE[(int)layer] * alpha;
-            Color oldComposite = mTexels[u + v * mWidth] * (1.0f - alpha);
-
-            mTexels[u + v * mWidth] = CompositeBrushColor(oldComposite, newComposite);
+            CompositeBrushColor(ref mTexels[u + v * mWidth], layer, 1.0f - alpha, alpha);
         }
 
         private void SolidEraser(int u, int v, float distance, float radius, float alpha, TextureLayer layer)
         {
-            Color newComposite = FULL_OPACITY_PALETTE[(int)layer] * -1.0f * alpha;
-            Color oldComposite = mTexels[u + v * mWidth] * (1.0f - alpha);
-
-            mTexels[u + v * mWidth] = CompositeBrushColor(oldComposite, newComposite);
+            SolidBrush(u, v, distance, radius, -alpha, layer);
         }
 
         /// <summary>
@@ -354,28 +351,18 @@ namespace GameConstructLibrary
         private void LinearBrush(int u, int v, float distance, float radius, float alpha, TextureLayer layer)
         {
             float InterpolateWeight = distance / radius;
-            Color newComposite = FULL_OPACITY_PALETTE[(int)layer] * (1.0f - InterpolateWeight) * alpha;
-            Color oldComposite = mTexels[u + v * mWidth] * InterpolateWeight * (1.0f - alpha);
-
-            mTexels[u + v * mWidth] = CompositeBrushColor(oldComposite, newComposite);
+            CompositeBrushColor(ref mTexels[u + v * mWidth], layer, InterpolateWeight * (1.0f - alpha), (1.0f - alpha) * alpha);
         }
 
         private void LinearEraser(int u, int v, float distance, float radius, float alpha, TextureLayer layer)
         {
-            float InterpolateWeight = distance / radius;
-            Color newComposite = FULL_OPACITY_PALETTE[(int)layer] *-1.0f * (1.0f - InterpolateWeight) * alpha;
-            Color oldComposite = mTexels[u + v * mWidth] * InterpolateWeight * (1.0f - alpha);
-
-            mTexels[u + v * mWidth] = CompositeBrushColor(oldComposite, newComposite);
+            LinearBrush(u, v, distance, radius, -alpha, layer);
         }
 
         private void QuadraticBrush(int u, int v, float distance, float radius, float alpha, TextureLayer layer)
         {
             float InterpolateWeight = (float)Math.Pow(distance / radius, 2);
-            Color newComposite = FULL_OPACITY_PALETTE[(int)layer] * (1.0f - InterpolateWeight) * alpha;
-            Color oldComposite = mTexels[u + v * mWidth] * InterpolateWeight * (1.0f - alpha);
-
-            mTexels[u + v * mWidth] = CompositeBrushColor(oldComposite, newComposite);
+            CompositeBrushColor(ref mTexels[u + v * mWidth], layer, InterpolateWeight * (1.0f - alpha), (1.0f - alpha) * alpha);
         }
 
         /// <summary>
@@ -419,12 +406,55 @@ namespace GameConstructLibrary
             radius = radius / 100.0f * mHeight;
             float radiusSquared = radius * radius;
 
-            // Normalize origin of modification to [0, mHeight), [0, mWidth).
-            position.X = (position.X / Utils.WorldScale.X + 50.0f) / 100.0f * mWidth;// mWidth / 2;
-            position.Y = (position.Y / Utils.WorldScale.Z + 50.0f) / 100.0f * mHeight;// mHeight / 2;
+            position.X = (position.X / Utils.WorldScale.X + 50.0f) / 100.0f * mWidth;
+            position.Y = (position.Y / Utils.WorldScale.Z + 50.0f) / 100.0f * mHeight;
+
+            //int cornerDisplacement = mIsBlock ? (int)radius : (int)Math.Sqrt(radiusSquared / 2.0f);
+
+            //SetTextureName(positionX, positionY, layer, detailTextureName);
+            //WriteDirtyBit(positionX, positionY);
+
+            //SetTextureName(positionX - cornerDisplacement, positionY - cornerDisplacement, layer, detailTextureName);
+            //WriteDirtyBit(positionX - cornerDisplacement, positionY - cornerDisplacement);
+
+            //SetTextureName(positionX + cornerDisplacement, positionY - cornerDisplacement, layer, detailTextureName);
+            //WriteDirtyBit(positionX + cornerDisplacement, positionY - cornerDisplacement);
+
+            //SetTextureName(positionX - cornerDisplacement, positionY + cornerDisplacement, layer, detailTextureName);
+            //WriteDirtyBit(positionX - cornerDisplacement, positionY + cornerDisplacement);
+
+            //SetTextureName(positionX + cornerDisplacement, positionY + cornerDisplacement, layer, detailTextureName);
+            //WriteDirtyBit(positionX + cornerDisplacement, positionY + cornerDisplacement);
+
+            //for (int v = positionY - cornerDisplacement; v <= positionY; ++v)
+            //{
+            //    for (int u = positionX - cornerDisplacement; u <= positionX; ++u)
+            //    {
+            //        int distanceSquared = 0;
+
+            //        if (!mIsBlock)
+            //        {
+            //            Vector2 displacement = new Vector2(u, v) - position;
+
+            //            if ((distanceSquared = (int)displacement.LengthSquared()) > radiusSquared)
+            //            {
+            //                continue;
+            //            }
+            //        }
+
+            //        int intRadius = (int)radius;
+
+            //        modifyTexel(u,             v,             distanceSquared, radiusSquared, alpha, layer);
+            //        modifyTexel(u + intRadius, v,             distanceSquared, radiusSquared, alpha, layer);
+            //        modifyTexel(u,             v + intRadius, distanceSquared, radiusSquared, alpha, layer);
+            //        modifyTexel(u + intRadius, v + intRadius, distanceSquared, radiusSquared, alpha, layer);
+            //    }
+            //}
 
             int minZ = (int)Math.Max(0, position.Y - radius), maxZ = (int)Math.Min(mHeight - 1, position.Y + radius);
             int minX = (int)Math.Max(0, position.X - radius), maxX = (int)Math.Min(mWidth - 1, position.X + radius);
+
+            //find corners of brush and update the texture name there as well as mark dirty.
 
             for (int vIndex = minZ; vIndex <= maxZ; ++vIndex)
             {
@@ -435,6 +465,8 @@ namespace GameConstructLibrary
                     float distanceSquared = displacement.LengthSquared();
                     if (mIsBlock || distanceSquared < radiusSquared)
                     {
+                        int intRadius = (int)radius;
+
                         modifyTexel(uIndex, vIndex, distanceSquared, radiusSquared, alpha, layer);
 
                         SetTextureName(uIndex, vIndex, layer, detailTextureName);

@@ -14,13 +14,15 @@ namespace GameConstructLibrary
         public string Model { get; set; }
         public string[] Parameters { get; set; }
         public Vector3 Position { get; set; }
-        public Vector3 Orientation { get; set; }
+        public Vector3 YawPitchRoll { get; set; }
         public Vector3 Scale { get; set; }
+        public Vector3 RotationAxis { get; set; }
+        public float RotationAngle { get; set; }
         public float Height { get; set; }
 
         public DummyObject()
         {
-
+            RotationAngle = 0;
         }
 
         public DummyObject(DummyObject copy)
@@ -29,7 +31,7 @@ namespace GameConstructLibrary
             Model = copy.Model;
             Parameters = copy.Parameters;
             Position = copy.Position;
-            Orientation = copy.Orientation;
+            YawPitchRoll = copy.YawPitchRoll;
             Scale = copy.Scale;
             Height = copy.Height;
         }
@@ -37,10 +39,9 @@ namespace GameConstructLibrary
         public void Draw()
         {
             InanimateModel tempModel = new InanimateModel(Model);
-            tempModel.Render(
-                new Vector3(Position.X, Position.Y + Height * Utils.WorldScale.Y, Position.Z),
-                Matrix.CreateFromYawPitchRoll(Orientation.X, Orientation.Y, Orientation.Z),
-                Scale);
+            Vector3 finalPosition = new Vector3(Position.X, Position.Y + Height * Utils.WorldScale.Y, Position.Z);
+            Matrix orientation = RotationAngle == 0 ? Matrix.CreateFromYawPitchRoll(YawPitchRoll.X, YawPitchRoll.Y, YawPitchRoll.Z) : Matrix.CreateFromAxisAngle(RotationAxis, RotationAngle);
+            tempModel.Render(finalPosition, orientation, Scale);
         }
 
     }

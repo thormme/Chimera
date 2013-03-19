@@ -73,7 +73,7 @@ namespace WorldEditor
             mDragPoint.Y = mControls.MouseState.Y;
         }
 
-        public Nullable<Vector3> GetPickingLocation(DummyWorld dummyWorld)
+        public Tuple<Vector3, Vector3> GetPickingLocation(DummyWorld dummyWorld)
         {
 
             Vector3 nearScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 0.0f);
@@ -87,7 +87,7 @@ namespace WorldEditor
 
             if (dummyWorld.Terrain.StaticCollidable.RayCast(ray, 2000.0f, out result))
             {
-                return result.Location;
+                return new Tuple<Vector3,Vector3>(result.Location, result.Normal);
             }
             else
             {

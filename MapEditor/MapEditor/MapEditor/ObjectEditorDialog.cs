@@ -196,7 +196,7 @@ namespace MapEditor
                     temp.Type = data[0];
                     temp.Model = data[1];
                     temp.Scale = new Vector3(1.0f, 1.0f, 1.0f);
-                    temp.Orientation = new Vector3(0.0f, 0.0f, 0.0f);
+                    temp.YawPitchRoll = new Vector3(0.0f, 0.0f, 0.0f);
                     List<string> parameters = new List<string>();
                     if (data.Length - 2 > 0)
                     {
@@ -253,7 +253,7 @@ namespace MapEditor
                 mTypes.TryGetValue(selected, out temp);
 
                 temp.Scale = new Vector3(Convert.ToSingle(mScaleXInput.Text), Convert.ToSingle(mScaleYInput.Text), Convert.ToSingle(mScaleZInput.Text));
-                temp.Orientation = new Vector3(Convert.ToSingle(mOrientationXInput.Text), Convert.ToSingle(mOrientationYInput.Text), Convert.ToSingle(mOrientationZInput.Text));
+                temp.YawPitchRoll = new Vector3(Convert.ToSingle(mOrientationXInput.Text), Convert.ToSingle(mOrientationYInput.Text), Convert.ToSingle(mOrientationZInput.Text));
                 temp.Height = Convert.ToSingle(mHeightInput.Text) / GameMapEditor.MapScale.Y;
 
                 GameMapEditor.Dummy = temp;

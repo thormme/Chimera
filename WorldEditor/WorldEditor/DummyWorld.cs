@@ -153,7 +153,7 @@ namespace WorldEditor
 
         public void New()
         {
-            mName = LevelFileLoader.GenerateBlankLevel(100, 100, 2700, 2700, 9, 9, "default_terrain_detail");
+            mName = LevelFileLoader.GenerateBlankLevel(100, 100, 900, 900, 9, 9, "default_terrain_detail");
 
             FileInfo fileInfo = new FileInfo(mName);
 

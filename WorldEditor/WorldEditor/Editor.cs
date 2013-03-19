@@ -93,7 +93,7 @@ namespace WorldEditor
                 this.Exit();
 
             GraphicsManager.Update(mCamera, gameTime);
-            mWorldEditor.Update(gameTime);
+            mWorldEditor.Update(gameTime, Form.ActiveForm == Form.FromHandle(Window.Handle));
 
             if (mWorldEditor.Closed)
             {

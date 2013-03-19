@@ -89,7 +89,6 @@ namespace WorldEditor.Dialogs
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "TextureSelectionForm";
             this.Text = "Texture Selection";
-            this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.texturePreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.textureBackground)).EndInit();
             this.ResumeLayout(false);

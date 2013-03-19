@@ -89,6 +89,40 @@ float4 PhongPSHelper(VSOutput pin, float4 textureColor)
     return color;
 }
 
+bool DrawCursor(float4 positionWS)
+{
+	switch (xDrawCursor)
+	{
+		case 1:
+		{
+			float radius = length(float2(xCursorPosition.r - positionWS.r, xCursorPosition.b - positionWS.b));
+			return radius <= xCursorOuterRadius && radius >= xCursorInnerRadius;
+		}
+		case 2:
+		{
+			float minXOut = xCursorPosition.r - xCursorOuterRadius, maxXOut = xCursorPosition.r + xCursorOuterRadius;
+			float minZOut = xCursorPosition.b - xCursorOuterRadius, maxZOut = xCursorPosition.b + xCursorOuterRadius;
+
+			float minXIn = xCursorPosition.r - xCursorInnerRadius, maxXIn = xCursorPosition.r + xCursorInnerRadius;
+			float minZIn = xCursorPosition.b - xCursorInnerRadius, maxZIn = xCursorPosition.b + xCursorInnerRadius;
+
+			bool insideOuter = positionWS.r >= minXOut &&
+							   positionWS.r <= maxXOut &&
+							   positionWS.b >= minZOut &&
+							   positionWS.b <= maxZOut;
+
+			bool insideInner = positionWS.r >= minXIn &&
+							   positionWS.r <= maxXIn &&
+							   positionWS.b >= minZIn &&
+							   positionWS.b <= maxZIn;
+
+			return insideOuter && !insideInner;
+		}
+	}
+
+	return false;
+}
+
 sampler NoShade_Sampler = sampler_state
 {
 	texture = <Texture>;
@@ -110,6 +144,11 @@ float4 CelShadePS(VSOutput pin) : SV_Target0
 
 float4 TerrainCelShadePS(VSOutput pin) : SV_Target0
 {
+	if (DrawCursor(pin.PositionWS))
+	{
+		return float4(0, 1, 0, 1);
+	}
+
 	float4 color = CompositeTerrainTexture(pin.TexCoord);
 
 	return CelShadePSHelper(pin, color);
@@ -124,6 +163,11 @@ float4 PhongPS(VSOutput pin) : SV_Target0
 
 float4 TerrainPhongPS(VSOutput pin) : SV_Target0
 {
+	if (DrawCursor(pin.PositionWS))
+	{
+		return float4(0, 1, 0, 1);
+	}
+
 	float4 color = CompositeTerrainTexture(pin.TexCoord);
 
 	return PhongPSHelper(pin, color);

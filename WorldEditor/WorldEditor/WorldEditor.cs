@@ -49,6 +49,8 @@ namespace WorldEditor
         private string mName = null;
         private string mFilePath = null;
 
+        private bool mIsActive = false;
+
         //Dialog for the world editor.
         public EditorForm mEditorForm = new EditorForm();
 
@@ -90,25 +92,28 @@ namespace WorldEditor
             CreateEditorForm();
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, bool gameWindowActive)
         {
+            mIsActive = gameWindowActive;
+
             mControls.Update(gameTime);
             mDummyWorld.Update(gameTime);
 
-            if (mDummyWorld.Name == null)
-            {
-                mPlaceable = false;
-            }
-            else
-            {
-            mEntity.Update(gameTime);
+            mPlaceable = false;
 
-            Vector3? pickingPosition = mEntity.GetPickingLocation(mDummyWorld);
-            if (pickingPosition != null && mCursorObject != null)
+            if (mDummyWorld.Name != null)
             {
-                mCursorObject.Position = pickingPosition.Value;
-            }
-            mPlaceable = pickingPosition.HasValue;
+                mEntity.Update(gameTime);
+
+                Tuple<Vector3, Vector3> pickingPosition = mEntity.GetPickingLocation(mDummyWorld);
+
+                mPlaceable = pickingPosition != null;
+
+                if (mPlaceable && mCursorObject != null)
+                {
+                    mCursorObject.Position = pickingPosition.Item1;
+                }
+
             }
 
             PerformActions();
@@ -116,21 +121,28 @@ namespace WorldEditor
 
         public void Draw()
         {
-            mDummyWorld.Draw();
+            GraphicsManager.CursorShape brush = GraphicsManager.CursorShape.NONE;
+
             if (mPlaceable)
             {
-                try
+                switch ((mEditorForm as EditorForm).Mode)
                 {
-                    if (mCursorObject != null)
-                    {
-                        mCursorObject.Draw();
-                    }
+                    case EditorForm.EditorMode.HEIGHTMAP:
+                        brush = (mEditorForm as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK ? GraphicsManager.CursorShape.BLOCK : GraphicsManager.CursorShape.CIRCLE;
+                        break;
+                    case EditorForm.EditorMode.PAINTING:
+                        brush = (mEditorForm as EditorForm).PaintingBrush == EditorForm.Brushes.BLOCK ? GraphicsManager.CursorShape.BLOCK : GraphicsManager.CursorShape.CIRCLE;
+                        break;
                 }
-                catch (SystemException)
-                {
-                    Console.WriteLine("Not a valid model file.");
-                }
+
+                GraphicsManager.CursorPosition = mCursorObject.Position - mCursorObject.Scale;
+                GraphicsManager.CursorInnerRadius = 8.0f * mCursorObject.Scale.X;
+                GraphicsManager.CursorOuterRadius = 9.0f * mCursorObject.Scale.X;
             }
+
+            GraphicsManager.DrawCursor = brush;
+
+            mDummyWorld.Draw();
         }
 
         #region Editor Form Creation and Handling
@@ -174,7 +186,7 @@ namespace WorldEditor
                 tempObject.Model = model.Key;
                 tempObject.Parameters = null;
                 tempObject.Position = Vector3.Zero;
-                tempObject.Orientation = Vector3.Up;
+                tempObject.YawPitchRoll = Vector3.Up;
                 tempObject.Scale = Vector3.One;
                 tempObject.Height = 0.0f;
                 mObjects.Add(tempObject.Model, tempObject);
@@ -203,7 +215,7 @@ namespace WorldEditor
                     tempObject.Parameters = parameters.ToArray();
 
                     tempObject.Position = Vector3.Zero;
-                    tempObject.Orientation = Vector3.Up;
+                    tempObject.YawPitchRoll = Vector3.Up;
                     tempObject.Scale = Vector3.One;
                     tempObject.Height = 0.0f;
 
@@ -320,10 +332,10 @@ namespace WorldEditor
         private void SwitchToEdit()
         {
             // TODO: possibly create new object here.
-            mCursorObject.Model = "editor";
+            mCursorObject.Model = "circleCursor";
             mCursorObject.Position = Vector3.Zero;
-            mCursorObject.Orientation = Vector3.Up;
-            mCursorObject.Scale = Vector3.One;
+            mCursorObject.YawPitchRoll = Vector3.Zero;
+            mCursorObject.Scale = new Vector3((int)(mEditorForm as EditorForm).Size, 0, (int)(mEditorForm as EditorForm).Size);
         }
 
         private void SelectNewObjectHandler(object sender, EventArgs e)
@@ -350,12 +362,12 @@ namespace WorldEditor
             float Roll = (float)mObjectParametersForm.Roll.Value;
             float Pitch = (float)mObjectParametersForm.Pitch.Value;
             float Yaw = (float)mObjectParametersForm.Yaw.Value;
-            dummyObject.Orientation = new Vector3(Roll, Pitch, Yaw);
+            dummyObject.YawPitchRoll = new Vector3(Roll, Pitch, Yaw);
 
             float ScaleX = (float)mObjectParametersForm.ScaleX.Value;
             float ScaleY = (float)mObjectParametersForm.ScaleY.Value;
             float ScaleZ = (float)mObjectParametersForm.ScaleZ.Value;
-            dummyObject.Orientation = new Vector3(ScaleX, ScaleY, ScaleZ);
+            dummyObject.YawPitchRoll = new Vector3(ScaleX, ScaleY, ScaleZ);
 
             dummyObject.Height = (float)mObjectParametersForm.Height.Value;
         }
@@ -379,42 +391,45 @@ namespace WorldEditor
 
         private void SelectionHandler(object sender, EventArgs e)
         {
-            mCursorObject.Scale = new Vector3((Utils.WorldScale.X + Utils.WorldScale.Z) / 2.0f * (int)(sender as NumericUpDown).Value);
+            mCursorObject.Scale = new Vector3((int)(sender as NumericUpDown).Value, 0, (int)(sender as NumericUpDown).Value);
         }
 
         #endregion
 
         private void PerformActions()
         {
-            EditorForm form = mEditorForm as EditorForm;
-            TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
-            if (mControls.LeftPressed.Active)
+            if (mIsActive)
             {
-                if (mPlaceable && form.Mode == EditorForm.EditorMode.OBJECTS)
+                EditorForm form = mEditorForm as EditorForm;
+                TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
+                if (mControls.LeftPressed.Active)
                 {
-                    AddState(mDummyWorld);
-                    mDummyWorld.AddObject(new DummyObject(mCursorObject));
-                }
-            }
-            else if (mControls.LeftHold.Active)
-            {
-                if (mPlaceable)
-                {
-                    switch(form.Mode)
+                    if (mPlaceable && form.Mode == EditorForm.EditorMode.OBJECTS)
                     {
-                        case EditorForm.EditorMode.HEIGHTMAP:
+                        AddState(mDummyWorld);
+                        mDummyWorld.AddObject(new DummyObject(mCursorObject));
+                    }
+                }
+                else if (mControls.LeftHold.Active)
+                {
+                    if (mPlaceable)
+                    {
+                        switch (form.Mode)
                         {
-                            float strength = form.Strength * 10.0f;
-                            mDummyWorld.ModifyHeightMap(mCursorObject.Position, form.Size, strength, form.HeightMapBrush, form.HeightMapTool);
-                            break;
-                        }
-                        case EditorForm.EditorMode.PAINTING:
-                        {
-                            float alpha = form.Strength / 100.0f;
-                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
-                            string textureName = ((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).SelectedItem.ToString();
-                            mDummyWorld.ModifyTextureMap(mCursorObject.Position, textureName, form.Size, alpha, form.PaintingBrush, form.PaintingTool, layer);
-                            break;
+                            case EditorForm.EditorMode.HEIGHTMAP:
+                                {
+                                    float strength = form.Strength * 10.0f;
+                                    mDummyWorld.ModifyHeightMap(mCursorObject.Position, form.Size, strength, form.HeightMapBrush, form.HeightMapTool);
+                                    break;
+                                }
+                            case EditorForm.EditorMode.PAINTING:
+                                {
+                                    float alpha = form.Strength / 100.0f;
+                                    GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
+                                    string textureName = ((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).SelectedItem.ToString();
+                                    mDummyWorld.ModifyTextureMap(mCursorObject.Position, textureName, form.Size, alpha, form.PaintingBrush, form.PaintingTool, layer);
+                                    break;
+                                }
                         }
                     }
                 }
