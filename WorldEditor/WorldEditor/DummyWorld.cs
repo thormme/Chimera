@@ -166,7 +166,6 @@ namespace WorldEditor
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
             mSkyDome = new SkyDome("default");
-            mSkyDome.Scale = new Vector3(40, 40, 40);
         }
 
         private void UnscaleObjects()

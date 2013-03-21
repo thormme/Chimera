@@ -67,6 +67,11 @@
       <Importer>XImporter</Importer>
       <Processor>AnimateModelProcessor</Processor>
     </Compile>
+    <Compile Include="models\skyDome\skyDome.X">
+      <Name>skyDome</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <Compile Include="shaders\ConfigurableShader.fx">
       <Name>ConfigurableShader</Name>
       <Importer>EffectImporter</Importer>
@@ -652,6 +657,21 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="textures\sprites\fassnacht.jpg">
+      <Name>fassnacht</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\pavel.jpg">
+      <Name>pavel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\sprites\largeClouds.jpg">
+      <Name>largeClouds</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="models\eagle\eagle.tweak">
@@ -766,9 +786,9 @@
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="models\skyDome\skyDome.FBX">
-      <Name>skyDome</Name>
-      <Importer>FbxImporter</Importer>
+    <Compile Include="models\skyBox\skyBox.X">
+      <Name>skyBox</Name>
+      <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
     <None Include="objects\BearSpawner.prop">

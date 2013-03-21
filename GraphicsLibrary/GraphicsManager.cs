@@ -292,10 +292,10 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
-                    if (mOutlining == Outlines.AnimateModels && renderable.IsSkinned ||
-                        mOutlining == Outlines.All)
+                    if ((mOutlining == Outlines.AnimateModels && renderable.IsSkinned || mOutlining == Outlines.All) &&
+                        !renderable.NoShading)
                     {
-                        DrawRenderableDefinition(renderable, false, false, true, false);
+                        DrawRenderableDefinition(renderable, false, true, false);
                     }
                 }
 
@@ -305,7 +305,7 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
-                    DrawRenderableDefinition(renderable, false, false, false, false);
+                    DrawRenderableDefinition(renderable, false, false, renderable.NoShading);
                 }
 
 
@@ -324,7 +324,7 @@ namespace GraphicsLibrary
                     mTransparentQueue.Sort(rc);
                     for (int i = mTransparentQueue.Count - 1; i >= 0; --i)
                     {
-                        DrawRenderableDefinition(mTransparentQueue[i], false, false, false, true);
+                        DrawRenderableDefinition(mTransparentQueue[i], false, false, true);
                     }
 
                     cull = new RasterizerState();
@@ -377,7 +377,7 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
-                    DrawRenderableDefinition(renderable, false, false, false, false);
+                    DrawRenderableDefinition(renderable, false, false, false);
                 }
             }
 
@@ -451,7 +451,12 @@ namespace GraphicsLibrary
         {
             if (mCanRender)
             {
-                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, true, worldTransforms, boneTransforms, overlayColor, overlayColorWeight, Vector2.Zero));
+                RenderableDefinition skinnedModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
+                skinnedModel.IsModel = true;
+                skinnedModel.IsSkinned = true;
+                skinnedModel.BoneTransforms = boneTransforms;
+
+                mRenderQueue.Enqueue(skinnedModel);
                 UpdateSceneExtents(boundingBox, worldTransforms);
             }
             else
@@ -469,9 +474,10 @@ namespace GraphicsLibrary
         {
             if (mCanRender)
             {
-                Matrix[] emptyTransforms = new Matrix[1];
-                emptyTransforms[0] = Matrix.Identity;
-                mRenderQueue.Enqueue(new RenderableDefinition(modelName, true, false, worldTransforms, emptyTransforms, overlayColor, overlayColorWeight, Vector2.Zero));
+                RenderableDefinition unskinnedModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
+                unskinnedModel.IsModel = true;
+
+                mRenderQueue.Enqueue(unskinnedModel);
 
                 UpdateSceneExtents(boundingBox, worldTransforms);
             }
@@ -490,19 +496,33 @@ namespace GraphicsLibrary
         {
             if (mCanRender)
             {
-                Matrix[] emptyTransforms = new Matrix[1];
-                emptyTransforms[0] = Matrix.Identity;
-                Vector3 translation;
-                Quaternion rotation;
-                Vector3 scale;
+                RenderableDefinition transparentModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
+                transparentModel.IsModel = true;
+                transparentModel.AnimationRate = animationRate;
 
-                worldTransforms.Decompose(out scale, out rotation, out translation);
-
-                mTransparentQueue.Add(new RenderableDefinition(modelName, true, false, worldTransforms, emptyTransforms, overlayColor, overlayColorWeight, animationRate));
+                mTransparentQueue.Add(transparentModel);
             }
             else
             {
                 throw new Exception("Unable to render transparent model " + modelName + " before calling BeginRendering() or after FinishRendering().\n");
+            }
+        }
+
+        static public void RenderSkyDome(string textureName, Matrix worldTransform, Color overlayColor, float overlayWeight)
+        {
+            if (mCanRender)
+            {
+                RenderableDefinition skydome = new RenderableDefinition("skyDome", worldTransform, overlayColor, overlayWeight);
+                skydome.IsModel = true;
+                skydome.OverlayTextureName = textureName;
+                skydome.NoShading = true;
+                skydome.WorldTransform = /*Matrix.CreateScale(64000, 64000, 64000)*/Matrix.CreateScale(1600, 1600, 1600) * skydome.WorldTransform;// *Matrix.CreateTranslation(new Vector3(0, -700, 0));
+
+                mRenderQueue.Enqueue(skydome);
+            }
+            else
+            {
+                throw new Exception("Unable to render skydome before calling BeginRendering() or after FinishRendering().\n");
             }
         }
 
@@ -515,7 +535,8 @@ namespace GraphicsLibrary
         {
             if (mCanRender)
             {
-                mRenderQueue.Enqueue(new RenderableDefinition(terrainName, false, false, worldTransforms, null, overlayColor, overlayColorWeight, Vector2.Zero));
+                RenderableDefinition terrain = new RenderableDefinition(terrainName, worldTransforms, overlayColor, overlayColorWeight);
+                mRenderQueue.Enqueue(terrain);
                 UpdateSceneExtents(boundingBox, worldTransforms);
             }
             else
@@ -879,67 +900,69 @@ namespace GraphicsLibrary
         /// 
         /// </summary>
         /// <param name="renderable"></param>
-        static private void DrawRenderableDefinition(RenderableDefinition renderable, bool isShadow, bool hiResShadow, bool isOutline, bool hasTransparency)
+        static private void DrawRenderableDefinition(RenderableDefinition renderable, bool isShadow, bool isOutline, bool hasTransparency)
         {
             if (!renderable.IsModel)
             {
                 // Render Terrain.
-                DrawTerrain(renderable.Name, renderable.WorldTransform, isShadow, hiResShadow, isOutline, renderable.OverlayColor, renderable.OverlayColorWeight);
+                DrawTerrain(renderable, isShadow, isOutline);
             }
             else
             {
                 // Render Inanimate or Animate Model.
-                DrawModel(renderable.Name, renderable.BoneTransforms, renderable.WorldTransform, renderable.IsSkinned, isShadow, hiResShadow, isOutline, hasTransparency, renderable.AnimationRate, renderable.OverlayColor, renderable.OverlayColorWeight);
+                DrawModel(renderable, isShadow, isOutline, hasTransparency);
             }
         }
 
         /// <summary>
         /// Draws all meshes within model to current rendertarget.  Applies rigged model transforms if necesarry.
         /// </summary>
-        static private void DrawModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, bool isSkinned, bool isShadow, bool hiResShadow, bool isOutline, bool hasTransparency, Vector2 animationRate, Vector3 overlayColor, float overlayColorWeight)
+        static private void DrawModel(RenderableDefinition renderable, bool isShadow, bool isOutline, bool hasTransparency)
         {
-            Model model = LookupModel(modelName);
+            Model model = LookupModel(renderable.Name);
 
             foreach (ModelMesh mesh in model.Meshes)
             {
                 string techniqueName;
                 if (isOutline)
                 {
-                    techniqueName = (isSkinned) ? "SkinnedNormalDepthShade" : "NormalDepthShade";
+                    techniqueName = (renderable.IsSkinned) ? "SkinnedNormalDepthShade" : "NormalDepthShade";
                 }
                 else if (CelShading == CelShaded.Models || CelShading == CelShaded.All)
                 {
-                    techniqueName = (isSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "CelShade";
+                    techniqueName = (renderable.IsSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "CelShade";
                 }
                 else if (CelShading == CelShaded.AnimateModels)
                 {
-                    techniqueName = (isSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "Phong";
+                    techniqueName = (renderable.IsSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "Phong";
                 }
                 else
                 {
-                    techniqueName = (isSkinned) ? "SkinnedPhong" : (hasTransparency) ? "NoShade" : "Phong";
+                    techniqueName = (renderable.IsSkinned) ? "SkinnedPhong" : (hasTransparency) ? "NoShade" : "Phong";
                 }
 
-                DrawMesh(mesh, techniqueName, boneTransforms, worldTransforms, animationRate, overlayColor, overlayColorWeight);
+                DrawMesh(mesh, techniqueName, renderable);
             }
         }
 
         /// <summary>
         /// Draws current Terrain to render target using appropriate effects.
         /// </summary>
-        static private void DrawTerrain(string terrainName, Matrix worldTransforms, bool isShadow, bool hiResShadow, bool isOutline, Vector3 overlayColor, float overlayColorWeight)
+        static private void DrawTerrain(RenderableDefinition renderable, bool isShadow, bool isOutline)
         {
-            TerrainDescription heightmap = LookupTerrain(terrainName);
+            TerrainDescription heightmap = LookupTerrain(renderable.Name);
 
             string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "TerrainCelShade" : "TerrainPhong");
-            DrawTerrainHeightMap(heightmap, techniqueName, worldTransforms, overlayColor, overlayColorWeight);
+            DrawTerrainHeightMap(heightmap, techniqueName, renderable);
         }
 
         /// <summary>
         /// Sets all effects for current mesh and renders to screen.
         /// </summary>
-        static private void DrawMesh(ModelMesh mesh, string techniqueName, Matrix[] boneTransforms, Matrix worldTransforms, Vector2 animationRate, Vector3 overlayColor, float overlayColorWeight)
+        static private void DrawMesh(ModelMesh mesh, string techniqueName, RenderableDefinition renderable)
         {
+            mDevice.SamplerStates[0] = SamplerState.PointClamp;
+
             foreach (AnimationUtilities.SkinnedEffect effect in mesh.Effects)
             {
                 effect.CurrentTechnique = effect.Techniques[techniqueName];
@@ -949,7 +972,15 @@ namespace GraphicsLibrary
                     effect.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
                 }
 
-                effect.SetBoneTransforms(boneTransforms);
+                if (renderable.BoneTransforms != null)
+                {
+                    effect.SetBoneTransforms(renderable.BoneTransforms);
+                }
+
+                if (renderable.OverlayTextureName != null)
+                {
+                    effect.Texture = LookupSprite(renderable.OverlayTextureName);
+                }
 
                 effect.View = mView;
                 effect.Projection = mProjection;
@@ -969,17 +1000,18 @@ namespace GraphicsLibrary
                 effect.Parameters["xDirLightSpecularColor"].SetValue(mDirectionalLight.SpecularColor);
                 effect.Parameters["xDirLightAmbientColor"].SetValue(mDirectionalLight.AmbientColor);
 
-                effect.Parameters["xOverlayColor"].SetValue(overlayColor);
-                effect.Parameters["xOverlayColorWeight"].SetValue(overlayColorWeight);
+                effect.Parameters["xOverlayColor"].SetValue(renderable.OverlayColor);
+                effect.Parameters["xOverlayColorWeight"].SetValue(renderable.OverlayColorWeight);
 
                 effect.Parameters["xNumShadowBands"].SetValue(techniqueName.Contains("Skinned") ? 2.0f : 3.0f);
 
                 effect.SpecularColor = new Vector3(0.25f);
                 effect.SpecularPower = 16;
 
-                effect.World = worldTransforms;
+                effect.World = renderable.WorldTransform;
 
-                if (animationRate != Vector2.Zero)
+                Vector2 animationRate = renderable.AnimationRate;
+                if (renderable.AnimationRate != Vector2.Zero)
                 {
                     mTimeElapsed %= 1.0f;
                     animationRate *= mTimeElapsed;
@@ -994,7 +1026,7 @@ namespace GraphicsLibrary
         /// <summary>
         /// Sets effect for current terrain and renders to screen.
         /// </summary>
-        static private void DrawTerrainHeightMap(TerrainDescription heightMap, string techniqueName, Matrix worldTransforms, Vector3 overlayColor, float overlayColorWeight)
+        static private void DrawTerrainHeightMap(TerrainDescription heightMap, string techniqueName, RenderableDefinition renderable)
         {
             mDevice.SamplerStates[0] = SamplerState.LinearClamp;
 
@@ -1030,13 +1062,13 @@ namespace GraphicsLibrary
             mTerrainShader.Parameters["xDirLightSpecularColor"].SetValue(mDirectionalLight.SpecularColor);
             mTerrainShader.Parameters["xDirLightAmbientColor"].SetValue(mDirectionalLight.AmbientColor);
 
-            mTerrainShader.Parameters["xOverlayColor"].SetValue(overlayColor);
-            mTerrainShader.Parameters["xOverlayColorWeight"].SetValue(overlayColorWeight);
+            mTerrainShader.Parameters["xOverlayColor"].SetValue(renderable.OverlayColor);
+            mTerrainShader.Parameters["xOverlayColorWeight"].SetValue(renderable.OverlayColorWeight);
 
             mTerrainShader.SpecularColor = new Vector3(0.25f);
             mTerrainShader.SpecularPower = 16;
 
-            mTerrainShader.World = worldTransforms;
+            mTerrainShader.World = renderable.WorldTransform;
 
             mTerrainShader.CurrentTechnique = mTerrainShader.Techniques[techniqueName];
 

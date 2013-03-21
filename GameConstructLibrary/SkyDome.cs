@@ -7,18 +7,29 @@ using GraphicsLibrary;
 
 namespace GameConstructLibrary
 {
-    public class SkyDome : IGameObject
+    public class SkyDome : IGameObject, IActor
     {
+        private Vector3 mPosition;
         public Vector3 Position
         {
-            get;
-            private set;
+            get { return mPosition; }
+            set
+            {
+                mPosition = value;
+                XNAOrientationMatrix = Matrix.CreateTranslation(mPosition);
+            }
         }
 
-        public Vector3 Scale
+        public string TextureName
         {
-            get;
-            set;
+            get
+            {
+                return mModel.TextureName;
+            }
+            set
+            {
+                mModel.TextureName = value;
+            }
         }
 
         public World World
@@ -29,27 +40,34 @@ namespace GameConstructLibrary
 
         public Matrix XNAOrientationMatrix
         {
-            get
-            {
-                return Matrix.CreateTranslation(Position) * Matrix.CreateScale(Scale.X);
-            }
+            get;
+            private set;
         }
 
-        private InanimateModel mModel;
+        public Vector3 Scale
+        {
+            get;
+            private set;
+        }
+
+        private SkyDomeRenderable mModel;
 
         public SkyDome(string skyTexture)
         {
-            mModel = new InanimateModel("skyDome");
+            mModel = new SkyDomeRenderable(skyTexture);
 
             Position = new Vector3(1, 1, 1);
-            //Scale = new Vector3(GraphicsManager.BoundingBoxHypotenuse * 2.5f);
+            Scale = new Vector3(1);
+            XNAOrientationMatrix = Matrix.Identity;
         }
 
         public void Render()
         {
-            //Scale = new Vector3(GraphicsManager.BoundingBoxHypotenuse * 2.5f / 40.0f);
-            Matrix scaleMatrix = Matrix.CreateScale(Scale);
-            mModel.Render(scaleMatrix);
+            mModel.Render(XNAOrientationMatrix);
+        }
+
+        public void Update(GameTime gameTime)
+        {
         }
     }
 }

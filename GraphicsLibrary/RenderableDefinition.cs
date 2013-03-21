@@ -10,59 +10,76 @@ namespace GraphicsLibrary
             get { return mName; }
         }
 
-        private bool mIsModel;
+        private bool mIsModel = false;
         public bool IsModel
         {
             get { return mIsModel; }
+            set { mIsModel = value; }
         }
 
-        private bool mIsSkinned;
+        private bool mIsSkinned = false;
         public bool IsSkinned
         {
             get { return mIsSkinned; }
+            set { mIsSkinned = value; }
         }
 
         private Matrix mWorldTransform;
         public Matrix WorldTransform
         {
             get { return mWorldTransform; }
+            set { mWorldTransform = value; }
         }
 
         private Matrix[] mBoneTransforms;
         public Matrix[] BoneTransforms
         {
             get { return mBoneTransforms; }
+            set { mBoneTransforms = value; }
         }
 
+        private Vector2 mAnimationRate = Vector2.Zero;
         public Vector2 AnimationRate
         {
             get { return mAnimationRate; }
             set { mAnimationRate = value; }
         }
-        private Vector2 mAnimationRate;
 
+        private Vector3 mOverlayColor;
         public Vector3 OverlayColor
         {
             get { return mOverlayColor; }
         }
-        private Vector3 mOverlayColor;
 
+        private float mOverlayColorWeight;
         public float OverlayColorWeight
         {
             get { return mOverlayColorWeight; }
         }
-        private float mOverlayColorWeight;
 
-        public RenderableDefinition(string name, bool isModel, bool isSkinned, Matrix worldTransform, Matrix[] boneTransforms, Color overlayColor, float overlayColorWeight, Vector2 animationRate)
+        private string mOverlayTextureName = null;
+        public string OverlayTextureName
         {
-            mName           = name;
-            mIsModel        = isModel;
-            mIsSkinned      = isSkinned;
-            mWorldTransform = worldTransform;
-            mBoneTransforms = boneTransforms;
-            mOverlayColor = overlayColor.ToVector3();
+            get { return mOverlayTextureName; }
+            set { mOverlayTextureName = value; }
+        }
+
+        private bool mNoShading = false;
+        public bool NoShading
+        {
+            get { return mNoShading; }
+            set { mNoShading = value; }
+        }
+
+        public RenderableDefinition(string name, Matrix worldTransform, Color overlayColor, float overlayColorWeight)
+        {
+            mName               = name;
+            mWorldTransform     = worldTransform;
+            mOverlayColor       = overlayColor.ToVector3();
             mOverlayColorWeight = overlayColorWeight;
-            mAnimationRate = animationRate;
+
+            mBoneTransforms = new Matrix[1];
+            mBoneTransforms[0] = Matrix.Identity;
         }
 
         public void Draw(bool isShadow)

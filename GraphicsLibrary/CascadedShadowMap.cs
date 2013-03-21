@@ -296,6 +296,11 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in renderables)
                 {
+                    if (renderable.NoShading)
+                    {
+                        continue;
+                    }
+
                     if (renderable.IsModel)
                     {
                         WriteModelShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);

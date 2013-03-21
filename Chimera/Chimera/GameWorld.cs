@@ -35,6 +35,11 @@ namespace Chimera
                     // Don't update actors which are far from the camera.
                     if (actor is IGameObject)
                     {
+                        if (actor is SkyDome && Player != null)
+                        {
+                            (actor as SkyDome).Position = Player.Position;
+                        }
+
                         if (actor is PlayerCreature)
                         {
                             actor.Update(gameTime);
