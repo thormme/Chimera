@@ -7,7 +7,7 @@ using GraphicsLibrary;
 
 namespace GameConstructLibrary
 {
-    public class SkyDome : IGameObject, IActor
+    public class SkyBox : IGameObject, IActor
     {
         private Vector3 mPosition;
         public Vector3 Position
@@ -50,11 +50,11 @@ namespace GameConstructLibrary
             private set;
         }
 
-        private SkyDomeRenderable mModel;
+        private SkyBoxRenderable mModel;
 
-        public SkyDome(string skyTexture)
+        public SkyBox(string skyTexture)
         {
-            mModel = new SkyDomeRenderable(skyTexture);
+            mModel = new SkyBoxRenderable(skyTexture);
 
             Position = new Vector3(1, 1, 1);
             Scale = new Vector3(1);

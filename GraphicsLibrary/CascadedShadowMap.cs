@@ -296,7 +296,7 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in renderables)
                 {
-                    if (renderable.NoShading)
+                    if (renderable.IsSkyBox)
                     {
                         continue;
                     }
@@ -343,13 +343,13 @@ namespace GraphicsLibrary
         {
             TerrainHeightMap terrain = GraphicsManager.LookupTerrainHeightMap(renderable.Name);
 
-            GraphicsManager.TerrainShader.World = renderable.WorldTransform;
+            GraphicsManager.VertexBufferShader.World = renderable.WorldTransform;
 
-            GraphicsManager.TerrainShader.Parameters["xLightView"].SetValue(mLightView);
-            GraphicsManager.TerrainShader.Parameters["xLightProjection"].SetValue(cascadeProjection);
+            GraphicsManager.VertexBufferShader.Parameters["xLightView"].SetValue(mLightView);
+            GraphicsManager.VertexBufferShader.Parameters["xLightProjection"].SetValue(cascadeProjection);
 
-            GraphicsManager.TerrainShader.CurrentTechnique = GraphicsManager.TerrainShader.Techniques["ShadowCast"];
-            GraphicsManager.TerrainShader.CurrentTechnique.Passes[0].Apply();
+            GraphicsManager.VertexBufferShader.CurrentTechnique = GraphicsManager.VertexBufferShader.Techniques["ShadowCast"];
+            GraphicsManager.VertexBufferShader.CurrentTechnique.Passes[0].Apply();
 
             int numCols = GraphicsManager.LookupTerrainHeightMap(renderable.Name).NumChunksHorizontal;
             int numRows = GraphicsManager.LookupTerrainHeightMap(renderable.Name).NumChunksVertical;

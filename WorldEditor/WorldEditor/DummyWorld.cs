@@ -27,7 +27,7 @@ namespace WorldEditor
 
         private TerrainHeightMap mHeightMap = null;
         private TerrainTexture mTextureMap = null;
-        private SkyDome mSkyDome = null;
+        private SkyBox mSkyBox = null;
 
         public TerrainPhysics Terrain
         {
@@ -165,7 +165,7 @@ namespace WorldEditor
 
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
-            mSkyDome = new SkyDome("default");
+            mSkyBox = new SkyBox("overcastSkyBox");
         }
 
         private void UnscaleObjects()
@@ -207,9 +207,9 @@ namespace WorldEditor
                 mTerrainPhysics.Render();
             }
 
-            if (mSkyDome != null)
+            if (mSkyBox != null)
             {
-                mSkyDome.Render();
+                mSkyBox.Render();
             }
 
             if (mDummies != null)

@@ -23,11 +23,11 @@ namespace GraphicsLibrary
         static private Effect mConfigurableShader;
         static private Effect mPostProcessShader;
 
-        static public AnimationUtilities.SkinnedEffect TerrainShader
+        static public AnimationUtilities.SkinnedEffect VertexBufferShader
         {
-            get { return mTerrainShader; }
+            get { return mVertexBufferShader; }
         }
-        static private AnimationUtilities.SkinnedEffect mTerrainShader;
+        static private AnimationUtilities.SkinnedEffect mVertexBufferShader;
 
         static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string, Model>();
         static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
@@ -55,9 +55,9 @@ namespace GraphicsLibrary
         static private RenderTarget2D mNormalDepthBuffer;
         static private RenderTarget2D mOutlineBuffer;
         static private RenderTarget2D mCompositeBuffer;
-        static private List<RenderTarget2D>[,] mTerrainTextureComposites;
 
-        static private Texture2D mSkyTexture;
+        static private VertexBuffer mSkyBoxVertexBuffer;
+        static private IndexBuffer mSkyBoxIndexBuffer;
 
         static private ICamera mCamera;
         static public ICamera Camera
@@ -233,7 +233,7 @@ namespace GraphicsLibrary
             LoadShaders(content);
             LoadModels(content);
             LoadSprites(content);
-            //LoadTerrain(content);
+            CreateSkyBoxBuffers();
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace GraphicsLibrary
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
                     if ((mOutlining == Outlines.AnimateModels && renderable.IsSkinned || mOutlining == Outlines.All) &&
-                        !renderable.NoShading)
+                        !renderable.IsSkyBox)
                     {
                         DrawRenderableDefinition(renderable, false, true, false);
                     }
@@ -305,7 +305,7 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
-                    DrawRenderableDefinition(renderable, false, false, renderable.NoShading);
+                    DrawRenderableDefinition(renderable, false, false, renderable.IsSkyBox);
                 }
 
 
@@ -508,17 +508,16 @@ namespace GraphicsLibrary
             }
         }
 
-        static public void RenderSkyDome(string textureName, Matrix worldTransform, Color overlayColor, float overlayWeight)
+        static public void RenderSkyBox(string textureName, Matrix worldTransform, Color overlayColor, float overlayWeight)
         {
             if (mCanRender)
             {
-                RenderableDefinition skydome = new RenderableDefinition("skyDome", worldTransform, overlayColor, overlayWeight);
-                skydome.IsModel = true;
-                skydome.OverlayTextureName = textureName;
-                skydome.NoShading = true;
-                skydome.WorldTransform = /*Matrix.CreateScale(64000, 64000, 64000)*/Matrix.CreateScale(1600, 1600, 1600) * skydome.WorldTransform;// *Matrix.CreateTranslation(new Vector3(0, -700, 0));
+                RenderableDefinition skybox = new RenderableDefinition(null, worldTransform, overlayColor, overlayWeight);
+                skybox.IsSkyBox = true;
+                skybox.OverlayTextureName = textureName;
+                skybox.WorldTransform = Matrix.CreateScale(1600, 1600, 1600) * skybox.WorldTransform * Matrix.CreateTranslation(new Vector3(0, -700, 0));
 
-                mRenderQueue.Enqueue(skydome);
+                mRenderQueue.Enqueue(skybox);
             }
             else
             {
@@ -642,13 +641,71 @@ namespace GraphicsLibrary
         static private void CreateLightsAndShadows()
         {
             mDirectionalLight = new Light(
-                new Vector3(-0.3333333f, -1.0f, 0.33333333f), // Direction
+                new Vector3(-0.3333333f, -1.0f, 0.33333333f),      // Direction
                 new Vector3(0.05333332f, 0.09882354f, 0.1819608f), // Ambient Color
                 new Vector3(1, 0.9607844f, 0.8078432f),            // Diffuse Color
                 new Vector3(1, 0.9607844f, 0.8078432f)             // Specular Color
                 );
 
             mShadowMap = new CascadedShadowMap(mDevice, 2048);
+        }
+
+        static private void CreateSkyBoxBuffers()
+        {
+            const int bottomLength = 2, rightLength = 2, numSides = 6;
+            const float uLength = 1.0f / 4.0f, vLength = 1.0f / 3.0f;
+
+            float[]   sideUOrigin = { uLength,                        uLength,                         2 * uLength,                    3 * uLength,                    0.0f,                           uLength };
+            float[]   sideVOrigin = { 0.0f,                           vLength,                         vLength,                        vLength,                        vLength,                        2 * vLength };
+            Vector3[] sideTopLeft = { new Vector3(-0.5f, 1.0f, 0.5f), new Vector3(-0.5f, 1.0f, -0.5f), new Vector3(0.5f, 1.0f, -0.5f), new Vector3(0.5f, 1.0f, 0.5f),  new Vector3(-0.5f, 1.0f, 0.5f), new Vector3(-0.5f, 0.0f, -0.5f) };
+            Vector3[] sideRight   = { new Vector3(1.0f, 0.0f, 0.0f),  new Vector3(1.0f, 0.0f, 0.0f),   new Vector3(0.0f, 0.0f, 1.0f),  new Vector3(-1.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, -1.0f), new Vector3(1.0f, 0.0f, 0.0f) };
+            Vector3[] sideBottom  = { new Vector3(0.0f, 0.0f, -1.0f), new Vector3(0.0f, -1.0f, 0.0f),  new Vector3(0.0f, -1.0f, 0.0f), new Vector3(0.0f, -1.0f, 0.0f), new Vector3(0.0f, -1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f) };
+            Vector3[] sideNormal = { new Vector3(0, -1, 0), new Vector3(0, 0, 1), new Vector3(-1, 0, 0), new Vector3(0, 0, -1), new Vector3(1, 0, 0), new Vector3(0, 1, 0) };
+
+            VertexPositionNormalTexture[] skyBoxVertices = new VertexPositionNormalTexture[numSides * bottomLength * rightLength];
+
+            int sideIndex;
+            for (sideIndex = 0; sideIndex < 6; ++sideIndex)
+            {
+                for (int bottom = 0; bottom <= 1; ++bottom)
+                {
+                    for (int right = 0; right <= 1; ++right)
+                    {
+                        VertexPositionNormalTexture vertex = new VertexPositionNormalTexture();
+                        vertex.Position = sideTopLeft[sideIndex] + bottom * sideBottom[sideIndex] + right * sideRight[sideIndex];
+                        vertex.Normal = sideNormal[sideIndex];
+                        vertex.TextureCoordinate = new Vector2(sideUOrigin[sideIndex] + right * uLength, sideVOrigin[sideIndex] + bottom * vLength);
+
+                        skyBoxVertices[sideIndex * bottomLength * rightLength + bottom * bottomLength + right] = vertex;
+                    }
+                }
+            }
+
+            mSkyBoxVertexBuffer = new VertexBuffer(mDevice, VertexPositionNormalTexture.VertexDeclaration, skyBoxVertices.Length, BufferUsage.WriteOnly);
+            mSkyBoxVertexBuffer.SetData(skyBoxVertices);
+
+            const int numQuadVertices = 6;
+            int[] skyBoxIndices = new int[numSides * numQuadVertices];
+
+            int count = 0;
+            for (sideIndex = 0; sideIndex < numSides; ++sideIndex)
+            {
+                int topLeftIndex = sideIndex * bottomLength * rightLength;
+                int topRightIndex = topLeftIndex + 1;
+                int bottomLeftIndex = topRightIndex + 1;
+                int bottomRightIndex = bottomLeftIndex + 1;
+
+                skyBoxIndices[count++] = topLeftIndex;
+                skyBoxIndices[count++] = topRightIndex;
+                skyBoxIndices[count++] = bottomRightIndex;
+
+                skyBoxIndices[count++] = topLeftIndex;
+                skyBoxIndices[count++] = bottomRightIndex;
+                skyBoxIndices[count++] = bottomLeftIndex;
+            }
+
+            mSkyBoxIndexBuffer = new IndexBuffer(mDevice, typeof(int), skyBoxIndices.Length, BufferUsage.WriteOnly);
+            mSkyBoxIndexBuffer.SetData(skyBoxIndices);
         }
 
         /// <summary>
@@ -796,7 +853,7 @@ namespace GraphicsLibrary
         {
             mConfigurableShader = content.Load<Effect>("shaders/ConfigurableShader");
             mPostProcessShader = content.Load<Effect>("shaders/PostProcessing");
-            mTerrainShader = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
+            mVertexBufferShader = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
         }
 
         /// <summary>
@@ -902,16 +959,19 @@ namespace GraphicsLibrary
         /// <param name="renderable"></param>
         static private void DrawRenderableDefinition(RenderableDefinition renderable, bool isShadow, bool isOutline, bool hasTransparency)
         {
-            if (!renderable.IsModel)
+            if (renderable.IsModel)
             {
-                // Render Terrain.
-                DrawTerrain(renderable, isShadow, isOutline);
-            }
-            else
-            {
-                // Render Inanimate or Animate Model.
                 DrawModel(renderable, isShadow, isOutline, hasTransparency);
+                return;
             }
+
+            if (renderable.IsSkyBox)
+            {
+                DrawSkyBox(renderable.OverlayTextureName, renderable.WorldTransform);
+                return;
+            }
+
+            DrawTerrain(renderable, isShadow, isOutline);
         }
 
         /// <summary>
@@ -1032,45 +1092,45 @@ namespace GraphicsLibrary
 
             if (CastingShadows)
             {
-                mTerrainShader.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
+                mVertexBufferShader.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
             }
 
-            mTerrainShader.Parameters["xDrawCursor"].SetValue((int)mDrawCursor);
+            mVertexBufferShader.Parameters["xDrawCursor"].SetValue((int)mDrawCursor);
 
             if (mDrawCursor != CursorShape.NONE)
             {
-                mTerrainShader.Parameters["xCursorPosition"].SetValue(mCursorPosition);
-                mTerrainShader.Parameters["xCursorInnerRadius"].SetValue(mCursorInnerRadius);
-                mTerrainShader.Parameters["xCursorOuterRadius"].SetValue(mCursorOuterRadius);
+                mVertexBufferShader.Parameters["xCursorPosition"].SetValue(mCursorPosition);
+                mVertexBufferShader.Parameters["xCursorInnerRadius"].SetValue(mCursorInnerRadius);
+                mVertexBufferShader.Parameters["xCursorOuterRadius"].SetValue(mCursorOuterRadius);
             }
 
-            mTerrainShader.Parameters["xVisualizeCascades"].SetValue(mShadowMap.VisualizeCascades);
-            mTerrainShader.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
-            mTerrainShader.Parameters["xLightView"].SetValue(mShadowMap.LightView);
-            mTerrainShader.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
-            mTerrainShader.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
-            mTerrainShader.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
+            mVertexBufferShader.Parameters["xVisualizeCascades"].SetValue(mShadowMap.VisualizeCascades);
+            mVertexBufferShader.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
+            mVertexBufferShader.Parameters["xLightView"].SetValue(mShadowMap.LightView);
+            mVertexBufferShader.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
+            mVertexBufferShader.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
+            mVertexBufferShader.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
 
-            mTerrainShader.View = mView;
-            mTerrainShader.Projection = mProjection;
+            mVertexBufferShader.View = mView;
+            mVertexBufferShader.Projection = mProjection;
 
-            TerrainShader.LightView = mShadowMap.LightView;
-            TerrainShader.LightProjection = mShadowMap.LightProjection;
+            VertexBufferShader.LightView = mShadowMap.LightView;
+            VertexBufferShader.LightProjection = mShadowMap.LightProjection;
 
-            mTerrainShader.Parameters["xDirLightDirection"].SetValue(mDirectionalLight.Direction);
-            mTerrainShader.Parameters["xDirLightDiffuseColor"].SetValue(mDirectionalLight.DiffuseColor);
-            mTerrainShader.Parameters["xDirLightSpecularColor"].SetValue(mDirectionalLight.SpecularColor);
-            mTerrainShader.Parameters["xDirLightAmbientColor"].SetValue(mDirectionalLight.AmbientColor);
+            mVertexBufferShader.Parameters["xDirLightDirection"].SetValue(mDirectionalLight.Direction);
+            mVertexBufferShader.Parameters["xDirLightDiffuseColor"].SetValue(mDirectionalLight.DiffuseColor);
+            mVertexBufferShader.Parameters["xDirLightSpecularColor"].SetValue(mDirectionalLight.SpecularColor);
+            mVertexBufferShader.Parameters["xDirLightAmbientColor"].SetValue(mDirectionalLight.AmbientColor);
 
-            mTerrainShader.Parameters["xOverlayColor"].SetValue(renderable.OverlayColor);
-            mTerrainShader.Parameters["xOverlayColorWeight"].SetValue(renderable.OverlayColorWeight);
+            mVertexBufferShader.Parameters["xOverlayColor"].SetValue(renderable.OverlayColor);
+            mVertexBufferShader.Parameters["xOverlayColorWeight"].SetValue(renderable.OverlayColorWeight);
 
-            mTerrainShader.SpecularColor = new Vector3(0.25f);
-            mTerrainShader.SpecularPower = 16;
+            mVertexBufferShader.SpecularColor = new Vector3(0.25f);
+            mVertexBufferShader.SpecularPower = 16;
 
-            mTerrainShader.World = renderable.WorldTransform;
+            mVertexBufferShader.World = renderable.WorldTransform;
 
-            mTerrainShader.CurrentTechnique = mTerrainShader.Techniques[techniqueName];
+            mVertexBufferShader.CurrentTechnique = mVertexBufferShader.Techniques[techniqueName];
 
             for (int chunkCol = 0; chunkCol < heightMap.Terrain.NumChunksHorizontal; chunkCol++)
             {
@@ -1085,7 +1145,7 @@ namespace GraphicsLibrary
                     //    continue;
                     //}
 
-                    mTerrainShader.Parameters["AlphaMap"].SetValue(heightMap.Texture.TextureBuffers[chunkRow, chunkCol]);
+                    mVertexBufferShader.Parameters["AlphaMap"].SetValue(heightMap.Texture.TextureBuffers[chunkRow, chunkCol]);
 
                     for (int i = 0; i < MAX_TEXTURE_LAYERS; ++i)
                     {
@@ -1093,7 +1153,7 @@ namespace GraphicsLibrary
 
                         if (detailTextureName != null)
                         {
-                            mTerrainShader.Parameters[LAYER_TEXTURE_NAMES[i]].SetValue(LookupSprite(detailTextureName));
+                            mVertexBufferShader.Parameters[LAYER_TEXTURE_NAMES[i]].SetValue(LookupSprite(detailTextureName));
                         }
                     }
 
@@ -1103,7 +1163,7 @@ namespace GraphicsLibrary
                     mDevice.SetVertexBuffer(vertexBuffer);
                     mDevice.Indices = indexBuffer;
 
-                    mTerrainShader.CurrentTechnique.Passes[0].Apply();
+                    mVertexBufferShader.CurrentTechnique.Passes[0].Apply();
 
                     mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
                 }
@@ -1117,10 +1177,29 @@ namespace GraphicsLibrary
                 mDevice.SetVertexBuffer(vertexBuffer);
                 mDevice.Indices = indexBuffer;
 
-                mTerrainShader.CurrentTechnique.Passes[0].Apply();
+                mVertexBufferShader.CurrentTechnique.Passes[0].Apply();
 
                 mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
             }
+        }
+
+        static private void DrawSkyBox(string textureName, Matrix worldTransform)
+        {
+            mDevice.SamplerStates[0] = SamplerState.PointClamp;
+
+            mVertexBufferShader.CurrentTechnique = mVertexBufferShader.Techniques["NoShade"];
+            mVertexBufferShader.World      = worldTransform;
+            mVertexBufferShader.View       = mView;
+            mVertexBufferShader.Projection = mProjection;
+
+            mVertexBufferShader.Texture = LookupSprite(textureName);
+
+            mDevice.SetVertexBuffer(mSkyBoxVertexBuffer);
+            mDevice.Indices = mSkyBoxIndexBuffer;
+
+            mVertexBufferShader.CurrentTechnique.Passes[0].Apply();
+
+            mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, mSkyBoxVertexBuffer.VertexCount, 0, mSkyBoxIndexBuffer.IndexCount / 3);
         }
 
         /// <summary>

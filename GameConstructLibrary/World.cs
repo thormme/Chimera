@@ -210,7 +210,7 @@ namespace GameConstructLibrary
             TerrainPhysics terrain = LoadTerrain(mapName, position, orientation, scale);
             Add(terrain);
 
-            SkyDome skydome = new SkyDome("pavel");
+            SkyBox skydome = new SkyBox("overcastSkyBox");
             Add(skydome);
         }
 

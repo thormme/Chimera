@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace GraphicsLibrary
 {
-    public class SkyDomeRenderable : Renderable
+    public class SkyBoxRenderable : Renderable
     {
         private string mTextureName = null;
         public string TextureName
@@ -15,7 +15,7 @@ namespace GraphicsLibrary
             set { mTextureName = value; }
         }
 
-        public SkyDomeRenderable(string textureName)
+        public SkyBoxRenderable(string textureName)
         {
             if (textureName != "default")
             {
@@ -25,7 +25,7 @@ namespace GraphicsLibrary
 
         protected override void Draw(Microsoft.Xna.Framework.Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            GraphicsManager.RenderSkyDome(TextureName, worldTransform, overlayColor, overlayColorWeight);
+            GraphicsManager.RenderSkyBox(TextureName, worldTransform, overlayColor, overlayColorWeight);
         }
     }
 }

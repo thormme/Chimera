@@ -65,7 +65,7 @@ namespace GraphicsLibrary
         }
 
         private bool mNoShading = false;
-        public bool NoShading
+        public bool IsSkyBox
         {
             get { return mNoShading; }
             set { mNoShading = value; }
