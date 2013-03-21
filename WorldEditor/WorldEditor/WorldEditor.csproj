@@ -269,11 +269,6 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chimera\ChimeraContent\ChimeraContent.contentproj">
-      <Project>{DDBC472F-F07E-420A-9AD7-31C03422F337}</Project>
-      <Name>ChimeraContent %28Content%29</Name>
-      <XnaReferenceType>Content</XnaReferenceType>
-    </ProjectReference>
     <ProjectReference Include="..\..\GameConstructLibrary\GameConstructLibrary.csproj">
       <Project>{EBF58AE6-887D-480A-B693-4DCB2C02CB8D}</Project>
       <Name>GameConstructLibrary</Name>

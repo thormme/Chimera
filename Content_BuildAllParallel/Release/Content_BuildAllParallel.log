@@ -1,0 +1,624 @@
+﻿Build started 3/21/2013 2:54:17 PM.
+     1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_BuildAllParallel\Content_BuildAllParallel.vcxproj" on node 2 (build target(s)).
+     1>PrepareForNMakeBuild:
+         Creating directory "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Release\".
+       PrepareForBuild:
+         Creating directory "obj\Win32\Release\".
+       Build:
+         “C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe” /m:4 “C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj”
+         Microsoft (R) Build Engine version 4.0.30319.17929
+         [Microsoft .NET Framework, version 4.0.30319.18033]
+         Copyright (C) Microsoft Corporation. All rights reserved.
+         
+         Build started 3/21/2013 2:54:17 PM.
+              1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" on node 1 (default targets).
+              1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" (1) is building "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Custom\Content_Custom.contentproj" (3) on node 2 (default targets).
+              3>PrepareForBuild:
+                  Creating directory "bin\x86\Debug\".
+                  Creating directory "obj\x86\Debug\".
+              3>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Custom\Content_Custom.contentproj" (3) is building "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimateModelPipeline\AnimateModelPipeline.csproj" (4) on node 2 (default targets).
+     1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(609,5): error : The OutputPath property is not set for project 'AnimateModelPipeline.csproj'.  Please check to make sure that you have specified a valid combination of Configuration and Platform for this project.  Configuration='Debug'  Platform='x86'.  You may be seeing this message because you are trying to build a project without a solution file, and have specified a non-default Configuration or Platform that doesn't exist for this project. [C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimateModelPipeline\AnimateModelPipeline.csproj]
+              4>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimateModelPipeline\AnimateModelPipeline.csproj" (default targets) -- FAILED.
+              3>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Custom\Content_Custom.contentproj" (default targets) -- FAILED.
+              1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" (1) is building "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\ChimeraContent\Content_Main.contentproj" (2) on node 1 (default targets).
+              2>CoreCompile:
+                  Rebuilding all content because build settings have changed
+                  Building models\skyDome\skyDome.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyDome\skyDome.xnb
+                  Importing models\skyDome\skyDome.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\skyDome\skyDome_0.xml
+                  Processing models\skyDome\skyDome.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyDome\skyDome.xnb
+                  Building models\skyDome\cloudMap.jpg -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyDome\cloudMap_0.xnb
+                  Importing models\skyDome\cloudMap.jpg with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\skyDome\cloudMap.jpg with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyDome\cloudMap_0.xnb
+                  Building models\rock\rock1dark.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1dark.xnb
+                  Importing models\rock\rock1dark.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock1dark_0.xml
+                  Processing models\rock\rock1dark.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1dark.xnb
+                  Building models\rock\rock1tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1tex_0.xnb
+                  Importing models\rock\rock1tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\rock\rock1tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1tex_0.xnb
+                  Building models\rock\rock1light.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1light.xnb
+                  Importing models\rock\rock1light.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock1light_0.xml
+                  Processing models\rock\rock1light.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1light.xnb
+                  Building models\rock\rock1tex2.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1tex2_0.xnb
+                  Importing models\rock\rock1tex2.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\rock\rock1tex2.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1tex2_0.xnb
+                  Building models\cactus\cactus1.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus1.xnb
+                  Importing models\cactus\cactus1.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\cactus\cactus1_0.xml
+                  Processing models\cactus\cactus1.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus1.xnb
+                  Building models\cactus\cactus1tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus1tex_0.xnb
+                  Importing models\cactus\cactus1tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\cactus\cactus1tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus1tex_0.xnb
+                  Building models\cactus\cactus2.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus2.xnb
+                  Importing models\cactus\cactus2.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\cactus\cactus2_0.xml
+                  Processing models\cactus\cactus2.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus2.xnb
+                  Building models\cactus\cactus2tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus2tex_0.xnb
+                  Importing models\cactus\cactus2tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\cactus\cactus2tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus2tex_0.xnb
+                  Building models\rock\rock2dark.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2dark.xnb
+                  Importing models\rock\rock2dark.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock2dark_0.xml
+                  Processing models\rock\rock2dark.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2dark.xnb
+                  Building models\rock\rock2tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2tex_0.xnb
+                  Importing models\rock\rock2tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\rock\rock2tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2tex_0.xnb
+                  Building models\rock\rock2light.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2light.xnb
+                  Importing models\rock\rock2light.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock2light_0.xml
+                  Processing models\rock\rock2light.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2light.xnb
+                  Building models\rock\rock2tex2.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2tex2_0.xnb
+                  Importing models\rock\rock2tex2.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\rock\rock2tex2.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2tex2_0.xnb
+                  Building models\rock\rock3dark.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3dark.xnb
+                  Importing models\rock\rock3dark.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock3dark_0.xml
+                  Processing models\rock\rock3dark.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3dark.xnb
+                  Building models\rock\rock3tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3tex_0.xnb
+                  Importing models\rock\rock3tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\rock\rock3tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3tex_0.xnb
+                  Building models\rock\rock3light.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3light.xnb
+                  Importing models\rock\rock3light.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock3light_0.xml
+                  Processing models\rock\rock3light.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3light.xnb
+                  Building models\rock\rock3tex2.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3tex2_0.xnb
+                  Importing models\rock\rock3tex2.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\rock\rock3tex2.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3tex2_0.xnb
+                  Building models\cactus\cactus3.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus3.xnb
+                  Importing models\cactus\cactus3.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\cactus\cactus3_0.xml
+                  Processing models\cactus\cactus3.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus3.xnb
+                  Building models\cactus\cactus3tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus3tex_0.xnb
+                  Importing models\cactus\cactus3tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\cactus\cactus3tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cactus\cactus3tex_0.xnb
+                  Building models\shrub\shrub1.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\shrub\shrub1.xnb
+                  Importing models\shrub\shrub1.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\shrub\shrub1_0.xml
+                  Processing models\shrub\shrub1.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\shrub\shrub1.xnb
+                  Building models\shrub\shrub1tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\shrub\shrub1tex_0.xnb
+                  Importing models\shrub\shrub1tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\shrub\shrub1tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\shrub\shrub1tex_0.xnb
+                  Building models\tree\tree1.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree1.xnb
+                  Importing models\tree\tree1.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\tree\tree1_0.xml
+                  Processing models\tree\tree1.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree1.xnb
+                  Building models\tree\tree1tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree1tex_0.xnb
+                  Importing models\tree\tree1tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\tree\tree1tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree1tex_0.xnb
+                  Building models\tree\tree2.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree2.xnb
+                  Importing models\tree\tree2.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\tree\tree2_0.xml
+                  Processing models\tree\tree2.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree2.xnb
+                  Building models\tree\tree2tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree2tex_0.xnb
+                  Importing models\tree\tree2tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\tree\tree2tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree2tex_0.xnb
+                  Building models\tree\tree3.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree3.xnb
+                  Importing models\tree\tree3.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\tree\tree3_0.xml
+                  Processing models\tree\tree3.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree3.xnb
+                  Building models\tree\tree3tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree3tex_0.xnb
+                  Importing models\tree\tree3tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\tree\tree3tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tree\tree3tex_0.xnb
+                  Building models\deadTree\deadTree1.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\deadTree\deadTree1.xnb
+                  Importing models\deadTree\deadTree1.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\deadTree\deadTree1_0.xml
+                  Processing models\deadTree\deadTree1.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\deadTree\deadTree1.xnb
+                  Building models\deadTree\deadtree1tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\deadTree\deadtree1tex_0.xnb
+                  Importing models\deadTree\deadtree1tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\deadTree\deadtree1tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\deadTree\deadtree1tex_0.xnb
+                  Building models\deadTree\deadTree2.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\deadTree\deadTree2.xnb
+                  Importing models\deadTree\deadTree2.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\deadTree\deadTree2_0.xml
+                  Processing models\deadTree\deadTree2.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\deadTree\deadTree2.xnb
+                  Building models\deadTree\deadtree2tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\deadTree\deadtree2tex_0.xnb
+                  Importing models\deadTree\deadtree2tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\deadTree\deadtree2tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\deadTree\deadtree2tex_0.xnb
+                  Building models\shrub\shrub2.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\shrub\shrub2.xnb
+                  Importing models\shrub\shrub2.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\shrub\shrub2_0.xml
+                  Processing models\shrub\shrub2.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\shrub\shrub2.xnb
+                  Building models\shrub\shrub2tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\shrub\shrub2tex_0.xnb
+                  Importing models\shrub\shrub2tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\shrub\shrub2tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\shrub\shrub2tex_0.xnb
+                  Building models\rock\rock1dark_collision.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1dark_collision.xnb
+                  Importing models\rock\rock1dark_collision.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock1dark_collision_0.xml
+                  Processing models\rock\rock1dark_collision.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1dark_collision.xnb
+                  Building models\rock\rock1light_collision.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1light_collision.xnb
+                  Importing models\rock\rock1light_collision.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock1light_collision_0.xml
+                  Processing models\rock\rock1light_collision.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock1light_collision.xnb
+                  Building models\rock\rock2dark_collision.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2dark_collision.xnb
+                  Importing models\rock\rock2dark_collision.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock2dark_collision_0.xml
+                  Processing models\rock\rock2dark_collision.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2dark_collision.xnb
+                  Building models\rock\rock2light_collision.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2light_collision.xnb
+                  Importing models\rock\rock2light_collision.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock2light_collision_0.xml
+                  Processing models\rock\rock2light_collision.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock2light_collision.xnb
+                  Building models\rock\rock3dark_collision.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3dark_collision.xnb
+                  Importing models\rock\rock3dark_collision.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock3dark_collision_0.xml
+                  Processing models\rock\rock3dark_collision.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3dark_collision.xnb
+                  Building models\rock\rock3light_collision.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3light_collision.xnb
+                  Importing models\rock\rock3light_collision.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock3light_collision_0.xml
+                  Processing models\rock\rock3light_collision.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock3light_collision.xnb
+                  Building models\leaves\leaf.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\leaves\leaf.xnb
+                  Importing models\leaves\leaf.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\leaves\leaf_0.xml
+                  Processing models\leaves\leaf.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\leaves\leaf.xnb
+                  Building models\leaves\leaftex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\leaves\leaftex_0.xnb
+                  Importing models\leaves\leaftex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\leaves\leaftex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\leaves\leaftex_0.xnb
+                  Building models\suckCone\suckCone.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\suckCone\suckCone.xnb
+                  Importing models\suckCone\suckCone.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\suckCone\suckCone_0.xml
+                  Processing models\suckCone\suckCone.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\suckCone\suckCone.xnb
+                  Building models\suckCone\suckCone_texture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\suckCone\suckCone_texture_0.xnb
+                  Importing models\suckCone\suckCone_texture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\suckCone\suckCone_texture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\suckCone\suckCone_texture_0.xnb
+                  Building models\suckCone\suckConeCollision.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\suckCone\suckConeCollision.xnb
+                  Importing models\suckCone\suckConeCollision.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\suckCone\suckConeCollision_0.xml
+                  Processing models\suckCone\suckConeCollision.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\suckCone\suckConeCollision.xnb
+                  Building models\tractorBeam\tractorBeam.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tractorBeam\tractorBeam.xnb
+                  Importing models\tractorBeam\tractorBeam.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\tractorBeam\tractorBeam_0.xml
+                  Processing models\tractorBeam\tractorBeam.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tractorBeam\tractorBeam.xnb
+                  Building models\tractorBeam\tractorBeam_texture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tractorBeam\tractorBeam_texture_0.xnb
+                  Importing models\tractorBeam\tractorBeam_texture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\tractorBeam\tractorBeam_texture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\tractorBeam\tractorBeam_texture_0.xnb
+                  Building models\checkpoint\checkpoint_blue.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_blue.xnb
+                  Importing models\checkpoint\checkpoint_blue.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\checkpoint\checkpoint_blue_0.xml
+                  Processing models\checkpoint\checkpoint_blue.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_blue.xnb
+                  Building models\checkpoint\checkpoint_metal_texture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_metal_texture_0.xnb
+                  Importing models\checkpoint\checkpoint_metal_texture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\checkpoint\checkpoint_metal_texture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_metal_texture_0.xnb
+                  Building models\checkpoint\checkpoint_dark_texture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_dark_texture_0.xnb
+                  Importing models\checkpoint\checkpoint_dark_texture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\checkpoint\checkpoint_dark_texture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_dark_texture_0.xnb
+                  Building models\checkpoint\checkpoint_blue_light_texture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_blue_light_texture_0.xnb
+                  Importing models\checkpoint\checkpoint_blue_light_texture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\checkpoint\checkpoint_blue_light_texture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_blue_light_texture_0.xnb
+                  Building models\checkpoint\checkpoint_light_blue.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_light_blue.xnb
+                  Importing models\checkpoint\checkpoint_light_blue.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\checkpoint\checkpoint_light_blue_0.xml
+                  Processing models\checkpoint\checkpoint_light_blue.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_light_blue.xnb
+                  Building models\checkpoint\checkpoint_blue_glow_texture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_blue_glow_texture_0.xnb
+                  Importing models\checkpoint\checkpoint_blue_glow_texture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\checkpoint\checkpoint_blue_glow_texture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_blue_glow_texture_0.xnb
+                  Building models\checkpoint\checkpoint_light_red.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_light_red.xnb
+                  Importing models\checkpoint\checkpoint_light_red.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\checkpoint\checkpoint_light_red_0.xml
+                  Processing models\checkpoint\checkpoint_light_red.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_light_red.xnb
+                  Building models\checkpoint\checkpoint_red_glow_texture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_red_glow_texture_0.xnb
+                  Importing models\checkpoint\checkpoint_red_glow_texture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\checkpoint\checkpoint_red_glow_texture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_red_glow_texture_0.xnb
+                  Building models\checkpoint\checkpoint_red.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_red.xnb
+                  Importing models\checkpoint\checkpoint_red.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\checkpoint\checkpoint_red_0.xml
+                  Processing models\checkpoint\checkpoint_red.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_red.xnb
+                  Building models\checkpoint\checkpoint_red_light_texture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_red_light_texture_0.xnb
+                  Importing models\checkpoint\checkpoint_red_light_texture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\checkpoint\checkpoint_red_light_texture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\checkpoint\checkpoint_red_light_texture_0.xnb
+                  Building models\rock\rock4.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock4.xnb
+                  Importing models\rock\rock4.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock4_0.xml
+                  Processing models\rock\rock4.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock4.xnb
+                  Building models\rock\rock4tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock4tex_0.xnb
+                  Importing models\rock\rock4tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\rock\rock4tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock4tex_0.xnb
+                  Building models\rock\rock4_collision.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock4_collision.xnb
+                  Importing models\rock\rock4_collision.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\rock\rock4_collision_0.xml
+                  Processing models\rock\rock4_collision.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\rock\rock4_collision.xnb
+                  Building models\cursor\blockCursor.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cursor\blockCursor.xnb
+                  Importing models\cursor\blockCursor.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\cursor\blockCursor_0.xml
+                  Processing models\cursor\blockCursor.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cursor\blockCursor.xnb
+                  Building models\cursor\blockCursorTexture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cursor\blockCursorTexture_0.xnb
+                  Importing models\cursor\blockCursorTexture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\cursor\blockCursorTexture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cursor\blockCursorTexture_0.xnb
+                  Building models\cursor\circleCursor.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cursor\circleCursor.xnb
+                  Importing models\cursor\circleCursor.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\cursor\circleCursor_0.xml
+                  Processing models\cursor\circleCursor.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cursor\circleCursor.xnb
+                  Building models\cursor\cursorTexture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cursor\cursorTexture_0.xnb
+                  Importing models\cursor\cursorTexture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\cursor\cursorTexture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\cursor\cursorTexture_0.xnb
+                  Building models\skyBox\skyBox.X -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\skyBox.xnb
+                  Importing models\skyBox\skyBox.X with Microsoft.Xna.Framework.Content.Pipeline.XImporter
+                  Serializing obj\x86\Debug\models\skyBox\skyBox_0.xml
+                  Processing models\skyBox\skyBox.X with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\skyBox.xnb
+                  Building models\skyBox\topw3.jpg -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\topw3_0.xnb
+                  Importing models\skyBox\topw3.jpg with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\skyBox\topw3.jpg with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\topw3_0.xnb
+                  Building models\skyBox\frontw3.jpg -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\frontw3_0.xnb
+                  Importing models\skyBox\frontw3.jpg with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\skyBox\frontw3.jpg with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\frontw3_0.xnb
+                  Building models\skyBox\rightw3.jpg -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\rightw3_0.xnb
+                  Importing models\skyBox\rightw3.jpg with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\skyBox\rightw3.jpg with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\rightw3_0.xnb
+                  Building models\skyBox\backw3.jpg -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\backw3_0.xnb
+                  Importing models\skyBox\backw3.jpg with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\skyBox\backw3.jpg with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\backw3_0.xnb
+                  Building models\skyBox\leftw3.jpg -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\leftw3_0.xnb
+                  Importing models\skyBox\leftw3.jpg with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\skyBox\leftw3.jpg with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\skyBox\leftw3_0.xnb
+                  Building shaders\ConfigurableShader.fx -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\shaders\ConfigurableShader.xnb
+                  Importing shaders\ConfigurableShader.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+                  Processing shaders\ConfigurableShader.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\shaders\ConfigurableShader.xnb
+                  Building shaders\PostProcessing.fx -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\shaders\PostProcessing.xnb
+                  Importing shaders\PostProcessing.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+                  Processing shaders\PostProcessing.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\shaders\PostProcessing.xnb
+                  Building shaders\DPSFDefaultEffect.fx -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\shaders\DPSFDefaultEffect.xnb
+                  Importing shaders\DPSFDefaultEffect.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+                  Processing shaders\DPSFDefaultEffect.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\shaders\DPSFDefaultEffect.xnb
+                  Building models\editor\editor.fbx -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\editor\editor.xnb
+                  Importing models\editor\editor.fbx with Microsoft.Xna.Framework.Content.Pipeline.FbxImporter
+                  Serializing obj\x86\Debug\models\editor\editor_0.xml
+                  Processing models\editor\editor.fbx with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\editor\editor.xnb
+                  Building models\editor\editor.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\editor\editor_0.xnb
+                  Importing models\editor\editor.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\editor\editor.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\editor\editor_0.xnb
+                  Building models\primitives\box.FBX -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\primitives\box.xnb
+                  Importing models\primitives\box.FBX with Microsoft.Xna.Framework.Content.Pipeline.FbxImporter
+                  Serializing obj\x86\Debug\models\primitives\box_0.xml
+                  Processing models\primitives\box.FBX with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\primitives\box.xnb
+                  Building models\primitives\purple_block.bmp -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\primitives\purple_block_0.xnb
+                  Importing models\primitives\purple_block.bmp with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\primitives\purple_block.bmp with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\primitives\purple_block_0.xnb
+                  Building models\primitives\sphere.FBX -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\primitives\sphere.xnb
+                  Importing models\primitives\sphere.FBX with Microsoft.Xna.Framework.Content.Pipeline.FbxImporter
+                  Serializing obj\x86\Debug\models\primitives\sphere_0.xml
+                  Processing models\primitives\sphere.FBX with Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\primitives\sphere.xnb
+                  Building models\primitives\orange_ball.bmp -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\primitives\orange_ball_0.xnb
+                  Importing models\primitives\orange_ball.bmp with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing models\primitives\orange_ball.bmp with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\models\primitives\orange_ball_0.xnb
+                  Building textures\air_particle.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\air_particle.xnb
+                  Importing textures\air_particle.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\air_particle.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\air_particle.xnb
+                  Building textures\sprites\empty.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\empty.xnb
+                  Importing textures\sprites\empty.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\empty.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\empty.xnb
+                  Building textures\sprites\test_tex.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\test_tex.xnb
+                  Importing textures\sprites\test_tex.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\test_tex.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\test_tex.xnb
+                  Building textures\sprites\CheetahLegsIcon.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\CheetahLegsIcon.xnb
+                  Importing textures\sprites\CheetahLegsIcon.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\CheetahLegsIcon.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\CheetahLegsIcon.xnb
+                  Building textures\sprites\EagleWingsIcon.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\EagleWingsIcon.xnb
+                  Importing textures\sprites\EagleWingsIcon.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\EagleWingsIcon.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\EagleWingsIcon.xnb
+                  Building textures\sprites\FrogHeadIcon.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\FrogHeadIcon.xnb
+                  Importing textures\sprites\FrogHeadIcon.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\FrogHeadIcon.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\FrogHeadIcon.xnb
+                  Building textures\sprites\KangarooLegsIcon.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\KangarooLegsIcon.xnb
+                  Importing textures\sprites\KangarooLegsIcon.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\KangarooLegsIcon.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\KangarooLegsIcon.xnb
+                  Building textures\sprites\PenguinLimbsIcon.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\PenguinLimbsIcon.xnb
+                  Importing textures\sprites\PenguinLimbsIcon.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\PenguinLimbsIcon.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\PenguinLimbsIcon.xnb
+                  Building textures\sprites\RhinoHeadIcon.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\RhinoHeadIcon.xnb
+                  Importing textures\sprites\RhinoHeadIcon.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\RhinoHeadIcon.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\RhinoHeadIcon.xnb
+                  Building textures\sprites\blueButton.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\blueButton.xnb
+                  Importing textures\sprites\blueButton.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\blueButton.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\blueButton.xnb
+                  Building textures\sprites\redButton.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\redButton.xnb
+                  Importing textures\sprites\redButton.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\redButton.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\redButton.xnb
+                  Building textures\sprites\yellowButton.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\yellowButton.xnb
+                  Importing textures\sprites\yellowButton.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\yellowButton.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\yellowButton.xnb
+                  Building textures\sprites\controls.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\controls.xnb
+                  Importing textures\sprites\controls.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\controls.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\controls.xnb
+                  Building textures\sprites\goals.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\goals.xnb
+                  Importing textures\sprites\goals.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\goals.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\goals.xnb
+                  Building textures\sprites\instructions.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\instructions.xnb
+                  Importing textures\sprites\instructions.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\instructions.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\instructions.xnb
+                  Building textures\sprites\options.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\options.xnb
+                  Importing textures\sprites\options.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\options.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\options.xnb
+                  Building textures\sprites\play.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\play.xnb
+                  Importing textures\sprites\play.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\play.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\play.xnb
+                  Building textures\sprites\story.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\story.xnb
+                  Importing textures\sprites\story.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\story.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\story.xnb
+                  Building textures\sprites\title.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\title.xnb
+                  Importing textures\sprites\title.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\title.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\title.xnb
+                  Building textures\sprites\check.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\check.xnb
+                  Importing textures\sprites\check.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\check.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\check.xnb
+                  Building textures\sprites\requirements.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\requirements.xnb
+                  Importing textures\sprites\requirements.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\requirements.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\requirements.xnb
+                  Building textures\sprites\requirementBox.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\requirementBox.xnb
+                  Importing textures\sprites\requirementBox.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\requirementBox.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\requirementBox.xnb
+                  Building textures\sprites\blue.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\blue.xnb
+                  Importing textures\sprites\blue.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\blue.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\blue.xnb
+                  Building textures\sprites\chimera.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\chimera.xnb
+                  Importing textures\sprites\chimera.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\chimera.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\chimera.xnb
+                  Building textures\sprites\green.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\green.xnb
+                  Importing textures\sprites\green.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\green.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\green.xnb
+                  Building textures\sprites\paused.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\paused.xnb
+                  Importing textures\sprites\paused.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\paused.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\paused.xnb
+                  Building textures\sprites\quit.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\quit.xnb
+                  Importing textures\sprites\quit.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\quit.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\quit.xnb
+                  Building textures\sprites\red.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\red.xnb
+                  Importing textures\sprites\red.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\red.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\red.xnb
+                  Building textures\sprites\resume.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\resume.xnb
+                  Importing textures\sprites\resume.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\resume.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\resume.xnb
+                  Building textures\sprites\checkpoint.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\checkpoint.xnb
+                  Importing textures\sprites\checkpoint.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\checkpoint.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\checkpoint.xnb
+                  Building textures\sprites\yellow.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\yellow.xnb
+                  Importing textures\sprites\yellow.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\yellow.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\yellow.xnb
+                  Building textures\sprites\white.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\white.xnb
+                  Importing textures\sprites\white.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\white.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\white.xnb
+                  Building textures\sprites\black.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\black.xnb
+                  Importing textures\sprites\black.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\black.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\black.xnb
+                  Building textures\sprites\assign.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\assign.xnb
+                  Importing textures\sprites\assign.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\assign.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\assign.xnb
+                  Building textures\sprites\reticle.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\reticle.xnb
+                  Importing textures\sprites\reticle.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\reticle.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\reticle.xnb
+                  Building textures\sprites\success.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\success.xnb
+                  Importing textures\sprites\success.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\success.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\success.xnb
+                  Building textures\sprites\sky.jpg -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\sky.xnb
+                  Importing textures\sprites\sky.jpg with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\sky.jpg with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\sky.xnb
+                  Building textures\sprites\grassTexture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\grassTexture.xnb
+                  Importing textures\sprites\grassTexture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\grassTexture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\grassTexture.xnb
+                  Building textures\sprites\dirtTexture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\dirtTexture.xnb
+                  Importing textures\sprites\dirtTexture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\dirtTexture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\dirtTexture.xnb
+                  Building textures\sprites\snowTexture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\snowTexture.xnb
+                  Importing textures\sprites\snowTexture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\snowTexture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\snowTexture.xnb
+                  Building textures\sprites\waterTexture.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\waterTexture.xnb
+                  Importing textures\sprites\waterTexture.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\waterTexture.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\waterTexture.xnb
+                  Building textures\sprites\default_terrain_detail.png -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\default_terrain_detail.xnb
+                  Importing textures\sprites\default_terrain_detail.png with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\default_terrain_detail.png with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\default_terrain_detail.xnb
+                  Building textures\sprites\fassnacht.jpg -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\fassnacht.xnb
+                  Importing textures\sprites\fassnacht.jpg with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\fassnacht.jpg with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\fassnacht.xnb
+                  Building textures\sprites\pavel.jpg -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\pavel.xnb
+                  Importing textures\sprites\pavel.jpg with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\pavel.jpg with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\pavel.xnb
+                  Building textures\sprites\largeClouds.jpg -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\largeClouds.xnb
+                  Importing textures\sprites\largeClouds.jpg with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\largeClouds.jpg with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\largeClouds.xnb
+                  Building textures\sprites\overcastSkyBox.jpg -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\overcastSkyBox.xnb
+                  Importing textures\sprites\overcastSkyBox.jpg with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Processing textures\sprites\overcastSkyBox.jpg with Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\sprites\overcastSkyBox.xnb
+                  Building sounds\sfx\chime.wav -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\chime.xnb
+                  Importing sounds\sfx\chime.wav with Microsoft.Xna.Framework.Content.Pipeline.WavImporter
+                  Processing sounds\sfx\chime.wav with Microsoft.Xna.Framework.Content.Pipeline.Processors.SoundEffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\chime.xnb
+                  Building sounds\sfx\fall.wav -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\fall.xnb
+                  Importing sounds\sfx\fall.wav with Microsoft.Xna.Framework.Content.Pipeline.WavImporter
+                  Processing sounds\sfx\fall.wav with Microsoft.Xna.Framework.Content.Pipeline.Processors.SoundEffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\fall.xnb
+                  Building sounds\sfx\hurt.wav -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\hurt.xnb
+                  Importing sounds\sfx\hurt.wav with Microsoft.Xna.Framework.Content.Pipeline.WavImporter
+                  Processing sounds\sfx\hurt.wav with Microsoft.Xna.Framework.Content.Pipeline.Processors.SoundEffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\hurt.xnb
+                  Building sounds\sfx\jump.wav -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\jump.xnb
+                  Importing sounds\sfx\jump.wav with Microsoft.Xna.Framework.Content.Pipeline.WavImporter
+                  Processing sounds\sfx\jump.wav with Microsoft.Xna.Framework.Content.Pipeline.Processors.SoundEffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\jump.xnb
+                  Building sounds\sfx\mindControl.wav -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\mindControl.xnb
+                  Importing sounds\sfx\mindControl.wav with Microsoft.Xna.Framework.Content.Pipeline.WavImporter
+                  Processing sounds\sfx\mindControl.wav with Microsoft.Xna.Framework.Content.Pipeline.Processors.SoundEffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\mindControl.xnb
+                  Building sounds\sfx\sliding.wav -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\sliding.xnb
+                  Importing sounds\sfx\sliding.wav with Microsoft.Xna.Framework.Content.Pipeline.WavImporter
+                  Processing sounds\sfx\sliding.wav with Microsoft.Xna.Framework.Content.Pipeline.Processors.SoundEffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\sliding.xnb
+                  Building sounds\sfx\spit.wav -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\spit.xnb
+                  Importing sounds\sfx\spit.wav with Microsoft.Xna.Framework.Content.Pipeline.WavImporter
+                  Processing sounds\sfx\spit.wav with Microsoft.Xna.Framework.Content.Pipeline.Processors.SoundEffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\spit.xnb
+                  Building sounds\sfx\walking.wav -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\walking.xnb
+                  Importing sounds\sfx\walking.wav with Microsoft.Xna.Framework.Content.Pipeline.WavImporter
+                  Processing sounds\sfx\walking.wav with Microsoft.Xna.Framework.Content.Pipeline.Processors.SoundEffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\sounds\sfx\walking.xnb
+                  Building textures\maps\default_texture.bmp -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\maps\default_texture.xnb
+                  Importing textures\maps\default_texture.bmp with Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\textures\maps\default_texture.xnb
+                  Building font.spritefont -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\font.xnb
+                  Importing font.spritefont with Microsoft.Xna.Framework.Content.Pipeline.FontDescriptionImporter
+                  Processing font.spritefont with Microsoft.Xna.Framework.Content.Pipeline.Processors.FontDescriptionProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\bin\x86\Debug\Content\font.xnb
+              2>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\ChimeraContent\Content_Main.contentproj" (default targets).
+              1>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" (default targets) -- FAILED.
+         
+         Build FAILED.
+         
+                "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" (default target) (1) ->
+                "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Custom\Content_Custom.contentproj" (default target) (3) ->
+                "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimateModelPipeline\AnimateModelPipeline.csproj" (default target) (4) ->
+                (_CheckForInvalidConfigurationAndPlatform target) -> 
+     1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(609,5): error : The OutputPath property is not set for project 'AnimateModelPipeline.csproj'.  Please check to make sure that you have specified a valid combination of Configuration and Platform for this project.  Configuration='Debug'  Platform='x86'.  You may be seeing this message because you are trying to build a project without a solution file, and have specified a non-default Configuration or Platform that doesn't exist for this project. [C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimateModelPipeline\AnimateModelPipeline.csproj]
+         
+             0 Warning(s)
+             1 Error(s)
+         
+         Time Elapsed 00:01:47.41
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.MakeFile.Targets(38,5): error MSB3073: The command "“C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe” /m:4 “C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj”" exited with code 1.
+     1>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_BuildAllParallel\Content_BuildAllParallel.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:01:48.25

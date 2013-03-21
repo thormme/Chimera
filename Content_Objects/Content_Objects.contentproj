@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectGuid>{50FD0490-71AF-43C0-889E-9352A535C106}</ProjectGuid>
+    <ProjectTypeGuids>{96E2B04D-8817-42c6-938A-82C39BA4D311};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
+    <OutputPath>bin\$(Platform)\$(Configuration)</OutputPath>
+    <ContentRootDirectory>Content</ContentRootDirectory>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Content_Objects</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.FBXImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.XImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.AudioImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="objects\BearSpawner.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>BearSpawner</Name>
+    </None>
+    <None Include="objects\Box.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Box</Name>
+    </None>
+    <None Include="objects\Cactus1S.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Cactus1S</Name>
+    </None>
+    <None Include="objects\Cactus2S.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Cactus2S</Name>
+    </None>
+    <None Include="objects\Cactus3S.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Cactus3S</Name>
+    </None>
+    <None Include="objects\Checkpoint.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Checkpoint</Name>
+    </None>
+    <None Include="objects\CheetahSpawner.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>CheetahSpawner</Name>
+    </None>
+    <None Include="objects\CobraSpawner.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>CobraSpawner</Name>
+    </None>
+    <None Include="objects\DeadTree1S.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>DeadTree1S</Name>
+    </None>
+    <None Include="objects\DeadTree2S.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>DeadTree2S</Name>
+    </None>
+    <None Include="objects\Dude.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Dude</Name>
+    </None>
+    <None Include="objects\EagleSpawner.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>EagleSpawner</Name>
+    </None>
+    <None Include="objects\FrogSpawner.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>FrogSpawner</Name>
+    </None>
+    <None Include="objects\GoalPoint.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>GoalPoint</Name>
+    </None>
+    <None Include="objects\KangarooSpawner.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>KangarooSpawner</Name>
+    </None>
+    <None Include="objects\LeafP.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>LeafP</Name>
+    </None>
+    <None Include="objects\LeafS.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>LeafS</Name>
+    </None>
+    <None Include="objects\LizardSpawner.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>LizardSpawner</Name>
+    </None>
+    <None Include="objects\PenguinSpawner.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>PenguinSpawner</Name>
+    </None>
+    <None Include="objects\PlayerStart.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>PlayerStart</Name>
+    </None>
+    <None Include="objects\RhinoSpawner.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>RhinoSpawner</Name>
+    </None>
+    <None Include="objects\Rock1DarkP.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock1DarkP</Name>
+    </None>
+    <None Include="objects\Rock1DarkS.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock1DarkS</Name>
+    </None>
+    <None Include="objects\Rock1LightP.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock1LightP</Name>
+    </None>
+    <None Include="objects\Rock1LightS.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock1LightS</Name>
+    </None>
+    <None Include="objects\Rock2DarkP.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock2DarkP</Name>
+    </None>
+    <None Include="objects\Rock2DarkS.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock2DarkS</Name>
+    </None>
+    <None Include="objects\Rock2LightP.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock2LightP</Name>
+    </None>
+    <None Include="objects\Rock2LightS.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock2LightS</Name>
+    </None>
+    <None Include="objects\Rock3DarkP.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock3DarkP</Name>
+    </None>
+    <None Include="objects\Rock3DarkS.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock3DarkS</Name>
+    </None>
+    <None Include="objects\Rock3LightP.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock3LightP</Name>
+    </None>
+    <None Include="objects\Rock3LightS.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Rock3LightS</Name>
+    </None>
+    <None Include="objects\rock4.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>rock4</Name>
+    </None>
+    <None Include="objects\Shrub1S.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Shrub1S</Name>
+    </None>
+    <None Include="objects\Shrub2S.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Shrub2S</Name>
+    </None>
+    <None Include="objects\Spawner.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Spawner</Name>
+    </None>
+    <None Include="objects\TipTrigger.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>TipTrigger</Name>
+    </None>
+    <None Include="objects\Tree1S.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Tree1S</Name>
+    </None>
+    <None Include="objects\Tree2S.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Tree2S</Name>
+    </None>
+    <None Include="objects\Tree3S.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Tree3S</Name>
+    </None>
+    <None Include="objects\TurtleSpawner.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>TurtleSpawner</Name>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

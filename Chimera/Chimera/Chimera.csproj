@@ -235,6 +235,11 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Content_DUmmy\Content_Dummy.contentproj">
+      <Project>{12E4B132-65A5-4E63-8C94-3F7687705DCE}</Project>
+      <Name>Content_Dummy %28Content%29</Name>
+      <XnaReferenceType>Content</XnaReferenceType>
+    </ProjectReference>
     <ProjectReference Include="..\..\GameConstructLibrary\GameConstructLibrary.csproj">
       <Project>{EBF58AE6-887D-480A-B693-4DCB2C02CB8D}</Project>
       <Name>GameConstructLibrary</Name>
@@ -246,11 +251,6 @@
     <ProjectReference Include="..\..\Utility\Utility.csproj">
       <Project>{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}</Project>
       <Name>Utility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ChimeraContent\ChimeraContent.contentproj">
-      <Name>ChimeraContent %28Content%29</Name>
-      <XnaReferenceType>Content</XnaReferenceType>
-      <Project>{DDBC472F-F07E-420A-9AD7-31C03422F337}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

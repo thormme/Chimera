@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectGuid>{8D59AE53-4C2F-4917-8BB2-611C09A3B9D1}</ProjectGuid>
+    <ProjectTypeGuids>{96E2B04D-8817-42c6-938A-82C39BA4D311};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
+    <OutputPath>bin\$(Platform)\$(Configuration)</OutputPath>
+    <ContentRootDirectory>Content</ContentRootDirectory>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Content_Custom</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.FBXImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.XImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.AudioImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="models\cheetah\cheetah.tweak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>cheetah</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\cheetah\cheetah.X">
+      <Name>cheetah</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\cheetah\cheetah_frontLeftLeg.X">
+      <Name>cheetah_frontLeftLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\cheetah\cheetah_frontRightLeg.X">
+      <Name>cheetah_frontRightLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\cheetah\cheetah_rearLeftLeg.X">
+      <Name>cheetah_rearLeftLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\cheetah\cheetah_rearRightLeg.X">
+      <Name>cheetah_rearRightLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\dude\dude_walk.fbx">
+      <Name>dude_walk</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="models\eagle\eagle.tweak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>eagle</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\eagle\eagle.X">
+      <Name>eagle</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\eagle\eagle_leftWing.X">
+      <Name>eagle_leftWing</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\eagle\eagle_rightWing.X">
+      <Name>eagle_rightWing</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="models\frog\frog.tweak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>frog</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\frog\frog.X">
+      <Name>frog</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\frog\frog_head.X">
+      <Name>frog_head</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="models\kangaroo\kangaroo.tweak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>kangaroo</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\kangaroo\kangaroo.X">
+      <Name>kangaroo</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\kangaroo\kangaroo_leftLeg.X">
+      <Name>kangaroo_leftLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\kangaroo\kangaroo_rightLeg.X">
+      <Name>kangaroo_rightLeg</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="models\penguin\penguin.tweak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>penguin</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\penguin\penguin.X">
+      <Name>penguin</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\penguin\penguin_leftFlipper.X">
+      <Name>penguin_leftFlipper</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\penguin\penguin_leftFoot.X">
+      <Name>penguin_leftFoot</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\penguin\penguin_rightFlipper.X">
+      <Name>penguin_rightFlipper</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\penguin\penguin_rightFoot.X">
+      <Name>penguin_rightFoot</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="models\playerBean\playerBean.tweak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>playerBean</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\playerBean\playerBean.X">
+      <Name>playerBean</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="models\rhino\rhino.tweak">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>rhino</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\rhino\rhino.X">
+      <Name>rhino</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\rhino\rhino_head.X">
+      <Name>rhino_head</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimateModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AnimateModelPipeline\AnimateModelPipeline.csproj">
+      <Project>{57C3FDF5-1889-4507-B5F1-46E6BE0F2F61}</Project>
+      <Name>AnimateModelPipeline</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

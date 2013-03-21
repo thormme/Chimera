@@ -1,0 +1,360 @@
+﻿Build started 3/21/2013 3:50:13 PM.
+     1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_BuildAllParallel\Content_BuildAllParallel.vcxproj" on node 2 (build target(s)).
+     1>Build:
+         “C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe” /m:4 “C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj”
+         Microsoft (R) Build Engine version 4.0.30319.17929
+         [Microsoft .NET Framework, version 4.0.30319.18033]
+         Copyright (C) Microsoft Corporation. All rights reserved.
+         
+         Build started 3/21/2013 3:50:13 PM.
+              1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" on node 1 (default targets).
+              1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" (1) is building "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Custom\Content_CustomModels.contentproj" (4) on node 3 (default targets).
+              4>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Custom\Content_CustomModels.contentproj" (4) is building "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimateModelPipeline\AnimateModelPipeline.csproj" (6) on node 3 (default targets).
+              6>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimateModelPipeline\AnimateModelPipeline.csproj" (6) is building "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimationUtilities\AnimationUtilities.csproj" (7) on node 3 (default targets).
+              7>ResolveAssemblyReferences:
+                  A TargetFramework profile exclusion list will be generated.
+                EmbedXnaFrameworkRuntimeProfile:
+                Skipping target "EmbedXnaFrameworkRuntimeProfile" because all output files are up-to-date with respect to the input files.
+                GenerateTargetFrameworkMonikerAttribute:
+                Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+                CoreCompile:
+                Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+                XnaWriteCacheFile:
+                Skipping target "XnaWriteCacheFile" because it has no inputs.
+                CopyFilesToOutputDirectory:
+                  AnimationUtilities -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimationUtilities\bin\x86\Debug\AnimationUtilities.dll
+              7>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimationUtilities\AnimationUtilities.csproj" (default targets).
+              6>GenerateTargetFrameworkMonikerAttribute:
+                Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+                CoreCompile:
+                Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+                CopyFilesToOutputDirectory:
+                  AnimateModelPipeline -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimateModelPipeline\bin\x86\Debug\AnimateModelPipeline.dll
+              6>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\AnimateModelPipeline\AnimateModelPipeline.csproj" (default targets).
+              1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" (1) is building "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Fonts\Content_Fonts.contentproj" (5) on node 4 (default targets).
+              5>CoreCompile:
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\font.xnb is already up to date
+              5>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Fonts\Content_Fonts.contentproj" (default targets).
+              1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" (1) is building "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\ChimeraContent\Content_Models.contentproj" (2) on node 1 (default targets).
+              2>CoreCompile:
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\skyDome\skyDome.xnb is already up to date
+                  obj\x86\Debug\models\skyDome\skyDome_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\skyDome\cloudMap_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock1dark.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock1dark_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock1tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock1light.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock1light_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock1tex2_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cactus\cactus1.xnb is already up to date
+                  obj\x86\Debug\models\cactus\cactus1_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cactus\cactus1tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cactus\cactus2.xnb is already up to date
+                  obj\x86\Debug\models\cactus\cactus2_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cactus\cactus2tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock2dark.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock2dark_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock2tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock2light.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock2light_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock2tex2_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock3dark.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock3dark_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock3tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock3light.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock3light_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock3tex2_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cactus\cactus3.xnb is already up to date
+                  obj\x86\Debug\models\cactus\cactus3_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cactus\cactus3tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\shrub\shrub1.xnb is already up to date
+                  obj\x86\Debug\models\shrub\shrub1_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\shrub\shrub1tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\tree\tree1.xnb is already up to date
+                  obj\x86\Debug\models\tree\tree1_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\tree\tree1tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\tree\tree2.xnb is already up to date
+                  obj\x86\Debug\models\tree\tree2_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\tree\tree2tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\tree\tree3.xnb is already up to date
+                  obj\x86\Debug\models\tree\tree3_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\tree\tree3tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\deadTree\deadTree1.xnb is already up to date
+                  obj\x86\Debug\models\deadTree\deadTree1_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\deadTree\deadtree1tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\deadTree\deadTree2.xnb is already up to date
+                  obj\x86\Debug\models\deadTree\deadTree2_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\deadTree\deadtree2tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\shrub\shrub2.xnb is already up to date
+                  obj\x86\Debug\models\shrub\shrub2_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\shrub\shrub2tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock1dark_collision.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock1dark_collision_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock1light_collision.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock1light_collision_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock2dark_collision.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock2dark_collision_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock2light_collision.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock2light_collision_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock3dark_collision.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock3dark_collision_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock3light_collision.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock3light_collision_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\leaves\leaf.xnb is already up to date
+                  obj\x86\Debug\models\leaves\leaf_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\leaves\leaftex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\suckCone\suckCone.xnb is already up to date
+                  obj\x86\Debug\models\suckCone\suckCone_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\suckCone\suckCone_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\suckCone\suckConeCollision.xnb is already up to date
+                  obj\x86\Debug\models\suckCone\suckConeCollision_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\tractorBeam\tractorBeam.xnb is already up to date
+                  obj\x86\Debug\models\tractorBeam\tractorBeam_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\tractorBeam\tractorBeam_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\checkpoint\checkpoint_blue.xnb is already up to date
+                  obj\x86\Debug\models\checkpoint\checkpoint_blue_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\checkpoint\checkpoint_metal_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\checkpoint\checkpoint_dark_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\checkpoint\checkpoint_blue_light_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\checkpoint\checkpoint_light_blue.xnb is already up to date
+                  obj\x86\Debug\models\checkpoint\checkpoint_light_blue_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\checkpoint\checkpoint_blue_glow_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\checkpoint\checkpoint_light_red.xnb is already up to date
+                  obj\x86\Debug\models\checkpoint\checkpoint_light_red_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\checkpoint\checkpoint_red_glow_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\checkpoint\checkpoint_red.xnb is already up to date
+                  obj\x86\Debug\models\checkpoint\checkpoint_red_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\checkpoint\checkpoint_red_light_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock4.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock4_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock4tex_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rock\rock4_collision.xnb is already up to date
+                  obj\x86\Debug\models\rock\rock4_collision_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cursor\blockCursor.xnb is already up to date
+                  obj\x86\Debug\models\cursor\blockCursor_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cursor\blockCursorTexture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cursor\circleCursor.xnb is already up to date
+                  obj\x86\Debug\models\cursor\circleCursor_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cursor\cursorTexture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\skyBox\skyBox.xnb is already up to date
+                  obj\x86\Debug\models\skyBox\skyBox_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\skyBox\topw3_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\skyBox\frontw3_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\skyBox\rightw3_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\skyBox\backw3_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\skyBox\leftw3_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\editor\editor.xnb is already up to date
+                  obj\x86\Debug\models\editor\editor_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\editor\editor_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\primitives\box.xnb is already up to date
+                  obj\x86\Debug\models\primitives\box_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\primitives\purple_block_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\primitives\sphere.xnb is already up to date
+                  obj\x86\Debug\models\primitives\sphere_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\primitives\orange_ball_0.xnb is already up to date
+              2>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\ChimeraContent\Content_Models.contentproj" (default targets).
+              1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" (1) is building "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_SFX\Content_SFX.contentproj" (9) on node 2 (default targets).
+              9>CoreCompile:
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\sounds\sfx\chime.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\sounds\sfx\fall.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\sounds\sfx\hurt.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\sounds\sfx\jump.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\sounds\sfx\mindControl.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\sounds\sfx\sliding.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\sounds\sfx\spit.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\sounds\sfx\walking.xnb is already up to date
+              9>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_SFX\Content_SFX.contentproj" (default targets).
+              1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" (1) is building "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Shaders\Content_Shaders.contentproj" (10) on node 4 (default targets).
+             10>CoreCompile:
+                  Building shaders\ConfigurableShader.fx -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\shaders\ConfigurableShader.xnb
+                  Rebuilding because asset is new
+                  Importing shaders\ConfigurableShader.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+              4>CoreCompile:
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cheetah\cheetah.xnb is already up to date
+                  obj\x86\Debug\models\cheetah\cheetah_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cheetah\cheetah_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cheetah\cheetah_frontLeftLeg.xnb is already up to date
+                  obj\x86\Debug\models\cheetah\cheetah_frontLeftLeg_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cheetah\cheetah_frontRightLeg.xnb is already up to date
+                  obj\x86\Debug\models\cheetah\cheetah_frontRightLeg_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cheetah\cheetah_rearLeftLeg.xnb is already up to date
+                  obj\x86\Debug\models\cheetah\cheetah_rearLeftLeg_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\cheetah\cheetah_rearRightLeg.xnb is already up to date
+                  obj\x86\Debug\models\cheetah\cheetah_rearRightLeg_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\eagle\eagle.xnb is already up to date
+                  obj\x86\Debug\models\eagle\eagle_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\eagle\eagle_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\eagle\eagle_leftWing.xnb is already up to date
+                  obj\x86\Debug\models\eagle\eagle_leftWing_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\eagle\eagle_rightWing.xnb is already up to date
+                  obj\x86\Debug\models\eagle\eagle_rightWing_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\frog\frog.xnb is already up to date
+                  obj\x86\Debug\models\frog\frog_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\frog\frog_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\frog\frog_head.xnb is already up to date
+                  obj\x86\Debug\models\frog\frog_head_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\kangaroo\kangaroo.xnb is already up to date
+                  obj\x86\Debug\models\kangaroo\kangaroo_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\kangaroo\kangaroo_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\kangaroo\kangaroo_leftLeg.xnb is already up to date
+                  obj\x86\Debug\models\kangaroo\kangaroo_leftLeg_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\kangaroo\kangaroo_rightLeg.xnb is already up to date
+                  obj\x86\Debug\models\kangaroo\kangaroo_rightLeg_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\penguin\penguin.xnb is already up to date
+                  obj\x86\Debug\models\penguin\penguin_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\penguin\penguin_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\penguin\penguin_leftFlipper.xnb is already up to date
+                  obj\x86\Debug\models\penguin\penguin_leftFlipper_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\penguin\penguin_leftFoot.xnb is already up to date
+                  obj\x86\Debug\models\penguin\penguin_leftFoot_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\penguin\penguin_rightFlipper.xnb is already up to date
+                  obj\x86\Debug\models\penguin\penguin_rightFlipper_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\penguin\penguin_rightFoot.xnb is already up to date
+                  obj\x86\Debug\models\penguin\penguin_rightFoot_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\playerBean\playerBean.xnb is already up to date
+                  obj\x86\Debug\models\playerBean\playerBean_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\playerBean\playerBean_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rhino\rhino.xnb is already up to date
+                  obj\x86\Debug\models\rhino\rhino_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rhino\rhino_texture_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\rhino\rhino_head.xnb is already up to date
+                  obj\x86\Debug\models\rhino\rhino_head_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\dude\dude_walk.xnb is already up to date
+                  obj\x86\Debug\models\dude\dude_walk_0.xml is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\dude\head_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\dude\jacket_0.xnb is already up to date
+             10>CoreCompile:
+                  Processing shaders\ConfigurableShader.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+              4>CoreCompile:
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\dude\pants_0.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\models\dude\upBodyC_0.xnb is already up to date
+              4>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Custom\Content_CustomModels.contentproj" (default targets).
+              1>Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" (1) is building "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Textures\Content_Textures.contentproj" (11) on node 1 (default targets).
+             11>CoreCompile:
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\air_particle.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\maps\default_texture.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\assign.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\black.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\blue.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\blueButton.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\check.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\checkpoint.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\CheetahLegsIcon.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\chimera.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\controls.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\default_terrain_detail.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\dirtTexture.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\EagleWingsIcon.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\empty.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\fassnacht.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\FrogHeadIcon.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\goals.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\grassTexture.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\green.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\instructions.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\KangarooLegsIcon.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\largeClouds.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\options.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\overcastSkyBox.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\paused.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\pavel.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\PenguinLimbsIcon.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\play.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\quit.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\red.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\redButton.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\requirementBox.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\requirements.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\resume.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\reticle.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\RhinoHeadIcon.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\sky.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\snowTexture.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\story.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\success.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\test_tex.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\title.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\waterTexture.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\white.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\yellow.xnb is already up to date
+                  C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\textures\sprites\yellowButton.xnb is already up to date
+             11>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Textures\Content_Textures.contentproj" (default targets).
+             10>CoreCompile:
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\shaders\ConfigurableShader.xnb
+                  Building shaders\DPSFDefaultEffect.fx -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\shaders\DPSFDefaultEffect.xnb
+                  Rebuilding because asset is new
+                  Importing shaders\DPSFDefaultEffect.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+                  Processing shaders\DPSFDefaultEffect.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\shaders\DPSFDefaultEffect.xnb
+                  Building shaders\PostProcessing.fx -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\shaders\PostProcessing.xnb
+                  Rebuilding because asset is new
+                  Importing shaders\PostProcessing.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+                  Processing shaders\PostProcessing.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+                  Compiling C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content\shaders\PostProcessing.xnb
+             10>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Shaders\Content_Shaders.contentproj" (default targets).
+              1>ResolveAssemblyReferences:
+                  A TargetFramework profile exclusion list will be generated.
+                GenerateTargetFrameworkMonikerAttribute:
+                Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+                CoreCompile:
+                  C:\Windows\Microsoft.NET\Framework\v4.0.30319\Csc.exe /noconfig /nowarn:1701,1702 /nostdlib+ /platform:x86 /errorreport:prompt /warn:4 /define:DEBUG;TRACE;WINDOWS /highentropyva- /reference:"C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Avatar.dll" /reference:"C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.dll" /reference:"C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Game.dll" /reference:"C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.GamerServices.dll" /reference:"C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Graphics.dll" /reference:"C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Net.dll" /reference:"C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Storage.dll" /reference:"C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Video.dll" /reference:"C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Xact.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\mscorlib.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Core.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Net.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Xml.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Xml.Linq.dll" /debug+ /debug:full /optimize- /out:obj\x86\Debug\Content_All.dll /resource:obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt,Microsoft.Xna.Framework.RuntimeProfile /target:library /utf8output Class1.cs Properties\AssemblyInfo.cs "C:\Users\Josh\AppData\Local\Temp\.NETFramework,Version=v4.0,Profile=Client.AssemblyAttributes.cs"
+                _CopyOutOfDateNestedContentItemsToOutputDirectory:
+                Building target "_CopyOutOfDateNestedContentItemsToOutputDirectory" partially, because some output files are out of date with respect to their input files.
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\BearSpawner.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\BearSpawner.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Box.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Box.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Cactus1S.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Cactus1S.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Cactus2S.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Cactus2S.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Cactus3S.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Cactus3S.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Checkpoint.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Checkpoint.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\CheetahSpawner.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\CheetahSpawner.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\CobraSpawner.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\CobraSpawner.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\DeadTree1S.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\DeadTree1S.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\DeadTree2S.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\DeadTree2S.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Dude.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Dude.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\EagleSpawner.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\EagleSpawner.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\FrogSpawner.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\FrogSpawner.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\GoalPoint.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\GoalPoint.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\KangarooSpawner.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\KangarooSpawner.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\LeafP.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\LeafP.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\LeafS.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\LeafS.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\LizardSpawner.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\LizardSpawner.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\PenguinSpawner.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\PenguinSpawner.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\PlayerStart.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\PlayerStart.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\RhinoSpawner.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\RhinoSpawner.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock1DarkP.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock1DarkP.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock1DarkS.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock1DarkS.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock1LightP.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock1LightP.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock1LightS.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock1LightS.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock2DarkP.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock2DarkP.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock2DarkS.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock2DarkS.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock2LightP.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock2LightP.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock2LightS.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock2LightS.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock3DarkP.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock3DarkP.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock3DarkS.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock3DarkS.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock3LightP.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock3LightP.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Rock3LightS.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Rock3LightS.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\rock4.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\rock4.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Shrub1S.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Shrub1S.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Shrub2S.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Shrub2S.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Spawner.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Spawner.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\TipTrigger.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\TipTrigger.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Tree1S.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Tree1S.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Tree2S.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Tree2S.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\Tree3S.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\Tree3S.prop".
+                  Copying file from "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_Objects\objects\TurtleSpawner.prop" to "..\Chimera\Chimera\bin\x86\Debug\Content\objects\TurtleSpawner.prop".
+                CopyFilesToOutputDirectory:
+                  Copying file from "obj\x86\Debug\Content_All.dll" to "..\Chimera\Chimera\bin\x86\Debug\Content_All.dll".
+                  Content_All -> C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Chimera\Chimera\bin\x86\Debug\Content_All.dll
+                  Copying file from "obj\x86\Debug\Content_All.pdb" to "..\Chimera\Chimera\bin\x86\Debug\Content_All.pdb".
+              1>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_All\Content_All.csproj" (default targets).
+         
+         Build succeeded.
+             0 Warning(s)
+             0 Error(s)
+         
+         Time Elapsed 00:00:08.28
+     1>Done Building Project "C:\Users\Josh\Documents\GitHub\eecs494FinalProject\Content_BuildAllParallel\Content_BuildAllParallel.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:08.78
