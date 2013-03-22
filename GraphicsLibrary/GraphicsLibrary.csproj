@@ -145,6 +145,7 @@
     <Compile Include="BillboardDefinition.cs" />
     <Compile Include="CascadedShadowMap.cs" />
     <Compile Include="DirectoryManager.cs" />
+    <Compile Include="BoundingBoxRenderer.cs" />
     <Compile Include="ICamera.cs" />
     <Compile Include="InanimateModel.cs" />
     <Compile Include="Light.cs" />

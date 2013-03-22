@@ -21,7 +21,8 @@ namespace GraphicsLibrary
 
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            GraphicsManager.RenderTransparentModel(mModelName, worldTransform, mBoundingBox, overlayColor, overlayColorWeight, Vector2.Zero);
+            BoundingBox transformedBBox = new BoundingBox(Vector3.Transform(mBoundingBox.Min, worldTransform), Vector3.Transform(mBoundingBox.Max, worldTransform));
+            GraphicsManager.RenderTransparentModel(mModelName, worldTransform, transformedBBox, overlayColor, overlayColorWeight, Vector2.Zero);
         }
     }
 }

@@ -120,6 +120,9 @@ namespace Chimera
             DebugConsole.AddCommand("visualizeCascades", new DebugConsole.ConsoleCommand(VisualizeCascadesCommand));
             DebugConsole.AddCommand("celShading", new DebugConsole.ConsoleCommand(CelShadingCommand));
             DebugConsole.AddCommand("outlining", new DebugConsole.ConsoleCommand(OutliningCommand));
+            DebugConsole.AddCommand("drawBoundingBoxes", new DebugConsole.ConsoleCommand(BoundingBoxCommand));
+            DebugConsole.AddCommand("BirdsEyeView", new DebugConsole.ConsoleCommand(BirdsEyeViewCommand));
+            DebugConsole.AddCommand("BEV", new DebugConsole.ConsoleCommand(BirdsEyeViewCommand));
             DebugConsole.Hide();
             // END
 
@@ -172,7 +175,7 @@ namespace Chimera
             DebugModelDrawer = new InstancedModelDrawer(this);
             DebugModelDrawer.IsWireframe = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //font = Content.Load<SpriteFont>("font");
+
             try
             {
                 GraphicsManager.LoadContent(Content, Graphics.GraphicsDevice, spriteBatch);
@@ -471,6 +474,27 @@ namespace Chimera
                 {
                     GraphicsManager.Outlining = GraphicsManager.Outlines.AnimateModels;
                 }
+            }
+        }
+
+        private void BoundingBoxCommand(List<string> parameters)
+        {
+            GraphicsManager.DrawBoundingBoxes = !GraphicsManager.DrawBoundingBoxes;
+        }
+
+        private void BirdsEyeViewCommand(List<string> parameters)
+        {
+            if (GraphicsManager.BirdsEyeViewCamera != null)
+            {
+                GraphicsManager.BirdsEyeViewCamera = null;
+            }
+            else
+            {
+                FPSCamera birdsEyeViewCamera = new FPSCamera(Graphics.GraphicsDevice.Viewport);
+                birdsEyeViewCamera.Position = new Vector3(0, 1000, 0);
+                birdsEyeViewCamera.Target = new Vector3(1, 1, 1);
+
+                GraphicsManager.BirdsEyeViewCamera = birdsEyeViewCamera;
             }
         }
 

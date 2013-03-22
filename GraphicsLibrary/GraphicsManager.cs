@@ -65,6 +65,8 @@ namespace GraphicsLibrary
             get { return mCamera; }
         }
 
+        static private BoundingFrustum mBoundingFrustum;
+
         static private Vector3 mMinSceneExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
         static private Vector3 mMaxSceneExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
@@ -131,6 +133,13 @@ namespace GraphicsLibrary
             set { mShadowMap.VisualizeCascades = value; }
         }
 
+        static public ICamera BirdsEyeViewCamera
+        {
+            get { return mBirdsEyeViewCamera; }
+            set { mBirdsEyeViewCamera = value; }
+        }
+        static private ICamera mBirdsEyeViewCamera = null;
+
         /// <summary>
         /// Renders scene in debug mode.
         /// </summary>
@@ -140,6 +149,13 @@ namespace GraphicsLibrary
             set { mDebugVisualization = value; }
         }
         static private bool mDebugVisualization = false;
+
+        static public bool DrawBoundingBoxes
+        {
+            get { return mDrawBoundingBoxes; }
+            set { mDrawBoundingBoxes = value; }
+        }
+        static private bool mDrawBoundingBoxes = false;
 
         static public GraphicsDevice Device
         {
@@ -244,9 +260,19 @@ namespace GraphicsLibrary
         {
             mTimeElapsed = (float)gameTime.TotalGameTime.TotalSeconds;
 
-            mCamera = camera;
+            if (mBirdsEyeViewCamera == null)
+            {
+                mCamera = camera;
+            }
+            else
+            {
+                mCamera = mBirdsEyeViewCamera;
+            }
+
             mView = mCamera.GetViewTransform();
             mProjection = mCamera.GetProjectionTransform();
+
+            mBoundingFrustum = new BoundingFrustum(camera.GetViewTransform() * camera.GetProjectionTransform());
         }
 
         /// <summary>
@@ -279,9 +305,6 @@ namespace GraphicsLibrary
             {
                 mShadowMap.GenerateCascades(mCamera, mDirectionalLight, new BoundingBox(mMinSceneExtent, mMaxSceneExtent));
                 mShadowMap.WriteShadowsToBuffer(mRenderQueue);
-
-                mMinSceneExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-                mMaxSceneExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
             }
 
             if (CelShading != CelShaded.None)
@@ -289,6 +312,9 @@ namespace GraphicsLibrary
                 // Draw Normal Depth Map.
                 mDevice.SetRenderTarget(mNormalDepthBuffer);
                 mDevice.Clear(Color.Black);
+
+                bool savedDrawBoundingBoxes = mDrawBoundingBoxes;
+                mDrawBoundingBoxes = false;
 
                 foreach (RenderableDefinition renderable in mRenderQueue)
                 {
@@ -298,6 +324,8 @@ namespace GraphicsLibrary
                         DrawRenderableDefinition(renderable, false, true, false);
                     }
                 }
+
+                mDrawBoundingBoxes = savedDrawBoundingBoxes;
 
                 // Draw Scene to Texture.
                 mDevice.SetRenderTarget(mSceneBuffer);
@@ -455,6 +483,7 @@ namespace GraphicsLibrary
                 skinnedModel.IsModel = true;
                 skinnedModel.IsSkinned = true;
                 skinnedModel.BoneTransforms = boneTransforms;
+                skinnedModel.BoundingBoxes[0, 0] = boundingBox;
 
                 mRenderQueue.Enqueue(skinnedModel);
                 UpdateSceneExtents(boundingBox, worldTransforms);
@@ -476,6 +505,7 @@ namespace GraphicsLibrary
             {
                 RenderableDefinition unskinnedModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
                 unskinnedModel.IsModel = true;
+                unskinnedModel.BoundingBoxes[0, 0] = boundingBox;
 
                 mRenderQueue.Enqueue(unskinnedModel);
 
@@ -499,6 +529,7 @@ namespace GraphicsLibrary
                 RenderableDefinition transparentModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
                 transparentModel.IsModel = true;
                 transparentModel.AnimationRate = animationRate;
+                transparentModel.BoundingBoxes[0, 0] = boundingBox;
 
                 mTransparentQueue.Add(transparentModel);
             }
@@ -530,13 +561,18 @@ namespace GraphicsLibrary
         /// </summary>
         /// <param name="terrainName">Name of terrain stored in database.</param>
         /// <param name="worldTransforms">Position, orientation, and scale of terrain in world space.</param>
-        static public void RenderTerrain(string terrainName, Matrix worldTransforms, BoundingBox boundingBox, Color overlayColor, float overlayColorWeight)
+        static public void RenderTerrain(string terrainName, Matrix worldTransforms, BoundingBox[,] boundingBoxes, Color overlayColor, float overlayColorWeight)
         {
             if (mCanRender)
             {
                 RenderableDefinition terrain = new RenderableDefinition(terrainName, worldTransforms, overlayColor, overlayColorWeight);
+                terrain.BoundingBoxes = boundingBoxes;
+
                 mRenderQueue.Enqueue(terrain);
-                UpdateSceneExtents(boundingBox, worldTransforms);
+                foreach (BoundingBox boundingBox in boundingBoxes)
+                {
+                    UpdateSceneExtents(boundingBox, worldTransforms);
+                }
             }
             else
             {
@@ -576,16 +612,26 @@ namespace GraphicsLibrary
             return new BoundingBox(minExtent, maxExtent);
         }
 
-        public static BoundingBox BuildTerrainBoundingBox(string terrainName)
+        public static BoundingBox[,] BuildTerrainBoundingBox(string terrainName)
         {
-            Vector3 minExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-            Vector3 maxExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-
             TerrainHeightMap terrain = LookupTerrain(terrainName).Terrain;
 
-            //BoundVertexBuffer(ref minExtent, ref maxExtent, terrain.VertexBuffer, terrain.NumVertices);
+            BoundingBox[,] terrainBoundingBoxes = new BoundingBox[terrain.NumChunksVertical, terrain.NumChunksHorizontal];
 
-            return new BoundingBox(minExtent, maxExtent);
+            for (int row = 0; row < terrain.NumChunksVertical; ++row)
+            {
+                for (int col = 0; col < terrain.NumChunksHorizontal; ++col)
+                {
+                    Vector3 minExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+                    Vector3 maxExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+                    BoundVertexBuffer(ref minExtent, ref maxExtent, terrain.VertexBuffers[row, col], terrain.VertexBuffers[row, col].VertexCount);
+
+                    terrainBoundingBoxes[row, col] = new BoundingBox(minExtent, maxExtent);
+                }
+            }
+
+            return terrainBoundingBoxes;
         }
 
         /// <summary>
@@ -979,6 +1025,11 @@ namespace GraphicsLibrary
         /// </summary>
         static private void DrawModel(RenderableDefinition renderable, bool isShadow, bool isOutline, bool hasTransparency)
         {
+            if (!isShadow && mBoundingFrustum.Contains(renderable.BoundingBoxes[0, 0]) == ContainmentType.Disjoint)
+            {
+                return;
+            }
+
             Model model = LookupModel(renderable.Name);
 
             foreach (ModelMesh mesh in model.Meshes)
@@ -1081,6 +1132,25 @@ namespace GraphicsLibrary
                 effect.Parameters["xTextureOffset"].SetValue(animationRate);
             }
             mesh.Draw();
+
+            if (mDrawBoundingBoxes)
+            {
+                Color bBoxColor;
+                if (renderable.IsSkinned)
+                {
+                    bBoxColor = Color.Yellow;
+                }
+                else if (techniqueName == "NoShade")
+                {
+                    bBoxColor = Color.Green;
+                }
+                else
+                {
+                    bBoxColor = Color.Red;
+                }
+
+                BoundingBoxRenderer.Render(renderable.BoundingBoxes[0, 0], mDevice, mView, mProjection, bBoxColor);
+            }
         }
 
         /// <summary>
@@ -1136,14 +1206,14 @@ namespace GraphicsLibrary
             {
                 for (int chunkRow = 0; chunkRow < heightMap.Terrain.NumChunksVertical; chunkRow++)
                 {
-                    //if (!heightMap.BoundingBoxes[chunkCol, chunkRow].Intersects(viewFrustum.BoundingBox))
-                    //{
-                    //    // Hey, it looks like you.
-                    //    // Just tried to draw me.
-                    //    // But I'm not on screen.
-                    //    // So cull me, maybe?
-                    //    continue;
-                    //}
+                    if (mBoundingFrustum.Contains(renderable.BoundingBoxes[chunkRow, chunkCol]) == ContainmentType.Disjoint)
+                    {
+                        // Hey, it looks like you.
+                        // Just tried to draw me.
+                        // But I'm not on screen.
+                        // So cull me, maybe?
+                        continue;
+                    }
 
                     mVertexBufferShader.Parameters["AlphaMap"].SetValue(heightMap.Texture.TextureBuffers[chunkRow, chunkCol]);
 
@@ -1166,6 +1236,11 @@ namespace GraphicsLibrary
                     mVertexBufferShader.CurrentTechnique.Passes[0].Apply();
 
                     mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
+
+                    if (mDrawBoundingBoxes)
+                    {
+                        BoundingBoxRenderer.Render(renderable.BoundingBoxes[chunkRow, chunkCol], mDevice, mView, mProjection, Color.Blue);
+                    }
                 }
             }
 
@@ -1300,8 +1375,8 @@ namespace GraphicsLibrary
 
         static private void UpdateSceneExtents(BoundingBox boundingBox, Matrix worldTransform)
         {
-            mMinSceneExtent = Vector3.Min(mMinSceneExtent, Vector3.Transform(boundingBox.Min, worldTransform));
-            mMaxSceneExtent = Vector3.Max(mMaxSceneExtent, Vector3.Transform(boundingBox.Max, worldTransform));
+            mMinSceneExtent = Vector3.Min(mMinSceneExtent, boundingBox.Min);
+            mMaxSceneExtent = Vector3.Max(mMaxSceneExtent, boundingBox.Max);
         }
 
         #endregion

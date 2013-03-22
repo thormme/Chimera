@@ -71,6 +71,13 @@ namespace GraphicsLibrary
             set { mNoShading = value; }
         }
 
+        private BoundingBox[,] mBoundingBoxes = new BoundingBox[1,1];
+        public BoundingBox[,] BoundingBoxes
+        {
+            get { return mBoundingBoxes; }
+            set { mBoundingBoxes = value; }
+        }
+
         public RenderableDefinition(string name, Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
             mName               = name;
