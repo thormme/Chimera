@@ -177,7 +177,7 @@ namespace WorldEditor
             (mEditorForm as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.OpenObjectParameterForm);
 
             (mEditorForm as EditorForm).SizeUpDown.ValueChanged += SelectionHandler;
-            (mEditorForm as EditorForm).StrengthUpDown.ValueChanged += SelectionHandler;
+            //(mEditorForm as EditorForm).StrengthUpDown.ValueChanged += SelectionHandler;
 
             foreach (var model in GraphicsManager.ModelLibrary)
             {

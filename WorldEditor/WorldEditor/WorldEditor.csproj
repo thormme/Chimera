@@ -61,10 +61,11 @@
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>8CBD3BFE5CE0792501AB7E41DFF9A37C558008A1</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>AC26A5CDDBF3EE0B4799B309F1EDD34422E3C373</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>WorldEditor_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -283,6 +284,11 @@
     <None Include="WorldEditor_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Content_DUmmy\Content_Dummy.contentproj">
+      <Project>{12E4B132-65A5-4E63-8C94-3F7687705DCE}</Project>
+      <Name>Content_Dummy %28Content%29</Name>
+      <XnaReferenceType>Content</XnaReferenceType>
+    </ProjectReference>
     <ProjectReference Include="..\..\GameConstructLibrary\GameConstructLibrary.csproj">
       <Project>{EBF58AE6-887D-480A-B693-4DCB2C02CB8D}</Project>
       <Name>GameConstructLibrary</Name>
