@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chimera", "Chimera\Chimera\Chimera.csproj", "{099FF29B-954A-4208-A12C-A2121DDFB7E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicsLibrary", "GraphicsLibrary\GraphicsLibrary.csproj", "{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}"
@@ -8,8 +8,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimateModelPipeline", "AnimateModelPipeline\AnimateModelPipeline.csproj", "{57C3FDF5-1889-4507-B5F1-46E6BE0F2F61}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameConstructLibrary", "GameConstructLibrary\GameConstructLibrary.csproj", "{EBF58AE6-887D-480A-B693-4DCB2C02CB8D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapEditor", "MapEditor\MapEditor\MapEditor\MapEditor.csproj", "{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}"
 EndProject
@@ -186,33 +184,6 @@ Global
 		{EBF58AE6-887D-480A-B693-4DCB2C02CB8D}.Release WorldEditor|x86.Build.0 = MapEditor Release|x86
 		{EBF58AE6-887D-480A-B693-4DCB2C02CB8D}.Release WorldEditor|Xbox 360.ActiveCfg = MapEditor Release|x86
 		{EBF58AE6-887D-480A-B693-4DCB2C02CB8D}.Release WorldEditor|Xbox 360.Build.0 = MapEditor Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug Chimera|Any CPU.ActiveCfg = Debug|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug Chimera|Mixed Platforms.ActiveCfg = Debug|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug Chimera|Win32.ActiveCfg = Debug|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug Chimera|x86.ActiveCfg = Debug|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug Chimera|Xbox 360.ActiveCfg = Debug|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug Chimera|Xbox 360.Build.0 = Debug|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug WorldEditor|Any CPU.ActiveCfg = MapEditor|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug WorldEditor|Mixed Platforms.ActiveCfg = MapEditor|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug WorldEditor|Win32.ActiveCfg = MapEditor Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug WorldEditor|x86.ActiveCfg = MapEditor|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug WorldEditor|x86.Build.0 = MapEditor|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug WorldEditor|Xbox 360.ActiveCfg = MapEditor Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Debug WorldEditor|Xbox 360.Build.0 = MapEditor Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release Chimera|Any CPU.ActiveCfg = Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release Chimera|Mixed Platforms.ActiveCfg = Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release Chimera|Win32.ActiveCfg = Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release Chimera|x86.ActiveCfg = Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release Chimera|Xbox 360.ActiveCfg = Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release Chimera|Xbox 360.Build.0 = Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release WorldEditor|Any CPU.ActiveCfg = MapEditor Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release WorldEditor|Mixed Platforms.ActiveCfg = MapEditor Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release WorldEditor|Mixed Platforms.Build.0 = MapEditor Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release WorldEditor|Win32.ActiveCfg = MapEditor Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release WorldEditor|x86.ActiveCfg = MapEditor Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release WorldEditor|x86.Build.0 = MapEditor Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release WorldEditor|Xbox 360.ActiveCfg = MapEditor Release|x86
-		{0D80249F-64A3-4A6B-9936-F9EAC60E59D8}.Release WorldEditor|Xbox 360.Build.0 = MapEditor Release|x86
 		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Debug Chimera|Any CPU.ActiveCfg = Debug|x86
 		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Debug Chimera|Any CPU.Build.0 = Debug|x86
 		{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}.Debug Chimera|Mixed Platforms.ActiveCfg = Debug|x86
