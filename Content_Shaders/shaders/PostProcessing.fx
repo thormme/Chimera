@@ -12,12 +12,12 @@ float EdgeWidth = 1;
 float EdgeIntensity = 1;
 
 // Epsilon values for face normals.
-float NormalThreshold = 0.5;
-float DepthThreshold = 0.1;
+float NormalThreshold = 0.1;
+float DepthThreshold = 1.25;
 
 // How dark the edges get in response to changes in data.
-float NormalSensitivity = 1;
-float DepthSensitivity = 10;
+float NormalSensitivity = 0.3;
+float DepthSensitivity = 8;
 
 // Resolution of scene rendered to texture.
 float2 ScreenResolution;
