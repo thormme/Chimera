@@ -533,9 +533,9 @@ namespace GameConstructLibrary
                 {
                     Vector3 shortenedForward = mLookAt - result.HitData.Location;
                     float distance = shortenedForward.Length();
-                    if (0.9f * distance < cameraDistance)
+                    if (0.5f * distance < cameraDistance)
                     {
-                        mPosition = mLookAt - 0.9f * distance * mForward;
+                        mPosition = mLookAt - 0.5f * distance * mForward;
                     }
                 }
             }

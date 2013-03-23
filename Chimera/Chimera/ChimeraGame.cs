@@ -156,6 +156,7 @@ namespace Chimera
         {
 
             GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
+            GraphicsManager.Outlining = GraphicsManager.Outlines.All;
             GraphicsManager.CastingShadows = true;
             GraphicsManager.DebugVisualization = false;
 
