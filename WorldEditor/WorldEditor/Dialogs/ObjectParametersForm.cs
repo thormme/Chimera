@@ -148,11 +148,19 @@ namespace WorldEditor.Dialogs
         {
             if ((sender as CheckBox).CheckState == CheckState.Checked)
             {
+                foreach (DummyObject dummyObject in SelectedObjects)
+                {
+                    dummyObject.Floating = true;
+                }
                 PositionY.Enabled = false;
                 Height.Enabled = true;
             }
             else if ((sender as CheckBox).CheckState == CheckState.Unchecked)
             {
+                foreach (DummyObject dummyObject in SelectedObjects)
+                {
+                    dummyObject.Floating = false;
+                }
                 PositionY.Enabled = true;
                 Height.Enabled = false;
             }
