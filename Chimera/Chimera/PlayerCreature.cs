@@ -338,6 +338,12 @@ namespace Chimera
             mSuckModel = new ScrollingTransparentModel("suckCone");
             mSuckModel.HorizontalVelocity = 1.0f;
             mSuckModel.VerticalVelocity = 1.0f;
+
+            for (int i = 0; i < NumParts; i++)
+            {
+                mPartAttachments[i] = new PartAttachment(new EmptyPart(), new List<PartBone>());
+            }
+
         }
 
         /// <summary>

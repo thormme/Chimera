@@ -127,8 +127,14 @@ namespace Chimera
 
         public Sprite Icon
         {
-            get;
-            protected set;
+            get
+            {
+                return mSprite;
+            }
+            protected set
+            {
+                mSprite = value;
+            }
         }
         protected Sprite mSprite;
 

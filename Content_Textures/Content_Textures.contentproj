@@ -337,13 +337,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="textures\sprites\waterTexture.png">
-      <Name>waterTexture</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="textures\sprites\white.png">
       <Name>white</Name>
       <Importer>TextureImporter</Importer>

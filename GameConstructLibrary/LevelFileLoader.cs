@@ -139,7 +139,7 @@ namespace GameConstructLibrary
             Color[] heightMapBuffer = new Color[heightMapHeight * heightMapWidth];
             for (int i = 0; i < heightMapBuffer.Length; ++i)
             {
-                heightMapBuffer[i] = new Color(0, 195, 255, 255);
+                heightMapBuffer[i] = new Color(0, 255, 0, 0);
             }
             Texture2D heightMapTexture = new Texture2D(GraphicsManager.Device, heightMapWidth, heightMapHeight);
             heightMapTexture.SetData(heightMapBuffer);

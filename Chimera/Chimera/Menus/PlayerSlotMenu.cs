@@ -17,6 +17,8 @@ namespace Chimera.Menus
         Game mOwnerGame;
         private PlayerCreature mPlayer;
 
+        private GraphicItem[] mSlots = new GraphicItem[3];
+
         public PlayerSlotMenu(Game game, PlayerCreature creature)
         {
             InputAction.IsMouseLocked = false;
@@ -38,7 +40,6 @@ namespace Chimera.Menus
                 ),
                 backgroundSprite
             );
-
             Add(background);
 
             x = 0;
@@ -61,6 +62,18 @@ namespace Chimera.Menus
             );
             Add(redButton);
 
+            Sprite slot0Sprite = mPlayer.PartAttachments[0].Part.Icon;
+            mSlots[0] = new GraphicItem(
+                new Microsoft.Xna.Framework.Rectangle(
+                    x,
+                    y,
+                    width,
+                    height
+                ),
+                slot0Sprite
+            );
+            Add(mSlots[0]);
+
             x += (int)(ChimeraGame.Graphics.PreferredBackBufferWidth) / 6;
             Sprite blueSprite = new Sprite("blueButton");
             Button blueButton = new Button(
@@ -75,6 +88,18 @@ namespace Chimera.Menus
             );
             Add(blueButton);
 
+            Sprite slot1Sprite = mPlayer.PartAttachments[1].Part.Icon;
+            mSlots[1] = new GraphicItem(
+                new Microsoft.Xna.Framework.Rectangle(
+                    x,
+                    y,
+                    width,
+                    height
+                ),
+                slot1Sprite
+            );
+            Add(mSlots[1]);
+
             x += (int)(ChimeraGame.Graphics.PreferredBackBufferWidth) / 6;
             Sprite yellowSprite = new Sprite("yellowButton");
             Button yellowButton = new Button(
@@ -88,6 +113,18 @@ namespace Chimera.Menus
                 new Button.ButtonAction((Button b) => CreatePart(2, b))
             );
             Add(yellowButton);
+
+            Sprite slot2Sprite = mPlayer.PartAttachments[2].Part.Icon;
+            mSlots[2] = new GraphicItem(
+                new Microsoft.Xna.Framework.Rectangle(
+                    x,
+                    y,
+                    width,
+                    height
+                ),
+                slot2Sprite
+            );
+            Add(mSlots[2]);
 
             Sprite doneSprite = new Sprite("check");
             x += (int)(ChimeraGame.Graphics.PreferredBackBufferWidth) / 6;
@@ -107,7 +144,7 @@ namespace Chimera.Menus
 
         private void CreatePart(int slot, Button button)
         {
-            ChimeraGame.PushState(new PlayerPartsMenu(mOwnerGame, mPlayer, slot));
+            ChimeraGame.PushState(new PlayerPartsMenu(mOwnerGame, mPlayer, slot, mSlots[slot]));
         }
 
         private void Done(Button button)

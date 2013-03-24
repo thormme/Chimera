@@ -162,6 +162,7 @@
     <Compile Include="Menus\MainMenu.cs" />
     <Compile Include="MeteredPart.cs" />
     <Compile Include="Parts\CheetahLegs.cs" />
+    <Compile Include="Parts\EmptyPart.cs" />
     <Compile Include="Parts\TestingLegs.cs" />
     <Compile Include="Parts\TestingWings.cs" />
     <Compile Include="Parts\FrogHead.cs" />
