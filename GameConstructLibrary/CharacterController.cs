@@ -62,7 +62,7 @@ namespace GameConstructLibrary
         /// </summary>
         public VerticalMotionConstraint VerticalMotionConstraint { get; private set; }
 
-        private float jumpSpeed = 6.0f;
+        private float jumpSpeed = 8.0f;
         /// <summary>
         /// Gets or sets the speed at which the character leaves the ground when it jumps.
         /// </summary>

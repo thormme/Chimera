@@ -44,7 +44,6 @@ namespace WorldEditor
         private Vector2 mSelectTopLeft = Vector2.Zero;
         private Vector2 mSelectBottomRight = Vector2.Zero;
         private Rectangle mSelectRectangle = new Rectangle();
-        private List<DummyObject> mSelectedObjects = new List<DummyObject>();
         #endregion
 
         private string mName = null;
@@ -181,7 +180,7 @@ namespace WorldEditor
             (mEditorForm as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.CloseTextureForm);
             (mEditorForm as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.OpenObjectParameterForm);
 
-            (mEditorForm as EditorForm).SizeUpDown.ValueChanged += SelectionHandler;
+            (mEditorForm as EditorForm).SizeUpDown.ValueChanged += CursorResizeHandler;
 
             mTextureSelectionForm.UOffset.ValueChanged += TextureHandler;
             mTextureSelectionForm.VOffset.ValueChanged += TextureHandler;
@@ -319,25 +318,6 @@ namespace WorldEditor
 
         }
 
-        private void EditHandler(object sender, EventArgs e)
-        {
-            TabControl editModes = (sender as TabControl);
-            if (editModes.SelectedTab == editModes.Controls["Objects"])
-            {
-
-            }
-            else if (editModes.SelectedTab == editModes.Controls["Heights"])
-            {
-                mObjectParametersForm.Hide();
-                SwitchToEdit();
-            }
-            else if (editModes.SelectedTab == editModes.Controls["Textures"])
-            {
-                mObjectParametersForm.Hide();
-                SwitchToEdit();
-            }
-        }
-
         private void SwitchToEdit()
         {
             // TODO: possibly create new object here.
@@ -355,10 +335,10 @@ namespace WorldEditor
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
             AddState(mDummyWorld);
-            mSelectedObjects.Clear();
-            mSelectedObjects.Add(new DummyObject(mObjects[(mEditorForm.Controls["EditTabs"].Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedItem.ToString()]));
-            SetObjectPropertiesToForm(mSelectedObjects[0]);
-            mDummyWorld.AddObject(mSelectedObjects[0]);
+            mObjectParametersForm.SelectedObjects.Clear();
+            mObjectParametersForm.SelectedObjects.Add(new DummyObject(mObjects[(mEditorForm.Controls["EditTabs"].Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedItem.ToString()]));
+            SetObjectPropertiesToForm(mObjectParametersForm.SelectedObjects[0]);
+            mDummyWorld.AddObject(mObjectParametersForm.SelectedObjects[0]);
         }
 
         private void SetObjectPropertiesToForm(DummyObject dummyObject)
@@ -368,9 +348,9 @@ namespace WorldEditor
             float Z = (float)mObjectParametersForm.PositionZ.Value;
             dummyObject.Position = new Vector3(X, Y, Z);
 
-            float Roll = (float)mObjectParametersForm.Roll.Value;
-            float Pitch = (float)mObjectParametersForm.Pitch.Value;
-            float Yaw = (float)mObjectParametersForm.Yaw.Value;
+            float Roll = (float)mObjectParametersForm.Roll.Value / (float)Math.PI * 180.0f;
+            float Pitch = (float)mObjectParametersForm.Pitch.Value / (float)Math.PI * 180.0f;
+            float Yaw = (float)mObjectParametersForm.Yaw.Value / (float)Math.PI * 180.0f;
             dummyObject.YawPitchRoll = new Vector3(Roll, Pitch, Yaw);
 
             float ScaleX = (float)mObjectParametersForm.ScaleX.Value;
@@ -379,6 +359,8 @@ namespace WorldEditor
             dummyObject.YawPitchRoll = new Vector3(ScaleX, ScaleY, ScaleZ);
 
             dummyObject.Height = (float)mObjectParametersForm.Height.Value;
+
+            dummyObject.Floating = mObjectParametersForm.Floating.Checked;
         }
 
         private void TextureHandler(object sender, EventArgs e)
@@ -422,7 +404,7 @@ namespace WorldEditor
             pictureBox.Image = bmp;
         }
 
-        private void SelectionHandler(object sender, EventArgs e)
+        private void CursorResizeHandler(object sender, EventArgs e)
         {
             mCursorObject.Scale = new Vector3((int)(sender as NumericUpDown).Value, 0, (int)(sender as NumericUpDown).Value);
         }
@@ -440,7 +422,11 @@ namespace WorldEditor
                     if (mPlaceable && form.Mode == EditorForm.EditorMode.OBJECTS)
                     {
                         AddState(mDummyWorld);
-                        mDummyWorld.AddObject(new DummyObject(mCursorObject));
+                        mObjectParametersForm.SelectedObjects.Clear();
+                        DummyObject dummy = new DummyObject(mObjects[mEditorForm.ObjectList.SelectedItem.ToString()]);
+                        mObjectParametersForm.SelectedObjects.Add(dummy);
+                        SetObjectPropertiesToForm(dummy);
+                        mDummyWorld.AddObject(dummy);
                     }
                 }
                 else if (mControls.LeftHold.Active)

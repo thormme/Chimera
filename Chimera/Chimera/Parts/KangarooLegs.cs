@@ -15,8 +15,8 @@ namespace Chimera.Parts
 
         const double maxJumpCharge = 3.0;
         const double jumpStrengthTimerStart = 1.0;
-        const double jumpStrength = 3.0;
-        const float forwardJumpForce = 30f;
+        const double jumpStrength = 2.2;
+        const float forwardJumpForce = 40f;
         const float poundForce = 320f;
         const double poundWaitTime = .5;
         const int poundDamage = 1;

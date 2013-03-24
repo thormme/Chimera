@@ -12,7 +12,8 @@ namespace Chimera.Parts
     class EagleWings : Part
     {
 
-        private const int flapPower = 200;
+        private const float initJumpMultiplier = 1.6f;
+        private const int flapPower = 260;
         private const int numFlaps = 3;
         private const float glideDivider = 2.0f;
 
@@ -68,7 +69,7 @@ namespace Chimera.Parts
                 --mReset;
                 if (mReset == 0)
                 {
-                    Creature.CharacterController.JumpSpeed /= 2;
+                    Creature.CharacterController.JumpSpeed /= initJumpMultiplier;
                 }
             }
 
@@ -92,7 +93,7 @@ namespace Chimera.Parts
         {
             if (mFlaps == 0 && Creature.CharacterController.SupportFinder.HasSupport)
             {
-                Creature.CharacterController.JumpSpeed *= 2;
+                Creature.CharacterController.JumpSpeed *= initJumpMultiplier;
                 Creature.Jump();
                 mReset = ResetFrames;
 

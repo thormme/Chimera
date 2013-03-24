@@ -122,6 +122,7 @@
             this.PositionX.Name = "PositionX";
             this.PositionX.Size = new System.Drawing.Size(60, 20);
             this.PositionX.TabIndex = 5;
+            this.PositionX.ValueChanged += new System.EventHandler(this.PositionX_ValueChanged);
             // 
             // PositionZ
             // 
@@ -140,6 +141,7 @@
             this.PositionZ.Name = "PositionZ";
             this.PositionZ.Size = new System.Drawing.Size(60, 20);
             this.PositionZ.TabIndex = 7;
+            this.PositionZ.ValueChanged += new System.EventHandler(this.PositionZ_ValueChanged);
             // 
             // Yaw
             // 
@@ -158,6 +160,7 @@
             this.Yaw.Name = "Yaw";
             this.Yaw.Size = new System.Drawing.Size(60, 20);
             this.Yaw.TabIndex = 8;
+            this.Yaw.ValueChanged += new System.EventHandler(this.Yaw_ValueChanged);
             // 
             // Pitch
             // 
@@ -181,6 +184,7 @@
             0,
             0,
             0});
+            this.Pitch.ValueChanged += new System.EventHandler(this.Pitch_ValueChanged);
             // 
             // Roll
             // 
@@ -199,6 +203,7 @@
             this.Roll.Name = "Roll";
             this.Roll.Size = new System.Drawing.Size(60, 20);
             this.Roll.TabIndex = 10;
+            this.Roll.ValueChanged += new System.EventHandler(this.Roll_ValueChanged);
             // 
             // ScaleX
             // 
@@ -222,6 +227,7 @@
             0,
             0,
             0});
+            this.ScaleX.ValueChanged += new System.EventHandler(this.ScaleX_ValueChanged);
             // 
             // ScaleY
             // 
@@ -245,6 +251,7 @@
             0,
             0,
             0});
+            this.ScaleY.ValueChanged += new System.EventHandler(this.ScaleY_ValueChanged);
             // 
             // ScaleZ
             // 
@@ -268,6 +275,7 @@
             0,
             0,
             0});
+            this.ScaleZ.ValueChanged += new System.EventHandler(this.ScaleZ_ValueChanged);
             // 
             // Height
             // 
@@ -287,6 +295,7 @@
             this.Height.Name = "Height";
             this.Height.Size = new System.Drawing.Size(60, 20);
             this.Height.TabIndex = 14;
+            this.Height.ValueChanged += new System.EventHandler(this.Height_ValueChanged);
             // 
             // PositionY
             // 
@@ -305,6 +314,7 @@
             this.PositionY.Name = "PositionY";
             this.PositionY.Size = new System.Drawing.Size(60, 20);
             this.PositionY.TabIndex = 6;
+            this.PositionY.ValueChanged += new System.EventHandler(this.PositionY_ValueChanged);
             // 
             // Floating
             // 
