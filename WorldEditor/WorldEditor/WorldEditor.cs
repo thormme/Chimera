@@ -378,14 +378,15 @@ namespace WorldEditor
             float heightReducedScale = (float)texture.Height / (float)pictureBox.Height;
             float vScale = heightReducedScale * (float)mTextureSelectionForm.VScale.Value;
 
+            float uOffset = (float)mTextureSelectionForm.UOffset.Value;
+            float vOffset = (float)mTextureSelectionForm.VOffset.Value;
+
             mTextureTransformShader.Parameters["Texture"].SetValue(texture);
             mTextureTransformShader.Parameters["UVScale"].SetValue(new Vector2(uScale, vScale));
-
-            float uOffset = (float)mTextureSelectionForm.UOffset.Value * (float)transformedTexture.Width;
-            float vOffset = (float)mTextureSelectionForm.VOffset.Value * (float)transformedTexture.Height;
+            mTextureTransformShader.Parameters["UVOffset"].SetValue(new Vector2(uOffset, vOffset));
 
             GraphicsManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, SamplerState.LinearWrap, null, null, mTextureTransformShader);
-            GraphicsManager.SpriteBatch.Draw(texture, new Rectangle(-(int)uOffset, -(int)vOffset, texture.Width, texture.Height), Color.White);
+            GraphicsManager.SpriteBatch.Draw(texture, new Rectangle(0, 0, texture.Width, texture.Height), Color.White);
             GraphicsManager.SpriteBatch.End();
 
             GraphicsManager.Device.SetRenderTarget(null);
