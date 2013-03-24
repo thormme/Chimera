@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using GraphicsLibrary;
 using Utility;
+using Microsoft.Xna.Framework.Content;
 
 namespace WorldEditor
 {
@@ -51,6 +52,8 @@ namespace WorldEditor
 
         private bool mIsActive = false;
 
+        private Effect mTextureTransformShader = null;
+
         //Dialog for the world editor.
         public EditorForm mEditorForm = new EditorForm();
 
@@ -84,12 +87,14 @@ namespace WorldEditor
         //Handles camera movement and picking.
         private Entity mEntity = null;
 
-        public WorldEditor(Viewport viewport, FPSCamera camera)
+        public WorldEditor(Viewport viewport, FPSCamera camera, ContentManager content)
         {
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
             mEntity = new Entity(viewport, mControls, mCamera);
             CreateEditorForm();
+
+            mTextureTransformShader = content.Load<Effect>("shaders/TextureTransform");
         }
 
         public void Update(GameTime gameTime, bool gameWindowActive)
@@ -97,7 +102,7 @@ namespace WorldEditor
             mIsActive = gameWindowActive;
 
             mControls.Update(gameTime);
-            mDummyWorld.Update(gameTime);
+            mDummyWorld.Update(gameTime, mCamera.Position);
 
             mPlaceable = false;
 
@@ -177,7 +182,11 @@ namespace WorldEditor
             (mEditorForm as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.OpenObjectParameterForm);
 
             (mEditorForm as EditorForm).SizeUpDown.ValueChanged += SelectionHandler;
-            //(mEditorForm as EditorForm).StrengthUpDown.ValueChanged += SelectionHandler;
+
+            mTextureSelectionForm.UOffset.ValueChanged += TextureHandler;
+            mTextureSelectionForm.VOffset.ValueChanged += TextureHandler;
+            mTextureSelectionForm.UScale.ValueChanged += TextureHandler;
+            mTextureSelectionForm.VScale.ValueChanged += TextureHandler;
 
             foreach (var model in GraphicsManager.ModelLibrary)
             {
@@ -374,11 +383,35 @@ namespace WorldEditor
 
         private void TextureHandler(object sender, EventArgs e)
         {
+            PictureBox pictureBox = (mTextureSelectionForm as TextureSelectionForm).TexturePreview as PictureBox;
             Texture2D texture = GraphicsManager.LookupSprite(mTextureSelectionForm.TextureList.SelectedItem.ToString());
+            RenderTarget2D transformedTexture = new RenderTarget2D(GraphicsManager.Device, pictureBox.Width, pictureBox.Height);
 
+            GraphicsManager.Device.SetRenderTarget(transformedTexture);
+            GraphicsManager.Device.Clear(Color.CornflowerBlue);
+
+            float widthReducedScale = (float)texture.Width / (float)pictureBox.Width;
+            float uScale = widthReducedScale * (float)mTextureSelectionForm.UScale.Value;
+
+            float heightReducedScale = (float)texture.Height / (float)pictureBox.Height;
+            float vScale = heightReducedScale * (float)mTextureSelectionForm.VScale.Value;
+
+            mTextureTransformShader.Parameters["Texture"].SetValue(texture);
+            mTextureTransformShader.Parameters["UVScale"].SetValue(new Vector2(uScale, vScale));
+
+            float uOffset = (float)mTextureSelectionForm.UOffset.Value * (float)transformedTexture.Width;
+            float vOffset = (float)mTextureSelectionForm.VOffset.Value * (float)transformedTexture.Height;
+
+            GraphicsManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, SamplerState.LinearWrap, null, null, mTextureTransformShader);
+            GraphicsManager.SpriteBatch.Draw(texture, new Rectangle(-(int)uOffset, -(int)vOffset, texture.Width, texture.Height), Color.White);
+            GraphicsManager.SpriteBatch.End();
+
+            GraphicsManager.Device.SetRenderTarget(null);
+
+            //Store data from texture in to image handle.
             MemoryStream ms = new MemoryStream();
 
-            texture.SaveAsPng(ms, texture.Width, texture.Height);
+            transformedTexture.SaveAsPng(ms, transformedTexture.Width, transformedTexture.Height);
 
             ms.Seek(0, SeekOrigin.Begin);
 
@@ -386,7 +419,7 @@ namespace WorldEditor
 
             ms.Close();
             ms = null;
-            ((mTextureSelectionForm as TextureSelectionForm).TexturePreview as PictureBox).Image = bmp;
+            pictureBox.Image = bmp;
         }
 
         private void SelectionHandler(object sender, EventArgs e)
@@ -424,10 +457,23 @@ namespace WorldEditor
                                 }
                             case EditorForm.EditorMode.PAINTING:
                                 {
+                                    TextureSelectionForm textureForm = mTextureSelectionForm as TextureSelectionForm;
                                     float alpha = form.Strength / 100.0f;
                                     GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
-                                    string textureName = ((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).SelectedItem.ToString();
-                                    mDummyWorld.ModifyTextureMap(mCursorObject.Position, textureName, form.Size, alpha, form.PaintingBrush, form.PaintingTool, layer);
+                                    string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
+
+                                    float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
+                                    float uScale = (float)textureForm.UScale.Value, vScale = (float)textureForm.VScale.Value;
+
+                                    mDummyWorld.ModifyTextureMap(
+                                        mCursorObject.Position, 
+                                        textureName, 
+                                        new Vector2(uOffset, vOffset), 
+                                        new Vector2(uScale, vScale), 
+                                        form.Size, alpha,
+                                        form.PaintingBrush, 
+                                        form.PaintingTool, layer);
+
                                     break;
                                 }
                         }

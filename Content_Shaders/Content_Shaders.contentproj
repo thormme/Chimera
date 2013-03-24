@@ -54,6 +54,11 @@
     <None Include="shaders\Structures.fxh">
       <Name>Structures</Name>
     </None>
+    <Compile Include="shaders\TextureTransform.fx">
+      <Name>TextureTransform</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
     <None Include="shaders\VertexShaders.fxh">
       <Name>VertexShaders</Name>
     </None>

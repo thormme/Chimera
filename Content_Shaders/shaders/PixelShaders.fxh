@@ -2,12 +2,22 @@
 
 float4 CompositeTerrainTexture(float2 texCoord)
 {
-	float4 baseColor         = SAMPLE_TEXTURE(Texture,      texCoord       );
 	float4 textureWeights    = SAMPLE_TEXTURE(AlphaMap,     texCoord       );
-	float4 redTextureColor   = SAMPLE_TEXTURE(RedTexture,   texCoord * 8.0f);
-	float4 greenTextureColor = SAMPLE_TEXTURE(GreenTexture, texCoord * 8.0f);
-	float4 blueTextureColor  = SAMPLE_TEXTURE(BlueTexture,  texCoord * 8.0f);
-	float4 alphaTextureColor = SAMPLE_TEXTURE(AlphaTexture, texCoord * 8.0f);
+
+	float2 baseUV = Texture_uvOffset + float2(texCoord.r * Texture_uvScale.r, texCoord.g * Texture_uvScale.g);
+	float4 baseColor         = SAMPLE_TEXTURE(Texture,      baseUV       );
+
+	float2 redUV = RedTexture_uvOffset + float2(texCoord.r * RedTexture_uvScale.r, texCoord.g * RedTexture_uvScale.g);
+	float4 redTextureColor   = SAMPLE_TEXTURE(RedTexture,   redUV);
+
+	float2 greenUV = GreenTexture_uvOffset + float2(texCoord.r * GreenTexture_uvScale.r, texCoord.g * GreenTexture_uvScale.g);
+	float4 greenTextureColor = SAMPLE_TEXTURE(GreenTexture, greenUV);
+
+	float2 blueUV = BlueTexture_uvOffset + float2(texCoord.r * BlueTexture_uvScale.r, texCoord.g * BlueTexture_uvScale.g);
+	float4 blueTextureColor  = SAMPLE_TEXTURE(BlueTexture,  blueUV);
+
+	float2 alphaUV = AlphaTexture_uvOffset + float2(texCoord.r * AlphaTexture_uvScale.r, texCoord.g * AlphaTexture_uvScale.g);
+	float4 alphaTextureColor = SAMPLE_TEXTURE(AlphaTexture, alphaUV);
 
 	textureWeights.r *= redTextureColor.a;
 	textureWeights.g *= greenTextureColor.a;

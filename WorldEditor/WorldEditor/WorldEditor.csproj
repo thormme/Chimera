@@ -281,7 +281,6 @@
     </None>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
-    <None Include="WorldEditor_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Content_DUmmy\Content_Dummy.contentproj">

@@ -111,7 +111,7 @@ namespace WorldEditor
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
         }
 
-        public void ModifyTextureMap(Vector3 position, string texture, float radius, float alpha, EditorForm.Brushes brush, EditorForm.PaintingTools tool, GameConstructLibrary.TerrainTexture.TextureLayer layer)
+        public void ModifyTextureMap(Vector3 position, string texture, Vector2 UVOffset, Vector2 UVScale, float radius, float alpha, EditorForm.Brushes brush, EditorForm.PaintingTools tool, GameConstructLibrary.TerrainTexture.TextureLayer layer)
         {
             mTextureMap.IsFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
 
@@ -120,10 +120,10 @@ namespace WorldEditor
             switch (tool)
             {
                 case EditorForm.PaintingTools.BRUSH:
-                    mTextureMap.PaintTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture);
+                    mTextureMap.PaintTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture, UVOffset, UVScale);
                     break;
                 case EditorForm.PaintingTools.ERASER:
-                    mTextureMap.EraseTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture);
+                    mTextureMap.EraseTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture, UVOffset, UVScale);
                     break;
             }
         }
@@ -186,8 +186,13 @@ namespace WorldEditor
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Vector3 cameraPosition)
         {
+            if (mSkyBox != null)
+            {
+                mSkyBox.Position = cameraPosition;
+            }
+
             if (mDummies != null)
             {
                 foreach (DummyObject obj in mDummies)
