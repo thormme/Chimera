@@ -348,15 +348,15 @@ namespace WorldEditor
             float Z = (float)mObjectParametersForm.PositionZ.Value;
             dummyObject.Position = new Vector3(X, Y, Z);
 
-            float Roll = (float)mObjectParametersForm.Roll.Value / (float)Math.PI * 180.0f;
-            float Pitch = (float)mObjectParametersForm.Pitch.Value / (float)Math.PI * 180.0f;
-            float Yaw = (float)mObjectParametersForm.Yaw.Value / (float)Math.PI * 180.0f;
+            float Roll = (float)mObjectParametersForm.Roll.Value * (float)Math.PI / 180.0f;
+            float Pitch = (float)mObjectParametersForm.Pitch.Value * (float)Math.PI / 180.0f;
+            float Yaw = (float)mObjectParametersForm.Yaw.Value * (float)Math.PI / 180.0f;
             dummyObject.YawPitchRoll = new Vector3(Roll, Pitch, Yaw);
 
             float ScaleX = (float)mObjectParametersForm.ScaleX.Value;
             float ScaleY = (float)mObjectParametersForm.ScaleY.Value;
             float ScaleZ = (float)mObjectParametersForm.ScaleZ.Value;
-            dummyObject.YawPitchRoll = new Vector3(ScaleX, ScaleY, ScaleZ);
+            dummyObject.Scale = new Vector3(ScaleX, ScaleY, ScaleZ);
 
             dummyObject.Height = (float)mObjectParametersForm.Height.Value;
 

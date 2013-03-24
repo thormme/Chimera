@@ -5,6 +5,14 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GraphicsLibrary;
 using Utility;
+using System.Xml.Serialization;
+using BEPUphysics.Entities;
+using BEPUphysics;
+using BEPUphysics.MathExtensions;
+using BEPUphysics.Entities.Prefabs;
+using BEPUphysics.CollisionShapes;
+using BEPUphysics.EntityStateManagement;
+using BEPUphysics.CollisionShapes.ConvexShapes;
 
 namespace GameConstructLibrary
 {
@@ -21,6 +29,11 @@ namespace GameConstructLibrary
         public float Height { get; set; }
         public bool Floating { get; set; }
 
+        [XmlIgnoreAttribute]
+        public TransformableEntity Entity;
+        [XmlIgnoreAttribute]
+        public Vector3 ModelOffset;
+
         public DummyObject()
         {
             RotationAngle = 0;
@@ -36,6 +49,38 @@ namespace GameConstructLibrary
             Scale = copy.Scale;
             Height = copy.Height;
             Floating = copy.Floating;
+        }
+
+        void UpdateEntityParameters()
+        {
+            Entity.Transform = Matrix3X3.CreateFromMatrix(Matrix.CreateScale(Scale) * Matrix.CreateTranslation(-ModelOffset));
+            Entity.OrientationMatrix = Matrix3X3.CreateFromMatrix(Matrix.CreateFromYawPitchRoll(YawPitchRoll.X, YawPitchRoll.Y, YawPitchRoll.Z));
+            Entity.Position = Position;
+        }
+
+        /// <summary>
+        /// Add the object to a physics space.
+        /// Will remove previously added entity.
+        /// </summary>
+        /// <param name="space">The Space to add the entity to.</param>
+        void AddToSpace(Space space)
+        {
+            if (space.Entities.Contains(Entity))
+            {
+                space.Remove(Entity);
+            }
+            Vector3[] vertices;
+            int[] indices;
+            CollisionMeshManager.LookupMesh(Model, out vertices, out indices);
+            Vector3 localPosition;
+            ConvexHullShape entity = new ConvexHullShape(vertices, out localPosition);
+            ModelOffset = localPosition;
+            //Entity entity = new MobileMesh(vertices, indices, new AffineTransform(Scale, Quaternion.CreateFromYawPitchRoll(YawPitchRoll.X, YawPitchRoll.Y, YawPitchRoll.Z), Position), MobileMeshSolidity.Solid);
+            Entity = new TransformableEntity(Position, entity,
+                Matrix3X3.CreateFromMatrix(Matrix.CreateScale(Scale) * Matrix.CreateTranslation(-localPosition)));
+            Entity.OrientationMatrix = Matrix3X3.CreateFromMatrix(Matrix.CreateFromYawPitchRoll(YawPitchRoll.X, YawPitchRoll.Y, YawPitchRoll.Z));
+            space.Add(Entity);
+            //return entity;
         }
 
         public void Draw()

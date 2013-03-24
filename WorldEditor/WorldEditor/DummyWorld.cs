@@ -44,6 +44,8 @@ namespace WorldEditor
 
         private List<DummyObject> mDummies = new List<DummyObject>();
 
+        public Space Space = new Space();
+
         public DummyWorld(Controls controls)
         {
             mName = null;
@@ -197,12 +199,20 @@ namespace WorldEditor
             {
                 foreach (DummyObject obj in mDummies)
                 {
-                    Ray ray = new Ray(new Vector3(obj.Position.X, mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f, obj.Position.Z), -Vector3.Up);
-                    RayHit result;
-                    mTerrainPhysics.StaticCollidable.RayCast(ray, (mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f) - (mTerrainPhysics.StaticCollidable.BoundingBox.Min.Y - 200.0f), out result);
-                    obj.Position = result.Location;
+                    if (obj.Floating)
+                    {
+                        Ray ray = new Ray(new Vector3(obj.Position.X, mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f, obj.Position.Z), -Vector3.Up);
+                        RayHit result;
+                        mTerrainPhysics.StaticCollidable.RayCast(ray, (mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f) - (mTerrainPhysics.StaticCollidable.BoundingBox.Min.Y - 200.0f), out result);
+                        obj.Position = result.Location;
+                    }
                 }
             }
+        }
+
+        public void RayCast(Ray ray, float distance, out RayHit result)
+        {
+            result = new RayHit();
         }
 
         public void Draw()
