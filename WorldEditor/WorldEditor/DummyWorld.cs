@@ -28,6 +28,7 @@ namespace WorldEditor
         private TerrainHeightMap mHeightMap = null;
         private TerrainTexture mTextureMap = null;
         private SkyBox mSkyBox = null;
+        private Water mWater = null;
 
         public TerrainPhysics Terrain
         {
@@ -168,6 +169,7 @@ namespace WorldEditor
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
             mSkyBox = new SkyBox("overcastSkyBox");
+            mWater = new Water("waterTexture", 10000, new Vector2(2,2));
         }
 
         private void UnscaleObjects()
@@ -195,6 +197,11 @@ namespace WorldEditor
                 mSkyBox.Position = cameraPosition;
             }
 
+            if (mWater != null)
+            {
+                mWater.SeaLevel = 100;
+            }
+
             if (mDummies != null)
             {
                 foreach (DummyObject obj in mDummies)
@@ -220,6 +227,11 @@ namespace WorldEditor
             if (mTerrainPhysics != null)
             {
                 mTerrainPhysics.Render();
+            }
+
+            if (mWater != null)
+            {
+                mWater.Render();
             }
 
             if (mSkyBox != null)

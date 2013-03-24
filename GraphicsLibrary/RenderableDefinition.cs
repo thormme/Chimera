@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GraphicsLibrary
 {
@@ -22,6 +23,20 @@ namespace GraphicsLibrary
         {
             get { return mIsSkinned; }
             set { mIsSkinned = value; }
+        }
+
+        private bool mIsWater = false;
+        public bool IsWater
+        {
+            get { return mIsWater; }
+            set { mIsWater = value; }
+        }
+
+        private bool mIsSkyBox = false;
+        public bool IsSkyBox
+        {
+            get { return mIsSkyBox; }
+            set { mIsSkyBox = value; }
         }
 
         private Matrix mWorldTransform;
@@ -64,18 +79,25 @@ namespace GraphicsLibrary
             set { mOverlayTextureName = value; }
         }
 
-        private bool mNoShading = false;
-        public bool IsSkyBox
-        {
-            get { return mNoShading; }
-            set { mNoShading = value; }
-        }
-
         private BoundingBox[,] mBoundingBoxes = new BoundingBox[1,1];
         public BoundingBox[,] BoundingBoxes
         {
             get { return mBoundingBoxes; }
             set { mBoundingBoxes = value; }
+        }
+
+        private VertexBuffer mVertexBuffer = null;
+        public VertexBuffer VertexBuffer
+        {
+            get { return mVertexBuffer; }
+            set { mVertexBuffer = value; }
+        }
+
+        private IndexBuffer mIndexBuffer = null;
+        public IndexBuffer IndexBuffer
+        {
+            get { return mIndexBuffer; }
+            set { mIndexBuffer = value; }
         }
 
         public RenderableDefinition(string name, Matrix worldTransform, Color overlayColor, float overlayColorWeight)

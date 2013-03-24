@@ -210,6 +210,9 @@ namespace GameConstructLibrary
             TerrainPhysics terrain = LoadTerrain(mapName, position, orientation, scale);
             Add(terrain);
 
+            Water water = new Water("waterTexture", 50, new Vector2(2, 2));
+            Add(water);
+
             SkyBox skydome = new SkyBox("overcastSkyBox");
             Add(skydome);
         }

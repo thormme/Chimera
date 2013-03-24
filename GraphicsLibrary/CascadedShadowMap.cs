@@ -305,7 +305,7 @@ namespace GraphicsLibrary
                     {
                         WriteModelShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);
                     }
-                    else
+                    else if (!renderable.IsWater)
                     {
                         WriteTerrainShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);
                     }

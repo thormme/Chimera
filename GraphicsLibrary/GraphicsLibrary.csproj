@@ -127,6 +127,7 @@
     <Compile Include="SuckParticleSystem.cs" />
     <Compile Include="TerrainTexture.cs" />
     <Compile Include="TransparentModel.cs" />
+    <Compile Include="WaterRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

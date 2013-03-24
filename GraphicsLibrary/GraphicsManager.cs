@@ -56,9 +56,6 @@ namespace GraphicsLibrary
         static private RenderTarget2D mOutlineBuffer;
         static private RenderTarget2D mCompositeBuffer;
 
-        static private VertexBuffer mSkyBoxVertexBuffer;
-        static private IndexBuffer mSkyBoxIndexBuffer;
-
         static private ICamera mCamera;
         static public ICamera Camera
         {
@@ -254,7 +251,6 @@ namespace GraphicsLibrary
             LoadShaders(content);
             LoadModels(content);
             LoadSprites(content);
-            CreateSkyBoxBuffers();
         }
 
         /// <summary>
@@ -482,21 +478,19 @@ namespace GraphicsLibrary
         /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
         static public void RenderSkinnedModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, BoundingBox boundingBox, Color overlayColor, float overlayColorWeight)
         {
-            if (mCanRender)
-            {
-                RenderableDefinition skinnedModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
-                skinnedModel.IsModel = true;
-                skinnedModel.IsSkinned = true;
-                skinnedModel.BoneTransforms = boneTransforms;
-                skinnedModel.BoundingBoxes[0, 0] = boundingBox;
-
-                mRenderQueue.Enqueue(skinnedModel);
-                UpdateSceneExtents(boundingBox, worldTransforms);
-            }
-            else
+            if (!mCanRender)
             {
                 throw new Exception("Unable to render animate model " + modelName + " before calling BeginRendering() or after FinishRendering().\n");
             }
+
+            RenderableDefinition skinnedModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
+            skinnedModel.IsModel = true;
+            skinnedModel.IsSkinned = true;
+            skinnedModel.BoneTransforms = boneTransforms;
+            skinnedModel.BoundingBoxes[0, 0] = boundingBox;
+
+            mRenderQueue.Enqueue(skinnedModel);
+            UpdateSceneExtents(boundingBox, worldTransforms);
         }
 
         /// <summary>
@@ -506,20 +500,18 @@ namespace GraphicsLibrary
         /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
         static public void RenderUnskinnedModel(string modelName, Matrix worldTransforms, BoundingBox boundingBox, Color overlayColor, float overlayColorWeight)
         {
-            if (mCanRender)
-            {
-                RenderableDefinition unskinnedModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
-                unskinnedModel.IsModel = true;
-                unskinnedModel.BoundingBoxes[0, 0] = boundingBox;
-
-                mRenderQueue.Enqueue(unskinnedModel);
-
-                UpdateSceneExtents(boundingBox, worldTransforms);
-            }
-            else
+            if (!mCanRender)
             {
                 throw new Exception("Unable to render inanimate model " + modelName + " before calling BeginRendering() or after FinishRendering().\n");
             }
+
+            RenderableDefinition unskinnedModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
+            unskinnedModel.IsModel = true;
+            unskinnedModel.BoundingBoxes[0, 0] = boundingBox;
+
+            mRenderQueue.Enqueue(unskinnedModel);
+
+            UpdateSceneExtents(boundingBox, worldTransforms);
         }
 
         /// <summary>
@@ -529,41 +521,56 @@ namespace GraphicsLibrary
         /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
         static public void RenderTransparentModel(string modelName, Matrix worldTransforms, BoundingBox boundingBox, Color overlayColor, float overlayColorWeight, Vector2 animationRate)
         {
-            if (mCanRender)
-            {
-                RenderableDefinition transparentModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
-                transparentModel.IsModel = true;
-                transparentModel.AnimationRate = animationRate;
-                transparentModel.BoundingBoxes[0, 0] = boundingBox;
-
-                mTransparentQueue.Add(transparentModel);
-            }
-            else
+            if (!mCanRender)
             {
                 throw new Exception("Unable to render transparent model " + modelName + " before calling BeginRendering() or after FinishRendering().\n");
             }
+
+            RenderableDefinition transparentModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
+            transparentModel.IsModel = true;
+            transparentModel.AnimationRate = animationRate;
+            transparentModel.BoundingBoxes[0, 0] = boundingBox;
+
+            mTransparentQueue.Add(transparentModel);
         }
 
-        static public void RenderSkyBox(string textureName, Matrix worldTransform, Color overlayColor, float overlayWeight)
+        static public void RenderSkyBox(VertexBuffer vertexBuffer, IndexBuffer indexBuffer, string textureName, Matrix worldTransform, Color overlayColor, float overlayWeight)
         {
-            if (mCanRender)
-            {
-                float scale = 30000;
-
-                Vector3 sceneScale = new Vector3(scale, scale, scale);
-                Vector3 centerOffset = new Vector3(0, sceneScale.Y * 0.5f, 0);
-
-                RenderableDefinition skybox = new RenderableDefinition(null, worldTransform, overlayColor, overlayWeight);
-                skybox.IsSkyBox = true;
-                skybox.OverlayTextureName = textureName;
-                skybox.WorldTransform = Matrix.CreateScale(sceneScale) * skybox.WorldTransform * Matrix.CreateTranslation(-centerOffset);
-
-                mRenderQueue.Enqueue(skybox);
-            }
-            else
+            if (!mCanRender)
             {
                 throw new Exception("Unable to render skydome before calling BeginRendering() or after FinishRendering().\n");
             }
+
+            float scale = 30000;
+
+            Vector3 sceneScale = new Vector3(scale, scale, scale);
+            Vector3 centerOffset = new Vector3(0, sceneScale.Y * 0.5f, 0);
+
+            RenderableDefinition skybox = new RenderableDefinition(null, worldTransform, overlayColor, overlayWeight);
+            skybox.IsSkyBox = true;
+            skybox.OverlayTextureName = textureName;
+            skybox.WorldTransform = Matrix.CreateScale(sceneScale) * skybox.WorldTransform * Matrix.CreateTranslation(-centerOffset);
+            skybox.VertexBuffer = vertexBuffer;
+            skybox.IndexBuffer = indexBuffer;
+
+            mRenderQueue.Enqueue(skybox);                
+        }
+
+        static public void RenderWater(VertexBuffer vertexBuffer, IndexBuffer indexBuffer, string textureName, Matrix worldTransform, Color overlayColor, float overlayColorWeight)
+        {
+            if (!mCanRender)
+            {
+                throw new Exception("Unable to render water before calling BeginRendering() or after FinishRendering().\n");
+            }
+
+            RenderableDefinition water = new RenderableDefinition(null, worldTransform, overlayColor, overlayColorWeight);
+            water.IsWater = true;
+            water.OverlayTextureName = textureName;
+            water.WorldTransform = worldTransform;
+            water.VertexBuffer = vertexBuffer;
+            water.IndexBuffer = indexBuffer;
+
+            mRenderQueue.Enqueue(water);
         }
 
         /// <summary>
@@ -704,64 +711,6 @@ namespace GraphicsLibrary
                 );
 
             mShadowMap = new CascadedShadowMap(mDevice, 2048);
-        }
-
-        static private void CreateSkyBoxBuffers()
-        {
-            const int bottomLength = 2, rightLength = 2, numSides = 6;
-            const float uLength = 1.0f / 4.0f, vLength = 1.0f / 3.0f;
-
-            float[]   sideUOrigin = { uLength,                        uLength,                         2 * uLength,                    3 * uLength,                    0.0f,                           uLength };
-            float[]   sideVOrigin = { 0.0f,                           vLength,                         vLength,                        vLength,                        vLength,                        2 * vLength };
-            Vector3[] sideTopLeft = { new Vector3(-0.5f, 1.0f, 0.5f), new Vector3(-0.5f, 1.0f, -0.5f), new Vector3(0.5f, 1.0f, -0.5f), new Vector3(0.5f, 1.0f, 0.5f),  new Vector3(-0.5f, 1.0f, 0.5f), new Vector3(-0.5f, 0.0f, -0.5f) };
-            Vector3[] sideRight   = { new Vector3(1.0f, 0.0f, 0.0f),  new Vector3(1.0f, 0.0f, 0.0f),   new Vector3(0.0f, 0.0f, 1.0f),  new Vector3(-1.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, -1.0f), new Vector3(1.0f, 0.0f, 0.0f) };
-            Vector3[] sideBottom  = { new Vector3(0.0f, 0.0f, -1.0f), new Vector3(0.0f, -1.0f, 0.0f),  new Vector3(0.0f, -1.0f, 0.0f), new Vector3(0.0f, -1.0f, 0.0f), new Vector3(0.0f, -1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f) };
-            Vector3[] sideNormal = { new Vector3(0, -1, 0), new Vector3(0, 0, 1), new Vector3(-1, 0, 0), new Vector3(0, 0, -1), new Vector3(1, 0, 0), new Vector3(0, 1, 0) };
-
-            VertexPositionNormalTexture[] skyBoxVertices = new VertexPositionNormalTexture[numSides * bottomLength * rightLength];
-
-            int sideIndex;
-            for (sideIndex = 0; sideIndex < 6; ++sideIndex)
-            {
-                for (int bottom = 0; bottom <= 1; ++bottom)
-                {
-                    for (int right = 0; right <= 1; ++right)
-                    {
-                        VertexPositionNormalTexture vertex = new VertexPositionNormalTexture();
-                        vertex.Position = sideTopLeft[sideIndex] + bottom * sideBottom[sideIndex] + right * sideRight[sideIndex];
-                        vertex.Normal = sideNormal[sideIndex];
-                        vertex.TextureCoordinate = new Vector2(sideUOrigin[sideIndex] + right * uLength, sideVOrigin[sideIndex] + bottom * vLength);
-
-                        skyBoxVertices[sideIndex * bottomLength * rightLength + bottom * bottomLength + right] = vertex;
-                    }
-                }
-            }
-
-            mSkyBoxVertexBuffer = new VertexBuffer(mDevice, VertexPositionNormalTexture.VertexDeclaration, skyBoxVertices.Length, BufferUsage.WriteOnly);
-            mSkyBoxVertexBuffer.SetData(skyBoxVertices);
-
-            const int numQuadVertices = 6;
-            int[] skyBoxIndices = new int[numSides * numQuadVertices];
-
-            int count = 0;
-            for (sideIndex = 0; sideIndex < numSides; ++sideIndex)
-            {
-                int topLeftIndex = sideIndex * bottomLength * rightLength;
-                int topRightIndex = topLeftIndex + 1;
-                int bottomLeftIndex = topRightIndex + 1;
-                int bottomRightIndex = bottomLeftIndex + 1;
-
-                skyBoxIndices[count++] = topLeftIndex;
-                skyBoxIndices[count++] = topRightIndex;
-                skyBoxIndices[count++] = bottomRightIndex;
-
-                skyBoxIndices[count++] = topLeftIndex;
-                skyBoxIndices[count++] = bottomRightIndex;
-                skyBoxIndices[count++] = bottomLeftIndex;
-            }
-
-            mSkyBoxIndexBuffer = new IndexBuffer(mDevice, typeof(int), skyBoxIndices.Length, BufferUsage.WriteOnly);
-            mSkyBoxIndexBuffer.SetData(skyBoxIndices);
         }
 
         /// <summary>
@@ -1023,7 +972,13 @@ namespace GraphicsLibrary
 
             if (renderable.IsSkyBox)
             {
-                DrawSkyBox(renderable.OverlayTextureName, renderable.WorldTransform);
+                DrawSkyBox(renderable);
+                return;
+            }
+
+            if (renderable.IsWater)
+            {
+                DrawWater(renderable);
                 return;
             }
 
@@ -1278,23 +1233,63 @@ namespace GraphicsLibrary
             }
         }
 
-        static private void DrawSkyBox(string textureName, Matrix worldTransform)
+        static private void DrawSkyBox(RenderableDefinition renderable)
         {
             mDevice.SamplerStates[0] = SamplerState.PointClamp;
 
             mVertexBufferShader.CurrentTechnique = mVertexBufferShader.Techniques["NoShade"];
-            mVertexBufferShader.World      = worldTransform;
+            mVertexBufferShader.World      = renderable.WorldTransform;
             mVertexBufferShader.View       = mView;
             mVertexBufferShader.Projection = Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, mCamera.AspectRatio, mCamera.GetNearPlaneDistance(), 30000);
 
-            mVertexBufferShader.Texture = LookupSprite(textureName);
+            mVertexBufferShader.Texture = LookupSprite(renderable.OverlayTextureName);
 
-            mDevice.SetVertexBuffer(mSkyBoxVertexBuffer);
-            mDevice.Indices = mSkyBoxIndexBuffer;
+            mDevice.SetVertexBuffer(renderable.VertexBuffer);
+            mDevice.Indices = renderable.IndexBuffer;
 
             mVertexBufferShader.CurrentTechnique.Passes[0].Apply();
 
-            mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, mSkyBoxVertexBuffer.VertexCount, 0, mSkyBoxIndexBuffer.IndexCount / 3);
+            mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, renderable.VertexBuffer.VertexCount, 0, renderable.IndexBuffer.IndexCount / 3);
+        }
+
+        static private void DrawWater(RenderableDefinition renderable)
+        {
+            mDevice.SamplerStates[0] = SamplerState.LinearWrap;
+
+            string techniqueName = (CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "CelShade" : "Phong";
+            mVertexBufferShader.CurrentTechnique = mVertexBufferShader.Techniques[techniqueName];
+
+            if (CastingShadows)
+            {
+                mVertexBufferShader.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
+            }
+
+            mVertexBufferShader.Parameters["xVisualizeCascades"].SetValue(mShadowMap.VisualizeCascades);
+            mVertexBufferShader.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
+            mVertexBufferShader.Parameters["xLightView"].SetValue(mShadowMap.LightView);
+            mVertexBufferShader.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
+            mVertexBufferShader.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
+            mVertexBufferShader.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
+
+            mVertexBufferShader.Parameters["xDirLightDirection"].SetValue(mDirectionalLight.Direction);
+            mVertexBufferShader.Parameters["xDirLightDiffuseColor"].SetValue(mDirectionalLight.DiffuseColor);
+            mVertexBufferShader.Parameters["xDirLightSpecularColor"].SetValue(mDirectionalLight.SpecularColor);
+            mVertexBufferShader.Parameters["xDirLightAmbientColor"].SetValue(mDirectionalLight.AmbientColor);
+
+            mVertexBufferShader.Parameters["xOverlayColor"].SetValue(renderable.OverlayColor);
+            mVertexBufferShader.Parameters["xOverlayColorWeight"].SetValue(renderable.OverlayColorWeight);
+
+            mVertexBufferShader.View = mView;
+            mVertexBufferShader.Projection = mProjection;
+
+            mVertexBufferShader.Texture = LookupSprite(renderable.OverlayTextureName);
+
+            mDevice.SetVertexBuffer(renderable.VertexBuffer);
+            mDevice.Indices = renderable.IndexBuffer;
+
+            mVertexBufferShader.CurrentTechnique.Passes[0].Apply();
+
+            mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, renderable.VertexBuffer.VertexCount, 0, renderable.IndexBuffer.IndexCount / 3);
         }
 
         /// <summary>
