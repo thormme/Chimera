@@ -19,6 +19,7 @@ namespace GameConstructLibrary
         public Vector3 RotationAxis { get; set; }
         public float RotationAngle { get; set; }
         public float Height { get; set; }
+        public bool Floating { get; set; }
 
         public DummyObject()
         {
@@ -34,6 +35,7 @@ namespace GameConstructLibrary
             YawPitchRoll = copy.YawPitchRoll;
             Scale = copy.Scale;
             Height = copy.Height;
+            Floating = copy.Floating;
         }
 
         public void Draw()

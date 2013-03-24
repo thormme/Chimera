@@ -122,6 +122,7 @@
             this.PositionX.Name = "PositionX";
             this.PositionX.Size = new System.Drawing.Size(60, 20);
             this.PositionX.TabIndex = 5;
+            this.PositionX.ValueChanged += new System.EventHandler(this.PositionX_ValueChanged);
             // 
             // PositionZ
             // 
@@ -158,6 +159,7 @@
             this.Yaw.Name = "Yaw";
             this.Yaw.Size = new System.Drawing.Size(60, 20);
             this.Yaw.TabIndex = 8;
+            this.Yaw.ValueChanged += new System.EventHandler(this.Yaw_ValueChanged);
             // 
             // Pitch
             // 
@@ -222,6 +224,7 @@
             0,
             0,
             0});
+            this.ScaleX.ValueChanged += new System.EventHandler(this.ScaleX_ValueChanged);
             // 
             // ScaleY
             // 
@@ -287,6 +290,7 @@
             this.Height.Name = "Height";
             this.Height.Size = new System.Drawing.Size(60, 20);
             this.Height.TabIndex = 14;
+            this.Height.ValueChanged += new System.EventHandler(this.Height_ValueChanged);
             // 
             // PositionY
             // 
