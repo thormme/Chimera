@@ -87,6 +87,10 @@
     <Reference Include="DPSF">
       <HintPath>..\Chimera\Chimera\libraries\DPSF\x86\DPSF.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\net-20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -139,8 +143,10 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="CharacterController.cs" />
+    <Compile Include="ChaseCamera.cs" />
     <Compile Include="CollisionMeshManager.cs" />
     <Compile Include="DummyObject.cs" />
+    <Compile Include="FPSCamera.cs" />
     <Compile Include="IGameState.cs" />
     <Compile Include="HorizontalMotionConstraint.cs" />
     <Compile Include="IActor.cs" />
@@ -158,6 +164,7 @@
     <Compile Include="Input\KeyInputAction.cs" />
     <Compile Include="Input\MouseButtonInputAction.cs" />
     <Compile Include="Input\MouseMovementInputAction.cs" />
+    <Compile Include="LevelFileLoader.cs" />
     <Compile Include="LevelManager.cs" />
     <Compile Include="Menu\Button.cs" />
     <Compile Include="Menu\GameMenu.cs" />
@@ -171,6 +178,7 @@
     <Compile Include="QueryManager.cs" />
     <Compile Include="Rand.cs" />
     <Compile Include="Sensor.cs" />
+    <Compile Include="SkyBox.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="StanceManager.cs" />
     <Compile Include="StepManager.cs" />

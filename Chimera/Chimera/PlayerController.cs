@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Entities.Prefabs;
 using Chimera;
+using Chimera.Menus;
 
 #endregion
 
@@ -224,7 +225,6 @@ namespace Chimera
         public override void SetCreature(Creature creature)
         {
             base.SetCreature(creature);
-            mCamera.TargetBody = mCreature;
         }
         #endregion
 
@@ -404,6 +404,12 @@ namespace Chimera
         private void PerformActions()
         {
             PlayerCreature player = (mCreature as PlayerCreature);
+
+            if ((mStealPressMouse.Active || mStealPress.Active) && 
+                player.CollidingObjects.Contains(player.Checkpoint))
+            {
+                ChimeraGame.PushState(new PlayerSlotMenu(ChimeraGame.Game, player));
+            }
 
             if (!NoControl && (mPressJump.Active || mJumpKey.Active))
             {

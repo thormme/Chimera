@@ -20,7 +20,7 @@
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Projects\School\EECS494\Chimera\</PublishUrl>
+    <PublishUrl>D:\Users\Josh\My Documents\Chimera\Chimera\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -30,7 +30,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>14</ApplicationRevision>
+    <ApplicationRevision>15</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -40,7 +40,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\x86\Debug</OutputPath>
+    <OutputPath>..\..\bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -52,7 +52,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\x86\Release</OutputPath>
+    <OutputPath>..\..\bin\x86\Release\</OutputPath>
     <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -63,7 +63,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MapEditor|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\MapEditor\</OutputPath>
+    <OutputPath>..\bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <DebugType>full</DebugType>
@@ -80,7 +80,7 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MapEditor Release|x86'">
-    <OutputPath>bin\x86\MapEditor Release\</OutputPath>
+    <OutputPath>..\..\bin\x86\Release\</OutputPath>
     <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <Optimize>true</Optimize>
     <NoStdLib>true</NoStdLib>
@@ -107,7 +107,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BEPUphysics">
@@ -173,7 +173,6 @@
     <Compile Include="AI\PassiveAI.cs" />
     <Compile Include="AI\PenguinAI.cs" />
     <Compile Include="AI\RhinoAI.cs" />
-    <Compile Include="ChaseCamera.cs" />
     <Compile Include="Checkpoint.cs" />
     <Compile Include="ConeSensor.cs" />
     <Compile Include="CooldownPart.cs" />
@@ -236,6 +235,11 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Content_DUmmy\Content_Dummy.contentproj">
+      <Project>{12E4B132-65A5-4E63-8C94-3F7687705DCE}</Project>
+      <Name>Content_Dummy %28Content%29</Name>
+      <XnaReferenceType>Content</XnaReferenceType>
+    </ProjectReference>
     <ProjectReference Include="..\..\GameConstructLibrary\GameConstructLibrary.csproj">
       <Project>{EBF58AE6-887D-480A-B693-4DCB2C02CB8D}</Project>
       <Name>GameConstructLibrary</Name>
@@ -247,11 +251,6 @@
     <ProjectReference Include="..\..\Utility\Utility.csproj">
       <Project>{3025FC73-AEC9-489F-96EF-BC52CCE64CEC}</Project>
       <Name>Utility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ChimeraContent\ChimeraContent.contentproj">
-      <Name>ChimeraContent %28Content%29</Name>
-      <XnaReferenceType>Content</XnaReferenceType>
-      <Project>{DDBC472F-F07E-420A-9AD7-31C03422F337}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -283,7 +282,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Chimera_TemporaryKey.pfx" />
+    <None Include="tree.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Triggers\" />

@@ -61,6 +61,8 @@ namespace Chimera
         private KeyInputAction sunLeft = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Left);
         private KeyInputAction sunRight = new KeyInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, Microsoft.Xna.Framework.Input.Keys.Right);
         private static InputAction enterConsoleCommand = new KeyInputAction(Microsoft.Xna.Framework.PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Enter);
+        private static InputAction previousConsoleCommand = new KeyInputAction(Microsoft.Xna.Framework.PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Up);
+        private static InputAction nextConsoleCommand = new KeyInputAction(Microsoft.Xna.Framework.PlayerIndex.One, InputAction.ButtonAction.Pressed, Microsoft.Xna.Framework.Input.Keys.Down);
         bool debugMode = false;
 
         private Nuclex.UserInterface.Screen mDebugScreen;
@@ -118,6 +120,9 @@ namespace Chimera
             DebugConsole.AddCommand("visualizeCascades", new DebugConsole.ConsoleCommand(VisualizeCascadesCommand));
             DebugConsole.AddCommand("celShading", new DebugConsole.ConsoleCommand(CelShadingCommand));
             DebugConsole.AddCommand("outlining", new DebugConsole.ConsoleCommand(OutliningCommand));
+            DebugConsole.AddCommand("drawBoundingBoxes", new DebugConsole.ConsoleCommand(BoundingBoxCommand));
+            DebugConsole.AddCommand("BirdsEyeView", new DebugConsole.ConsoleCommand(BirdsEyeViewCommand));
+            DebugConsole.AddCommand("BEV", new DebugConsole.ConsoleCommand(BirdsEyeViewCommand));
             DebugConsole.Hide();
             // END
 
@@ -151,14 +156,13 @@ namespace Chimera
         {
 
             GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
+            GraphicsManager.Outlining = GraphicsManager.Outlines.All;
             GraphicsManager.CastingShadows = true;
             GraphicsManager.DebugVisualization = false;
 
             IntPtr ptr = this.Window.Handle;
             System.Windows.Forms.Form form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(ptr);
             form.Size = new System.Drawing.Size(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
-
-
 
             base.Initialize();
         }
@@ -172,7 +176,7 @@ namespace Chimera
             DebugModelDrawer = new InstancedModelDrawer(this);
             DebugModelDrawer.IsWireframe = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = Content.Load<SpriteFont>("font");
+
             try
             {
                 GraphicsManager.LoadContent(Content, Graphics.GraphicsDevice, spriteBatch);
@@ -226,6 +230,16 @@ namespace Chimera
             if (DebugConsole.IsVisible && enterConsoleCommand.Active)
             {
                 DebugConsole.RunEnteredCommand();
+            } 
+            if (DebugConsole.IsVisible && nextConsoleCommand.Active)
+            {
+                DebugConsole.NavigateToNextCommand();
+                mDebugScreen.FocusedControl = DebugConsole.ConsoleInput;
+            }
+            if (DebugConsole.IsVisible && previousConsoleCommand.Active)
+            {
+                DebugConsole.NavigateToPreviousCommand();
+                mDebugScreen.FocusedControl = DebugConsole.ConsoleInput;
             }
             if (debug.Active)
             {
@@ -244,7 +258,7 @@ namespace Chimera
             {
                 IsMouseVisible = !InputAction.IsMouseLocked;
 
-                Chimera.ChaseCamera camera = Camera as Chimera.ChaseCamera;
+                ChaseCamera camera = Camera as ChaseCamera;
 
                 if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
                 {
@@ -263,10 +277,20 @@ namespace Chimera
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                     this.Exit();
 
-                InputAction.Update();
+                if (IsActive)
+                {
+                    InputAction.Update();
+                }
                 if (mGameStates.Count > 0)
                 {
-                    mGameStates[mGameStates.Count - 1].Update(gameTime);
+                    IGameState gameState = mGameStates[mGameStates.Count - 1];
+
+                    gameState.Update(gameTime);
+                    
+                    if (gameState is Chimera.GameWorld && camera != null)
+                    {
+                        camera.World = gameState as World;
+                    }
                 }
 
                 if (Camera != null)
@@ -412,23 +436,23 @@ namespace Chimera
         {
             if (parameters.Count > 0)
             {
-                if (parameters[0].ToLower() == "all")
+                if (parameters[0].ToLower().Contains("all"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
                 }
-                else if (parameters[0].ToLower() == "none")
+                else if (parameters[0].ToLower().Contains("none"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.None;
                 }
-                else if (parameters[0].ToLower() == "models")
+                else if (parameters[0].ToLower().Contains("models"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.Models;
                 }
-                else if (parameters[0].ToLower() == "terrain")
+                else if (parameters[0].ToLower().Contains("terrain"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.Terrain;
                 }
-                else if (parameters[0].ToLower() == "animatemodels")
+                else if (parameters[0].ToLower().Contains("animatemodels"))
                 {
                     GraphicsManager.CelShading = GraphicsManager.CelShaded.AnimateModels;
                 }
@@ -439,18 +463,39 @@ namespace Chimera
         {
             if (parameters.Count > 0)
             {
-                if (parameters[0].ToLower() == "all")
+                if (parameters[0].ToLower().Contains("all"))
                 {
                     GraphicsManager.Outlining = GraphicsManager.Outlines.All;
                 }
-                else if (parameters[0].ToLower() == "none")
+                else if (parameters[0].ToLower().Contains("none"))
                 {
                     GraphicsManager.Outlining = GraphicsManager.Outlines.None;
                 }
-                else if (parameters[0].ToLower() == "animatemodels")
+                else if (parameters[0].ToLower().Contains("animatemodels"))
                 {
                     GraphicsManager.Outlining = GraphicsManager.Outlines.AnimateModels;
                 }
+            }
+        }
+
+        private void BoundingBoxCommand(List<string> parameters)
+        {
+            GraphicsManager.DrawBoundingBoxes = !GraphicsManager.DrawBoundingBoxes;
+        }
+
+        private void BirdsEyeViewCommand(List<string> parameters)
+        {
+            if (GraphicsManager.BirdsEyeViewCamera != null)
+            {
+                GraphicsManager.BirdsEyeViewCamera = null;
+            }
+            else
+            {
+                FPSCamera birdsEyeViewCamera = new FPSCamera(Graphics.GraphicsDevice.Viewport);
+                birdsEyeViewCamera.Position = new Vector3(0, 1000, 0);
+                birdsEyeViewCamera.Target = new Vector3(1, 1, 1);
+
+                GraphicsManager.BirdsEyeViewCamera = birdsEyeViewCamera;
             }
         }
 

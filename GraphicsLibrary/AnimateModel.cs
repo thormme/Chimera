@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using AnimationUtilities;
 
 namespace GraphicsLibrary
 {
@@ -13,7 +14,7 @@ namespace GraphicsLibrary
     {
         #region Fields
 
-        public BoundingBox BoundingBox
+        public new BoundingBox BoundingBox
         {
             get { return mBoundingBox; }
         }
@@ -123,8 +124,9 @@ namespace GraphicsLibrary
         /// <param name="worldTransform">Transformation of model in to place in world space.</param>
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
+            BoundingBox transformedBBox = new BoundingBox(Vector3.Transform(mBoundingBox.Min, worldTransform), Vector3.Transform(mBoundingBox.Max, worldTransform));
             Matrix[] skinTransforms = AnimationPlayer.GetSkinTransforms();
-            GraphicsManager.RenderSkinnedModel(mModelName, skinTransforms, worldTransform, mBoundingBox, overlayColor, overlayColorWeight);
+            GraphicsManager.RenderSkinnedModel(mModelName, skinTransforms, worldTransform, transformedBBox, overlayColor, overlayColorWeight);
         }
 
         #endregion

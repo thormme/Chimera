@@ -10,6 +10,7 @@ using System.Reflection;
 using BEPUphysics.Collidables;
 using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Entities.Prefabs;
+using System.IO;
 
 namespace GameConstructLibrary
 {
@@ -168,8 +169,15 @@ namespace GameConstructLibrary
 
         public void AddLevelFromFile(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)
         {
+            if (!mapName.Contains(".lvl"))
+            {
+                mapName += ".lvl";
+            }
 
-            List<DummyObject> objects = LevelManager.Load(mapName);
+            FileInfo fileInfo = new FileInfo(mapName);
+            List<DummyObject> objects = LevelFileLoader.LoadObjectsFromFile(fileInfo);
+            GraphicsManager.AddTerrain(fileInfo, LevelFileLoader.LoadHeightMapFromFile(fileInfo), LevelFileLoader.LoadTextureFromFile(fileInfo));
+
             foreach (DummyObject dummy in objects)
             {
                 if (dummy.Type == "Root")
@@ -180,7 +188,7 @@ namespace GameConstructLibrary
 
                 if (type != null)
                 {
-                    Quaternion objectOrientation = Quaternion.CreateFromYawPitchRoll(dummy.Orientation.X, dummy.Orientation.Y, dummy.Orientation.Z);
+                    Quaternion objectOrientation = Quaternion.CreateFromYawPitchRoll(dummy.YawPitchRoll.X, dummy.YawPitchRoll.Y, dummy.YawPitchRoll.Z);
                     object[] parameters = new object[5];
                     parameters[0] = dummy.Model;
                     parameters[1] = Vector3.Multiply(dummy.Position, scale) + position;
@@ -201,6 +209,9 @@ namespace GameConstructLibrary
 
             TerrainPhysics terrain = LoadTerrain(mapName, position, orientation, scale);
             Add(terrain);
+
+            SkyBox skydome = new SkyBox("overcastSkyBox");
+            Add(skydome);
         }
 
         protected virtual TerrainPhysics LoadTerrain(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)

@@ -2,3 +2,8 @@
 obj/
 bin/
 *.cachefile
+/*.sdf
+*.log
+*.csproj.user
+*.opensdf
+Thumbs.db

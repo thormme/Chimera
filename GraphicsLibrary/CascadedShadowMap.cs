@@ -112,8 +112,8 @@ namespace GraphicsLibrary
 
         private void ResizeCascadeContainer()
         {
-            float[] nearPercentages = { 0.0f, 0.01f, 0.1f, 0.5f };
-            float[] farPercentages  = { 0.01f, 0.1f, 0.5f, 1.0f };
+            float[] nearPercentages = { 0.0f, 0.02f, 0.06f, 0.3f };
+            float[] farPercentages  = { 0.02f, 0.06f, 0.3f, 1.0f };
             Color[] colorBands = { 
                                       new Color(1.0f, 0.0f, 0.0f, 1.0f), 
                                       new Color(0.0f, 1.0f, 0.0f, 1.0f), 
@@ -287,8 +287,8 @@ namespace GraphicsLibrary
             for (int iCascadeCount = 0; iCascadeCount < mCascadeCount; iCascadeCount++)
             {
                 Viewport cascadeViewport = new Viewport(
-                    (iCascadeCount % 2) * mCascadeResolution, 
-                    (iCascadeCount / 2) * mCascadeResolution, 
+                    (iCascadeCount % 2) * mCascadeResolution,
+                    (iCascadeCount / 2) * mCascadeResolution,
                     mCascadeResolution, mCascadeResolution
                 );
 
@@ -296,6 +296,11 @@ namespace GraphicsLibrary
 
                 foreach (RenderableDefinition renderable in renderables)
                 {
+                    if (renderable.IsSkyBox)
+                    {
+                        continue;
+                    }
+
                     if (renderable.IsModel)
                     {
                         WriteModelShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);
@@ -318,7 +323,7 @@ namespace GraphicsLibrary
 
             foreach (ModelMesh mesh in model.Meshes)
             {
-                foreach (SkinnedEffect effect in mesh.Effects)
+                foreach (AnimationUtilities.SkinnedEffect effect in mesh.Effects)
                 {
                     effect.Parameters["xLightView"].SetValue(mLightView);
                     effect.Parameters["xLightProjection"].SetValue(cascadeProjection);
@@ -338,21 +343,36 @@ namespace GraphicsLibrary
         {
             TerrainHeightMap terrain = GraphicsManager.LookupTerrainHeightMap(renderable.Name);
 
-            GraphicsManager.TerrainShader.World = renderable.WorldTransform;
+            GraphicsManager.VertexBufferShader.World = renderable.WorldTransform;
 
-            GraphicsManager.TerrainShader.Parameters["xLightView"].SetValue(mLightView);
-            GraphicsManager.TerrainShader.Parameters["xLightProjection"].SetValue(cascadeProjection);
+            GraphicsManager.VertexBufferShader.Parameters["xLightView"].SetValue(mLightView);
+            GraphicsManager.VertexBufferShader.Parameters["xLightProjection"].SetValue(cascadeProjection);
 
-            GraphicsManager.TerrainShader.CurrentTechnique = GraphicsManager.TerrainShader.Techniques["ShadowCast"];
-            GraphicsManager.TerrainShader.CurrentTechnique.Passes[0].Apply();
+            GraphicsManager.VertexBufferShader.CurrentTechnique = GraphicsManager.VertexBufferShader.Techniques["ShadowCast"];
+            GraphicsManager.VertexBufferShader.CurrentTechnique.Passes[0].Apply();
 
-            mGraphicsDevice.DrawIndexedPrimitives(
-                PrimitiveType.TriangleList,
-                0,
-                0,
-                terrain.NumVertices,
-                0,
-                terrain.NumIndices / 3);
+            int numCols = GraphicsManager.LookupTerrainHeightMap(renderable.Name).NumChunksHorizontal;
+            int numRows = GraphicsManager.LookupTerrainHeightMap(renderable.Name).NumChunksVertical;
+
+            for (int col = 0; col < numCols; col++)
+            {
+                for (int row = 0; row < numRows; row++)
+                {
+                    VertexBuffer vertexBuffer = terrain.VertexBuffers[row, col];
+                    IndexBuffer indexBuffer = terrain.IndexBuffers[row, col];
+
+                    mGraphicsDevice.SetVertexBuffer(vertexBuffer);
+                    mGraphicsDevice.Indices = indexBuffer;
+
+                    mGraphicsDevice.DrawIndexedPrimitives(
+                        PrimitiveType.TriangleList,
+                        0,
+                        0,
+                        vertexBuffer.VertexCount,
+                        0,
+                        indexBuffer.IndexCount / 3);
+                }
+            }
         }
 
         #endregion

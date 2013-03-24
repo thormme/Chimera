@@ -8,7 +8,7 @@ namespace GraphicsLibrary
     {
         private string mModelName;
 
-        public BoundingBox BoundingBox
+        public new BoundingBox BoundingBox
         {
             get { return mBoundingBox; }
         }
@@ -41,7 +41,8 @@ namespace GraphicsLibrary
 
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            GraphicsManager.RenderTransparentModel(mModelName, worldTransform, mBoundingBox, overlayColor, overlayColorWeight, ScrollVelocity);
+            BoundingBox transformedBoundingBox = new BoundingBox(Vector3.Transform(mBoundingBox.Min, worldTransform), Vector3.Transform(mBoundingBox.Max, worldTransform));
+            GraphicsManager.RenderTransparentModel(mModelName, worldTransform, transformedBoundingBox, overlayColor, overlayColorWeight, ScrollVelocity);
         }
     }
 }
