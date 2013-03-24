@@ -51,6 +51,21 @@ BEGIN_CONSTANTS
 	float xCursorInnerRadius;
 	float xCursorOuterRadius;
 
+	float2 Texture_uvOffset;
+	float2 Texture_uvScale;
+
+	float2 RedTexture_uvOffset;
+	float2 RedTexture_uvScale;
+
+	float2 GreenTexture_uvOffset;
+	float2 GreenTexture_uvScale;
+
+	float2 BlueTexture_uvOffset;
+	float2 BlueTexture_uvScale;
+
+	float2 AlphaTexture_uvOffset;
+	float2 AlphaTexture_uvScale;
+
 MATRIX_CONSTANTS
 
     float4x4 WorldViewProj                      _vs(c15)          _cb(c0);

@@ -39,6 +39,20 @@ namespace GameConstructLibrary
         }
         private string[, ,] mDetailTextureNames;
 
+        public Vector2[, ,] DetailTextureUVOffset
+        {
+            get { return mDetailTextureUVOffset; }
+            set { mDetailTextureUVOffset = value; }
+        }
+        private Vector2[, ,] mDetailTextureUVOffset;
+
+        public Vector2[, ,] DetailTextureUVScale
+        {
+            get { return mDetailTextureUVScale; }
+            set { mDetailTextureUVScale = value; }
+        }
+        private Vector2[, ,] mDetailTextureUVScale;
+
         /// <summary>
         /// Total number of texels heightmap is wide.
         /// </summary>
@@ -161,7 +175,14 @@ namespace GameConstructLibrary
 
         #region Construction
 
-        public TerrainTexture(Texture2D alphaMap, string[,,] detailTextureNames, int numChunksHorizontal, int numChunksVertical, GraphicsDevice device)
+        public TerrainTexture(
+            Texture2D alphaMap, 
+            string[,,] detailTextureNames, 
+            Vector2[, ,] detailTextureUVOffset, 
+            Vector2[, ,] detailTextureUVScale, 
+            int numChunksHorizontal, 
+            int numChunksVertical, 
+            GraphicsDevice device)
         {
             mDevice = device;
 
@@ -178,7 +199,9 @@ namespace GameConstructLibrary
 
             mTextureBuffers = new Texture2D[mNumChunksVertical, mNumChunksHorizontal];
 
-            mDetailTextureNames = detailTextureNames;
+            mDetailTextureNames    = detailTextureNames;
+            mDetailTextureUVOffset = detailTextureUVOffset;
+            mDetailTextureUVScale  = detailTextureUVScale;
 
             mDirtyChunks = new bool[mNumChunksVertical, mNumChunksHorizontal];
             for (int row = 0; row < mNumChunksVertical; ++row)
@@ -248,27 +271,27 @@ namespace GameConstructLibrary
 
         #region Texel Modification
 
-        public void PaintTerrain(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName)
+        public void PaintTerrain(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName, Vector2 uVOffset, Vector2 uVScale)
         {
             if (!mIsFeathered)
             {
-                PaintSolidBrush(position, radius, alpha, layer, detailTextureName);
+                PaintSolidBrush(position, radius, alpha, layer, detailTextureName, uVOffset, uVScale);
             }
             else
             {
-                PaintLinearBrush(position, radius, alpha, layer, detailTextureName);
+                PaintLinearBrush(position, radius, alpha, layer, detailTextureName, uVOffset, uVScale);
             }
         }
 
-        public void EraseTerrain(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName)
+        public void EraseTerrain(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName, Vector2 uVSOffset, Vector2 uVScale)
         {
             if (!mIsFeathered)
             {
-                EraseSolidBrush(position, radius, alpha, layer, detailTextureName);
+                EraseSolidBrush(position, radius, alpha, layer, detailTextureName, uVSOffset, uVScale);
             }
             else
             {
-                EraseLinearBrush(position, radius, alpha, layer, detailTextureName);
+                EraseLinearBrush(position, radius, alpha, layer, detailTextureName, uVSOffset, uVScale);
             }
         }
 
@@ -279,34 +302,34 @@ namespace GameConstructLibrary
         /// <param name="radius"></param>
         /// <param name="layer"></param>
         /// <param name="detailTextureName"></param>
-        public void PaintSolidBrush(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName)
+        public void PaintSolidBrush(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName, Vector2 uVSOffset, Vector2 uVScale)
         {
             Brush solidModifier = SolidBrush;
-            ModifyTexels(position, radius, alpha, layer, detailTextureName, solidModifier);
+            ModifyTexels(position, radius, alpha, layer, detailTextureName, uVSOffset, uVScale, solidModifier);
         }
 
-        public void PaintLinearBrush(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName)
+        public void PaintLinearBrush(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName, Vector2 uVSOffset, Vector2 uVScale)
         {
             Brush lerpModifier = LinearBrush;
-            ModifyTexels(position, radius, alpha, layer, detailTextureName, lerpModifier);
+            ModifyTexels(position, radius, alpha, layer, detailTextureName, uVSOffset, uVScale, lerpModifier);
         }
 
-        public void PaintQuadraticBrush(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName)
+        public void PaintQuadraticBrush(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName, Vector2 uVSOffset, Vector2 uVScale)
         {
             Brush quadModifier = QuadraticBrush;
-            ModifyTexels(position, radius, alpha, layer, detailTextureName, quadModifier);
+            ModifyTexels(position, radius, alpha, layer, detailTextureName, uVSOffset, uVScale, quadModifier);
         }
 
-        public void EraseSolidBrush(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName)
+        public void EraseSolidBrush(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName, Vector2 uVSOffset, Vector2 uVScale)
         {
             Brush solidModifier = SolidEraser;
-            ModifyTexels(position, radius, alpha, layer, detailTextureName, solidModifier);
+            ModifyTexels(position, radius, alpha, layer, detailTextureName, uVSOffset, uVScale, solidModifier);
         }
 
-        public void EraseLinearBrush(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName)
+        public void EraseLinearBrush(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName, Vector2 uVSOffset, Vector2 uVScale)
         {
             Brush lerpModifier = LinearEraser;
-            ModifyTexels(position, radius, alpha, layer, detailTextureName, lerpModifier);
+            ModifyTexels(position, radius, alpha, layer, detailTextureName, uVSOffset, uVScale, lerpModifier);
         }
 
         #endregion
@@ -385,12 +408,14 @@ namespace GameConstructLibrary
         /// <param name="v"></param>
         /// <param name="layer"></param>
         /// <param name="detailTextureName"></param>
-        private void SetTextureName(int u, int v, TextureLayer layer, string detailTextureName)
+        private void SetTextureName(int u, int v, TextureLayer layer, string detailTextureName, Vector2 uVOffset, Vector2 uVScale)
         {
             int chunkRowIndex = v / mChunkHeight;
             int chunkColIndex = u / mChunkWidth;
 
             mDetailTextureNames[chunkRowIndex, chunkColIndex, (int)layer] = detailTextureName;
+            mDetailTextureUVOffset[chunkRowIndex, chunkColIndex, (int)layer] = uVOffset;
+            mDetailTextureUVScale[chunkRowIndex, chunkColIndex, (int)layer] = uVScale;
         }
 
         /// <summary>
@@ -401,7 +426,7 @@ namespace GameConstructLibrary
         /// <param name="layer"></param>
         /// <param name="magnitude"></param>
         /// <param name="modifyTexel"></param>
-        private void ModifyTexels(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName, Brush modifyTexel)
+        private void ModifyTexels(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName, Vector2 uVOffset, Vector2 uVScale, Brush modifyTexel)
         {
             radius = radius / 100.0f * mHeight;
             float radiusSquared = radius * radius;
@@ -409,52 +434,8 @@ namespace GameConstructLibrary
             position.X = (position.X / Utils.WorldScale.X + 50.0f) / 100.0f * mWidth;
             position.Y = (position.Y / Utils.WorldScale.Z + 50.0f) / 100.0f * mHeight;
 
-            //int cornerDisplacement = mIsBlock ? (int)radius : (int)Math.Sqrt(radiusSquared / 2.0f);
-
-            //SetTextureName(positionX, positionY, layer, detailTextureName);
-            //WriteDirtyBit(positionX, positionY);
-
-            //SetTextureName(positionX - cornerDisplacement, positionY - cornerDisplacement, layer, detailTextureName);
-            //WriteDirtyBit(positionX - cornerDisplacement, positionY - cornerDisplacement);
-
-            //SetTextureName(positionX + cornerDisplacement, positionY - cornerDisplacement, layer, detailTextureName);
-            //WriteDirtyBit(positionX + cornerDisplacement, positionY - cornerDisplacement);
-
-            //SetTextureName(positionX - cornerDisplacement, positionY + cornerDisplacement, layer, detailTextureName);
-            //WriteDirtyBit(positionX - cornerDisplacement, positionY + cornerDisplacement);
-
-            //SetTextureName(positionX + cornerDisplacement, positionY + cornerDisplacement, layer, detailTextureName);
-            //WriteDirtyBit(positionX + cornerDisplacement, positionY + cornerDisplacement);
-
-            //for (int v = positionY - cornerDisplacement; v <= positionY; ++v)
-            //{
-            //    for (int u = positionX - cornerDisplacement; u <= positionX; ++u)
-            //    {
-            //        int distanceSquared = 0;
-
-            //        if (!mIsBlock)
-            //        {
-            //            Vector2 displacement = new Vector2(u, v) - position;
-
-            //            if ((distanceSquared = (int)displacement.LengthSquared()) > radiusSquared)
-            //            {
-            //                continue;
-            //            }
-            //        }
-
-            //        int intRadius = (int)radius;
-
-            //        modifyTexel(u,             v,             distanceSquared, radiusSquared, alpha, layer);
-            //        modifyTexel(u + intRadius, v,             distanceSquared, radiusSquared, alpha, layer);
-            //        modifyTexel(u,             v + intRadius, distanceSquared, radiusSquared, alpha, layer);
-            //        modifyTexel(u + intRadius, v + intRadius, distanceSquared, radiusSquared, alpha, layer);
-            //    }
-            //}
-
             int minZ = (int)Math.Max(0, position.Y - radius), maxZ = (int)Math.Min(mHeight - 1, position.Y + radius);
             int minX = (int)Math.Max(0, position.X - radius), maxX = (int)Math.Min(mWidth - 1, position.X + radius);
-
-            //find corners of brush and update the texture name there as well as mark dirty.
 
             for (int vIndex = minZ; vIndex <= maxZ; ++vIndex)
             {
@@ -469,7 +450,7 @@ namespace GameConstructLibrary
 
                         modifyTexel(uIndex, vIndex, distanceSquared, radiusSquared, alpha, layer);
 
-                        SetTextureName(uIndex, vIndex, layer, detailTextureName);
+                        SetTextureName(uIndex, vIndex, layer, detailTextureName, uVOffset, uVScale);
                         WriteDirtyBit(uIndex, vIndex);
                     }
                 }
@@ -549,7 +530,9 @@ namespace GameConstructLibrary
                         {
                             if (mDetailTextureNames[row, col, layer] != null)
                             {
-                                writer.WriteLine(mDetailTextureNames[row, col, layer]);
+                                writer.WriteLine(mDetailTextureNames[row, col, layer] + " " + 
+                                    mDetailTextureUVOffset[row, col, layer].X + " " + mDetailTextureUVOffset[row, col, layer].Y + " " + 
+                                    mDetailTextureUVScale[row, col, layer].X  + " " + mDetailTextureUVScale[row, col, layer].Y);
                             }
                             else
                             {

@@ -153,16 +153,24 @@ namespace GameConstructLibrary
             alphaMapTexture.SetData(alphaMapBuffer);
 
             string[, ,] detailTextureNames = new string[chunkRows, chunkCols, 5];
+            Vector2[, ,] detailTextureUVOffsets = new Vector2[chunkRows, chunkCols, 5];
+            Vector2[, ,] detailTextureUVScales = new Vector2[chunkRows, chunkCols, 5];
+
             for (int row = 0; row < chunkRows; ++row)
             {
                 for (int col = 0; col < chunkCols; ++col)
                 {
                     detailTextureNames[row, col, 0] = defaultTexture;
+                    for (int index = 0; index < 5; ++index)
+                    {
+                        detailTextureUVOffsets[row, col, index] = Vector2.Zero;
+                        detailTextureUVScales[row, col, index] = Vector2.One;
+                    }
                 }
             }
 
             TerrainHeightMap heightMap = new TerrainHeightMap(heightMapTexture, chunkRows, chunkCols, GraphicsManager.Device);
-            TerrainTexture texture = new TerrainTexture(alphaMapTexture, detailTextureNames, chunkRows, chunkCols, GraphicsManager.Device);
+            TerrainTexture texture = new TerrainTexture(alphaMapTexture, detailTextureNames, detailTextureUVOffsets, detailTextureUVScales, chunkRows, chunkCols, GraphicsManager.Device);
 
             mLastLoadedTerrainDescription = new TerrainDescription(heightMap, texture);
 
@@ -192,6 +200,8 @@ namespace GameConstructLibrary
 
                 Texture2D alphaMap = null, heightMap = null;
                 string[, ,] detailTextureNames = null;
+                Vector2[, ,] detailTextureUVOffsets = null;
+                Vector2[, ,] detailTextureUVScales = null;
 
                 mLastLoadedObjectList = new List<DummyObject>();
 
@@ -221,7 +231,7 @@ namespace GameConstructLibrary
                     }
                     else if (entryFileName.Contains("DetailTextures"))
                     {
-                        detailTextureNames = LoadDetailTextureNames(memoryStream);
+                        LoadDetailTextureNames(memoryStream, out detailTextureNames, out detailTextureUVOffsets, out detailTextureUVScales);
                     }
                     else if (entryFileName.Contains("Objects"))
                     {
@@ -232,7 +242,7 @@ namespace GameConstructLibrary
                 }
 
                 TerrainHeightMap terrainHeightMap = new TerrainHeightMap(heightMap, numChunks, numChunks, GraphicsManager.Device);
-                TerrainTexture texture = new TerrainTexture(alphaMap, detailTextureNames, numChunks, numChunks, GraphicsManager.Device);
+                TerrainTexture texture = new TerrainTexture(alphaMap, detailTextureNames, detailTextureUVOffsets, detailTextureUVScales, numChunks, numChunks, GraphicsManager.Device);
 
                 mLastLoadedTerrainDescription = new TerrainDescription(terrainHeightMap, texture);
                 mLastLoadedLevelName = filePathAndName.Name;
@@ -252,10 +262,8 @@ namespace GameConstructLibrary
         /// </summary>
         /// <param name="fileStream"></param>
         /// <returns></returns>
-        static private string[, ,] LoadDetailTextureNames(MemoryStream fileStream)
+        static private void LoadDetailTextureNames(MemoryStream fileStream, out string[, ,] detailTextureNames, out Vector2[, ,] detailTextureUVOffset, out Vector2[, ,] detailTextureUVScale)
         {
-            string[, ,] detailTextureNames = null;
-
             using (StreamReader reader = new StreamReader(fileStream))
             {
                 List<int> size = ParseStringForIntegers(reader.ReadLine(), ' ');
@@ -263,6 +271,8 @@ namespace GameConstructLibrary
                 int numChunksCol = size[1];
 
                 detailTextureNames = new string[numChunksRow, numChunksCol, 5];
+                detailTextureUVOffset = new Vector2[numChunksRow, numChunksCol, 5];
+                detailTextureUVScale = new Vector2[numChunksRow, numChunksCol, 5];
 
                 string intString = reader.ReadLine();
                 while (!reader.EndOfStream)
@@ -271,10 +281,18 @@ namespace GameConstructLibrary
 
                     for (int textureNameIndex = 0; textureNameIndex < 5; textureNameIndex++)
                     {
-                        string textureName = reader.ReadLine();
+                        string line = reader.ReadLine();
+                        string[] parsedLine = line.Split(' ');
+
+                        string textureName = parsedLine[0];
+                        float uOffset = float.Parse(parsedLine[1]), vOffset = float.Parse(parsedLine[2]);
+                        float uScale = float.Parse(parsedLine[3]), vScale = float.Parse(parsedLine[4]);
+
                         if (textureName != "NULLTEXTURE")
                         {
                             detailTextureNames[chunkDetails[0], chunkDetails[1], textureNameIndex] = textureName;
+                            detailTextureUVOffset[chunkDetails[0], chunkDetails[1], textureNameIndex] = new Vector2(uOffset, vOffset);
+                            detailTextureUVScale[chunkDetails[0], chunkDetails[1], textureNameIndex] = new Vector2(uScale, vScale);
                         }
                     }
 
@@ -283,8 +301,6 @@ namespace GameConstructLibrary
 
                 reader.Close();
             }
-
-            return detailTextureNames;
         }
 
         /// <summary>

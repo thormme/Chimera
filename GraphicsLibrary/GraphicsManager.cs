@@ -223,6 +223,11 @@ namespace GraphicsLibrary
         }
         static private float mCursorOuterRadius;
 
+        static public SpriteBatch SpriteBatch
+        {
+            get { return mSpriteBatch; }
+        }
+
         #endregion
 
         #region Constants
@@ -543,10 +548,15 @@ namespace GraphicsLibrary
         {
             if (mCanRender)
             {
+                float scale = 30000;
+
+                Vector3 sceneScale = new Vector3(scale, scale, scale);
+                Vector3 centerOffset = new Vector3(0, sceneScale.Y * 0.5f, 0);
+
                 RenderableDefinition skybox = new RenderableDefinition(null, worldTransform, overlayColor, overlayWeight);
                 skybox.IsSkyBox = true;
                 skybox.OverlayTextureName = textureName;
-                skybox.WorldTransform = Matrix.CreateScale(1600, 1600, 1600) * skybox.WorldTransform * Matrix.CreateTranslation(new Vector3(0, -700, 0));
+                skybox.WorldTransform = Matrix.CreateScale(sceneScale) * skybox.WorldTransform * Matrix.CreateTranslation(-centerOffset);
 
                 mRenderQueue.Enqueue(skybox);
             }
@@ -1202,6 +1212,11 @@ namespace GraphicsLibrary
 
             mVertexBufferShader.CurrentTechnique = mVertexBufferShader.Techniques[techniqueName];
 
+            for (int i = 0; i < 7; ++i)
+            {
+                mDevice.SamplerStates[i] = SamplerState.PointWrap;
+            }
+
             for (int chunkCol = 0; chunkCol < heightMap.Terrain.NumChunksHorizontal; chunkCol++)
             {
                 for (int chunkRow = 0; chunkRow < heightMap.Terrain.NumChunksVertical; chunkRow++)
@@ -1220,10 +1235,15 @@ namespace GraphicsLibrary
                     for (int i = 0; i < MAX_TEXTURE_LAYERS; ++i)
                     {
                         string detailTextureName = heightMap.Texture.DetailTextureNames[chunkRow, chunkCol, i];
+                        Vector2 uvOffset = heightMap.Texture.DetailTextureUVOffset[chunkRow, chunkCol, i];
+                        Vector2 uvScale = heightMap.Texture.DetailTextureUVScale[chunkRow, chunkCol, i];
 
                         if (detailTextureName != null)
                         {
                             mVertexBufferShader.Parameters[LAYER_TEXTURE_NAMES[i]].SetValue(LookupSprite(detailTextureName));
+
+                            mVertexBufferShader.Parameters[LAYER_TEXTURE_NAMES[i] + "_uvOffset"].SetValue(uvOffset);
+                            mVertexBufferShader.Parameters[LAYER_TEXTURE_NAMES[i] + "_uvScale"].SetValue(uvScale);
                         }
                     }
 
@@ -1265,7 +1285,7 @@ namespace GraphicsLibrary
             mVertexBufferShader.CurrentTechnique = mVertexBufferShader.Techniques["NoShade"];
             mVertexBufferShader.World      = worldTransform;
             mVertexBufferShader.View       = mView;
-            mVertexBufferShader.Projection = mProjection;
+            mVertexBufferShader.Projection = Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, mCamera.AspectRatio, mCamera.GetNearPlaneDistance(), 30000);
 
             mVertexBufferShader.Texture = LookupSprite(textureName);
 
