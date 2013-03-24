@@ -5,4 +5,5 @@ bin/
 /*.sdf
 *.log
 *.csproj.user
+*.opensdf
 Thumbs.db
