@@ -339,9 +339,9 @@ namespace WorldEditor
             float Z = (float)mObjectParametersForm.PositionZ.Value;
             dummyObject.Position = new Vector3(X, Y, Z);
 
-            float Roll = (float)mObjectParametersForm.Roll.Value;
-            float Pitch = (float)mObjectParametersForm.Pitch.Value;
-            float Yaw = (float)mObjectParametersForm.Yaw.Value;
+            float Roll = (float)mObjectParametersForm.Roll.Value / (float)Math.PI * 180.0f;
+            float Pitch = (float)mObjectParametersForm.Pitch.Value / (float)Math.PI * 180.0f;
+            float Yaw = (float)mObjectParametersForm.Yaw.Value / (float)Math.PI * 180.0f;
             dummyObject.YawPitchRoll = new Vector3(Roll, Pitch, Yaw);
 
             float ScaleX = (float)mObjectParametersForm.ScaleX.Value;
@@ -350,6 +350,8 @@ namespace WorldEditor
             dummyObject.YawPitchRoll = new Vector3(ScaleX, ScaleY, ScaleZ);
 
             dummyObject.Height = (float)mObjectParametersForm.Height.Value;
+
+            dummyObject.Floating = mObjectParametersForm.Floating.Checked;
         }
 
         private void TextureHandler(object sender, EventArgs e)
@@ -387,7 +389,11 @@ namespace WorldEditor
                     if (mPlaceable && form.Mode == EditorForm.EditorMode.OBJECTS)
                     {
                         AddState(mDummyWorld);
-                        mDummyWorld.AddObject(new DummyObject(mCursorObject));
+                        mObjectParametersForm.SelectedObjects.Clear();
+                        DummyObject dummy = new DummyObject(mObjects[mEditorForm.ObjectList.SelectedItem.ToString()]);
+                        mObjectParametersForm.SelectedObjects.Add(dummy);
+                        SetObjectPropertiesToForm(dummy);
+                        mDummyWorld.AddObject(dummy);
                     }
                 }
                 else if (mControls.LeftHold.Active)

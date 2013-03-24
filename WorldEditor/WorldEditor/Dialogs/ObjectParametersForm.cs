@@ -191,7 +191,7 @@ namespace WorldEditor.Dialogs
         {
             foreach (DummyObject dummyObject in SelectedObjects)
             {
-                dummyObject.YawPitchRoll = new Vector3((float)((sender as NumericUpDown).Value), dummyObject.YawPitchRoll.Y, dummyObject.YawPitchRoll.Z);
+                dummyObject.YawPitchRoll = new Vector3((float)((sender as NumericUpDown).Value) / 180.0f * (float)Math.PI, dummyObject.YawPitchRoll.Y, dummyObject.YawPitchRoll.Z);
             }
         }
 
@@ -199,7 +199,7 @@ namespace WorldEditor.Dialogs
         {
             foreach (DummyObject dummyObject in SelectedObjects)
             {
-                dummyObject.YawPitchRoll = new Vector3(dummyObject.YawPitchRoll.X, (float)((sender as NumericUpDown).Value), dummyObject.YawPitchRoll.Z);
+                dummyObject.YawPitchRoll = new Vector3(dummyObject.YawPitchRoll.X, (float)((sender as NumericUpDown).Value) / 180.0f * (float)Math.PI, dummyObject.YawPitchRoll.Z);
             }
         }
 
@@ -207,7 +207,7 @@ namespace WorldEditor.Dialogs
         {
             foreach (DummyObject dummyObject in SelectedObjects)
             {
-                dummyObject.YawPitchRoll = new Vector3(dummyObject.YawPitchRoll.X, dummyObject.YawPitchRoll.Y, (float)((sender as NumericUpDown).Value));
+                dummyObject.YawPitchRoll = new Vector3(dummyObject.YawPitchRoll.X, dummyObject.YawPitchRoll.Y, (float)((sender as NumericUpDown).Value) / 180.0f * (float)Math.PI);
             }
         }
 
