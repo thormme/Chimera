@@ -132,10 +132,12 @@ namespace WorldEditor
                 switch ((mEditorForm as EditorForm).Mode)
                 {
                     case EditorForm.EditorMode.HEIGHTMAP:
-                        brush = (mEditorForm as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK ? GraphicsManager.CursorShape.BLOCK : GraphicsManager.CursorShape.CIRCLE;
+                        brush = (mEditorForm as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK || (mEditorForm as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
+                            GraphicsManager.CursorShape.BLOCK : GraphicsManager.CursorShape.CIRCLE;
                         break;
                     case EditorForm.EditorMode.PAINTING:
-                        brush = (mEditorForm as EditorForm).PaintingBrush == EditorForm.Brushes.BLOCK ? GraphicsManager.CursorShape.BLOCK : GraphicsManager.CursorShape.CIRCLE;
+                        brush = (mEditorForm as EditorForm).PaintingBrush == EditorForm.Brushes.BLOCK || (mEditorForm as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
+                            GraphicsManager.CursorShape.BLOCK : GraphicsManager.CursorShape.CIRCLE;
                         break;
                 }
 
@@ -316,6 +318,25 @@ namespace WorldEditor
                 mName = fileInfo.Name;
             }
 
+        }
+
+        private void EditHandler(object sender, EventArgs e)
+        {
+            TabControl editModes = (sender as TabControl);
+            if (editModes.SelectedTab == editModes.Controls["Heights"])
+            {
+                mObjectParametersForm.Hide();
+                SwitchToEdit();
+            }
+            else if (editModes.SelectedTab == editModes.Controls["Textures"])
+            {
+                mObjectParametersForm.Hide();
+                SwitchToEdit();
+            }
+            else if (editModes.SelectedTab == editModes.Controls["Objects"])
+            {
+
+            }
         }
 
         private void SwitchToEdit()

@@ -17,12 +17,14 @@ namespace Chimera.Menus
         Game mOwnerGame;
         private PlayerCreature mPlayer;
         private int mSlot;
+        private GraphicItem mMenuSlot;
 
-        public PlayerPartsMenu(Game game, PlayerCreature creature, int slot)
+        public PlayerPartsMenu(Game game, PlayerCreature creature, int slot, GraphicItem menuSlot)
         {
             mOwnerGame = game;
             mPlayer = creature;
             mSlot = slot;
+            mMenuSlot = menuSlot;
 
             Sprite backgroundSprite = new Sprite("red");
             int width = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth);
@@ -72,7 +74,13 @@ namespace Chimera.Menus
         private void CreatePart(Type part, Button button)
         {
 
+            mPlayer.RemovePart(mPlayer.PartAttachments[mSlot].Part);
             mPlayer.AddPart(Activator.CreateInstance(part) as Part, mSlot);
+
+            string[] fullName = part.ToString().Split('.');
+            string name = fullName[fullName.Length - 1];
+            Sprite sprite = new Sprite(name + "Icon");
+            mMenuSlot.Sprite = sprite;
             
             ChimeraGame.PopState();
 

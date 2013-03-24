@@ -11,7 +11,30 @@ namespace GameConstructLibrary.Menu
     {
         public GameMenu Menu { get; set; }
 
+        public Sprite Sprite
+        {
+            get
+            {
+                return mSprite;
+            }
+            set
+            {
+                mSprite = value;
+            }
+        }
         protected Sprite mSprite;
+
+        public Rectangle Bounds
+        {
+            get
+            {
+                return mBounds;
+            }
+            set
+            {
+                mBounds = value;
+            }
+        }
         protected Rectangle mBounds;
 
         public GraphicItem(Rectangle bounds, Sprite sprite)

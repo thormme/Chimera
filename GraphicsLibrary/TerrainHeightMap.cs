@@ -643,6 +643,8 @@ namespace GameConstructLibrary
         public void SetTerrain(Vector2 position, float radius, float height)
         {
             VertexModifier modifier = SetVertex;
+            height *= 130.56f;
+
             ModifyVertices(position, radius, height, 1, modifier);
         }
 
@@ -834,7 +836,7 @@ namespace GameConstructLibrary
 
                         if (mIsBlock || displacement.LengthSquared() < radiusSquared)
                         {
-                            float featherScale = mIsFeathered ? (float)Math.Log(radius - displacement.Length()) / radius : 1.0f;
+                            float featherScale = mIsFeathered ? mIsBlock ? Math.Max(0.0f, (float)Math.Log(radius * 2.0f - displacement.Length())) / radius : Math.Max(0.0f, (float)Math.Log(radius - displacement.Length())) / radius : 1.0f;
                             modifyVertex(xIndex, zIndex, magnitude * featherScale, pass);
 
                             WriteDirtyBit(xIndex, zIndex);
