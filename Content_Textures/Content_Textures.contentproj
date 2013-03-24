@@ -361,6 +361,11 @@
     <Folder Include="textures\billboards\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="textures\sprites\rockTexture.png">
+      <Name>rockTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="textures\sprites\waterTexture.png">
       <Name>waterTexture</Name>
       <Importer>TextureImporter</Importer>
