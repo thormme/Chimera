@@ -128,6 +128,9 @@ namespace WorldEditor
                 case EditorForm.PaintingTools.ERASER:
                     mTextureMap.EraseTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture, UVOffset, UVScale);
                     break;
+                case EditorForm.PaintingTools.SMOOTH:
+                    mTextureMap.SmoothTerrain(new Vector2(position.X, position.Z), radius);
+                    break;
             }
         }
 

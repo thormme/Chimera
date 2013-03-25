@@ -295,6 +295,16 @@ namespace GameConstructLibrary
             }
         }
 
+        public void SmoothTerrain(Vector2 position, float radius)
+        {
+            SmoothBrush(position, radius);
+        }
+
+        public void SmoothPaint(Vector2 position, float radius)
+        {
+            SmoothBrush(position, radius);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -332,16 +342,37 @@ namespace GameConstructLibrary
             ModifyTexels(position, radius, alpha, layer, detailTextureName, uVSOffset, uVScale, lerpModifier);
         }
 
+        public void SmoothBrush(Vector2 position, float radius)
+        {
+            Brush smoothModifier = SmoothBrush;
+            ModifyTexels(position, radius, 0, 0, null, Vector2.Zero, Vector2.Zero, smoothModifier);
+        }
+
         #endregion
 
         #region Texel Modification Helpers
 
-        private void CompositeBrushColor(ref Color result, TextureLayer layer, float baseWeight, float newWeight)
+        private void CompositeBrushColor(ref Color result, TextureLayer layer, float alpha)
         {
-            result.R = (byte)(result.R * baseWeight + FULL_OPACITY_PALETTE[(int)layer].R * newWeight);
-            result.G = (byte)(result.G * baseWeight + FULL_OPACITY_PALETTE[(int)layer].G * newWeight);
-            result.B = (byte)(result.B * baseWeight + FULL_OPACITY_PALETTE[(int)layer].B * newWeight);
-            result.A = (byte)(result.A * baseWeight + FULL_OPACITY_PALETTE[(int)layer].A * newWeight);
+            float newColor = 255.0f * alpha;
+
+            switch (layer)
+            {
+                case TextureLayer.ALPHA:
+                    result.A = (byte)Math.Max(Math.Min(result.A + newColor, 255), 0);
+                    break;
+                case TextureLayer.RED:
+                    result.R = (byte)Math.Max(Math.Min(result.R + newColor, 255), 0);
+                    break;
+                case TextureLayer.GREEN:
+                    result.G = (byte)Math.Max(Math.Min(result.G + newColor, 255), 0);
+                    break;
+                case TextureLayer.BLUE:
+                    result.B = (byte)Math.Max(Math.Min(result.B + newColor, 255), 0);
+                    break;
+                case TextureLayer.BACKGROUND:
+                    break;
+            }
         }
 
         private delegate void Brush(int u, int v, float distance, float radius, float alpha, TextureLayer layer);
@@ -355,7 +386,7 @@ namespace GameConstructLibrary
         /// <param name="radiusTextureLayer"></param>
         private void SolidBrush(int u, int v, float distance, float radius, float alpha, TextureLayer layer)
         {
-            CompositeBrushColor(ref mTexels[u + v * mWidth], layer, 1.0f - alpha, alpha);
+            CompositeBrushColor(ref mTexels[u + v * mWidth], layer, alpha);
         }
 
         private void SolidEraser(int u, int v, float distance, float radius, float alpha, TextureLayer layer)
@@ -374,7 +405,7 @@ namespace GameConstructLibrary
         private void LinearBrush(int u, int v, float distance, float radius, float alpha, TextureLayer layer)
         {
             float InterpolateWeight = distance / radius;
-            CompositeBrushColor(ref mTexels[u + v * mWidth], layer, InterpolateWeight * (1.0f - alpha), (1.0f - alpha) * alpha);
+            CompositeBrushColor(ref mTexels[u + v * mWidth], layer, (1.0f - alpha) * alpha);
         }
 
         private void LinearEraser(int u, int v, float distance, float radius, float alpha, TextureLayer layer)
@@ -385,7 +416,31 @@ namespace GameConstructLibrary
         private void QuadraticBrush(int u, int v, float distance, float radius, float alpha, TextureLayer layer)
         {
             float InterpolateWeight = (float)Math.Pow(distance / radius, 2);
-            CompositeBrushColor(ref mTexels[u + v * mWidth], layer, InterpolateWeight * (1.0f - alpha), (1.0f - alpha) * alpha);
+            CompositeBrushColor(ref mTexels[u + v * mWidth], layer, (1.0f - alpha) * alpha);
+        }
+
+        private void SmoothBrush(int u, int v, float distance, float radius, float alpha, TextureLayer layer)
+        {
+            float aSum = 0.0f, rSum = 0.0f, gSum = 0.0f, bSum = 0.0f;
+            int count = 0;
+            for (int row = Math.Max(0, v - 1); row <= Math.Min(mHeight - 1, v + 1); ++row)
+            {
+                for (int col = Math.Max(0, u - 1); col <= Math.Min(mWidth - 1, u + 1); ++col)
+                {
+                    ++count;
+                    Color neighborColor = mTexels[col + row * mWidth];
+
+                    aSum += neighborColor.A;
+                    rSum += neighborColor.R;
+                    gSum += neighborColor.G;
+                    bSum += neighborColor.B;
+                }
+            }
+
+            mTexels[u + v * mWidth].A = (byte)(aSum / count);
+            mTexels[u + v * mWidth].R = (byte)(rSum / count);
+            mTexels[u + v * mWidth].G = (byte)(gSum / count);
+            mTexels[u + v * mWidth].B = (byte)(bSum / count);
         }
 
         /// <summary>
@@ -410,12 +465,15 @@ namespace GameConstructLibrary
         /// <param name="detailTextureName"></param>
         private void SetTextureName(int u, int v, TextureLayer layer, string detailTextureName, Vector2 uVOffset, Vector2 uVScale)
         {
-            int chunkRowIndex = v / mChunkHeight;
-            int chunkColIndex = u / mChunkWidth;
+            if (detailTextureName != null)
+            {
+                int chunkRowIndex = v / mChunkHeight;
+                int chunkColIndex = u / mChunkWidth;
 
-            mDetailTextureNames[chunkRowIndex, chunkColIndex, (int)layer] = detailTextureName;
-            mDetailTextureUVOffset[chunkRowIndex, chunkColIndex, (int)layer] = uVOffset;
-            mDetailTextureUVScale[chunkRowIndex, chunkColIndex, (int)layer] = uVScale;
+                mDetailTextureNames[chunkRowIndex, chunkColIndex, (int)layer] = detailTextureName;
+                mDetailTextureUVOffset[chunkRowIndex, chunkColIndex, (int)layer] = uVOffset;
+                mDetailTextureUVScale[chunkRowIndex, chunkColIndex, (int)layer] = uVScale;
+            }
         }
 
         /// <summary>

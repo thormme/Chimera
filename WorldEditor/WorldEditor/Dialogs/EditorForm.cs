@@ -20,7 +20,7 @@ namespace WorldEditor.Dialogs
 
         public enum Brushes { CIRCLE, CIRCLE_FEATHERED, BLOCK, BLOCK_FEATHERED, NONE };
 
-        public enum PaintingTools { BRUSH, ERASER, NONE };
+        public enum PaintingTools { BRUSH, ERASER, SMOOTH, NONE };
 
         public enum Layers { BACKGROUND, LAYER1, LAYER2, LAYER3, LAYER4, NONE };
 
@@ -300,6 +300,10 @@ namespace WorldEditor.Dialogs
             toolButton1.Enabled = true;
             toolButton1.Visible = true;
 
+            toolButton2.BackgroundImage = smoothTerrainIcon;
+            toolButton2.Enabled = true;
+            toolButton2.Visible = true;
+
             switch (PaintingTool)
             {
                 case PaintingTools.BRUSH:
@@ -307,6 +311,9 @@ namespace WorldEditor.Dialogs
                     break;
                 case PaintingTools.ERASER:
                     toolButton1.BackgroundImage = lowerTerrainSelectedIcon;
+                    break;
+                case PaintingTools.SMOOTH:
+                    toolButton2.BackgroundImage = smoothTerrainSelectedIcon;
                     break;
             }
         }
@@ -581,6 +588,7 @@ namespace WorldEditor.Dialogs
                     HeightMapTool = HeightMapTools.SET;
                     break;
                 case EditorMode.PAINTING:
+                    PaintingTool = PaintingTools.SMOOTH;
                     break;
             }
 
