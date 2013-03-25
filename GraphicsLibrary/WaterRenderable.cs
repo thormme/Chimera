@@ -107,7 +107,7 @@ namespace GraphicsLibrary
                     VertexPositionNormalTexture vertex = new VertexPositionNormalTexture();
                     vertex.Position = new Vector3(-SEA_WIDTH / 2.0f + (float)x * quadWidth, mSeaLevel, -SEA_HEIGHT / 2.0f + (float)y * quadHeight);
                     vertex.Normal = Vector3.Up;
-                    vertex.TextureCoordinate = new Vector2((float)x / quadResolution.X * 800.0f, (float)y / (float)quadResolution.Y * 800.0f);
+                    vertex.TextureCoordinate = new Vector2((float)x / quadResolution.X * 80.0f, (float)y / (float)quadResolution.Y * 80.0f);
 
                     mVertices[x + y * (int)mResolution.X] = vertex;
                 }

@@ -569,8 +569,10 @@ namespace GraphicsLibrary
             water.WorldTransform = worldTransform;
             water.VertexBuffer = vertexBuffer;
             water.IndexBuffer = indexBuffer;
+            water.AnimationRate = new Vector2(0.02f, 0f);
 
             mRenderQueue.Enqueue(water);
+            //mTransparentQueue.Add(water);
         }
 
         /// <summary>
@@ -978,7 +980,7 @@ namespace GraphicsLibrary
 
             if (renderable.IsWater)
             {
-                DrawWater(renderable);
+                DrawWater(renderable, isOutline);
                 return;
             }
 
@@ -1089,7 +1091,6 @@ namespace GraphicsLibrary
                 Vector2 animationRate = renderable.AnimationRate;
                 if (renderable.AnimationRate != Vector2.Zero)
                 {
-                    mTimeElapsed %= 1.0f;
                     animationRate *= mTimeElapsed;
                     animationRate.X %= 1.0f;
                     animationRate.Y %= 1.0f;
@@ -1159,6 +1160,8 @@ namespace GraphicsLibrary
 
             mVertexBufferShader.Parameters["xOverlayColor"].SetValue(renderable.OverlayColor);
             mVertexBufferShader.Parameters["xOverlayColorWeight"].SetValue(renderable.OverlayColorWeight);
+
+            mVertexBufferShader.Parameters["xTextureOffset"].SetValue(renderable.AnimationRate);
 
             mVertexBufferShader.SpecularColor = new Vector3(0.25f);
             mVertexBufferShader.SpecularPower = 16;
@@ -1244,6 +1247,8 @@ namespace GraphicsLibrary
 
             mVertexBufferShader.Texture = LookupSprite(renderable.OverlayTextureName);
 
+            mVertexBufferShader.Parameters["xTextureOffset"].SetValue(renderable.AnimationRate);
+
             mDevice.SetVertexBuffer(renderable.VertexBuffer);
             mDevice.Indices = renderable.IndexBuffer;
 
@@ -1252,11 +1257,20 @@ namespace GraphicsLibrary
             mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, renderable.VertexBuffer.VertexCount, 0, renderable.IndexBuffer.IndexCount / 3);
         }
 
-        static private void DrawWater(RenderableDefinition renderable)
+        static private void DrawWater(RenderableDefinition renderable, bool isOutline)
         {
             mDevice.SamplerStates[0] = SamplerState.LinearWrap;
 
-            string techniqueName = (CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "CelShade" : "Phong";
+            string techniqueName;
+            if (isOutline)
+            {
+                techniqueName = (renderable.IsSkinned) ? "SkinnedNormalDepthShade" : "NormalDepthShade";
+            }
+            else
+            {
+                techniqueName = (CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "CelShade" : "Phong";
+            }
+
             mVertexBufferShader.CurrentTechnique = mVertexBufferShader.Techniques[techniqueName];
 
             if (CastingShadows)
@@ -1278,6 +1292,15 @@ namespace GraphicsLibrary
 
             mVertexBufferShader.Parameters["xOverlayColor"].SetValue(renderable.OverlayColor);
             mVertexBufferShader.Parameters["xOverlayColorWeight"].SetValue(renderable.OverlayColorWeight);
+
+            Vector2 animationRate = renderable.AnimationRate;
+            if (renderable.AnimationRate != Vector2.Zero)
+            {
+                animationRate *= mTimeElapsed;
+                animationRate.X %= 1.0f;
+                animationRate.Y %= 1.0f;
+            }
+            mVertexBufferShader.Parameters["xTextureOffset"].SetValue(animationRate);
 
             mVertexBufferShader.View = mView;
             mVertexBufferShader.Projection = mProjection;

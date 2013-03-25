@@ -8,8 +8,8 @@
 #include "macros.fxh"
 
 // Settings of outline edges.
-float EdgeWidth = 1;
-float EdgeIntensity = 1;
+float EdgeWidth = 3;
+float EdgeIntensity = 2;
 
 // Epsilon values for face normals.
 float NormalThreshold = 0.1;
@@ -60,6 +60,11 @@ float4 EdgeDetectPS(float2 texCoord : TEXCOORD0) : COLOR0
     // Apply the edge detection result to the main scene color.
     scene *= (1 - edgeAmount);
 
+	if (edgeAmount < 0.25f)
+	{
+		edgeAmount = 0.0f;
+	}
+
 	return float4(edgeAmount, edgeAmount, edgeAmount, 1.0);
 }
 
@@ -69,7 +74,14 @@ float4 CompositePS(float2 texCoord : TEXCOORD0) : COLOR0
 
 	float3 outline = SAMPLE_TEXTURE(OutlineTexture, texCoord);
 
-	return float4(sceneColor * (1 - outline.r), 1.0);
+	return float4(sceneColor * (1.0 - outline.r), 1.0);
+
+	if (outline.r == 0.0)
+	{
+		return float4(sceneColor, 1.0);
+	}
+	
+	return float4(sceneColor * 1.45, 1.0);
 }
 
 technique EdgeDetect

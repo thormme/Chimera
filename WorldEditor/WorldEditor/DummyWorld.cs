@@ -199,7 +199,7 @@ namespace WorldEditor
 
             if (mWater != null)
             {
-                mWater.SeaLevel = 100;
+                mWater.SeaLevel = 36000;
             }
 
             if (mDummies != null)
