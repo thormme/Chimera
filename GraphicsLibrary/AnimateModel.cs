@@ -14,12 +14,6 @@ namespace GraphicsLibrary
     {
         #region Fields
 
-        public new BoundingBox BoundingBox
-        {
-            get { return mBoundingBox; }
-        }
-        private BoundingBox mBoundingBox;
-
         private string          mModelName;
         private string          mAnimationName;
         private AnimationPlayer mAnimationPlayer;
@@ -70,7 +64,7 @@ namespace GraphicsLibrary
 
             PlayAnimation(defaultAnimation, false);
 
-            mBoundingBox = GraphicsManager.BuildModelBoundingBox(mModelName);
+            //mBoundingBox = GraphicsManager.BuildModelBoundingBox(mModelName);
         }
 
         /// <summary>
@@ -124,9 +118,8 @@ namespace GraphicsLibrary
         /// <param name="worldTransform">Transformation of model in to place in world space.</param>
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            BoundingBox transformedBBox = new BoundingBox(Vector3.Transform(mBoundingBox.Min, worldTransform), Vector3.Transform(mBoundingBox.Max, worldTransform));
             Matrix[] skinTransforms = AnimationPlayer.GetSkinTransforms();
-            GraphicsManager.RenderSkinnedModel(mModelName, skinTransforms, worldTransform, transformedBBox, overlayColor, overlayColorWeight);
+            GraphicsManager.RenderSkinnedModel(mModelName, skinTransforms, worldTransform, mBoundingBox, overlayColor, overlayColorWeight);
         }
 
         #endregion

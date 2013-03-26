@@ -478,6 +478,7 @@ namespace Chimera
                     int count = 0;
                     foreach (PartBone partBone in partAttachment.Bones)
                     {
+                        partAttachment.Part.SubParts[count].Renderable.BoundingBox = Entity.CollisionInformation.BoundingBox;
                         Matrix worldTransform = (mRenderable as AnimateModel).GetBoneTransform(partBone.ToString()) * GetRenderTransform();
                         partAttachment.Part.SubParts[count].Render(worldTransform, overlayColor, overlayColorWeight, scale);
 
@@ -625,6 +626,7 @@ namespace Chimera
 
             if (mRenderable != null)
             {
+                mRenderable.BoundingBox = Entity.CollisionInformation.BoundingBox;
                 mRenderable.Render(GetRenderTransform(), color, weight);
             }
             RenderParts(color, weight);

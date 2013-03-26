@@ -607,6 +607,7 @@ namespace Chimera
         {
             if (mStealing)
             {
+                mSuckModel.BoundingBox = mPartStealSensor.Entity.CollisionInformation.BoundingBox;
                 mSuckModel.Render(mConeOrientation);
             }
 

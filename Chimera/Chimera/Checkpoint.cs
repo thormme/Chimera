@@ -78,14 +78,22 @@ namespace Chimera
 
         public override void  Render()
         {
+            BoundingBox scaledBoundingBox = new BoundingBox(Entity.CollisionInformation.BoundingBox.Min, Vector3.Transform(Entity.CollisionInformation.BoundingBox.Max, Matrix.CreateScale(1, 6, 1)));
+
             if (mActiveCheckpoint)
             {
+                mBlueCheckpoint.BoundingBox = scaledBoundingBox;
                 mBlueCheckpoint.Render(Position, XNAOrientationMatrix, Scale);
+
+                mBlueLight.BoundingBox = scaledBoundingBox;
                 mBlueLight.Render(Position, XNAOrientationMatrix, Scale);
             }
             else
             {
+                mRedCheckpoint.BoundingBox = scaledBoundingBox;
                 mRedCheckpoint.Render(Position, XNAOrientationMatrix, Scale);
+
+                mRedLight.BoundingBox = scaledBoundingBox;
                 mRedLight.Render(Position, XNAOrientationMatrix, Scale);
             }
         }

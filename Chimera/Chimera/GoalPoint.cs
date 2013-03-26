@@ -96,5 +96,13 @@ namespace Chimera
                 }
             }
         }
+
+        public override void Render()
+        {
+            mRenderable.BoundingBox = new BoundingBox(
+                Entity.CollisionInformation.BoundingBox.Min, 
+                Vector3.Transform(Entity.CollisionInformation.BoundingBox.Max, Matrix.CreateScale(new Vector3(1, 1000, 1))));
+            base.Render();
+        }
     }
 }

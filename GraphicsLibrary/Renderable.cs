@@ -14,7 +14,12 @@ namespace GraphicsLibrary
 
         ///////////////////////////////// Interface //////////////////////////////////
 
-        public BoundingBox BoundingBox { get; set; }
+        public BoundingBox BoundingBox
+        {
+            get { return mBoundingBox; }
+            set { mBoundingBox = value; }
+        }
+        protected BoundingBox mBoundingBox;
 
         /// <summary>
         /// Draws the IRenderable object at worldPosition using default scale and orientation.

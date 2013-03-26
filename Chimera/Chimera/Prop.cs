@@ -76,6 +76,7 @@ namespace Chimera
 
         public void Render()
         {
+            mRenderable.BoundingBox = StaticCollidable.BoundingBox;
             mRenderable.Render(Position, XNAOrientationMatrix, Scale);
         }
 
