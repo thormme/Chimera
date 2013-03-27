@@ -37,6 +37,9 @@ namespace WorldEditor
 
             Form windowForm = (Form)Form.FromHandle(Window.Handle);
             windowForm.ControlBox = false;
+
+            this.Window.AllowUserResizing = true;
+            this.Window.ClientSizeChanged += ResizedWindow;
         }
 
         /// <summary>
@@ -117,6 +120,19 @@ namespace WorldEditor
             GraphicsManager.FinishRendering();
 
             base.Draw(gameTime);
+        }
+
+        protected void ResizedWindow(object sender, EventArgs e)
+        {
+            Viewport vp = this.GraphicsDevice.Viewport;
+
+            vp.Width = this.Window.ClientBounds.Width;
+            vp.Height = this.Window.ClientBounds.Height;
+
+            this.GraphicsDevice.Viewport = vp;
+            GraphicsManager.CreateBuffers();
+            this.mCamera.Viewport = vp;
+            this.mWorldEditor.Entity.Viewport = vp;
         }
     }
 }

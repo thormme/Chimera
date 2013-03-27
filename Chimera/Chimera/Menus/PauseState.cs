@@ -26,12 +26,12 @@ namespace Chimera.Menus
             */
 
             Sprite pausedSprite = new Sprite("paused");
-            int height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .25);
+            int height = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight * .25);
             int width = (int)((float)pausedSprite.Width / (float)pausedSprite.Height * (float)height);
-            int y = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .1);
+            int y = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight * .1);
             GraphicItem paused = new GraphicItem(
                 new Microsoft.Xna.Framework.Rectangle(
-                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    GraphicsManager.Device.PresentationParameters.BackBufferWidth / 2 - width / 2,
                     y,
                     width,
                     height
@@ -40,12 +40,12 @@ namespace Chimera.Menus
             );
 
             Sprite resumeSprite = new Sprite("resume");
-            height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .12);
+            height = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight * .12);
             width = (int)((float)resumeSprite.Width / (float)resumeSprite.Height * (float)height);
-            y = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .32);
+            y = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight * .32);
             Button resume = new Button(
                 new Microsoft.Xna.Framework.Rectangle(
-                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    GraphicsManager.Device.PresentationParameters.BackBufferWidth / 2 - width / 2,
                     y + height,
                     width,
                     height
@@ -55,12 +55,12 @@ namespace Chimera.Menus
             );
 
             Sprite checkpointSprite = new Sprite("checkpoint");
-            height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .15);
+            height = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight * .15);
             width = (int)((float)checkpointSprite.Width / (float)checkpointSprite.Height * (float)height);
-            y = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .47);
+            y = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight * .47);
             Button checkpoint = new Button(
                 new Microsoft.Xna.Framework.Rectangle(
-                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    GraphicsManager.Device.PresentationParameters.BackBufferWidth / 2 - width / 2,
                     y + height,
                     width,
                     height
@@ -70,12 +70,12 @@ namespace Chimera.Menus
             );
 
             Sprite quitSprite = new Sprite("quit");
-            height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .14);
+            height = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight * .14);
             width = (int)((float)quitSprite.Width / (float)quitSprite.Height * (float)height);
-            y = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight * .64);
+            y = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight * .64);
             Button quit = new Button(
                 new Microsoft.Xna.Framework.Rectangle(
-                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    GraphicsManager.Device.PresentationParameters.BackBufferWidth / 2 - width / 2,
                     y + height,
                     width,
                     height

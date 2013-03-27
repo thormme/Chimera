@@ -84,6 +84,11 @@ namespace WorldEditor
         private DummyWorld mDummyWorld = null;
 
         //Handles camera movement and picking.
+        public Entity Entity
+        {
+            get { return mEntity; }
+            set { mEntity = value; }
+        }
         private Entity mEntity = null;
 
         public WorldEditor(Viewport viewport, FPSCamera camera, ContentManager content)

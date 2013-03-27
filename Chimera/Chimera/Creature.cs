@@ -592,7 +592,7 @@ namespace Chimera
 
             mBoneIndex = 0;
 
-            mTrailParticles = new ParticleSystem("puff", Position);
+            //mTrailParticles = new ParticleSystem("puff", Position);
         }
 
         /// <summary>
@@ -635,7 +635,7 @@ namespace Chimera
             }
             RenderParts(color, weight);
 
-            mTrailParticles.Render();
+            //mTrailParticles.Render();
         }
 
         /// <summary>
@@ -789,7 +789,7 @@ namespace Chimera
         public virtual void Move(Vector2 direction)
         {
             Move(direction, direction);
-            mTrailParticles.Position = Position;
+            //mTrailParticles.Position = Position;
         }
 
         /// <summary>

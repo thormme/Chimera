@@ -19,12 +19,12 @@ namespace Chimera.Menus
             mOwnerGame = game;
 
             Sprite backgroundSprite = new Sprite("red");
-            int height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight);
-            int width = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth);
+            int height = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight);
+            int width = (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth);
             int y = 0;
             GraphicItem background = new GraphicItem(
                 new Microsoft.Xna.Framework.Rectangle(
-                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    GraphicsManager.Device.PresentationParameters.BackBufferWidth / 2 - width / 2,
                     y,
                     width,
                     height
@@ -33,12 +33,12 @@ namespace Chimera.Menus
             );
 
             Sprite buttonSprite = new Sprite("empty");
-            height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight);
-            width = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth);
+            height = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight);
+            width = (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth);
             y = 0;
             Button button = new Button(
                 new Microsoft.Xna.Framework.Rectangle(
-                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    GraphicsManager.Device.PresentationParameters.BackBufferWidth / 2 - width / 2,
                     y,
                     width,
                     height
@@ -48,12 +48,12 @@ namespace Chimera.Menus
             );
 
             Sprite storySprite = new Sprite("story");
-            height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight);
+            height = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight);
             width = (int)((float)storySprite.Width / (float)storySprite.Height * (float)height);
             y = 0;
             GraphicItem story = new GraphicItem(
                 new Microsoft.Xna.Framework.Rectangle(
-                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    GraphicsManager.Device.PresentationParameters.BackBufferWidth / 2 - width / 2,
                     y,
                     width,
                     height

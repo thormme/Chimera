@@ -27,13 +27,13 @@ namespace Chimera.Menus
             mPlayer = creature;
 
             Sprite backgroundSprite = new Sprite("blue");
-            int width = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth);
-            int height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight);
+            int width = (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth);
+            int height = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight);
             int x = 0;
             int y = 0;
             GraphicItem background = new GraphicItem(
                 new Microsoft.Xna.Framework.Rectangle(
-                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    GraphicsManager.Device.PresentationParameters.BackBufferWidth / 2 - width / 2,
                     y,
                     width,
                     height
@@ -43,12 +43,12 @@ namespace Chimera.Menus
             Add(background);
 
             x = 0;
-            y = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight / 2);
+            y = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight / 2);
 
-            width = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth) / 8;
-            height = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth) / 8;
+            width = (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth) / 8;
+            height = (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth) / 8;
 
-            x += (int)(ChimeraGame.Graphics.PreferredBackBufferWidth) / 6;
+            x += (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth) / 6;
             Sprite redSprite = new Sprite("redButton");
             Button redButton = new Button(
             new Microsoft.Xna.Framework.Rectangle(
@@ -74,7 +74,7 @@ namespace Chimera.Menus
             );
             Add(mSlots[0]);
 
-            x += (int)(ChimeraGame.Graphics.PreferredBackBufferWidth) / 6;
+            x += (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth) / 6;
             Sprite blueSprite = new Sprite("blueButton");
             Button blueButton = new Button(
             new Microsoft.Xna.Framework.Rectangle(
@@ -100,7 +100,7 @@ namespace Chimera.Menus
             );
             Add(mSlots[1]);
 
-            x += (int)(ChimeraGame.Graphics.PreferredBackBufferWidth) / 6;
+            x += (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth) / 6;
             Sprite yellowSprite = new Sprite("yellowButton");
             Button yellowButton = new Button(
             new Microsoft.Xna.Framework.Rectangle(
@@ -127,7 +127,7 @@ namespace Chimera.Menus
             Add(mSlots[2]);
 
             Sprite doneSprite = new Sprite("check");
-            x += (int)(ChimeraGame.Graphics.PreferredBackBufferWidth) / 6;
+            x += (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth) / 6;
             Button exitButton = new Button(
             new Microsoft.Xna.Framework.Rectangle(
                     x,

@@ -85,6 +85,8 @@ namespace Chimera
 
         public ChimeraGame()
         {
+            this.Window.AllowUserResizing = true;
+            this.Window.ClientSizeChanged += ResizedWindow;
 
             Game = this;
             Graphics = new GraphicsDeviceManager(this);
@@ -139,6 +141,28 @@ namespace Chimera
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Sensor.SensorGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Projectile.SensorProjectileGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, InvisibleWall.InvisibleWallGroup), CollisionRule.NoBroadPhase);
+        }
+
+        protected void ResizedWindow(object sender, EventArgs e)
+        {
+            int Width, Height;
+            var safeWidth = Math.Max(this.Window.ClientBounds.Width, 1);
+            var safeHeight = Math.Max(this.Window.ClientBounds.Height, 1);
+            var newViewport = new Viewport(0, 0, safeWidth, safeHeight) { MinDepth = 0.0f, MaxDepth = 1.0f };
+
+            var presentationParams = GraphicsDevice.PresentationParameters;
+            presentationParams.BackBufferWidth = safeWidth;
+            presentationParams.BackBufferHeight = safeHeight;
+            presentationParams.DeviceWindowHandle = this.Window.Handle;
+            GraphicsDevice.Reset(presentationParams);
+
+            GraphicsDevice.Viewport = newViewport;
+
+            GraphicsManager.CreateBuffers();
+            if (Camera != null)
+            {
+                (Camera as ChaseCamera).Viewport = newViewport;
+            }
         }
 
         ~ChimeraGame()

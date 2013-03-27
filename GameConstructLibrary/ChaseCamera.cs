@@ -413,6 +413,11 @@ namespace GameConstructLibrary
             {
                 return mAspectRatio;
             }
+            set
+            {
+                mAspectRatio = value;
+                mDirtyProjection = true;
+            }
         }
         private float mAspectRatio;
 
@@ -432,6 +437,14 @@ namespace GameConstructLibrary
             }
         }
         private float mFieldOfView = MathHelper.PiOver4;
+
+        public Viewport Viewport
+        {
+            set
+            {
+                this.AspectRatio = (float)value.Width / (float)value.Height;
+            }
+        }
 
         /// <summary>
         /// Distance of near plane in front of camera.
@@ -488,7 +501,7 @@ namespace GameConstructLibrary
 
         public ChaseCamera(Viewport viewport)
         {
-            this.mAspectRatio = (float)viewport.Width / (float)viewport.Height;
+            this.Viewport = viewport;
         }
 
         /// <summary>

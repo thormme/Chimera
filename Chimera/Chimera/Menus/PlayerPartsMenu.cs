@@ -27,13 +27,13 @@ namespace Chimera.Menus
             mMenuSlot = menuSlot;
 
             Sprite backgroundSprite = new Sprite("red");
-            int width = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth);
-            int height = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight);
+            int width = (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth);
+            int height = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight);
             int x = 0;
             int y = 0;
             GraphicItem background = new GraphicItem(
                 new Microsoft.Xna.Framework.Rectangle(
-                    ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
+                    GraphicsManager.Device.PresentationParameters.BackBufferWidth / 2 - width / 2,
                     y,
                     width,
                     height
@@ -44,16 +44,16 @@ namespace Chimera.Menus
             Add(background);
 
 
-            y = (int)(ChimeraGame.Graphics.PreferredBackBufferHeight / 2);
+            y = (int)(GraphicsManager.Device.PresentationParameters.BackBufferHeight / 2);
             foreach (Type partType in creature.Info.Parts)
             {
                 Type part = partType;
                 string[] fullName = partType.ToString().Split('.');
                 string name = fullName[fullName.Length - 1];
                 Sprite sprite = new Sprite(name + "Icon");
-                width = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth) / 8;
-                height = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth / 8);
-                x += (int)(ChimeraGame.Graphics.PreferredBackBufferWidth) / 8;
+                width = (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth) / 8;
+                height = (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth / 8);
+                x += (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth) / 8;
                 Button button = new Button(
                 new Microsoft.Xna.Framework.Rectangle(
                         x,

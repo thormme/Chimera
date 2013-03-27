@@ -629,11 +629,11 @@ namespace Chimera
         {
             if (mRenderReticle == true)
             {
-                int width = (int)(ChimeraGame.Graphics.PreferredBackBufferWidth * .05);
+                int width = (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth * .05);
                 int height = width;
                 Rectangle bounds = new Rectangle(
-                    (int)ChimeraGame.Graphics.PreferredBackBufferWidth / 2 - width / 2,
-                    (int)ChimeraGame.Graphics.PreferredBackBufferHeight / 2 - height / 2,
+                    (int)GraphicsManager.Device.PresentationParameters.BackBufferWidth / 2 - width / 2,
+                    (int)GraphicsManager.Device.PresentationParameters.BackBufferHeight / 2 - height / 2,
                     width,
                     height
                 );
@@ -643,8 +643,8 @@ namespace Chimera
 
         private void RenderRequirement()
         {
-            int width = ChimeraGame.Graphics.PreferredBackBufferWidth;
-            int height = ChimeraGame.Graphics.PreferredBackBufferHeight;
+            int width = GraphicsManager.Device.PresentationParameters.BackBufferWidth;
+            int height = GraphicsManager.Device.PresentationParameters.BackBufferHeight;
             Rectangle textRect = new Rectangle((int)(height * 0.04f), (int)(height * 0.02f), (int)(128 * width / 1280), (int)(26 * height / 720));
             Rectangle boxRect = new Rectangle((int)(height * 0.046f), (int)(height * 0.04f), (int)(0.16f * height), (int)(0.16f * height));
 
@@ -677,8 +677,8 @@ namespace Chimera
         private void RenderAbilities()
         {
 
-            int width = ChimeraGame.Graphics.PreferredBackBufferWidth;
-            int height = ChimeraGame.Graphics.PreferredBackBufferHeight;
+            int width = GraphicsManager.Device.PresentationParameters.BackBufferWidth;
+            int height = GraphicsManager.Device.PresentationParameters.BackBufferHeight;
             int buttonSize = (int)(0.1f * height);
 
             if (FoundPart)

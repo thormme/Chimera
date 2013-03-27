@@ -709,7 +709,7 @@ namespace GraphicsLibrary
         /// <summary>
         /// Instantiates rendertargets written to by graphics device.
         /// </summary>
-        static private void CreateBuffers()
+        static public void CreateBuffers()
         {
             var pp = mDevice.PresentationParameters;
 

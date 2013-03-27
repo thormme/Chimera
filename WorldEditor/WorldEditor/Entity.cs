@@ -15,6 +15,11 @@ namespace WorldEditor
         private const float Speed = 0.5f;
         private const float Sensitivity = 0.1f;
 
+        public Viewport Viewport
+        {
+            get { return mViewport; }
+            set { mViewport = value; }
+        }
         private Viewport mViewport = new Viewport();
         private FPSCamera mCamera = null;
         private Controls mControls = null;
