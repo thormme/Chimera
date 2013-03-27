@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Core;
+using DPSF;
 
 namespace GraphicsLibrary
 {
@@ -34,6 +35,7 @@ namespace GraphicsLibrary
         static private Dictionary<string, Dictionary<string, Matrix>> mUniqueModelBoneLibrary = new Dictionary<string, Dictionary<string, Matrix>>();
         static private Dictionary<string, Texture2D> mUniqueTextureLibrary = new Dictionary<string, Texture2D>();
         static private Dictionary<string, Dictionary<int, Texture2D>> mUniqueAnimateTextureLibrary = new Dictionary<string, Dictionary<int, Texture2D>>();
+        static private Dictionary<string, TexturedParticles> mUniqueParticleLibrary = new Dictionary<string, TexturedParticles>();
 
         static private GraphicsDevice mDevice;
         static private SpriteBatch mSpriteBatch;
@@ -41,6 +43,7 @@ namespace GraphicsLibrary
         static private Queue<RenderableDefinition> mRenderQueue = new Queue<RenderableDefinition>();
         static private Queue<SpriteDefinition> mSpriteQueue = new Queue<SpriteDefinition>();
         static private List<RenderableDefinition> mTransparentQueue = new List<RenderableDefinition>();
+        static private Queue<ParticleDefinition> mParticleQueue = new Queue<ParticleDefinition>();
 
         static private Light mDirectionalLight;
         static public Light DirectionalLight
@@ -62,18 +65,12 @@ namespace GraphicsLibrary
             get { return mCamera; }
         }
 
+        static private ParticleSystemManager mParticleManager;
+
         static private BoundingFrustum mBoundingFrustum;
 
         static private Vector3 mMinSceneExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
         static private Vector3 mMaxSceneExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-
-        static public float BoundingBoxHypotenuse
-        {
-            get
-            {
-                return (mMaxSceneExtent - mMinSceneExtent).Length();
-            }
-        }
 
         static private bool mCanRender = false;
 
@@ -82,7 +79,6 @@ namespace GraphicsLibrary
         static private int mEdgeWidth = 1;
         static private int mEdgeIntensity = 1;
 
-        static private string mBASE_DIRECTORY = DirectoryManager.GetRoot() + "Chimera/ChimeraContent/";
         static private char[] mDelimeterChars = { ' ' };
 
         #endregion
@@ -251,6 +247,7 @@ namespace GraphicsLibrary
             LoadShaders(content);
             LoadModels(content);
             LoadSprites(content);
+            InitializeParticles(content);
         }
 
         /// <summary>
@@ -274,6 +271,12 @@ namespace GraphicsLibrary
             mProjection = mCamera.GetProjectionTransform();
 
             mBoundingFrustum = new BoundingFrustum(camera.GetViewTransform() * camera.GetProjectionTransform());
+
+            foreach (TexturedParticles particles in mUniqueParticleLibrary.Values)
+            {
+                particles.CameraPosition = mCamera.Position;
+                particles.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            }
         }
 
         /// <summary>
@@ -284,6 +287,7 @@ namespace GraphicsLibrary
             mRenderQueue.Clear();
             mSpriteQueue.Clear();
             mTransparentQueue.Clear();
+            mParticleQueue.Clear();
             mCanRender = true;
         }
 
@@ -337,6 +341,10 @@ namespace GraphicsLibrary
                     DrawRenderableDefinition(renderable, false, false, renderable.IsSkyBox);
                 }
 
+                foreach (ParticleDefinition particle in mParticleQueue)
+                {
+                    DrawParticles(particle);
+                }
 
                 // Draw semi transparent renderables to texture.
                 if (mTransparentQueue.Count > 0)
@@ -582,20 +590,18 @@ namespace GraphicsLibrary
         /// <param name="worldTransforms">Position, orientation, and scale of terrain in world space.</param>
         static public void RenderTerrain(string terrainName, Matrix worldTransforms, BoundingBox[,] boundingBoxes, Color overlayColor, float overlayColorWeight)
         {
-            if (mCanRender)
-            {
-                RenderableDefinition terrain = new RenderableDefinition(terrainName, worldTransforms, overlayColor, overlayColorWeight);
-                terrain.BoundingBoxes = boundingBoxes;
-
-                mRenderQueue.Enqueue(terrain);
-                foreach (BoundingBox boundingBox in boundingBoxes)
-                {
-                    UpdateSceneExtents(boundingBox, worldTransforms);
-                }
-            }
-            else
+            if (!mCanRender)
             {
                 throw new Exception("Unable to render terrain " + terrainName + " before calling BeginRendering() or after FinishRendering().\n");
+            }
+
+            RenderableDefinition terrain = new RenderableDefinition(terrainName, worldTransforms, overlayColor, overlayColorWeight);
+            terrain.BoundingBoxes = boundingBoxes;
+
+            mRenderQueue.Enqueue(terrain);
+            foreach (BoundingBox boundingBox in boundingBoxes)
+            {
+                UpdateSceneExtents(boundingBox, worldTransforms);
             }
         }
 
@@ -605,14 +611,27 @@ namespace GraphicsLibrary
         /// <param name="screenSpace"></param>
         static public void RenderSprite(string spriteName, Rectangle screenSpace, Color blendColor, float blendColorWeight)
         {
-            if (mCanRender)
-            {
-                mSpriteQueue.Enqueue(new SpriteDefinition(spriteName, screenSpace, blendColor, blendColorWeight));
-            }
-            else
+            if (!mCanRender)
             {
                 throw new Exception("Unable to render sprite " + spriteName + " before calling BeginRendering() or after FinishRendering().\n");
             }
+            
+            mSpriteQueue.Enqueue(new SpriteDefinition(spriteName, screenSpace, blendColor, blendColorWeight));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="particleSystemName"></param>
+        /// <param name="worldTransforms"></param>
+        static public void RenderParticles(string particleSystemName, Matrix worldTransforms)
+        {
+            if (!mCanRender)
+            {
+                throw new Exception("Unable to render particle system " + particleSystemName + " before calling BeginRendering() or after FinishRendering().\n");
+            }
+
+            mParticleQueue.Enqueue(new ParticleDefinition(particleSystemName, worldTransforms));
         }
 
         public static BoundingBox BuildModelBoundingBox(string modelName)
@@ -908,6 +927,23 @@ namespace GraphicsLibrary
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        static private void InitializeParticles(ContentManager content)
+        {
+            mParticleManager = new ParticleSystemManager();
+
+            for (int i = 0; i < 1; ++i)
+            {
+                TexturedParticles newParticleSystem = new TexturedParticles(null, "puff");
+                newParticleSystem.AutoInitialize(mDevice, content, mSpriteBatch);
+
+                mParticleManager.AddParticleSystem(newParticleSystem);
+                mUniqueParticleLibrary.Add("puff", newParticleSystem);
+            }
+        }
+
+        /// <summary>
         /// Inserts new model in to model container.  Throws Exception on duplicate key.
         /// </summary>
         static private void AddModel(string modelName, Model model)
@@ -958,6 +994,21 @@ namespace GraphicsLibrary
                 return result;
             }
             throw new KeyNotFoundException("Unable to find sprite key: " + spriteName);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="particleSystemName"></param>
+        /// <returns></returns>
+        static private TexturedParticles LookupParticles(string particleSystemName)
+        {
+            TexturedParticles result;
+            if (mUniqueParticleLibrary.TryGetValue(particleSystemName, out result))
+            {
+                return result;
+            }
+            throw new KeyNotFoundException("Unable to find particle key: " + particleSystemName);
         }
 
         /// <summary>
@@ -1313,6 +1364,14 @@ namespace GraphicsLibrary
             mVertexBufferShader.CurrentTechnique.Passes[0].Apply();
 
             mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, renderable.VertexBuffer.VertexCount, 0, renderable.IndexBuffer.IndexCount / 3);
+        }
+
+        static private void DrawParticles(ParticleDefinition particles)
+        {
+            TexturedParticles particleSystem = LookupParticles(particles.Name);
+
+            particleSystem.SetWorldViewProjectionMatrices(particles.WorldTransform, mView, mProjection);
+            particleSystem.Draw();
         }
 
         /// <summary>

@@ -108,6 +108,9 @@
     <Compile Include="Billboard.cs" />
     <Compile Include="BillboardDefinition.cs" />
     <Compile Include="CascadedShadowMap.cs" />
+    <Compile Include="ParticleDefinition.cs" />
+    <Compile Include="ParticleSystem.cs" />
+    <Compile Include="TexturedParticles.cs" />
     <Compile Include="DirectoryManager.cs" />
     <Compile Include="BoundingBoxRenderer.cs" />
     <Compile Include="ICamera.cs" />

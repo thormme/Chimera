@@ -82,6 +82,7 @@ namespace Chimera
         /// </summary>
         public override void Render()
         {
+            mRenderable.BoundingBox = Entity.CollisionInformation.BoundingBox;
             mRenderable.Render(Matrix.CreateScale(Scale) * Matrix.CreateTranslation(-mCorrectionTranslate) * XNAOrientationMatrix * Matrix.CreateTranslation(Position));
         }
     }

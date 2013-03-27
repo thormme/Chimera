@@ -114,7 +114,9 @@ namespace Chimera
 
         protected List<PartAttachment> mPartAttachments;
         protected List<PartBone> mUnusedPartBones;
-        
+
+        private ParticleSystem mTrailParticles = null;
+
         #endregion
 
         #region Public Properties
@@ -589,6 +591,8 @@ namespace Chimera
             controller.SetCreature(this);
 
             mBoneIndex = 0;
+
+            mTrailParticles = new ParticleSystem("puff", Position);
         }
 
         /// <summary>
@@ -630,6 +634,8 @@ namespace Chimera
                 mRenderable.Render(GetRenderTransform(), color, weight);
             }
             RenderParts(color, weight);
+
+            mTrailParticles.Render();
         }
 
         /// <summary>
@@ -783,6 +789,7 @@ namespace Chimera
         public virtual void Move(Vector2 direction)
         {
             Move(direction, direction);
+            mTrailParticles.Position = Position;
         }
 
         /// <summary>

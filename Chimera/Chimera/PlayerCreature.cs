@@ -75,6 +75,8 @@ namespace Chimera
 
         private ScrollingTransparentModel mSuckModel;
 
+        private ParticleSystem mTrailParticles = null;
+
         #endregion
 
         #region Public Properties
@@ -344,6 +346,7 @@ namespace Chimera
                 mPartAttachments[i] = new PartAttachment(new EmptyPart(), new List<PartBone>());
             }
 
+            mTrailParticles = new ParticleSystem("puff", Position);
         }
 
         /// <summary>
@@ -358,6 +361,8 @@ namespace Chimera
             : this(ChimeraGame.Graphics.GraphicsDevice.Viewport, translation, Matrix.CreateFromQuaternion(orientation).Forward)
         {
             ChimeraGame.Camera = Camera;
+
+            mTrailParticles = new ParticleSystem("puff", Position);
         }
 
         public override void InitialCollisionDetected(EntityCollidable sender, Collidable other, BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler collisionPair)
@@ -593,6 +598,8 @@ namespace Chimera
             }
 
             base.Update(gameTime);
+
+            mTrailParticles.Position = Position;
         }
 
         public override void TryPlayAnimation(string animationName, bool loop)
@@ -615,6 +622,7 @@ namespace Chimera
             RenderReticle();
             RenderRequirement();
             RenderAbilities();
+            mTrailParticles.Render();
         }
 
         private void RenderReticle()
