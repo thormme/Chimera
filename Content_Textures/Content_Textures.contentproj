@@ -361,6 +361,13 @@
     <Folder Include="textures\billboards\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="textures\sprites\rockTexture.png">
+      <Name>rockTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="textures\sprites\waterTexture.png">
       <Name>waterTexture</Name>
       <Importer>TextureImporter</Importer>
@@ -370,6 +377,13 @@
   <ItemGroup>
     <Compile Include="textures\particles\puff.png">
       <Name>puff</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\sprites\sandTexture.png">
+      <Name>sandTexture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
