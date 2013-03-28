@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -14,7 +11,9 @@ using System.IO;
 
 namespace GameConstructLibrary
 {
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class TerrainTexture
     {
         #region Public Properties
@@ -152,6 +151,9 @@ namespace GameConstructLibrary
         /// </summary>
         private Color[] mTexels;
 
+        private Stack<ModifyAction> mUndoStack;
+        private Stack<ModifyAction> mRedoStack;
+
         #endregion
 
         #region Constants
@@ -164,6 +166,26 @@ namespace GameConstructLibrary
                 new Color(0, 0, 255, 0), 
                 new Color(0, 0, 0, 255) 
             };
+
+        #endregion
+
+        #region Structures
+
+        public struct ActionParameters
+        {
+            public Vector2 Position;
+            public float Radius;
+            public TextureLayer Layer;
+            public string TextureName;
+            public Vector2 UVOffset;
+            public Vector2 UVScale;
+        }
+
+        public struct ModifyAction
+        {
+            public List<ActionParameters> Parameters;
+            public Brush Tool;
+        }
 
         #endregion
 
@@ -295,11 +317,6 @@ namespace GameConstructLibrary
             }
         }
 
-        public void SmoothTerrain(Vector2 position, float radius)
-        {
-            SmoothBrush(position, radius);
-        }
-
         public void SmoothPaint(Vector2 position, float radius)
         {
             SmoothBrush(position, radius);
@@ -375,7 +392,7 @@ namespace GameConstructLibrary
             }
         }
 
-        private delegate void Brush(int u, int v, float distance, float radius, float alpha, TextureLayer layer);
+        public delegate void Brush(int u, int v, float distance, float radius, float alpha, TextureLayer layer);
 
         /// <summary>
         /// 
@@ -540,6 +557,19 @@ namespace GameConstructLibrary
                     }
                 }
             }
+        }
+
+        #endregion
+
+        #region Undo / Redo
+
+        public void Undo()
+        {
+        }
+
+        public void Redo()
+        {
+
         }
 
         #endregion

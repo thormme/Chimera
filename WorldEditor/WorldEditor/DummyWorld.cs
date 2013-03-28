@@ -86,7 +86,12 @@ namespace WorldEditor
             mTextureMap = GraphicsManager.LookupTerrainTexture(mName);
         }
 
-        public void ModifyHeightMap(Vector3 position, float radius, float intensity, EditorForm.Brushes brush, EditorForm.HeightMapTools tool)
+        public void ModifyHeightMap(
+            Vector3 position, 
+            float radius, 
+            float intensity, 
+            EditorForm.Brushes brush, 
+            EditorForm.HeightMapTools tool)
         {
             mHeightMap.IsFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
 
@@ -114,7 +119,26 @@ namespace WorldEditor
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
         }
 
-        public void ModifyTextureMap(Vector3 position, string texture, Vector2 UVOffset, Vector2 UVScale, float radius, float alpha, EditorForm.Brushes brush, EditorForm.PaintingTools tool, GameConstructLibrary.TerrainTexture.TextureLayer layer)
+        public void CreateNewHeightMapAction()
+        {
+            mHeightMap.NewAction = true;
+        }
+
+        public void UndoHeightMap()
+        {
+            mHeightMap.Undo();
+        }
+
+        public void ModifyTextureMap(
+            Vector3 position, 
+            string texture, 
+            Vector2 UVOffset, 
+            Vector2 UVScale, 
+            float radius, 
+            float alpha, 
+            EditorForm.Brushes brush, 
+            EditorForm.PaintingTools tool, 
+            GameConstructLibrary.TerrainTexture.TextureLayer layer)
         {
             mTextureMap.IsFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
 
@@ -129,7 +153,7 @@ namespace WorldEditor
                     mTextureMap.EraseTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture, UVOffset, UVScale);
                     break;
                 case EditorForm.PaintingTools.SMOOTH:
-                    mTextureMap.SmoothTerrain(new Vector2(position.X, position.Z), radius);
+                    mTextureMap.SmoothPaint(new Vector2(position.X, position.Z), radius);
                     break;
             }
         }

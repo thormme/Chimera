@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -141,6 +138,16 @@ namespace GameConstructLibrary
         }
         private bool mIsBlock = false;
 
+        /// <summary>
+        /// When the user has started a new edit to the terrain.
+        /// </summary>
+        public bool NewAction
+        {
+            get { return mNewAction; }
+            set { mNewAction = value; }
+        }
+        private bool mNewAction = false;
+
         #endregion
 
         #region Private Variables
@@ -171,6 +178,12 @@ namespace GameConstructLibrary
         private VertexPositionColorTextureNormal[] mVertices;
 
         private VertexPositionColorTextureNormal[] mEdgeVertices;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private Stack<ModifyAction> mUndoStack = new Stack<ModifyAction>();
+        private Stack<ModifyAction> mRedoStack = new Stack<ModifyAction>();
 
         private float mFlattenHeightSum = 0.0f;
         private int mFlattenNumVertices = 0;
@@ -231,6 +244,24 @@ namespace GameConstructLibrary
                 new VertexElement(sizeof(float) * 6, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
                 new VertexElement(sizeof(float) * 8, VertexElementFormat.Color, VertexElementUsage.Color, 0)
             );
+        }
+
+        public struct ModifyAction
+        {
+            public List<Vector2 > Positions;
+            public VertexModifier Tool;
+            public float          Radius;
+            public float          Height;
+            public int            NumPasses;
+
+            public ModifyAction(VertexModifier tool, float radius, float height, int numPasses)
+            {
+                Tool = tool;
+                Radius = radius;
+                Height = height;
+                NumPasses = numPasses;
+                Positions = new List<Vector2>();
+            }
         }
 
         #endregion
@@ -620,6 +651,7 @@ namespace GameConstructLibrary
         {
             VertexModifier modifier = RaiseLowerVertex;
             ModifyVertices(position, radius, deltaHeight, 1, modifier);
+            CreateUndoRedoAction(modifier, position, radius, deltaHeight, 1);
         }
 
         /// <summary>
@@ -632,6 +664,7 @@ namespace GameConstructLibrary
         {
             VertexModifier modifier = RaiseLowerVertex;
             ModifyVertices(position, radius, -deltaHeight, 1, modifier);
+            CreateUndoRedoAction(modifier, position, radius, -deltaHeight, 1);
         }
 
         /// <summary>
@@ -646,6 +679,7 @@ namespace GameConstructLibrary
             height *= 130.56f;
 
             ModifyVertices(position, radius, height, 1, modifier);
+            CreateUndoRedoAction(modifier, position, radius, height, 1);
         }
 
         /// <summary>
@@ -660,6 +694,7 @@ namespace GameConstructLibrary
 
             VertexModifier modifier = FlattenVertex;
             ModifyVertices(position, radius, 0.0f, 2, modifier);
+            CreateUndoRedoAction(modifier, position, radius, 0.0f, 2);
         }
 
         /// <summary>
@@ -675,13 +710,14 @@ namespace GameConstructLibrary
 
             VertexModifier modifier = SmoothVertex;
             ModifyVertices(position, radius, 0.0f, 2, modifier);
+            CreateUndoRedoAction(modifier, position, radius, 0.0f, 2);
         }
 
         #endregion
 
         #region Heightmap Modification Helpers
 
-        private delegate void VertexModifier(int x, int z, float magnitude, int pass);
+        public delegate void VertexModifier(int x, int z, float magnitude, int pass);
 
         /// <summary>
         /// Increase or decrease the Y coordinate of the vertex at X, Z by magnitude meters.
@@ -850,6 +886,25 @@ namespace GameConstructLibrary
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modifier"></param>
+        /// <param name="position"></param>
+        /// <param name="radius"></param>
+        /// <param name="magnitude"></param>
+        /// <param name="numPasses"></param>
+        private void CreateUndoRedoAction(VertexModifier modifier, Vector2 position, float radius, float magnitude, int numPasses)
+        {
+            // Keep track of changes for Undo / Redo.
+            if (NewAction == true || mUndoStack.Count == 0 || mUndoStack.Peek().Tool != modifier)
+            {
+                mUndoStack.Push(new ModifyAction(modifier, radius, magnitude, numPasses));
+                NewAction = false;
+            }
+            mUndoStack.Peek().Positions.Add(position);
+        }
+
+        /// <summary>
         /// Updates VertexBuffers so that the modified terrain is correctly rendered.
         /// </summary>
         private void UpdateVertexBuffers()
@@ -920,6 +975,37 @@ namespace GameConstructLibrary
                     }
                 }
             }
+        }
+
+        #endregion
+
+        #region Undo / Redo
+
+        public void Undo()
+        {
+            if (mUndoStack.Count == 0)
+            {
+                return;
+            }
+
+            ModifyAction oldDelta = mUndoStack.Pop();
+
+            for (int actionCount = 0; actionCount < oldDelta.Positions.Count; ++actionCount)
+            {
+                ModifyVertices(
+                    oldDelta.Positions[actionCount],
+                    oldDelta.Radius,
+                    -oldDelta.Height,
+                    oldDelta.NumPasses,
+                    oldDelta.Tool);
+            }
+
+            mRedoStack.Push(oldDelta);
+        }
+
+        public void Redo()
+        {
+
         }
 
         #endregion

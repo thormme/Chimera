@@ -28,6 +28,9 @@ namespace WorldEditor
 
         private const int DefaultWidth = 100;
         private const int DefaultHeight = 100;
+
+        private const double UndoTimeLimit = 0.50;
+
         #endregion
 
         #region UndoRedo
@@ -125,7 +128,7 @@ namespace WorldEditor
 
             }
 
-            PerformActions();
+            PerformActions(gameTime);
         }
 
         public void Draw()
@@ -360,7 +363,6 @@ namespace WorldEditor
 
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
-            AddState(mDummyWorld);
             mObjectParametersForm.SelectedObjects.Clear();
             mObjectParametersForm.SelectedObjects.Add(new DummyObject(mObjects[(mEditorForm.Controls["EditTabs"].Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedItem.ToString()]));
             SetObjectPropertiesToForm(mObjectParametersForm.SelectedObjects[0]);
@@ -438,8 +440,12 @@ namespace WorldEditor
 
         #endregion
 
-        private void PerformActions()
+        private double mTimeSinceUndo = 0.0;
+
+        private void PerformActions(GameTime gameTime)
         {
+            mTimeSinceUndo += gameTime.ElapsedGameTime.TotalSeconds;
+
             if (mIsActive)
             {
                 EditorForm form = mEditorForm as EditorForm;
@@ -448,7 +454,6 @@ namespace WorldEditor
                 {
                     if (mPlaceable && form.Mode == EditorForm.EditorMode.OBJECTS)
                     {
-                        AddState(mDummyWorld);
                         mObjectParametersForm.SelectedObjects.Clear();
                         DummyObject dummy = new DummyObject(mObjects[mEditorForm.ObjectList.SelectedItem.ToString()]);
                         mObjectParametersForm.SelectedObjects.Add(dummy);
@@ -463,34 +468,44 @@ namespace WorldEditor
                         switch (form.Mode)
                         {
                             case EditorForm.EditorMode.HEIGHTMAP:
-                                {
-                                    float strength = form.Strength * 10.0f;
-                                    mDummyWorld.ModifyHeightMap(mCursorObject.Position, form.Size, strength, form.HeightMapBrush, form.HeightMapTool);
-                                    break;
-                                }
+                            {
+                                float strength = form.Strength * 10.0f;
+                                mDummyWorld.ModifyHeightMap(mCursorObject.Position, form.Size, strength, form.HeightMapBrush, form.HeightMapTool);
+                                break;
+                            }
                             case EditorForm.EditorMode.PAINTING:
-                                {
-                                    TextureSelectionForm textureForm = mTextureSelectionForm as TextureSelectionForm;
-                                    float alpha = form.Strength / 100.0f;
-                                    GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
-                                    string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
+                            {
+                                TextureSelectionForm textureForm = mTextureSelectionForm as TextureSelectionForm;
+                                float alpha = form.Strength / 100.0f;
+                                GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
+                                string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
 
-                                    float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
-                                    float uScale = (float)textureForm.UScale.Value, vScale = (float)textureForm.VScale.Value;
+                                float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
+                                float uScale = (float)textureForm.UScale.Value, vScale = (float)textureForm.VScale.Value;
 
-                                    mDummyWorld.ModifyTextureMap(
-                                        mCursorObject.Position, 
-                                        textureName, 
-                                        new Vector2(uOffset, vOffset), 
-                                        new Vector2(uScale, vScale), 
-                                        form.Size, alpha,
-                                        form.PaintingBrush, 
-                                        form.PaintingTool, layer);
+                                mDummyWorld.ModifyTextureMap(
+                                    mCursorObject.Position, 
+                                    textureName, 
+                                    new Vector2(uOffset, vOffset), 
+                                    new Vector2(uScale, vScale), 
+                                    form.Size, alpha,
+                                    form.PaintingBrush, 
+                                    form.PaintingTool, 
+                                    layer);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
                     }
+                }
+                else if (mControls.LeftReleased.Active)
+                {
+                    mDummyWorld.CreateNewHeightMapAction();
+                }
+                else if (mControls.Control.Active && mControls.Undo.Active && mTimeSinceUndo > UndoTimeLimit)
+                {
+                    mTimeSinceUndo = 0.0;
+                    mDummyWorld.UndoHeightMap();
                 }
             }
         }
@@ -500,83 +515,5 @@ namespace WorldEditor
 
 
         #endregion
-
-        #region UndoRedo
-
-        public void AddState(DummyWorld state)
-        {
-            
-            //if (mUndoRedoCurrentState == mUndoLimit)
-            //{
-            //    mUndoLimit = mUndoRedoCurrentState + 1;
-            //}
-
-            //if (mUndoLimit >= NumUndoRedoStates)
-            //{
-            //    mUndoLimit = 0;
-            //}
-
-            //mUndoRedoStates[mUndoRedoCurrentState] = new DummyWorld(state);
-            //mUndoRedoCurrentState++;
-            //mRedoLimit = mUndoRedoCurrentState;
-
-            //if (mUndoRedoCurrentState >= NumUndoRedoStates)
-            //{
-            //    mUndoRedoCurrentState = 0;
-            //}
-
-        }
-
-        public void Undo()
-        {
-
-            int originalState = mUndoRedoCurrentState;
-            mUndoRedoCurrentState--;
-
-            if (mUndoRedoCurrentState < 0)
-            {
-                mUndoRedoCurrentState = NumUndoRedoStates - 1;
-            }
-
-            if (mUndoRedoStates[mUndoRedoCurrentState] == null || mUndoRedoCurrentState == mUndoLimit)
-            {
-                mUndoRedoCurrentState = originalState;
-                return;
-            }
-
-            SwapWorld(originalState);
-
-        }
-
-        public void Redo()
-        {
-
-            int originalState = mUndoRedoCurrentState;
-            mUndoRedoCurrentState++;
-
-            if (mUndoRedoCurrentState >= NumUndoRedoStates)
-            {
-                mUndoRedoCurrentState = 0;
-            }
-
-            if (mUndoRedoStates[mUndoRedoCurrentState] == null || mUndoRedoCurrentState == mRedoLimit + 1)
-            {
-                mUndoRedoCurrentState = originalState;
-                return;
-            }
-
-            SwapWorld(originalState);
-
-        }
-
-        private void SwapWorld(int originalState)
-        {
-            mUndoRedoStates[originalState] = new DummyWorld(mDummyWorld);
-            mDummyWorld = mUndoRedoStates[mUndoRedoCurrentState];
-            mDummyWorld.LinkHeightMap();
-        }
-
-        #endregion
-
     }
 }

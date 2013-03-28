@@ -26,7 +26,8 @@ namespace WorldEditor
         public KeyInputAction Alt = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.LeftAlt);
         public KeyInputAction Shift = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.LeftShift);
 
-        public KeyInputAction UndoRedo = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Z);
+        public KeyInputAction Undo = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Z);
+        public KeyInputAction Redo = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Y);
         public KeyInputAction Delete = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Delete);
         public KeyInputAction Increase = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.OemPlus);
         public KeyInputAction Decrease = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.OemMinus);
