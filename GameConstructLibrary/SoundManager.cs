@@ -18,8 +18,8 @@ namespace GameConstructLibrary
         /// <param name="content">Global game content manager.</param>
         static public void LoadContent(ContentManager content)
         {
-            // Load models.
-            DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "sounds");
+            // Load sounds.
+            DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "audio");
             if (!dir.Exists)
             {
                 throw new DirectoryNotFoundException("Could not find sounds/ directory in content.");
@@ -33,7 +33,7 @@ namespace GameConstructLibrary
                 {
                     string soundName = Path.GetFileNameWithoutExtension(file.Name);
                     string subDirPath = Path.GetFileNameWithoutExtension(subDir.FullName);
-                    mUniqueSoundEffectLibrary.Add(soundName, content.Load<SoundEffect>("sounds/" + subDirPath + "/" + soundName));
+                    mUniqueSoundEffectLibrary.Add(soundName, content.Load<SoundEffect>("audio/" + subDirPath + "/" + soundName));
                 }
             }
         }

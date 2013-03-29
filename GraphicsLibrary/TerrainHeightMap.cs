@@ -431,14 +431,14 @@ namespace GameConstructLibrary
                             int bottomLeftIndex = x + (z + 1) * mChunkWidth;
 
                             // Make first triangle.
+                            chunkIndices[counter++] = bottomLeftIndex;
                             chunkIndices[counter++] = topLeftIndex;
                             chunkIndices[counter++] = topRightIndex;
-                            chunkIndices[counter++] = bottomRightIndex;
 
                             // Make second triangle.
-                            chunkIndices[counter++] = topLeftIndex;
-                            chunkIndices[counter++] = bottomRightIndex;
                             chunkIndices[counter++] = bottomLeftIndex;
+                            chunkIndices[counter++] = topRightIndex;
+                            chunkIndices[counter++] = bottomRightIndex;
                         }
                     }
 
@@ -635,6 +635,24 @@ namespace GameConstructLibrary
         {
             Color pixelValue = Utils.GetTexture2DPixelColor(u, v, heightMap);
             return pixelValue.R * 256 * 256 + pixelValue.G * 256 + pixelValue.B;
+        }
+
+        #endregion
+
+        #region Queries
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="z"></param>
+        /// <returns></returns>
+        public float HeightAt(float x, float z)
+        {
+            int xIndex = (int)((x / Utils.WorldScale.X + mWidth / 2) / mWidth);
+            int zIndex = (int)((z / Utils.WorldScale.Z + mHeight / 2) / mHeight);
+
+            return mVertices[xIndex + zIndex * mWidth].Position.Y;
         }
 
         #endregion

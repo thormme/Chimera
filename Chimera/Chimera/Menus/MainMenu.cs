@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using BEPUphysicsDrawer.Models;
 using GraphicsLibrary;
 using GameConstructLibrary;
+using Utility;
 
 namespace Chimera.Menus
 {
@@ -91,9 +92,8 @@ namespace Chimera.Menus
             ChimeraGame.PopState();
 
             GameWorld world = new GameWorld(mDebugDrawer);
-            world.AddLevelFromFile("tree", new Vector3(0, 0, 0), Quaternion.Identity, new Vector3(8.0f, 0.01f, 8.0f));
+            world.AddLevelFromFile("tree", Vector3.Zero, Quaternion.Identity, Utils.WorldScale);
             ChimeraGame.PushState(world);
-
         }
 
         private void Instructions(Button button)

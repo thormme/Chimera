@@ -8,8 +8,8 @@
 #include "macros.fxh"
 
 // Settings of outline edges.
-float EdgeWidth = 3;
-float EdgeIntensity = 2;
+float EdgeWidth = 1;
+float EdgeIntensity = 1;
 
 // Epsilon values for face normals.
 float NormalThreshold = 0.5;

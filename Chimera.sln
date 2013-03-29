@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chimera", "Chimera\Chimera\Chimera.csproj", "{099FF29B-954A-4208-A12C-A2121DDFB7E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicsLibrary", "GraphicsLibrary\GraphicsLibrary.csproj", "{B68107C8-3825-47AA-BC8A-B7AA8D2902F6}"
@@ -31,11 +31,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content_Objects", "Content_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content_Shaders", "Content_Shaders\Content_Shaders.contentproj", "{F50B1428-A220-44C0-9A44-28B4989E7923}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content_SFX", "Content_SFX\Content_SFX.contentproj", "{212E62AA-982F-4B75-B2DA-D2A6C93EBD19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content_Audio", "Content_SFX\Content_Audio.contentproj", "{212E62AA-982F-4B75-B2DA-D2A6C93EBD19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content_Fonts", "Content_Fonts\Content_Fonts.contentproj", "{EA74773E-D658-4366-AB62-085F8235C5BC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content_Music", "Content_Music\Content_Music.contentproj", "{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{187F2BD1-D182-4F09-9B54-154FE553BFE6}"
 EndProject
@@ -501,26 +499,6 @@ Global
 		{EA74773E-D658-4366-AB62-085F8235C5BC}.Release WorldEditor|Win32.ActiveCfg = Debug|Any CPU
 		{EA74773E-D658-4366-AB62-085F8235C5BC}.Release WorldEditor|x86.ActiveCfg = Debug|Any CPU
 		{EA74773E-D658-4366-AB62-085F8235C5BC}.Release WorldEditor|Xbox 360.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Debug Chimera|Any CPU.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Debug Chimera|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Debug Chimera|Win32.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Debug Chimera|x86.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Debug Chimera|Xbox 360.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Debug WorldEditor|Any CPU.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Debug WorldEditor|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Debug WorldEditor|Win32.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Debug WorldEditor|x86.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Debug WorldEditor|Xbox 360.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Release Chimera|Any CPU.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Release Chimera|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Release Chimera|Win32.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Release Chimera|x86.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Release Chimera|Xbox 360.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Release WorldEditor|Any CPU.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Release WorldEditor|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Release WorldEditor|Win32.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Release WorldEditor|x86.ActiveCfg = Debug|Any CPU
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}.Release WorldEditor|Xbox 360.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -535,7 +513,6 @@ Global
 		{F50B1428-A220-44C0-9A44-28B4989E7923} = {187F2BD1-D182-4F09-9B54-154FE553BFE6}
 		{212E62AA-982F-4B75-B2DA-D2A6C93EBD19} = {187F2BD1-D182-4F09-9B54-154FE553BFE6}
 		{EA74773E-D658-4366-AB62-085F8235C5BC} = {187F2BD1-D182-4F09-9B54-154FE553BFE6}
-		{72E7B285-45D0-4188-AC5D-0FA2D9A228DE} = {187F2BD1-D182-4F09-9B54-154FE553BFE6}
 		{57C3FDF5-1889-4507-B5F1-46E6BE0F2F61} = {187F2BD1-D182-4F09-9B54-154FE553BFE6}
 	EndGlobalSection
 EndGlobal

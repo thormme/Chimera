@@ -18,7 +18,7 @@ namespace GameConstructLibrary
 
         static private string mLastLoadedLevelName = null;
         static private TerrainDescription mLastLoadedTerrainDescription = null;
-        static private List<DummyObject> mLastLoadedObjectList = new List<DummyObject>();
+        static private List<DummyObject> mLastLoadedObjectList = null;
 
         #endregion
 
@@ -180,6 +180,16 @@ namespace GameConstructLibrary
             return name;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        static public void Clear()
+        {
+            mLastLoadedLevelName = null;
+            mLastLoadedObjectList = null;
+            mLastLoadedTerrainDescription = null;
+        }
+
         #endregion
 
         #region Helper Functions
@@ -254,6 +264,54 @@ namespace GameConstructLibrary
                     zipFile.IsStreamOwner = true;
                     zipFile.Close();
                 }
+
+                int numDummies = mLastLoadedObjectList.Count;
+
+                bool containsPlayer = false, containsGoal = false;
+
+                for (int i = 0; i < numDummies; ++i)
+                {
+                    if (mLastLoadedObjectList[i].Type == "Chimera.PlayerCreature, Chimera")
+                    {
+                        containsPlayer = true;
+                    }
+
+                    if (mLastLoadedObjectList[i].Type == "Chimera.GoalPoint, Chimera")
+                    {
+                        containsGoal = true;
+                    }
+                }
+
+                if (containsPlayer == false)
+                {
+                    DummyObject player = new DummyObject();
+                    player.Type = "Chimera.PlayerCreature, Chimera";
+                    player.Model = "playerBean";
+                    player.Position = new Vector3(0.0f, mLastLoadedTerrainDescription.Terrain.HeightAt(0.0f, 0.0f) * 1.25f, 0.0f);
+                    player.YawPitchRoll = Vector3.Zero;
+                    player.Scale = Vector3.Zero;
+                    player.RotationAxis = Vector3.Zero;
+                    player.RotationAngle = 0.0f;
+                    player.Height = 0.0f;
+
+                    mLastLoadedObjectList.Add(player);
+                }
+
+                if (containsGoal == false)
+                {
+                    DummyObject goal = new DummyObject();
+                    goal.Type = "Chimera.GoalPoint, Chimera";
+                    goal.Model = "tractorBeam";
+                    goal.Parameters = new string[2] { null, "PenguinLimbs" };
+                    goal.Position = new Vector3(50.0f, mLastLoadedTerrainDescription.Terrain.HeightAt(50.0f, 50.0f), 50.0f);
+                    goal.YawPitchRoll = Vector3.Zero;
+                    goal.Scale = new Vector3(0.125f, 100f, 0.125f);
+                    goal.RotationAxis = Vector3.Zero;
+                    goal.RotationAngle = 0.0f;
+                    goal.Height = 0.0f;
+
+                    mLastLoadedObjectList.Add(goal);
+                }
             }
         }
 
@@ -285,11 +343,12 @@ namespace GameConstructLibrary
                         string[] parsedLine = line.Split(' ');
 
                         string textureName = parsedLine[0];
-                        float uOffset = float.Parse(parsedLine[1]), vOffset = float.Parse(parsedLine[2]);
-                        float uScale = float.Parse(parsedLine[3]), vScale = float.Parse(parsedLine[4]);
 
                         if (textureName != "NULLTEXTURE")
                         {
+                            float uOffset = float.Parse(parsedLine[1]), vOffset = float.Parse(parsedLine[2]);
+                            float uScale = float.Parse(parsedLine[3]), vScale = float.Parse(parsedLine[4]);
+
                             detailTextureNames[chunkDetails[0], chunkDetails[1], textureNameIndex] = textureName;
                             detailTextureUVOffset[chunkDetails[0], chunkDetails[1], textureNameIndex] = new Vector2(uOffset, vOffset);
                             detailTextureUVScale[chunkDetails[0], chunkDetails[1], textureNameIndex] = new Vector2(uScale, vScale);

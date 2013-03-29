@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using Chimera.Menus;
 using Nuclex.Input;
 using Nuclex.UserInterface;
+using Utility;
 
 namespace Chimera
 {
@@ -125,6 +126,7 @@ namespace Chimera
             DebugConsole.AddCommand("drawBoundingBoxes", new DebugConsole.ConsoleCommand(BoundingBoxCommand));
             DebugConsole.AddCommand("BirdsEyeView", new DebugConsole.ConsoleCommand(BirdsEyeViewCommand));
             DebugConsole.AddCommand("BEV", new DebugConsole.ConsoleCommand(BirdsEyeViewCommand));
+            DebugConsole.AddCommand("level", new DebugConsole.ConsoleCommand(LoadLevel));
             DebugConsole.Hide();
             // END
 
@@ -145,7 +147,6 @@ namespace Chimera
 
         protected void ResizedWindow(object sender, EventArgs e)
         {
-            int Width, Height;
             var safeWidth = Math.Max(this.Window.ClientBounds.Width, 1);
             var safeHeight = Math.Max(this.Window.ClientBounds.Height, 1);
             var newViewport = new Viewport(0, 0, safeWidth, safeHeight) { MinDepth = 0.0f, MaxDepth = 1.0f };
@@ -221,6 +222,11 @@ namespace Chimera
 
         public void ExitToMenu()
         {
+            if (mGameStates.Count > 1 && mGameStates[mGameStates.Count - 2] is GameWorld)
+            {
+                (mGameStates[mGameStates.Count - 2] as GameWorld).Clear();
+            }
+
             mNumPopQueued = mGameStates.Count;
             mGameStateAddQueue.Clear();
 
@@ -278,8 +284,8 @@ namespace Chimera
                 }
             }
 
-            try
-            {
+            //try
+            //{
                 IsMouseVisible = !InputAction.IsMouseLocked;
 
                 ChaseCamera camera = Camera as ChaseCamera;
@@ -335,15 +341,15 @@ namespace Chimera
                 mGameStateAddQueue.Clear();
 
                 base.Update(gameTime);
-            }
-            catch (Exception e) 
-            {
-                TextWriter tw = new StreamWriter("log.txt");
-                tw.WriteLine(e.Message);
-                tw.WriteLine(e.StackTrace);
-                tw.Close();
-                throw e;
-            }
+            //}
+            //catch (Exception e) 
+            //{
+            //    TextWriter tw = new StreamWriter("log.txt");
+            //    tw.WriteLine(e.Message);
+            //    tw.WriteLine(e.StackTrace);
+            //    tw.Close();
+            //    throw e;
+            //}
         }
 
         /// <summary>
@@ -520,6 +526,26 @@ namespace Chimera
                 birdsEyeViewCamera.Target = new Vector3(1, 1, 1);
 
                 GraphicsManager.BirdsEyeViewCamera = birdsEyeViewCamera;
+            }
+        }
+
+        private void LoadLevel(List<string> parameters)
+        {
+            if (parameters.Count == 0 || !File.Exists(parameters[0]))
+            {
+                return;
+            }
+
+            if (mGameStates[mGameStates.Count - 1] is World)
+            {
+                DebugModelDrawer = null;
+                DebugModelDrawer = new InstancedModelDrawer(this);
+                DebugModelDrawer.IsWireframe = true;
+
+                (mGameStates[mGameStates.Count - 1] as GameWorld).Clear();
+                mGameStates[mGameStates.Count - 1] = null;
+                mGameStates[mGameStates.Count - 1] = new GameWorld(DebugModelDrawer);
+                (mGameStates[mGameStates.Count - 1] as GameWorld).AddLevelFromFile(parameters[0], Vector3.Zero, Quaternion.Identity, Utils.WorldScale);
             }
         }
 

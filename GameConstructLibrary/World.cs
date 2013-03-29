@@ -11,6 +11,7 @@ using BEPUphysics.Collidables;
 using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Entities.Prefabs;
 using System.IO;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GameConstructLibrary
 {
@@ -28,6 +29,8 @@ namespace GameConstructLibrary
         private ModelDrawer mDebugModelDrawer;
 
         public Space Space;
+
+        public SoundEffectInstance LevelTheme;
 
         public World(ModelDrawer debugModelDrawer)
         {
@@ -169,6 +172,8 @@ namespace GameConstructLibrary
 
         public void AddLevelFromFile(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)
         {
+            LevelFileLoader.Clear();
+
             if (!mapName.Contains(".lvl"))
             {
                 mapName += ".lvl";
@@ -203,18 +208,21 @@ namespace GameConstructLibrary
                     }
 
                     CheckSpecialObject(obj);
-
                 }
             }
 
             TerrainPhysics terrain = LoadTerrain(mapName, position, orientation, scale);
             Add(terrain);
 
-            Water water = new Water("waterTexture", 50, new Vector2(2, 2));
-            Add(water);
+            //Water water = new Water("waterTexture", 50, new Vector2(2, 2));
+            //Add(water);
 
             SkyBox skydome = new SkyBox("overcastSkyBox");
             Add(skydome);
+
+            LevelTheme = SoundManager.LookupSound("desertTheme").CreateInstance();
+            LevelTheme.IsLooped = true;
+            LevelTheme.Play();
         }
 
         protected virtual TerrainPhysics LoadTerrain(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)
@@ -235,6 +243,9 @@ namespace GameConstructLibrary
             {
                 Remove(gameObject);
             }
+
+            LevelTheme.Stop();
+            LevelTheme = null;
         }
     }
 }

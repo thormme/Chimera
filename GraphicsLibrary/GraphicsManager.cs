@@ -76,8 +76,8 @@ namespace GraphicsLibrary
 
         static private float mTimeElapsed = 0.0f;
 
-        static private int mEdgeWidth = 1;
-        static private int mEdgeIntensity = 1;
+        static private float mEdgeWidth = 1.5f;
+        static private float mEdgeIntensity = 1.0f;
 
         static private char[] mDelimeterChars = { ' ' };
 

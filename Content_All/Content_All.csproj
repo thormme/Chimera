@@ -115,19 +115,14 @@
       <Name>Content_Fonts %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
-    <ProjectReference Include="..\Content_Music\Content_Music.contentproj">
-      <Project>{72E7B285-45D0-4188-AC5D-0FA2D9A228DE}</Project>
-      <Name>Content_Music %28Content%29</Name>
-      <XnaReferenceType>Content</XnaReferenceType>
-    </ProjectReference>
     <ProjectReference Include="..\Content_Objects\Content_Objects.contentproj">
       <Project>{50FD0490-71AF-43C0-889E-9352A535C106}</Project>
       <Name>Content_Objects %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
-    <ProjectReference Include="..\Content_SFX\Content_SFX.contentproj">
+    <ProjectReference Include="..\Content_SFX\Content_Audio.contentproj">
       <Project>{212E62AA-982F-4B75-B2DA-D2A6C93EBD19}</Project>
-      <Name>Content_SFX %28Content%29</Name>
+      <Name>Content_Audio %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
     <ProjectReference Include="..\Content_Shaders\Content_Shaders.contentproj">
