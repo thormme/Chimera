@@ -1,0 +1,1 @@
+for /r "..\" %%f in (*.X) do (start XModelNormalUnifier.exe "%%f" "%%f")
