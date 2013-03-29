@@ -30,7 +30,7 @@ namespace WorldEditor
 
         public Editor()
         {
-            IsMouseVisible = true;
+            IsMouseVisible = false;
 
             mGraphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -55,7 +55,7 @@ namespace WorldEditor
             GraphicsManager.CastingShadows = true;
 
             mCamera = new FPSCamera(GraphicsDevice.Viewport);
-            mCamera.Position = new Vector3(0, 1400, -1000);
+            mCamera.Position = new Vector3(0, 1400, 1000);
             mCamera.Target = new Vector3(0, 100, 0);
             mCamera.FarPlaneDistance = 3000;
 

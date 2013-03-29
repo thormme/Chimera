@@ -146,7 +146,7 @@ namespace GameConstructLibrary
             get { return mNewAction; }
             set { mNewAction = value; }
         }
-        private bool mNewAction = false;
+        private bool mNewAction = true;
 
         #endregion
 
@@ -184,6 +184,7 @@ namespace GameConstructLibrary
         /// </summary>
         private Stack<ModifyAction> mUndoStack = new Stack<ModifyAction>();
         private Stack<ModifyAction> mRedoStack = new Stack<ModifyAction>();
+        private ModifyAction mCurrentAction = null;
 
         private float mFlattenHeightSum = 0.0f;
         private int mFlattenNumVertices = 0;
@@ -246,22 +247,9 @@ namespace GameConstructLibrary
             );
         }
 
-        public struct ModifyAction
+        public class ModifyAction
         {
-            public List<Vector2 > Positions;
-            public VertexModifier Tool;
-            public float          Radius;
-            public float          Height;
-            public int            NumPasses;
-
-            public ModifyAction(VertexModifier tool, float radius, float height, int numPasses)
-            {
-                Tool = tool;
-                Radius = radius;
-                Height = height;
-                NumPasses = numPasses;
-                Positions = new List<Vector2>();
-            }
+            public float[] Heights = null;
         }
 
         #endregion
@@ -315,6 +303,8 @@ namespace GameConstructLibrary
             UpdateNormalVectors(0, mHeight - 1, 0, mWidth - 1);
 
             InitializeBuffers();
+
+            mCurrentAction = new ModifyAction();
         }
 
         #endregion
@@ -649,8 +639,8 @@ namespace GameConstructLibrary
         /// <returns></returns>
         public float HeightAt(float x, float z)
         {
-            int xIndex = (int)((x / Utils.WorldScale.X + mWidth / 2) / mWidth);
-            int zIndex = (int)((z / Utils.WorldScale.Z + mHeight / 2) / mHeight);
+            int xIndex = (int)(x / Utils.WorldScale.X + mWidth / 2);
+            int zIndex = (int)(z / Utils.WorldScale.Z + mHeight / 2);
 
             return mVertices[xIndex + zIndex * mWidth].Position.Y;
         }
@@ -669,7 +659,6 @@ namespace GameConstructLibrary
         {
             VertexModifier modifier = RaiseLowerVertex;
             ModifyVertices(position, radius, deltaHeight, 1, modifier);
-            CreateUndoRedoAction(modifier, position, radius, deltaHeight, 1);
         }
 
         /// <summary>
@@ -682,7 +671,6 @@ namespace GameConstructLibrary
         {
             VertexModifier modifier = RaiseLowerVertex;
             ModifyVertices(position, radius, -deltaHeight, 1, modifier);
-            CreateUndoRedoAction(modifier, position, radius, -deltaHeight, 1);
         }
 
         /// <summary>
@@ -697,7 +685,6 @@ namespace GameConstructLibrary
             height *= 130.56f;
 
             ModifyVertices(position, radius, height, 1, modifier);
-            CreateUndoRedoAction(modifier, position, radius, height, 1);
         }
 
         /// <summary>
@@ -712,7 +699,6 @@ namespace GameConstructLibrary
 
             VertexModifier modifier = FlattenVertex;
             ModifyVertices(position, radius, 0.0f, 2, modifier);
-            CreateUndoRedoAction(modifier, position, radius, 0.0f, 2);
         }
 
         /// <summary>
@@ -728,7 +714,6 @@ namespace GameConstructLibrary
 
             VertexModifier modifier = SmoothVertex;
             ModifyVertices(position, radius, 0.0f, 2, modifier);
-            CreateUndoRedoAction(modifier, position, radius, 0.0f, 2);
         }
 
         #endregion
@@ -871,6 +856,17 @@ namespace GameConstructLibrary
         /// <param name="modifyVertex"></param>
         private void ModifyVertices(Vector2 position, float radius, float magnitude, int numPasses, VertexModifier modifyVertex)
         {
+            if (NewAction)
+            {
+                NewAction = false;
+
+                BackupVertices();
+                mUndoStack.Push(mCurrentAction);
+                mCurrentAction = null;
+                mCurrentAction = new ModifyAction();
+                mRedoStack.Clear();
+            }
+
             float radiusSquared = radius * radius;
 
             // Normalize origin of modification to [0,mHeight), [0, mWidth).
@@ -879,7 +875,7 @@ namespace GameConstructLibrary
 
             int minZ = (int)Math.Max(0, position.Y - radius), maxZ = (int)Math.Min(mHeight - 1, position.Y + radius);
             int minX = (int)Math.Max(0, position.X - radius), maxX = (int)Math.Min(mWidth - 1, position.X + radius);
-
+            
             for (int pass = 0; pass < numPasses; ++pass)
             {
                 for (int zIndex = minZ; zIndex <= maxZ; ++zIndex)
@@ -911,15 +907,32 @@ namespace GameConstructLibrary
         /// <param name="radius"></param>
         /// <param name="magnitude"></param>
         /// <param name="numPasses"></param>
-        private void CreateUndoRedoAction(VertexModifier modifier, Vector2 position, float radius, float magnitude, int numPasses)
+        private void BackupVertices()
         {
-            // Keep track of changes for Undo / Redo.
-            if (NewAction == true || mUndoStack.Count == 0 || mUndoStack.Peek().Tool != modifier)
+            mCurrentAction.Heights = new float[mWidth * mHeight];
+
+            for (int z = 0; z < mHeight; ++z)
             {
-                mUndoStack.Push(new ModifyAction(modifier, radius, magnitude, numPasses));
-                NewAction = false;
+                for (int x = 0; x < mWidth; ++x)
+                {
+                    mCurrentAction.Heights[x + z * mWidth] = mVertices[x + z * mWidth].Position.Y;
+                }
             }
-            mUndoStack.Peek().Positions.Add(position);
+        }
+
+        private void RestoreVertices()
+        {
+            for (int z = 0; z < mHeight; ++z)
+            {
+                for (int x = 0; x < mWidth; ++x)
+                {
+                    mVertices[x + z * mWidth].Position.Y = mCurrentAction.Heights[x + z * mWidth];
+                    WriteDirtyBit(x, z);
+                }
+            }
+
+            UpdateNormalVectors(0, mHeight - 1, 0, mWidth - 1);
+            UpdateVertexBuffers();
         }
 
         /// <summary>
@@ -1006,24 +1019,35 @@ namespace GameConstructLibrary
                 return;
             }
 
-            ModifyAction oldDelta = mUndoStack.Pop();
-
-            for (int actionCount = 0; actionCount < oldDelta.Positions.Count; ++actionCount)
+            if (mCurrentAction.Heights == null)
             {
-                ModifyVertices(
-                    oldDelta.Positions[actionCount],
-                    oldDelta.Radius,
-                    -oldDelta.Height,
-                    oldDelta.NumPasses,
-                    oldDelta.Tool);
+                BackupVertices();
             }
 
-            mRedoStack.Push(oldDelta);
+            mRedoStack.Push(mCurrentAction);
+
+            mCurrentAction = mUndoStack.Pop();
+
+            RestoreVertices();
         }
 
         public void Redo()
         {
+            if (mRedoStack.Count == 0)
+            {
+                return;
+            }
 
+            if (mCurrentAction.Heights == null)
+            {
+                BackupVertices();
+            }
+
+            mUndoStack.Push(mCurrentAction);
+
+            mCurrentAction = mRedoStack.Pop();
+
+            RestoreVertices();
         }
 
         #endregion

@@ -151,9 +151,6 @@ namespace GameConstructLibrary
         /// </summary>
         private Color[] mTexels;
 
-        private Stack<ModifyAction> mUndoStack;
-        private Stack<ModifyAction> mRedoStack;
-
         #endregion
 
         #region Constants
@@ -175,16 +172,28 @@ namespace GameConstructLibrary
         {
             public Vector2 Position;
             public float Radius;
+            public float Alpha;
             public TextureLayer Layer;
-            public string TextureName;
-            public Vector2 UVOffset;
-            public Vector2 UVScale;
+
+            public ActionParameters(Vector2 position, float radius, float alpha, TextureLayer layer)
+            {
+                Position = position;
+                Radius = radius;
+                Alpha = alpha;
+                Layer = layer;
+            }
         }
 
-        public struct ModifyAction
+        public class ModifyAction
         {
             public List<ActionParameters> Parameters;
             public Brush Tool;
+
+            public ModifyAction(Brush tool)
+            {
+                Tool = tool;
+                Parameters = new List<ActionParameters>();
+            }
         }
 
         #endregion
@@ -305,15 +314,15 @@ namespace GameConstructLibrary
             }
         }
 
-        public void EraseTerrain(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName, Vector2 uVSOffset, Vector2 uVScale)
+        public void EraseTerrain(Vector2 position, float radius, float alpha, TextureLayer layer, string detailTextureName, Vector2 uVOffset, Vector2 uVScale)
         {
             if (!mIsFeathered)
             {
-                EraseSolidBrush(position, radius, alpha, layer, detailTextureName, uVSOffset, uVScale);
+                EraseSolidBrush(position, radius, alpha, layer, detailTextureName, uVOffset, uVScale);
             }
             else
             {
-                EraseLinearBrush(position, radius, alpha, layer, detailTextureName, uVSOffset, uVScale);
+                EraseLinearBrush(position, radius, alpha, layer, detailTextureName, uVOffset, uVScale);
             }
         }
 
@@ -557,19 +566,6 @@ namespace GameConstructLibrary
                     }
                 }
             }
-        }
-
-        #endregion
-
-        #region Undo / Redo
-
-        public void Undo()
-        {
-        }
-
-        public void Redo()
-        {
-
         }
 
         #endregion

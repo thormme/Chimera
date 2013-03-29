@@ -21,6 +21,7 @@ namespace WorldEditor
     {
 
         #region Constants
+
         private const string ContentPath = "Content";
         private const string ModelsPath = "models";
         private const string ObjectsPath = "objects";
@@ -29,7 +30,7 @@ namespace WorldEditor
         private const int DefaultWidth = 100;
         private const int DefaultHeight = 100;
 
-        private const double UndoTimeLimit = 0.50;
+        private const double UndoTimeLimit = 0.10;
 
         #endregion
 
@@ -49,12 +50,7 @@ namespace WorldEditor
         private Rectangle mSelectRectangle = new Rectangle();
         #endregion
 
-        private string mName = null;
-        private string mFilePath = null;
-
-        private bool mIsActive = false;
-
-        private Effect mTextureTransformShader = null;
+        #region Public Properties
 
         //Dialog for the world editor.
         public EditorForm mEditorForm = new EditorForm();
@@ -65,6 +61,25 @@ namespace WorldEditor
         public TextureSelectionForm mTextureSelectionForm = new TextureSelectionForm();
 
         public bool Closed = false;
+
+        //Handles camera movement and picking.
+        public Entity Entity
+        {
+            get { return mEntity; }
+            set { mEntity = value; }
+        }
+        private Entity mEntity = null;
+
+        #endregion
+
+        #region Private Variables
+
+        private string mName = null;
+        private string mFilePath = null;
+
+        private bool mIsActive = false;
+
+        private Effect mTextureTransformShader = null;
 
         private FPSCamera mCamera = null;
 
@@ -86,13 +101,11 @@ namespace WorldEditor
         //Stores the objects placed in the world and the height map.
         private DummyWorld mDummyWorld = null;
 
-        //Handles camera movement and picking.
-        public Entity Entity
-        {
-            get { return mEntity; }
-            set { mEntity = value; }
-        }
-        private Entity mEntity = null;
+        private double mTimeSinceUndo = 0.0;
+
+        #endregion
+
+        #region Public Interface
 
         public WorldEditor(Viewport viewport, FPSCamera camera, ContentManager content)
         {
@@ -158,6 +171,8 @@ namespace WorldEditor
 
             mDummyWorld.Draw();
         }
+
+        #endregion
 
         #region Editor Form Creation and Handling
 
@@ -251,7 +266,7 @@ namespace WorldEditor
                 ((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).Items.Add(texture.Key);
             }
 
-            SwitchToEdit();
+            ScaleCursor();
         }
 
         private void CloseHandler(object sender, EventArgs e)
@@ -334,12 +349,12 @@ namespace WorldEditor
             if (editModes.SelectedTab == editModes.Controls["Heights"])
             {
                 mObjectParametersForm.Hide();
-                SwitchToEdit();
+                ScaleCursor();
             }
             else if (editModes.SelectedTab == editModes.Controls["Textures"])
             {
                 mObjectParametersForm.Hide();
-                SwitchToEdit();
+                ScaleCursor();
             }
             else if (editModes.SelectedTab == editModes.Controls["Objects"])
             {
@@ -347,12 +362,8 @@ namespace WorldEditor
             }
         }
 
-        private void SwitchToEdit()
+        private void ScaleCursor()
         {
-            // TODO: possibly create new object here.
-            mCursorObject.Model = "circleCursor";
-            mCursorObject.Position = Vector3.Zero;
-            mCursorObject.YawPitchRoll = Vector3.Zero;
             mCursorObject.Scale = new Vector3((int)(mEditorForm as EditorForm).Size, 0, (int)(mEditorForm as EditorForm).Size);
         }
 
@@ -440,79 +451,85 @@ namespace WorldEditor
 
         #endregion
 
-        private double mTimeSinceUndo = 0.0;
+        #region Update Helpers
 
         private void PerformActions(GameTime gameTime)
         {
             mTimeSinceUndo += gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (mIsActive)
+            if (!mIsActive)
             {
-                EditorForm form = mEditorForm as EditorForm;
-                TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
-                if (mControls.LeftPressed.Active)
-                {
-                    if (mPlaceable && form.Mode == EditorForm.EditorMode.OBJECTS)
-                    {
-                        mObjectParametersForm.SelectedObjects.Clear();
-                        DummyObject dummy = new DummyObject(mObjects[mEditorForm.ObjectList.SelectedItem.ToString()]);
-                        mObjectParametersForm.SelectedObjects.Add(dummy);
-                        SetObjectPropertiesToForm(dummy);
-                        mDummyWorld.AddObject(dummy);
-                    }
-                }
-                else if (mControls.LeftHold.Active)
-                {
-                    if (mPlaceable)
-                    {
-                        switch (form.Mode)
-                        {
-                            case EditorForm.EditorMode.HEIGHTMAP:
-                            {
-                                float strength = form.Strength * 10.0f;
-                                mDummyWorld.ModifyHeightMap(mCursorObject.Position, form.Size, strength, form.HeightMapBrush, form.HeightMapTool);
-                                break;
-                            }
-                            case EditorForm.EditorMode.PAINTING:
-                            {
-                                TextureSelectionForm textureForm = mTextureSelectionForm as TextureSelectionForm;
-                                float alpha = form.Strength / 100.0f;
-                                GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
-                                string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
+                return;
+            }
 
-                                float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
-                                float uScale = (float)textureForm.UScale.Value, vScale = (float)textureForm.VScale.Value;
+            EditorForm form = mEditorForm as EditorForm;
 
-                                mDummyWorld.ModifyTextureMap(
-                                    mCursorObject.Position, 
-                                    textureName, 
-                                    new Vector2(uOffset, vOffset), 
-                                    new Vector2(uScale, vScale), 
-                                    form.Size, alpha,
-                                    form.PaintingBrush, 
-                                    form.PaintingTool, 
-                                    layer);
-
-                                break;
-                            }
-                        }
-                    }
-                }
-                else if (mControls.LeftReleased.Active)
-                {
-                    mDummyWorld.CreateNewHeightMapAction();
-                }
-                else if (mControls.Control.Active && mControls.Undo.Active && mTimeSinceUndo > UndoTimeLimit)
+            if (mControls.Control.Active && mTimeSinceUndo > UndoTimeLimit)
+            {
+                if (mControls.Undo.Active)
                 {
                     mTimeSinceUndo = 0.0;
                     mDummyWorld.UndoHeightMap();
                 }
+                else if (mControls.Redo.Active)
+                {
+                    mTimeSinceUndo = 0.0;
+                    mDummyWorld.RedoHeightMap();
+                }
+            }
+
+            if (!mPlaceable)
+            {
+                return;
+            }
+
+            mDummyWorld.NewHeightMapAction = mDummyWorld.NewHeightMapAction || !mControls.LeftHold.Active;
+
+            TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
+
+            if (mControls.LeftPressed.Active && form.Mode == EditorForm.EditorMode.OBJECTS)
+            {
+                mObjectParametersForm.SelectedObjects.Clear();
+                DummyObject dummy = new DummyObject(mObjects[mEditorForm.ObjectList.SelectedItem.ToString()]);
+                mObjectParametersForm.SelectedObjects.Add(dummy);
+                SetObjectPropertiesToForm(dummy);
+                mDummyWorld.AddObject(dummy);
+            }
+            else if (mControls.LeftHold.Active)
+            {
+                switch (form.Mode)
+                {
+                    case EditorForm.EditorMode.HEIGHTMAP:
+                    {
+                        float strength = form.Strength * 10.0f;
+                        mDummyWorld.ModifyHeightMap(mCursorObject.Position, form.Size, strength, form.HeightMapBrush, form.HeightMapTool);
+                        break;
+                    }
+                    case EditorForm.EditorMode.PAINTING:
+                    {
+                        TextureSelectionForm textureForm = mTextureSelectionForm as TextureSelectionForm;
+                        float alpha = form.Strength / 100.0f;
+                        GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
+                        string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
+
+                        float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
+                        float uScale = (float)textureForm.UScale.Value, vScale = (float)textureForm.VScale.Value;
+
+                        mDummyWorld.ModifyTextureMap(
+                            mCursorObject.Position, 
+                            textureName, 
+                            new Vector2(uOffset, vOffset), 
+                            new Vector2(uScale, vScale), 
+                            form.Size, alpha,
+                            form.PaintingBrush, 
+                            form.PaintingTool, 
+                            layer);
+
+                        break;
+                    }
+                }
             }
         }
-
-        #region SelectionBox
-
-
 
         #endregion
     }

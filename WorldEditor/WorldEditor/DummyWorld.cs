@@ -47,27 +47,18 @@ namespace WorldEditor
 
         public Space Space = new Space();
 
+        public bool NewHeightMapAction
+        {
+            get { return mHeightMap.NewAction; }
+            set { mHeightMap.NewAction = value; }
+        }
+        
         public DummyWorld(Controls controls)
         {
             mName = null;
             mHeightMap = null;
             mTextureMap = null;
             mTerrainPhysics = null;
-        }
-
-        public DummyWorld(DummyWorld copy)
-        {
-            mName = copy.mName;
-
-            //mHeightMap = new TerrainHeightMap(copy.mHeightMap);
-            //mTextureMap = new TerrainTexture(copy.mTextureMap);
-            mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
-
-            mDummies = new List<DummyObject>();
-            foreach (DummyObject obj in copy.mDummies)
-            {
-                mDummies.Add(new DummyObject(obj));
-            }
         }
 
         public void AddObject(DummyObject dummyObject)
@@ -119,14 +110,18 @@ namespace WorldEditor
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
         }
 
-        public void CreateNewHeightMapAction()
-        {
-            mHeightMap.NewAction = true;
-        }
-
         public void UndoHeightMap()
         {
             mHeightMap.Undo();
+
+            mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
+        }
+
+        public void RedoHeightMap()
+        {
+            mHeightMap.Redo();
+
+            mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
         }
 
         public void ModifyTextureMap(

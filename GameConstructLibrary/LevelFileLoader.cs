@@ -287,7 +287,7 @@ namespace GameConstructLibrary
                     DummyObject player = new DummyObject();
                     player.Type = "Chimera.PlayerCreature, Chimera";
                     player.Model = "playerBean";
-                    player.Position = new Vector3(0.0f, mLastLoadedTerrainDescription.Terrain.HeightAt(0.0f, 0.0f) * 1.25f, 0.0f);
+                    player.Position = new Vector3(0.0f, mLastLoadedTerrainDescription.Terrain.HeightAt(0.0f, 0.0f), 0.0f);
                     player.YawPitchRoll = Vector3.Zero;
                     player.Scale = Vector3.Zero;
                     player.RotationAxis = Vector3.Zero;
