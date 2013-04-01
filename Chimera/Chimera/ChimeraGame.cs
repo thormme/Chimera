@@ -251,10 +251,23 @@ namespace Chimera
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if (sunUp.Active && !sunDown.Active)
+            {
+                GraphicsManager.DirectionalLight.PositionTheta += 0.001f;
+            }
+            else if (!sunUp.Active && sunDown.Active)
+            {
+                GraphicsManager.DirectionalLight.PositionTheta -= 0.001f;
+            }
 
-            float up = sunUp.Active && sunDown.Active ? 0.0f : (sunUp.Active ? 10.0f : (sunDown.Active ? -10.0f : 0.0f));
-            float left = sunLeft.Active && sunRight.Active ? 0.0f : (sunLeft.Active ? 10.0f : (sunRight.Active ? -10.0f : 0.0f));
-            GraphicsManager.DirectionalLight.Position += new Vector3(up, 0, left);
+            if (sunLeft.Active && !sunRight.Active)
+            {
+                GraphicsManager.DirectionalLight.PositionPhi += 0.001f;
+            }
+            else if (!sunLeft.Active && sunRight.Active)
+            {
+                GraphicsManager.DirectionalLight.PositionPhi -= 0.001f;
+            }
 
             // DEBUG STUFF
             if (DebugConsole.IsVisible && enterConsoleCommand.Active)

@@ -725,10 +725,11 @@ namespace GraphicsLibrary
         static private void CreateLightsAndShadows()
         {
             mDirectionalLight = new Light(
-                new Vector3(-0.3333333f, -1.0f, 0.33333333f),      // Direction
-                new Vector3(0.05333332f, 0.09882354f, 0.1819608f), // Ambient Color
-                new Vector3(1, 0.9607844f, 0.8078432f),            // Diffuse Color
-                new Vector3(1, 0.9607844f, 0.8078432f)             // Specular Color
+                Vector3.Normalize(new Vector3(0.4233333f, 1.0f, -0.5533332f)), // Direction
+                Vector3.Zero,                                                  // Gaze
+                new Vector3(0.05333332f, 0.09882354f, 0.1819608f),             // Ambient Color
+                new Vector3(1, 0.9607844f, 0.8078432f),                        // Diffuse Color
+                new Vector3(1, 0.9607844f, 0.8078432f)                         // Specular Color
                 );
 
             mShadowMap = new CascadedShadowMap(mDevice, 2048);

@@ -30,7 +30,7 @@ namespace WorldEditor
 
         public Editor()
         {
-            IsMouseVisible = false;
+            IsMouseVisible = true;
 
             mGraphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";

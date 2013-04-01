@@ -11,16 +11,54 @@ namespace GraphicsLibrary
         public Vector3 Position
         {
             get { return mPosition; }
-            set { mPosition = value; }
+            set
+            { 
+                mPosition = value;
+                mDirection = mGaze - mPosition;
+            }
         }
         private Vector3 mPosition;
+
+        public Vector3 Gaze
+        {
+            get { return mGaze; }
+            set { mGaze = value; }
+        }
+        private Vector3 mGaze;
 
         public Vector3 Direction
         {
             get { return mDirection; }
-            set { mDirection = value; }
         }
         private Vector3 mDirection;
+
+        public float PositionTheta
+        {
+            get { return mPositionTheta; }
+            set
+            {
+                mPositionTheta = value;
+                Position = Vector3.Normalize(new Vector3(
+                    (float)Math.Sin((double)PositionTheta) * (float)Math.Cos((double)PositionPhi),
+                    (float)Math.Sin((double)PositionTheta) * (float)Math.Sin((double)PositionPhi),
+                    (float)Math.Cos((double)PositionTheta)));
+            }
+        }
+        private float mPositionTheta = 0.0f;
+
+        public float PositionPhi
+        {
+            get { return mPositionPhi; }
+            set
+            {
+                mPositionPhi = value;
+                Position = Vector3.Normalize(new Vector3(
+                    (float)Math.Sin((double)PositionTheta) * (float)Math.Cos((double)PositionPhi),
+                    (float)Math.Sin((double)PositionTheta) * (float)Math.Sin((double)PositionPhi),
+                    (float)Math.Cos((double)PositionTheta)));
+            }
+        }
+        private float mPositionPhi = 0.0f;
 
         public Vector3 Up
         {
@@ -50,10 +88,12 @@ namespace GraphicsLibrary
         }
         private Vector3 mSpecularColor;
 
-        public Light(Vector3 direction, Vector3 ambientColor, Vector3 diffuseColor, Vector3 specularColor)
+        public Light(Vector3 position, Vector3 gaze, Vector3 ambientColor, Vector3 diffuseColor, Vector3 specularColor)
         {
-            mPosition = Vector3.Zero;
-            mDirection = direction;
+            mGaze = gaze;
+            Position = position;
+            mPositionPhi = (float)Math.Atan(Position.Y / Position.X);
+            mPositionTheta = (float)Math.Acos(Position.Z / Position.Length());
             mAmbientColor = ambientColor;
             mDiffuseColor = diffuseColor;
             mSpecularColor = specularColor;

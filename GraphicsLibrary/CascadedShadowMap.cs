@@ -112,8 +112,8 @@ namespace GraphicsLibrary
 
         private void ResizeCascadeContainer()
         {
-            float[] nearPercentages = { 0.0f, 0.02f, 0.06f, 0.3f };
-            float[] farPercentages  = { 0.02f, 0.06f, 0.3f, 1.0f };
+            float[] nearPercentages = { 0.0f / 256.0f, 1.0f / 64.0f, 1.0f / 16.0f, 1.0f / 4.0f };
+            float[] farPercentages  = { 1.0f / 64.0f,  1.0f / 16.0f, 1.0f / 4.0f,  1.0f / 1.0f };
             Color[] colorBands = { 
                                       new Color(1.0f, 0.0f, 0.0f, 1.0f), 
                                       new Color(0.0f, 1.0f, 0.0f, 1.0f), 
@@ -372,6 +372,23 @@ namespace GraphicsLibrary
                         0,
                         indexBuffer.IndexCount / 3);
                 }
+            }
+
+            for (int side = 0; side < 4; side++)
+            {
+                VertexBuffer vertexBuffer = terrain.EdgeVertexBuffers[side];
+                IndexBuffer indexBuffer = terrain.EdgeIndexBuffers[side];
+
+                mGraphicsDevice.SetVertexBuffer(vertexBuffer);
+                mGraphicsDevice.Indices = indexBuffer;
+
+                mGraphicsDevice.DrawIndexedPrimitives(
+                    PrimitiveType.TriangleList,
+                    0,
+                    0,
+                    vertexBuffer.VertexCount,
+                    0,
+                    indexBuffer.IndexCount / 3);
             }
         }
 
