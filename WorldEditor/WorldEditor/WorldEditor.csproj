@@ -142,19 +142,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dialogs\EditorForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Dialogs\EditorForm.Designer.cs">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\ObjectParametersForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Dialogs\ObjectParametersForm.Designer.cs">
       <DependentUpon>ObjectParametersForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\TextureSelectionForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Dialogs\TextureSelectionForm.Designer.cs">
       <DependentUpon>TextureSelectionForm.cs</DependentUpon>

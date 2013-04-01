@@ -11,6 +11,7 @@ using System.IO;
 using GraphicsLibrary;
 using Utility;
 using Microsoft.Xna.Framework.Content;
+using System.Diagnostics;
 
 namespace WorldEditor
 {
@@ -53,12 +54,12 @@ namespace WorldEditor
         #region Public Properties
 
         //Dialog for the world editor.
-        public EditorForm mEditorForm = new EditorForm();
+        public EditorForm EditorPane = new EditorForm();
 
         //Dialog for object parameters.
-        public ObjectParametersForm mObjectParametersForm = new ObjectParametersForm();
+        public ObjectParametersForm ObjectParameterPane = new ObjectParametersForm();
 
-        public TextureSelectionForm mTextureSelectionForm = new TextureSelectionForm();
+        public TextureSelectionForm TextureSelectionPane = new TextureSelectionForm();
 
         public bool Closed = false;
 
@@ -150,14 +151,14 @@ namespace WorldEditor
 
             if (mPlaceable)
             {
-                switch ((mEditorForm as EditorForm).Mode)
+                switch ((EditorPane as EditorForm).Mode)
                 {
                     case EditorForm.EditorMode.HEIGHTMAP:
-                        brush = (mEditorForm as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK || (mEditorForm as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
+                        brush = (EditorPane as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK || (EditorPane as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
                             GraphicsManager.CursorShape.BLOCK : GraphicsManager.CursorShape.CIRCLE;
                         break;
                     case EditorForm.EditorMode.PAINTING:
-                        brush = (mEditorForm as EditorForm).PaintingBrush == EditorForm.Brushes.BLOCK || (mEditorForm as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
+                        brush = (EditorPane as EditorForm).PaintingBrush == EditorForm.Brushes.BLOCK || (EditorPane as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
                             GraphicsManager.CursorShape.BLOCK : GraphicsManager.CursorShape.CIRCLE;
                         break;
                 }
@@ -178,39 +179,36 @@ namespace WorldEditor
 
         private void CreateEditorForm()
         {
-            mEditorForm.Show();
-            mEditorForm.Location = new System.Drawing.Point(80, 80);
+            EditorPane.Show();
 
-            (mEditorForm as EditorForm).FormClosing += CloseHandler;
+            TextureSelectionPane.Hide();
 
-            mTextureSelectionForm.Hide();
-            mTextureSelectionForm.Location = new System.Drawing.Point(80, 80);
-
-            MenuStrip editMenu = (mEditorForm.Controls["MenuStrip"] as MenuStrip);
+            MenuStrip editMenu = (EditorPane.Controls["MenuStrip"] as MenuStrip);
             (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["NewMenu"].Click    += NewHandler;
             (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveMenu"].Click   += SaveHandler;
             (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveAsMenu"].Click += SaveAsHandler;
             (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["OpenMenu"].Click   += OpenHandler;
+            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["PlayMenu"].Click   += PlayHandler;
 
-            TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
+            TabControl editModes = (EditorPane.Controls["EditTabs"] as TabControl);
 
-            ((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).SelectedIndexChanged += TextureHandler;
+            ((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).SelectedIndexChanged += TextureHandler;
 
-            (mEditorForm as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseTextureForm);
-            (mEditorForm as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
+            (EditorPane as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseTextureForm);
+            (EditorPane as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
 
-            (mEditorForm as EditorForm).PaintModeButton.Click += new System.EventHandler(this.OpenTextureForm);
-            (mEditorForm as EditorForm).PaintModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
+            (EditorPane as EditorForm).PaintModeButton.Click += new System.EventHandler(this.OpenTextureForm);
+            (EditorPane as EditorForm).PaintModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
 
-            (mEditorForm as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.CloseTextureForm);
-            (mEditorForm as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.OpenObjectParameterForm);
+            (EditorPane as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.CloseTextureForm);
+            (EditorPane as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.OpenObjectParameterForm);
 
-            (mEditorForm as EditorForm).SizeUpDown.ValueChanged += CursorResizeHandler;
+            (EditorPane as EditorForm).SizeUpDown.ValueChanged += CursorResizeHandler;
 
-            mTextureSelectionForm.UOffset.ValueChanged += TextureHandler;
-            mTextureSelectionForm.VOffset.ValueChanged += TextureHandler;
-            mTextureSelectionForm.UScale.ValueChanged += TextureHandler;
-            mTextureSelectionForm.VScale.ValueChanged += TextureHandler;
+            TextureSelectionPane.UOffset.ValueChanged += TextureHandler;
+            TextureSelectionPane.VOffset.ValueChanged += TextureHandler;
+            TextureSelectionPane.UScale.ValueChanged += TextureHandler;
+            TextureSelectionPane.VScale.ValueChanged += TextureHandler;
 
             foreach (var model in GraphicsManager.ModelLibrary)
             {
@@ -223,7 +221,7 @@ namespace WorldEditor
                 tempObject.Scale = Vector3.One;
                 tempObject.Height = 0.0f;
                 mObjects.Add(tempObject.Model, tempObject);
-                ((mEditorForm as EditorForm).ObjectList as ListBox).Items.Add(tempObject.Model);
+                ((EditorPane as EditorForm).ObjectList as ListBox).Items.Add(tempObject.Model);
             }
 
             FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
@@ -263,7 +261,7 @@ namespace WorldEditor
 
             foreach (var texture in GraphicsManager.TextureLibrary)
             {
-                ((mTextureSelectionForm as TextureSelectionForm).TextureList as ListBox).Items.Add(texture.Key);
+                ((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).Items.Add(texture.Key);
             }
 
             ScaleCursor();
@@ -276,22 +274,22 @@ namespace WorldEditor
 
         private void OpenTextureForm(object sender, EventArgs e)
         {
-            mTextureSelectionForm.Show();
+            TextureSelectionPane.Show();
         }
 
         private void CloseTextureForm(object sender, EventArgs e)
         {
-            mTextureSelectionForm.Hide();
+            TextureSelectionPane.Hide();
         }
 
         private void OpenObjectParameterForm(object sender, EventArgs e)
         {
-            mObjectParametersForm.Show();
+            ObjectParameterPane.Show();
         }
 
         private void CloseObjectParameterForm(object sender, EventArgs e)
         {
-            mObjectParametersForm.Hide();
+            ObjectParameterPane.Hide();
         }
 
         private void NewHandler(object sender, EventArgs e)
@@ -339,8 +337,28 @@ namespace WorldEditor
                 FileInfo fileInfo = new FileInfo(openDialog.FileName);
                 mDummyWorld.Open(fileInfo);
                 mName = fileInfo.Name;
+                mFilePath = fileInfo.FullName;
             }
 
+        }
+
+        private void PlayHandler(object sender, EventArgs e)
+        {
+            if (mFilePath == null)
+            {
+                SaveAsHandler(sender, e);
+            }
+
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.CreateNoWindow = false;
+            startInfo.UseShellExecute = false;
+            startInfo.FileName = "Chimera.exe";
+            startInfo.WindowStyle = ProcessWindowStyle.Normal;
+            startInfo.Arguments = "\"" + mFilePath + "\"";
+
+            using (Process gameProcess = Process.Start(startInfo))
+            {
+            }
         }
 
         private void EditHandler(object sender, EventArgs e)
@@ -348,12 +366,12 @@ namespace WorldEditor
             TabControl editModes = (sender as TabControl);
             if (editModes.SelectedTab == editModes.Controls["Heights"])
             {
-                mObjectParametersForm.Hide();
+                ObjectParameterPane.Hide();
                 ScaleCursor();
             }
             else if (editModes.SelectedTab == editModes.Controls["Textures"])
             {
-                mObjectParametersForm.Hide();
+                ObjectParameterPane.Hide();
                 ScaleCursor();
             }
             else if (editModes.SelectedTab == editModes.Controls["Objects"])
@@ -364,61 +382,61 @@ namespace WorldEditor
 
         private void ScaleCursor()
         {
-            mCursorObject.Scale = new Vector3((int)(mEditorForm as EditorForm).Size, 0, (int)(mEditorForm as EditorForm).Size);
+            mCursorObject.Scale = new Vector3((int)(EditorPane as EditorForm).Size, 0, (int)(EditorPane as EditorForm).Size);
         }
 
         private void SelectNewObjectHandler(object sender, EventArgs e)
         {
-            mObjectParametersForm.Show();
+            ObjectParameterPane.Show();
         }
 
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
-            mObjectParametersForm.SelectedObjects.Clear();
-            mObjectParametersForm.SelectedObjects.Add(new DummyObject(mObjects[(mEditorForm.Controls["EditTabs"].Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedItem.ToString()]));
-            SetObjectPropertiesToForm(mObjectParametersForm.SelectedObjects[0]);
-            mDummyWorld.AddObject(mObjectParametersForm.SelectedObjects[0]);
+            ObjectParameterPane.SelectedObjects.Clear();
+            ObjectParameterPane.SelectedObjects.Add(new DummyObject(mObjects[(EditorPane.Controls["EditTabs"].Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedItem.ToString()]));
+            SetObjectPropertiesToForm(ObjectParameterPane.SelectedObjects[0]);
+            mDummyWorld.AddObject(ObjectParameterPane.SelectedObjects[0]);
         }
 
         private void SetObjectPropertiesToForm(DummyObject dummyObject)
         {
-            float X = (float)mObjectParametersForm.PositionX.Value;
-            float Y = (float)mObjectParametersForm.PositionY.Value;
-            float Z = (float)mObjectParametersForm.PositionZ.Value;
+            float X = (float)ObjectParameterPane.PositionX.Value;
+            float Y = (float)ObjectParameterPane.PositionY.Value;
+            float Z = (float)ObjectParameterPane.PositionZ.Value;
             dummyObject.Position = new Vector3(X, Y, Z);
 
-            float Roll = (float)mObjectParametersForm.Roll.Value * (float)Math.PI / 180.0f;
-            float Pitch = (float)mObjectParametersForm.Pitch.Value * (float)Math.PI / 180.0f;
-            float Yaw = (float)mObjectParametersForm.Yaw.Value * (float)Math.PI / 180.0f;
+            float Roll = (float)ObjectParameterPane.Roll.Value * (float)Math.PI / 180.0f;
+            float Pitch = (float)ObjectParameterPane.Pitch.Value * (float)Math.PI / 180.0f;
+            float Yaw = (float)ObjectParameterPane.Yaw.Value * (float)Math.PI / 180.0f;
             dummyObject.YawPitchRoll = new Vector3(Roll, Pitch, Yaw);
 
-            float ScaleX = (float)mObjectParametersForm.ScaleX.Value;
-            float ScaleY = (float)mObjectParametersForm.ScaleY.Value;
-            float ScaleZ = (float)mObjectParametersForm.ScaleZ.Value;
+            float ScaleX = (float)ObjectParameterPane.ScaleX.Value;
+            float ScaleY = (float)ObjectParameterPane.ScaleY.Value;
+            float ScaleZ = (float)ObjectParameterPane.ScaleZ.Value;
             dummyObject.Scale = new Vector3(ScaleX, ScaleY, ScaleZ);
 
-            dummyObject.Height = (float)mObjectParametersForm.Height.Value;
+            dummyObject.Height = (float)ObjectParameterPane.Height.Value;
 
-            dummyObject.Floating = mObjectParametersForm.Floating.Checked;
+            dummyObject.Floating = ObjectParameterPane.Floating.Checked;
         }
 
         private void TextureHandler(object sender, EventArgs e)
         {
-            PictureBox pictureBox = (mTextureSelectionForm as TextureSelectionForm).TexturePreview as PictureBox;
-            Texture2D texture = GraphicsManager.LookupSprite(mTextureSelectionForm.TextureList.SelectedItem.ToString());
+            PictureBox pictureBox = (TextureSelectionPane as TextureSelectionForm).TexturePreview as PictureBox;
+            Texture2D texture = GraphicsManager.LookupSprite(TextureSelectionPane.TextureList.SelectedItem.ToString());
             RenderTarget2D transformedTexture = new RenderTarget2D(GraphicsManager.Device, pictureBox.Width, pictureBox.Height);
 
             GraphicsManager.Device.SetRenderTarget(transformedTexture);
             GraphicsManager.Device.Clear(Color.CornflowerBlue);
 
             float widthReducedScale = (float)texture.Width / (float)pictureBox.Width;
-            float uScale = widthReducedScale * (float)mTextureSelectionForm.UScale.Value;
+            float uScale = widthReducedScale * (float)TextureSelectionPane.UScale.Value;
 
             float heightReducedScale = (float)texture.Height / (float)pictureBox.Height;
-            float vScale = heightReducedScale * (float)mTextureSelectionForm.VScale.Value;
+            float vScale = heightReducedScale * (float)TextureSelectionPane.VScale.Value;
 
-            float uOffset = (float)mTextureSelectionForm.UOffset.Value;
-            float vOffset = (float)mTextureSelectionForm.VOffset.Value;
+            float uOffset = (float)TextureSelectionPane.UOffset.Value;
+            float vOffset = (float)TextureSelectionPane.VOffset.Value;
 
             mTextureTransformShader.Parameters["Texture"].SetValue(texture);
             mTextureTransformShader.Parameters["UVScale"].SetValue(new Vector2(uScale, vScale));
@@ -462,7 +480,7 @@ namespace WorldEditor
                 return;
             }
 
-            EditorForm form = mEditorForm as EditorForm;
+            EditorForm form = EditorPane as EditorForm;
 
             if (mControls.Control.Active && mTimeSinceUndo > UndoTimeLimit)
             {
@@ -485,13 +503,13 @@ namespace WorldEditor
 
             mDummyWorld.NewHeightMapAction = mDummyWorld.NewHeightMapAction || !mControls.LeftHold.Active;
 
-            TabControl editModes = (mEditorForm.Controls["EditTabs"] as TabControl);
+            TabControl editModes = (EditorPane.Controls["EditTabs"] as TabControl);
 
             if (mControls.LeftPressed.Active && form.Mode == EditorForm.EditorMode.OBJECTS)
             {
-                mObjectParametersForm.SelectedObjects.Clear();
-                DummyObject dummy = new DummyObject(mObjects[mEditorForm.ObjectList.SelectedItem.ToString()]);
-                mObjectParametersForm.SelectedObjects.Add(dummy);
+                ObjectParameterPane.SelectedObjects.Clear();
+                DummyObject dummy = new DummyObject(mObjects[EditorPane.ObjectList.SelectedItem.ToString()]);
+                ObjectParameterPane.SelectedObjects.Add(dummy);
                 SetObjectPropertiesToForm(dummy);
                 mDummyWorld.AddObject(dummy);
             }
@@ -507,7 +525,7 @@ namespace WorldEditor
                     }
                     case EditorForm.EditorMode.PAINTING:
                     {
-                        TextureSelectionForm textureForm = mTextureSelectionForm as TextureSelectionForm;
+                        TextureSelectionForm textureForm = TextureSelectionPane as TextureSelectionForm;
                         float alpha = form.Strength / 100.0f;
                         GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
                         string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();

@@ -46,7 +46,7 @@
     <NMakeOutput>Content_BuildAllParallel.exe</NMakeOutput>
     <NMakeCleanCommandLine>“$(MSBuildBinPath)\msbuild.exe” /m:$(NUMBER_OF_PROCESSORS) “$(SolutionDir)Content_All\Content_All.csproj” /t:Clean</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>“$(MSBuildBinPath)\msbuild.exe” /m:$(NUMBER_OF_PROCESSORS) “$(SolutionDir)Content_All\Content_All.csproj” /t:Rebuild</NMakeReBuildCommandLine>
-    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakePreprocessorDefinitions>WIN32;_RELEASE;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>

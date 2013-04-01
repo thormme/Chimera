@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework;
 
 namespace WorldEditor.Dialogs
 {
-    public partial class ObjectParametersForm : Form
+    public partial class ObjectParametersForm : UserControl
     {
         public ObjectParametersForm()
         {

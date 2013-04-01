@@ -10,7 +10,7 @@ using Utility;
 
 namespace WorldEditor.Dialogs
 {
-    public partial class EditorForm : Form
+    public partial class EditorForm : UserControl
     {
         #region Enums
 

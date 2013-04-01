@@ -35,9 +35,6 @@ namespace WorldEditor
             mGraphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            Form windowForm = (Form)Form.FromHandle(Window.Handle);
-            windowForm.ControlBox = false;
-
             this.Window.AllowUserResizing = true;
             this.Window.ClientSizeChanged += ResizedWindow;
         }
@@ -74,6 +71,12 @@ namespace WorldEditor
             GraphicsManager.LoadContent(Content, mGraphics.GraphicsDevice, mSpriteBatch);
             mWorldEditor = new WorldEditor(GraphicsDevice.Viewport, mCamera, Content);
 
+            Form windowForm = (Form)Form.FromHandle(Window.Handle);
+            windowForm.Controls.Add(mWorldEditor.EditorPane);
+            windowForm.Controls.Add(mWorldEditor.TextureSelectionPane);
+            windowForm.Controls.Add(mWorldEditor.ObjectParameterPane);
+
+            ResizedWindow(null, null);
         }
 
         /// <summary>
@@ -124,15 +127,35 @@ namespace WorldEditor
 
         protected void ResizedWindow(object sender, EventArgs e)
         {
-            Viewport vp = this.GraphicsDevice.Viewport;
+            int paneWidth = this.mWorldEditor.TextureSelectionPane.Width + this.mWorldEditor.EditorPane.Width;
 
-            vp.Width = this.Window.ClientBounds.Width;
-            vp.Height = this.Window.ClientBounds.Height;
+            var safeWidth = Math.Max(this.Window.ClientBounds.Width, 1);
+            var safeHeight = Math.Max(this.Window.ClientBounds.Height, 1);
+            var newViewport = new Viewport(
+                (int)(safeWidth * (float)this.mWorldEditor.EditorPane.Width / (float)safeWidth), 
+                0, 
+                (int)(safeWidth * (1.0f - (float)paneWidth / (float)safeWidth)), 
+                safeHeight) { MinDepth = 0.0f, MaxDepth = 1.0f };
 
-            this.GraphicsDevice.Viewport = vp;
+            var presentationParams = GraphicsDevice.PresentationParameters;
+            presentationParams.BackBufferWidth = safeWidth;
+            presentationParams.BackBufferHeight = safeHeight;
+            presentationParams.DeviceWindowHandle = this.Window.Handle;
+            GraphicsDevice.Reset(presentationParams);
+
+            GraphicsDevice.Viewport = newViewport;
+            mWorldEditor.Entity.Viewport = newViewport;
+
+            GraphicsManager.OverrideViewport = (Viewport?)newViewport;
+
             GraphicsManager.CreateBuffers();
-            this.mCamera.Viewport = vp;
-            this.mWorldEditor.Entity.Viewport = vp;
+            if (mCamera != null)
+            {
+                (mCamera as FPSCamera).Viewport = newViewport;
+            }
+
+            this.mWorldEditor.TextureSelectionPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.TextureSelectionPane.Width, 0);
+            this.mWorldEditor.ObjectParameterPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.ObjectParameterPane.Width, 0);
         }
     }
 }

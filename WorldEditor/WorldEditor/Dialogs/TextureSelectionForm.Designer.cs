@@ -30,16 +30,13 @@ namespace WorldEditor.Dialogs
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TextureSelectionForm));
             this.textureList = new System.Windows.Forms.ListBox();
             this.texturePreview = new System.Windows.Forms.PictureBox();
-            this.textureBackground = new System.Windows.Forms.PictureBox();
             this.VOffset = new System.Windows.Forms.NumericUpDown();
             this.UOffset = new System.Windows.Forms.NumericUpDown();
             this.VScale = new System.Windows.Forms.NumericUpDown();
             this.UScale = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.texturePreview)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textureBackground)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.VOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.UOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.VScale)).BeginInit();
@@ -55,7 +52,7 @@ namespace WorldEditor.Dialogs
             this.textureList.FormattingEnabled = true;
             this.textureList.HorizontalScrollbar = true;
             this.textureList.ItemHeight = 18;
-            this.textureList.Location = new System.Drawing.Point(38, 35);
+            this.textureList.Location = new System.Drawing.Point(66, 34);
             this.textureList.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.textureList.Name = "textureList";
             this.textureList.Size = new System.Drawing.Size(168, 218);
@@ -65,23 +62,13 @@ namespace WorldEditor.Dialogs
             // 
             this.texturePreview.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.texturePreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.texturePreview.Location = new System.Drawing.Point(255, 36);
+            this.texturePreview.Location = new System.Drawing.Point(38, 291);
             this.texturePreview.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.texturePreview.Name = "texturePreview";
             this.texturePreview.Size = new System.Drawing.Size(223, 218);
             this.texturePreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.texturePreview.TabIndex = 2;
             this.texturePreview.TabStop = false;
-            // 
-            // textureBackground
-            // 
-            this.textureBackground.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("textureBackground.BackgroundImage")));
-            this.textureBackground.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.textureBackground.Location = new System.Drawing.Point(-2, -1);
-            this.textureBackground.Name = "textureBackground";
-            this.textureBackground.Size = new System.Drawing.Size(522, 327);
-            this.textureBackground.TabIndex = 4;
-            this.textureBackground.TabStop = false;
             // 
             // VOffset
             // 
@@ -95,7 +82,7 @@ namespace WorldEditor.Dialogs
             0,
             0,
             65536});
-            this.VOffset.Location = new System.Drawing.Point(687, 37);
+            this.VOffset.Location = new System.Drawing.Point(159, 548);
             this.VOffset.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.VOffset.Maximum = new decimal(new int[] {
             1,
@@ -119,7 +106,7 @@ namespace WorldEditor.Dialogs
             0,
             0,
             65536});
-            this.UOffset.Location = new System.Drawing.Point(538, 37);
+            this.UOffset.Location = new System.Drawing.Point(38, 548);
             this.UOffset.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.UOffset.Maximum = new decimal(new int[] {
             1,
@@ -143,7 +130,7 @@ namespace WorldEditor.Dialogs
             0,
             0,
             65536});
-            this.VScale.Location = new System.Drawing.Point(687, 173);
+            this.VScale.Location = new System.Drawing.Point(159, 684);
             this.VScale.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.VScale.Name = "VScale";
             this.VScale.Size = new System.Drawing.Size(115, 48);
@@ -167,7 +154,7 @@ namespace WorldEditor.Dialogs
             0,
             0,
             65536});
-            this.UScale.Location = new System.Drawing.Point(538, 173);
+            this.UScale.Location = new System.Drawing.Point(38, 684);
             this.UScale.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.UScale.Name = "UScale";
             this.UScale.Size = new System.Drawing.Size(115, 48);
@@ -184,21 +171,17 @@ namespace WorldEditor.Dialogs
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
-            this.ClientSize = new System.Drawing.Size(833, 331);
-            this.ControlBox = false;
             this.Controls.Add(this.VScale);
             this.Controls.Add(this.UScale);
             this.Controls.Add(this.VOffset);
             this.Controls.Add(this.UOffset);
             this.Controls.Add(this.textureList);
             this.Controls.Add(this.texturePreview);
-            this.Controls.Add(this.textureBackground);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "TextureSelectionForm";
-            this.Text = "Texture Selection";
+            this.Size = new System.Drawing.Size(310, 772);
             ((System.ComponentModel.ISupportInitialize)(this.texturePreview)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textureBackground)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.VOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.UOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.VScale)).EndInit();
@@ -211,7 +194,6 @@ namespace WorldEditor.Dialogs
 
         private ListBox textureList;
         private PictureBox texturePreview;
-        private PictureBox textureBackground;
         public NumericUpDown VOffset;
         public NumericUpDown UOffset;
         public NumericUpDown VScale;

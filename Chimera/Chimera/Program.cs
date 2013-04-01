@@ -10,7 +10,8 @@ namespace Chimera
         /// </summary>
         static void Main(string[] args)
         {
-            using (ChimeraGame game = new ChimeraGame())
+            string firstLevel = args.Length > 0 ? args[0] : null;
+            using (ChimeraGame game = new ChimeraGame(firstLevel))
             {
                 game.Run();
             }

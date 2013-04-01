@@ -378,6 +378,7 @@ Global
 		{B7259BB1-744A-4C99-9A06-728C92655CAD}.Release WorldEditor|Win32.ActiveCfg = Release|Win32
 		{B7259BB1-744A-4C99-9A06-728C92655CAD}.Release WorldEditor|Win32.Build.0 = Release|Win32
 		{B7259BB1-744A-4C99-9A06-728C92655CAD}.Release WorldEditor|x86.ActiveCfg = Release|Win32
+		{B7259BB1-744A-4C99-9A06-728C92655CAD}.Release WorldEditor|x86.Build.0 = Release|Win32
 		{B7259BB1-744A-4C99-9A06-728C92655CAD}.Release WorldEditor|Xbox 360.ActiveCfg = Release|Win32
 		{12E4B132-65A5-4E63-8C94-3F7687705DCE}.Debug Chimera|Any CPU.ActiveCfg = Debug|Any CPU
 		{12E4B132-65A5-4E63-8C94-3F7687705DCE}.Debug Chimera|Mixed Platforms.ActiveCfg = Debug|Any CPU

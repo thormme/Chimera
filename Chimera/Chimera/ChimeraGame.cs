@@ -40,6 +40,8 @@ namespace Chimera
             protected set;
         }
 
+        private string mFirstLevelName;
+
         private InputAction forward;
         private KeyInputAction celShading;
         private InputAction pause = new CombinedInputAction(
@@ -84,8 +86,10 @@ namespace Chimera
 
         private Sprite mSprite = new Sprite("test_tex");
 
-        public ChimeraGame()
+        public ChimeraGame(string firstLevel)
         {
+            mFirstLevelName = firstLevel;
+
             this.Window.AllowUserResizing = true;
             this.Window.ClientSizeChanged += ResizedWindow;
 
@@ -230,8 +234,7 @@ namespace Chimera
             mNumPopQueued = mGameStates.Count;
             mGameStateAddQueue.Clear();
 
-            GameMenu menu = new Menus.MainMenu(this, DebugModelDrawer);
-
+            GameMenu menu = new Menus.MainMenu(this, DebugModelDrawer, mFirstLevelName);
             PushState(menu);
         }
 

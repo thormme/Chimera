@@ -36,8 +36,11 @@ namespace WorldEditor.Dialogs
             this.ObjectList = new System.Windows.Forms.ListBox();
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.File = new System.Windows.Forms.ToolStripMenuItem();
-            this.SaveMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.NewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveAsMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.PlayMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.Edit = new System.Windows.Forms.ToolStripMenuItem();
             this.terrainModeButton = new System.Windows.Forms.PictureBox();
             this.paintModeButton = new System.Windows.Forms.PictureBox();
@@ -59,8 +62,6 @@ namespace WorldEditor.Dialogs
             this.layer2Button = new System.Windows.Forms.PictureBox();
             this.layer4Button = new System.Windows.Forms.PictureBox();
             this.layer3Button = new System.Windows.Forms.PictureBox();
-            this.NewMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.SaveAsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.terrainModeButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.paintModeButton)).BeginInit();
@@ -105,7 +106,7 @@ namespace WorldEditor.Dialogs
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
             this.MenuStrip.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
-            this.MenuStrip.Size = new System.Drawing.Size(333, 28);
+            this.MenuStrip.Size = new System.Drawing.Size(320, 28);
             this.MenuStrip.TabIndex = 4;
             this.MenuStrip.Text = "menuStrip1";
             // 
@@ -115,22 +116,41 @@ namespace WorldEditor.Dialogs
             this.NewMenu,
             this.OpenMenu,
             this.SaveMenu,
-            this.SaveAsMenu});
+            this.SaveAsMenu,
+            this.PlayMenu});
             this.File.Name = "File";
             this.File.Size = new System.Drawing.Size(46, 22);
             this.File.Text = "File";
             // 
-            // SaveMenu
+            // NewMenu
             // 
-            this.SaveMenu.Name = "SaveMenu";
-            this.SaveMenu.Size = new System.Drawing.Size(152, 22);
-            this.SaveMenu.Text = "Save";
+            this.NewMenu.Name = "NewMenu";
+            this.NewMenu.Size = new System.Drawing.Size(168, 22);
+            this.NewMenu.Text = "New";
             // 
             // OpenMenu
             // 
             this.OpenMenu.Name = "OpenMenu";
-            this.OpenMenu.Size = new System.Drawing.Size(152, 22);
+            this.OpenMenu.Size = new System.Drawing.Size(168, 22);
             this.OpenMenu.Text = "Open";
+            // 
+            // SaveMenu
+            // 
+            this.SaveMenu.Name = "SaveMenu";
+            this.SaveMenu.Size = new System.Drawing.Size(168, 22);
+            this.SaveMenu.Text = "Save";
+            // 
+            // SaveAsMenu
+            // 
+            this.SaveAsMenu.Name = "SaveAsMenu";
+            this.SaveAsMenu.Size = new System.Drawing.Size(168, 22);
+            this.SaveAsMenu.Text = "Save As";
+            // 
+            // PlayMenu
+            // 
+            this.PlayMenu.Name = "PlayMenu";
+            this.PlayMenu.Size = new System.Drawing.Size(168, 22);
+            this.PlayMenu.Text = "Play In Game";
             // 
             // Edit
             // 
@@ -170,6 +190,7 @@ namespace WorldEditor.Dialogs
             this.objectModeButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.objectModeButton.Name = "objectModeButton";
             this.objectModeButton.Size = new System.Drawing.Size(96, 103);
+            this.objectModeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.objectModeButton.TabIndex = 7;
             this.objectModeButton.TabStop = false;
             this.objectModeButton.Click += new System.EventHandler(this.objectModeButton_Click);
@@ -409,25 +430,12 @@ namespace WorldEditor.Dialogs
             this.layer3Button.Visible = false;
             this.layer3Button.Click += new System.EventHandler(this.layer3Button_Click);
             // 
-            // NewMenu
-            // 
-            this.NewMenu.Name = "NewMenu";
-            this.NewMenu.Size = new System.Drawing.Size(152, 22);
-            this.NewMenu.Text = "New";
-            // 
-            // SaveAsMenu
-            // 
-            this.SaveAsMenu.Name = "SaveAsMenu";
-            this.SaveAsMenu.Size = new System.Drawing.Size(152, 22);
-            this.SaveAsMenu.Text = "Save As";
-            // 
             // EditorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
-            this.ClientSize = new System.Drawing.Size(333, 875);
             this.Controls.Add(this.ObjectList);
             this.Controls.Add(this.layer4Button);
             this.Controls.Add(this.layer3Button);
@@ -452,9 +460,7 @@ namespace WorldEditor.Dialogs
             this.Controls.Add(this.MenuStrip);
             this.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.MinimizeBox = false;
             this.Name = "EditorForm";
-            this.Text = "World Editor";
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.terrainModeButton)).EndInit();
@@ -512,6 +518,7 @@ namespace WorldEditor.Dialogs
         private PictureBox layer3Button;
         private ToolStripMenuItem NewMenu;
         private ToolStripMenuItem SaveAsMenu;
+        private ToolStripMenuItem PlayMenu;
 
         public NumericUpDown SizeUpDown
         {

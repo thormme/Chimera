@@ -211,7 +211,7 @@ namespace GameConstructLibrary
                 }
             }
 
-            TerrainPhysics terrain = LoadTerrain(mapName, position, orientation, scale);
+            TerrainPhysics terrain = LoadTerrain(fileInfo.Name, position, orientation, scale);
             Add(terrain);
 
             //Water water = new Water("waterTexture", 50, new Vector2(2, 2));

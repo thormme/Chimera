@@ -13,11 +13,14 @@ namespace Chimera.Menus
 {
     class MainMenu : GameMenu
     {
+        private string mFirstLevelName;
+
         ModelDrawer mDebugDrawer;
         Game mOwnerGame;
 
-        public MainMenu(Game game, ModelDrawer debugModelDrawer)
+        public MainMenu(Game game, ModelDrawer debugModelDrawer, string levelName)
         {
+            mFirstLevelName = levelName;
             mDebugDrawer = debugModelDrawer;
             mOwnerGame = game;
 
@@ -92,7 +95,7 @@ namespace Chimera.Menus
             ChimeraGame.PopState();
 
             GameWorld world = new GameWorld(mDebugDrawer);
-            world.AddLevelFromFile("tree", Vector3.Zero, Quaternion.Identity, Utils.WorldScale);
+            world.AddLevelFromFile(mFirstLevelName == null ? "tree" : mFirstLevelName, Vector3.Zero, Quaternion.Identity, Utils.WorldScale);
             ChimeraGame.PushState(world);
         }
 

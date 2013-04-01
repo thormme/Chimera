@@ -162,6 +162,13 @@ namespace GraphicsLibrary
             }
         }
 
+        static public Viewport? OverrideViewport
+        {
+            get { return mOverrideViewport; }
+            set { mOverrideViewport = value; }
+        }
+        static private Viewport? mOverrideViewport = null;
+
         static public Dictionary<string, Model> ModelLibrary
         {
             get
@@ -381,6 +388,8 @@ namespace GraphicsLibrary
                 mDevice.SetRenderTarget(null);
                 mDevice.Clear(Color.CornflowerBlue);
 
+                Viewport viewport = mOverrideViewport == null ? mDevice.Viewport : (Viewport)mOverrideViewport;
+
                 if (DebugVisualization)
                 {
                     mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
@@ -402,7 +411,7 @@ namespace GraphicsLibrary
                 else
                 {
                     mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
-                    mSpriteBatch.Draw(mCompositeBuffer, new Rectangle(0, 0, mSceneBuffer.Width, mSceneBuffer.Height), Color.White);
+                    mSpriteBatch.Draw(mCompositeBuffer, new Rectangle(viewport.X, viewport.Y, viewport.Width, viewport.Height), Color.White);
                     mSpriteBatch.End();
                 }
             }
@@ -711,12 +720,12 @@ namespace GraphicsLibrary
         /// </summary>
         static public void CreateBuffers()
         {
-            var pp = mDevice.PresentationParameters;
+            var viewport = mDevice.Viewport;
 
-            mCompositeBuffer          = new RenderTarget2D(mDevice, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
-            mNormalDepthBuffer        = new RenderTarget2D(mDevice, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
-            mOutlineBuffer            = new RenderTarget2D(mDevice, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
-            mSceneBuffer              = new RenderTarget2D(mDevice, pp.BackBufferWidth, pp.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mCompositeBuffer = new RenderTarget2D(mDevice, viewport.Width, viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mNormalDepthBuffer = new RenderTarget2D(mDevice, viewport.Width, viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mOutlineBuffer = new RenderTarget2D(mDevice, viewport.Width, viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mSceneBuffer = new RenderTarget2D(mDevice, viewport.Width, viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
         }
 
         /// <summary>
