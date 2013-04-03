@@ -108,11 +108,11 @@ namespace WorldEditor
 
         #region Public Interface
 
-        public WorldEditor(Viewport viewport, FPSCamera camera, ContentManager content)
+        public WorldEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content)
         {
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
-            mEntity = new Entity(viewport, mControls, mCamera);
+            mEntity = new Entity(graphicsDevice, mControls, mCamera);
             CreateEditorForm();
 
             mTextureTransformShader = content.Load<Effect>("shaders/TextureTransform");
@@ -131,13 +131,13 @@ namespace WorldEditor
             {
                 mEntity.Update(gameTime);
 
-                Tuple<Vector3, Vector3> pickingPosition = mEntity.GetPickingLocation(mDummyWorld);
+                Vector3? pickingPosition = mEntity.GetPickingLocation(mDummyWorld);
 
                 mPlaceable = pickingPosition != null;
 
                 if (mPlaceable && mCursorObject != null)
                 {
-                    mCursorObject.Position = pickingPosition.Item1;
+                    mCursorObject.Position = pickingPosition.Value;
                 }
 
             }

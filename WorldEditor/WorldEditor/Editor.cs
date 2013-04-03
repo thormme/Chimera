@@ -69,7 +69,7 @@ namespace WorldEditor
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
 
             GraphicsManager.LoadContent(Content, mGraphics.GraphicsDevice, mSpriteBatch);
-            mWorldEditor = new WorldEditor(GraphicsDevice.Viewport, mCamera, Content);
+            mWorldEditor = new WorldEditor(GraphicsDevice, mCamera, Content);
 
             Form windowForm = (Form)Form.FromHandle(Window.Handle);
             windowForm.Controls.Add(mWorldEditor.EditorPane);

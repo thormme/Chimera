@@ -21,6 +21,7 @@ namespace WorldEditor
             set { mViewport = value; }
         }
         private Viewport mViewport = new Viewport();
+        GraphicsDevice mGraphicsDevice = null;
         private FPSCamera mCamera = null;
         private Controls mControls = null;
         private Vector2 mDragPoint = Vector2.Zero;
@@ -28,9 +29,10 @@ namespace WorldEditor
         private Vector3 mMovement = Vector3.Zero;
         private Vector3 mDirection = Vector3.Zero;
 
-        public Entity(Viewport viewport, Controls controls, FPSCamera camera)
+        public Entity(GraphicsDevice graphicsDevice, Controls controls, FPSCamera camera)
         {
-            mViewport = viewport;
+            mGraphicsDevice = graphicsDevice;
+            mViewport = graphicsDevice.Viewport;
             mControls = controls;
             mCamera = camera;
         }
@@ -78,7 +80,7 @@ namespace WorldEditor
             mDragPoint.Y = mControls.MouseState.Y;
         }
 
-        public Tuple<Vector3, Vector3> GetPickingLocation(DummyWorld dummyWorld)
+        public Vector3? GetPickingLocation(DummyWorld dummyWorld)
         {
 
             Vector3 nearScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 0.0f);
@@ -88,11 +90,15 @@ namespace WorldEditor
             Vector3 projectionDirection = (farWorld - nearWorld);
             projectionDirection.Normalize();
             Ray ray = new Ray(mCamera.Position, projectionDirection);
+            FPSCamera cam =  new FPSCamera(new Viewport(0, 0, 1, 1));
+            cam.Position = mCamera.Position;
             RayHit result;
 
             if (dummyWorld.Terrain.StaticCollidable.RayCast(ray, 2000.0f, out result))
             {
-                return new Tuple<Vector3,Vector3>(result.Location, result.Normal);
+                Console.WriteLine(result.Location);
+                Console.WriteLine(dummyWorld.RayCast(mGraphicsDevice, ray).Item1);
+                return result.Location;
             }
             else
             {

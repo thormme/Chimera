@@ -981,7 +981,7 @@ namespace GraphicsLibrary
         /// <summary>
         /// Retrieves terrain from database.  Throws KeyNotFoundException if terrainName does not exist in database.
         /// </summary>
-        static private TerrainDescription LookupTerrain(string terrainName)
+        static public TerrainDescription LookupTerrain(string terrainName)
         {
             TerrainDescription result;
             if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))

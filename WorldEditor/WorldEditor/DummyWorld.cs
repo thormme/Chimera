@@ -9,6 +9,7 @@ using Utility;
 using BEPUphysics;
 using WorldEditor.Dialogs;
 using System.IO;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace WorldEditor
 {
@@ -239,9 +240,97 @@ namespace WorldEditor
             }
         }
 
-        public void RayCast(Ray ray, float distance, out RayHit result)
+        private void DrawTerrain(GraphicsDevice graphics)
         {
-            result = new RayHit();
+            var heightMap = GraphicsManager.LookupTerrain(mName);
+            for (int chunkCol = 0; chunkCol < heightMap.Terrain.NumChunksHorizontal; chunkCol++)
+            {
+                for (int chunkRow = 0; chunkRow < heightMap.Terrain.NumChunksVertical; chunkRow++)
+                {
+                    VertexBuffer vertexBuffer = heightMap.Terrain.VertexBuffers[chunkRow, chunkCol];
+                    IndexBuffer indexBuffer = heightMap.Terrain.IndexBuffers[chunkRow, chunkCol];
+
+                    graphics.SetVertexBuffer(vertexBuffer);
+                    graphics.Indices = indexBuffer;
+
+                    graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
+                }
+            }
+        }
+
+        public Tuple<Vector3, DummyObject> RayCast(GraphicsDevice graphics, Ray ray)
+        {
+            // Record original graphics device settings
+            var oldRenderTargets = graphics.GetRenderTargets();
+
+            // Set graphics device to render to texture
+            RenderTarget2D depthTarget = new RenderTarget2D(
+                graphics,
+                1,
+                1,
+                false,
+                graphics.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24);
+            DepthStencilState depthStencilState = new DepthStencilState();
+            depthStencilState.DepthBufferFunction = CompareFunction.LessEqual;
+            graphics.DepthStencilState = depthStencilState;
+            graphics.SetRenderTarget(depthTarget);
+
+            Viewport pickingViewport = new Microsoft.Xna.Framework.Graphics.Viewport(0, 0, 1, 1);
+            FPSCamera camera = new FPSCamera(pickingViewport);
+            camera.Position = ray.Position;
+            camera.Target = camera.Position + ray.Direction;
+
+            graphics.Clear(Color.CornflowerBlue);
+            BasicEffect b = new BasicEffect(graphics);
+
+            Single minDepth = camera.FarPlaneDistance;
+            DummyObject closestObject = null;
+
+            DrawTerrain(graphics);
+            // Check whether terrain is closer than far clip
+            {
+                graphics.SetRenderTarget(null);
+                Single[] depth = new Single[1];
+                Console.WriteLine(depth[0]);
+                depthTarget.GetData(depth);
+                if (depth[0] < minDepth)
+                {
+                    minDepth = depth[0];
+                }
+            }
+
+            foreach (DummyObject dummy in mDummies)
+            {
+                graphics.SetRenderTarget(depthTarget);
+                Model model = GraphicsManager.LookupModel(dummy.Model);
+                Matrix[] transforms = new Matrix[model.Bones.Count];
+                model.CopyAbsoluteBoneTransformsTo(transforms);
+                foreach (ModelMesh mesh in model.Meshes)
+                {
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        effect.LightingEnabled = false;
+                        effect.View = camera.GetViewTransform();
+                        effect.Projection = camera.GetProjectionTransform();
+                        effect.World = transforms[mesh.ParentBone.Index];
+                    }
+                    mesh.Draw();
+                }
+                graphics.SetRenderTarget(null);
+                Single[] depth = new Single[1];
+                depthTarget.GetData(depth);
+                if (depth[0] < minDepth)
+                {
+                    minDepth = depth[0];
+                    closestObject = dummy;
+                }
+            }
+
+            // Reset graphics device to previous settings
+            graphics.SetRenderTargets(oldRenderTargets);
+            Console.WriteLine(minDepth);
+            return new Tuple<Vector3, DummyObject>(ray.Position + ray.Direction * minDepth, closestObject);
         }
 
         public void Draw()
