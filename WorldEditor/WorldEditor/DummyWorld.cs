@@ -242,8 +242,8 @@ namespace WorldEditor
 
         private void DrawTerrain(GraphicsDevice graphics)
         {
-            var heightMap = GraphicsManager.LookupTerrain(mName);
-            for (int chunkCol = 0; chunkCol < heightMap.Terrain.NumChunksHorizontal; chunkCol++)
+            var heightMap = AssetLibrary.LookupTerrain(mName);
+            /*for (int chunkCol = 0; chunkCol < heightMap.Terrain.NumChunksHorizontal; chunkCol++)
             {
                 for (int chunkRow = 0; chunkRow < heightMap.Terrain.NumChunksVertical; chunkRow++)
                 {
@@ -255,7 +255,7 @@ namespace WorldEditor
 
                     graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
                 }
-            }
+            }*/
         }
 
         public Tuple<Vector3, DummyObject> RayCast(GraphicsDevice graphics, Ray ray)
@@ -287,7 +287,7 @@ namespace WorldEditor
             Single minDepth = camera.FarPlaneDistance;
             DummyObject closestObject = null;
 
-            DrawTerrain(graphics);
+            /*DrawTerrain(graphics);
             // Check whether terrain is closer than far clip
             {
                 graphics.SetRenderTarget(null);
@@ -303,7 +303,7 @@ namespace WorldEditor
             foreach (DummyObject dummy in mDummies)
             {
                 graphics.SetRenderTarget(depthTarget);
-                Model model = GraphicsManager.LookupModel(dummy.Model);
+                Model model = AssetLibrary.LookupModel(dummy.Model);
                 Matrix[] transforms = new Matrix[model.Bones.Count];
                 model.CopyAbsoluteBoneTransformsTo(transforms);
                 foreach (ModelMesh mesh in model.Meshes)
@@ -329,7 +329,7 @@ namespace WorldEditor
 
             // Reset graphics device to previous settings
             graphics.SetRenderTargets(oldRenderTargets);
-            Console.WriteLine(minDepth);
+            Console.WriteLine(minDepth);*/
             return new Tuple<Vector3, DummyObject>(ray.Position + ray.Direction * minDepth, closestObject);
         }
 

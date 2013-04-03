@@ -70,7 +70,7 @@ namespace WorldEditor
 
             GraphicsManager.Initialize(GraphicsDevice, mSpriteBatch);
             AssetLibrary.LoadContent(Content);
-            mWorldEditor = new WorldEditor(GraphicsDevice.Viewport, mCamera, Content);
+            mWorldEditor = new WorldEditor(GraphicsDevice, mCamera, Content);
 
             Form windowForm = (Form)Form.FromHandle(Window.Handle);
             windowForm.Controls.Add(mWorldEditor.EditorPane);
