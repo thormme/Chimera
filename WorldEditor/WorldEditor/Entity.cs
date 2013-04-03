@@ -96,8 +96,7 @@ namespace WorldEditor
 
             if (dummyWorld.Terrain.StaticCollidable.RayCast(ray, 2000.0f, out result))
             {
-                Console.WriteLine(result.Location);
-                Console.WriteLine(dummyWorld.RayCast(mGraphicsDevice, ray).Item1);
+                //dummyWorld.RayCast(mGraphicsDevice, ray);
                 return result.Location;
             }
             else

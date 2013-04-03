@@ -44,7 +44,13 @@ namespace GraphicsLibrary
         {
             base.NormalDepthConfigurer(effect, instance, optionalParameters);
 
-            effect.SetBoneTransforms((instance as AnimateModelParameters).SkinTransforms);
+            Matrix[] skinTransforms = new Matrix[] { Matrix.Identity };
+            if (instance is AnimateModelParameters)
+            {
+                skinTransforms = ((instance as AnimateModelParameters).SkinTransforms);
+            }
+            effect.SetBoneTransforms(skinTransforms);
+
 
             effect.CurrentTechnique = effect.Techniques["SkinnedNormalDepthShade"];
         }
@@ -53,7 +59,12 @@ namespace GraphicsLibrary
         {
             base.ShadowMapConfigurer(effect, instance, optionalParameters);
 
-            effect.SetBoneTransforms((instance as AnimateModelParameters).SkinTransforms);
+            Matrix[] skinTransforms = new Matrix[] { Matrix.Identity };
+            if (instance is AnimateModelParameters)
+            {
+                skinTransforms = ((instance as AnimateModelParameters).SkinTransforms);
+            }
+            effect.SetBoneTransforms(skinTransforms);
 
             effect.CurrentTechnique = effect.Techniques["SkinnedShadowCast"];
         }
@@ -62,7 +73,13 @@ namespace GraphicsLibrary
         {
             base.ShadowsConfigurer(effect, instance, optionalParameters);
 
-            effect.SetBoneTransforms((instance as AnimateModelParameters).SkinTransforms);
+            Matrix[] skinTransforms = new Matrix[] { Matrix.Identity };
+            if (instance is AnimateModelParameters)
+            {
+                skinTransforms = ((instance as AnimateModelParameters).SkinTransforms);
+            }
+            effect.SetBoneTransforms(skinTransforms);
+
 
             effect.CurrentTechnique = effect.Techniques["SkinnedCelShadeWithShadows"];
         }
@@ -70,8 +87,14 @@ namespace GraphicsLibrary
         protected override void WithoutShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
         {
             base.WithoutShadowsConfigurer(effect, instance, optionalParameters);
- 
-            effect.SetBoneTransforms((instance as AnimateModelParameters).SkinTransforms);
+
+            Matrix[] skinTransforms = new Matrix[] { Matrix.Identity };
+            if (instance is AnimateModelParameters)
+            {
+                skinTransforms = ((instance as AnimateModelParameters).SkinTransforms);
+            }
+            effect.SetBoneTransforms(skinTransforms);
+
 
             effect.CurrentTechnique = effect.Techniques["SkinnedCelShadeWithoutShadows"];
         }
@@ -80,7 +103,13 @@ namespace GraphicsLibrary
         {
             base.PickingConfigurer(effect, instance, optionalParameters);
 
-            effect.SetBoneTransforms((instance as AnimateModelParameters).SkinTransforms);
+            Matrix[] skinTransforms = new Matrix[] { Matrix.Identity };
+            if (instance is AnimateModelParameters)
+            {
+                skinTransforms = ((instance as AnimateModelParameters).SkinTransforms);
+            }
+            effect.SetBoneTransforms(skinTransforms);
+
 
             effect.CurrentTechnique = effect.Techniques["SkinnedPickingShade"];
         }

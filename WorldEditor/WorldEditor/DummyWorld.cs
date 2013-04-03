@@ -240,22 +240,45 @@ namespace WorldEditor
             }
         }
 
-        private void DrawTerrain(GraphicsDevice graphics)
+        private void DrawTerrain(GraphicsDevice graphics, Matrix view, Matrix projection)
         {
-            var heightMap = AssetLibrary.LookupTerrain(mName);
-            /*for (int chunkCol = 0; chunkCol < heightMap.Terrain.NumChunksHorizontal; chunkCol++)
+            AnimationUtilities.SkinnedEffect effect = AssetLibrary.VertexBufferShader;
+
+            effect.CurrentTechnique = effect.Techniques["NormalDepthShade"];
+
+            effect.World = Matrix.Identity;
+            effect.View = view;
+            effect.Projection = projection;
+
+            var heightMap = AssetLibrary.LookupTerrainHeightMap(mName);
+            for (int chunkCol = 0; chunkCol < heightMap.NumChunksHorizontal; chunkCol++)
             {
-                for (int chunkRow = 0; chunkRow < heightMap.Terrain.NumChunksVertical; chunkRow++)
+                for (int chunkRow = 0; chunkRow < heightMap.NumChunksVertical; chunkRow++)
                 {
-                    VertexBuffer vertexBuffer = heightMap.Terrain.VertexBuffers[chunkRow, chunkCol];
-                    IndexBuffer indexBuffer = heightMap.Terrain.IndexBuffers[chunkRow, chunkCol];
+                    VertexBuffer vertexBuffer = heightMap.VertexBuffers[chunkRow, chunkCol];
+                    IndexBuffer indexBuffer = heightMap.IndexBuffers[chunkRow, chunkCol];
 
                     graphics.SetVertexBuffer(vertexBuffer);
                     graphics.Indices = indexBuffer;
 
+                    effect.CurrentTechnique.Passes[0].Apply();
+
                     graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
                 }
-            }*/
+            }
+
+            for (int side = 0; side < 4; side++)
+            {
+                VertexBuffer vertexBuffer = heightMap.EdgeVertexBuffers[side];
+                IndexBuffer indexBuffer = heightMap.EdgeIndexBuffers[side];
+
+                graphics.SetVertexBuffer(vertexBuffer);
+                graphics.Indices = indexBuffer;
+
+                effect.CurrentTechnique.Passes[0].Apply();
+
+                graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
+            }
         }
 
         public Tuple<Vector3, DummyObject> RayCast(GraphicsDevice graphics, Ray ray)
@@ -271,12 +294,15 @@ namespace WorldEditor
                 false,
                 graphics.PresentationParameters.BackBufferFormat,
                 DepthFormat.Depth24);
+
             DepthStencilState depthStencilState = new DepthStencilState();
             depthStencilState.DepthBufferFunction = CompareFunction.LessEqual;
+
             graphics.DepthStencilState = depthStencilState;
             graphics.SetRenderTarget(depthTarget);
 
             Viewport pickingViewport = new Microsoft.Xna.Framework.Graphics.Viewport(0, 0, 1, 1);
+
             FPSCamera camera = new FPSCamera(pickingViewport);
             camera.Position = ray.Position;
             camera.Target = camera.Position + ray.Direction;
@@ -287,49 +313,57 @@ namespace WorldEditor
             Single minDepth = camera.FarPlaneDistance;
             DummyObject closestObject = null;
 
-            /*DrawTerrain(graphics);
+            DrawTerrain(graphics, camera.ViewTransform, camera.ProjectionTransform);
             // Check whether terrain is closer than far clip
             {
                 graphics.SetRenderTarget(null);
-                Single[] depth = new Single[1];
-                Console.WriteLine(depth[0]);
-                depthTarget.GetData(depth);
-                if (depth[0] < minDepth)
+
+                Color[] depthColor = new Color[1];
+                depthTarget.GetData(depthColor);
+
+                if (depthColor[0].A < minDepth)
                 {
-                    minDepth = depth[0];
+                    minDepth = depthColor[0].A;
                 }
+                //Console.WriteLine(depthColor[0].A);
             }
 
             foreach (DummyObject dummy in mDummies)
             {
                 graphics.SetRenderTarget(depthTarget);
-                Model model = AssetLibrary.LookupModel(dummy.Model);
-                Matrix[] transforms = new Matrix[model.Bones.Count];
-                model.CopyAbsoluteBoneTransformsTo(transforms);
+
+                Model model = AssetLibrary.LookupModel(dummy.Model).Model;
                 foreach (ModelMesh mesh in model.Meshes)
                 {
-                    foreach (BasicEffect effect in mesh.Effects)
+                    foreach (AnimationUtilities.SkinnedEffect effect in mesh.Effects)
                     {
-                        effect.LightingEnabled = false;
                         effect.View = camera.GetViewTransform();
                         effect.Projection = camera.GetProjectionTransform();
-                        effect.World = transforms[mesh.ParentBone.Index];
+                        effect.World = Matrix.CreateScale(dummy.Scale) *
+                                       Matrix.CreateFromYawPitchRoll(dummy.YawPitchRoll.X, dummy.YawPitchRoll.Y, dummy.YawPitchRoll.Z) *
+                                       Matrix.CreateTranslation(dummy.Position);
+
+                        effect.CurrentTechnique = effect.Techniques["NormalDepthShade"];
                     }
                     mesh.Draw();
                 }
+
                 graphics.SetRenderTarget(null);
-                Single[] depth = new Single[1];
-                depthTarget.GetData(depth);
-                if (depth[0] < minDepth)
+
+                Color[] depthColor = new Color[1];
+                depthTarget.GetData(depthColor);
+
+                if (depthColor[0].A < minDepth)
                 {
-                    minDepth = depth[0];
+                    minDepth = depthColor[0].A;
                     closestObject = dummy;
                 }
             }
 
             // Reset graphics device to previous settings
             graphics.SetRenderTargets(oldRenderTargets);
-            Console.WriteLine(minDepth);*/
+            //Console.WriteLine(minDepth);
+
             return new Tuple<Vector3, DummyObject>(ray.Position + ray.Direction * minDepth, closestObject);
         }
 

@@ -283,6 +283,10 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AnimationUtilities\AnimationUtilities.csproj">
+      <Project>{a2b93efb-0d0c-455b-b1bb-176c336ee60d}</Project>
+      <Name>AnimationUtilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Content_DUmmy\Content_Dummy.contentproj">
       <Project>{12E4B132-65A5-4E63-8C94-3F7687705DCE}</Project>
       <Name>Content_Dummy %28Content%29</Name>
