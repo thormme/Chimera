@@ -54,7 +54,7 @@ namespace GraphicsLibrary
         {
             mModelName = modelName;
 
-            mSkinningData = GraphicsManager.LookupModelSkinningData(mModelName + mAnimationName);
+            mSkinningData = AssetLibrary.LookupModelSkinningData(mModelName + mAnimationName);
             if (mSkinningData == null)
             {
                 throw new Exception("This model does not contain skinningData.");
@@ -63,8 +63,6 @@ namespace GraphicsLibrary
             mAnimationPlayer = new AnimationPlayer(mSkinningData);
 
             PlayAnimation(defaultAnimation, false);
-
-            //mBoundingBox = GraphicsManager.BuildModelBoundingBox(mModelName);
         }
 
         /// <summary>
@@ -78,8 +76,7 @@ namespace GraphicsLibrary
                 throw new Exception(mModelName + " does not contain bone: " + boneName);
             }
 
-            return GraphicsManager.LookupTweakedBoneOrientation(mModelName, boneName) * AnimationPlayer.GetWorldTransforms()[boneIndex];
-            //return AnimationPlayer.GetWorldTransforms()[boneIndex];
+            return AssetLibrary.LookupTweakedBoneOrientation(mModelName, boneName) * AnimationPlayer.GetWorldTransforms()[boneIndex];
         }
 
         /// <summary>
@@ -118,8 +115,15 @@ namespace GraphicsLibrary
         /// <param name="worldTransform">Transformation of model in to place in world space.</param>
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            Matrix[] skinTransforms = AnimationPlayer.GetSkinTransforms();
-            GraphicsManager.RenderSkinnedModel(mModelName, skinTransforms, worldTransform, mBoundingBox, overlayColor, overlayColorWeight);
+            AnimateModelRenderer.AnimateModelParameters parameters = new AnimateModelRenderer.AnimateModelParameters();
+            parameters.BoundingBox = BoundingBox;
+            parameters.Name = mModelName;
+            parameters.OverlayColor = overlayColor;
+            parameters.OverlayWeight = overlayColorWeight;
+            parameters.SkinTransforms = AnimationPlayer.GetSkinTransforms(); ;
+            parameters.World = worldTransform;
+
+            GraphicsManager.EnqueueRenderable(parameters);
         }
 
         #endregion

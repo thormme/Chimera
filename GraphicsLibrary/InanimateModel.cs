@@ -10,13 +10,18 @@ namespace GraphicsLibrary
         public InanimateModel(string modelName)
         {
             mModelName = modelName;
-
-            mBoundingBox = GraphicsManager.BuildModelBoundingBox(mModelName);
         }
 
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            GraphicsManager.RenderUnskinnedModel(mModelName, worldTransform, mBoundingBox, overlayColor, overlayColorWeight);
+            ModelRenderer.RendererParameters parameters = new RendererBase.RendererParameters();
+            parameters.BoundingBox = BoundingBox;
+            parameters.Name = mModelName;
+            parameters.OverlayColor = overlayColor;
+            parameters.OverlayWeight = overlayColorWeight;
+            parameters.World = worldTransform;
+
+            GraphicsManager.EnqueueRenderable(parameters);
         }
     }
 }

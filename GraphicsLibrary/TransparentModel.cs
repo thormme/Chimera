@@ -10,12 +10,19 @@ namespace GraphicsLibrary
         public TransparentModel(string modelName)
         {
             mModelName = modelName;
-            mBoundingBox = GraphicsManager.BuildModelBoundingBox(mModelName);
         }
 
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            GraphicsManager.RenderTransparentModel(mModelName, worldTransform, mBoundingBox, overlayColor, overlayColorWeight, Vector2.Zero);
+            TransparentModelRenderer.TransparentModelParameters parameters = new TransparentModelRenderer.TransparentModelParameters();
+            parameters.AnimationOffset = Vector2.Zero;
+            parameters.BoundingBox = BoundingBox;
+            parameters.Name = mModelName;
+            parameters.OverlayColor = overlayColor;
+            parameters.OverlayWeight = overlayColorWeight;
+            parameters.World = worldTransform;
+
+            GraphicsManager.EnqueueTransparentRenderable(parameters);
         }
     }
 }

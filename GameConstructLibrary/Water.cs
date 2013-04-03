@@ -16,13 +16,7 @@ namespace GameConstructLibrary
             get { return mModel.SeaLevel; }
             set { mModel.SeaLevel = value; }
         }
-
-        public Vector2 Resolution
-        {
-            get { return mModel.Resolution; }
-            set { mModel.Resolution = value; }
-        }
-
+        
         public string TextureName
         {
             get { return mModel.TextureName; }
@@ -66,9 +60,9 @@ namespace GameConstructLibrary
 
         #endregion
 
-        public Water(string waterTexture, float seaLevel, Vector2 vertexResolution)
+        public Water(string waterTexture, float seaLevel)
         {
-            mModel = new WaterRenderable(waterTexture, seaLevel, vertexResolution);
+            mModel = new WaterRenderable(waterTexture, seaLevel);
 
             Position = new Vector3(1, 1, 1);
             Scale = new Vector3(1);

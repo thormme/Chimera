@@ -14,82 +14,107 @@ namespace GraphicsLibrary
 {
     static public class GraphicsManager
     {
-        ////////////////////////////// Internal State ////////////////////////////////
-
-        #region Fields
-
-        static private Matrix mView;
-        static private Matrix mProjection;
-
-        static private Effect mConfigurableShader;
-        static private Effect mPostProcessShader;
-
-        static public AnimationUtilities.SkinnedEffect VertexBufferShader
-        {
-            get { return mVertexBufferShader; }
-        }
-        static private AnimationUtilities.SkinnedEffect mVertexBufferShader;
-
-        static private Dictionary<string, Model> mUniqueModelLibrary = new Dictionary<string, Model>();
-        static private Dictionary<string, TerrainDescription> mUniqueTerrainLibrary = new Dictionary<string, TerrainDescription>();
-        static private Dictionary<string, Dictionary<string, Matrix>> mUniqueModelBoneLibrary = new Dictionary<string, Dictionary<string, Matrix>>();
-        static private Dictionary<string, Texture2D> mUniqueTextureLibrary = new Dictionary<string, Texture2D>();
-        static private Dictionary<string, Dictionary<int, Texture2D>> mUniqueAnimateTextureLibrary = new Dictionary<string, Dictionary<int, Texture2D>>();
-        static private Dictionary<string, TexturedParticles> mUniqueParticleLibrary = new Dictionary<string, TexturedParticles>();
+        #region Rendering Variables And Properties
 
         static private GraphicsDevice mDevice;
         static private SpriteBatch mSpriteBatch;
-
-        static private Queue<RenderableDefinition> mRenderQueue = new Queue<RenderableDefinition>();
-        static private Queue<SpriteDefinition> mSpriteQueue = new Queue<SpriteDefinition>();
-        static private List<RenderableDefinition> mTransparentQueue = new List<RenderableDefinition>();
-        static private Queue<ParticleDefinition> mParticleQueue = new Queue<ParticleDefinition>();
-
-        static private Light mDirectionalLight;
-        static public Light DirectionalLight
-        {
-            get { return mDirectionalLight; }
-            set { mDirectionalLight = value; }
-        }
-
-        static private CascadedShadowMap mShadowMap;
 
         static private RenderTarget2D mSceneBuffer;
         static private RenderTarget2D mNormalDepthBuffer;
         static private RenderTarget2D mOutlineBuffer;
         static private RenderTarget2D mCompositeBuffer;
 
+        static private Viewport? mOverrideViewport = null;
+
+        static public GraphicsDevice Device
+        { 
+            get { return mDevice; }
+            private set { mDevice = value; }
+        }
+
+        static public SpriteBatch SpriteBatch
+        {
+            get { return mSpriteBatch; }
+        }
+
+        static public Viewport? OverrideViewport
+        {
+            get { return mOverrideViewport; }
+            set { mOverrideViewport = value; }
+        }
+        
+        #endregion
+
+        #region Lighting Variables And Properties
+
+        static private Matrix mView;
+        static private Matrix mProjection;
+        
+        static private Light mDirectionalLight;
+
         static private ICamera mCamera;
+        static private ICamera mBirdsEyeViewCamera = null;
+        
+        static private BoundingFrustum mBoundingFrustum;
+        static private Vector3 mMinSceneExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+        static private Vector3 mMaxSceneExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+        static private CascadedShadowMap mShadowMap;
+
+        static public Light DirectionalLight
+        {
+            get { return mDirectionalLight; }
+            set { mDirectionalLight = value; }
+        }
+
         static public ICamera Camera
         {
             get { return mCamera; }
         }
 
-        static private ParticleSystemManager mParticleManager;
+        static public ICamera BirdsEyeViewCamera
+        {
+            get { return mBirdsEyeViewCamera; }
+            set { mBirdsEyeViewCamera = value; }
+        }
 
-        static private BoundingFrustum mBoundingFrustum;
+        static public BoundingFrustum ViewBoundingFrustum
+        {
+            get { return mBoundingFrustum; }
+            set { mBoundingFrustum = value; }
+        }
 
-        static private Vector3 mMinSceneExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-        static private Vector3 mMaxSceneExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+        #endregion
+
+        #region Render Queues
+
+        static private Queue<RendererBase> mRenderQueue = new Queue<RendererBase>();
+        static private Queue<SpriteDefinition> mSpriteQueue = new Queue<SpriteDefinition>();
+        static private List<RendererBase> mTransparentRenderQueue = new List<RendererBase>();
 
         static private bool mCanRender = false;
+
+        #endregion
+
+        #region Miscellaneous Visual Effect variables
 
         static private float mTimeElapsed = 0.0f;
 
         static private float mEdgeWidth = 1.5f;
         static private float mEdgeIntensity = 1.0f;
-
-        static private char[] mDelimeterChars = { ' ' };
-
+        
         #endregion
 
-        ///////////////////////////////// Interface //////////////////////////////////
-
-        #region Puplic Properties
+        #region Configuration Variables And Properties
 
         public enum CelShaded { All, Models, AnimateModels, Terrain, None };
+        public enum Outlines { All, AnimateModels, None };
 
         static private CelShaded mCelShading = CelShaded.All;
+        static private Outlines mOutlining = Outlines.AnimateModels;
+        static private bool mCastingShadows = true;
+        static private bool mDebugVisualization = false;
+        static private bool mDrawBoundingBoxes = false;
 
         /// <summary>
         /// Sets the render state to Cel Shading or Phong shading.
@@ -100,16 +125,11 @@ namespace GraphicsLibrary
             set { mCelShading = value; }
         }
 
-        public enum Outlines { All, AnimateModels, None };
-
-        static private Outlines mOutlining = Outlines.AnimateModels;
         static public Outlines Outlining
         {
             get { return mOutlining; }
             set { mOutlining = value; }
         }
-
-        static private bool mCastingShadows = true;
 
         /// <summary>
         /// Renders scene with or without shadows.
@@ -126,13 +146,6 @@ namespace GraphicsLibrary
             set { mShadowMap.VisualizeCascades = value; }
         }
 
-        static public ICamera BirdsEyeViewCamera
-        {
-            get { return mBirdsEyeViewCamera; }
-            set { mBirdsEyeViewCamera = value; }
-        }
-        static private ICamera mBirdsEyeViewCamera = null;
-
         /// <summary>
         /// Renders scene in debug mode.
         /// </summary>
@@ -141,120 +154,24 @@ namespace GraphicsLibrary
             get { return mDebugVisualization; }
             set { mDebugVisualization = value; }
         }
-        static private bool mDebugVisualization = false;
 
         static public bool DrawBoundingBoxes
         {
             get { return mDrawBoundingBoxes; }
             set { mDrawBoundingBoxes = value; }
         }
-        static private bool mDrawBoundingBoxes = false;
-
-        static public GraphicsDevice Device
-        {
-            get
-            {
-                return mDevice;
-            }
-            private set
-            {
-                mDevice = value;
-            }
-        }
-
-        static public Viewport? OverrideViewport
-        {
-            get { return mOverrideViewport; }
-            set { mOverrideViewport = value; }
-        }
-        static private Viewport? mOverrideViewport = null;
-
-        static public Dictionary<string, Model> ModelLibrary
-        {
-            get
-            {
-                return mUniqueModelLibrary;
-            }
-            private set
-            {
-                mUniqueModelLibrary = value;
-            }
-        }
-
-        static public Dictionary<string, Texture2D> TextureLibrary
-        {
-            get
-            {
-                return mUniqueTextureLibrary;
-            }
-            private set
-            {
-                mUniqueTextureLibrary = value;
-            }
-        }
-
-        public enum CursorShape { NONE, CIRCLE, BLOCK };
-
-        static public CursorShape DrawCursor
-        {
-            get { return mDrawCursor; }
-            set { mDrawCursor = value; }
-        }
-        static private CursorShape mDrawCursor;
-
-        static public Vector3 CursorPosition
-        {
-            get { return mCursorPosition; }
-            set { mCursorPosition = value; }
-        }
-        static private Vector3 mCursorPosition;
-
-        static public float CursorInnerRadius
-        {
-            get { return mCursorInnerRadius; }
-            set { mCursorInnerRadius = value; }
-        }
-        static private float mCursorInnerRadius;
-
-        static public float CursorOuterRadius
-        {
-            get { return mCursorOuterRadius; }
-            set { mCursorOuterRadius = value; }
-        }
-        static private float mCursorOuterRadius;
-
-        static public SpriteBatch SpriteBatch
-        {
-            get { return mSpriteBatch; }
-        }
 
         #endregion
+        
+        #region Public Interface
 
-        #region Constants
-
-        const int MAX_TEXTURE_LAYERS = 5;
-
-        static string[] LAYER_TEXTURE_NAMES = new string[] { "Texture", "RedTexture", "GreenTexture", "BlueTexture", "AlphaTexture" };
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Loads all models from content/models/ and shader file in to memory.
-        /// </summary>
-        /// <param name="content">Global game content manager.</param>
-        static public void LoadContent(ContentManager content, GraphicsDevice device, SpriteBatch spriteBatch)
+        static public void Initialize(GraphicsDevice device, SpriteBatch spriteBatch)
         {
             mDevice = device;
             mSpriteBatch = spriteBatch;
 
             CreateBuffers();
             CreateLightsAndShadows();
-            LoadShaders(content);
-            LoadModels(content);
-            LoadSprites(content);
-            InitializeParticles(content);
         }
 
         /// <summary>
@@ -278,12 +195,6 @@ namespace GraphicsLibrary
             mProjection = mCamera.GetProjectionTransform();
 
             mBoundingFrustum = new BoundingFrustum(camera.GetViewTransform() * camera.GetProjectionTransform());
-
-            foreach (TexturedParticles particles in mUniqueParticleLibrary.Values)
-            {
-                particles.CameraPosition = mCamera.Position;
-                particles.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
-            }
         }
 
         /// <summary>
@@ -291,10 +202,21 @@ namespace GraphicsLibrary
         /// </summary>
         static public void BeginRendering()
         {
+            foreach (RendererBase renderer in mRenderQueue)
+            {
+                renderer.ClearAllInstances();
+            }
             mRenderQueue.Clear();
+
             mSpriteQueue.Clear();
-            mTransparentQueue.Clear();
-            mParticleQueue.Clear();
+
+            foreach (RendererBase transparentRenderer in mTransparentRenderQueue)
+            {
+                transparentRenderer.ClearAllInstances();
+            }
+            mTransparentRenderQueue.Clear();
+
+            //mParticleQueue.Clear();
             mCanRender = true;
         }
 
@@ -303,417 +225,101 @@ namespace GraphicsLibrary
         /// </summary>
         static public void FinishRendering()
         {
-            mDevice.BlendState = BlendState.Opaque;
-            mDevice.DepthStencilState = DepthStencilState.Default;
-            mDevice.SamplerStates[1] = SamplerState.PointClamp;
-
-            RasterizerState cull = new RasterizerState();
-            cull.CullMode = CullMode.CullCounterClockwiseFace;
-            //cull.FillMode = FillMode.WireFrame;
-
-            mDevice.RasterizerState = cull;
-
-            if (CastingShadows && mCamera != null)
+            if (CastingShadows)
             {
-                mShadowMap.GenerateCascades(mCamera, mDirectionalLight, new BoundingBox(mMinSceneExtent, mMaxSceneExtent));
-                mShadowMap.WriteShadowsToBuffer(mRenderQueue);
+                RenderShadowBuffer();
             }
 
-            if (CelShading != CelShaded.None)
+            RenderSceneBuffer();
+
+            if (Outlining != Outlines.None)
             {
-                // Draw Normal Depth Map.
-                mDevice.SetRenderTarget(mNormalDepthBuffer);
-                mDevice.Clear(Color.Black);
+                RenderNormalDepthBuffer();
+                RenderOutlines();
+            }
 
-                bool savedDrawBoundingBoxes = mDrawBoundingBoxes;
-                mDrawBoundingBoxes = false;
+            CompositeScene();
 
-                foreach (RenderableDefinition renderable in mRenderQueue)
-                {
-                    if ((mOutlining == Outlines.AnimateModels && renderable.IsSkinned || mOutlining == Outlines.All) &&
-                        !renderable.IsSkyBox)
-                    {
-                        DrawRenderableDefinition(renderable, false, true, false);
-                    }
-                }
-
-                mDrawBoundingBoxes = savedDrawBoundingBoxes;
-
-                // Draw Scene to Texture.
-                mDevice.SetRenderTarget(mSceneBuffer);
-                mDevice.Clear(Color.CornflowerBlue);
-
-                foreach (RenderableDefinition renderable in mRenderQueue)
-                {
-                    DrawRenderableDefinition(renderable, false, false, renderable.IsSkyBox);
-                }
-
-                foreach (ParticleDefinition particle in mParticleQueue)
-                {
-                    DrawParticles(particle);
-                }
-
-                // Draw semi transparent renderables to texture.
-                if (mTransparentQueue.Count > 0)
-                {
-                    cull = new RasterizerState();
-                    cull.CullMode = CullMode.None;
-                    mDevice.RasterizerState = cull;
-
-                    mDevice.BlendState = BlendState.AlphaBlend;
-                    mDevice.DepthStencilState = DepthStencilState.DepthRead;
-
-                    RenderableComparer rc = new RenderableComparer();
-
-                    mTransparentQueue.Sort(rc);
-                    for (int i = mTransparentQueue.Count - 1; i >= 0; --i)
-                    {
-                        DrawRenderableDefinition(mTransparentQueue[i], false, false, true);
-                    }
-
-                    cull = new RasterizerState();
-                    cull.CullMode = CullMode.CullCounterClockwiseFace;
-                    mDevice.RasterizerState = cull;
-
-                    mDevice.BlendState = BlendState.Opaque;
-                    mDevice.DepthStencilState = DepthStencilState.Default;
-                }
-
-                // Draw Outline to outline texture.
-                mDevice.SetRenderTarget(mOutlineBuffer);
-                mDevice.Clear(Color.White);
-
-                ApplyPostProcessing();
-
-                mDevice.SetRenderTarget(null);
-                mDevice.Clear(Color.CornflowerBlue);
-
-                Viewport viewport = mOverrideViewport == null ? mDevice.Viewport : (Viewport)mOverrideViewport;
-
-                if (DebugVisualization)
-                {
-                    mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
-                    mSpriteBatch.Draw(mShadowMap.Buffer, new Rectangle(0, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
-                    mSpriteBatch.End();
-
-                    mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
-                    mSpriteBatch.Draw(mNormalDepthBuffer, new Rectangle(mSceneBuffer.Width / 2, 0, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
-                    mSpriteBatch.End();
-
-                    mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
-                    mSpriteBatch.Draw(mOutlineBuffer, new Rectangle(0, mSceneBuffer.Height / 2, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
-                    mSpriteBatch.End();
-
-                    mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
-                    mSpriteBatch.Draw(mCompositeBuffer, new Rectangle(mSceneBuffer.Width / 2, mSceneBuffer.Height / 2, mSceneBuffer.Width / 2, mSceneBuffer.Height / 2), Color.White);
-                    mSpriteBatch.End();
-                }
-                else
-                {
-                    mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
-                    mSpriteBatch.Draw(mCompositeBuffer, new Rectangle(viewport.X, viewport.Y, viewport.Width, viewport.Height), Color.White);
-                    mSpriteBatch.End();
-                }
+            if (DebugVisualization)
+            {
+                PresentDebugBuffers();
             }
             else
             {
-                // Draw Scene to Screen with no post-processing.
-                mDevice.SetRenderTarget(null);
-                mDevice.Clear(Color.CornflowerBlue);
-
-                foreach (RenderableDefinition renderable in mRenderQueue)
-                {
-                    DrawRenderableDefinition(renderable, false, false, false);
-                }
+                PresentScene();
             }
 
-            mDevice.SetRenderTarget(null);
-            foreach (SpriteDefinition sprite in mSpriteQueue)
-            {
-                mSpriteBatch.Begin(0, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
-                mSpriteBatch.Draw(LookupSprite(sprite.Name), sprite.ScreenSpace, Color.White);
-                if (sprite.BlendColorWeight > 0.0f)
-                {
-                    Color overlay = new Color(sprite.BlendColor.R, sprite.BlendColor.G, sprite.BlendColor.B, sprite.BlendColorWeight);
-                    mSpriteBatch.Draw(LookupSprite(sprite.Name), sprite.ScreenSpace, overlay);
-                }
-                mSpriteBatch.End();
-            }
+            RenderGUI();
 
             mCanRender = false;
         }
 
-        /// <summary>
-        /// Looks up model associated with modelName and returns the skinningData for that model.
-        /// </summary>
-        /// <param name="modelName">Name of model stored in database</param>
-        /// <returns>Bone transforms associated with modelName</returns>
-        static public SkinningData LookupModelSkinningData(string modelName)
-        {
-            Model model = LookupModel(modelName);
-            return model.Tag as SkinningData;
-        }
+        #endregion
 
-        /// <summary>
-        /// Retrieves terrain height map from database.  Throws KeyNotFoundException if terrainName does not exist in database.
-        /// </summary>
-        static public TerrainHeightMap LookupTerrainHeightMap(string terrainName)
-        {
-            return LookupTerrain(terrainName).Terrain;
-        }
+        #region Renderable Enqueue Methods
 
-        static public TerrainTexture LookupTerrainTexture(string terrainName)
-        {
-            return LookupTerrain(terrainName).Texture;
-        }
-
-        /// <summary>
-        /// Retrieves Tweaked orientation transform matrix for specific bone on an AnimateModel.
-        /// </summary>
-        static public Matrix LookupTweakedBoneOrientation(string modelName, string boneName)
-        {
-            Dictionary<string, Matrix> boneTweakLibrary;
-            if (!mUniqueModelBoneLibrary.TryGetValue(modelName, out boneTweakLibrary))
-            {
-                throw new Exception(modelName + " does not contain any bone orientation tweaks");
-            }
-
-            Matrix localBoneOrientation;
-            if (!boneTweakLibrary.TryGetValue(boneName, out localBoneOrientation))
-            {
-                throw new Exception(modelName + " does not contain bone: " + boneName);
-            }
-
-            return localBoneOrientation;
-        }
-
-        /// <summary>
-        /// Renders animated model.
-        /// </summary>
-        /// <param name="modelName">Name of model stored in database.</param>
-        /// <param name="boneTransforms">State of rigged skeleton for current frame</param>
-        /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
-        static public void RenderSkinnedModel(string modelName, Matrix[] boneTransforms, Matrix worldTransforms, BoundingBox boundingBox, Color overlayColor, float overlayColorWeight)
+        static public void EnqueueRenderable(RendererBase.RendererParameters instance)
         {
             if (!mCanRender)
             {
-                throw new Exception("Unable to render animate model " + modelName + " before calling BeginRendering() or after FinishRendering().\n");
+                throw new Exception("Unable to render " + instance.Name + " before calling BeginRendering() or after FinishRendering().\n");
             }
 
-            RenderableDefinition skinnedModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
-            skinnedModel.IsModel = true;
-            skinnedModel.IsSkinned = true;
-            skinnedModel.BoneTransforms = boneTransforms;
-            skinnedModel.BoundingBoxes[0, 0] = boundingBox;
+            RendererBase renderer = AssetLibrary.LookupRenderer(instance.Name);
+            if (!mRenderQueue.Contains(renderer))
+            {
+                mRenderQueue.Enqueue(renderer);
+            }
 
-            mRenderQueue.Enqueue(skinnedModel);
-            UpdateSceneExtents(boundingBox, worldTransforms);
+            renderer.AddInstance(instance);
+
+            UpdateSceneExtents(instance);
         }
 
-        /// <summary>
-        /// Renders inanimate model.
-        /// </summary>
-        /// <param name="modelName">Name of model stored in database.</param>
-        /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
-        static public void RenderUnskinnedModel(string modelName, Matrix worldTransforms, BoundingBox boundingBox, Color overlayColor, float overlayColorWeight)
+        static public void EnqueueTransparentRenderable(TransparentModelRenderer.TransparentModelParameters instance)
         {
             if (!mCanRender)
             {
-                throw new Exception("Unable to render inanimate model " + modelName + " before calling BeginRendering() or after FinishRendering().\n");
+                throw new Exception("Unable to render transparent renderer " + instance.Name + " before calling BeginRendering() or after FinishRendering().\n");
             }
 
-            RenderableDefinition unskinnedModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
-            unskinnedModel.IsModel = true;
-            unskinnedModel.BoundingBoxes[0, 0] = boundingBox;
+            ModelRenderer renderer = AssetLibrary.LookupModel(instance.Name);
+            if (!(renderer is TransparentModelRenderer))
+            {
+                renderer = new TransparentModelRenderer(renderer.Model);
+            }
 
-            mRenderQueue.Enqueue(unskinnedModel);
+            if (!mTransparentRenderQueue.Contains(renderer))
+            {
+                mTransparentRenderQueue.Add(renderer);
+            }
 
-            UpdateSceneExtents(boundingBox, worldTransforms);
+            renderer.AddInstance(instance);
+
+            UpdateSceneExtents(instance);
         }
 
-        /// <summary>
-        /// Renders semi-transparent model.
-        /// </summary>
-        /// /// <param name="modelName">Name of model stored in database.</param>
-        /// <param name="worldTransforms">Position, orientation, and scale of model in world space.</param>
-        static public void RenderTransparentModel(string modelName, Matrix worldTransforms, BoundingBox boundingBox, Color overlayColor, float overlayColorWeight, Vector2 animationRate)
-        {
-            if (!mCanRender)
-            {
-                throw new Exception("Unable to render transparent model " + modelName + " before calling BeginRendering() or after FinishRendering().\n");
-            }
+        #endregion
 
-            RenderableDefinition transparentModel = new RenderableDefinition(modelName, worldTransforms, overlayColor, overlayColorWeight);
-            transparentModel.IsModel = true;
-            transparentModel.AnimationRate = animationRate;
-            transparentModel.BoundingBoxes[0, 0] = boundingBox;
-
-            mTransparentQueue.Add(transparentModel);
-        }
-
-        static public void RenderSkyBox(VertexBuffer vertexBuffer, IndexBuffer indexBuffer, string textureName, Matrix worldTransform, Color overlayColor, float overlayWeight)
-        {
-            if (!mCanRender)
-            {
-                throw new Exception("Unable to render skydome before calling BeginRendering() or after FinishRendering().\n");
-            }
-
-            float scale = 30000;
-
-            Vector3 sceneScale = new Vector3(scale, scale, scale);
-            Vector3 centerOffset = new Vector3(0, sceneScale.Y * 0.5f, 0);
-
-            RenderableDefinition skybox = new RenderableDefinition(null, worldTransform, overlayColor, overlayWeight);
-            skybox.IsSkyBox = true;
-            skybox.OverlayTextureName = textureName;
-            skybox.WorldTransform = Matrix.CreateScale(sceneScale) * skybox.WorldTransform * Matrix.CreateTranslation(-centerOffset);
-            skybox.VertexBuffer = vertexBuffer;
-            skybox.IndexBuffer = indexBuffer;
-
-            mRenderQueue.Enqueue(skybox);                
-        }
-
-        static public void RenderWater(VertexBuffer vertexBuffer, IndexBuffer indexBuffer, string textureName, Matrix worldTransform, Color overlayColor, float overlayColorWeight)
-        {
-            if (!mCanRender)
-            {
-                throw new Exception("Unable to render water before calling BeginRendering() or after FinishRendering().\n");
-            }
-
-            RenderableDefinition water = new RenderableDefinition(null, worldTransform, overlayColor, overlayColorWeight);
-            water.IsWater = true;
-            water.OverlayTextureName = textureName;
-            water.WorldTransform = worldTransform;
-            water.VertexBuffer = vertexBuffer;
-            water.IndexBuffer = indexBuffer;
-            water.AnimationRate = new Vector2(0.02f, 0f);
-
-            mRenderQueue.Enqueue(water);
-            //mTransparentQueue.Add(water);
-        }
-
-        /// <summary>
-        /// Renders terrain.
-        /// </summary>
-        /// <param name="terrainName">Name of terrain stored in database.</param>
-        /// <param name="worldTransforms">Position, orientation, and scale of terrain in world space.</param>
-        static public void RenderTerrain(string terrainName, Matrix worldTransforms, BoundingBox[,] boundingBoxes, Color overlayColor, float overlayColorWeight)
-        {
-            if (!mCanRender)
-            {
-                throw new Exception("Unable to render terrain " + terrainName + " before calling BeginRendering() or after FinishRendering().\n");
-            }
-
-            RenderableDefinition terrain = new RenderableDefinition(terrainName, worldTransforms, overlayColor, overlayColorWeight);
-            terrain.BoundingBoxes = boundingBoxes;
-
-            mRenderQueue.Enqueue(terrain);
-            foreach (BoundingBox boundingBox in boundingBoxes)
-            {
-                UpdateSceneExtents(boundingBox, worldTransforms);
-            }
-        }
+        #region Sprite Enqueue Methods
 
         /// <summary>
         /// Renders sprite to the screen.  Useful for things like UI.
         /// </summary>
         /// <param name="screenSpace"></param>
-        static public void RenderSprite(string spriteName, Rectangle screenSpace, Color blendColor, float blendColorWeight)
+        static public void EnqueueSprite(string spriteName, Rectangle screenSpace, Color blendColor, float blendColorWeight)
         {
             if (!mCanRender)
             {
                 throw new Exception("Unable to render sprite " + spriteName + " before calling BeginRendering() or after FinishRendering().\n");
             }
-            
+
             mSpriteQueue.Enqueue(new SpriteDefinition(spriteName, screenSpace, blendColor, blendColorWeight));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="particleSystemName"></param>
-        /// <param name="worldTransforms"></param>
-        static public void RenderParticles(string particleSystemName, Matrix worldTransforms)
-        {
-            if (!mCanRender)
-            {
-                throw new Exception("Unable to render particle system " + particleSystemName + " before calling BeginRendering() or after FinishRendering().\n");
-            }
-
-            mParticleQueue.Enqueue(new ParticleDefinition(particleSystemName, worldTransforms));
-        }
-
-        public static BoundingBox BuildModelBoundingBox(string modelName)
-        {
-            Vector3 minExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-            Vector3 maxExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-
-            foreach (ModelMesh mesh in LookupModel(modelName).Meshes)
-            {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    BoundVertexBuffer(ref minExtent, ref maxExtent, part.VertexBuffer, part.NumVertices);
-                }
-            }
-
-            return new BoundingBox(minExtent, maxExtent);
-        }
-
-        public static BoundingBox[,] BuildTerrainBoundingBox(string terrainName)
-        {
-            TerrainHeightMap terrain = LookupTerrain(terrainName).Terrain;
-
-            BoundingBox[,] terrainBoundingBoxes = new BoundingBox[terrain.NumChunksVertical, terrain.NumChunksHorizontal];
-
-            for (int row = 0; row < terrain.NumChunksVertical; ++row)
-            {
-                for (int col = 0; col < terrain.NumChunksHorizontal; ++col)
-                {
-                    Vector3 minExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-                    Vector3 maxExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-
-                    BoundVertexBuffer(ref minExtent, ref maxExtent, terrain.VertexBuffers[row, col], terrain.VertexBuffers[row, col].VertexCount);
-
-                    terrainBoundingBoxes[row, col] = new BoundingBox(minExtent, maxExtent);
-                }
-            }
-
-            return terrainBoundingBoxes;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="level"></param>
-        public static void AddTerrain(FileInfo level, TerrainHeightMap heightMap, TerrainTexture texture)
-        {
-            if (mUniqueTerrainLibrary.ContainsKey(level.Name))
-            {
-                mUniqueTerrainLibrary.Remove(level.Name);
-            }
-
-            mUniqueTerrainLibrary.Add(level.Name, new TerrainDescription(heightMap, texture));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="savePath"></param>
-        /// <param name="levelName"></param>
-        public static void UpdateTerrain(FileInfo savePath, ref string levelName)
-        {
-            if (!mUniqueTerrainLibrary.ContainsKey(savePath.Name))
-            {
-                mUniqueTerrainLibrary.Add(savePath.Name, mUniqueTerrainLibrary[levelName]);
-                levelName = savePath.Name;
-            }
-        }
-
         #endregion
-
-        ///////////////////////////// Internal functions /////////////////////////////
-
-        #region Helper Methods
+        
+        #region Initialization Methods
 
         /// <summary>
         /// Instantiates rendertargets written to by graphics device.
@@ -742,761 +348,212 @@ namespace GraphicsLibrary
                 );
 
             mShadowMap = new CascadedShadowMap(mDevice, 2048);
-        }
+        }    
+        
+        #endregion
 
-        /// <summary>
-        /// Reads all models in from content directory and stores them in modelLibrary.
-        /// </summary>
-        static private void LoadModels(ContentManager content)
+        #region Render Pipeline Methods
+
+        static private void RenderShadowBuffer()
         {
-            DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "models");
-            if (!dir.Exists)
+            if (mCamera != null)
             {
-                throw new DirectoryNotFoundException("Could not find models directory \n" + dir.FullName + "\nin content.");
-            }
-
-            DirectoryInfo[] subDirs = dir.GetDirectories();
-            foreach (DirectoryInfo subDir in subDirs)
-            {
-                string subDirName = subDir.Name;
-
-                FileInfo[] files = subDir.GetFiles("*.xnb");
-                foreach (FileInfo file in files)
-                {
-                    try
-                    {
-                        string textureKey = "_animate_texture_";
-                        string modelName = Path.GetFileNameWithoutExtension(file.Name);
-                        if (modelName.Contains(textureKey))
-                        {
-                            Texture2D texture = content.Load<Texture2D>("models/" + subDirName + "/" + modelName);
-
-                            string[] nameParts = modelName.Split(new char[] { '_' });
-
-                            Dictionary<int, Texture2D> animateTextures;
-                            if (!mUniqueAnimateTextureLibrary.TryGetValue(nameParts[0], out animateTextures))
-                            {
-                                animateTextures = new Dictionary<int, Texture2D>();
-                                mUniqueAnimateTextureLibrary.Add(nameParts[0], animateTextures);
-                            }
-
-                            animateTextures.Add(Int32.Parse(nameParts[3]), texture);
-                        }
-                        else
-                        {
-                            Model input = content.Load<Model>("models/" + subDirName + "/" + modelName);
-
-                            foreach (ModelMesh mesh in input.Meshes)
-                            {
-                                foreach (ModelMeshPart part in mesh.MeshParts)
-                                {
-                                    Microsoft.Xna.Framework.Graphics.SkinnedEffect skinnedEffect = part.Effect as Microsoft.Xna.Framework.Graphics.SkinnedEffect;
-                                    if (skinnedEffect != null)
-                                    {
-                                        AnimationUtilities.SkinnedEffect newEffect = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
-                                        newEffect.CopyFromSkinnedEffect(skinnedEffect);
-
-                                        part.Effect = newEffect;
-                                    }
-                                    else
-                                    {
-                                        Microsoft.Xna.Framework.Graphics.BasicEffect basicEffect = part.Effect as Microsoft.Xna.Framework.Graphics.BasicEffect;
-                                        if (basicEffect != null)
-                                        {
-                                            AnimationUtilities.SkinnedEffect newEffect = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
-                                            newEffect.CopyFromBasicEffect(basicEffect);
-
-                                            part.Effect = newEffect;
-                                        }
-                                    }
-                                }
-                            }
-
-                            AddModel(modelName, input);
-                        }
-                    }
-                    catch { }
-                }
-
-                // Parse Bone Orientation Tweak File and store in library.
-                FileInfo[] tweakOrientationFiles = subDir.GetFiles("*.tweak");
-                foreach (FileInfo file in tweakOrientationFiles)
-                {
-                    Dictionary<string, Matrix> tweakLibrary = new Dictionary<string, Matrix>();
-                    TextReader tr = new StreamReader(file.DirectoryName + "\\" + file.Name);
-
-                    int count = int.Parse(tr.ReadLine());
-                    string blank = tr.ReadLine();
-
-                    for (int i = 0; i < count; ++i)
-                    {
-                        Matrix tweakMatrix;
-                        string boneName;
-                        ParseTweakFile(tr, out boneName, out tweakMatrix);
-
-                        tweakLibrary.Add(boneName, tweakMatrix);
-                    }
-                    tr.Close();
-
-                    mUniqueModelBoneLibrary.Add(Path.GetFileNameWithoutExtension(file.Name), tweakLibrary);
-                }
-
-                FileInfo[] tweakModifierFiles = subDir.GetFiles("*.modtweak");
-                foreach (FileInfo file in tweakModifierFiles)
-                {
-                    TextReader tr = new StreamReader(file.DirectoryName + "\\" + file.Name);
-                    int count = int.Parse(tr.ReadLine());
-                    string blank = tr.ReadLine();
-
-                    Dictionary<string, Matrix> tweakLibrary;
-                    if (mUniqueModelBoneLibrary.TryGetValue(Path.GetFileNameWithoutExtension(file.Name), out tweakLibrary))
-                    {
-                        TextWriter tw = new StreamWriter("playerBeanPartOrientations.txt");
-
-                        tw.WriteLine(count);
-                        tw.WriteLine("");
-
-                        for (int i = 0; i < count; ++i)
-                        {
-                            Matrix modifyMatrix;
-                            string boneName;
-                            ParseTweakFile(tr, out boneName, out modifyMatrix);
-
-                            Matrix storedMatrix;
-                            if (tweakLibrary.TryGetValue(boneName, out storedMatrix))
-                            {
-                                storedMatrix = modifyMatrix * storedMatrix;
-                                tweakLibrary[boneName] = storedMatrix;
-                            }
-
-                            tw.WriteLine(boneName);
-                            tw.WriteLine(storedMatrix.M11.ToString() + " " + storedMatrix.M12.ToString() + " " + storedMatrix.M13.ToString() + " " + storedMatrix.M14.ToString());
-                            tw.WriteLine(storedMatrix.M21.ToString() + " " + storedMatrix.M22.ToString() + " " + storedMatrix.M23.ToString() + " " + storedMatrix.M24.ToString());
-                            tw.WriteLine(storedMatrix.M31.ToString() + " " + storedMatrix.M32.ToString() + " " + storedMatrix.M33.ToString() + " " + storedMatrix.M34.ToString());
-                            tw.WriteLine(storedMatrix.M41.ToString() + " " + storedMatrix.M42.ToString() + " " + storedMatrix.M43.ToString() + " " + storedMatrix.M44.ToString());
-                            tw.WriteLine("");
-                        }
-                        tw.Close();
-                    }
-                }
+                mShadowMap.GenerateCascades(mCamera, mDirectionalLight, new BoundingBox(mMinSceneExtent, mMaxSceneExtent));
+                mShadowMap.WriteShadowsToBuffer(mRenderQueue);
             }
         }
 
-        /// <summary>
-        /// Sets up pipeline for executing shaders.
-        /// </summary>
-        static private void LoadShaders(ContentManager content)
+        static private void RenderNormalDepthBuffer()
         {
-            mConfigurableShader = content.Load<Effect>("shaders/ConfigurableShader");
-            mPostProcessShader = content.Load<Effect>("shaders/PostProcessing");
-            mVertexBufferShader = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
-        }
+            mDevice.BlendState = BlendState.Opaque;
+            mDevice.DepthStencilState = DepthStencilState.Default;
+            mDevice.SamplerStates[1] = SamplerState.PointClamp;
 
-        /// <summary>
-        /// Reads sprites in from content directory and stores them in spriteLibrary.
-        /// </summary>
-        static private void LoadSprites(ContentManager content)
-        {
-            DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/maps/");
-            if (!dir.Exists)
+            RasterizerState cull = new RasterizerState();
+            cull.CullMode = CullMode.CullCounterClockwiseFace;
+
+            mDevice.RasterizerState = cull;
+
+            mDevice.SetRenderTarget(mNormalDepthBuffer);
+            mDevice.Clear(Color.Black);
+
+            foreach (RendererBase renderer in mRenderQueue)
             {
-                throw new DirectoryNotFoundException("Could not find textures/maps/ directory in content.");
-            }
-
-            FileInfo[] mapFiles = dir.GetFiles("*");
-            foreach (FileInfo file in mapFiles)
-            {
-                string mapName = Path.GetFileNameWithoutExtension(file.Name);
-                Texture2D map = content.Load<Texture2D>("textures/maps/" + mapName);
-
-                if (mUniqueTextureLibrary.ContainsKey(mapName))
-                {
-                    throw new Exception("Duplicate map key: " + mapName);
-                }
-                mUniqueTextureLibrary.Add(mapName, map);
-            }
-
-            dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/sprites/");
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException("Could not find textures/sprites/ directory in content.");
-            }
-
-            FileInfo[] spriteFiles = dir.GetFiles("*");
-            foreach (FileInfo file in spriteFiles)
-            {
-                string spriteName = Path.GetFileNameWithoutExtension(file.Name);
-                Texture2D sprite = content.Load<Texture2D>("textures/sprites/" + spriteName);
-
-                if (mUniqueTextureLibrary.ContainsKey(spriteName))
-                {
-                    throw new Exception("Duplicate sprite key: " + spriteName);
-                }
-                mUniqueTextureLibrary.Add(spriteName, sprite);
+                renderer.RenderAllInstancesNormalDepth(mView, mProjection);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        static private void InitializeParticles(ContentManager content)
+        static private void RenderSceneBuffer()
         {
-            mParticleManager = new ParticleSystemManager();
+            mDevice.SetRenderTarget(mSceneBuffer);
+            mDevice.Clear(Color.CornflowerBlue);
 
-            for (int i = 0; i < 1; ++i)
+            RasterizerState cull = new RasterizerState();
+            cull.CullMode = CullMode.CullCounterClockwiseFace;
+
+            mDevice.RasterizerState = cull;
+            mDevice.BlendState = BlendState.Opaque;
+            mDevice.DepthStencilState = DepthStencilState.Default;
+
+            foreach (RendererBase renderer in mRenderQueue)
             {
-                TexturedParticles newParticleSystem = new TexturedParticles(null, "puff");
-                newParticleSystem.AutoInitialize(mDevice, content, mSpriteBatch);
-
-                mParticleManager.AddParticleSystem(newParticleSystem);
-                mUniqueParticleLibrary.Add("puff", newParticleSystem);
-            }
-        }
-
-        /// <summary>
-        /// Inserts new model in to model container.  Throws Exception on duplicate key.
-        /// </summary>
-        static private void AddModel(string modelName, Model model)
-        {
-            if (mUniqueModelLibrary.ContainsKey(modelName))
-            {
-                throw new Exception("Duplicate model key: " + modelName);
-            }
-            mUniqueModelLibrary.Add(modelName, model);
-        }
-
-        /// <summary>
-        /// Retrieves model from database.  Throws KeyNotFoundException if modelName does not exist in database.
-        /// </summary>
-        static public Model LookupModel(string modelName)
-        {
-            Model result;
-            if (mUniqueModelLibrary.TryGetValue(modelName, out result))
-            {
-                return result;
-            }
-            throw new KeyNotFoundException("Unable to find model key: " + modelName);
-        }
-
-        /// <summary>
-        /// Retrieves terrain from database.  Throws KeyNotFoundException if terrainName does not exist in database.
-        /// </summary>
-        static public TerrainDescription LookupTerrain(string terrainName)
-        {
-            TerrainDescription result;
-            if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
-            {
-                return result;
-            }
-            throw new KeyNotFoundException("Unable to find terrain key: " + terrainName);
-        }
-
-        /// <summary>
-        /// Retrieves sprite from database.  Throws KeyNotFoundException if spriteName does not exist in database.
-        /// </summary>
-        /// <param name="spriteName"></param>
-        /// <returns></returns>
-        static public Texture2D LookupSprite(string spriteName)
-        {
-            Texture2D result;
-            if (mUniqueTextureLibrary.TryGetValue(spriteName, out result))
-            {
-                return result;
-            }
-            throw new KeyNotFoundException("Unable to find sprite key: " + spriteName);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="particleSystemName"></param>
-        /// <returns></returns>
-        static private TexturedParticles LookupParticles(string particleSystemName)
-        {
-            TexturedParticles result;
-            if (mUniqueParticleLibrary.TryGetValue(particleSystemName, out result))
-            {
-                return result;
-            }
-            throw new KeyNotFoundException("Unable to find particle key: " + particleSystemName);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="renderable"></param>
-        static private void DrawRenderableDefinition(RenderableDefinition renderable, bool isShadow, bool isOutline, bool hasTransparency)
-        {
-            if (renderable.IsModel)
-            {
-                DrawModel(renderable, isShadow, isOutline, hasTransparency);
-                return;
-            }
-
-            if (renderable.IsSkyBox)
-            {
-                DrawSkyBox(renderable);
-                return;
-            }
-
-            if (renderable.IsWater)
-            {
-                DrawWater(renderable, isOutline);
-                return;
-            }
-
-            DrawTerrain(renderable, isShadow, isOutline);
-        }
-
-        /// <summary>
-        /// Draws all meshes within model to current rendertarget.  Applies rigged model transforms if necesarry.
-        /// </summary>
-        static private void DrawModel(RenderableDefinition renderable, bool isShadow, bool isOutline, bool hasTransparency)
-        {
-            if (!isShadow && mBoundingFrustum.Contains(renderable.BoundingBoxes[0, 0]) == ContainmentType.Disjoint)
-            {
-                return;
-            }
-
-            Model model = LookupModel(renderable.Name);
-
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                string techniqueName;
-                if (isOutline)
-                {
-                    techniqueName = (renderable.IsSkinned) ? "SkinnedNormalDepthShade" : "NormalDepthShade";
-                }
-                else if (CelShading == CelShaded.Models || CelShading == CelShaded.All)
-                {
-                    techniqueName = (renderable.IsSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "CelShade";
-                }
-                else if (CelShading == CelShaded.AnimateModels)
-                {
-                    techniqueName = (renderable.IsSkinned) ? "SkinnedCelShade" : (hasTransparency) ? "NoShade" : "Phong";
-                }
-                else
-                {
-                    techniqueName = (renderable.IsSkinned) ? "SkinnedPhong" : (hasTransparency) ? "NoShade" : "Phong";
-                }
-
-                DrawMesh(mesh, techniqueName, renderable);
-            }
-        }
-
-        /// <summary>
-        /// Draws current Terrain to render target using appropriate effects.
-        /// </summary>
-        static private void DrawTerrain(RenderableDefinition renderable, bool isShadow, bool isOutline)
-        {
-            TerrainDescription heightmap = LookupTerrain(renderable.Name);
-
-            string techniqueName = (isOutline) ? "NormalDepthShade" : ((CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "TerrainCelShade" : "TerrainPhong");
-            DrawTerrainHeightMap(heightmap, techniqueName, renderable);
-        }
-
-        /// <summary>
-        /// Sets all effects for current mesh and renders to screen.
-        /// </summary>
-        static private void DrawMesh(ModelMesh mesh, string techniqueName, RenderableDefinition renderable)
-        {
-            mDevice.SamplerStates[0] = SamplerState.PointClamp;
-
-            foreach (AnimationUtilities.SkinnedEffect effect in mesh.Effects)
-            {
-                effect.CurrentTechnique = effect.Techniques[techniqueName];
-
                 if (CastingShadows)
                 {
-                    effect.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
-                }
-
-                if (renderable.BoneTransforms != null)
-                {
-                    effect.SetBoneTransforms(renderable.BoneTransforms);
-                }
-
-                if (renderable.OverlayTextureName != null)
-                {
-                    effect.Texture = LookupSprite(renderable.OverlayTextureName);
-                }
-
-                effect.View = mView;
-                effect.Projection = mProjection;
-
-                effect.LightView = mShadowMap.LightView;
-                effect.LightProjection = mShadowMap.LightProjection;
-
-                effect.Parameters["xVisualizeCascades"].SetValue(mShadowMap.VisualizeCascades);
-                effect.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
-                effect.Parameters["xLightView"].SetValue(mShadowMap.LightView);
-                effect.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
-                effect.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
-                effect.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
-
-                effect.Parameters["xDirLightDirection"].SetValue(mDirectionalLight.Direction);
-                effect.Parameters["xDirLightDiffuseColor"].SetValue(mDirectionalLight.DiffuseColor);
-                effect.Parameters["xDirLightSpecularColor"].SetValue(mDirectionalLight.SpecularColor);
-                effect.Parameters["xDirLightAmbientColor"].SetValue(mDirectionalLight.AmbientColor);
-
-                effect.Parameters["xOverlayColor"].SetValue(renderable.OverlayColor);
-                effect.Parameters["xOverlayColorWeight"].SetValue(renderable.OverlayColorWeight);
-
-                effect.Parameters["xNumShadowBands"].SetValue(techniqueName.Contains("Skinned") ? 2.0f : 3.0f);
-
-                effect.SpecularColor = new Vector3(0.25f);
-                effect.SpecularPower = 16;
-
-                effect.World = renderable.WorldTransform;
-
-                Vector2 animationRate = renderable.AnimationRate;
-                if (renderable.AnimationRate != Vector2.Zero)
-                {
-                    animationRate *= mTimeElapsed;
-                    animationRate.X %= 1.0f;
-                    animationRate.Y %= 1.0f;
-                }
-                effect.Parameters["xTextureOffset"].SetValue(animationRate);
-            }
-            mesh.Draw();
-
-            if (mDrawBoundingBoxes)
-            {
-                Color bBoxColor;
-                if (renderable.IsSkinned)
-                {
-                    bBoxColor = Color.Yellow;
-                }
-                else if (techniqueName == "NoShade")
-                {
-                    bBoxColor = Color.Green;
+                    renderer.RenderAllInstancesWithShadows(mShadowMap, mView, mProjection, mDirectionalLight);
                 }
                 else
                 {
-                    bBoxColor = Color.Red;
+                    renderer.RenderAllInstancesWithoutShadows(mView, mProjection, mDirectionalLight);
                 }
-
-                BoundingBoxRenderer.Render(renderable.BoundingBoxes[0, 0], mDevice, mView, mProjection, bBoxColor);
             }
+
+            // Set new depth buffer and alpha handling state to draw semi-transparent objects.
+            RasterizerState transparentCull = new RasterizerState();
+            transparentCull.CullMode = CullMode.None;
+
+            mDevice.RasterizerState = transparentCull;
+            mDevice.BlendState = BlendState.AlphaBlend;
+            mDevice.DepthStencilState = DepthStencilState.DepthRead;
+
+            //RenderableComparer rc = new RenderableComparer();
+
+            //mTransparentRenderQueue.Sort(rc);
+            foreach (TransparentModelRenderer renderer in mTransparentRenderQueue)
+            {
+                renderer.RenderAllInstancesNoShading(mView, mProjection);
+            }
+            
+            // Restore depth buffer and alpha handling state.
+            mDevice.RasterizerState = cull;
+            mDevice.BlendState = BlendState.Opaque;
+            mDevice.DepthStencilState = DepthStencilState.Default;
         }
 
-        /// <summary>
-        /// Sets effect for current terrain and renders to screen.
-        /// </summary>
-        static private void DrawTerrainHeightMap(TerrainDescription heightMap, string techniqueName, RenderableDefinition renderable)
+        static private void RenderGUI()
         {
-            mDevice.SamplerStates[0] = SamplerState.LinearClamp;
-
-            if (CastingShadows)
+            mDevice.SetRenderTarget(null);
+            foreach (SpriteDefinition sprite in mSpriteQueue)
             {
-                mVertexBufferShader.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
-            }
-
-            mVertexBufferShader.Parameters["xDrawCursor"].SetValue((int)mDrawCursor);
-
-            if (mDrawCursor != CursorShape.NONE)
-            {
-                mVertexBufferShader.Parameters["xCursorPosition"].SetValue(mCursorPosition);
-                mVertexBufferShader.Parameters["xCursorInnerRadius"].SetValue(mCursorInnerRadius);
-                mVertexBufferShader.Parameters["xCursorOuterRadius"].SetValue(mCursorOuterRadius);
-            }
-
-            mVertexBufferShader.Parameters["xVisualizeCascades"].SetValue(mShadowMap.VisualizeCascades);
-            mVertexBufferShader.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
-            mVertexBufferShader.Parameters["xLightView"].SetValue(mShadowMap.LightView);
-            mVertexBufferShader.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
-            mVertexBufferShader.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
-            mVertexBufferShader.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
-
-            mVertexBufferShader.View = mView;
-            mVertexBufferShader.Projection = mProjection;
-
-            VertexBufferShader.LightView = mShadowMap.LightView;
-            VertexBufferShader.LightProjection = mShadowMap.LightProjection;
-
-            mVertexBufferShader.Parameters["xDirLightDirection"].SetValue(mDirectionalLight.Direction);
-            mVertexBufferShader.Parameters["xDirLightDiffuseColor"].SetValue(mDirectionalLight.DiffuseColor);
-            mVertexBufferShader.Parameters["xDirLightSpecularColor"].SetValue(mDirectionalLight.SpecularColor);
-            mVertexBufferShader.Parameters["xDirLightAmbientColor"].SetValue(mDirectionalLight.AmbientColor);
-
-            mVertexBufferShader.Parameters["xOverlayColor"].SetValue(renderable.OverlayColor);
-            mVertexBufferShader.Parameters["xOverlayColorWeight"].SetValue(renderable.OverlayColorWeight);
-
-            mVertexBufferShader.Parameters["xTextureOffset"].SetValue(renderable.AnimationRate);
-
-            mVertexBufferShader.SpecularColor = new Vector3(0.25f);
-            mVertexBufferShader.SpecularPower = 16;
-
-            mVertexBufferShader.World = renderable.WorldTransform;
-
-            mVertexBufferShader.CurrentTechnique = mVertexBufferShader.Techniques[techniqueName];
-
-            for (int i = 0; i < 7; ++i)
-            {
-                mDevice.SamplerStates[i] = SamplerState.PointWrap;
-            }
-
-            for (int chunkCol = 0; chunkCol < heightMap.Terrain.NumChunksHorizontal; chunkCol++)
-            {
-                for (int chunkRow = 0; chunkRow < heightMap.Terrain.NumChunksVertical; chunkRow++)
+                mSpriteBatch.Begin(0, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+                mSpriteBatch.Draw(AssetLibrary.LookupSprite(sprite.Name), sprite.ScreenSpace, Color.White);
+                if (sprite.BlendColorWeight > 0.0f)
                 {
-                    if (mBoundingFrustum.Contains(renderable.BoundingBoxes[chunkRow, chunkCol]) == ContainmentType.Disjoint)
-                    {
-                        // Hey, it looks like you.
-                        // Just tried to draw me.
-                        // But I'm not on screen.
-                        // So cull me, maybe?
-                        continue;
-                    }
-
-                    mVertexBufferShader.Parameters["AlphaMap"].SetValue(heightMap.Texture.TextureBuffers[chunkRow, chunkCol]);
-
-                    for (int i = 0; i < MAX_TEXTURE_LAYERS; ++i)
-                    {
-                        string detailTextureName = heightMap.Texture.DetailTextureNames[chunkRow, chunkCol, i];
-                        Vector2 uvOffset = heightMap.Texture.DetailTextureUVOffset[chunkRow, chunkCol, i];
-                        Vector2 uvScale = heightMap.Texture.DetailTextureUVScale[chunkRow, chunkCol, i];
-
-                        if (detailTextureName != null)
-                        {
-                            mVertexBufferShader.Parameters[LAYER_TEXTURE_NAMES[i]].SetValue(LookupSprite(detailTextureName));
-
-                            mVertexBufferShader.Parameters[LAYER_TEXTURE_NAMES[i] + "_uvOffset"].SetValue(uvOffset);
-                            mVertexBufferShader.Parameters[LAYER_TEXTURE_NAMES[i] + "_uvScale"].SetValue(uvScale);
-                        }
-                    }
-
-                    VertexBuffer vertexBuffer = heightMap.Terrain.VertexBuffers[chunkRow, chunkCol];
-                    IndexBuffer indexBuffer = heightMap.Terrain.IndexBuffers[chunkRow, chunkCol];
-
-                    mDevice.SetVertexBuffer(vertexBuffer);
-                    mDevice.Indices = indexBuffer;
-
-                    mVertexBufferShader.CurrentTechnique.Passes[0].Apply();
-
-                    mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
-
-                    if (mDrawBoundingBoxes)
-                    {
-                        BoundingBoxRenderer.Render(renderable.BoundingBoxes[chunkRow, chunkCol], mDevice, mView, mProjection, Color.Blue);
-                    }
+                    Color overlay = new Color(sprite.BlendColor.R, sprite.BlendColor.G, sprite.BlendColor.B, sprite.BlendColorWeight);
+                    mSpriteBatch.Draw(AssetLibrary.LookupSprite(sprite.Name), sprite.ScreenSpace, overlay);
                 }
-            }
-
-            for (int edgeChunkIndex = 0; edgeChunkIndex < 4; ++edgeChunkIndex)
-            {
-                VertexBuffer vertexBuffer = heightMap.Terrain.EdgeVertexBuffers[edgeChunkIndex];
-                IndexBuffer indexBuffer = heightMap.Terrain.EdgeIndexBuffers[edgeChunkIndex];
-
-                mDevice.SetVertexBuffer(vertexBuffer);
-                mDevice.Indices = indexBuffer;
-
-                mVertexBufferShader.CurrentTechnique.Passes[0].Apply();
-
-                mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
+                mSpriteBatch.End();
             }
         }
 
-        static private void DrawSkyBox(RenderableDefinition renderable)
+        static private void RenderOutlines()
         {
-            mDevice.SamplerStates[0] = SamplerState.PointClamp;
+            Effect effect = AssetLibrary.PostProcessShader;
 
-            mVertexBufferShader.CurrentTechnique = mVertexBufferShader.Techniques["NoShade"];
-            mVertexBufferShader.World      = renderable.WorldTransform;
-            mVertexBufferShader.View       = mView;
-            mVertexBufferShader.Projection = Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, mCamera.AspectRatio, mCamera.GetNearPlaneDistance(), 30000);
+            mDevice.SetRenderTarget(mOutlineBuffer);
+            mDevice.Clear(Color.White);
 
-            mVertexBufferShader.Texture = LookupSprite(renderable.OverlayTextureName);
+            effect.CurrentTechnique = effect.Techniques["EdgeDetect"];
 
-            mVertexBufferShader.Parameters["xTextureOffset"].SetValue(renderable.AnimationRate);
+            effect.Parameters["NormalDepthTexture"].SetValue(mNormalDepthBuffer);
+            effect.Parameters["SceneTexture"].SetValue(mSceneBuffer);
 
-            mDevice.SetVertexBuffer(renderable.VertexBuffer);
-            mDevice.Indices = renderable.IndexBuffer;
+            effect.Parameters["EdgeWidth"].SetValue(mEdgeWidth);
+            effect.Parameters["EdgeIntensity"].SetValue(mEdgeIntensity);
+            effect.Parameters["ScreenResolution"].SetValue(new Vector2(mSceneBuffer.Width, mSceneBuffer.Height));
 
-            mVertexBufferShader.CurrentTechnique.Passes[0].Apply();
-
-            mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, renderable.VertexBuffer.VertexCount, 0, renderable.IndexBuffer.IndexCount / 3);
-        }
-
-        static private void DrawWater(RenderableDefinition renderable, bool isOutline)
-        {
-            mDevice.SamplerStates[0] = SamplerState.LinearWrap;
-
-            string techniqueName;
-            if (isOutline)
-            {
-                techniqueName = (renderable.IsSkinned) ? "SkinnedNormalDepthShade" : "NormalDepthShade";
-            }
-            else
-            {
-                techniqueName = (CelShading == CelShaded.Terrain || CelShading == CelShaded.All) ? "CelShade" : "Phong";
-            }
-
-            mVertexBufferShader.CurrentTechnique = mVertexBufferShader.Techniques[techniqueName];
-
-            if (CastingShadows)
-            {
-                mVertexBufferShader.Parameters["ShadowMap"].SetValue(mShadowMap.Buffer);
-            }
-
-            mVertexBufferShader.Parameters["xVisualizeCascades"].SetValue(mShadowMap.VisualizeCascades);
-            mVertexBufferShader.Parameters["xCascadeCount"].SetValue(mShadowMap.CascadeCount);
-            mVertexBufferShader.Parameters["xLightView"].SetValue(mShadowMap.LightView);
-            mVertexBufferShader.Parameters["xLightProjections"].SetValue(mShadowMap.LightProjections);
-            mVertexBufferShader.Parameters["xCascadeBufferBounds"].SetValue(mShadowMap.CascadeBounds);
-            mVertexBufferShader.Parameters["xCascadeColors"].SetValue(mShadowMap.CascadeColors);
-
-            mVertexBufferShader.Parameters["xDirLightDirection"].SetValue(mDirectionalLight.Direction);
-            mVertexBufferShader.Parameters["xDirLightDiffuseColor"].SetValue(mDirectionalLight.DiffuseColor);
-            mVertexBufferShader.Parameters["xDirLightSpecularColor"].SetValue(mDirectionalLight.SpecularColor);
-            mVertexBufferShader.Parameters["xDirLightAmbientColor"].SetValue(mDirectionalLight.AmbientColor);
-
-            mVertexBufferShader.Parameters["xOverlayColor"].SetValue(renderable.OverlayColor);
-            mVertexBufferShader.Parameters["xOverlayColorWeight"].SetValue(renderable.OverlayColorWeight);
-
-            Vector2 animationRate = renderable.AnimationRate;
-            if (renderable.AnimationRate != Vector2.Zero)
-            {
-                animationRate *= mTimeElapsed;
-                animationRate.X %= 1.0f;
-                animationRate.Y %= 1.0f;
-            }
-            mVertexBufferShader.Parameters["xTextureOffset"].SetValue(animationRate);
-
-            mVertexBufferShader.View = mView;
-            mVertexBufferShader.Projection = mProjection;
-
-            mVertexBufferShader.Texture = LookupSprite(renderable.OverlayTextureName);
-
-            mDevice.SetVertexBuffer(renderable.VertexBuffer);
-            mDevice.Indices = renderable.IndexBuffer;
-
-            mVertexBufferShader.CurrentTechnique.Passes[0].Apply();
-
-            mDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, renderable.VertexBuffer.VertexCount, 0, renderable.IndexBuffer.IndexCount / 3);
-        }
-
-        static private void DrawParticles(ParticleDefinition particles)
-        {
-            TexturedParticles particleSystem = LookupParticles(particles.Name);
-
-            particleSystem.SetWorldViewProjectionMatrices(particles.WorldTransform, mView, mProjection);
-            particleSystem.Draw();
-        }
-
-        /// <summary>
-        /// Updates scene buffer with outline.
-        /// </summary>
-        static private void ApplyPostProcessing()
-        {
-            mPostProcessShader.Parameters["EdgeWidth"].SetValue(mEdgeWidth);
-            mPostProcessShader.Parameters["EdgeIntensity"].SetValue(mEdgeIntensity);
-            mPostProcessShader.Parameters["ScreenResolution"].SetValue(new Vector2(mSceneBuffer.Width, mSceneBuffer.Height));
-            mPostProcessShader.Parameters["NormalDepthTexture"].SetValue(mNormalDepthBuffer);
-            mPostProcessShader.Parameters["SceneTexture"].SetValue(mSceneBuffer);
-
-            mPostProcessShader.CurrentTechnique = mPostProcessShader.Techniques["EdgeDetect"];
-
-            mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, mPostProcessShader);
+            mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, effect);
             mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width, mSceneBuffer.Height), Color.White);
             mSpriteBatch.End();
+        }
+
+        static private void CompositeScene()
+        {
+            Effect effect = AssetLibrary.PostProcessShader;
 
             mDevice.SetRenderTarget(mCompositeBuffer);
             mDevice.Clear(Color.CornflowerBlue);
 
-            mPostProcessShader.Parameters["OutlineTexture"].SetValue(mOutlineBuffer);
-            mPostProcessShader.Parameters["SceneTexture"].SetValue(mSceneBuffer);
+            effect.CurrentTechnique = effect.Techniques["Composite"];
 
-            mPostProcessShader.CurrentTechnique = mPostProcessShader.Techniques["Composite"];
+            effect.Parameters["OutlineTexture"].SetValue(mOutlineBuffer);
+            effect.Parameters["SceneTexture"].SetValue(mSceneBuffer);
 
-            mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, mPostProcessShader);
+            mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, effect);
             mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width, mSceneBuffer.Height), Color.White);
+            mSpriteBatch.End();
+
+            mDevice.SetRenderTarget(mOutlineBuffer);
+            mDevice.Clear(Color.Black);
+        }
+
+        static private void PresentDebugBuffers()
+        {
+            mDevice.SetRenderTarget(null);
+            mDevice.Clear(Color.CornflowerBlue);
+
+            Viewport viewport = mOverrideViewport == null ? mDevice.Viewport : (Viewport)mOverrideViewport;
+
+            mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+            mSpriteBatch.Draw(mShadowMap.Buffer, new Rectangle(viewport.X, viewport.Y, viewport.Width / 2, viewport.Height / 2), Color.White);
+            mSpriteBatch.End();
+
+            mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+            mSpriteBatch.Draw(mNormalDepthBuffer, new Rectangle(viewport.X + viewport.Width / 2, viewport.Y, viewport.Width / 2, viewport.Height / 2), Color.White);
+            mSpriteBatch.End();
+
+            mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+            mSpriteBatch.Draw(mOutlineBuffer, new Rectangle(viewport.X, viewport.Y + viewport.Height / 2, viewport.Width / 2, viewport.Height / 2), Color.White);
+            mSpriteBatch.End();
+
+            mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+            mSpriteBatch.Draw(mCompositeBuffer, new Rectangle(viewport.X + viewport.Width / 2, viewport.Y + viewport.Height / 2, viewport.Width / 2, viewport.Height / 2), Color.White);
             mSpriteBatch.End();
         }
 
-        /// <summary>
-        /// Reads tweak file and extracts matrices.
-        /// </summary>
-        /// <param name="tr">Text reader open to tweak file.</param>
-        /// <param name="boneName">Name of bone associated with current matrix.</param>
-        /// <param name="tweakMatrix">Tweak matrix of current bone.</param>
-        static private void ParseTweakFile(TextReader tr, out string boneName, out Matrix tweakMatrix)
+        static private void PresentScene()
         {
-            // Get bone name.
-            boneName = tr.ReadLine();
+            mDevice.SetRenderTarget(null);
+            mDevice.Clear(Color.CornflowerBlue);
 
-            // Get first row of matrix.
-            string[] row1Parts = tr.ReadLine().Split(mDelimeterChars, 4);
+            Viewport viewport = mOverrideViewport == null ? mDevice.Viewport : (Viewport)mOverrideViewport;
 
-            float M11 = float.Parse(row1Parts[0]);
-            float M12 = float.Parse(row1Parts[1]);
-            float M13 = float.Parse(row1Parts[2]);
-            float M14 = float.Parse(row1Parts[3]);
-
-            // Get second row of matrix.
-            string[] row2Parts = tr.ReadLine().Split(mDelimeterChars, 4);
-
-            float M21 = float.Parse(row2Parts[0]);
-            float M22 = float.Parse(row2Parts[1]);
-            float M23 = float.Parse(row2Parts[2]);
-            float M24 = float.Parse(row2Parts[3]);
-
-            // Get third row of matrix.
-            string[] row3Parts = tr.ReadLine().Split(mDelimeterChars, 4);
-
-            float M31 = float.Parse(row3Parts[0]);
-            float M32 = float.Parse(row3Parts[1]);
-            float M33 = float.Parse(row3Parts[2]);
-            float M34 = float.Parse(row3Parts[3]);
-
-            // Get fourth row of matrix.
-            string[] row4Parts = tr.ReadLine().Split(mDelimeterChars, 4);
-
-            float M41 = float.Parse(row4Parts[0]);
-            float M42 = float.Parse(row4Parts[1]);
-            float M43 = float.Parse(row4Parts[2]);
-            float M44 = float.Parse(row4Parts[3]);
-
-            // Skip blank line.
-            tr.ReadLine();
-
-            tweakMatrix = new Matrix(M11, M12, M13, M14, M21, M22, M23, M24, M31, M32, M33, M34, M41, M42, M43, M44);
+            mSpriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
+            mSpriteBatch.Draw(mCompositeBuffer, new Rectangle(viewport.X, viewport.Y, viewport.Width, viewport.Height), Color.White);
+            mSpriteBatch.End();
         }
+                                      
+        #endregion
 
-        static private void BoundVertexBuffer(ref Vector3 min, ref Vector3 max, VertexBuffer vertexBuffer, int vertexCount)
+        #region Scene Bounding Box Helper Methods
+  
+        static private void UpdateSceneExtents(RendererBase.RendererParameters instance)
         {
-            int vertexStride = vertexBuffer.VertexDeclaration.VertexStride;
-            int vertexBufferSize = vertexCount * vertexStride;
-
-            float[] vertexData = new float[vertexBufferSize / sizeof(float)];
-            vertexBuffer.GetData<float>(vertexData);
-
-            for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
+            if (!(instance is TerrainRenderer.TerrainParameters))
             {
-                Vector3 localPosition = new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]);
+                mMinSceneExtent = Vector3.Min(mMinSceneExtent, instance.BoundingBox.Min);
+                mMaxSceneExtent = Vector3.Max(mMaxSceneExtent, instance.BoundingBox.Max);
 
-                min = Vector3.Min(min, localPosition);
-                max = Vector3.Max(max, localPosition);
+                return;
             }
-        }
-
-        static private void UpdateSceneExtents(BoundingBox boundingBox, Matrix worldTransform)
-        {
-            mMinSceneExtent = Vector3.Min(mMinSceneExtent, boundingBox.Min);
-            mMaxSceneExtent = Vector3.Max(mMaxSceneExtent, boundingBox.Max);
+                
+            foreach (BoundingBox boundingBox in (instance as TerrainRenderer.TerrainParameters).BoundingBoxes)
+            {
+                mMinSceneExtent = Vector3.Min(mMinSceneExtent, boundingBox.Min);
+                mMaxSceneExtent = Vector3.Max(mMaxSceneExtent, boundingBox.Max);
+            }
         }
 
         #endregion
     }
 
-    class RenderableComparer : IComparer<RenderableDefinition>
-    {
-        public int Compare(RenderableDefinition x, RenderableDefinition y)
-        {
-            float xDistance = (x.WorldTransform.Translation - GraphicsManager.Camera.Position).LengthSquared();
-            float yDistance = (y.WorldTransform.Translation - GraphicsManager.Camera.Position).LengthSquared();
+    //class RenderableComparer : IComparer<RenderableDefinition>
+    //{
+    //    public int Compare(RenderableDefinition x, RenderableDefinition y)
+    //    {
+    //        float xDistance = (x.WorldTransform.Translation - GraphicsManager.Camera.Position).LengthSquared();
+    //        float yDistance = (y.WorldTransform.Translation - GraphicsManager.Camera.Position).LengthSquared();
 
-            return xDistance.CompareTo(yDistance);
-        }
-    }
+    //        return xDistance.CompareTo(yDistance);
+    //    }
+    //}
 }

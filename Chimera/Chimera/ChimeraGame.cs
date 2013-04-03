@@ -183,7 +183,6 @@ namespace Chimera
         /// </summary>
         protected override void Initialize()
         {
-
             GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
             GraphicsManager.Outlining = GraphicsManager.Outlines.All;
             GraphicsManager.CastingShadows = true;
@@ -208,7 +207,8 @@ namespace Chimera
 
             try
             {
-                GraphicsManager.LoadContent(Content, Graphics.GraphicsDevice, spriteBatch);
+                GraphicsManager.Initialize(GraphicsDevice, spriteBatch);
+                AssetLibrary.LoadContent(Content);
                 CollisionMeshManager.LoadContent(Content);
                 SoundManager.LoadContent(Content);
 
