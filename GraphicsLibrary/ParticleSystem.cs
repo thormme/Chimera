@@ -30,7 +30,7 @@ namespace GraphicsLibrary
 
         public void Render()
         {
-            GraphicsManager.RenderParticles(mTextureName, mWorldTransform);
+            //GraphicsManager.RenderParticles(mTextureName, mWorldTransform);
         }
     }
 }

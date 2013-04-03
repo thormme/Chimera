@@ -59,6 +59,25 @@ Technique TerrainCelShade
 	}
 }
 
+Technique TerrainCelShadeWithShadows
+{
+	Pass
+	{
+		VertexShader = compile vs_3_0 VS();
+		PixelShader  = compile ps_3_0 TerrainCelShadePS();
+	}
+}
+
+Technique TerrainCelShadeWithoutShadows
+
+{
+	Pass
+	{
+		VertexShader = compile vs_3_0 VS();
+		PixelShader  = compile ps_3_0 TerrainCelShadePS();
+	}
+}
+
 Technique TerrainPhong
 {
 	Pass
@@ -82,6 +101,42 @@ Technique CelShade
 	Pass
 	{
 		VertexShader = compile vs_3_0 VS();
+		PixelShader  = compile ps_3_0 CelShadePS();
+	}
+}
+
+Technique CelShadeWithShadows
+{
+	Pass
+	{
+		VertexShader = compile vs_3_0 VS();
+		PixelShader  = compile ps_3_0 CelShadePS();
+	}
+}
+
+Technique CelShadeNoShadows
+{
+	Pass
+	{
+		VertexShader = compile vs_3_0 VS();
+		PixelShader  = compile ps_3_0 CelShadePS();
+	}
+}
+
+Technique SkinnedCelShadeWithShadows
+{
+	Pass
+	{
+		VertexShader = compile vs_3_0 SkinnedVS();
+		PixelShader  = compile ps_3_0 CelShadePS();
+	}
+}
+
+Technique SkinnedCelShadeWithoutShadows
+{
+	Pass
+	{
+		VertexShader = compile vs_3_0 SkinnedVS();
 		PixelShader  = compile ps_3_0 CelShadePS();
 	}
 }

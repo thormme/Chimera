@@ -21,7 +21,7 @@ namespace GraphicsLibrary
             {
                 if (mTexture == null)
                 {
-                    mTexture = GraphicsManager.LookupSprite(mName);
+                    mTexture = AssetLibrary.LookupSprite(mName);
                 }
                 return mTexture.Width;
             }
@@ -32,7 +32,7 @@ namespace GraphicsLibrary
             {
                 if (mTexture == null)
                 {
-                    mTexture = GraphicsManager.LookupSprite(mName);
+                    mTexture = AssetLibrary.LookupSprite(mName);
                 }
                 return mTexture.Height;
             }
@@ -87,7 +87,7 @@ namespace GraphicsLibrary
         /// <param name="blendColorWeight">Percentage of sprite color to come from blendColor</param>
         public void Render(Rectangle screenSpace, Color blendColor, float blendColorWeight)
         {
-            GraphicsManager.RenderSprite(mName, screenSpace, blendColor, blendColorWeight);
+            GraphicsManager.EnqueueSprite(mName, screenSpace, blendColor, blendColorWeight);
         }
     }
 }

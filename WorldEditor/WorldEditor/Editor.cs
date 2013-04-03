@@ -68,7 +68,8 @@ namespace WorldEditor
             // Create a new SpriteBatch, which can be used to draw textures.
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            GraphicsManager.LoadContent(Content, mGraphics.GraphicsDevice, mSpriteBatch);
+            GraphicsManager.Initialize(GraphicsDevice, mSpriteBatch);
+            AssetLibrary.LoadContent(Content);
             mWorldEditor = new WorldEditor(GraphicsDevice.Viewport, mCamera, Content);
 
             Form windowForm = (Form)Form.FromHandle(Window.Handle);

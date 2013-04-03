@@ -273,7 +273,7 @@ namespace GraphicsLibrary
             }
         }
 
-        public void WriteShadowsToBuffer(Queue<RenderableDefinition> renderables)
+        public void WriteShadowsToBuffer(Queue<RendererBase> renderers)
         {
             // Render shadow map for each subfrusta.
             mGraphicsDevice.BlendState = BlendState.Opaque;
@@ -294,101 +294,10 @@ namespace GraphicsLibrary
 
                 mGraphicsDevice.Viewport = cascadeViewport;
 
-                foreach (RenderableDefinition renderable in renderables)
+                foreach (RendererBase renderer in renderers)
                 {
-                    if (renderable.IsSkyBox)
-                    {
-                        continue;
-                    }
-
-                    if (renderable.IsModel)
-                    {
-                        WriteModelShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);
-                    }
-                    else if (!renderable.IsWater)
-                    {
-                        WriteTerrainShadowToBuffer(renderable, mCascadeContainer[iCascadeCount].ProjectionTransform);
-                    }
+                    renderer.RenderAllInstancesShadowMap(LightView, mCascadeContainer[iCascadeCount].ProjectionTransform);
                 }
-            }
-        }
-
-        #endregion
-
-        #region Private Render Helpers
-
-        private void WriteModelShadowToBuffer(RenderableDefinition renderable, Matrix cascadeProjection)
-        {
-            Model model = GraphicsManager.LookupModel(renderable.Name);
-
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (AnimationUtilities.SkinnedEffect effect in mesh.Effects)
-                {
-                    effect.Parameters["xLightView"].SetValue(mLightView);
-                    effect.Parameters["xLightProjection"].SetValue(cascadeProjection);
-
-                    effect.CurrentTechnique = effect.Techniques[renderable.IsSkinned ? "SkinnedShadowCast" : "ShadowCast"];
-
-                    effect.SetBoneTransforms(renderable.BoneTransforms);
-
-                    effect.World = renderable.WorldTransform;
-                }
-
-                mesh.Draw();
-            }
-        }
-
-        private void WriteTerrainShadowToBuffer(RenderableDefinition renderable, Matrix cascadeProjection)
-        {
-            TerrainHeightMap terrain = GraphicsManager.LookupTerrainHeightMap(renderable.Name);
-
-            GraphicsManager.VertexBufferShader.World = renderable.WorldTransform;
-
-            GraphicsManager.VertexBufferShader.Parameters["xLightView"].SetValue(mLightView);
-            GraphicsManager.VertexBufferShader.Parameters["xLightProjection"].SetValue(cascadeProjection);
-
-            GraphicsManager.VertexBufferShader.CurrentTechnique = GraphicsManager.VertexBufferShader.Techniques["ShadowCast"];
-            GraphicsManager.VertexBufferShader.CurrentTechnique.Passes[0].Apply();
-
-            int numCols = GraphicsManager.LookupTerrainHeightMap(renderable.Name).NumChunksHorizontal;
-            int numRows = GraphicsManager.LookupTerrainHeightMap(renderable.Name).NumChunksVertical;
-
-            for (int col = 0; col < numCols; col++)
-            {
-                for (int row = 0; row < numRows; row++)
-                {
-                    VertexBuffer vertexBuffer = terrain.VertexBuffers[row, col];
-                    IndexBuffer indexBuffer = terrain.IndexBuffers[row, col];
-
-                    mGraphicsDevice.SetVertexBuffer(vertexBuffer);
-                    mGraphicsDevice.Indices = indexBuffer;
-
-                    mGraphicsDevice.DrawIndexedPrimitives(
-                        PrimitiveType.TriangleList,
-                        0,
-                        0,
-                        vertexBuffer.VertexCount,
-                        0,
-                        indexBuffer.IndexCount / 3);
-                }
-            }
-
-            for (int side = 0; side < 4; side++)
-            {
-                VertexBuffer vertexBuffer = terrain.EdgeVertexBuffers[side];
-                IndexBuffer indexBuffer = terrain.EdgeIndexBuffers[side];
-
-                mGraphicsDevice.SetVertexBuffer(vertexBuffer);
-                mGraphicsDevice.Indices = indexBuffer;
-
-                mGraphicsDevice.DrawIndexedPrimitives(
-                    PrimitiveType.TriangleList,
-                    0,
-                    0,
-                    vertexBuffer.VertexCount,
-                    0,
-                    indexBuffer.IndexCount / 3);
             }
         }
 

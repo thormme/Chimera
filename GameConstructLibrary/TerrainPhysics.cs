@@ -18,6 +18,11 @@ namespace GameConstructLibrary
     {
         public static CollisionGroup TerrainPhysicsGroup = new CollisionGroup();
 
+        public TerrainRenderable TerrainRenderable
+        {
+            get { return mTerrainRenderable; }
+            set { mTerrainRenderable = value; } 
+        }
         private TerrainRenderable mTerrainRenderable;
 
         /// <summary>
@@ -29,7 +34,7 @@ namespace GameConstructLibrary
         /// <param name="scale">The amount to scale the terrain</param>
         public TerrainPhysics(String terrainName, Vector3 translation, Quaternion orientation, Vector3 scale)
         {
-            float[,] heights = GraphicsManager.LookupTerrainHeightMap(terrainName).GetHeights();
+            float[,] heights = AssetLibrary.LookupTerrainHeightMap(terrainName).GetHeights();
             StaticCollidable = new Terrain(
                 heights,
                 new AffineTransform(scale, orientation, translation - new Vector3(scale.X * .5f * heights.GetLength(0), 0f, scale.Z * .5f * heights.GetLength(1)))

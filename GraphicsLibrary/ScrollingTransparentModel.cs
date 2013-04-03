@@ -34,7 +34,15 @@ namespace GraphicsLibrary
 
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            GraphicsManager.RenderTransparentModel(mModelName, worldTransform, mBoundingBox, overlayColor, overlayColorWeight, ScrollVelocity);
+            TransparentModelRenderer.TransparentModelParameters parameters = new TransparentModelRenderer.TransparentModelParameters();
+            parameters.AnimationOffset = ScrollVelocity;
+            parameters.BoundingBox = BoundingBox;
+            parameters.Name = mModelName;
+            parameters.OverlayColor = overlayColor;
+            parameters.OverlayWeight = overlayColorWeight;
+            parameters.World = worldTransform;
+
+            GraphicsManager.EnqueueTransparentRenderable(parameters);
         }
     }
 }

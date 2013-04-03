@@ -73,8 +73,8 @@ namespace WorldEditor
 
         public void LinkHeightMap()
         {
-            mHeightMap = GraphicsManager.LookupTerrainHeightMap(mName);
-            mTextureMap = GraphicsManager.LookupTerrainTexture(mName);
+            mHeightMap = AssetLibrary.LookupTerrainHeightMap(mName);
+            mTextureMap = AssetLibrary.LookupTerrainTexture(mName);
         }
 
         public void ModifyHeightMap(
@@ -159,7 +159,7 @@ namespace WorldEditor
             UnscaleObjects();
             LevelFileLoader.SaveLevelToFile(fileInfo);
             ScaleObjects();
-            GraphicsManager.UpdateTerrain(fileInfo, ref mName);
+            AssetLibrary.UpdateTerrain(fileInfo, ref mName);
         }
 
         public void Open(FileInfo fileInfo)
@@ -169,7 +169,7 @@ namespace WorldEditor
             mHeightMap = LevelFileLoader.LoadHeightMapFromFile(fileInfo);
             mTextureMap = LevelFileLoader.LoadTextureFromFile(fileInfo);
 
-            GraphicsManager.AddTerrain(fileInfo, mHeightMap, mTextureMap);
+            AssetLibrary.AddTerrain(fileInfo, mHeightMap, mTextureMap);
 
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
@@ -186,12 +186,12 @@ namespace WorldEditor
             mHeightMap = LevelFileLoader.LoadHeightMapFromFile(fileInfo);
             mTextureMap = LevelFileLoader.LoadTextureFromFile(fileInfo);
 
-            GraphicsManager.AddTerrain(fileInfo, mHeightMap, mTextureMap);
+            AssetLibrary.AddTerrain(fileInfo, mHeightMap, mTextureMap);
 
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
             mSkyBox = new SkyBox("overcastSkyBox");
-            mWater = new Water("waterTexture", 10000, new Vector2(2,2));
+            mWater = new Water("waterTexture", 10000);
         }
 
         private void UnscaleObjects()

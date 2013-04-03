@@ -181,7 +181,7 @@ namespace GameConstructLibrary
 
             FileInfo fileInfo = new FileInfo(mapName);
             List<DummyObject> objects = LevelFileLoader.LoadObjectsFromFile(fileInfo);
-            GraphicsManager.AddTerrain(fileInfo, LevelFileLoader.LoadHeightMapFromFile(fileInfo), LevelFileLoader.LoadTextureFromFile(fileInfo));
+            AssetLibrary.AddTerrain(fileInfo, LevelFileLoader.LoadHeightMapFromFile(fileInfo), LevelFileLoader.LoadTextureFromFile(fileInfo));
 
             foreach (DummyObject dummy in objects)
             {

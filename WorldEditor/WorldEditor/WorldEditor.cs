@@ -147,7 +147,7 @@ namespace WorldEditor
 
         public void Draw()
         {
-            GraphicsManager.CursorShape brush = GraphicsManager.CursorShape.NONE;
+            TerrainRenderable.CursorShape brush = TerrainRenderable.CursorShape.NONE;
 
             if (mPlaceable)
             {
@@ -155,20 +155,19 @@ namespace WorldEditor
                 {
                     case EditorForm.EditorMode.HEIGHTMAP:
                         brush = (EditorPane as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK || (EditorPane as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
-                            GraphicsManager.CursorShape.BLOCK : GraphicsManager.CursorShape.CIRCLE;
+                            TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
                         break;
                     case EditorForm.EditorMode.PAINTING:
                         brush = (EditorPane as EditorForm).PaintingBrush == EditorForm.Brushes.BLOCK || (EditorPane as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
-                            GraphicsManager.CursorShape.BLOCK : GraphicsManager.CursorShape.CIRCLE;
+                            TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
                         break;
                 }
 
-                GraphicsManager.CursorPosition = mCursorObject.Position - mCursorObject.Scale;
-                GraphicsManager.CursorInnerRadius = 8.0f * mCursorObject.Scale.X;
-                GraphicsManager.CursorOuterRadius = 9.0f * mCursorObject.Scale.X;
+                mDummyWorld.Terrain.TerrainRenderable.CursorPosition = mCursorObject.Position - mCursorObject.Scale;
+                mDummyWorld.Terrain.TerrainRenderable.CursorInnerRadius = 8.0f * mCursorObject.Scale.X;
+                mDummyWorld.Terrain.TerrainRenderable.CursorOuterRadius = 9.0f * mCursorObject.Scale.X;
+                mDummyWorld.Terrain.TerrainRenderable.DrawCursor = brush;
             }
-
-            GraphicsManager.DrawCursor = brush;
 
             mDummyWorld.Draw();
         }
@@ -210,7 +209,7 @@ namespace WorldEditor
             TextureSelectionPane.UScale.ValueChanged += TextureHandler;
             TextureSelectionPane.VScale.ValueChanged += TextureHandler;
 
-            foreach (var model in GraphicsManager.ModelLibrary)
+            foreach (var model in AssetLibrary.ModelLibrary)
             {
                 DummyObject tempObject = new DummyObject();
                 tempObject.Type = "Chimera.Prop";
@@ -259,7 +258,7 @@ namespace WorldEditor
                 }
             }
 
-            foreach (var texture in GraphicsManager.TextureLibrary)
+            foreach (var texture in AssetLibrary.TextureLibrary)
             {
                 ((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).Items.Add(texture.Key);
             }
@@ -423,7 +422,7 @@ namespace WorldEditor
         private void TextureHandler(object sender, EventArgs e)
         {
             PictureBox pictureBox = (TextureSelectionPane as TextureSelectionForm).TexturePreview as PictureBox;
-            Texture2D texture = GraphicsManager.LookupSprite(TextureSelectionPane.TextureList.SelectedItem.ToString());
+            Texture2D texture = AssetLibrary.LookupSprite(TextureSelectionPane.TextureList.SelectedItem.ToString());
             RenderTarget2D transformedTexture = new RenderTarget2D(GraphicsManager.Device, pictureBox.Width, pictureBox.Height);
 
             GraphicsManager.Device.SetRenderTarget(transformedTexture);
