@@ -36,13 +36,11 @@ namespace Chimera
         /// </param>
         /// <param name="partType">The part required to pass the level.</param>
         public GoalPoint(Vector3 position, Quaternion orientation, Vector3 scale, string nextLevel, Type partType)
-            : base(new ScrollingTransparentModel("tractorBeam"), new Cylinder(position, 1f, scale.Length() * 7.0f))
+            : base(new ScrollingTransparentModel("tractorBeam", new Vector2(0.1f, 0.0f)), new Cylinder(position, 1f, scale.Length() * 7.0f))
         {
             mNextLevel = nextLevel;
             PartType = partType;
             Scale = new Vector3(1.0f, 5.0f, 1.0f);
-            (mRenderable as ScrollingTransparentModel).HorizontalVelocity = 0.1f;
-            (mRenderable as ScrollingTransparentModel).VerticalVelocity = 0.0f;
         }
 
         /// <summary>

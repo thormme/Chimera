@@ -337,9 +337,7 @@ namespace Chimera
 
             SpawnOrigin = position;
 
-            mSuckModel = new ScrollingTransparentModel("suckCone");
-            mSuckModel.HorizontalVelocity = 1.0f;
-            mSuckModel.VerticalVelocity = 1.0f;
+            mSuckModel = new ScrollingTransparentModel("suckCone", new Vector2(1.0f, 1.0f));
 
             for (int i = 0; i < NumParts; i++)
             {
@@ -581,8 +579,7 @@ namespace Chimera
                 rotationIncrease = partStealFraction * 1.5f;
             }
 
-            mSuckModel.VerticalVelocity = 0.5f + rotationIncrease;
-            mSuckModel.HorizontalVelocity = mSuckModel.VerticalVelocity;
+            mSuckModel.AnimationRate *= 1.5f;
 
             if (Controller is PlayerController)
             {

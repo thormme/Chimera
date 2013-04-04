@@ -36,11 +36,8 @@ namespace Chimera
 
             mRedCheckpoint = new InanimateModel("checkpoint_red");
             mBlueCheckpoint = new InanimateModel("checkpoint_blue");
-            mRedLight = new ScrollingTransparentModel("checkpoint_light_red");
-            mBlueLight = new ScrollingTransparentModel("checkpoint_light_blue");
-
-            mRedLight.HorizontalVelocity = 0.1f;
-            mBlueLight.HorizontalVelocity = 0.1f;
+            mRedLight = new ScrollingTransparentModel("checkpoint_light_red", new Vector2(0.1f, 0.0f));
+            mBlueLight = new ScrollingTransparentModel("checkpoint_light_blue", new Vector2(0.1f, 0.0f));
         }
 
         /// <summary>
