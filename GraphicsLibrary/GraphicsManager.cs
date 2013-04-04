@@ -100,7 +100,7 @@ namespace GraphicsLibrary
 
         static private float mTimeElapsed = 0.0f;
 
-        static private float mEdgeWidth = 1.5f;
+        static private float mEdgeWidth = 1.0f;
         static private float mEdgeIntensity = 1.0f;
         
         #endregion
@@ -481,9 +481,6 @@ namespace GraphicsLibrary
             mSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, effect);
             mSpriteBatch.Draw(mSceneBuffer, new Rectangle(0, 0, mSceneBuffer.Width, mSceneBuffer.Height), Color.White);
             mSpriteBatch.End();
-
-            mDevice.SetRenderTarget(mOutlineBuffer);
-            mDevice.Clear(Color.Black);
         }
 
         static private void PresentDebugBuffers()

@@ -12,12 +12,16 @@ float EdgeWidth = 1;
 float EdgeIntensity = 1;
 
 // Epsilon values for face normals.
-float NormalThreshold = 0.5;
+float NormalThreshold = 0.7;
 float DepthThreshold = 0.1;
 
 // How dark the edges get in response to changes in data.
 float NormalSensitivity = 1;
 float DepthSensitivity = 10;
+
+// Given 3x3 sobel kernels.
+const float SobelXKernel[9] = { -1, 0, 1, -2, 0, 2,  -1,  0, 1 };
+const float SobelYKernel[9] = { 1, 2,  1, 0, 0,  0, -1, -2, -1 };
 
 // Resolution of scene rendered to texture.
 float2 ScreenResolution;
@@ -33,55 +37,50 @@ DECLARE_TEXTURE(OutlineTexture, 2);
 
 float4 EdgeDetectPS(float2 texCoord : TEXCOORD0) : COLOR0
 {
-	// Look up the original color from the main scene.
-    float3 scene = SAMPLE_TEXTURE(SceneTexture, texCoord);
-
-	// Grab four values adjacent to texCoord and offset along the four diagonals.
+	// Grab all values adjacent to texCoord and offset along each cardinal direction.
 	float2 edgeOffset = EdgeWidth / ScreenResolution;
         
-    float4 n1 = SAMPLE_TEXTURE(NormalDepthTexture, texCoord + float2(-1, -1) * edgeOffset);
-    float4 n2 = SAMPLE_TEXTURE(NormalDepthTexture, texCoord + float2( 1,  1) * edgeOffset);
-    float4 n3 = SAMPLE_TEXTURE(NormalDepthTexture, texCoord + float2(-1,  1) * edgeOffset);
-    float4 n4 = SAMPLE_TEXTURE(NormalDepthTexture, texCoord + float2( 1, -1) * edgeOffset);
+	float4 pixels[9];
 
-    // Work out how much the normal and depth values are changing.
-    float4 diagonalDelta = abs(n1 - n2) + abs(n3 - n4);
-
-    float normalDelta = dot(diagonalDelta.xyz, 1);
-    float depthDelta = diagonalDelta.w;
-        
-    // Filter out very small changes, in order to produce nice clean results.
-    normalDelta = saturate((normalDelta - NormalThreshold) * NormalSensitivity);
-    depthDelta = saturate((depthDelta - DepthThreshold) * DepthSensitivity);
-
-    // Does this pixel lie on an edge?
-    float edgeAmount = saturate(normalDelta + depthDelta) * EdgeIntensity;
-        
-    // Apply the edge detection result to the main scene color.
-    scene *= (1 - edgeAmount);
-
-	if (edgeAmount < 0.25f)
+	for (int row = -1; row <= 1; row++)
 	{
-		edgeAmount = 0.0f;
+		for (int col = -1; col <= 1; col++)
+		{
+			pixels[(col + 1) + (row + 1) * 3] = SAMPLE_TEXTURE(NormalDepthTexture, texCoord + float2(col, row) * edgeOffset);
+		}
 	}
 
-	return float4(edgeAmount, edgeAmount, edgeAmount, 1.0);
+	float4 sobelXGradient = float4(0,0,0,0);
+	float4 sobelYGradient = float4(0,0,0,0);
+	for (int i = 0; i < 9; i++)
+	{
+		sobelXGradient += pixels[i] * SobelXKernel[i];
+		sobelYGradient += pixels[i] * SobelYKernel[i];
+	}
+
+	float depthXGradient = sobelXGradient.w;
+	float depthYGradient = sobelYGradient.w;
+
+	float normalGradient = length(sobelXGradient.rgb) + length(sobelYGradient.rgb);
+	float depthGradient = sqrt(depthXGradient * depthXGradient + depthYGradient * depthYGradient);
+
+    // Filter out very small changes, in order to produce nice clean results.
+    normalGradient = saturate((normalGradient - NormalThreshold) * NormalSensitivity);
+    depthGradient = saturate((depthGradient - DepthThreshold) * DepthSensitivity);
+
+    // Does this pixel lie on an edge?
+    float edgeAmount = saturate(normalGradient + depthGradient) * EdgeIntensity;
+
+	return float4(edgeAmount, edgeAmount, edgeAmount, 1);
 }
 
 float4 CompositePS(float2 texCoord : TEXCOORD0) : COLOR0
 {
-	float3 sceneColor = SAMPLE_TEXTURE(SceneTexture, texCoord);
-
 	float3 outline = SAMPLE_TEXTURE(OutlineTexture, texCoord);
 
-	return float4(sceneColor * (1.0 - outline.r), 1.0);
+	float3 sceneColor = SAMPLE_TEXTURE(SceneTexture, texCoord);
 
-	if (outline.r == 0.0)
-	{
-		return float4(sceneColor, 1.0);
-	}
-	
-	return float4(sceneColor * 1.45, 1.0);
+	return float4(sceneColor * (1.0 - 0.75 * outline.r), 1.0);
 }
 
 technique EdgeDetect

@@ -21,8 +21,13 @@ NormalDepthVSOutput NormalDepthVS(VSInput vin)
 	float3 worldNormal = normalize(mul(vin.Normal, WorldInverseTranspose));
 
 	// Output color holds the normalized normal vector in rgb and the normalized depth in alpha.
-	output.Color.rgb = (worldNormal + 1) / 2;
+	output.Color.rgb = worldNormal;
 	output.Color.a   = output.PositionPS.z / output.PositionPS.w;
+
+	if (output.Color.a < 1)
+	{
+		output.Color.a = 1;
+	}
 
 	return output;
 }
