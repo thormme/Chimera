@@ -98,6 +98,7 @@ namespace GraphicsLibrary
 
             mEffect.Parameters["xOverlayColor"].SetValue(skyBoxInstance.OverlayColor.ToVector3());
             mEffect.Parameters["xOverlayColorWeight"].SetValue(skyBoxInstance.OverlayWeight);
+            mEffect.Parameters["xTextureOffset"].SetValue(skyBoxInstance.TextureAnimationOffset);
             
             mEffect.Texture = AssetLibrary.LookupSprite(skyBoxInstance.TextureName);
 

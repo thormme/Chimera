@@ -11,8 +11,9 @@ namespace GraphicsLibrary
     {
         #region Constants
 
-        const float SEA_WIDTH  = 800.0f;
-        const float SEA_HEIGHT = 800.0f;
+        const float SEA_WIDTH  = 6000.0f;
+        const float SEA_HEIGHT = 6000.0f;
+        const float TEXTURE_TILE_SCALE = 80.0f;
 
         #endregion
 
@@ -35,7 +36,6 @@ namespace GraphicsLibrary
         {
             public string TextureName { get; set; }
             public float SeaLevel { get; set; }
-            public Vector2 AnimationOffset { get; set; }
         }
 
         #endregion
@@ -132,7 +132,7 @@ namespace GraphicsLibrary
 
             mEffect.Parameters["xOverlayColor"].SetValue(waterInstance.OverlayColor.ToVector3());
             mEffect.Parameters["xOverlayColorWeight"].SetValue(waterInstance.OverlayWeight);
-            mEffect.Parameters["xTextureOffset"].SetValue(waterInstance.AnimationOffset);
+            mEffect.Parameters["xTextureOffset"].SetValue(waterInstance.TextureAnimationOffset);
             mEffect.Texture = AssetLibrary.LookupSprite(waterInstance.TextureName);
 
             GraphicsManager.Device.SetVertexBuffer(mVertexBuffer);
@@ -163,7 +163,7 @@ namespace GraphicsLibrary
                     VertexPositionNormalTexture vertex = new VertexPositionNormalTexture();
                     vertex.Position = new Vector3(-SEA_WIDTH / 2.0f + (float)x * quadWidth, 1.0f, -SEA_HEIGHT / 2.0f + (float)y * quadHeight);
                     vertex.Normal = Vector3.Up;
-                    vertex.TextureCoordinate = new Vector2((float)x / quadResolution.X * 80.0f, (float)y / (float)quadResolution.Y * 80.0f);
+                    vertex.TextureCoordinate = new Vector2((float)x / quadResolution.X * TEXTURE_TILE_SCALE, (float)y / (float)quadResolution.Y * TEXTURE_TILE_SCALE);
 
                     mVertices[x + y * (int)mResolution.X] = vertex;
                 }

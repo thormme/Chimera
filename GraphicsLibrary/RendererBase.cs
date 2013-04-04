@@ -25,6 +25,7 @@ namespace GraphicsLibrary
             public BoundingBox BoundingBox { get; set; }
             public Color OverlayColor { get; set; }
             public float OverlayWeight { get; set; }
+            public Vector2 TextureAnimationOffset { get; set; }
         }
 
         #endregion

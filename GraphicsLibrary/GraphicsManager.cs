@@ -96,15 +96,6 @@ namespace GraphicsLibrary
 
         #endregion
 
-        #region Miscellaneous Visual Effect variables
-
-        static private float mTimeElapsed = 0.0f;
-
-        static private float mEdgeWidth = 1.0f;
-        static private float mEdgeIntensity = 1.0f;
-        
-        #endregion
-
         #region Configuration Variables And Properties
 
         public enum CelShaded { All, Models, AnimateModels, Terrain, None };
@@ -115,6 +106,9 @@ namespace GraphicsLibrary
         static private bool mCastingShadows = true;
         static private bool mDebugVisualization = false;
         static private bool mDrawBoundingBoxes = false;
+
+        static private float mEdgeWidth = 1.0f;
+        static private float mEdgeIntensity = 1.0f;
 
         /// <summary>
         /// Sets the render state to Cel Shading or Phong shading.
@@ -180,8 +174,6 @@ namespace GraphicsLibrary
         /// <param name="camera">View space camera.</param>
         static public void Update(ICamera camera, GameTime gameTime)
         {
-            mTimeElapsed = (float)gameTime.TotalGameTime.TotalSeconds;
-
             if (mBirdsEyeViewCamera == null)
             {
                 mCamera = camera;
@@ -216,7 +208,6 @@ namespace GraphicsLibrary
             }
             mTransparentRenderQueue.Clear();
 
-            //mParticleQueue.Clear();
             mCanRender = true;
         }
 

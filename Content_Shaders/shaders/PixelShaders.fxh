@@ -147,7 +147,7 @@ sampler NoShade_Sampler = sampler_state
 
 float4 CelShadePS(VSOutput pin) : SV_Target0
 {
-	float4 color = SAMPLE_TEXTURE(Texture, pin.TexCoord);
+	float4 color = SAMPLE_TEXTURE(Texture, pin.TexCoord + xTextureOffset);
 
 	return CelShadePSHelper(pin, color);
 }
@@ -159,14 +159,14 @@ float4 TerrainCelShadePS(VSOutput pin) : SV_Target0
 		return float4(0, 1, 0, 1);
 	}
 
-	float4 color = CompositeTerrainTexture(pin.TexCoord);
+	float4 color = CompositeTerrainTexture(pin.TexCoord + xTextureOffset);
 
 	return CelShadePSHelper(pin, color);
 }
 
 float4 PhongPS(VSOutput pin) : SV_Target0
 {
-	float4 color = SAMPLE_TEXTURE(Texture, pin.TexCoord);
+	float4 color = SAMPLE_TEXTURE(Texture, pin.TexCoord + xTextureOffset);
 		
 	return PhongPSHelper(pin, color);
 }
@@ -178,7 +178,7 @@ float4 TerrainPhongPS(VSOutput pin) : SV_Target0
 		return float4(0, 1, 0, 1);
 	}
 
-	float4 color = CompositeTerrainTexture(pin.TexCoord);
+	float4 color = CompositeTerrainTexture(pin.TexCoord + xTextureOffset);
 
 	return PhongPSHelper(pin, color);
 }
@@ -195,7 +195,7 @@ float4 NormalDepthPS(float4 color : COLOR0) : COLOR0
 
 float4 NoShadePS(VSOutput pin) : SV_Target0
 {
-	float4 color = tex2D(NoShade_Sampler, pin.TexCoord);
+	float4 color = tex2D(NoShade_Sampler, pin.TexCoord + xTextureOffset);
 
 	float textureWeight = 1.0f - xOverlayColorWeight;
 	color.rgb *= textureWeight;

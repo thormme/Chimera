@@ -136,6 +136,7 @@ namespace GraphicsLibrary
 
             mEffect.Parameters["xOverlayColor"].SetValue(instance.OverlayColor.ToVector3());
             mEffect.Parameters["xOverlayColorWeight"].SetValue(instance.OverlayWeight);
+            mEffect.Parameters["xTextureOffset"].SetValue(instance.TextureAnimationOffset);
 
             mEffect.Parameters["xDrawCursor"].SetValue((int)terrainInstance.DrawCursor);
 

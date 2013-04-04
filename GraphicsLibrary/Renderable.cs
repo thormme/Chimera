@@ -21,6 +21,13 @@ namespace GraphicsLibrary
         }
         protected BoundingBox mBoundingBox;
 
+        protected float mElapsedTime = 0.0f;
+
+        public void Update(GameTime gameTime)
+        {
+            mElapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+
         /// <summary>
         /// Draws the IRenderable object at worldPosition using default scale and orientation.
         /// </summary>

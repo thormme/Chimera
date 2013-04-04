@@ -111,6 +111,7 @@ namespace GraphicsLibrary
 
                     effect.Parameters["xOverlayColor"].SetValue(instance.OverlayColor.ToVector3());
                     effect.Parameters["xOverlayColorWeight"].SetValue(instance.OverlayWeight);
+                    effect.Parameters["xTextureOffset"].SetValue(instance.TextureAnimationOffset);
 
                     effectConfigurer(effect, instance, optionalParameters);
                 }

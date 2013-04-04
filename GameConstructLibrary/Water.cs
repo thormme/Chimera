@@ -62,20 +62,21 @@ namespace GameConstructLibrary
 
         public Water(string waterTexture, float seaLevel)
         {
-            mModel = new WaterRenderable(waterTexture, seaLevel);
+            mModel = new WaterRenderable(waterTexture, new Vector2(0.0f, 0.1f), seaLevel);
 
             Position = new Vector3(1, 1, 1);
             Scale = new Vector3(1);
             XNAOrientationMatrix = Matrix.Identity;
         }
 
+        public void Update(GameTime gameTime)
+        {
+            mModel.Update(gameTime);
+        }
+
         public void Render()
         {
             mModel.Render(XNAOrientationMatrix);
-        }
-
-        public void Update(GameTime gameTime)
-        {
         }
     }
 }

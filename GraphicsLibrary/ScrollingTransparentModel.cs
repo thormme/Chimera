@@ -8,26 +8,15 @@ namespace GraphicsLibrary
     {
         private string mModelName;
 
-        public float HorizontalVelocity
+        public Vector2 AnimationRate
         {
-            get { return mScrollVelocity.X; }
-            set { mScrollVelocity.X = value; }
+            get { return mAnimationRate; }
+            set { mAnimationRate = value; }
         }
 
-        public float VerticalVelocity
-        {
-            get { return mScrollVelocity.Y; }
-            set { mScrollVelocity.Y = value; }
-        }
+        private Vector2 mAnimationRate = Vector2.Zero;
 
-        public Vector2 ScrollVelocity
-        {
-            get { return mScrollVelocity; }
-            set { mScrollVelocity = value; }
-        }
-        private Vector2 mScrollVelocity = Vector2.Zero;
-
-        public ScrollingTransparentModel(string modelName)
+        public ScrollingTransparentModel(string modelName, Vector2 animationRate)
         {
             mModelName = modelName;
         }
@@ -35,7 +24,7 @@ namespace GraphicsLibrary
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
             TransparentModelRenderer.TransparentModelParameters parameters = new TransparentModelRenderer.TransparentModelParameters();
-            parameters.AnimationOffset = ScrollVelocity;
+            parameters.AnimationOffset = new Vector2((mAnimationRate.X * mElapsedTime) % 1.0f, (mAnimationRate.Y * mElapsedTime) % 1.0f);
             parameters.BoundingBox = BoundingBox;
             parameters.Name = mModelName;
             parameters.OverlayColor = overlayColor;

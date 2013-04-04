@@ -192,7 +192,7 @@ namespace WorldEditor
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
             mSkyBox = new SkyBox("overcastSkyBox");
-            mWater = new Water("waterTexture", 10000);
+            mWater = new Water("waterTexture", 100);
         }
 
         private void UnscaleObjects()
@@ -222,7 +222,7 @@ namespace WorldEditor
 
             if (mWater != null)
             {
-                mWater.SeaLevel = 36000;
+                mWater.Update(gameTime);
             }
 
             if (mDummies != null)

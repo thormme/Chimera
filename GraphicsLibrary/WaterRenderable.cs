@@ -23,25 +23,33 @@ namespace GraphicsLibrary
             set { mTextureName = value; }
         }
 
+        public Vector2 AnimationRate
+        {
+            get { return mAnimationRate; }
+            set { mAnimationRate = value; }
+        }
+
         #endregion
 
         #region Private Variables
 
         private string mTextureName;
         private float mSeaLevel;
+        private Vector2 mAnimationRate;
 
         #endregion
 
-        public WaterRenderable(string textureName, float seaLevel)
+        public WaterRenderable(string textureName, Vector2 animationRate, float seaLevel)
         {
+            mAnimationRate = animationRate;
             mSeaLevel = seaLevel;
             mTextureName = textureName;
         }
-
+        
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
             WaterRenderer.WaterParameters parameters = new WaterRenderer.WaterParameters();
-            parameters.AnimationOffset = Vector2.Zero;
+            parameters.TextureAnimationOffset = new Vector2((mAnimationRate.X * mElapsedTime) % 1.0f, (mAnimationRate.Y * mElapsedTime) % 1.0f);
             parameters.Name = "WATER_RENDERER";
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
