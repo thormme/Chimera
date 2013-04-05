@@ -337,7 +337,7 @@ namespace Chimera
 
             SpawnOrigin = position;
 
-            mSuckModel = new ScrollingTransparentModel("suckCone", new Vector2(1.0f, 1.0f));
+            mSuckModel = new ScrollingTransparentModel("suckCone", new Vector2(0.5f, 0.5f));
 
             for (int i = 0; i < NumParts; i++)
             {
@@ -560,10 +560,7 @@ namespace Chimera
         /// <param name="gameTime">Time elapsed since last frame.</param>
         public override void Update(GameTime gameTime)
         {
-            //if (mHackStop)
-            //{
-            //    return;
-            //}
+            mSuckModel.Update(gameTime);
 
             if ((World as GameWorld).Goal != null)
             {
@@ -579,7 +576,7 @@ namespace Chimera
                 rotationIncrease = partStealFraction * 1.5f;
             }
 
-            mSuckModel.AnimationRate *= 1.5f;
+            //mSuckModel.AnimationRate *= 1.5f;
 
             if (Controller is PlayerController)
             {

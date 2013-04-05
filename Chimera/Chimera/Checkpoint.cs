@@ -73,6 +73,11 @@ namespace Chimera
             }
         }
 
+        public void Update(GameTime gameTime)
+        {
+            mRenderable.Update(gameTime);
+        }
+
         public override void  Render()
         {
             BoundingBox scaledBoundingBox = new BoundingBox(Entity.CollisionInformation.BoundingBox.Min, Vector3.Transform(Entity.CollisionInformation.BoundingBox.Max, Matrix.CreateScale(1, 6, 1)));

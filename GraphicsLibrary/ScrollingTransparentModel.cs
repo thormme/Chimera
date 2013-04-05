@@ -19,6 +19,7 @@ namespace GraphicsLibrary
         public ScrollingTransparentModel(string modelName, Vector2 animationRate)
         {
             mModelName = modelName;
+            mAnimationRate = animationRate;
         }
 
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)

@@ -95,6 +95,11 @@ namespace Chimera
             }
         }
 
+        public void Update(GameTime gameTime)
+        {
+            mRenderable.Update(gameTime);
+        }
+
         public override void Render()
         {
             mRenderable.BoundingBox = new BoundingBox(
