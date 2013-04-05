@@ -101,7 +101,6 @@ namespace WorldEditor
                 {
                     Console.WriteLine(castResult.Item2.Model);
                 }
-                Console.WriteLine(result.Location);
                 return result.Location;
             }
             else
