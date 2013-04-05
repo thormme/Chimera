@@ -281,11 +281,18 @@ namespace WorldEditor
             }
         }
 
-        public Tuple<Vector3, DummyObject> RayCast(GraphicsDevice graphics, Ray ray)
+        /// <summary>
+        /// Gets the DummyObject associated with a particular ID.
+        /// </summary>
+        /// <param name="objectID">The ID.</param>
+        /// <returns>
+        /// The DummyObject with the ID.
+        /// null if none was found.
+        /// </returns>
+        public DummyObject GetDummyObjectFromID(UInt32 objectID)
         {
-            uint objectID = GraphicsManager.GetPickingObject(ray);
-
             DummyObject selectedObject = null;
+            // TODO: Use some structure to efficiencize.
             foreach (DummyObject dummy in mDummies)
             {
                 if (dummy.ObjectID == objectID)
@@ -294,8 +301,34 @@ namespace WorldEditor
                     break;
                 }
             }
+            return selectedObject;
+        }
 
-            return new Tuple<Vector3, DummyObject>(ray.Position + ray.Direction * 0, selectedObject);
+        /// <summary>
+        /// Find the position and object in a ray.
+        /// </summary>
+        /// <param name="ray">The ray.</param>
+        /// <param name="maximumDistance">The maximum distance to look from the ray origin.</param>
+        /// <param name="castResult">Tuple containing the rayHit result and the DummyObject if any (can be null).</param>
+        /// <returns>Whether the ray hit anything.</returns>
+        public bool RayCast(Ray ray, float maximumDistance, out Tuple<RayHit, DummyObject> castResult)
+        {
+            // Fill out default failed hit data
+            castResult = new Tuple<RayHit, DummyObject>(new RayHit(), null);
+
+            DummyObject selectedObject = GetDummyObjectFromID(GraphicsManager.GetPickingObject(ray));
+            RayHit rayHit = new RayHit();
+
+            if (selectedObject == null || !selectedObject.RayCast(ray, maximumDistance, out rayHit))
+            {
+                if (!Terrain.StaticCollidable.RayCast(ray, maximumDistance, out rayHit))
+                {
+                    return false;
+                }
+            }
+
+            castResult = new Tuple<RayHit, DummyObject>(rayHit, selectedObject);
+            return true;
         }
 
         public void Draw()

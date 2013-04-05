@@ -70,6 +70,7 @@ namespace WorldEditor
 
             GraphicsManager.Initialize(GraphicsDevice, mSpriteBatch);
             AssetLibrary.LoadContent(Content);
+            CollisionMeshManager.LoadContent(Content);
             mWorldEditor = new WorldEditor(GraphicsDevice, mCamera, Content);
 
             Form windowForm = (Form)Form.FromHandle(Window.Handle);

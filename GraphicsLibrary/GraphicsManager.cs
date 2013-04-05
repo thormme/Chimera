@@ -246,6 +246,11 @@ namespace GraphicsLibrary
             mCanRender = false;
         }
 
+        /// <summary>
+        /// Return the ID of the nearest object intersecting a ray.
+        /// </summary>
+        /// <param name="ray">The ray to check for intersections with.</param>
+        /// <returns>The ID of the nearest intersecting object. 0 if none found.</returns>
         static public UInt32 GetPickingObject(Ray ray)
         {
             // Set graphics device to render to texture
@@ -278,7 +283,7 @@ namespace GraphicsLibrary
 
             Color[] depthColor = new Color[1];
             pickingBuffer.GetData(depthColor);
-            return depthColor[0].PackedValue >> 8;
+            return (UInt32)(depthColor[0].R << 16) + (UInt32)(depthColor[0].G << 8) + (UInt32)(depthColor[0].B);
         }
 
         #endregion

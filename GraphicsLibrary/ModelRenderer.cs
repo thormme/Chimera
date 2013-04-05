@@ -43,7 +43,8 @@ namespace GraphicsLibrary
 
             effect.CurrentTechnique = effect.Techniques["PickingShade"];
 
-            effect.Parameters["xPickingIndex"].SetValue(objectID << 8 + 255);
+            Vector4 indexColor = new Vector4((float)(objectID << 8 >> 24) / 255, (float)(objectID << 16 >> 24) / 255, (float)(objectID << 24 >> 24) / 255, 1f);
+            effect.Parameters["xPickingIndex"].SetValue(indexColor);
         }
 
         protected override void ShadowMapConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)

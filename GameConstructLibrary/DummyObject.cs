@@ -13,6 +13,7 @@ using BEPUphysics.Entities.Prefabs;
 using BEPUphysics.CollisionShapes;
 using BEPUphysics.EntityStateManagement;
 using BEPUphysics.CollisionShapes.ConvexShapes;
+using BEPUphysics.Collidables;
 
 namespace GameConstructLibrary
 {
@@ -20,7 +21,19 @@ namespace GameConstructLibrary
     {
         private static UInt32 mNextObjectID = 1;
 
-        public string Type { get; set; }
+        private string mType { get; set; }
+        public string Type
+        {
+            get
+            {
+                return mType;
+            }
+            set
+            {
+                mType = value;
+                ParameterChanged();
+            }
+        }
         private string mModel { get; set; }
         public string Model
         {
@@ -33,16 +46,117 @@ namespace GameConstructLibrary
                 mDrawableModel = new InanimateModel(value);
                 mDrawableModel.ObjectID = mNextObjectID++;
                 mModel = value;
+                ParameterChanged();
             }
         }
-        public string[] Parameters { get; set; }
-        public Vector3 Position { get; set; }
-        public Vector3 YawPitchRoll { get; set; }
-        public Vector3 Scale { get; set; }
-        public Vector3 RotationAxis { get; set; }
-        public float RotationAngle { get; set; }
-        public float Height { get; set; }
-        public bool Floating { get; set; }
+        public string[] mParameters { get; set; }
+        public string[] Parameters
+        {
+            get
+            {
+                return mParameters;
+            }
+            set
+            {
+                mParameters = value;
+                ParameterChanged();
+            }
+        }
+        public Vector3 mPosition { get; set; }
+        public Vector3 Position
+        {
+            get
+            {
+                return mPosition;
+            }
+            set
+            {
+                bool changed = (Position - value).LengthSquared() > .0001;
+                mPosition = value;
+                if (changed)
+                {
+                    ParameterChanged();
+                }
+            }
+        }
+        public Vector3 mYawPitchRoll { get; set; }
+        public Vector3 YawPitchRoll
+        {
+            get
+            {
+                return mYawPitchRoll;
+            }
+            set
+            {
+                mYawPitchRoll = value;
+                ParameterChanged();
+            }
+        }
+        public Vector3 mScale { get; set; }
+        public Vector3 Scale
+        {
+            get
+            {
+                return mScale;
+            }
+            set
+            {
+                mScale = value;
+                ParameterChanged();
+            }
+        }
+        public Vector3 mRotationAxis { get; set; }
+        public Vector3 RotationAxis
+        {
+            get
+            {
+                return mRotationAxis;
+            }
+            set
+            {
+                mRotationAxis = value;
+                ParameterChanged();
+            }
+        }
+        public float mRotationAngle { get; set; }
+        public float RotationAngle
+        {
+            get
+            {
+                return mRotationAngle;
+            }
+            set
+            {
+                mRotationAngle = value;
+                ParameterChanged();
+            }
+        }
+        public float mHeight { get; set; }
+        public float Height
+        {
+            get
+            {
+                return mHeight;
+            }
+            set
+            {
+                mHeight = value;
+                ParameterChanged();
+            }
+        }
+        public bool mFloating { get; set; }
+        public bool Floating
+        {
+            get
+            {
+                return mFloating;
+            }
+            set
+            {
+                mFloating = value;
+                ParameterChanged();
+            }
+        }
 
         [XmlIgnore]
         public InanimateModel mDrawableModel { get; set; }
@@ -52,6 +166,27 @@ namespace GameConstructLibrary
             get
             {
                 return mDrawableModel.ObjectID;
+            }
+        }
+        [XmlIgnore]
+        private StaticMesh mPhysicsStaticMesh;
+        [XmlIgnore]
+        private StaticMesh mPhysicsMesh
+        {
+            get
+            {
+                if (mPhysicsStaticMesh == null)
+                {
+                    Vector3[] vertices;
+                    int[] indices;
+                    CollisionMeshManager.LookupMesh(Model, out vertices, out indices);
+
+                    mPhysicsStaticMesh = new StaticMesh(
+                        vertices,
+                        indices,
+                        new AffineTransform(Scale, Quaternion.CreateFromYawPitchRoll(YawPitchRoll.X, YawPitchRoll.Y, YawPitchRoll.Z), Position));
+                }
+                return mPhysicsStaticMesh;
             }
         }
 
@@ -70,6 +205,16 @@ namespace GameConstructLibrary
             Scale = copy.Scale;
             Height = copy.Height;
             Floating = copy.Floating;
+        }
+
+        private void ParameterChanged()
+        {
+            mPhysicsStaticMesh = null;
+        }
+
+        public bool RayCast(Ray ray, float maximumLength, out RayHit rayHit)
+        {
+            return mPhysicsMesh.RayCast(ray, maximumLength, out rayHit);
         }
 
         public void Draw()
