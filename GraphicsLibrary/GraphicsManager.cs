@@ -9,6 +9,7 @@ using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Core;
 using DPSF;
+using Utility;
 
 namespace GraphicsLibrary
 {
@@ -243,6 +244,39 @@ namespace GraphicsLibrary
             RenderGUI();
 
             mCanRender = false;
+        }
+
+        static public int GetPickingObject(Ray ray)
+        {
+            // Set graphics device to render to texture
+            RenderTarget2D depthTarget = new RenderTarget2D(
+                mDevice,
+                1,
+                1,
+                false,
+                mDevice.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24);
+
+            mDevice.SetRenderTarget(depthTarget);
+            mDevice.Clear(Color.Transparent);
+
+            RasterizerState cull = new RasterizerState();
+            cull.CullMode = CullMode.CullCounterClockwiseFace;
+
+            mDevice.RasterizerState = cull;
+            mDevice.BlendState = BlendState.Opaque;
+            mDevice.DepthStencilState = DepthStencilState.Default;
+
+            foreach (RendererBase renderer in mRenderQueue)
+            {
+                renderer.RenderAllInstancesPicking(
+                    Utils.GetViewMatrixFromRay(ray), 
+                    Matrix.CreatePerspective(1, 1, mCamera.GetNearPlaneDistance(), mCamera.GetFarPlaneDistance()));
+            }
+
+            mDevice.SetRenderTarget(depthTarget);
+
+
         }
 
         #endregion

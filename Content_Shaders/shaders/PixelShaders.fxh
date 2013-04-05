@@ -193,6 +193,11 @@ float4 NormalDepthPS(float4 color : COLOR0) : COLOR0
 	return color;
 }
 
+float4 PickingPS() : COLOR0
+{
+	return xPickingIndex;
+}
+
 float4 NoShadePS(VSOutput pin) : SV_Target0
 {
 	float4 color = tex2D(NoShade_Sampler, pin.TexCoord + xTextureOffset);

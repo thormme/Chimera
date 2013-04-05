@@ -283,29 +283,7 @@ namespace WorldEditor
 
         public Tuple<Vector3, DummyObject> RayCast(GraphicsDevice graphics, Ray ray)
         {
-            // Record original graphics device settings
-            var oldRenderTargets = graphics.GetRenderTargets();
-
-            // Set graphics device to render to texture
-            RenderTarget2D depthTarget = new RenderTarget2D(
-                graphics,
-                1,
-                1,
-                false,
-                graphics.PresentationParameters.BackBufferFormat,
-                DepthFormat.Depth24);
-
-            DepthStencilState depthStencilState = new DepthStencilState();
-            depthStencilState.DepthBufferFunction = CompareFunction.LessEqual;
-
-            graphics.DepthStencilState = depthStencilState;
-            graphics.SetRenderTarget(depthTarget);
-
-            Viewport pickingViewport = new Microsoft.Xna.Framework.Graphics.Viewport(0, 0, 1, 1);
-
-            FPSCamera camera = new FPSCamera(pickingViewport);
-            camera.Position = ray.Position;
-            camera.Target = camera.Position + ray.Direction;
+            
 
             graphics.Clear(Color.CornflowerBlue);
             BasicEffect b = new BasicEffect(graphics);

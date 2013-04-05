@@ -37,6 +37,15 @@ namespace GraphicsLibrary
             effect.CurrentTechnique = effect.Techniques["NormalDepthShade"];
         }
 
+        protected override void PickingMapConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
+        {
+            int objectID = (int)optionalParameters[0];
+
+            effect.CurrentTechnique = effect.Techniques["Picking"];
+
+            effect.Parameters["xPickingIndex"].SetValue(objectID << 8 + 255);
+        }
+
         protected override void ShadowMapConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
         {
             Matrix lightView = (optionalParameters[0] as Matrix?).Value;

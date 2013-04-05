@@ -7,6 +7,8 @@ namespace GraphicsLibrary
     {
         private string mModelName;
 
+        public int ObjectID;
+
         public InanimateModel(string modelName)
         {
             mModelName = modelName;
@@ -20,6 +22,7 @@ namespace GraphicsLibrary
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
             parameters.World = worldTransform;
+            parameters.ObjectID = ObjectID;
 
             GraphicsManager.EnqueueRenderable(parameters);
         }

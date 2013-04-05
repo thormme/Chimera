@@ -18,6 +18,8 @@ namespace GameConstructLibrary
 {
     public class DummyObject
     {
+        private static int mNextObjectID = 1;
+
         public string Type { get; set; }
         private string mModel { get; set; }
         public string Model
@@ -29,6 +31,7 @@ namespace GameConstructLibrary
             set
             {
                 mDrawableModel = new InanimateModel(value);
+                mDrawableModel.ObjectID = mNextObjectID++;
                 mModel = value;
             }
         }
