@@ -37,11 +37,11 @@ namespace GraphicsLibrary
             effect.CurrentTechnique = effect.Techniques["NormalDepthShade"];
         }
 
-        protected override void PickingMapConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
+        protected override void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
         {
-            int objectID = (int)optionalParameters[0];
+            UInt32 objectID = (UInt32)optionalParameters[0];
 
-            effect.CurrentTechnique = effect.Techniques["Picking"];
+            effect.CurrentTechnique = effect.Techniques["PickingShade"];
 
             effect.Parameters["xPickingIndex"].SetValue(objectID << 8 + 255);
         }
@@ -98,17 +98,12 @@ namespace GraphicsLibrary
             effect.SpecularPower = 16;
         }
 
-        protected override void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
-        {
-            effect.CurrentTechnique = effect.Techniques["PickingShade"];
-        }
-
         protected override void DrawGeometry(Matrix view, Matrix projection, object[] optionalParameters, EffectConfigurer effectConfigurer, RendererParameters instance)
         {
-            if (effectConfigurer != ShadowMapConfigurer && GraphicsManager.ViewBoundingFrustum.Contains(instance.BoundingBox) == ContainmentType.Disjoint)
+            /*if (effectConfigurer != ShadowMapConfigurer && GraphicsManager.ViewBoundingFrustum.Contains(instance.BoundingBox) == ContainmentType.Disjoint)
             {
                 return;
-            }
+            }*/
 
             foreach (ModelMesh mesh in mModel.Meshes)
             {

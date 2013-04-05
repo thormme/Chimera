@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GraphicsLibrary
@@ -7,7 +8,7 @@ namespace GraphicsLibrary
     {
         private string mModelName;
 
-        public int ObjectID;
+        public UInt32 ObjectID;
 
         public InanimateModel(string modelName)
         {

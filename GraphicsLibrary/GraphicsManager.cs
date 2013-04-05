@@ -246,19 +246,19 @@ namespace GraphicsLibrary
             mCanRender = false;
         }
 
-        static public int GetPickingObject(Ray ray)
+        static public UInt32 GetPickingObject(Ray ray)
         {
             // Set graphics device to render to texture
-            RenderTarget2D depthTarget = new RenderTarget2D(
+            RenderTarget2D pickingBuffer = new RenderTarget2D(
                 mDevice,
                 1,
                 1,
                 false,
                 mDevice.PresentationParameters.BackBufferFormat,
                 DepthFormat.Depth24);
-
-            mDevice.SetRenderTarget(depthTarget);
-            mDevice.Clear(Color.Transparent);
+            
+            mDevice.SetRenderTarget(pickingBuffer);
+            mDevice.Clear(Color.Black);
 
             RasterizerState cull = new RasterizerState();
             cull.CullMode = CullMode.CullCounterClockwiseFace;
@@ -271,12 +271,14 @@ namespace GraphicsLibrary
             {
                 renderer.RenderAllInstancesPicking(
                     Utils.GetViewMatrixFromRay(ray), 
-                    Matrix.CreatePerspective(1, 1, mCamera.GetNearPlaneDistance(), mCamera.GetFarPlaneDistance()));
+                    Matrix.CreateOrthographic(1, 1, mCamera.GetNearPlaneDistance(), mCamera.GetFarPlaneDistance()));
             }
 
-            mDevice.SetRenderTarget(depthTarget);
+            mDevice.SetRenderTarget(null);
 
-
+            Color[] depthColor = new Color[1];
+            pickingBuffer.GetData(depthColor);
+            return depthColor[0].PackedValue >> 8;
         }
 
         #endregion

@@ -18,7 +18,7 @@ namespace GameConstructLibrary
 {
     public class DummyObject
     {
-        private static int mNextObjectID = 1;
+        private static UInt32 mNextObjectID = 1;
 
         public string Type { get; set; }
         private string mModel { get; set; }
@@ -46,6 +46,14 @@ namespace GameConstructLibrary
 
         [XmlIgnore]
         public InanimateModel mDrawableModel { get; set; }
+        [XmlIgnore]
+        public UInt32 ObjectID
+        {
+            get
+            {
+                return mDrawableModel.ObjectID;
+            }
+        }
 
         public DummyObject()
         {

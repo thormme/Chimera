@@ -99,20 +99,7 @@ namespace GraphicsLibrary
             effect.CurrentTechnique = effect.Techniques["SkinnedCelShadeWithoutShadows"];
         }
 
-        protected override void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
-        {
-            base.PickingConfigurer(effect, instance, optionalParameters);
-
-            Matrix[] skinTransforms = new Matrix[] { Matrix.Identity };
-            if (instance is AnimateModelParameters)
-            {
-                skinTransforms = ((instance as AnimateModelParameters).SkinTransforms);
-            }
-            effect.SetBoneTransforms(skinTransforms);
-
-
-            effect.CurrentTechnique = effect.Techniques["SkinnedPickingShade"];
-        }
+        
 
         #endregion
     }

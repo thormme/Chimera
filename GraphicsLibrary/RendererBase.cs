@@ -22,7 +22,7 @@ namespace GraphicsLibrary
             public string Name { get; set; }
             public Matrix World { get; set; }
             public Guid Guid { get; set; }
-            public int ObjectID { get; set; }
+            public UInt32 ObjectID { get; set; }
             public BoundingBox BoundingBox { get; set; }
             public Color OverlayColor { get; set; }
             public float OverlayWeight { get; set; }

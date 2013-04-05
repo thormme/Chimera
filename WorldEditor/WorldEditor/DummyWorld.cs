@@ -283,66 +283,19 @@ namespace WorldEditor
 
         public Tuple<Vector3, DummyObject> RayCast(GraphicsDevice graphics, Ray ray)
         {
-            
+            uint objectID = GraphicsManager.GetPickingObject(ray);
 
-            graphics.Clear(Color.CornflowerBlue);
-            BasicEffect b = new BasicEffect(graphics);
-
-            Single minDepth = camera.FarPlaneDistance;
-            DummyObject closestObject = null;
-
-            DrawTerrain(graphics, camera.ViewTransform, camera.ProjectionTransform);
-            // Check whether terrain is closer than far clip
-            {
-                graphics.SetRenderTarget(null);
-
-                Color[] depthColor = new Color[1];
-                depthTarget.GetData(depthColor);
-
-                if (depthColor[0].A < minDepth)
-                {
-                    minDepth = depthColor[0].A;
-                }
-                //Console.WriteLine(depthColor[0].A);
-            }
-
+            DummyObject selectedObject = null;
             foreach (DummyObject dummy in mDummies)
             {
-                graphics.SetRenderTarget(depthTarget);
-
-                Model model = AssetLibrary.LookupModel(dummy.Model).Model;
-                foreach (ModelMesh mesh in model.Meshes)
+                if (dummy.ObjectID == objectID)
                 {
-                    foreach (AnimationUtilities.SkinnedEffect effect in mesh.Effects)
-                    {
-                        effect.View = camera.GetViewTransform();
-                        effect.Projection = camera.GetProjectionTransform();
-                        effect.World = Matrix.CreateScale(dummy.Scale) *
-                                       Matrix.CreateFromYawPitchRoll(dummy.YawPitchRoll.X, dummy.YawPitchRoll.Y, dummy.YawPitchRoll.Z) *
-                                       Matrix.CreateTranslation(dummy.Position);
-
-                        effect.CurrentTechnique = effect.Techniques["NormalDepthShade"];
-                    }
-                    mesh.Draw();
-                }
-
-                graphics.SetRenderTarget(null);
-
-                Color[] depthColor = new Color[1];
-                depthTarget.GetData(depthColor);
-
-                if (depthColor[0].A < minDepth)
-                {
-                    minDepth = depthColor[0].A;
-                    closestObject = dummy;
+                    selectedObject = dummy;
+                    break;
                 }
             }
 
-            // Reset graphics device to previous settings
-            graphics.SetRenderTargets(oldRenderTargets);
-            //Console.WriteLine(minDepth);
-
-            return new Tuple<Vector3, DummyObject>(ray.Position + ray.Direction * minDepth, closestObject);
+            return new Tuple<Vector3, DummyObject>(ray.Position + ray.Direction * 0, selectedObject);
         }
 
         public void Draw()
