@@ -9,6 +9,7 @@ using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Core;
 using DPSF;
+using Utility;
 
 namespace GraphicsLibrary
 {
@@ -243,6 +244,46 @@ namespace GraphicsLibrary
             RenderGUI();
 
             mCanRender = false;
+        }
+
+        /// <summary>
+        /// Return the ID of the nearest object intersecting a ray.
+        /// </summary>
+        /// <param name="ray">The ray to check for intersections with.</param>
+        /// <returns>The ID of the nearest intersecting object. 0 if none found.</returns>
+        static public UInt32 GetPickingObject(Ray ray)
+        {
+            // Set graphics device to render to texture
+            RenderTarget2D pickingBuffer = new RenderTarget2D(
+                mDevice,
+                1,
+                1,
+                false,
+                mDevice.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24);
+            
+            mDevice.SetRenderTarget(pickingBuffer);
+            mDevice.Clear(Color.Black);
+
+            RasterizerState cull = new RasterizerState();
+            cull.CullMode = CullMode.CullCounterClockwiseFace;
+
+            mDevice.RasterizerState = cull;
+            mDevice.BlendState = BlendState.Opaque;
+            mDevice.DepthStencilState = DepthStencilState.Default;
+
+            foreach (RendererBase renderer in mRenderQueue)
+            {
+                renderer.RenderAllInstancesPicking(
+                    Utils.GetViewMatrixFromRay(ray), 
+                    Matrix.CreateOrthographic(1, 1, mCamera.GetNearPlaneDistance(), mCamera.GetFarPlaneDistance()));
+            }
+
+            mDevice.SetRenderTarget(null);
+
+            Color[] depthColor = new Color[1];
+            pickingBuffer.GetData(depthColor);
+            return (UInt32)(depthColor[0].R << 16) + (UInt32)(depthColor[0].G << 8) + (UInt32)(depthColor[0].B);
         }
 
         #endregion

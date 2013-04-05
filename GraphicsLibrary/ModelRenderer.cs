@@ -37,6 +37,16 @@ namespace GraphicsLibrary
             effect.CurrentTechnique = effect.Techniques["NormalDepthShade"];
         }
 
+        protected override void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
+        {
+            UInt32 objectID = (UInt32)optionalParameters[0];
+
+            effect.CurrentTechnique = effect.Techniques["PickingShade"];
+
+            Vector4 indexColor = new Vector4((float)(objectID << 8 >> 24) / 255, (float)(objectID << 16 >> 24) / 255, (float)(objectID << 24 >> 24) / 255, 1f);
+            effect.Parameters["xPickingIndex"].SetValue(indexColor);
+        }
+
         protected override void ShadowMapConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
         {
             Matrix lightView = (optionalParameters[0] as Matrix?).Value;
@@ -89,17 +99,12 @@ namespace GraphicsLibrary
             effect.SpecularPower = 16;
         }
 
-        protected override void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
-        {
-            effect.CurrentTechnique = effect.Techniques["PickingShade"];
-        }
-
         protected override void DrawGeometry(Matrix view, Matrix projection, object[] optionalParameters, EffectConfigurer effectConfigurer, RendererParameters instance)
         {
-            if (effectConfigurer != ShadowMapConfigurer && GraphicsManager.ViewBoundingFrustum.Contains(instance.BoundingBox) == ContainmentType.Disjoint)
+            /*if (effectConfigurer != ShadowMapConfigurer && GraphicsManager.ViewBoundingFrustum.Contains(instance.BoundingBox) == ContainmentType.Disjoint)
             {
                 return;
-            }
+            }*/
 
             foreach (ModelMesh mesh in mModel.Meshes)
             {

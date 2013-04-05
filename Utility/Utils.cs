@@ -41,6 +41,13 @@ namespace Utility
             return bounds;
         }
 
+        public static Matrix GetViewMatrixFromRay(Ray ray)
+        {
+            Vector3 rayRight = Vector3.Cross(ray.Direction, Vector3.Up);
+            Vector3 rayUp = Vector3.Cross(rayRight, ray.Direction);
+            return Matrix.CreateLookAt(ray.Position, ray.Position + ray.Direction, rayUp);
+        }
+
         public static Vector2 WorldToScreenCoordinates(Vector3 worldCoordinate, float viewportWidth, float viewportHeight, Matrix viewTransform, Matrix projectionTransform)
         {
             Vector4 position = new Vector4(worldCoordinate.X, worldCoordinate.Y, worldCoordinate.Z, 1);

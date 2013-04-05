@@ -281,90 +281,54 @@ namespace WorldEditor
             }
         }
 
-        public Tuple<Vector3, DummyObject> RayCast(GraphicsDevice graphics, Ray ray)
+        /// <summary>
+        /// Gets the DummyObject associated with a particular ID.
+        /// </summary>
+        /// <param name="objectID">The ID.</param>
+        /// <returns>
+        /// The DummyObject with the ID.
+        /// null if none was found.
+        /// </returns>
+        public DummyObject GetDummyObjectFromID(UInt32 objectID)
         {
-            // Record original graphics device settings
-            var oldRenderTargets = graphics.GetRenderTargets();
-
-            // Set graphics device to render to texture
-            RenderTarget2D depthTarget = new RenderTarget2D(
-                graphics,
-                1,
-                1,
-                false,
-                graphics.PresentationParameters.BackBufferFormat,
-                DepthFormat.Depth24);
-
-            DepthStencilState depthStencilState = new DepthStencilState();
-            depthStencilState.DepthBufferFunction = CompareFunction.LessEqual;
-
-            graphics.DepthStencilState = depthStencilState;
-            graphics.SetRenderTarget(depthTarget);
-
-            Viewport pickingViewport = new Microsoft.Xna.Framework.Graphics.Viewport(0, 0, 1, 1);
-
-            FPSCamera camera = new FPSCamera(pickingViewport);
-            camera.Position = ray.Position;
-            camera.Target = camera.Position + ray.Direction;
-
-            graphics.Clear(Color.CornflowerBlue);
-            BasicEffect b = new BasicEffect(graphics);
-
-            Single minDepth = camera.FarPlaneDistance;
-            DummyObject closestObject = null;
-
-            DrawTerrain(graphics, camera.ViewTransform, camera.ProjectionTransform);
-            // Check whether terrain is closer than far clip
-            {
-                graphics.SetRenderTarget(null);
-
-                Color[] depthColor = new Color[1];
-                depthTarget.GetData(depthColor);
-
-                if (depthColor[0].A < minDepth)
-                {
-                    minDepth = depthColor[0].A;
-                }
-                //Console.WriteLine(depthColor[0].A);
-            }
-
+            DummyObject selectedObject = null;
+            // TODO: Use some structure to efficiencize.
             foreach (DummyObject dummy in mDummies)
             {
-                graphics.SetRenderTarget(depthTarget);
-
-                Model model = AssetLibrary.LookupModel(dummy.Model).Model;
-                foreach (ModelMesh mesh in model.Meshes)
+                if (dummy.ObjectID == objectID)
                 {
-                    foreach (AnimationUtilities.SkinnedEffect effect in mesh.Effects)
-                    {
-                        effect.View = camera.GetViewTransform();
-                        effect.Projection = camera.GetProjectionTransform();
-                        effect.World = Matrix.CreateScale(dummy.Scale) *
-                                       Matrix.CreateFromYawPitchRoll(dummy.YawPitchRoll.X, dummy.YawPitchRoll.Y, dummy.YawPitchRoll.Z) *
-                                       Matrix.CreateTranslation(dummy.Position);
-
-                        effect.CurrentTechnique = effect.Techniques["NormalDepthShade"];
-                    }
-                    mesh.Draw();
+                    selectedObject = dummy;
+                    break;
                 }
+            }
+            return selectedObject;
+        }
 
-                graphics.SetRenderTarget(null);
+        /// <summary>
+        /// Find the position and object in a ray.
+        /// </summary>
+        /// <param name="ray">The ray.</param>
+        /// <param name="maximumDistance">The maximum distance to look from the ray origin.</param>
+        /// <param name="castResult">Tuple containing the rayHit result and the DummyObject if any (can be null).</param>
+        /// <returns>Whether the ray hit anything.</returns>
+        public bool RayCast(Ray ray, float maximumDistance, out Tuple<RayHit, DummyObject> castResult)
+        {
+            // Fill out default failed hit data
+            castResult = new Tuple<RayHit, DummyObject>(new RayHit(), null);
 
-                Color[] depthColor = new Color[1];
-                depthTarget.GetData(depthColor);
+            DummyObject selectedObject = GetDummyObjectFromID(GraphicsManager.GetPickingObject(ray));
+            RayHit rayHit = new RayHit();
 
-                if (depthColor[0].A < minDepth)
+            if (selectedObject == null || !selectedObject.RayCast(ray, maximumDistance, out rayHit))
+            {
+                if (!Terrain.StaticCollidable.RayCast(ray, maximumDistance, out rayHit))
                 {
-                    minDepth = depthColor[0].A;
-                    closestObject = dummy;
+                    return false;
                 }
             }
 
-            // Reset graphics device to previous settings
-            graphics.SetRenderTargets(oldRenderTargets);
-            //Console.WriteLine(minDepth);
-
-            return new Tuple<Vector3, DummyObject>(ray.Position + ray.Direction * minDepth, closestObject);
+            castResult = new Tuple<RayHit, DummyObject>(rayHit, selectedObject);
+            return true;
         }
 
         public void Draw()

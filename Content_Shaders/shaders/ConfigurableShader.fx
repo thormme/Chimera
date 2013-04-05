@@ -176,3 +176,12 @@ Technique NormalDepthShade
 		PixelShader  = compile ps_3_0 NormalDepthPS();
 	}
 }
+
+Technique PickingShade
+{
+	Pass
+	{
+		VertexShader = compile vs_3_0 VS();
+		PixelShader  = compile ps_3_0 PickingPS();
+	}
+}

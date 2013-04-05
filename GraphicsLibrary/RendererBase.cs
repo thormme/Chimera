@@ -22,6 +22,7 @@ namespace GraphicsLibrary
             public string Name { get; set; }
             public Matrix World { get; set; }
             public Guid Guid { get; set; }
+            public UInt32 ObjectID { get; set; }
             public BoundingBox BoundingBox { get; set; }
             public Color OverlayColor { get; set; }
             public float OverlayWeight { get; set; }
@@ -113,7 +114,7 @@ namespace GraphicsLibrary
         protected void RenderPicking(Matrix view, Matrix projection, RendererParameters instance)
         {
             EffectConfigurer pickingConfigurer = PickingConfigurer;
-            DrawGeometry(view, projection, null, pickingConfigurer, instance);
+            DrawGeometry(view, projection, new object[] { instance.ObjectID }, pickingConfigurer, instance);
         }
 
         #endregion

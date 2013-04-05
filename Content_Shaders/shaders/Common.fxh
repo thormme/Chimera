@@ -51,6 +51,8 @@ BEGIN_CONSTANTS
 	float xCursorInnerRadius;
 	float xCursorOuterRadius;
 
+	float4 xPickingIndex;
+
 	float2 Texture_uvOffset;
 	float2 Texture_uvScale;
 

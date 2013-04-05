@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GraphicsLibrary
@@ -6,6 +7,8 @@ namespace GraphicsLibrary
     public class InanimateModel : Renderable
     {
         private string mModelName;
+
+        public UInt32 ObjectID;
 
         public InanimateModel(string modelName)
         {
@@ -20,6 +23,7 @@ namespace GraphicsLibrary
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
             parameters.World = worldTransform;
+            parameters.ObjectID = ObjectID;
 
             GraphicsManager.EnqueueRenderable(parameters);
         }
