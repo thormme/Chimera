@@ -108,15 +108,15 @@ namespace WorldEditor.Dialogs
 
                 if (Yaw.BackColor == DefaultBackColor)
                 {
-                    Yaw.Value = (decimal)SelectedObjects[0].YawPitchRoll.X;
+                    Yaw.Value = (decimal)SelectedObjects[0].YawPitchRoll.X / (decimal)Math.PI * (decimal)180.0;
                 }
                 if (Pitch.BackColor == DefaultBackColor)
                 {
-                    Pitch.Value = (decimal)SelectedObjects[0].YawPitchRoll.Y;
+                    Pitch.Value = (decimal)SelectedObjects[0].YawPitchRoll.Y / (decimal)Math.PI * (decimal)180.0;
                 }
                 if (Roll.BackColor == DefaultBackColor)
                 {
-                    Roll.Value = (decimal)SelectedObjects[0].YawPitchRoll.Z;
+                    Roll.Value = (decimal)SelectedObjects[0].YawPitchRoll.Z / (decimal)Math.PI * (decimal)180.0;
                 }
 
                 if (ScaleX.BackColor == DefaultBackColor)

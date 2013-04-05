@@ -131,13 +131,13 @@ namespace WorldEditor
             {
                 mEntity.Update(gameTime);
 
-                Vector3? pickingPosition = mEntity.GetPickingLocation(mDummyWorld);
+                var pickingResult = mEntity.GetPickingLocation(mDummyWorld);
 
-                mPlaceable = pickingPosition != null;
+                mPlaceable = pickingResult != null;
 
                 if (mPlaceable && mCursorObject != null)
                 {
-                    mCursorObject.Position = pickingPosition.Value;
+                    mCursorObject.Position = pickingResult.Item1.Location;
                 }
 
             }
@@ -208,6 +208,8 @@ namespace WorldEditor
             TextureSelectionPane.VOffset.ValueChanged += TextureHandler;
             TextureSelectionPane.UScale.ValueChanged += TextureHandler;
             TextureSelectionPane.VScale.ValueChanged += TextureHandler;
+
+            ObjectParameterPane.Create.Click += CreateObjectButtonHandler;
 
             foreach (var model in AssetLibrary.ModelLibrary)
             {
@@ -392,9 +394,10 @@ namespace WorldEditor
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
             ObjectParameterPane.SelectedObjects.Clear();
-            ObjectParameterPane.SelectedObjects.Add(new DummyObject(mObjects[(EditorPane.Controls["EditTabs"].Controls["Objects"].Controls["ObjectList"] as ListBox).SelectedItem.ToString()]));
-            SetObjectPropertiesToForm(ObjectParameterPane.SelectedObjects[0]);
-            mDummyWorld.AddObject(ObjectParameterPane.SelectedObjects[0]);
+            DummyObject dummy = new DummyObject(mObjects[EditorPane.ObjectList.SelectedItem.ToString()]);
+            ObjectParameterPane.SelectedObjects.Add(dummy);
+            SetObjectPropertiesToForm(dummy);
+            mDummyWorld.AddObject(dummy);
         }
 
         private void SetObjectPropertiesToForm(DummyObject dummyObject)
@@ -507,10 +510,12 @@ namespace WorldEditor
             if (mControls.LeftPressed.Active && form.Mode == EditorForm.EditorMode.OBJECTS)
             {
                 ObjectParameterPane.SelectedObjects.Clear();
-                DummyObject dummy = new DummyObject(mObjects[EditorPane.ObjectList.SelectedItem.ToString()]);
-                ObjectParameterPane.SelectedObjects.Add(dummy);
-                SetObjectPropertiesToForm(dummy);
-                mDummyWorld.AddObject(dummy);
+                DummyObject dummy = Entity.GetPickingLocation(mDummyWorld).Item2;
+                if (dummy != null)
+                {
+                    ObjectParameterPane.SelectedObjects.Add(dummy);
+                    ObjectParameterPane.UpdateParameterFields();
+                }
             }
             else if (mControls.LeftHold.Active)
             {

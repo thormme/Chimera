@@ -80,7 +80,7 @@ namespace WorldEditor
             mDragPoint.Y = mControls.MouseState.Y;
         }
 
-        public Vector3? GetPickingLocation(DummyWorld dummyWorld)
+        public Tuple<RayHit, DummyObject> GetPickingLocation(DummyWorld dummyWorld)
         {
 
             Vector3 nearScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 0.0f);
@@ -92,21 +92,13 @@ namespace WorldEditor
             Ray ray = new Ray(mCamera.Position, projectionDirection);
             FPSCamera cam =  new FPSCamera(new Viewport(0, 0, 1, 1));
             cam.Position = mCamera.Position;
-            RayHit result;
 
-            if (dummyWorld.Terrain.StaticCollidable.RayCast(ray, 2000.0f, out result))
+            Tuple<RayHit, DummyObject> castResult;
+            if (dummyWorld.RayCast(ray, 2000.0f, out castResult))
             {
-                Tuple<RayHit, DummyObject> castResult;
-                if (dummyWorld.RayCast(ray, 2000.0f, out castResult) && castResult.Item2 != null)
-                {
-                    Console.WriteLine(castResult.Item2.Model);
-                }
-                return result.Location;
+                return castResult;
             }
-            else
-            {
-                return null;
-            }
+            return null;
 
         }
 
