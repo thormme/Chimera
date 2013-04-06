@@ -208,6 +208,11 @@
             // ScaleX
             // 
             this.ScaleX.DecimalPlaces = 2;
+            this.ScaleX.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.ScaleX.Location = new System.Drawing.Point(105, 102);
             this.ScaleX.Maximum = new decimal(new int[] {
             10000,
@@ -232,6 +237,11 @@
             // ScaleY
             // 
             this.ScaleY.DecimalPlaces = 2;
+            this.ScaleY.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.ScaleY.Location = new System.Drawing.Point(171, 103);
             this.ScaleY.Maximum = new decimal(new int[] {
             10000,
@@ -256,6 +266,11 @@
             // ScaleZ
             // 
             this.ScaleZ.DecimalPlaces = 2;
+            this.ScaleZ.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.ScaleZ.Location = new System.Drawing.Point(237, 102);
             this.ScaleZ.Maximum = new decimal(new int[] {
             10000,
@@ -319,6 +334,8 @@
             // Floating
             // 
             this.Floating.AutoSize = true;
+            this.Floating.Checked = true;
+            this.Floating.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Floating.Location = new System.Drawing.Point(171, 132);
             this.Floating.Name = "Floating";
             this.Floating.Size = new System.Drawing.Size(63, 17);
@@ -358,7 +375,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(320, 206);
             this.Controls.Add(this.CreatePlace);
             this.Controls.Add(this.Place);
             this.Controls.Add(this.Create);
@@ -379,7 +395,7 @@
             this.Controls.Add(this.PositionLabel);
             this.Controls.Add(this.Physical);
             this.Name = "ObjectParametersForm";
-            this.Text = "Object Parameters Menu";
+            this.Size = new System.Drawing.Size(320, 206);
             ((System.ComponentModel.ISupportInitialize)(this.PositionX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PositionZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Yaw)).EndInit();

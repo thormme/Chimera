@@ -169,6 +169,8 @@ namespace GameConstructLibrary
             }
         }
         [XmlIgnore]
+        public bool IsHighlighted { get; set; }
+        [XmlIgnore]
         private StaticMesh mPhysicsStaticMesh;
         [XmlIgnore]
         private StaticMesh mPhysicsMesh
@@ -193,6 +195,7 @@ namespace GameConstructLibrary
         public DummyObject()
         {
             RotationAngle = 0;
+            IsHighlighted = false;
         }
 
         public DummyObject(DummyObject copy)
@@ -205,6 +208,7 @@ namespace GameConstructLibrary
             Scale = copy.Scale;
             Height = copy.Height;
             Floating = copy.Floating;
+            IsHighlighted = false; ;
         }
 
         private void ParameterChanged()
@@ -221,7 +225,14 @@ namespace GameConstructLibrary
         {
             Vector3 finalPosition = new Vector3(Position.X, Position.Y + Height * Utils.WorldScale.Y, Position.Z);
             Matrix orientation = RotationAngle == 0 ? Matrix.CreateFromYawPitchRoll(YawPitchRoll.X, YawPitchRoll.Y, YawPitchRoll.Z) : Matrix.CreateFromAxisAngle(RotationAxis, RotationAngle);
-            mDrawableModel.Render(finalPosition, orientation, Scale);
+            if (IsHighlighted)
+            {
+                mDrawableModel.Render(finalPosition, orientation, Scale, Color.Red, 0.5f);
+            }
+            else
+            {
+                mDrawableModel.Render(finalPosition, orientation, Scale);
+            }
         }
 
     }

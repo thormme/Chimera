@@ -39,11 +39,9 @@ namespace GraphicsLibrary
 
         protected override void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
         {
-            UInt32 objectID = (UInt32)optionalParameters[0];
-
             effect.CurrentTechnique = effect.Techniques["PickingShade"];
 
-            Vector4 indexColor = new Vector4((float)(objectID << 8 >> 24) / 255, (float)(objectID << 16 >> 24) / 255, (float)(objectID << 24 >> 24) / 255, 1f);
+            Vector4 indexColor = new Vector4((float)(instance.ObjectID << 8 >> 24) / 255, (float)(instance.ObjectID << 16 >> 24) / 255, (float)(instance.ObjectID << 24 >> 24) / 255, 1f);
             effect.Parameters["xPickingIndex"].SetValue(indexColor);
         }
 
