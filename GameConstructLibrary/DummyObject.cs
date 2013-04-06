@@ -208,7 +208,7 @@ namespace GameConstructLibrary
             Scale = copy.Scale;
             Height = copy.Height;
             Floating = copy.Floating;
-            IsHighlighted = false; ;
+            IsHighlighted = false;
         }
 
         private void ParameterChanged()

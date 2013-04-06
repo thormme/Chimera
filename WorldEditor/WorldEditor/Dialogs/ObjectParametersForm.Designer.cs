@@ -295,7 +295,6 @@
             // Height
             // 
             this.Height.DecimalPlaces = 2;
-            this.Height.Enabled = false;
             this.Height.Location = new System.Drawing.Point(105, 129);
             this.Height.Maximum = new decimal(new int[] {
             10000,
@@ -315,6 +314,7 @@
             // PositionY
             // 
             this.PositionY.DecimalPlaces = 2;
+            this.PositionY.Enabled = false;
             this.PositionY.Location = new System.Drawing.Point(171, 50);
             this.PositionY.Maximum = new decimal(new int[] {
             10000,
