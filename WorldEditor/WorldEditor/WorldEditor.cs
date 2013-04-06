@@ -509,8 +509,18 @@ namespace WorldEditor
 
             if (mControls.LeftReleased.Active && form.Mode == EditorForm.EditorMode.OBJECTS)
             {
+                foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
+                {
+                    oldObject.IsHighlighted = false;
+                }
                 ObjectParameterPane.SelectedObjects.Clear();
+
                 List<DummyObject> dummyObjects = Entity.GetObjectsInSelection(mDummyWorld);
+                foreach (DummyObject newObject in dummyObjects)
+                {
+                    newObject.IsHighlighted = true;
+                }
+
                 ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
                 if (dummyObjects.Count > 0)
                 {

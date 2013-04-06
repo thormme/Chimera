@@ -114,7 +114,7 @@ namespace GraphicsLibrary
         protected void RenderPicking(Matrix view, Matrix projection, RendererParameters instance)
         {
             EffectConfigurer pickingConfigurer = PickingConfigurer;
-            DrawGeometry(view, projection, new object[] { instance.ObjectID }, pickingConfigurer, instance);
+            DrawGeometry(view, projection, null, pickingConfigurer, instance);
         }
 
         #endregion

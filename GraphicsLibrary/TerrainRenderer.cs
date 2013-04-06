@@ -119,6 +119,8 @@ namespace GraphicsLibrary
         protected override void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
         {
             effect.CurrentTechnique = effect.Techniques["PickingShade"];
+
+            effect.Parameters["xPickingIndex"].SetValue(new Vector4(0,0,0,0));
         }
 
         protected override void DrawGeometry(Matrix view, Matrix projection, object[] optionalParameters, EffectConfigurer effectConfigurer, RendererParameters instance)
