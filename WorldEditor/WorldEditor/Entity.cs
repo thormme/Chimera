@@ -6,13 +6,14 @@ using Microsoft.Xna.Framework;
 using GameConstructLibrary;
 using BEPUphysics;
 using Microsoft.Xna.Framework.Graphics;
+using GraphicsLibrary;
 
 namespace WorldEditor
 {
     public class Entity
     {
 
-        private const float Speed = 0.5f;
+        private const float Speed = 0.05f;
         private const float Sensitivity = 0.1f;
 
         public Viewport Viewport
@@ -52,6 +53,10 @@ namespace WorldEditor
 
         private void UpdateDirection()
         {
+            if (mControls.LeftPressed.Active)
+            {
+                UpdateDragPoint();
+            }
             if (mControls.RightPressed.Active)
             {
                 UpdateDragPoint();
@@ -80,9 +85,19 @@ namespace WorldEditor
             mDragPoint.Y = mControls.MouseState.Y;
         }
 
+        public List<DummyObject> GetObjectsInSelection(DummyWorld dummyWorld)
+        {
+            return dummyWorld.GetDummyObjectFromID(
+                GraphicsManager.GetPickingScreenObjects(
+                    new Rectangle(
+                        (int)Math.Min(mControls.MouseState.X, mDragPoint.X) - Viewport.X,
+                        (int)Math.Min(mControls.MouseState.Y, mDragPoint.Y) - Viewport.Y, 
+                        (int)Math.Max(Math.Abs(mDragPoint.X - mControls.MouseState.X), 1),
+                        (int)Math.Max(Math.Abs(mDragPoint.Y - mControls.MouseState.Y), 1))).ToArray());
+        }
+
         public Tuple<RayHit, DummyObject> GetPickingLocation(DummyWorld dummyWorld)
         {
-
             Vector3 nearScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 0.0f);
             Vector3 farScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 1.0f);
             Vector3 nearWorld = mViewport.Unproject(nearScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
@@ -99,8 +114,6 @@ namespace WorldEditor
                 return castResult;
             }
             return null;
-
         }
-
     }
 }

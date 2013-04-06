@@ -24,6 +24,7 @@ namespace GraphicsLibrary
         static private RenderTarget2D mNormalDepthBuffer;
         static private RenderTarget2D mOutlineBuffer;
         static private RenderTarget2D mCompositeBuffer;
+        static private RenderTarget2D mPickingBuffer;
 
         static private Viewport? mOverrideViewport = null;
 
@@ -107,6 +108,7 @@ namespace GraphicsLibrary
         static private bool mCastingShadows = true;
         static private bool mDebugVisualization = false;
         static private bool mDrawBoundingBoxes = false;
+        static private bool mRenderPickingBuffer = false;
 
         static private float mEdgeWidth = 1.0f;
         static private float mEdgeIntensity = 1.0f;
@@ -154,6 +156,12 @@ namespace GraphicsLibrary
         {
             get { return mDrawBoundingBoxes; }
             set { mDrawBoundingBoxes = value; }
+        }
+        
+        static public bool EnableScreenPicking
+        {
+            get { return mRenderPickingBuffer; }
+            set { mRenderPickingBuffer = value; }
         }
 
         #endregion
@@ -230,6 +238,11 @@ namespace GraphicsLibrary
                 RenderOutlines();
             }
 
+            if (EnableScreenPicking)
+            {
+                RenderPickingBuffer();
+            }
+
             CompositeScene();
 
             if (DebugVisualization)
@@ -244,6 +257,11 @@ namespace GraphicsLibrary
             RenderGUI();
 
             mCanRender = false;
+        }
+
+        static private UInt32 ConvertPickingColorToID(Color pixelColor)
+        {
+            return (UInt32)(pixelColor.R << 16) + (UInt32)(pixelColor.G << 8) + (UInt32)(pixelColor.B);
         }
 
         /// <summary>
@@ -284,6 +302,36 @@ namespace GraphicsLibrary
             Color[] depthColor = new Color[1];
             pickingBuffer.GetData(depthColor);
             return (UInt32)(depthColor[0].R << 16) + (UInt32)(depthColor[0].G << 8) + (UInt32)(depthColor[0].B);
+        }
+
+        /// <summary>
+        /// Return the IDs of the nearest objects on screen within the bounds.
+        /// </summary>
+        /// <param name="bounds">The area to check within.</param>
+        /// <returns>The IDs of the nearest intersecting object. 0 if none found.</returns>
+        static public List<UInt32> GetPickingScreenObjects(Rectangle bounds)
+        {
+            mDevice.SetRenderTarget(null);
+            Color[] depthColor = new Color[mPickingBuffer.Width * mPickingBuffer.Height];
+            mPickingBuffer.GetData(depthColor);
+
+            List<UInt32> ids = new List<UInt32>();
+
+            for (int y = bounds.Y; y - bounds.Y < bounds.Height; y++)
+            {
+                for (int x = bounds.X; x - bounds.X < bounds.Width; x++)
+                {
+                    Color pixelColor = depthColor[y * mPickingBuffer.Width + x];
+                    UInt32 id = ConvertPickingColorToID(pixelColor);
+
+                    if (!ids.Contains(id))
+                    {
+                        ids.Add(id);
+                    }
+                }
+            }
+
+            return ids;            
         }
 
         #endregion
@@ -364,6 +412,7 @@ namespace GraphicsLibrary
             mNormalDepthBuffer = new RenderTarget2D(mDevice, viewport.Width, viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
             mOutlineBuffer = new RenderTarget2D(mDevice, viewport.Width, viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
             mSceneBuffer = new RenderTarget2D(mDevice, viewport.Width, viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            mPickingBuffer = new RenderTarget2D(mDevice, viewport.Width, viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
         }
 
         /// <summary>
@@ -412,6 +461,29 @@ namespace GraphicsLibrary
             foreach (RendererBase renderer in mRenderQueue)
             {
                 renderer.RenderAllInstancesNormalDepth(mView, mProjection);
+            }
+        }
+
+        /// <summary>
+        /// Render a buffer containing the IDs of the nearest objects.
+        /// </summary>
+        static public void RenderPickingBuffer()
+        {
+            mDevice.SetRenderTarget(mPickingBuffer);
+            mDevice.Clear(Color.Black);
+
+            RasterizerState cull = new RasterizerState();
+            cull.CullMode = CullMode.CullCounterClockwiseFace;
+
+            mDevice.RasterizerState = cull;
+            mDevice.BlendState = BlendState.Opaque;
+            mDevice.DepthStencilState = DepthStencilState.Default;
+
+            foreach (RendererBase renderer in mRenderQueue)
+            {
+                renderer.RenderAllInstancesPicking(
+                    mView,
+                    mProjection);
             }
         }
 

@@ -507,13 +507,13 @@ namespace WorldEditor
 
             TabControl editModes = (EditorPane.Controls["EditTabs"] as TabControl);
 
-            if (mControls.LeftPressed.Active && form.Mode == EditorForm.EditorMode.OBJECTS)
+            if (mControls.LeftReleased.Active && form.Mode == EditorForm.EditorMode.OBJECTS)
             {
                 ObjectParameterPane.SelectedObjects.Clear();
-                DummyObject dummy = Entity.GetPickingLocation(mDummyWorld).Item2;
-                if (dummy != null)
+                List<DummyObject> dummyObjects = Entity.GetObjectsInSelection(mDummyWorld);
+                ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
+                if (dummyObjects.Count > 0)
                 {
-                    ObjectParameterPane.SelectedObjects.Add(dummy);
                     ObjectParameterPane.UpdateParameterFields();
                 }
             }

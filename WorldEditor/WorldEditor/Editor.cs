@@ -50,6 +50,7 @@ namespace WorldEditor
             GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
             GraphicsManager.Outlining = GraphicsManager.Outlines.All;
             GraphicsManager.CastingShadows = true;
+            GraphicsManager.EnableScreenPicking = true;
 
             mCamera = new FPSCamera(GraphicsDevice.Viewport);
             mCamera.Position = new Vector3(0, 1400, 1000);

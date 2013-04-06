@@ -22,20 +22,22 @@ namespace WorldEditor.Dialogs
 
         public void UpdateParameterFields()
         {
+            // Background default color.
+            System.Drawing.Color defaultBGColor = System.Drawing.Color.White;
             // Background when there are different values for the same parameter.
             System.Drawing.Color differentValuesBGColor = System.Drawing.Color.LightYellow;
 
             // Set controls to default state.
-            PositionX.BackColor = DefaultBackColor;
-            PositionY.BackColor = DefaultBackColor;
-            PositionZ.BackColor = DefaultBackColor;
-            Yaw.BackColor = DefaultBackColor;
-            Pitch.BackColor = DefaultBackColor;
-            Roll.BackColor = DefaultBackColor;
-            ScaleX.BackColor = DefaultBackColor;
-            ScaleY.BackColor = DefaultBackColor;
-            ScaleZ.BackColor = DefaultBackColor;
-            Height.BackColor = DefaultBackColor;
+            PositionX.BackColor = defaultBGColor;
+            PositionY.BackColor = defaultBGColor;
+            PositionZ.BackColor = defaultBGColor;
+            Yaw.BackColor = defaultBGColor;
+            Pitch.BackColor = defaultBGColor;
+            Roll.BackColor = defaultBGColor;
+            ScaleX.BackColor = defaultBGColor;
+            ScaleY.BackColor = defaultBGColor;
+            ScaleZ.BackColor = defaultBGColor;
+            Height.BackColor = defaultBGColor;
             Floating.CheckState = CheckState.Unchecked;
 
             // Check which parameters are not shared by all objects.

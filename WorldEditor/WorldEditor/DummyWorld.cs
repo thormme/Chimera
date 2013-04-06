@@ -291,17 +291,43 @@ namespace WorldEditor
         /// </returns>
         public DummyObject GetDummyObjectFromID(UInt32 objectID)
         {
-            DummyObject selectedObject = null;
+            List<DummyObject> objects = GetDummyObjectFromID(new UInt32[] { objectID });
+            if (objects.Count > 0)
+            {
+                return objects[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the DummyObjects associated with particular IDs.
+        /// </summary>
+        /// <param name="objectIDs">The IDs.</param>
+        /// <returns>
+        /// The DummyObjects with the IDs.
+        /// </returns>
+        public List<DummyObject> GetDummyObjectFromID(UInt32[] objectIDs)
+        {
+            List<UInt32> objectIDList = objectIDs.ToList();
+            List<DummyObject> selectedObjects = new List<DummyObject>();
             // TODO: Use some structure to efficiencize.
             foreach (DummyObject dummy in mDummies)
             {
-                if (dummy.ObjectID == objectID)
+                for (int i = 0; i < objectIDList.Count; i++)
                 {
-                    selectedObject = dummy;
-                    break;
+                    UInt32 id = objectIDList[i];
+                    if (dummy.ObjectID == id)
+                    {
+                        selectedObjects.Add(dummy);
+                        objectIDList.Remove(id);
+                        break;
+                    }
                 }
             }
-            return selectedObject;
+            return selectedObjects;
         }
 
         /// <summary>
