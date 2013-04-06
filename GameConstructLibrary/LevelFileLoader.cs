@@ -134,8 +134,11 @@ namespace GameConstructLibrary
         /// <param name="chunkCols"></param>
         /// <param name="defaultTexture"></param>
         /// <returns></returns>
-        static public string GenerateBlankLevel(int heightMapWidth, int heightMapHeight, int alphaMapWidth, int alphaMapHeight, int chunkRows, int chunkCols, string defaultTexture)
+        static public string GenerateBlankLevel(int heightMapWidth, int heightMapHeight, int alphaMapWidth, int alphaMapHeight, int chunkRows, int chunkCols, string defaultTexture, out List<DummyObject> dummyObjectList)
         {
+            mLastLoadedObjectList = new List<DummyObject>();
+            dummyObjectList = mLastLoadedObjectList;
+
             Color[] heightMapBuffer = new Color[heightMapHeight * heightMapWidth];
             for (int i = 0; i < heightMapBuffer.Length; ++i)
             {
