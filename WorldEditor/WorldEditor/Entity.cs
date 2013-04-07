@@ -12,8 +12,8 @@ namespace WorldEditor
 {
     public class Entity
     {
-        private const float SpeedMinimum = 0.05f;
-        private const float SpeedAcceleration = 0.1f;
+        private const float SpeedMinimum = 0.0025f;
+        private const float SpeedAcceleration = 0.05f;
         private const float Sensitivity = 0.1f;
 
         public Viewport Viewport

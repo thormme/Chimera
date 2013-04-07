@@ -55,7 +55,8 @@ namespace WorldEditor
             mCamera = new FPSCamera(GraphicsDevice.Viewport);
             mCamera.Position = new Vector3(0, 1400, 1000);
             mCamera.Target = new Vector3(0, 100, 0);
-            mCamera.FarPlaneDistance = 3000;
+            mCamera.FarPlaneDistance = 2500;
+            mCamera.NearPlaneDistance = 0.2f;
 
             base.Initialize();
         }
