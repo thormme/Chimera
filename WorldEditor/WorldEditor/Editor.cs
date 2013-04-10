@@ -80,6 +80,8 @@ namespace WorldEditor
             windowForm.Controls.Add(mWorldEditor.TextureSelectionPane);
             windowForm.Controls.Add(mWorldEditor.ObjectParameterPane);
 
+            mWorldEditor.ObjectParameterPane.Dock = DockStyle.Right;
+
             ResizedWindow(null, null);
         }
 
@@ -159,7 +161,7 @@ namespace WorldEditor
             }
 
             this.mWorldEditor.TextureSelectionPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.TextureSelectionPane.Width, 0);
-            this.mWorldEditor.ObjectParameterPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.ObjectParameterPane.Width, 0);
+            //this.mWorldEditor.ObjectParameterPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.ObjectParameterPane.Width, 0);
         }
     }
 }
