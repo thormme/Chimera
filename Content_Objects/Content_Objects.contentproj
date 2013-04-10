@@ -84,10 +84,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Name>RhinoSpawner</Name>
     </None>
-    <None Include="objects\rock4.prop">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Name>rock4</Name>
-    </None>
     <None Include="objects\Spawner.prop">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Name>Spawner</Name>

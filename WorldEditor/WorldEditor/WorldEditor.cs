@@ -278,7 +278,10 @@ namespace WorldEditor
 
         private void OpenTextureForm(object sender, EventArgs e)
         {
-            TextureSelectionPane.Show((Form)Form.FromHandle(Window.Handle));
+            if (!TextureSelectionPane.Visible)
+            {
+                TextureSelectionPane.Show((Form)Form.FromHandle(Window.Handle));
+            }
         }
 
         private void CloseTextureForm(object sender, EventArgs e)
@@ -288,7 +291,10 @@ namespace WorldEditor
 
         private void OpenObjectParameterForm(object sender, EventArgs e)
         {
-            ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
+            if (!ObjectParameterPane.Visible)
+            {
+                ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
+            }
         }
 
         private void CloseObjectParameterForm(object sender, EventArgs e)

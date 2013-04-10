@@ -182,6 +182,7 @@ namespace WorldEditor.Dialogs
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "TextureSelectionForm";
+            this.ShowInTaskbar = false;
             ((System.ComponentModel.ISupportInitialize)(this.texturePreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.VOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.UOffset)).EndInit();
