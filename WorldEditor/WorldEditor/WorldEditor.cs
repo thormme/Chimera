@@ -84,6 +84,8 @@ namespace WorldEditor
 
         private FPSCamera mCamera = null;
 
+        private GameWindow Window = null;
+
         //Stores all placeable objects.
         private Dictionary<string, DummyObject> mObjects = new Dictionary<string, DummyObject>();
 
@@ -108,8 +110,9 @@ namespace WorldEditor
 
         #region Public Interface
 
-        public WorldEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content)
+        public WorldEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content, GameWindow window)
         {
+            Window = window;
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
             mEntity = new Entity(graphicsDevice, mControls, mCamera);
@@ -275,7 +278,7 @@ namespace WorldEditor
 
         private void OpenTextureForm(object sender, EventArgs e)
         {
-            TextureSelectionPane.Show();
+            TextureSelectionPane.Show((Form)Form.FromHandle(Window.Handle));
         }
 
         private void CloseTextureForm(object sender, EventArgs e)
@@ -285,7 +288,7 @@ namespace WorldEditor
 
         private void OpenObjectParameterForm(object sender, EventArgs e)
         {
-            ObjectParameterPane.Show();
+            ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
         }
 
         private void CloseObjectParameterForm(object sender, EventArgs e)
@@ -388,16 +391,19 @@ namespace WorldEditor
 
         private void SelectNewObjectHandler(object sender, EventArgs e)
         {
-            ObjectParameterPane.Show();
+            ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
         }
 
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
-            ObjectParameterPane.SelectedObjects.Clear();
-            DummyObject dummy = new DummyObject(mObjects[EditorPane.ObjectList.SelectedItem.ToString()]);
-            ObjectParameterPane.SelectedObjects.Add(dummy);
-            SetObjectPropertiesToForm(dummy);
-            mDummyWorld.AddObject(dummy);
+            if (EditorPane.ObjectList.SelectedItem != null)
+            {
+                ObjectParameterPane.SelectedObjects.Clear();
+                DummyObject dummy = new DummyObject(mObjects[EditorPane.ObjectList.SelectedItem.ToString()]);
+                ObjectParameterPane.SelectedObjects.Add(dummy);
+                SetObjectPropertiesToForm(dummy);
+                mDummyWorld.AddObject(dummy);
+            }
         }
 
         private void SetObjectPropertiesToForm(DummyObject dummyObject)

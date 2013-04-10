@@ -148,13 +148,13 @@
       <DependentUpon>EditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\ObjectParametersForm.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\ObjectParametersForm.Designer.cs">
       <DependentUpon>ObjectParametersForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\TextureSelectionForm.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\TextureSelectionForm.Designer.cs">
       <DependentUpon>TextureSelectionForm.cs</DependentUpon>
