@@ -543,23 +543,25 @@ namespace WorldEditor
                     case EditorForm.EditorMode.PAINTING:
                     {
                         TextureSelectionForm textureForm = TextureSelectionPane as TextureSelectionForm;
-                        float alpha = form.Strength / 100.0f;
-                        GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
-                        string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
+                        if ((textureForm.TextureList as ListBox).SelectedItem != null)
+                        {
+                            float alpha = form.Strength / 100.0f;
+                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
+                            string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
 
-                        float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
-                        float uScale = (float)textureForm.UScale.Value, vScale = (float)textureForm.VScale.Value;
+                            float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
+                            float uScale = (float)textureForm.UScale.Value, vScale = (float)textureForm.VScale.Value;
 
-                        mDummyWorld.ModifyTextureMap(
-                            mCursorObject.Position, 
-                            textureName, 
-                            new Vector2(uOffset, vOffset), 
-                            new Vector2(uScale, vScale), 
-                            form.Size, alpha,
-                            form.PaintingBrush, 
-                            form.PaintingTool, 
-                            layer);
-
+                            mDummyWorld.ModifyTextureMap(
+                                mCursorObject.Position,
+                                textureName,
+                                new Vector2(uOffset, vOffset),
+                                new Vector2(uScale, vScale),
+                                form.Size, alpha,
+                                form.PaintingBrush,
+                                form.PaintingTool,
+                                layer);
+                        }
                         break;
                     }
                 }
