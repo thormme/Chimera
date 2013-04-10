@@ -251,8 +251,8 @@ namespace WorldEditor
                     tempObject.Scale = Vector3.One;
                     tempObject.Height = 0.0f;
 
-                    mObjects.Add(tempObject.Model, tempObject);
-                    (editModes.Controls["Objects"].Controls["ObjectList"] as ListBox).Items.Add(tempObject.Model);
+                    mObjects.Add(Path.GetFileNameWithoutExtension(file.Name), tempObject);
+                    ((EditorPane as EditorForm).ObjectList as ListBox).Items.Add(Path.GetFileNameWithoutExtension(file.Name));
                 }
                 catch (SystemException)
                 {
@@ -522,10 +522,7 @@ namespace WorldEditor
                 }
 
                 ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
-                if (dummyObjects.Count > 0)
-                {
                     ObjectParameterPane.UpdateParameterFields();
-                }
             }
             else if (mControls.LeftHold.Active)
             {

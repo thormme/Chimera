@@ -68,6 +68,7 @@
             this.Physical.TabIndex = 0;
             this.Physical.Text = "Physical";
             this.Physical.UseVisualStyleBackColor = true;
+            this.Physical.CheckedChanged += new System.EventHandler(this.Physical_CheckedChanged);
             // 
             // PositionLabel
             // 
