@@ -54,6 +54,8 @@ namespace WorldEditor
         #region Public Properties
 
         //Dialog for the world editor.
+        public ToolMenu ToolMenu = new ToolMenu();
+
         public EditorForm EditorPane = new EditorForm();
 
         //Dialog for object parameters.
@@ -156,14 +158,14 @@ namespace WorldEditor
 
             if (mPlaceable)
             {
-                switch ((EditorPane as EditorForm).Mode)
+                switch (ToolMenu.Mode)
                 {
-                    case EditorForm.EditorMode.HEIGHTMAP:
-                        brush = (EditorPane as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK || (EditorPane as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
+                    case ToolMenu.EditorMode.HEIGHTMAP:
+                        brush = ToolMenu.HeightMapBrush == ToolMenu.Brushes.BLOCK || ToolMenu.HeightMapBrush == ToolMenu.Brushes.BLOCK_FEATHERED ? 
                             TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
                         break;
-                    case EditorForm.EditorMode.PAINTING:
-                        brush = (EditorPane as EditorForm).PaintingBrush == EditorForm.Brushes.BLOCK || (EditorPane as EditorForm).HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
+                    case ToolMenu.EditorMode.PAINTING:
+                        brush = ToolMenu.PaintingBrush == ToolMenu.Brushes.BLOCK || ToolMenu.HeightMapBrush == ToolMenu.Brushes.BLOCK_FEATHERED ? 
                             TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
                         break;
                 }
@@ -183,31 +185,34 @@ namespace WorldEditor
 
         private void CreateEditorForm()
         {
-            EditorPane.Show();
-
             TextureSelectionPane.Hide();
 
-            MenuStrip editMenu = (EditorPane.Controls["MenuStrip"] as MenuStrip);
-            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["NewMenu"].Click    += NewHandler;
-            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveMenu"].Click   += SaveHandler;
-            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["SaveAsMenu"].Click += SaveAsHandler;
-            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["OpenMenu"].Click   += OpenHandler;
-            (editMenu.Items["File"] as ToolStripMenuItem).DropDownItems["PlayMenu"].Click   += PlayHandler;
+            mCursorObject.Scale = new Vector3(5.0f, 0.0f, 5.0f);
 
-            TabControl editModes = (EditorPane.Controls["EditTabs"] as TabControl);
+            ToolMenu.NewMenu.Click    += NewHandler;
+            ToolMenu.SaveMenu.Click += SaveHandler;
+            ToolMenu.SaveAsMenu.Click += SaveAsHandler;
+            ToolMenu.OpenMenu.Click += OpenHandler;
+            ToolMenu.PlayMenu.Click += PlayHandler;
+            ToolMenu.ViewWaterMenu.Click += ViewWaterHandler;
+            ToolMenu.ViewSkyBoxMenu.Click += ViewSkyBoxHandler;
+            ToolMenu.UndoMenu.Click += UndoHandler;
+            ToolMenu.RedoMenu.Click += RedoHandler;
 
-            ((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).SelectedIndexChanged += TextureHandler;
+            //TabControl editModes = (EditorPane.Controls["EditTabs"] as TabControl);
 
-            (EditorPane as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseTextureForm);
-            (EditorPane as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
+            //((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).SelectedIndexChanged += TextureHandler;
 
-            (EditorPane as EditorForm).PaintModeButton.Click += new System.EventHandler(this.OpenTextureForm);
-            (EditorPane as EditorForm).PaintModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
+            //(EditorPane as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseTextureForm);
+            //(EditorPane as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
 
-            (EditorPane as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.CloseTextureForm);
-            (EditorPane as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.OpenObjectParameterForm);
+            //(EditorPane as EditorForm).PaintModeButton.Click += new System.EventHandler(this.OpenTextureForm);
+            //(EditorPane as EditorForm).PaintModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
 
-            (EditorPane as EditorForm).SizeUpDown.ValueChanged += CursorResizeHandler;
+            //(EditorPane as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.CloseTextureForm);
+            //(EditorPane as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.OpenObjectParameterForm);
+
+            //(EditorPane as EditorForm).SizeUpDown.ValueChanged += CursorResizeHandler;
 
             TextureSelectionPane.UOffset.ValueChanged += TextureHandler;
             TextureSelectionPane.VOffset.ValueChanged += TextureHandler;
@@ -227,7 +232,7 @@ namespace WorldEditor
                 tempObject.Scale = Vector3.One;
                 tempObject.Height = 0.0f;
                 mObjects.Add(tempObject.Model, tempObject);
-                ((EditorPane as EditorForm).ObjectList as ListBox).Items.Add(tempObject.Model);
+                (EditorPane.ObjectList as ListBox).Items.Add(tempObject.Model);
             }
 
             FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
@@ -251,8 +256,6 @@ namespace WorldEditor
             {
                 ((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).Items.Add(texture.Key);
             }
-
-            ScaleCursor();
         }
 
         private void CloseHandler(object sender, EventArgs e)
@@ -266,6 +269,16 @@ namespace WorldEditor
             {
                 TextureSelectionPane.Show((Form)Form.FromHandle(Window.Handle));
             }
+        }
+
+        private void ViewWaterHandler(object sender, EventArgs e)
+        {
+            mDummyWorld.DrawWater = !mDummyWorld.DrawWater;
+        }
+
+        private void ViewSkyBoxHandler(object sender, EventArgs e)
+        {
+            mDummyWorld.DrawSkyBox = !mDummyWorld.DrawSkyBox;
         }
 
         private void CloseTextureForm(object sender, EventArgs e)
@@ -355,30 +368,6 @@ namespace WorldEditor
             }
         }
 
-        private void EditHandler(object sender, EventArgs e)
-        {
-            TabControl editModes = (sender as TabControl);
-            if (editModes.SelectedTab == editModes.Controls["Heights"])
-            {
-                ObjectParameterPane.Hide();
-                ScaleCursor();
-            }
-            else if (editModes.SelectedTab == editModes.Controls["Textures"])
-            {
-                ObjectParameterPane.Hide();
-                ScaleCursor();
-            }
-            else if (editModes.SelectedTab == editModes.Controls["Objects"])
-            {
-
-            }
-        }
-
-        private void ScaleCursor()
-        {
-            mCursorObject.Scale = new Vector3((int)(EditorPane as EditorForm).Size, 0, (int)(EditorPane as EditorForm).Size);
-        }
-
         private void SelectNewObjectHandler(object sender, EventArgs e)
         {
             ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
@@ -465,6 +454,24 @@ namespace WorldEditor
             mCursorObject.Scale = new Vector3((int)(sender as NumericUpDown).Value, 0, (int)(sender as NumericUpDown).Value);
         }
 
+        private void UndoHandler(object sender, EventArgs e)
+        {
+            if (mTimeSinceUndo > UndoTimeLimit)
+            {
+                mTimeSinceUndo = 0.0;
+                mDummyWorld.UndoHeightMap();
+            }
+        }
+
+        private void RedoHandler(object sender, EventArgs e)
+        {
+            if (mTimeSinceUndo > UndoTimeLimit)
+            {
+                mTimeSinceUndo = 0.0;
+                mDummyWorld.RedoHeightMap();
+            }
+        }
+
         #endregion
 
         #region Update Helpers
@@ -477,8 +484,6 @@ namespace WorldEditor
             {
                 return;
             }
-
-            EditorForm form = EditorPane as EditorForm;
 
             if (mControls.Control.Active && mTimeSinceUndo > UndoTimeLimit)
             {
@@ -501,9 +506,7 @@ namespace WorldEditor
 
             mDummyWorld.NewHeightMapAction = mDummyWorld.NewHeightMapAction || !mControls.LeftHold.Active;
 
-            TabControl editModes = (EditorPane.Controls["EditTabs"] as TabControl);
-
-            if (mControls.LeftReleased.Active && form.Mode == EditorForm.EditorMode.OBJECTS)
+            if (mControls.LeftReleased.Active && ToolMenu.Mode == ToolMenu.EditorMode.OBJECTS)
             {
                 foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
                 {
@@ -522,21 +525,21 @@ namespace WorldEditor
             }
             else if (mControls.LeftHold.Active)
             {
-                switch (form.Mode)
+                switch (ToolMenu.Mode)
                 {
-                    case EditorForm.EditorMode.HEIGHTMAP:
+                    case ToolMenu.EditorMode.HEIGHTMAP:
                     {
-                        float strength = form.Strength * 10.0f;
-                        mDummyWorld.ModifyHeightMap(mCursorObject.Position, form.Size, strength, form.HeightMapBrush, form.HeightMapTool);
+                        float strength = 10.0f;// form.Strength * 10.0f;
+                        mDummyWorld.ModifyHeightMap(mCursorObject.Position, 5.0f/*form.Size*/, strength, ToolMenu.HeightMapBrush, ToolMenu.Tool);
                         break;
                     }
-                    case EditorForm.EditorMode.PAINTING:
+                    case ToolMenu.EditorMode.PAINTING:
                     {
                         TextureSelectionForm textureForm = TextureSelectionPane as TextureSelectionForm;
                         if ((textureForm.TextureList as ListBox).SelectedItem != null)
                         {
-                            float alpha = form.Strength / 100.0f;
-                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(form.PaintingLayers);
+                            float alpha = EditorPane.Strength / 100.0f;
+                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(EditorPane.PaintingLayers);
                             string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
 
                             float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
@@ -547,9 +550,9 @@ namespace WorldEditor
                                 textureName,
                                 new Vector2(uOffset, vOffset),
                                 new Vector2(uScale, vScale),
-                                form.Size, alpha,
-                                form.PaintingBrush,
-                                form.PaintingTool,
+                                EditorPane.Size, alpha,
+                                (ToolMenu.Brushes)EditorPane.PaintingBrush,
+                                ToolMenu.Tool,
                                 layer);
                         }
                         break;

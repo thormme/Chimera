@@ -62,6 +62,7 @@ namespace WorldEditor.Dialogs
             this.layer2Button = new System.Windows.Forms.PictureBox();
             this.layer4Button = new System.Windows.Forms.PictureBox();
             this.layer3Button = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.terrainModeButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.paintModeButton)).BeginInit();
@@ -430,12 +431,23 @@ namespace WorldEditor.Dialogs
             this.layer3Button.Visible = false;
             this.layer3Button.Click += new System.EventHandler(this.layer3Button_Click);
             // 
+            // button1
+            // 
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.Location = new System.Drawing.Point(210, 590);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(97, 104);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // EditorForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.ObjectList);
             this.Controls.Add(this.layer4Button);
             this.Controls.Add(this.layer3Button);
@@ -457,7 +469,7 @@ namespace WorldEditor.Dialogs
             this.Controls.Add(this.objectModeButton);
             this.Controls.Add(this.paintModeButton);
             this.Controls.Add(this.terrainModeButton);
-            this.Controls.Add(this.MenuStrip);
+            //this.Controls.Add(this.MenuStrip);
             this.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "EditorForm";
@@ -490,7 +502,7 @@ namespace WorldEditor.Dialogs
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip MenuStrip;
+        public System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem File;
         private System.Windows.Forms.ToolStripMenuItem SaveMenu;
         private System.Windows.Forms.ToolStripMenuItem OpenMenu;
@@ -519,6 +531,7 @@ namespace WorldEditor.Dialogs
         private ToolStripMenuItem NewMenu;
         private ToolStripMenuItem SaveAsMenu;
         private ToolStripMenuItem PlayMenu;
+        private Button button1;
 
         public NumericUpDown SizeUpDown
         {

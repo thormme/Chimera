@@ -15,6 +15,8 @@ namespace WorldEditor
 {
     public class DummyWorld
     {
+        public bool DrawSkyBox = true;
+        public bool DrawWater = true;
 
         private const float MoveSpeed = 1.0f;
         private const float ScaleSpeed = 1.05f;
@@ -81,29 +83,29 @@ namespace WorldEditor
         public void ModifyHeightMap(
             Vector3 position, 
             float radius, 
-            float intensity, 
-            EditorForm.Brushes brush, 
-            EditorForm.HeightMapTools tool)
+            float intensity,
+            ToolMenu.Brushes brush,
+            ToolMenu.Tools tool)
         {
-            mHeightMap.IsFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+            mHeightMap.IsFeathered = brush == ToolMenu.Brushes.CIRCLE_FEATHERED || brush == ToolMenu.Brushes.BLOCK_FEATHERED;
 
-            mHeightMap.IsBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+            mHeightMap.IsBlock = brush == ToolMenu.Brushes.BLOCK || brush == ToolMenu.Brushes.BLOCK_FEATHERED;
 
             switch (tool)
             {
-                case EditorForm.HeightMapTools.SET:
+                case ToolMenu.Tools.SET:
                     mHeightMap.SetTerrain(new Vector2(position.X, position.Z), radius, intensity);
                     break;
-                case EditorForm.HeightMapTools.SMOOTH:
+                case ToolMenu.Tools.SMOOTH:
                     mHeightMap.SmoothTerrain(new Vector2(position.X, position.Z), radius);
                     break;
-                case EditorForm.HeightMapTools.FLATTEN:
+                case ToolMenu.Tools.FLATTEN:
                     mHeightMap.FlattenTerrain(new Vector2(position.X, position.Z), radius);
                     break;
-                case EditorForm.HeightMapTools.LOWER:
+                case ToolMenu.Tools.LOWER:
                     mHeightMap.LowerTerrain(new Vector2(position.X, position.Z), radius, intensity);
                     break;
-                case EditorForm.HeightMapTools.RAISE:
+                case ToolMenu.Tools.RAISE:
                     mHeightMap.RaiseTerrain(new Vector2(position.X, position.Z), radius, intensity);
                     break;
             }
@@ -132,23 +134,23 @@ namespace WorldEditor
             Vector2 UVScale, 
             float radius, 
             float alpha, 
-            EditorForm.Brushes brush, 
-            EditorForm.PaintingTools tool, 
+            ToolMenu.Brushes brush,
+            ToolMenu.Tools tool, 
             GameConstructLibrary.TerrainTexture.TextureLayer layer)
         {
-            mTextureMap.IsFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+            mTextureMap.IsFeathered = brush == ToolMenu.Brushes.CIRCLE_FEATHERED || brush == ToolMenu.Brushes.BLOCK_FEATHERED;
 
-            mTextureMap.IsBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+            mTextureMap.IsBlock = brush == ToolMenu.Brushes.BLOCK || brush == ToolMenu.Brushes.BLOCK_FEATHERED;
 
             switch (tool)
             {
-                case EditorForm.PaintingTools.BRUSH:
+                case ToolMenu.Tools.PAINT:
                     mTextureMap.PaintTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture, UVOffset, UVScale);
                     break;
-                case EditorForm.PaintingTools.ERASER:
+                case ToolMenu.Tools.ERASE:
                     mTextureMap.EraseTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture, UVOffset, UVScale);
                     break;
-                case EditorForm.PaintingTools.SMOOTH:
+                case ToolMenu.Tools.BLEND:
                     mTextureMap.SmoothPaint(new Vector2(position.X, position.Z), radius);
                     break;
             }
@@ -364,12 +366,12 @@ namespace WorldEditor
                 mTerrainPhysics.Render();
             }
 
-            if (mWater != null)
+            if (mWater != null && DrawWater)
             {
                 mWater.Render();
             }
 
-            if (mSkyBox != null)
+            if (mSkyBox != null && DrawSkyBox)
             {
                 mSkyBox.Render();
             }
