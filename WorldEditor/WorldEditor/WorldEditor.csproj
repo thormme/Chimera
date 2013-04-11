@@ -161,6 +161,7 @@
     </Compile>
     <Compile Include="DummyWorld.cs" />
     <Compile Include="Controls.cs" />
+    <Compile Include="EditorObjectDefinition.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

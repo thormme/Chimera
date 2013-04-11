@@ -21,6 +21,25 @@ namespace GameConstructLibrary
     {
         private static UInt32 mNextObjectID = 1;
 
+        /// <summary>
+        /// The name of the object type in the editor.
+        /// </summary>
+        private string mEditorType { get; set; }
+        public string EditorType
+        {
+            get
+            {
+                return mEditorType;
+            }
+            set
+            {
+                mEditorType = value;
+                ParameterChanged();
+            }
+        }
+        /// <summary>
+        /// The in game object type this will be create.
+        /// </summary>
         private string mType { get; set; }
         public string Type
         {
@@ -49,7 +68,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
-        public string[] mParameters { get; set; }
+        private string[] mParameters { get; set; }
         public string[] Parameters
         {
             get
@@ -62,7 +81,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
-        public Vector3 mPosition { get; set; }
+        private Vector3 mPosition { get; set; }
         public Vector3 Position
         {
             get
@@ -79,7 +98,7 @@ namespace GameConstructLibrary
                 }
             }
         }
-        public Vector3 mYawPitchRoll { get; set; }
+        private Vector3 mYawPitchRoll { get; set; }
         public Vector3 YawPitchRoll
         {
             get
@@ -92,7 +111,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
-        public Vector3 mScale { get; set; }
+        private Vector3 mScale { get; set; }
         public Vector3 Scale
         {
             get
@@ -105,7 +124,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
-        public Vector3 mRotationAxis { get; set; }
+        private Vector3 mRotationAxis { get; set; }
         public Vector3 RotationAxis
         {
             get
@@ -118,7 +137,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
-        public float mRotationAngle { get; set; }
+        private float mRotationAngle { get; set; }
         public float RotationAngle
         {
             get
@@ -131,7 +150,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
-        public float mHeight { get; set; }
+        private float mHeight { get; set; }
         public float Height
         {
             get
@@ -144,7 +163,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
-        public bool mFloating { get; set; }
+        private bool mFloating { get; set; }
         public bool Floating
         {
             get

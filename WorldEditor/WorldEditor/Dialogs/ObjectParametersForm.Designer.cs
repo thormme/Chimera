@@ -41,11 +41,11 @@
             this.ScaleX = new System.Windows.Forms.NumericUpDown();
             this.ScaleY = new System.Windows.Forms.NumericUpDown();
             this.ScaleZ = new System.Windows.Forms.NumericUpDown();
-            this.Height = new System.Windows.Forms.NumericUpDown();
+            this.FloatingHeight = new System.Windows.Forms.NumericUpDown();
             this.PositionY = new System.Windows.Forms.NumericUpDown();
             this.Floating = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.AdditionalParametersPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Create = new System.Windows.Forms.Button();
             this.CreatePlace = new System.Windows.Forms.Button();
@@ -58,7 +58,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ScaleX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ScaleY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ScaleZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Height)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FloatingHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PositionY)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -185,11 +185,6 @@
             this.Pitch.Name = "Pitch";
             this.Pitch.Size = new System.Drawing.Size(60, 20);
             this.Pitch.TabIndex = 9;
-            this.Pitch.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.Pitch.ValueChanged += new System.EventHandler(this.Pitch_ValueChanged);
             // 
             // Roll
@@ -298,24 +293,24 @@
             0});
             this.ScaleZ.ValueChanged += new System.EventHandler(this.ScaleZ_ValueChanged);
             // 
-            // Height
+            // FloatingHeight
             // 
-            this.Height.DecimalPlaces = 2;
-            this.Height.Location = new System.Drawing.Point(109, 119);
-            this.Height.Maximum = new decimal(new int[] {
+            this.FloatingHeight.DecimalPlaces = 2;
+            this.FloatingHeight.Location = new System.Drawing.Point(109, 119);
+            this.FloatingHeight.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.Height.Minimum = new decimal(new int[] {
+            this.FloatingHeight.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.Height.Name = "Height";
-            this.Height.Size = new System.Drawing.Size(60, 20);
-            this.Height.TabIndex = 14;
-            this.Height.ValueChanged += new System.EventHandler(this.Height_ValueChanged);
+            this.FloatingHeight.Name = "FloatingHeight";
+            this.FloatingHeight.Size = new System.Drawing.Size(60, 20);
+            this.FloatingHeight.TabIndex = 14;
+            this.FloatingHeight.ValueChanged += new System.EventHandler(this.Height_ValueChanged);
             // 
             // PositionY
             // 
@@ -356,7 +351,7 @@
             this.panel2.Controls.Add(this.Physical);
             this.panel2.Controls.Add(this.Floating);
             this.panel2.Controls.Add(this.PositionLabel);
-            this.panel2.Controls.Add(this.Height);
+            this.panel2.Controls.Add(this.FloatingHeight);
             this.panel2.Controls.Add(this.OrientationLabel);
             this.panel2.Controls.Add(this.ScaleZ);
             this.panel2.Controls.Add(this.ScaleLabel);
@@ -374,13 +369,15 @@
             this.panel2.Size = new System.Drawing.Size(304, 153);
             this.panel2.TabIndex = 20;
             // 
-            // panel3
+            // AdditionalParametersPanel
             // 
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(0, 153);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(304, 26);
-            this.panel3.TabIndex = 21;
+            this.AdditionalParametersPanel.AutoSize = true;
+            this.AdditionalParametersPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AdditionalParametersPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AdditionalParametersPanel.Location = new System.Drawing.Point(0, 153);
+            this.AdditionalParametersPanel.Name = "AdditionalParametersPanel";
+            this.AdditionalParametersPanel.Size = new System.Drawing.Size(304, 0);
+            this.AdditionalParametersPanel.TabIndex = 21;
             // 
             // panel1
             // 
@@ -388,7 +385,7 @@
             this.panel1.Controls.Add(this.CreatePlace);
             this.panel1.Controls.Add(this.Place);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 179);
+            this.panel1.Location = new System.Drawing.Point(0, 153);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(304, 39);
             this.panel1.TabIndex = 22;
@@ -424,11 +421,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(304, 218);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(304, 200);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.AdditionalParametersPanel);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MinimumSize = new System.Drawing.Size(304, 190);
             this.Name = "ObjectParametersForm";
             this.ShowInTaskbar = false;
             ((System.ComponentModel.ISupportInitialize)(this.PositionX)).EndInit();
@@ -439,12 +438,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.ScaleX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ScaleY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ScaleZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Height)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FloatingHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PositionY)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -463,14 +463,14 @@
         public System.Windows.Forms.NumericUpDown ScaleX;
         public System.Windows.Forms.NumericUpDown ScaleY;
         public System.Windows.Forms.NumericUpDown ScaleZ;
-        public System.Windows.Forms.NumericUpDown Height;
+        public System.Windows.Forms.NumericUpDown FloatingHeight;
         public System.Windows.Forms.NumericUpDown PositionY;
         public System.Windows.Forms.CheckBox Floating;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.Button Create;
         public System.Windows.Forms.Button CreatePlace;
         public System.Windows.Forms.Button Place;
+        public System.Windows.Forms.Panel AdditionalParametersPanel;
     }
 }

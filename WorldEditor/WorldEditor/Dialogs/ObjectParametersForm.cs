@@ -37,11 +37,32 @@ namespace WorldEditor.Dialogs
             ScaleX.BackColor = defaultBGColor;
             ScaleY.BackColor = defaultBGColor;
             ScaleZ.BackColor = defaultBGColor;
-            Height.BackColor = defaultBGColor;
+            FloatingHeight.BackColor = defaultBGColor;
             Floating.Tag = CheckState.Unchecked;
             Physical.Tag = CheckState.Unchecked;
             Physical.Enabled = true;
 
+            // Remove context sensitive parameters.
+            AdditionalParametersPanel.Controls.Clear();
+
+            List<TextBox> parameterTextBoxes = new List<TextBox>();
+            if (SelectedObjects.Count > 0)
+            {
+                for (int i = 0; i < SelectedObjects[0].Parameters.Length; i++)
+                {
+                    string parameter = SelectedObjects[0].Parameters[i];
+
+                    TextBox param = new TextBox();
+                    param.Location = new System.Drawing.Point(0, AdditionalParametersPanel.Height);
+                    param.BackColor = defaultBGColor;
+                    param.Tag = i;
+                    param.TextChanged += AdditionalParameterChanged;
+                    AdditionalParametersPanel.Controls.Add(param);
+                    parameterTextBoxes.Add(param);
+                }
+                AdditionalParametersPanel.Invalidate();
+            }
+            bool objectsOfSameType = true;
             
             for (int i = 0; i < SelectedObjects.Count; i++)
             {
@@ -95,7 +116,7 @@ namespace WorldEditor.Dialogs
 
                     if (SelectedObjects[i].Height != SelectedObjects[i - 1].Height)
                     {
-                        Height.BackColor = differentValuesBGColor;
+                        FloatingHeight.BackColor = differentValuesBGColor;
                     }
 
                     if (SelectedObjects[i].Floating != SelectedObjects[i - 1].Floating)
@@ -106,6 +127,21 @@ namespace WorldEditor.Dialogs
                     if (SelectedObjects[i].Type != SelectedObjects[i - 1].Type)
                     {
                         Physical.Tag = CheckState.Indeterminate;
+                        objectsOfSameType = false;
+
+                        parameterTextBoxes.Clear();
+                        AdditionalParametersPanel.Controls.Clear();
+                    }
+
+                    if (objectsOfSameType)
+                    {
+                        for (int j = 0; j < SelectedObjects[i].Parameters.Length; j++)
+                        {
+                            if (SelectedObjects[i].Parameters[j] != SelectedObjects[i - 1].Parameters[j])
+                            {
+                                parameterTextBoxes[i].BackColor = differentValuesBGColor;
+                            }
+                        }
                     }
                 }
             }
@@ -151,9 +187,9 @@ namespace WorldEditor.Dialogs
                     ScaleZ.Value = (decimal)SelectedObjects[0].Scale.Z;
                 }
 
-                if (Height.BackColor == defaultBGColor)
+                if (FloatingHeight.BackColor == defaultBGColor)
                 {
-                    Height.Value = (decimal)SelectedObjects[0].Height;
+                    FloatingHeight.Value = (decimal)SelectedObjects[0].Height;
                 }
 
                 if ((CheckState)Floating.Tag != CheckState.Indeterminate)
@@ -173,7 +209,20 @@ namespace WorldEditor.Dialogs
                 {
                     Physical.CheckState = CheckState.Indeterminate;
                 }
+
+                for (int i = 0; i < parameterTextBoxes.Count; i++)
+                {
+                    parameterTextBoxes[i].Text = SelectedObjects[0].Parameters[i];
+                }
             }
+
+            // Resize form to fit contents.
+            int height = 0;
+            foreach (Control control in Controls)
+            {
+                height += control.Height;
+            }
+            Height = height;
         }
 
         private void Floating_CheckedChanged(object sender, EventArgs e)
@@ -185,7 +234,7 @@ namespace WorldEditor.Dialogs
                     dummyObject.Floating = true;
                 }
                 PositionY.Enabled = false;
-                Height.Enabled = true;
+                FloatingHeight.Enabled = true;
             }
             else if ((sender as CheckBox).CheckState == CheckState.Unchecked)
             {
@@ -194,12 +243,12 @@ namespace WorldEditor.Dialogs
                     dummyObject.Floating = false;
                 }
                 PositionY.Enabled = true;
-                Height.Enabled = false;
+                FloatingHeight.Enabled = false;
             }
             else if ((sender as CheckBox).CheckState == CheckState.Indeterminate)
             {
                 PositionY.Enabled = false;
-                Height.Enabled = false;
+                FloatingHeight.Enabled = false;
             }
         }
 
@@ -294,5 +343,12 @@ namespace WorldEditor.Dialogs
             }
         }
 
+        private void AdditionalParameterChanged(object sender, EventArgs e)
+        {
+            foreach (DummyObject dummyObject in SelectedObjects)
+            {
+                dummyObject.Parameters[(int)(sender as TextBox).Tag] = (sender as TextBox).Text;
+            }
+        }
     }
 }

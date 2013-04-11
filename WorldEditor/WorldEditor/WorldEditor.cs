@@ -86,6 +86,8 @@ namespace WorldEditor
 
         private GameWindow Window = null;
 
+        private Dictionary<string, EditorObjectDefinition> mObjectDefinitions = new Dictionary<string, EditorObjectDefinition>(); 
+
         //Stores all placeable objects.
         private Dictionary<string, DummyObject> mObjects = new Dictionary<string, DummyObject>();
 
@@ -231,31 +233,13 @@ namespace WorldEditor
             FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
             foreach (FileInfo file in objects)
             {
-                DummyObject tempObject = new DummyObject();
                 try
                 {
-                    string[] data = System.IO.File.ReadAllLines(file.FullName);
+                    EditorObjectDefinition definition = new EditorObjectDefinition(file);
 
-                    tempObject.Type = data[0];
-                    tempObject.Model = data[1];
-
-                    List<string> parameters = new List<string>();
-                    if (data.Length - 2 > 0)
-                    {
-                        for (int count = 0; count < data.Length - 2; count++)
-                        {
-                            parameters.Add(data[count + 2]);
-                        }
-                    }
-                    tempObject.Parameters = parameters.ToArray();
-
-                    tempObject.Position = Vector3.Zero;
-                    tempObject.YawPitchRoll = Vector3.Up;
-                    tempObject.Scale = Vector3.One;
-                    tempObject.Height = 0.0f;
-
-                    mObjects.Add(Path.GetFileNameWithoutExtension(file.Name), tempObject);
-                    ((EditorPane as EditorForm).ObjectList as ListBox).Items.Add(Path.GetFileNameWithoutExtension(file.Name));
+                    mObjectDefinitions.Add(definition.EditorType, definition);
+                    mObjects.Add(definition.EditorType, definition.CreateDummyObject());
+                    ((EditorPane as EditorForm).ObjectList as ListBox).Items.Add(definition.EditorType);
                 }
                 catch (SystemException)
                 {
@@ -429,7 +413,7 @@ namespace WorldEditor
             float ScaleZ = (float)ObjectParameterPane.ScaleZ.Value;
             dummyObject.Scale = new Vector3(ScaleX, ScaleY, ScaleZ);
 
-            dummyObject.Height = (float)ObjectParameterPane.Height.Value;
+            dummyObject.Height = (float)ObjectParameterPane.FloatingHeight.Value;
 
             dummyObject.Floating = ObjectParameterPane.Floating.Checked;
         }
