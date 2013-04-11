@@ -44,9 +44,12 @@
             this.Height = new System.Windows.Forms.NumericUpDown();
             this.PositionY = new System.Windows.Forms.NumericUpDown();
             this.Floating = new System.Windows.Forms.CheckBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.Create = new System.Windows.Forms.Button();
-            this.Place = new System.Windows.Forms.Button();
             this.CreatePlace = new System.Windows.Forms.Button();
+            this.Place = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PositionX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PositionZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Yaw)).BeginInit();
@@ -57,22 +60,25 @@
             ((System.ComponentModel.ISupportInitialize)(this.ScaleZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Height)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PositionY)).BeginInit();
+            this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Physical
             // 
             this.Physical.AutoSize = true;
-            this.Physical.Location = new System.Drawing.Point(16, 21);
+            this.Physical.Location = new System.Drawing.Point(20, 11);
             this.Physical.Name = "Physical";
             this.Physical.Size = new System.Drawing.Size(65, 17);
             this.Physical.TabIndex = 0;
             this.Physical.Text = "Physical";
             this.Physical.UseVisualStyleBackColor = true;
+            this.Physical.CheckedChanged += new System.EventHandler(this.Physical_CheckedChanged);
             // 
             // PositionLabel
             // 
             this.PositionLabel.AutoSize = true;
-            this.PositionLabel.Location = new System.Drawing.Point(13, 53);
+            this.PositionLabel.Location = new System.Drawing.Point(17, 43);
             this.PositionLabel.Name = "PositionLabel";
             this.PositionLabel.Size = new System.Drawing.Size(47, 13);
             this.PositionLabel.TabIndex = 1;
@@ -81,7 +87,7 @@
             // OrientationLabel
             // 
             this.OrientationLabel.AutoSize = true;
-            this.OrientationLabel.Location = new System.Drawing.Point(13, 79);
+            this.OrientationLabel.Location = new System.Drawing.Point(17, 69);
             this.OrientationLabel.Name = "OrientationLabel";
             this.OrientationLabel.Size = new System.Drawing.Size(61, 13);
             this.OrientationLabel.TabIndex = 2;
@@ -90,7 +96,7 @@
             // ScaleLabel
             // 
             this.ScaleLabel.AutoSize = true;
-            this.ScaleLabel.Location = new System.Drawing.Point(12, 105);
+            this.ScaleLabel.Location = new System.Drawing.Point(16, 95);
             this.ScaleLabel.Name = "ScaleLabel";
             this.ScaleLabel.Size = new System.Drawing.Size(37, 13);
             this.ScaleLabel.TabIndex = 3;
@@ -99,7 +105,7 @@
             // HeightLabel
             // 
             this.HeightLabel.AutoSize = true;
-            this.HeightLabel.Location = new System.Drawing.Point(12, 132);
+            this.HeightLabel.Location = new System.Drawing.Point(16, 122);
             this.HeightLabel.Name = "HeightLabel";
             this.HeightLabel.Size = new System.Drawing.Size(41, 13);
             this.HeightLabel.TabIndex = 4;
@@ -108,7 +114,7 @@
             // PositionX
             // 
             this.PositionX.DecimalPlaces = 2;
-            this.PositionX.Location = new System.Drawing.Point(105, 50);
+            this.PositionX.Location = new System.Drawing.Point(109, 40);
             this.PositionX.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -127,7 +133,7 @@
             // PositionZ
             // 
             this.PositionZ.DecimalPlaces = 2;
-            this.PositionZ.Location = new System.Drawing.Point(237, 50);
+            this.PositionZ.Location = new System.Drawing.Point(241, 40);
             this.PositionZ.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -146,7 +152,7 @@
             // Yaw
             // 
             this.Yaw.DecimalPlaces = 2;
-            this.Yaw.Location = new System.Drawing.Point(105, 76);
+            this.Yaw.Location = new System.Drawing.Point(109, 66);
             this.Yaw.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -165,7 +171,7 @@
             // Pitch
             // 
             this.Pitch.DecimalPlaces = 2;
-            this.Pitch.Location = new System.Drawing.Point(171, 76);
+            this.Pitch.Location = new System.Drawing.Point(175, 66);
             this.Pitch.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -189,7 +195,7 @@
             // Roll
             // 
             this.Roll.DecimalPlaces = 2;
-            this.Roll.Location = new System.Drawing.Point(237, 76);
+            this.Roll.Location = new System.Drawing.Point(241, 66);
             this.Roll.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -213,7 +219,7 @@
             0,
             0,
             131072});
-            this.ScaleX.Location = new System.Drawing.Point(105, 102);
+            this.ScaleX.Location = new System.Drawing.Point(109, 92);
             this.ScaleX.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -242,7 +248,7 @@
             0,
             0,
             131072});
-            this.ScaleY.Location = new System.Drawing.Point(171, 103);
+            this.ScaleY.Location = new System.Drawing.Point(175, 93);
             this.ScaleY.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -271,7 +277,7 @@
             0,
             0,
             131072});
-            this.ScaleZ.Location = new System.Drawing.Point(237, 102);
+            this.ScaleZ.Location = new System.Drawing.Point(241, 92);
             this.ScaleZ.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -295,8 +301,7 @@
             // Height
             // 
             this.Height.DecimalPlaces = 2;
-            this.Height.Enabled = false;
-            this.Height.Location = new System.Drawing.Point(105, 129);
+            this.Height.Location = new System.Drawing.Point(109, 119);
             this.Height.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -315,7 +320,8 @@
             // PositionY
             // 
             this.PositionY.DecimalPlaces = 2;
-            this.PositionY.Location = new System.Drawing.Point(171, 50);
+            this.PositionY.Enabled = false;
+            this.PositionY.Location = new System.Drawing.Point(175, 40);
             this.PositionY.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -336,7 +342,7 @@
             this.Floating.AutoSize = true;
             this.Floating.Checked = true;
             this.Floating.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.Floating.Location = new System.Drawing.Point(171, 132);
+            this.Floating.Location = new System.Drawing.Point(175, 122);
             this.Floating.Name = "Floating";
             this.Floating.Size = new System.Drawing.Size(63, 17);
             this.Floating.TabIndex = 15;
@@ -344,58 +350,87 @@
             this.Floating.UseVisualStyleBackColor = true;
             this.Floating.CheckedChanged += new System.EventHandler(this.Floating_CheckedChanged);
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.PositionX);
+            this.panel2.Controls.Add(this.Physical);
+            this.panel2.Controls.Add(this.Floating);
+            this.panel2.Controls.Add(this.PositionLabel);
+            this.panel2.Controls.Add(this.Height);
+            this.panel2.Controls.Add(this.OrientationLabel);
+            this.panel2.Controls.Add(this.ScaleZ);
+            this.panel2.Controls.Add(this.ScaleLabel);
+            this.panel2.Controls.Add(this.ScaleY);
+            this.panel2.Controls.Add(this.HeightLabel);
+            this.panel2.Controls.Add(this.ScaleX);
+            this.panel2.Controls.Add(this.PositionY);
+            this.panel2.Controls.Add(this.Roll);
+            this.panel2.Controls.Add(this.PositionZ);
+            this.panel2.Controls.Add(this.Pitch);
+            this.panel2.Controls.Add(this.Yaw);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(304, 153);
+            this.panel2.TabIndex = 20;
+            // 
+            // panel3
+            // 
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(0, 153);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(304, 26);
+            this.panel3.TabIndex = 21;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.Create);
+            this.panel1.Controls.Add(this.CreatePlace);
+            this.panel1.Controls.Add(this.Place);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 179);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(304, 39);
+            this.panel1.TabIndex = 22;
+            // 
             // Create
             // 
-            this.Create.Location = new System.Drawing.Point(16, 171);
+            this.Create.Location = new System.Drawing.Point(11, 10);
             this.Create.Name = "Create";
             this.Create.Size = new System.Drawing.Size(75, 23);
             this.Create.TabIndex = 16;
             this.Create.Text = "Create";
             this.Create.UseVisualStyleBackColor = true;
             // 
-            // Place
-            // 
-            this.Place.Location = new System.Drawing.Point(105, 170);
-            this.Place.Name = "Place";
-            this.Place.Size = new System.Drawing.Size(75, 23);
-            this.Place.TabIndex = 17;
-            this.Place.Text = "Place";
-            this.Place.UseVisualStyleBackColor = true;
-            // 
             // CreatePlace
             // 
-            this.CreatePlace.Location = new System.Drawing.Point(197, 170);
+            this.CreatePlace.Location = new System.Drawing.Point(197, 10);
             this.CreatePlace.Name = "CreatePlace";
             this.CreatePlace.Size = new System.Drawing.Size(111, 23);
             this.CreatePlace.TabIndex = 18;
             this.CreatePlace.Text = "Create and Place";
             this.CreatePlace.UseVisualStyleBackColor = true;
             // 
+            // Place
+            // 
+            this.Place.Location = new System.Drawing.Point(102, 10);
+            this.Place.Name = "Place";
+            this.Place.Size = new System.Drawing.Size(75, 23);
+            this.Place.TabIndex = 17;
+            this.Place.Text = "Place";
+            this.Place.UseVisualStyleBackColor = true;
+            // 
             // ObjectParametersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.CreatePlace);
-            this.Controls.Add(this.Place);
-            this.Controls.Add(this.Create);
-            this.Controls.Add(this.Floating);
-            this.Controls.Add(this.Height);
-            this.Controls.Add(this.ScaleZ);
-            this.Controls.Add(this.ScaleY);
-            this.Controls.Add(this.ScaleX);
-            this.Controls.Add(this.Roll);
-            this.Controls.Add(this.Pitch);
-            this.Controls.Add(this.Yaw);
-            this.Controls.Add(this.PositionZ);
-            this.Controls.Add(this.PositionY);
-            this.Controls.Add(this.PositionX);
-            this.Controls.Add(this.HeightLabel);
-            this.Controls.Add(this.ScaleLabel);
-            this.Controls.Add(this.OrientationLabel);
-            this.Controls.Add(this.PositionLabel);
-            this.Controls.Add(this.Physical);
+            this.ClientSize = new System.Drawing.Size(304, 218);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ObjectParametersForm";
-            this.Size = new System.Drawing.Size(320, 206);
+            this.ShowInTaskbar = false;
             ((System.ComponentModel.ISupportInitialize)(this.PositionX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PositionZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Yaw)).EndInit();
@@ -406,8 +441,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.ScaleZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Height)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PositionY)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -429,8 +466,11 @@
         public System.Windows.Forms.NumericUpDown Height;
         public System.Windows.Forms.NumericUpDown PositionY;
         public System.Windows.Forms.CheckBox Floating;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.Button Create;
-        public System.Windows.Forms.Button Place;
         public System.Windows.Forms.Button CreatePlace;
+        public System.Windows.Forms.Button Place;
     }
 }

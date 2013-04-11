@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework;
 
 namespace WorldEditor.Dialogs
 {
-    public partial class ObjectParametersForm : UserControl
+    public partial class ObjectParametersForm : Form
     {
         public ObjectParametersForm()
         {
@@ -38,110 +38,140 @@ namespace WorldEditor.Dialogs
             ScaleY.BackColor = defaultBGColor;
             ScaleZ.BackColor = defaultBGColor;
             Height.BackColor = defaultBGColor;
-            Floating.CheckState = CheckState.Unchecked;
+            Floating.Tag = CheckState.Unchecked;
+            Physical.Tag = CheckState.Unchecked;
+            Physical.Enabled = true;
 
-            // Check which parameters are not shared by all objects.
-            for (int i = 1; i < SelectedObjects.Count; i++)
+            
+            for (int i = 0; i < SelectedObjects.Count; i++)
             {
-                if (SelectedObjects[i].Position.X != SelectedObjects[i - 1].Position.X)
+                // Check that certain conditions are met for every selected object.
+                if (!(SelectedObjects[i].Type.Contains("Chimera.PhysicsProp") || SelectedObjects[i].Type.Contains("Chimera.Prop")))
                 {
-                    PositionX.BackColor = differentValuesBGColor;
+                    Physical.Enabled = false;
                 }
-                if (SelectedObjects[i].Position.Y != SelectedObjects[i - 1].Position.Y)
+                
+                // Check which parameters are not shared by all objects.
+                if (i > 0)
                 {
-                    PositionY.BackColor = differentValuesBGColor;
-                }
-                if (SelectedObjects[i].Position.Z != SelectedObjects[i - 1].Position.Z)
-                {
-                    PositionZ.BackColor = differentValuesBGColor;
-                }
+                    if (SelectedObjects[i].Position.X != SelectedObjects[i - 1].Position.X)
+                    {
+                        PositionX.BackColor = differentValuesBGColor;
+                    }
+                    if (SelectedObjects[i].Position.Y != SelectedObjects[i - 1].Position.Y)
+                    {
+                        PositionY.BackColor = differentValuesBGColor;
+                    }
+                    if (SelectedObjects[i].Position.Z != SelectedObjects[i - 1].Position.Z)
+                    {
+                        PositionZ.BackColor = differentValuesBGColor;
+                    }
 
-                if (SelectedObjects[i].YawPitchRoll.X != SelectedObjects[i - 1].YawPitchRoll.X)
-                {
-                    Yaw.BackColor = differentValuesBGColor;
-                }
-                if (SelectedObjects[i].YawPitchRoll.Y != SelectedObjects[i - 1].YawPitchRoll.Y)
-                {
-                    Pitch.BackColor = differentValuesBGColor;
-                }
-                if (SelectedObjects[i].YawPitchRoll.Z != SelectedObjects[i - 1].YawPitchRoll.Z)
-                {
-                    Roll.BackColor = differentValuesBGColor;
-                }
+                    if (SelectedObjects[i].YawPitchRoll.X != SelectedObjects[i - 1].YawPitchRoll.X)
+                    {
+                        Yaw.BackColor = differentValuesBGColor;
+                    }
+                    if (SelectedObjects[i].YawPitchRoll.Y != SelectedObjects[i - 1].YawPitchRoll.Y)
+                    {
+                        Pitch.BackColor = differentValuesBGColor;
+                    }
+                    if (SelectedObjects[i].YawPitchRoll.Z != SelectedObjects[i - 1].YawPitchRoll.Z)
+                    {
+                        Roll.BackColor = differentValuesBGColor;
+                    }
 
-                if (SelectedObjects[i].Scale.X != SelectedObjects[i - 1].Scale.X)
-                {
-                    ScaleX.BackColor = differentValuesBGColor;
-                }
-                if (SelectedObjects[i].Scale.Y != SelectedObjects[i - 1].Scale.Y)
-                {
-                    ScaleY.BackColor = differentValuesBGColor;
-                }
-                if (SelectedObjects[i].Scale.Z != SelectedObjects[i - 1].Scale.Z)
-                {
-                    ScaleZ.BackColor = differentValuesBGColor;
-                }
+                    if (SelectedObjects[i].Scale.X != SelectedObjects[i - 1].Scale.X)
+                    {
+                        ScaleX.BackColor = differentValuesBGColor;
+                    }
+                    if (SelectedObjects[i].Scale.Y != SelectedObjects[i - 1].Scale.Y)
+                    {
+                        ScaleY.BackColor = differentValuesBGColor;
+                    }
+                    if (SelectedObjects[i].Scale.Z != SelectedObjects[i - 1].Scale.Z)
+                    {
+                        ScaleZ.BackColor = differentValuesBGColor;
+                    }
 
-                if (SelectedObjects[i].Height != SelectedObjects[i - 1].Height)
-                {
-                    Height.BackColor = differentValuesBGColor;
-                }
+                    if (SelectedObjects[i].Height != SelectedObjects[i - 1].Height)
+                    {
+                        Height.BackColor = differentValuesBGColor;
+                    }
 
-                if (SelectedObjects[i].Floating != SelectedObjects[i - 1].Floating)
-                {
-                    Floating.CheckState = CheckState.Indeterminate;
+                    if (SelectedObjects[i].Floating != SelectedObjects[i - 1].Floating)
+                    {
+                        Floating.Tag = CheckState.Indeterminate;
+                    }
+
+                    if (SelectedObjects[i].Type != SelectedObjects[i - 1].Type)
+                    {
+                        Physical.Tag = CheckState.Indeterminate;
+                    }
                 }
             }
 
             if (SelectedObjects.Count > 0)
             {
-                if (PositionX.BackColor == DefaultBackColor)
+                if (PositionX.BackColor == defaultBGColor)
                 {
                     PositionX.Value = (decimal)SelectedObjects[0].Position.X;
                 }
-                if (PositionY.BackColor == DefaultBackColor)
+                if (PositionY.BackColor == defaultBGColor)
                 {
                     PositionY.Value = (decimal)SelectedObjects[0].Position.Y;
                 }
-                if (PositionZ.BackColor == DefaultBackColor)
+                if (PositionZ.BackColor == defaultBGColor)
                 {
                     PositionZ.Value = (decimal)SelectedObjects[0].Position.Z;
                 }
 
-                if (Yaw.BackColor == DefaultBackColor)
+                if (Yaw.BackColor == defaultBGColor)
                 {
                     Yaw.Value = (decimal)SelectedObjects[0].YawPitchRoll.X / (decimal)Math.PI * (decimal)180.0;
                 }
-                if (Pitch.BackColor == DefaultBackColor)
+                if (Pitch.BackColor == defaultBGColor)
                 {
                     Pitch.Value = (decimal)SelectedObjects[0].YawPitchRoll.Y / (decimal)Math.PI * (decimal)180.0;
                 }
-                if (Roll.BackColor == DefaultBackColor)
+                if (Roll.BackColor == defaultBGColor)
                 {
                     Roll.Value = (decimal)SelectedObjects[0].YawPitchRoll.Z / (decimal)Math.PI * (decimal)180.0;
                 }
 
-                if (ScaleX.BackColor == DefaultBackColor)
+                if (ScaleX.BackColor == defaultBGColor)
                 {
                     ScaleX.Value = (decimal)SelectedObjects[0].Scale.X;
                 }
-                if (ScaleY.BackColor == DefaultBackColor)
+                if (ScaleY.BackColor == defaultBGColor)
                 {
                     ScaleY.Value = (decimal)SelectedObjects[0].Scale.Y;
                 }
-                if (ScaleZ.BackColor == DefaultBackColor)
+                if (ScaleZ.BackColor == defaultBGColor)
                 {
                     ScaleZ.Value = (decimal)SelectedObjects[0].Scale.Z;
                 }
 
-                if (Height.BackColor == DefaultBackColor)
+                if (Height.BackColor == defaultBGColor)
                 {
                     Height.Value = (decimal)SelectedObjects[0].Height;
                 }
 
-                if (Floating.CheckState != CheckState.Indeterminate)
+                if ((CheckState)Floating.Tag != CheckState.Indeterminate)
                 {
-                    Floating.Checked = SelectedObjects[0].Floating;
+                    Floating.CheckState = SelectedObjects[0].Floating ? CheckState.Checked : CheckState.Unchecked;
+                }
+                else
+                {
+                    Floating.CheckState = CheckState.Indeterminate;
+                }
+
+                if ((CheckState)Physical.Tag != CheckState.Indeterminate && Physical.Enabled)
+                {
+                    Physical.CheckState = SelectedObjects[0].Type.Contains("Chimera.PhysicsProp") ? CheckState.Checked : CheckState.Unchecked;
+                }
+                else
+                {
+                    Physical.CheckState = CheckState.Indeterminate;
                 }
             }
         }
@@ -250,6 +280,17 @@ namespace WorldEditor.Dialogs
             foreach (DummyObject dummyObject in SelectedObjects)
             {
                 dummyObject.Height = (float)((sender as NumericUpDown).Value);
+            }
+        }
+
+        private void Physical_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBox).CheckState != CheckState.Indeterminate)
+            {
+                foreach (DummyObject dummyObject in SelectedObjects)
+                {
+                    dummyObject.Type = ((sender as CheckBox).Checked) ? "Chimera.PhysicsProp" : "Chimera.Prop";
+                }
             }
         }
 

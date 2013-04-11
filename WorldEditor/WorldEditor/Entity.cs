@@ -12,8 +12,8 @@ namespace WorldEditor
 {
     public class Entity
     {
-
-        private const float Speed = 0.05f;
+        private const float SpeedMinimum = 0.0025f;
+        private const float SpeedAcceleration = 0.05f;
         private const float Sensitivity = 0.1f;
 
         public Viewport Viewport
@@ -29,6 +29,7 @@ namespace WorldEditor
 
         private Vector3 mMovement = Vector3.Zero;
         private Vector3 mDirection = Vector3.Zero;
+        private float mSpeed = 0.05f;
 
         public Entity(GraphicsDevice graphicsDevice, Controls controls, FPSCamera camera)
         {
@@ -40,13 +41,18 @@ namespace WorldEditor
 
         public void Update(GameTime gameTime)
         {
-            UpdateMovement();
+            UpdateMovement(gameTime);
             UpdateDirection();
             UpdateCamera(gameTime);
         }
 
-        private void UpdateMovement()
+        private void UpdateMovement(GameTime gameTime)
         {
+            mSpeed += SpeedAcceleration * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (!(mControls.Right.Active || mControls.Left.Active || mControls.Forward.Active || mControls.Backward.Active))
+            {
+                mSpeed = SpeedMinimum;
+            }
             mMovement.X = -(float)(mControls.Right.Degree - mControls.Left.Degree);
             mMovement.Y = (float)(mControls.Forward.Degree - mControls.Backward.Degree);
         }
@@ -75,7 +81,7 @@ namespace WorldEditor
 
         private void UpdateCamera(GameTime gameTime)
         {
-            mCamera.Move(Speed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds, Speed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds, 0.0f);
+            mCamera.Move(mSpeed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds, mSpeed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds, 0.0f);
             mCamera.RotateAroundSelf(Sensitivity * mDirection.X * gameTime.ElapsedGameTime.Milliseconds, Sensitivity * mDirection.Y * gameTime.ElapsedGameTime.Milliseconds, 0.0f);
         }
 

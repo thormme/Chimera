@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace WorldEditor.Dialogs
 {
-    public partial class TextureSelectionForm : UserControl
+    public partial class TextureSelectionForm : Form
     {
         public TextureSelectionForm()
         {

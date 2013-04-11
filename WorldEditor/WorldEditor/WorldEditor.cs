@@ -56,6 +56,8 @@ namespace WorldEditor
         //Dialog for the world editor.
         public ToolMenu ToolMenu = new ToolMenu();
 
+        public EditorForm EditorPane = new EditorForm();
+
         //Dialog for object parameters.
         public ObjectParametersForm ObjectParameterPane = new ObjectParametersForm();
 
@@ -84,6 +86,8 @@ namespace WorldEditor
 
         private FPSCamera mCamera = null;
 
+        private GameWindow Window = null;
+
         //Stores all placeable objects.
         private Dictionary<string, DummyObject> mObjects = new Dictionary<string, DummyObject>();
 
@@ -108,8 +112,9 @@ namespace WorldEditor
 
         #region Public Interface
 
-        public WorldEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content)
+        public WorldEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content, GameWindow window)
         {
+            Window = window;
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
             mEntity = new Entity(graphicsDevice, mControls, mCamera);
@@ -214,54 +219,54 @@ namespace WorldEditor
 
             ObjectParameterPane.Create.Click += CreateObjectButtonHandler;
 
-            //foreach (var model in AssetLibrary.ModelLibrary)
-            //{
-            //    DummyObject tempObject = new DummyObject();
-            //    tempObject.Type = "Chimera.Prop";
-            //    tempObject.Model = model.Key;
-            //    tempObject.Parameters = null;
-            //    tempObject.Position = Vector3.Zero;
-            //    tempObject.YawPitchRoll = Vector3.Up;
-            //    tempObject.Scale = Vector3.One;
-            //    tempObject.Height = 0.0f;
-            //    mObjects.Add(tempObject.Model, tempObject);
-            //    ((EditorPane as EditorForm).ObjectList as ListBox).Items.Add(tempObject.Model);
-            //}
+            foreach (var model in AssetLibrary.ModelLibrary)
+            {
+                DummyObject tempObject = new DummyObject();
+                tempObject.Type = "Chimera.Prop";
+                tempObject.Model = model.Key;
+                tempObject.Parameters = null;
+                tempObject.Position = Vector3.Zero;
+                tempObject.YawPitchRoll = Vector3.Up;
+                tempObject.Scale = Vector3.One;
+                tempObject.Height = 0.0f;
+                mObjects.Add(tempObject.Model, tempObject);
+                (EditorPane.ObjectList as ListBox).Items.Add(tempObject.Model);
+            }
 
-            //FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
-            //foreach (FileInfo file in objects)
-            //{
-            //    DummyObject tempObject = new DummyObject();
-            //    try
-            //    {
-            //        string[] data = System.IO.File.ReadAllLines(file.FullName);
+            FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
+            foreach (FileInfo file in objects)
+            {
+                DummyObject tempObject = new DummyObject();
+                try
+                {
+                    string[] data = System.IO.File.ReadAllLines(file.FullName);
 
-            //        tempObject.Type = data[0];
-            //        tempObject.Model = data[1];
+                    tempObject.Type = data[0];
+                    tempObject.Model = data[1];
 
-            //        List<string> parameters = new List<string>();
-            //        if (data.Length - 2 > 0)
-            //        {
-            //            for (int count = 0; count < data.Length - 2; count++)
-            //            {
-            //                parameters.Add(data[count + 2]);
-            //            }
-            //        }
-            //        tempObject.Parameters = parameters.ToArray();
+                    List<string> parameters = new List<string>();
+                    if (data.Length - 2 > 0)
+                    {
+                        for (int count = 0; count < data.Length - 2; count++)
+                        {
+                            parameters.Add(data[count + 2]);
+                        }
+                    }
+                    tempObject.Parameters = parameters.ToArray();
 
-            //        tempObject.Position = Vector3.Zero;
-            //        tempObject.YawPitchRoll = Vector3.Up;
-            //        tempObject.Scale = Vector3.One;
-            //        tempObject.Height = 0.0f;
+                    tempObject.Position = Vector3.Zero;
+                    tempObject.YawPitchRoll = Vector3.Up;
+                    tempObject.Scale = Vector3.One;
+                    tempObject.Height = 0.0f;
 
-            //        mObjects.Add(tempObject.Model, tempObject);
-            //        (editModes.Controls["Objects"].Controls["ObjectList"] as ListBox).Items.Add(tempObject.Model);
-            //    }
-            //    catch (SystemException)
-            //    {
-            //        Console.WriteLine("Formatting error in object: " + file.Name + ".");
-            //    }
-            //}
+                    mObjects.Add(Path.GetFileNameWithoutExtension(file.Name), tempObject);
+                    (EditorPane.ObjectList as ListBox).Items.Add(Path.GetFileNameWithoutExtension(file.Name));
+                }
+                catch (SystemException)
+                {
+                    Console.WriteLine("Formatting error in object: " + file.Name + ".");
+                }
+            }
 
             foreach (var texture in AssetLibrary.TextureLibrary)
             {
@@ -276,7 +281,10 @@ namespace WorldEditor
 
         private void OpenTextureForm(object sender, EventArgs e)
         {
-            TextureSelectionPane.Show();
+            if (!TextureSelectionPane.Visible)
+            {
+                TextureSelectionPane.Show((Form)Form.FromHandle(Window.Handle));
+            }
         }
 
         private void ViewWaterHandler(object sender, EventArgs e)
@@ -296,7 +304,10 @@ namespace WorldEditor
 
         private void OpenObjectParameterForm(object sender, EventArgs e)
         {
-            ObjectParameterPane.Show();
+            if (!ObjectParameterPane.Visible)
+            {
+                ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
+            }
         }
 
         private void CloseObjectParameterForm(object sender, EventArgs e)
@@ -375,16 +386,19 @@ namespace WorldEditor
 
         private void SelectNewObjectHandler(object sender, EventArgs e)
         {
-            ObjectParameterPane.Show();
+            ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
         }
 
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
-            //ObjectParameterPane.SelectedObjects.Clear();
-            //DummyObject dummy = new DummyObject(mObjects[EditorPane.ObjectList.SelectedItem.ToString()]);
-            //ObjectParameterPane.SelectedObjects.Add(dummy);
-            //SetObjectPropertiesToForm(dummy);
-            //mDummyWorld.AddObject(dummy);
+            if (EditorPane.ObjectList.SelectedItem != null)
+            {
+                ObjectParameterPane.SelectedObjects.Clear();
+                DummyObject dummy = new DummyObject(mObjects[EditorPane.ObjectList.SelectedItem.ToString()]);
+                ObjectParameterPane.SelectedObjects.Add(dummy);
+                SetObjectPropertiesToForm(dummy);
+                mDummyWorld.AddObject(dummy);
+            }
         }
 
         private void SetObjectPropertiesToForm(DummyObject dummyObject)
@@ -523,10 +537,7 @@ namespace WorldEditor
                 }
 
                 ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
-                if (dummyObjects.Count > 0)
-                {
                     ObjectParameterPane.UpdateParameterFields();
-                }
             }
             else if (mControls.LeftHold.Active)
             {
@@ -541,23 +552,25 @@ namespace WorldEditor
                     case ToolMenu.EditorMode.PAINTING:
                     {
                         TextureSelectionForm textureForm = TextureSelectionPane as TextureSelectionForm;
-                        float alpha = 1.0f;// form.Strength / 100.0f;
-                        GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(ToolMenu.PaintingLayers);
-                        string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
+                        if ((textureForm.TextureList as ListBox).SelectedItem != null)
+                        {
+                            float alpha = EditorPane.Strength / 100.0f;
+                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(EditorPane.PaintingLayers);
+                            string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
 
-                        float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
-                        float uScale = (float)textureForm.UScale.Value, vScale = (float)textureForm.VScale.Value;
+                            float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
+                            float uScale = (float)textureForm.UScale.Value, vScale = (float)textureForm.VScale.Value;
 
-                        mDummyWorld.ModifyTextureMap(
-                            mCursorObject.Position, 
-                            textureName, 
-                            new Vector2(uOffset, vOffset), 
-                            new Vector2(uScale, vScale), 
-                            5.0f/*form.Size*/, alpha,
-                            ToolMenu.PaintingBrush,
-                            ToolMenu.Tool, 
-                            layer);
-
+                            mDummyWorld.ModifyTextureMap(
+                                mCursorObject.Position,
+                                textureName,
+                                new Vector2(uOffset, vOffset),
+                                new Vector2(uScale, vScale),
+                                EditorPane.Size, alpha,
+                                (ToolMenu.Brushes)EditorPane.PaintingBrush,
+                                ToolMenu.Tool,
+                                layer);
+                        }
                         break;
                     }
                 }

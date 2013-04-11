@@ -35,8 +35,12 @@ namespace WorldEditor
             mGraphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+            Form windowForm = (Form)Form.FromHandle(Window.Handle);
+
             this.Window.AllowUserResizing = true;
             this.Window.ClientSizeChanged += ResizedWindow;
+            windowForm.LocationChanged += RepositionWindows;
+            windowForm.Resize += RepositionWindows;
         }
 
         /// <summary>
@@ -55,7 +59,8 @@ namespace WorldEditor
             mCamera = new FPSCamera(GraphicsDevice.Viewport);
             mCamera.Position = new Vector3(0, 1400, 1000);
             mCamera.Target = new Vector3(0, 100, 0);
-            mCamera.FarPlaneDistance = 3000;
+            mCamera.FarPlaneDistance = 2500;
+            mCamera.NearPlaneDistance = 0.2f;
 
             base.Initialize();
         }
@@ -72,15 +77,14 @@ namespace WorldEditor
             GraphicsManager.Initialize(GraphicsDevice, mSpriteBatch);
             AssetLibrary.LoadContent(Content);
             CollisionMeshManager.LoadContent(Content);
-            mWorldEditor = new WorldEditor(GraphicsDevice, mCamera, Content);
+            mWorldEditor = new WorldEditor(GraphicsDevice, mCamera, Content, Window);
 
             Form windowForm = (Form)Form.FromHandle(Window.Handle);
-            //windowForm.Controls.Add(mWorldEditor.EditorPane.MenuStrip);
             windowForm.Controls.Add(mWorldEditor.ToolMenu.ToolStrip);
             windowForm.Controls.Add(mWorldEditor.ToolMenu.MenuStrip);
-            //windowForm.Controls.Add(mWorldEditor.EditorPane);
-            //windowForm.Controls.Add(mWorldEditor.TextureSelectionPane);
-            //windowForm.Controls.Add(mWorldEditor.ObjectParameterPane);
+
+            mWorldEditor.ObjectParameterPane.Shown += RepositionWindows;
+            mWorldEditor.TextureSelectionPane.Shown += RepositionWindows;
 
             ResizedWindow(null, null);
         }
@@ -159,6 +163,21 @@ namespace WorldEditor
             if (mCamera != null)
             {
                 (mCamera as FPSCamera).Viewport = newViewport;
+            }
+
+            RepositionWindows(sender, e);
+        }
+
+        protected void RepositionWindows(object sender, EventArgs e)
+        {
+            var safeWidth = Math.Max(this.Window.ClientBounds.Width, 1);
+            var safeHeight = Math.Max(this.Window.ClientBounds.Height, 1);
+
+            Form gameForm = (Form)Form.FromHandle(Window.Handle);
+            if (this.mWorldEditor != null)
+            {
+                this.mWorldEditor.TextureSelectionPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.TextureSelectionPane.Width + gameForm.RectangleToScreen(gameForm.ClientRectangle).X, gameForm.RectangleToScreen(gameForm.ClientRectangle).Y);
+                this.mWorldEditor.ObjectParameterPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.ObjectParameterPane.Width + gameForm.RectangleToScreen(gameForm.ClientRectangle).X, gameForm.RectangleToScreen(gameForm.ClientRectangle).Y);
             }
         }
     }

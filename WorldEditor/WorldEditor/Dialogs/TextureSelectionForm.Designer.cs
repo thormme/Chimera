@@ -171,6 +171,7 @@ namespace WorldEditor.Dialogs
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
+            this.ClientSize = new System.Drawing.Size(294, 734);
             this.Controls.Add(this.VScale);
             this.Controls.Add(this.UScale);
             this.Controls.Add(this.VOffset);
@@ -178,9 +179,10 @@ namespace WorldEditor.Dialogs
             this.Controls.Add(this.textureList);
             this.Controls.Add(this.texturePreview);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "TextureSelectionForm";
-            this.Size = new System.Drawing.Size(310, 772);
+            this.ShowInTaskbar = false;
             ((System.ComponentModel.ISupportInitialize)(this.texturePreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.VOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.UOffset)).EndInit();
