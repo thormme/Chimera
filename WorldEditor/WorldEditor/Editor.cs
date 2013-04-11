@@ -75,9 +75,12 @@ namespace WorldEditor
             mWorldEditor = new WorldEditor(GraphicsDevice, mCamera, Content);
 
             Form windowForm = (Form)Form.FromHandle(Window.Handle);
-            windowForm.Controls.Add(mWorldEditor.EditorPane);
-            windowForm.Controls.Add(mWorldEditor.TextureSelectionPane);
-            windowForm.Controls.Add(mWorldEditor.ObjectParameterPane);
+            //windowForm.Controls.Add(mWorldEditor.EditorPane.MenuStrip);
+            windowForm.Controls.Add(mWorldEditor.ToolMenu.ToolStrip);
+            windowForm.Controls.Add(mWorldEditor.ToolMenu.MenuStrip);
+            //windowForm.Controls.Add(mWorldEditor.EditorPane);
+            //windowForm.Controls.Add(mWorldEditor.TextureSelectionPane);
+            //windowForm.Controls.Add(mWorldEditor.ObjectParameterPane);
 
             ResizedWindow(null, null);
         }
@@ -130,15 +133,16 @@ namespace WorldEditor
 
         protected void ResizedWindow(object sender, EventArgs e)
         {
-            int paneWidth = this.mWorldEditor.TextureSelectionPane.Width + this.mWorldEditor.EditorPane.Width;
+            int toolMenuHeight = this.mWorldEditor.ToolMenu.MenuStrip.Height + this.mWorldEditor.ToolMenu.ToolStrip.Height;
 
             var safeWidth = Math.Max(this.Window.ClientBounds.Width, 1);
             var safeHeight = Math.Max(this.Window.ClientBounds.Height, 1);
+
             var newViewport = new Viewport(
-                (int)(safeWidth * (float)this.mWorldEditor.EditorPane.Width / (float)safeWidth), 
-                0, 
-                (int)(safeWidth * (1.0f - (float)paneWidth / (float)safeWidth)), 
-                safeHeight) { MinDepth = 0.0f, MaxDepth = 1.0f };
+                0,
+                toolMenuHeight, 
+                safeWidth,
+                safeHeight - toolMenuHeight) { MinDepth = 0.0f, MaxDepth = 1.0f };
 
             var presentationParams = GraphicsDevice.PresentationParameters;
             presentationParams.BackBufferWidth = safeWidth;
@@ -156,9 +160,6 @@ namespace WorldEditor
             {
                 (mCamera as FPSCamera).Viewport = newViewport;
             }
-
-            this.mWorldEditor.TextureSelectionPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.TextureSelectionPane.Width, 0);
-            this.mWorldEditor.ObjectParameterPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.ObjectParameterPane.Width, 0);
         }
     }
 }

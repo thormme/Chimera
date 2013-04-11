@@ -652,5 +652,10 @@ namespace WorldEditor.Dialogs
             PaintingLayers = Layers.LAYER4;
             UpdateLayerIcons();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.button1.BackgroundImage = raiseTerrainSelectedIcon;
+        }
     }
 }
