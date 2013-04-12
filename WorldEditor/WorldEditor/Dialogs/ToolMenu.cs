@@ -26,7 +26,26 @@ namespace WorldEditor.Dialogs
 
         #region State
 
-        public EditorMode Mode = EditorMode.HEIGHTMAP;
+        private EditorMode mMode = EditorMode.HEIGHTMAP;
+        public EditorMode Mode
+        {
+            get
+            {
+                return mMode;
+            }
+            set
+            {
+                bool changed = mMode != value;
+                mMode = value;
+                if (changed && ModeChanged != null)
+                {
+                    ModeChanged(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        public delegate void ModeChangedHandler(object sender, EventArgs e);
+        public event ModeChangedHandler ModeChanged;
 
         public Tools Tool = Tools.RAISE;
         public Brushes HeightMapBrush = Brushes.CIRCLE;
@@ -66,10 +85,10 @@ namespace WorldEditor.Dialogs
 
             mObjectTools = new List<ToolStripButton>()
             {
-                selectObjectButton,
-                translateObjectButton,
-                rotateObjectButton,
-                scaleObjectButton
+                SelectObjectButton,
+                TranslateObjectButton,
+                RotateObjectButton,
+                ScaleObjectButton
             }.AsReadOnly();
 
             mToolGroups = new List<ReadOnlyCollection<ToolStripButton>>
@@ -96,10 +115,10 @@ namespace WorldEditor.Dialogs
             this.eraseTextureButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.PAINTING, Tools.ERASE);
             this.smoothTextureButton.Tag   = new Tuple<EditorMode, Tools>(EditorMode.PAINTING, Tools.BLEND);
 
-            this.selectObjectButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SELECT);
-            this.translateObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.TRANSLATE);
-            this.rotateObjectButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.ROTATE);
-            this.scaleObjectButton.Tag     = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SCALE);
+            this.SelectObjectButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SELECT);
+            this.TranslateObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.TRANSLATE);
+            this.RotateObjectButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.ROTATE);
+            this.ScaleObjectButton.Tag     = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SCALE);
         }
 
         private void SetButtonImages()
@@ -114,10 +133,10 @@ namespace WorldEditor.Dialogs
             this.eraseTextureButton.Image  = UILibrary.LowerTerrainIcon;
             this.smoothTextureButton.Image = UILibrary.SmoothTerrainIcon;
 
-            this.selectObjectButton.Image    = UILibrary.ObjectModeButtonIcon;
-            this.translateObjectButton.Image = UILibrary.ObjectModeButtonIcon;
-            this.rotateObjectButton.Image    = UILibrary.ObjectModeButtonIcon;
-            this.scaleObjectButton.Image     = UILibrary.ObjectModeButtonIcon;
+            this.SelectObjectButton.Image    = UILibrary.ObjectModeButtonIcon;
+            this.TranslateObjectButton.Image = UILibrary.ObjectModeButtonIcon;
+            this.RotateObjectButton.Image    = UILibrary.ObjectModeButtonIcon;
+            this.ScaleObjectButton.Image     = UILibrary.ObjectModeButtonIcon;
         }
 
         private void toolButton_Click(object sender, EventArgs e)

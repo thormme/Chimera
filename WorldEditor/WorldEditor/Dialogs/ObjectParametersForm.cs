@@ -56,7 +56,6 @@ namespace WorldEditor.Dialogs
                     param.Location = new System.Drawing.Point(0, AdditionalParametersPanel.Height);
                     param.BackColor = defaultBGColor;
                     param.Tag = i;
-                    param.TextChanged += AdditionalParameterChanged;
                     AdditionalParametersPanel.Controls.Add(param);
                     parameterTextBoxes.Add(param);
                 }
@@ -213,6 +212,7 @@ namespace WorldEditor.Dialogs
                 for (int i = 0; i < parameterTextBoxes.Count; i++)
                 {
                     parameterTextBoxes[i].Text = SelectedObjects[0].Parameters[i];
+                    parameterTextBoxes[i].TextChanged += AdditionalParameterChanged;
                 }
             }
 

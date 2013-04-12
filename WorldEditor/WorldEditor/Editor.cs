@@ -176,8 +176,12 @@ namespace WorldEditor
             Form gameForm = (Form)Form.FromHandle(Window.Handle);
             if (this.mWorldEditor != null)
             {
-                this.mWorldEditor.TextureSelectionPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.TextureSelectionPane.Width + gameForm.RectangleToScreen(gameForm.ClientRectangle).X, gameForm.RectangleToScreen(gameForm.ClientRectangle).Y);
-                this.mWorldEditor.ObjectParameterPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.ObjectParameterPane.Width + gameForm.RectangleToScreen(gameForm.ClientRectangle).X, gameForm.RectangleToScreen(gameForm.ClientRectangle).Y);
+                int gameY = gameForm.RectangleToScreen(gameForm.ClientRectangle).Y;
+                int gameX = gameForm.RectangleToScreen(gameForm.ClientRectangle).X;
+                int viewportTop = gameY + mWorldEditor.ToolMenu.ToolStrip.Height + mWorldEditor.ToolMenu.MenuStrip.Height;
+
+                this.mWorldEditor.TextureSelectionPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.TextureSelectionPane.Width + gameX, viewportTop);
+                this.mWorldEditor.ObjectParameterPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.ObjectParameterPane.Width + gameX, viewportTop);
             }
         }
     }

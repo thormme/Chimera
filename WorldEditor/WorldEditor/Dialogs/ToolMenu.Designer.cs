@@ -41,10 +41,10 @@ namespace WorldEditor.Dialogs
             this.eraseTextureButton = new System.Windows.Forms.ToolStripButton();
             this.smoothTextureButton = new System.Windows.Forms.ToolStripButton();
             this.textureSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.selectObjectButton = new System.Windows.Forms.ToolStripButton();
-            this.translateObjectButton = new System.Windows.Forms.ToolStripButton();
-            this.rotateObjectButton = new System.Windows.Forms.ToolStripButton();
-            this.scaleObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.SelectObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.TranslateObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.RotateObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.ScaleObjectButton = new System.Windows.Forms.ToolStripButton();
             this.objectSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,10 +78,10 @@ namespace WorldEditor.Dialogs
             this.eraseTextureButton,
             this.smoothTextureButton,
             this.textureSeparator,
-            this.selectObjectButton,
-            this.translateObjectButton,
-            this.rotateObjectButton,
-            this.scaleObjectButton,
+            this.SelectObjectButton,
+            this.TranslateObjectButton,
+            this.RotateObjectButton,
+            this.ScaleObjectButton,
             this.objectSeparator});
             this.toolStrip.Location = new System.Drawing.Point(0, 25);
             this.toolStrip.Name = "toolStrip";
@@ -179,45 +179,45 @@ namespace WorldEditor.Dialogs
             this.textureSeparator.Name = "textureSeparator";
             this.textureSeparator.Size = new System.Drawing.Size(6, 47);
             // 
-            // selectObjectButton
+            // SelectObjectButton
             // 
-            this.selectObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.selectObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("selectObjectButton.Image")));
-            this.selectObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.selectObjectButton.Name = "selectObjectButton";
-            this.selectObjectButton.Size = new System.Drawing.Size(44, 44);
-            this.selectObjectButton.Text = "Select Objects";
-            this.selectObjectButton.Click += new System.EventHandler(this.toolButton_Click);
+            this.SelectObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SelectObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("SelectObjectButton.Image")));
+            this.SelectObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SelectObjectButton.Name = "SelectObjectButton";
+            this.SelectObjectButton.Size = new System.Drawing.Size(44, 44);
+            this.SelectObjectButton.Text = "Select Objects";
+            this.SelectObjectButton.Click += new System.EventHandler(this.toolButton_Click);
             // 
-            // translateObjectButton
+            // TranslateObjectButton
             // 
-            this.translateObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.translateObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("translateObjectButton.Image")));
-            this.translateObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.translateObjectButton.Name = "translateObjectButton";
-            this.translateObjectButton.Size = new System.Drawing.Size(44, 44);
-            this.translateObjectButton.Text = "Translate Selected Object";
-            this.translateObjectButton.Click += new System.EventHandler(this.toolButton_Click);
+            this.TranslateObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.TranslateObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("TranslateObjectButton.Image")));
+            this.TranslateObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.TranslateObjectButton.Name = "TranslateObjectButton";
+            this.TranslateObjectButton.Size = new System.Drawing.Size(44, 44);
+            this.TranslateObjectButton.Text = "Translate Selected Object";
+            this.TranslateObjectButton.Click += new System.EventHandler(this.toolButton_Click);
             // 
-            // rotateObjectButton
+            // RotateObjectButton
             // 
-            this.rotateObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.rotateObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("rotateObjectButton.Image")));
-            this.rotateObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.rotateObjectButton.Name = "rotateObjectButton";
-            this.rotateObjectButton.Size = new System.Drawing.Size(44, 44);
-            this.rotateObjectButton.Text = "Rotate Selected Object";
-            this.rotateObjectButton.Click += new System.EventHandler(this.toolButton_Click);
+            this.RotateObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.RotateObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("RotateObjectButton.Image")));
+            this.RotateObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.RotateObjectButton.Name = "RotateObjectButton";
+            this.RotateObjectButton.Size = new System.Drawing.Size(44, 44);
+            this.RotateObjectButton.Text = "Rotate Selected Object";
+            this.RotateObjectButton.Click += new System.EventHandler(this.toolButton_Click);
             // 
-            // scaleObjectButton
+            // ScaleObjectButton
             // 
-            this.scaleObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.scaleObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("scaleObjectButton.Image")));
-            this.scaleObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.scaleObjectButton.Name = "scaleObjectButton";
-            this.scaleObjectButton.Size = new System.Drawing.Size(44, 44);
-            this.scaleObjectButton.Text = "Scale Selected Object";
-            this.scaleObjectButton.Click += new System.EventHandler(this.toolButton_Click);
+            this.ScaleObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ScaleObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("ScaleObjectButton.Image")));
+            this.ScaleObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ScaleObjectButton.Name = "ScaleObjectButton";
+            this.ScaleObjectButton.Size = new System.Drawing.Size(44, 44);
+            this.ScaleObjectButton.Text = "Scale Selected Object";
+            this.ScaleObjectButton.Click += new System.EventHandler(this.toolButton_Click);
             // 
             // objectSeparator
             // 
@@ -358,10 +358,6 @@ namespace WorldEditor.Dialogs
         private System.Windows.Forms.ToolStripButton eraseTextureButton;
         private System.Windows.Forms.ToolStripButton smoothTextureButton;
         private System.Windows.Forms.ToolStripSeparator textureSeparator;
-        private System.Windows.Forms.ToolStripButton selectObjectButton;
-        private System.Windows.Forms.ToolStripButton translateObjectButton;
-        private System.Windows.Forms.ToolStripButton rotateObjectButton;
-        private System.Windows.Forms.ToolStripButton scaleObjectButton;
         private System.Windows.Forms.ToolStripSeparator objectSeparator;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -376,6 +372,10 @@ namespace WorldEditor.Dialogs
         public ToolStripMenuItem vIEWToolStripMenuItem;
         public ToolStripMenuItem ViewSkyBoxMenu;
         public ToolStripMenuItem ViewWaterMenu;
+        public ToolStripButton SelectObjectButton;
+        public ToolStripButton TranslateObjectButton;
+        public ToolStripButton RotateObjectButton;
+        public ToolStripButton ScaleObjectButton;
 
         public ToolStrip ToolStrip
         {

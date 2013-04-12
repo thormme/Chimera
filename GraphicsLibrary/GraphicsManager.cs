@@ -317,9 +317,9 @@ namespace GraphicsLibrary
 
             List<UInt32> ids = new List<UInt32>();
 
-            for (int y = bounds.Y; y - bounds.Y < bounds.Height; y++)
+            for (int y = Math.Max(0, bounds.Y); y - bounds.Y < bounds.Height; y++)
             {
-                for (int x = bounds.X; x - bounds.X < bounds.Width; x++)
+                for (int x = Math.Max(0, bounds.X); x - bounds.X < bounds.Width; x++)
                 {
                     Color pixelColor = depthColor[y * mPickingBuffer.Width + x];
                     UInt32 id = ConvertPickingColorToID(pixelColor);

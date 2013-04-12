@@ -199,6 +199,8 @@ namespace WorldEditor
             ToolMenu.UndoMenu.Click += UndoHandler;
             ToolMenu.RedoMenu.Click += RedoHandler;
 
+            ToolMenu.ModeChanged += UpdateContextTools;
+
             //TabControl editModes = (EditorPane.Controls["EditTabs"] as TabControl);
 
             //((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).SelectedIndexChanged += TextureHandler;
@@ -469,6 +471,16 @@ namespace WorldEditor
             {
                 mTimeSinceUndo = 0.0;
                 mDummyWorld.RedoHeightMap();
+            }
+        }
+
+        private void UpdateContextTools(object sender, EventArgs e)
+        {
+            switch ((sender as ToolMenu).Mode)
+            {
+                case Dialogs.ToolMenu.EditorMode.OBJECTS:
+                    OpenObjectParameterForm(this, EventArgs.Empty);
+                    break;
             }
         }
 
