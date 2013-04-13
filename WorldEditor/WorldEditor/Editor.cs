@@ -20,27 +20,18 @@ namespace WorldEditor
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Editor : Microsoft.Xna.Framework.Game
+    public class Editor : GameDeviceControl
     {
-        private GraphicsDeviceManager mGraphics = null;
         private SpriteBatch mSpriteBatch = null;
 
         private FPSCamera mCamera = null;
         private WorldEditor mWorldEditor = null;
+        private ContentManager Content = null;
 
         public Editor()
         {
-            IsMouseVisible = true;
-
-            mGraphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-
-            Form windowForm = (Form)Form.FromHandle(Window.Handle);
-
-            this.Window.AllowUserResizing = true;
-            this.Window.ClientSizeChanged += ResizedWindow;
-            windowForm.LocationChanged += RepositionWindows;
-            windowForm.Resize += RepositionWindows;
+            LocationChanged += RepositionWindows;
+            Resize += RepositionWindows;
         }
 
         /// <summary>
@@ -51,6 +42,10 @@ namespace WorldEditor
         /// </summary>
         protected override void Initialize()
         {
+            base.Initialize();
+
+            Content = new ContentManager(Services, "Content");
+
             GraphicsManager.CelShading = GraphicsManager.CelShaded.All;
             GraphicsManager.Outlining = GraphicsManager.Outlines.All;
             GraphicsManager.CastingShadows = true;
@@ -61,8 +56,6 @@ namespace WorldEditor
             mCamera.Target = new Vector3(0, 100, 0);
             mCamera.FarPlaneDistance = 2500;
             mCamera.NearPlaneDistance = 0.2f;
-
-            base.Initialize();
         }
 
         /// <summary>
@@ -75,15 +68,16 @@ namespace WorldEditor
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
 
             GraphicsManager.Initialize(GraphicsDevice, mSpriteBatch);
+            Console.WriteLine(Content.RootDirectory);
             AssetLibrary.LoadContent(Content);
             CollisionMeshManager.LoadContent(Content);
-            mWorldEditor = new WorldEditor(GraphicsDevice, mCamera, Content, Window);
+            mWorldEditor = new WorldEditor(GraphicsDevice, mCamera, Content);
 
-            Form windowForm = (Form)Form.FromHandle(Window.Handle);
-            windowForm.Controls.Add(mWorldEditor.ToolMenu.ToolStrip);
-            windowForm.Controls.Add(mWorldEditor.ToolMenu.MenuStrip);
+            Parent.Controls.Add(mWorldEditor.ToolMenu.ToolStrip);
+            Parent.Controls.Add(mWorldEditor.ToolMenu.MenuStrip);
+            //windowForm.Controls.Add(mWorldEditor.ObjectParameterPane);
 
-            mWorldEditor.ObjectParameterPane.Shown += RepositionWindows;
+            //mWorldEditor.ObjectParameterPane.Shown += RepositionWindows;
             mWorldEditor.TextureSelectionPane.Shown += RepositionWindows;
 
             ResizedWindow(null, null);
@@ -105,19 +99,13 @@ namespace WorldEditor
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
-                this.Exit();
-
             GraphicsManager.Update(mCamera, gameTime);
-            mWorldEditor.Update(gameTime, Form.ActiveForm == Form.FromHandle(Window.Handle));
+            mWorldEditor.Update(gameTime, Form.ActiveForm == this.Parent);
 
             if (mWorldEditor.Closed)
             {
-                Exit();
+                //Exit();
             }
-
-            base.Update(gameTime);
         }
 
         /// <summary>
@@ -131,16 +119,14 @@ namespace WorldEditor
             GraphicsManager.BeginRendering();
             mWorldEditor.Draw();
             GraphicsManager.FinishRendering();
-
-            base.Draw(gameTime);
         }
 
         protected void ResizedWindow(object sender, EventArgs e)
         {
             int toolMenuHeight = this.mWorldEditor.ToolMenu.MenuStrip.Height + this.mWorldEditor.ToolMenu.ToolStrip.Height;
 
-            var safeWidth = Math.Max(this.Window.ClientBounds.Width, 1);
-            var safeHeight = Math.Max(this.Window.ClientBounds.Height, 1);
+            var safeWidth = Math.Max(this.Width, 1);
+            var safeHeight = Math.Max(this.Height, 1);
 
             var newViewport = new Viewport(
                 0,
@@ -151,7 +137,7 @@ namespace WorldEditor
             var presentationParams = GraphicsDevice.PresentationParameters;
             presentationParams.BackBufferWidth = safeWidth;
             presentationParams.BackBufferHeight = safeHeight;
-            presentationParams.DeviceWindowHandle = this.Window.Handle;
+            presentationParams.DeviceWindowHandle = this.Handle;
             GraphicsDevice.Reset(presentationParams);
 
             GraphicsDevice.Viewport = newViewport;
@@ -170,19 +156,19 @@ namespace WorldEditor
 
         protected void RepositionWindows(object sender, EventArgs e)
         {
-            var safeWidth = Math.Max(this.Window.ClientBounds.Width, 1);
-            var safeHeight = Math.Max(this.Window.ClientBounds.Height, 1);
+            //var safeWidth = Math.Max(this.Window.ClientBounds.Width, 1);
+            //var safeHeight = Math.Max(this.Window.ClientBounds.Height, 1);
 
-            Form gameForm = (Form)Form.FromHandle(Window.Handle);
+            /*Form gameForm = (Form)Form.FromHandle(this.Parent.Handle);
             if (this.mWorldEditor != null)
             {
-                int gameY = gameForm.RectangleToScreen(gameForm.ClientRectangle).Y;
                 int gameX = gameForm.RectangleToScreen(gameForm.ClientRectangle).X;
+                int gameY = gameForm.RectangleToScreen(gameForm.ClientRectangle).Y;
                 int viewportTop = gameY + mWorldEditor.ToolMenu.ToolStrip.Height + mWorldEditor.ToolMenu.MenuStrip.Height;
 
-                this.mWorldEditor.TextureSelectionPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.TextureSelectionPane.Width + gameX, viewportTop);
-                this.mWorldEditor.ObjectParameterPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.ObjectParameterPane.Width + gameX, viewportTop);
-            }
+                //this.mWorldEditor.TextureSelectionPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.TextureSelectionPane.Width + gameX, viewportTop);
+                //this.mWorldEditor.ObjectParameterPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.ObjectParameterPane.Width + gameX, viewportTop);
+            }*/
         }
     }
 }

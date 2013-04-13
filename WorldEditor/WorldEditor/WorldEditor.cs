@@ -86,8 +86,6 @@ namespace WorldEditor
 
         private FPSCamera mCamera = null;
 
-        private GameWindow Window = null;
-
         private Dictionary<string, EditorObjectDefinition> mObjectDefinitions = new Dictionary<string, EditorObjectDefinition>(); 
 
         //Stores all placeable objects.
@@ -114,9 +112,8 @@ namespace WorldEditor
 
         #region Public Interface
 
-        public WorldEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content, GameWindow window)
+        public WorldEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content)
         {
-            Window = window;
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
             mEntity = new Entity(graphicsDevice, mControls, mCamera);
@@ -199,7 +196,10 @@ namespace WorldEditor
             ToolMenu.UndoMenu.Click += UndoHandler;
             ToolMenu.RedoMenu.Click += RedoHandler;
 
-            ToolMenu.ModeChanged += UpdateContextTools;
+            ToolMenu.ModeChanged += UpdateModeContext;
+
+            ObjectParameterPane.Show();
+            ObjectParameterPane.Dock = DockStyle.Left;
 
             //TabControl editModes = (EditorPane.Controls["EditTabs"] as TabControl);
 
@@ -234,7 +234,7 @@ namespace WorldEditor
                 tempObject.Scale = Vector3.One;
                 tempObject.Height = 0.0f;
                 mObjects.Add(tempObject.Model, tempObject);
-                (EditorPane.ObjectList as ListBox).Items.Add(tempObject.Model);
+                //(EditorPane.ObjectList as ListBox).Items.Add(tempObject.Model);
             }
 
             FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
@@ -246,7 +246,7 @@ namespace WorldEditor
 
                     mObjectDefinitions.Add(definition.EditorType, definition);
                     mObjects.Add(definition.EditorType, definition.CreateDummyObject());
-                    ((EditorPane as EditorForm).ObjectList as ListBox).Items.Add(definition.EditorType);
+                    //((EditorPane as EditorForm).ObjectList as ListBox).Items.Add(definition.EditorType);
                 }
                 catch (SystemException)
                 {
@@ -269,7 +269,7 @@ namespace WorldEditor
         {
             if (!TextureSelectionPane.Visible)
             {
-                TextureSelectionPane.Show((Form)Form.FromHandle(Window.Handle));
+                //TextureSelectionPane.Show((Form)Form.FromHandle(Window.Handle));
             }
         }
 
@@ -292,13 +292,26 @@ namespace WorldEditor
         {
             if (!ObjectParameterPane.Visible)
             {
-                ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
+                ObjectParameterPane.Show(/*(Form)Form.FromHandle(Window.Handle)*/);
             }
         }
 
         private void CloseObjectParameterForm(object sender, EventArgs e)
         {
             ObjectParameterPane.Hide();
+        }
+
+        private void OpenObjectCreationForm(object sender, EventArgs e)
+        {
+            //if (!ObjectParameterPane.Visible)
+            {
+                //ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
+            }
+        }
+
+        private void CloseObjectCreationForm(object sender, EventArgs e)
+        {
+            //ObjectParameterPane.Hide();
         }
 
         private void NewHandler(object sender, EventArgs e)
@@ -372,18 +385,18 @@ namespace WorldEditor
 
         private void SelectNewObjectHandler(object sender, EventArgs e)
         {
-            ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
+            ObjectParameterPane.Show(/*(Form)Form.FromHandle(Window.Handle)*/);
         }
 
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
-            if (EditorPane.ObjectList.SelectedItem != null)
+            //if (EditorPane.ObjectList.SelectedItem != null)
             {
-                ObjectParameterPane.SelectedObjects.Clear();
+                /*ObjectParameterPane.SelectedObjects.Clear();
                 DummyObject dummy = new DummyObject(mObjects[EditorPane.ObjectList.SelectedItem.ToString()]);
                 ObjectParameterPane.SelectedObjects.Add(dummy);
                 SetObjectPropertiesToForm(dummy);
-                mDummyWorld.AddObject(dummy);
+                mDummyWorld.AddObject(dummy);*/
             }
         }
 
@@ -474,13 +487,31 @@ namespace WorldEditor
             }
         }
 
-        private void UpdateContextTools(object sender, EventArgs e)
+        private void UpdateModeContext(object sender, EventArgs e)
         {
             switch ((sender as ToolMenu).Mode)
             {
                 case Dialogs.ToolMenu.EditorMode.OBJECTS:
                     OpenObjectParameterForm(this, EventArgs.Empty);
                     break;
+                case Dialogs.ToolMenu.EditorMode.HEIGHTMAP:
+                    CloseObjectParameterForm(this, EventArgs.Empty);
+                    break;
+                case Dialogs.ToolMenu.EditorMode.PAINTING:
+                    CloseObjectParameterForm(this, EventArgs.Empty);
+                    break;
+            }
+        }
+
+        private void UpdateToolContext(object sender, EventArgs e)
+        {
+            if ((sender as ToolMenu).Tool == Dialogs.ToolMenu.Tools.PLACE)
+            {
+                OpenObjectCreationForm(this, EventArgs.Empty);
+            }
+            else
+            {
+                CloseObjectCreationForm(this, EventArgs.Empty);
             }
         }
 
@@ -550,8 +581,8 @@ namespace WorldEditor
                         TextureSelectionForm textureForm = TextureSelectionPane as TextureSelectionForm;
                         if ((textureForm.TextureList as ListBox).SelectedItem != null)
                         {
-                            float alpha = EditorPane.Strength / 100.0f;
-                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(EditorPane.PaintingLayers);
+                            float alpha = /*EditorPane.Strength*/50 / 100.0f; // TODO: Fixit
+                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(/*EditorPane.PaintingLayers*/GameConstructLibrary.TerrainTexture.TextureLayer.BACKGROUND);
                             string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
 
                             float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
@@ -562,8 +593,8 @@ namespace WorldEditor
                                 textureName,
                                 new Vector2(uOffset, vOffset),
                                 new Vector2(uScale, vScale),
-                                EditorPane.Size, alpha,
-                                (ToolMenu.Brushes)EditorPane.PaintingBrush,
+                                /*EditorPane.Size*/1, alpha,// TODO Fixit
+                                (ToolMenu.Brushes)/*EditorPane.PaintingBrush*/ToolMenu.Brushes.CIRCLE,
                                 ToolMenu.Tool,
                                 layer);
                         }

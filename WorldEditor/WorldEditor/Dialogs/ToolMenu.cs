@@ -12,11 +12,21 @@ namespace WorldEditor.Dialogs
 {
     public partial class ToolMenu : UserControl
     {
+        #region Events
+
+        public delegate void ModeChangedHandler(object sender, EventArgs e);
+        public event ModeChangedHandler ModeChanged;
+
+        public delegate void ToolChangedHandler(object sender, EventArgs e);
+        public event ModeChangedHandler ToolChanged;
+
+        #endregion
+
         #region Enums
 
         public enum EditorMode { HEIGHTMAP, PAINTING, OBJECTS };
 
-        public enum Tools { RAISE, LOWER, SET, SMOOTH, FLATTEN, PAINT, ERASE, BLEND, SELECT, TRANSLATE, ROTATE, SCALE, NONE };
+        public enum Tools { RAISE, LOWER, SET, SMOOTH, FLATTEN, PAINT, ERASE, BLEND, SELECT, PLACE, ROTATE, SCALE, NONE };
 
         public enum Brushes { CIRCLE, CIRCLE_FEATHERED, BLOCK, BLOCK_FEATHERED, NONE };
         
@@ -44,10 +54,23 @@ namespace WorldEditor.Dialogs
             }
         }
 
-        public delegate void ModeChangedHandler(object sender, EventArgs e);
-        public event ModeChangedHandler ModeChanged;
-
-        public Tools Tool = Tools.RAISE;
+        private Tools mTool = Tools.RAISE;
+        public Tools Tool
+        {
+            get
+            {
+                return mTool;
+            }
+            set
+            {
+                bool changed = mTool != value;
+                mTool = value;
+                if (changed && ToolChanged != null)
+                {
+                    ToolChanged(this, EventArgs.Empty);
+                }
+            }
+        }
         public Brushes HeightMapBrush = Brushes.CIRCLE;
 
         public Brushes PaintingBrush = Brushes.CIRCLE;
@@ -116,7 +139,7 @@ namespace WorldEditor.Dialogs
             this.smoothTextureButton.Tag   = new Tuple<EditorMode, Tools>(EditorMode.PAINTING, Tools.BLEND);
 
             this.SelectObjectButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SELECT);
-            this.TranslateObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.TRANSLATE);
+            this.TranslateObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.PLACE);
             this.RotateObjectButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.ROTATE);
             this.ScaleObjectButton.Tag     = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SCALE);
         }

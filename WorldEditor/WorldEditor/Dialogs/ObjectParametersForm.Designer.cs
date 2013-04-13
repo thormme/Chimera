@@ -426,10 +426,10 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.AdditionalParametersPanel);
             this.Controls.Add(this.panel2);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            //this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MinimumSize = new System.Drawing.Size(304, 190);
             this.Name = "ObjectParametersForm";
-            this.ShowInTaskbar = false;
+            //this.ShowInTaskbar = false;
             ((System.ComponentModel.ISupportInitialize)(this.PositionX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PositionZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Yaw)).EndInit();
