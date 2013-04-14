@@ -106,14 +106,17 @@ namespace WorldEditor
         //Stores the objects placed in the world and the height map.
         private DummyWorld mDummyWorld = null;
 
+        private GameDeviceControl mGameControl = null;
+
         private double mTimeSinceUndo = 0.0;
 
         #endregion
 
         #region Public Interface
 
-        public WorldEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content)
+        public WorldEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content, GameDeviceControl gameControl)
         {
+            mGameControl = gameControl;
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
             mEntity = new Entity(graphicsDevice, mControls, mCamera);
@@ -126,7 +129,7 @@ namespace WorldEditor
         {
             mIsActive = gameWindowActive;
 
-            mControls.Update(gameTime);
+            mControls.Update(gameTime, mGameControl.RectangleToScreen(mGameControl.ClientRectangle).Location);
             mDummyWorld.Update(gameTime, mCamera.Position);
 
             mPlaceable = false;
@@ -135,7 +138,7 @@ namespace WorldEditor
             {
                 mEntity.Update(gameTime);
 
-                var pickingResult = mEntity.GetPickingLocation(mDummyWorld);
+                var pickingResult = mEntity.GetPickingLocation(mDummyWorld, null);
 
                 mPlaceable = pickingResult != null;
 

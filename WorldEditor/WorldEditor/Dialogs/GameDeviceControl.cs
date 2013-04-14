@@ -17,6 +17,7 @@ namespace WorldEditor.Dialogs
         {
             mTimer = Stopwatch.StartNew();
             mPreviousFrameTime = mTimer.Elapsed;
+            Application.Idle += delegate { Invalidate(); };
         }
 
         protected override void OnCreateControl()
@@ -41,9 +42,9 @@ namespace WorldEditor.Dialogs
         protected override void Draw()
         {
             TimeSpan elapsed = mTimer.Elapsed - mPreviousFrameTime;
-            Draw(new GameTime(mTimer.Elapsed, elapsed));
+            mPreviousFrameTime = mTimer.Elapsed;
             Update(new GameTime(mTimer.Elapsed, elapsed));
-            Invalidate();
+            Draw(new GameTime(mTimer.Elapsed, elapsed));
         }
 
         protected abstract void Draw(GameTime gameTime);

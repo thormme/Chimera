@@ -71,7 +71,7 @@ namespace WorldEditor
             Console.WriteLine(Content.RootDirectory);
             AssetLibrary.LoadContent(Content);
             CollisionMeshManager.LoadContent(Content);
-            mWorldEditor = new WorldEditor(GraphicsDevice, mCamera, Content);
+            mWorldEditor = new WorldEditor(GraphicsDevice, mCamera, Content, this);
 
             Parent.Controls.Add(mWorldEditor.ToolMenu.ToolStrip);
             Parent.Controls.Add(mWorldEditor.ToolMenu.MenuStrip);
@@ -130,9 +130,9 @@ namespace WorldEditor
 
             var newViewport = new Viewport(
                 0,
-                toolMenuHeight, 
+                0, 
                 safeWidth,
-                safeHeight - toolMenuHeight) { MinDepth = 0.0f, MaxDepth = 1.0f };
+                safeHeight) { MinDepth = 0.0f, MaxDepth = 1.0f };
 
             var presentationParams = GraphicsDevice.PresentationParameters;
             presentationParams.BackBufferWidth = safeWidth;

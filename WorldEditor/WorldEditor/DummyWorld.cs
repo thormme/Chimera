@@ -62,6 +62,8 @@ namespace WorldEditor
             mHeightMap = null;
             mTextureMap = null;
             mTerrainPhysics = null;
+
+            New();
         }
 
         public void AddObject(DummyObject dummyObject)
