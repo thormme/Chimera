@@ -224,7 +224,7 @@ namespace WorldEditor
             TextureSelectionPane.UScale.ValueChanged += TextureHandler;
             TextureSelectionPane.VScale.ValueChanged += TextureHandler;
 
-            ObjectParameterPane.Create.Click += CreateObjectButtonHandler;
+            //ObjectParameterPane.Create.Click += CreateObjectButtonHandler;
 
             foreach (var model in AssetLibrary.ModelLibrary)
             {

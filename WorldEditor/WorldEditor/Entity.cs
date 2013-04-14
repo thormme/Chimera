@@ -90,7 +90,6 @@ namespace WorldEditor
         {
             mDragPoint.X = mControls.MouseState.X;
             mDragPoint.Y = mControls.MouseState.Y;
-            Console.WriteLine(mDragPoint);
         }
 
         public List<DummyObject> GetObjectsInSelection(DummyWorld dummyWorld)
@@ -106,7 +105,6 @@ namespace WorldEditor
 
         public Tuple<RayHit, DummyObject> GetPickingLocation(DummyWorld dummyWorld, Form gameForm)
         {
-            Console.WriteLine(mControls.MouseState.Y);
             //Form gameForm = this.Parent as Form;
             //gameForm.RectangleToScreen(gameForm.ClientRectangle).X;
             Vector3 nearScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 0.0f);

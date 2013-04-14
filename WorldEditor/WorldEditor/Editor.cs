@@ -15,7 +15,7 @@ using GameConstructLibrary;
 using WorldEditor.Dialogs;
 using System.Windows.Forms;
 
-namespace WorldEditor
+namespace WorldEditor.Dialogs
 {
     /// <summary>
     /// This is the main type for your game
@@ -30,8 +30,6 @@ namespace WorldEditor
 
         public Editor()
         {
-            LocationChanged += RepositionWindows;
-            Resize += RepositionWindows;
         }
 
         /// <summary>
@@ -75,10 +73,6 @@ namespace WorldEditor
 
             Parent.Controls.Add(mWorldEditor.ToolMenu.ToolStrip);
             Parent.Controls.Add(mWorldEditor.ToolMenu.MenuStrip);
-            //windowForm.Controls.Add(mWorldEditor.ObjectParameterPane);
-
-            //mWorldEditor.ObjectParameterPane.Shown += RepositionWindows;
-            mWorldEditor.TextureSelectionPane.Shown += RepositionWindows;
 
             ResizedWindow(null, null);
         }
@@ -150,25 +144,6 @@ namespace WorldEditor
             {
                 (mCamera as FPSCamera).Viewport = newViewport;
             }
-
-            RepositionWindows(sender, e);
-        }
-
-        protected void RepositionWindows(object sender, EventArgs e)
-        {
-            //var safeWidth = Math.Max(this.Window.ClientBounds.Width, 1);
-            //var safeHeight = Math.Max(this.Window.ClientBounds.Height, 1);
-
-            /*Form gameForm = (Form)Form.FromHandle(this.Parent.Handle);
-            if (this.mWorldEditor != null)
-            {
-                int gameX = gameForm.RectangleToScreen(gameForm.ClientRectangle).X;
-                int gameY = gameForm.RectangleToScreen(gameForm.ClientRectangle).Y;
-                int viewportTop = gameY + mWorldEditor.ToolMenu.ToolStrip.Height + mWorldEditor.ToolMenu.MenuStrip.Height;
-
-                //this.mWorldEditor.TextureSelectionPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.TextureSelectionPane.Width + gameX, viewportTop);
-                //this.mWorldEditor.ObjectParameterPane.Location = new System.Drawing.Point(safeWidth - this.mWorldEditor.ObjectParameterPane.Width + gameX, viewportTop);
-            }*/
         }
     }
 }
