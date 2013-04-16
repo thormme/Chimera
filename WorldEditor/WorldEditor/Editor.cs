@@ -25,7 +25,7 @@ namespace WorldEditor.Dialogs
         private SpriteBatch mSpriteBatch = null;
 
         private FPSCamera mCamera = null;
-        private WorldEditor mWorldEditor = null;
+        private MapEditor mWorldEditor = null;
         private ContentManager Content = null;
 
         public Editor()
@@ -69,12 +69,10 @@ namespace WorldEditor.Dialogs
             Console.WriteLine(Content.RootDirectory);
             AssetLibrary.LoadContent(Content);
             CollisionMeshManager.LoadContent(Content);
-            mWorldEditor = new WorldEditor(GraphicsDevice, mCamera, Content, this);
-
-            Parent.Controls.Add(mWorldEditor.ToolMenu.ToolStrip);
-            Parent.Controls.Add(mWorldEditor.ToolMenu.MenuStrip);
+            mWorldEditor = new MapEditor(GraphicsDevice, mCamera, Content, this, Parent as EditorForm);
 
             ResizedWindow(null, null);
+            this.Resize += ResizedWindow;
         }
 
         /// <summary>
@@ -117,8 +115,6 @@ namespace WorldEditor.Dialogs
 
         protected void ResizedWindow(object sender, EventArgs e)
         {
-            int toolMenuHeight = this.mWorldEditor.ToolMenu.MenuStrip.Height + this.mWorldEditor.ToolMenu.ToolStrip.Height;
-
             var safeWidth = Math.Max(this.Width, 1);
             var safeHeight = Math.Max(this.Height, 1);
 

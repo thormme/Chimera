@@ -86,28 +86,28 @@ namespace WorldEditor
             Vector3 position, 
             float radius, 
             float intensity,
-            ToolMenu.Brushes brush,
-            ToolMenu.Tools tool)
+            EditorForm.Brushes brush,
+            EditorForm.Tools tool)
         {
-            mHeightMap.IsFeathered = brush == ToolMenu.Brushes.CIRCLE_FEATHERED || brush == ToolMenu.Brushes.BLOCK_FEATHERED;
+            mHeightMap.IsFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
 
-            mHeightMap.IsBlock = brush == ToolMenu.Brushes.BLOCK || brush == ToolMenu.Brushes.BLOCK_FEATHERED;
+            mHeightMap.IsBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
 
             switch (tool)
             {
-                case ToolMenu.Tools.SET:
+                case EditorForm.Tools.SET:
                     mHeightMap.SetTerrain(new Vector2(position.X, position.Z), radius, intensity);
                     break;
-                case ToolMenu.Tools.SMOOTH:
+                case EditorForm.Tools.SMOOTH:
                     mHeightMap.SmoothTerrain(new Vector2(position.X, position.Z), radius);
                     break;
-                case ToolMenu.Tools.FLATTEN:
+                case EditorForm.Tools.FLATTEN:
                     mHeightMap.FlattenTerrain(new Vector2(position.X, position.Z), radius);
                     break;
-                case ToolMenu.Tools.LOWER:
+                case EditorForm.Tools.LOWER:
                     mHeightMap.LowerTerrain(new Vector2(position.X, position.Z), radius, intensity);
                     break;
-                case ToolMenu.Tools.RAISE:
+                case EditorForm.Tools.RAISE:
                     mHeightMap.RaiseTerrain(new Vector2(position.X, position.Z), radius, intensity);
                     break;
             }
@@ -135,24 +135,24 @@ namespace WorldEditor
             Vector2 UVOffset, 
             Vector2 UVScale, 
             float radius, 
-            float alpha, 
-            ToolMenu.Brushes brush,
-            ToolMenu.Tools tool, 
+            float alpha,
+            EditorForm.Brushes brush,
+            EditorForm.Tools tool, 
             GameConstructLibrary.TerrainTexture.TextureLayer layer)
         {
-            mTextureMap.IsFeathered = brush == ToolMenu.Brushes.CIRCLE_FEATHERED || brush == ToolMenu.Brushes.BLOCK_FEATHERED;
+            mTextureMap.IsFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
 
-            mTextureMap.IsBlock = brush == ToolMenu.Brushes.BLOCK || brush == ToolMenu.Brushes.BLOCK_FEATHERED;
+            mTextureMap.IsBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
 
             switch (tool)
             {
-                case ToolMenu.Tools.PAINT:
+                case EditorForm.Tools.PAINT:
                     mTextureMap.PaintTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture, UVOffset, UVScale);
                     break;
-                case ToolMenu.Tools.ERASE:
+                case EditorForm.Tools.ERASE:
                     mTextureMap.EraseTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture, UVOffset, UVScale);
                     break;
-                case ToolMenu.Tools.BLEND:
+                case EditorForm.Tools.BLEND:
                     mTextureMap.SmoothPaint(new Vector2(position.X, position.Z), radius);
                     break;
             }

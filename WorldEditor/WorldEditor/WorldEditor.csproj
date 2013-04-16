@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WorldEditor</RootNamespace>
+    <RootNamespace>MapEditor</RootNamespace>
     <AssemblyName>WorldEditor</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -165,12 +165,6 @@
     <Compile Include="Dialogs\TextureSelectionForm.Designer.cs">
       <DependentUpon>TextureSelectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\ToolMenu.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Dialogs\ToolMenu.Designer.cs">
-      <DependentUpon>ToolMenu.cs</DependentUpon>
-    </Compile>
     <Compile Include="DummyWorld.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="EditorObjectDefinition.cs" />
@@ -183,7 +177,7 @@
     </Compile>
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="UILibrary.cs" />
-    <Compile Include="WorldEditor.cs" />
+    <Compile Include="MapEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Artwork\block_brush_feathered_icon.png">
@@ -361,9 +355,6 @@
     <EmbeddedResource Include="Dialogs\TextureSelectionForm.resx">
       <DependentUpon>TextureSelectionForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\ToolMenu.resx">
-      <DependentUpon>ToolMenu.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

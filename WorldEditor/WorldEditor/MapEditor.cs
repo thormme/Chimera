@@ -18,7 +18,7 @@ namespace WorldEditor
 
     public enum EditMode { Object, Height, Texture }
 
-    public class WorldEditor
+    public class MapEditor
     {
 
         #region Constants
@@ -54,12 +54,12 @@ namespace WorldEditor
         #region Public Properties
 
         //Dialog for the world editor.
-        public ToolMenu ToolMenu = new ToolMenu();
+        public EditorForm EditorForm = null;
 
         public EditorForm EditorPane = new EditorForm();
 
         //Dialog for object parameters.
-        public ObjectParametersForm ObjectParameterPane = new ObjectParametersForm();
+        public ObjectParametersForm ObjectParameterPane = null;
 
         public TextureSelectionForm TextureSelectionPane = new TextureSelectionForm();
 
@@ -114,8 +114,10 @@ namespace WorldEditor
 
         #region Public Interface
 
-        public WorldEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content, GameDeviceControl gameControl)
+        public MapEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content, GameDeviceControl gameControl, EditorForm editorForm)
         {
+            this.EditorForm = editorForm;
+            this.ObjectParameterPane = editorForm.ObjectParametersForm;
             mGameControl = gameControl;
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
@@ -158,14 +160,14 @@ namespace WorldEditor
 
             if (mPlaceable)
             {
-                switch (ToolMenu.Mode)
+                switch (EditorForm.Mode)
                 {
-                    case ToolMenu.EditorMode.HEIGHTMAP:
-                        brush = ToolMenu.HeightMapBrush == ToolMenu.Brushes.BLOCK || ToolMenu.HeightMapBrush == ToolMenu.Brushes.BLOCK_FEATHERED ? 
+                    case EditorForm.EditorMode.HEIGHTMAP:
+                        brush = EditorForm.HeightMapBrush == EditorForm.Brushes.BLOCK || EditorForm.HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
                             TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
                         break;
-                    case ToolMenu.EditorMode.PAINTING:
-                        brush = ToolMenu.PaintingBrush == ToolMenu.Brushes.BLOCK || ToolMenu.HeightMapBrush == ToolMenu.Brushes.BLOCK_FEATHERED ? 
+                    case EditorForm.EditorMode.PAINTING:
+                        brush = EditorForm.PaintingBrush == EditorForm.Brushes.BLOCK || EditorForm.HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
                             TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
                         break;
                 }
@@ -189,17 +191,17 @@ namespace WorldEditor
 
             mCursorObject.Scale = new Vector3(5.0f, 0.0f, 5.0f);
 
-            ToolMenu.NewMenu.Click    += NewHandler;
-            ToolMenu.SaveMenu.Click += SaveHandler;
-            ToolMenu.SaveAsMenu.Click += SaveAsHandler;
-            ToolMenu.OpenMenu.Click += OpenHandler;
-            ToolMenu.PlayMenu.Click += PlayHandler;
-            ToolMenu.ViewWaterMenu.Click += ViewWaterHandler;
-            ToolMenu.ViewSkyBoxMenu.Click += ViewSkyBoxHandler;
-            ToolMenu.UndoMenu.Click += UndoHandler;
-            ToolMenu.RedoMenu.Click += RedoHandler;
+            EditorForm.NewMenu.Click    += NewHandler;
+            EditorForm.SaveMenu.Click += SaveHandler;
+            EditorForm.SaveAsMenu.Click += SaveAsHandler;
+            EditorForm.OpenMenu.Click += OpenHandler;
+            EditorForm.PlayMenu.Click += PlayHandler;
+            EditorForm.ViewWaterMenu.Click += ViewWaterHandler;
+            EditorForm.ViewSkyBoxMenu.Click += ViewSkyBoxHandler;
+            EditorForm.UndoMenu.Click += UndoHandler;
+            EditorForm.RedoMenu.Click += RedoHandler;
 
-            ToolMenu.ModeChanged += UpdateModeContext;
+            EditorForm.ModeChanged += UpdateModeContext;
 
             ObjectParameterPane.Show();
             ObjectParameterPane.Dock = DockStyle.Left;
@@ -492,15 +494,15 @@ namespace WorldEditor
 
         private void UpdateModeContext(object sender, EventArgs e)
         {
-            switch ((sender as ToolMenu).Mode)
+            switch ((sender as EditorForm).Mode)
             {
-                case Dialogs.ToolMenu.EditorMode.OBJECTS:
+                case Dialogs.EditorForm.EditorMode.OBJECTS:
                     OpenObjectParameterForm(this, EventArgs.Empty);
                     break;
-                case Dialogs.ToolMenu.EditorMode.HEIGHTMAP:
+                case Dialogs.EditorForm.EditorMode.HEIGHTMAP:
                     CloseObjectParameterForm(this, EventArgs.Empty);
                     break;
-                case Dialogs.ToolMenu.EditorMode.PAINTING:
+                case Dialogs.EditorForm.EditorMode.PAINTING:
                     CloseObjectParameterForm(this, EventArgs.Empty);
                     break;
             }
@@ -508,7 +510,7 @@ namespace WorldEditor
 
         private void UpdateToolContext(object sender, EventArgs e)
         {
-            if ((sender as ToolMenu).Tool == Dialogs.ToolMenu.Tools.PLACE)
+            if ((sender as EditorForm).Tool == Dialogs.EditorForm.Tools.PLACE)
             {
                 OpenObjectCreationForm(this, EventArgs.Empty);
             }
@@ -552,7 +554,7 @@ namespace WorldEditor
 
             mDummyWorld.NewHeightMapAction = mDummyWorld.NewHeightMapAction || !mControls.LeftHold.Active;
 
-            if (mControls.LeftReleased.Active && ToolMenu.Mode == ToolMenu.EditorMode.OBJECTS)
+            if (mControls.LeftReleased.Active && EditorForm.Mode == EditorForm.EditorMode.OBJECTS)
             {
                 foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
                 {
@@ -571,15 +573,15 @@ namespace WorldEditor
             }
             else if (mControls.LeftHold.Active)
             {
-                switch (ToolMenu.Mode)
+                switch (EditorForm.Mode)
                 {
-                    case ToolMenu.EditorMode.HEIGHTMAP:
+                    case EditorForm.EditorMode.HEIGHTMAP:
                     {
                         float strength = 10.0f;// form.Strength * 10.0f;
-                        mDummyWorld.ModifyHeightMap(mCursorObject.Position, 5.0f/*form.Size*/, strength, ToolMenu.HeightMapBrush, ToolMenu.Tool);
+                        mDummyWorld.ModifyHeightMap(mCursorObject.Position, 5.0f/*form.Size*/, strength, EditorForm.HeightMapBrush, EditorForm.Tool);
                         break;
                     }
-                    case ToolMenu.EditorMode.PAINTING:
+                    case EditorForm.EditorMode.PAINTING:
                     {
                         TextureSelectionForm textureForm = TextureSelectionPane as TextureSelectionForm;
                         if ((textureForm.TextureList as ListBox).SelectedItem != null)
@@ -597,8 +599,8 @@ namespace WorldEditor
                                 new Vector2(uOffset, vOffset),
                                 new Vector2(uScale, vScale),
                                 /*EditorPane.Size*/1, alpha,// TODO Fixit
-                                (ToolMenu.Brushes)/*EditorPane.PaintingBrush*/ToolMenu.Brushes.CIRCLE,
-                                ToolMenu.Tool,
+                                (EditorForm.Brushes)/*EditorPane.PaintingBrush*/EditorForm.Brushes.CIRCLE,
+                                EditorForm.Tool,
                                 layer);
                         }
                         break;
