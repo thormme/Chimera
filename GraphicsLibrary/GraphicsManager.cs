@@ -334,6 +334,39 @@ namespace GraphicsLibrary
             return ids;            
         }
 
+        static public Texture2D RenderPreviewImage(ModelRenderer renderer)
+        {
+            RenderTarget2D previewTexture = new RenderTarget2D(mDevice, 256, 256, false, SurfaceFormat.Color, DepthFormat.Depth24);
+
+            mDevice.SetRenderTarget(previewTexture);
+            mDevice.Clear(Color.CornflowerBlue);
+
+            mDevice.SamplerStates[0] = SamplerState.PointClamp;
+            mDevice.SamplerStates[1] = SamplerState.PointClamp;
+
+            RasterizerState cull = new RasterizerState();
+            cull.CullMode = CullMode.CullCounterClockwiseFace;
+
+            mDevice.RasterizerState = cull;
+            mDevice.BlendState = BlendState.Opaque;
+            mDevice.DepthStencilState = DepthStencilState.Default;
+
+            AnimateModelRenderer.AnimateModelParameters parameters = new AnimateModelRenderer.AnimateModelParameters();
+            parameters.SkinTransforms = new Matrix[] { Matrix.Identity };
+            parameters.World = Matrix.Identity;
+
+            renderer.ClearAllInstances();
+            renderer.AddInstance(parameters);
+            renderer.RenderAllInstancesWithShadows(
+                mShadowMap, Matrix.CreateLookAt(new Vector3(renderer.BoundingSphere.Radius, renderer.BoundingSphere.Radius, renderer.BoundingSphere.Radius), Vector3.Zero, Vector3.Up), 
+                Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, mCamera.AspectRatio, 0.1f, 1000.0f),
+                mDirectionalLight);
+
+            mDevice.SetRenderTarget(null);
+
+            return previewTexture;
+        }
+
         #endregion
 
         #region Renderable Enqueue Methods

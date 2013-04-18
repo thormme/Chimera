@@ -334,8 +334,8 @@
             // ContextToolsPanel
             // 
             this.ContextToolsPanel.AutoScroll = true;
-            this.ContextToolsPanel.Controls.Add(this.ObjectPlacementPanel);
             this.ContextToolsPanel.Controls.Add(this.ObjectParametersForm);
+            this.ContextToolsPanel.Controls.Add(this.ObjectPlacementPanel);
             this.ContextToolsPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.ContextToolsPanel.Location = new System.Drawing.Point(675, 72);
             this.ContextToolsPanel.Name = "ContextToolsPanel";
@@ -344,16 +344,17 @@
             // 
             // ObjectPlacementPanel
             // 
-            this.ObjectPlacementPanel.Location = new System.Drawing.Point(3, 127);
+            this.ObjectPlacementPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 0);
             this.ObjectPlacementPanel.Name = "ObjectPlacementPanel";
-            this.ObjectPlacementPanel.Size = new System.Drawing.Size(235, 379);
+            this.ObjectPlacementPanel.Size = new System.Drawing.Size(234, 379);
             this.ObjectPlacementPanel.TabIndex = 1;
             // 
             // ObjectParametersForm
             // 
             this.ObjectParametersForm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ObjectParametersForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ObjectParametersForm.Location = new System.Drawing.Point(0, 0);
+            this.ObjectParametersForm.Location = new System.Drawing.Point(0, 379);
             this.ObjectParametersForm.MinimumSize = new System.Drawing.Size(260, 160);
             this.ObjectParametersForm.Name = "ObjectParametersForm";
             this.ObjectParametersForm.Size = new System.Drawing.Size(260, 160);

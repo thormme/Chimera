@@ -6,6 +6,9 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GraphicsLibrary;
+using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 
 namespace WorldEditor.Dialogs
 {

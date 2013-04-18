@@ -12,12 +12,15 @@ namespace GraphicsLibrary
         #region Private Variables
 
         protected Model mModel;
+        protected BoundingSphere mBoundingSphere;
         
         #endregion
 
         #region Public Properties
 
         public Model Model { get { return mModel; } }
+
+        public BoundingSphere BoundingSphere { get { return mBoundingSphere; } }
 
         #endregion
 
@@ -26,6 +29,18 @@ namespace GraphicsLibrary
         public ModelRenderer(Model model)
         {
             mModel = model;
+
+            mBoundingSphere = new BoundingSphere(Vector3.Zero, 0.0f);
+
+            foreach (ModelMesh mesh in mModel.Meshes)
+            {
+                float meshRadius = (mesh.BoundingSphere.Center - mBoundingSphere.Center).Length() + mesh.BoundingSphere.Radius;
+
+                if (meshRadius > mBoundingSphere.Radius)
+                {
+                    mBoundingSphere.Radius = meshRadius;
+                }
+            }
         }
 
         #endregion

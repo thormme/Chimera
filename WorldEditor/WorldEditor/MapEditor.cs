@@ -227,6 +227,7 @@ namespace WorldEditor
             TextureSelectionPane.VScale.ValueChanged += TextureHandler;
 
             EditorForm.ObjectPlacementPanel.ObjectTree.NodeMouseDoubleClick += CreateObjectButtonHandler;
+            EditorForm.ObjectPlacementPanel.ObjectTree.AfterSelect += UpdatePreviewImage;
 
             TreeNode modelNode = new TreeNode("Models");
             TreeNode entityNode = new TreeNode("Entities");
@@ -396,14 +397,33 @@ namespace WorldEditor
         {
             ObjectParameterPane.Show(/*(Form)Form.FromHandle(Window.Handle)*/);
         }
+                
+        private void UpdatePreviewImage(object sender, EventArgs e)
+        {
+            TreeNode selectedObject = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode;
+            if (mObjects.ContainsKey(selectedObject.Text) && selectedObject.Nodes.Count == 0)
+            {
+                Texture2D previewImage = GraphicsManager.RenderPreviewImage(AssetLibrary.LookupModel(mObjects[selectedObject.Text].Model));
+                MemoryStream ms = new MemoryStream();
+
+                previewImage.SaveAsPng(ms, previewImage.Width, previewImage.Height);
+                ms.Seek(0, SeekOrigin.Begin);
+
+                System.Drawing.Image bmp = System.Drawing.Bitmap.FromStream(ms);
+
+                ms.Close();
+                ms = null;
+                EditorForm.ObjectPlacementPanel.PreviewPictureBox.Image = bmp;
+            }
+        }
 
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
-            string objectName = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode.Text;
-            if (mObjects.ContainsKey(objectName))
+            TreeNode selectedObject = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode;
+            if (mObjects.ContainsKey(selectedObject.Text) && selectedObject.NextNode == null)
             {
                 ObjectParameterPane.SelectedObjects.Clear();
-                DummyObject dummy = new DummyObject(mObjects[objectName]);
+                DummyObject dummy = new DummyObject(mObjects[selectedObject.Name]);
                 ObjectParameterPane.SelectedObjects.Add(dummy);
                 SetObjectPropertiesToForm(dummy);
                 mDummyWorld.AddObject(dummy);
