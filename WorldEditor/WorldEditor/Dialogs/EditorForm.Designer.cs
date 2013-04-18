@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditorForm));
-            this.editorPanel = new WorldEditor.Dialogs.Editor();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.raiseTerrainButton = new System.Windows.Forms.ToolStripButton();
             this.lowerTerrainButton = new System.Windows.Forms.ToolStripButton();
@@ -60,21 +59,13 @@
             this.ViewSkyBoxMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewWaterMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextToolsPanel = new System.Windows.Forms.Panel();
+            this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
             this.ObjectParametersForm = new WorldEditor.Dialogs.ObjectParametersForm();
+            this.editorPanel = new WorldEditor.Dialogs.Editor();
             this.ToolStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.ContextToolsPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // editorPanel
-            // 
-            this.editorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.editorPanel.Location = new System.Drawing.Point(2, 74);
-            this.editorPanel.Name = "editorPanel";
-            this.editorPanel.Size = new System.Drawing.Size(688, 428);
-            this.editorPanel.TabIndex = 0;
             // 
             // ToolStrip
             // 
@@ -343,12 +334,20 @@
             // ContextToolsPanel
             // 
             this.ContextToolsPanel.AutoScroll = true;
+            this.ContextToolsPanel.Controls.Add(this.ObjectPlacementPanel);
             this.ContextToolsPanel.Controls.Add(this.ObjectParametersForm);
             this.ContextToolsPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.ContextToolsPanel.Location = new System.Drawing.Point(675, 72);
             this.ContextToolsPanel.Name = "ContextToolsPanel";
             this.ContextToolsPanel.Size = new System.Drawing.Size(251, 431);
             this.ContextToolsPanel.TabIndex = 4;
+            // 
+            // ObjectPlacementPanel
+            // 
+            this.ObjectPlacementPanel.Location = new System.Drawing.Point(3, 127);
+            this.ObjectPlacementPanel.Name = "ObjectPlacementPanel";
+            this.ObjectPlacementPanel.Size = new System.Drawing.Size(235, 379);
+            this.ObjectPlacementPanel.TabIndex = 1;
             // 
             // ObjectParametersForm
             // 
@@ -359,6 +358,16 @@
             this.ObjectParametersForm.Name = "ObjectParametersForm";
             this.ObjectParametersForm.Size = new System.Drawing.Size(260, 160);
             this.ObjectParametersForm.TabIndex = 0;
+            // 
+            // editorPanel
+            // 
+            this.editorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.editorPanel.Location = new System.Drawing.Point(2, 74);
+            this.editorPanel.Name = "editorPanel";
+            this.editorPanel.Size = new System.Drawing.Size(688, 428);
+            this.editorPanel.TabIndex = 0;
             // 
             // EditorForm
             // 
@@ -415,5 +424,6 @@
         public System.Windows.Forms.Panel ContextToolsPanel;
         public ObjectParametersForm ObjectParametersForm;
         public System.Windows.Forms.ToolStrip ToolStrip;
+        public global::WorldEditor.Dialogs.ObjectPlacementPanel ObjectPlacementPanel;
     }
 }

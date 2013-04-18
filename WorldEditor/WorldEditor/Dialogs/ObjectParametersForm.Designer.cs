@@ -62,7 +62,7 @@
             // Physical
             // 
             this.Physical.AutoSize = true;
-            this.Physical.Location = new System.Drawing.Point(188, 88);
+            this.Physical.Location = new System.Drawing.Point(179, 88);
             this.Physical.Name = "Physical";
             this.Physical.Size = new System.Drawing.Size(65, 17);
             this.Physical.TabIndex = 0;
@@ -73,11 +73,12 @@
             // PositionLabel
             // 
             this.PositionLabel.AutoSize = true;
-            this.PositionLabel.Location = new System.Drawing.Point(3, 8);
+            this.PositionLabel.Location = new System.Drawing.Point(4, 8);
             this.PositionLabel.Name = "PositionLabel";
             this.PositionLabel.Size = new System.Drawing.Size(47, 13);
             this.PositionLabel.TabIndex = 1;
             this.PositionLabel.Text = "Position:";
+            this.PositionLabel.Click += new System.EventHandler(this.PositionLabel_Click);
             // 
             // OrientationLabel
             // 
@@ -87,29 +88,32 @@
             this.OrientationLabel.Size = new System.Drawing.Size(50, 13);
             this.OrientationLabel.TabIndex = 2;
             this.OrientationLabel.Text = "Rotation:";
+            this.OrientationLabel.Click += new System.EventHandler(this.OrientationLabel_Click);
             // 
             // ScaleLabel
             // 
             this.ScaleLabel.AutoSize = true;
-            this.ScaleLabel.Location = new System.Drawing.Point(2, 60);
+            this.ScaleLabel.Location = new System.Drawing.Point(3, 60);
             this.ScaleLabel.Name = "ScaleLabel";
             this.ScaleLabel.Size = new System.Drawing.Size(37, 13);
             this.ScaleLabel.TabIndex = 3;
             this.ScaleLabel.Text = "Scale:";
+            this.ScaleLabel.Click += new System.EventHandler(this.ScaleLabel_Click);
             // 
             // HeightLabel
             // 
             this.HeightLabel.AutoSize = true;
-            this.HeightLabel.Location = new System.Drawing.Point(2, 87);
+            this.HeightLabel.Location = new System.Drawing.Point(3, 87);
             this.HeightLabel.Name = "HeightLabel";
             this.HeightLabel.Size = new System.Drawing.Size(41, 13);
             this.HeightLabel.TabIndex = 4;
             this.HeightLabel.Text = "Height:";
+            this.HeightLabel.Click += new System.EventHandler(this.HeightLabel_Click);
             // 
             // PositionX
             // 
             this.PositionX.DecimalPlaces = 2;
-            this.PositionX.Location = new System.Drawing.Point(55, 6);
+            this.PositionX.Location = new System.Drawing.Point(53, 6);
             this.PositionX.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -128,7 +132,7 @@
             // PositionZ
             // 
             this.PositionZ.DecimalPlaces = 2;
-            this.PositionZ.Location = new System.Drawing.Point(187, 6);
+            this.PositionZ.Location = new System.Drawing.Point(178, 6);
             this.PositionZ.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -147,7 +151,7 @@
             // Yaw
             // 
             this.Yaw.DecimalPlaces = 2;
-            this.Yaw.Location = new System.Drawing.Point(55, 32);
+            this.Yaw.Location = new System.Drawing.Point(53, 32);
             this.Yaw.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -166,7 +170,7 @@
             // Pitch
             // 
             this.Pitch.DecimalPlaces = 2;
-            this.Pitch.Location = new System.Drawing.Point(121, 32);
+            this.Pitch.Location = new System.Drawing.Point(116, 32);
             this.Pitch.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -185,7 +189,7 @@
             // Roll
             // 
             this.Roll.DecimalPlaces = 2;
-            this.Roll.Location = new System.Drawing.Point(187, 32);
+            this.Roll.Location = new System.Drawing.Point(178, 32);
             this.Roll.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -209,7 +213,7 @@
             0,
             0,
             131072});
-            this.ScaleX.Location = new System.Drawing.Point(55, 58);
+            this.ScaleX.Location = new System.Drawing.Point(53, 58);
             this.ScaleX.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -238,7 +242,7 @@
             0,
             0,
             131072});
-            this.ScaleY.Location = new System.Drawing.Point(121, 58);
+            this.ScaleY.Location = new System.Drawing.Point(116, 58);
             this.ScaleY.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -267,7 +271,7 @@
             0,
             0,
             131072});
-            this.ScaleZ.Location = new System.Drawing.Point(187, 58);
+            this.ScaleZ.Location = new System.Drawing.Point(178, 58);
             this.ScaleZ.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -291,7 +295,7 @@
             // FloatingHeight
             // 
             this.FloatingHeight.DecimalPlaces = 2;
-            this.FloatingHeight.Location = new System.Drawing.Point(55, 85);
+            this.FloatingHeight.Location = new System.Drawing.Point(53, 85);
             this.FloatingHeight.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -311,7 +315,7 @@
             // 
             this.PositionY.DecimalPlaces = 2;
             this.PositionY.Enabled = false;
-            this.PositionY.Location = new System.Drawing.Point(121, 6);
+            this.PositionY.Location = new System.Drawing.Point(116, 6);
             this.PositionY.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -332,7 +336,7 @@
             this.Floating.AutoSize = true;
             this.Floating.Checked = true;
             this.Floating.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.Floating.Location = new System.Drawing.Point(121, 88);
+            this.Floating.Location = new System.Drawing.Point(116, 88);
             this.Floating.Name = "Floating";
             this.Floating.Size = new System.Drawing.Size(63, 17);
             this.Floating.TabIndex = 15;
@@ -361,7 +365,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(252, 112);
+            this.panel2.Size = new System.Drawing.Size(243, 112);
             this.panel2.TabIndex = 20;
             // 
             // AdditionalParametersPanel
@@ -371,7 +375,7 @@
             this.AdditionalParametersPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.AdditionalParametersPanel.Location = new System.Drawing.Point(0, 112);
             this.AdditionalParametersPanel.Name = "AdditionalParametersPanel";
-            this.AdditionalParametersPanel.Size = new System.Drawing.Size(252, 0);
+            this.AdditionalParametersPanel.Size = new System.Drawing.Size(243, 0);
             this.AdditionalParametersPanel.TabIndex = 21;
             // 
             // ObjectParametersForm
@@ -382,7 +386,7 @@
             this.Controls.Add(this.AdditionalParametersPanel);
             this.Controls.Add(this.panel2);
             this.Name = "ObjectParametersForm";
-            this.Size = new System.Drawing.Size(252, 128);
+            this.Size = new System.Drawing.Size(243, 128);
             ((System.ComponentModel.ISupportInitialize)(this.PositionX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PositionZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Yaw)).EndInit();

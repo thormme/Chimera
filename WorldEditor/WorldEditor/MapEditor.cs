@@ -226,8 +226,12 @@ namespace WorldEditor
             TextureSelectionPane.UScale.ValueChanged += TextureHandler;
             TextureSelectionPane.VScale.ValueChanged += TextureHandler;
 
-            //ObjectParameterPane.Create.Click += CreateObjectButtonHandler;
+            EditorForm.ObjectPlacementPanel.ObjectTree.NodeMouseDoubleClick += CreateObjectButtonHandler;
 
+            TreeNode modelNode = new TreeNode("Models");
+            TreeNode entityNode = new TreeNode("Entities");
+            EditorForm.ObjectPlacementPanel.ObjectTree.Nodes.Add(modelNode);
+            EditorForm.ObjectPlacementPanel.ObjectTree.Nodes.Add(entityNode);
             foreach (var model in AssetLibrary.ModelLibrary)
             {
                 DummyObject tempObject = new DummyObject();
@@ -239,7 +243,7 @@ namespace WorldEditor
                 tempObject.Scale = Vector3.One;
                 tempObject.Height = 0.0f;
                 mObjects.Add(tempObject.Model, tempObject);
-                //(EditorPane.ObjectList as ListBox).Items.Add(tempObject.Model);
+                modelNode.Nodes.Add(new TreeNode(tempObject.Model));
             }
 
             FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
@@ -251,7 +255,7 @@ namespace WorldEditor
 
                     mObjectDefinitions.Add(definition.EditorType, definition);
                     mObjects.Add(definition.EditorType, definition.CreateDummyObject());
-                    //((EditorPane as EditorForm).ObjectList as ListBox).Items.Add(definition.EditorType);
+                    entityNode.Nodes.Add(definition.EditorType);
                 }
                 catch (SystemException)
                 {
@@ -395,13 +399,14 @@ namespace WorldEditor
 
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
-            //if (EditorPane.ObjectList.SelectedItem != null)
+            string objectName = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode.Text;
+            if (mObjects.ContainsKey(objectName))
             {
-                /*ObjectParameterPane.SelectedObjects.Clear();
-                DummyObject dummy = new DummyObject(mObjects[EditorPane.ObjectList.SelectedItem.ToString()]);
+                ObjectParameterPane.SelectedObjects.Clear();
+                DummyObject dummy = new DummyObject(mObjects[objectName]);
                 ObjectParameterPane.SelectedObjects.Add(dummy);
                 SetObjectPropertiesToForm(dummy);
-                mDummyWorld.AddObject(dummy);*/
+                mDummyWorld.AddObject(dummy);
             }
         }
 
