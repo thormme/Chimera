@@ -14,33 +14,6 @@ Technique SkinnedShadowCast
 	}
 }
 
-Technique SkinnedCelShade
-{
-	Pass
-	{
-		VertexShader = compile vs_3_0 SkinnedVS();
-		PixelShader  = compile ps_3_0 CelShadePS();
-	}
-}
-
-Technique SkinnedOutline
-{
-	Pass
-	{
-		VertexShader = compile vs_3_0 SkinnedOutlineVS();
-		PixelShader  = compile ps_3_0 OutlinePS();
-	}
-}
-
-Technique SkinnedPhong
-{
-	Pass
-	{
-		VertexShader = compile vs_3_0 SkinnedVS();
-		PixelShader  = compile ps_3_0 PhongPS();
-	}
-}
-
 Technique SkinnedNormalDepthShade
 {
 	Pass
@@ -50,7 +23,25 @@ Technique SkinnedNormalDepthShade
 	}
 }
 
-Technique TerrainCelShade
+Technique SkinnedCelShadeWithoutShadows
+{
+	Pass
+	{
+		VertexShader = compile vs_3_0 SkinnedVS();
+		PixelShader  = compile ps_3_0 CelShadePS();
+	}
+}
+
+Technique SkinnedCelShadeWithShadows
+{
+	Pass
+	{
+		VertexShader = compile vs_3_0 SkinnedVSWithShadows();
+		PixelShader  = compile ps_3_0 CelShadePSWithShadows();
+	}
+}
+
+Technique TerrainCelShadeWithoutShadows
 {
 	Pass
 	{
@@ -63,27 +54,8 @@ Technique TerrainCelShadeWithShadows
 {
 	Pass
 	{
-		VertexShader = compile vs_3_0 VS();
-		PixelShader  = compile ps_3_0 TerrainCelShadePS();
-	}
-}
-
-Technique TerrainCelShadeWithoutShadows
-
-{
-	Pass
-	{
-		VertexShader = compile vs_3_0 VS();
-		PixelShader  = compile ps_3_0 TerrainCelShadePS();
-	}
-}
-
-Technique TerrainPhong
-{
-	Pass
-	{
-		VertexShader = compile vs_3_0 VS();
-		PixelShader  = compile ps_3_0 TerrainPhongPS();
+		VertexShader = compile vs_3_0 VSWithShadows();
+		PixelShader  = compile ps_3_0 TerrainCelShadePSWithShadows();
 	}
 }
 
@@ -96,7 +68,7 @@ Technique ShadowCast
 	}
 }
 
-Technique CelShade
+Technique CelShadeWithoutShadows
 {
 	Pass
 	{
@@ -109,35 +81,8 @@ Technique CelShadeWithShadows
 {
 	Pass
 	{
-		VertexShader = compile vs_3_0 VS();
-		PixelShader  = compile ps_3_0 CelShadePS();
-	}
-}
-
-Technique CelShadeNoShadows
-{
-	Pass
-	{
-		VertexShader = compile vs_3_0 VS();
-		PixelShader  = compile ps_3_0 CelShadePS();
-	}
-}
-
-Technique SkinnedCelShadeWithShadows
-{
-	Pass
-	{
-		VertexShader = compile vs_3_0 SkinnedVS();
-		PixelShader  = compile ps_3_0 CelShadePS();
-	}
-}
-
-Technique SkinnedCelShadeWithoutShadows
-{
-	Pass
-	{
-		VertexShader = compile vs_3_0 SkinnedVS();
-		PixelShader  = compile ps_3_0 CelShadePS();
+		VertexShader = compile vs_3_0 VSWithShadows();
+		PixelShader  = compile ps_3_0 CelShadePSWithShadows();
 	}
 }
 
@@ -156,15 +101,6 @@ Technique Outline
 	{
 		VertexShader = compile vs_3_0 OutlineVS();
 		PixelShader  = compile ps_3_0 OutlinePS();
-	}
-}
-
-Technique Phong
-{
-	Pass
-	{
-		VertexShader = compile vs_3_0 VS();
-		PixelShader  = compile ps_3_0 PhongPS();
 	}
 }
 

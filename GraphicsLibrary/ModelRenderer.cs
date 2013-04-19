@@ -115,10 +115,10 @@ namespace GraphicsLibrary
 
         protected override void DrawGeometry(Matrix view, Matrix projection, object[] optionalParameters, EffectConfigurer effectConfigurer, RendererParameters instance)
         {
-            /*if (effectConfigurer != ShadowMapConfigurer && GraphicsManager.ViewBoundingFrustum.Contains(instance.BoundingBox) == ContainmentType.Disjoint)
+            if (effectConfigurer != ShadowMapConfigurer && GraphicsManager.ViewBoundingFrustum.Contains(instance.BoundingBox) == ContainmentType.Disjoint)
             {
                 return;
-            }*/
+            }
 
             foreach (ModelMesh mesh in mModel.Meshes)
             {
