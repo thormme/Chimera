@@ -437,7 +437,7 @@
             this.TextureSelectionForm.BackColor = System.Drawing.SystemColors.Control;
             this.TextureSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
             this.TextureSelectionForm.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextureSelectionForm.Location = new System.Drawing.Point(0, 1010);
+            this.TextureSelectionForm.Location = new System.Drawing.Point(0, 1014);
             this.TextureSelectionForm.Margin = new System.Windows.Forms.Padding(4);
             this.TextureSelectionForm.Name = "TextureSelectionForm";
             this.TextureSelectionForm.Size = new System.Drawing.Size(234, 555);
@@ -447,7 +447,7 @@
             // 
             this.ObjectParametersForm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ObjectParametersForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ObjectParametersForm.Location = new System.Drawing.Point(0, 889);
+            this.ObjectParametersForm.Location = new System.Drawing.Point(0, 893);
             this.ObjectParametersForm.Name = "ObjectParametersForm";
             this.ObjectParametersForm.Size = new System.Drawing.Size(234, 121);
             this.ObjectParametersForm.TabIndex = 1;
@@ -455,7 +455,7 @@
             // ObjectPlacementPanel
             // 
             this.ObjectPlacementPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 434);
+            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 438);
             this.ObjectPlacementPanel.Name = "ObjectPlacementPanel";
             this.ObjectPlacementPanel.Size = new System.Drawing.Size(234, 455);
             this.ObjectPlacementPanel.TabIndex = 0;
@@ -463,7 +463,7 @@
             // HeightMapBrushPropertiesForm
             // 
             this.HeightMapBrushPropertiesForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.HeightMapBrushPropertiesForm.Location = new System.Drawing.Point(0, 263);
+            this.HeightMapBrushPropertiesForm.Location = new System.Drawing.Point(0, 267);
             this.HeightMapBrushPropertiesForm.Name = "HeightMapBrushPropertiesForm";
             this.HeightMapBrushPropertiesForm.Size = new System.Drawing.Size(234, 171);
             this.HeightMapBrushPropertiesForm.TabIndex = 3;
@@ -471,7 +471,7 @@
             // TextureBrushPropertiesForm
             // 
             this.TextureBrushPropertiesForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TextureBrushPropertiesForm.Location = new System.Drawing.Point(0, 92);
+            this.TextureBrushPropertiesForm.Location = new System.Drawing.Point(0, 96);
             this.TextureBrushPropertiesForm.Name = "TextureBrushPropertiesForm";
             this.TextureBrushPropertiesForm.Size = new System.Drawing.Size(234, 171);
             this.TextureBrushPropertiesForm.TabIndex = 4;
@@ -481,7 +481,7 @@
             this.BrushSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
             this.BrushSelectionForm.Location = new System.Drawing.Point(0, 0);
             this.BrushSelectionForm.Name = "BrushSelectionForm";
-            this.BrushSelectionForm.Size = new System.Drawing.Size(234, 92);
+            this.BrushSelectionForm.Size = new System.Drawing.Size(234, 96);
             this.BrushSelectionForm.TabIndex = 0;
             // 
             // editorPanel
