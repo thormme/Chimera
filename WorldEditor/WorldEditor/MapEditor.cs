@@ -61,7 +61,9 @@ namespace WorldEditor
         //Dialog for object parameters.
         public ObjectParametersForm ObjectParameterPane = null;
 
-        public TextureSelectionForm TextureSelectionPane = new TextureSelectionForm();
+        public ObjectPlacementPanel ObjectPlacementPane = null;
+
+        public TextureSelectionForm TextureSelectionPane = null;
 
         public bool Closed = false;
 
@@ -118,6 +120,8 @@ namespace WorldEditor
         {
             this.EditorForm = editorForm;
             this.ObjectParameterPane = editorForm.ObjectParametersForm;
+            this.ObjectPlacementPane = editorForm.ObjectPlacementPanel;
+            this.TextureSelectionPane = editorForm.TextureSelectionForm;
             mGameControl = gameControl;
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
@@ -206,28 +210,19 @@ namespace WorldEditor
             ObjectParameterPane.Show();
             ObjectParameterPane.Dock = DockStyle.Left;
 
-            //TabControl editModes = (EditorPane.Controls["EditTabs"] as TabControl);
-
-            //((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).SelectedIndexChanged += TextureHandler;
-
-            //(EditorPane as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseTextureForm);
-            //(EditorPane as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
-
-            //(EditorPane as EditorForm).PaintModeButton.Click += new System.EventHandler(this.OpenTextureForm);
-            //(EditorPane as EditorForm).PaintModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
-
-            //(EditorPane as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.CloseTextureForm);
-            //(EditorPane as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.OpenObjectParameterForm);
-
-            //(EditorPane as EditorForm).SizeUpDown.ValueChanged += CursorResizeHandler;
-
+            TextureSelectionPane.TextureList.SelectedIndexChanged += TextureHandler;
             TextureSelectionPane.UOffset.ValueChanged += TextureHandler;
             TextureSelectionPane.VOffset.ValueChanged += TextureHandler;
             TextureSelectionPane.UScale.ValueChanged += TextureHandler;
             TextureSelectionPane.VScale.ValueChanged += TextureHandler;
 
-            //ObjectParameterPane.Create.Click += CreateObjectButtonHandler;
+            EditorForm.ObjectPlacementPanel.ObjectTree.NodeMouseDoubleClick += CreateObjectButtonHandler;
+            EditorForm.ObjectPlacementPanel.ObjectTree.AfterSelect += UpdatePreviewImage;
 
+            TreeNode modelNode = new TreeNode("Models");
+            TreeNode entityNode = new TreeNode("Entities");
+            EditorForm.ObjectPlacementPanel.ObjectTree.Nodes.Add(modelNode);
+            EditorForm.ObjectPlacementPanel.ObjectTree.Nodes.Add(entityNode);
             foreach (var model in AssetLibrary.ModelLibrary)
             {
                 DummyObject tempObject = new DummyObject();
@@ -239,7 +234,7 @@ namespace WorldEditor
                 tempObject.Scale = Vector3.One;
                 tempObject.Height = 0.0f;
                 mObjects.Add(tempObject.Model, tempObject);
-                //(EditorPane.ObjectList as ListBox).Items.Add(tempObject.Model);
+                modelNode.Nodes.Add(new TreeNode(tempObject.Model));
             }
 
             FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
@@ -251,7 +246,7 @@ namespace WorldEditor
 
                     mObjectDefinitions.Add(definition.EditorType, definition);
                     mObjects.Add(definition.EditorType, definition.CreateDummyObject());
-                    //((EditorPane as EditorForm).ObjectList as ListBox).Items.Add(definition.EditorType);
+                    entityNode.Nodes.Add(definition.EditorType);
                 }
                 catch (SystemException)
                 {
@@ -263,6 +258,8 @@ namespace WorldEditor
             {
                 ((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).Items.Add(texture.Key);
             }
+
+            UpdateModeContext(EditorForm, null);
         }
 
         private void CloseHandler(object sender, EventArgs e)
@@ -274,7 +271,7 @@ namespace WorldEditor
         {
             if (!TextureSelectionPane.Visible)
             {
-                //TextureSelectionPane.Show((Form)Form.FromHandle(Window.Handle));
+                TextureSelectionPane.Show();
             }
         }
 
@@ -308,15 +305,15 @@ namespace WorldEditor
 
         private void OpenObjectCreationForm(object sender, EventArgs e)
         {
-            //if (!ObjectParameterPane.Visible)
+            if (!ObjectPlacementPane.Visible)
             {
-                //ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
+                ObjectPlacementPane.Show();
             }
         }
 
         private void CloseObjectCreationForm(object sender, EventArgs e)
         {
-            //ObjectParameterPane.Hide();
+            ObjectPlacementPane.Hide();
         }
 
         private void NewHandler(object sender, EventArgs e)
@@ -392,16 +389,37 @@ namespace WorldEditor
         {
             ObjectParameterPane.Show(/*(Form)Form.FromHandle(Window.Handle)*/);
         }
+                
+        private void UpdatePreviewImage(object sender, EventArgs e)
+        {
+            TreeNode selectedObject = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode;
+            if (mObjects.ContainsKey(selectedObject.Text) && selectedObject.Nodes.Count == 0)
+            {
+                Texture2D previewImage = GraphicsManager.RenderPreviewImage(AssetLibrary.LookupModel(mObjects[selectedObject.Text].Model));
+                MemoryStream ms = new MemoryStream();
+
+                previewImage.SaveAsPng(ms, previewImage.Width, previewImage.Height);
+                ms.Seek(0, SeekOrigin.Begin);
+
+                System.Drawing.Image bmp = System.Drawing.Bitmap.FromStream(ms);
+
+                ms.Close();
+                ms = null;
+                EditorForm.ObjectPlacementPanel.PreviewPictureBox.BackgroundImage = bmp;
+                EditorForm.ObjectPlacementPanel.PreviewPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            }
+        }
 
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
-            //if (EditorPane.ObjectList.SelectedItem != null)
+            TreeNode selectedObject = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode;
+            if (mObjects.ContainsKey(selectedObject.Text) && selectedObject.Nodes.Count <= 0)
             {
-                /*ObjectParameterPane.SelectedObjects.Clear();
-                DummyObject dummy = new DummyObject(mObjects[EditorPane.ObjectList.SelectedItem.ToString()]);
+                ObjectParameterPane.SelectedObjects.Clear();
+                DummyObject dummy = new DummyObject(mObjects[selectedObject.Text]);
                 ObjectParameterPane.SelectedObjects.Add(dummy);
                 SetObjectPropertiesToForm(dummy);
-                mDummyWorld.AddObject(dummy);*/
+                mDummyWorld.AddObject(dummy);
             }
         }
 
@@ -497,13 +515,19 @@ namespace WorldEditor
             switch ((sender as EditorForm).Mode)
             {
                 case Dialogs.EditorForm.EditorMode.OBJECTS:
+                    OpenObjectCreationForm(this, EventArgs.Empty);
                     OpenObjectParameterForm(this, EventArgs.Empty);
+                    CloseTextureForm(this, EventArgs.Empty);
                     break;
                 case Dialogs.EditorForm.EditorMode.HEIGHTMAP:
+                    CloseObjectCreationForm(this, EventArgs.Empty);
                     CloseObjectParameterForm(this, EventArgs.Empty);
+                    CloseTextureForm(this, EventArgs.Empty);
                     break;
                 case Dialogs.EditorForm.EditorMode.PAINTING:
+                    CloseObjectCreationForm(this, EventArgs.Empty);
                     CloseObjectParameterForm(this, EventArgs.Empty);
+                    OpenTextureForm(this, EventArgs.Empty);
                     break;
             }
         }

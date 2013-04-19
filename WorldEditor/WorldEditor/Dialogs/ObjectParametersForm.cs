@@ -382,5 +382,25 @@ namespace WorldEditor.Dialogs
                 dummyObject.Parameters[(int)(sender as TextBox).Tag] = (sender as TextBox).Text;
             }
         }
+
+        private void OrientationLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ScaleLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HeightLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PositionLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

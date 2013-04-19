@@ -48,8 +48,24 @@ VSOutput VS(VSInput vin)
 
 	output.LightAmount = dot(worldNormal, -xDirLightDirection);
 
-	output.Shadow = GetShadowData(output.PositionWS);
 	output.TexCoord = vin.TexCoord + xTextureOffset;
+
+	return output;
+}
+
+VSOutputWithShadows VSWithShadows(VSInput vin)
+{
+	VSOutputWithShadows output;
+	VSOutput vout = VS(vin);
+
+	output.PositionWS  = vout.PositionWS;
+	output.PositionPS  = vout.PositionPS;
+	output.Diffuse     = vout.Diffuse;
+	output.Specular    = vout.Specular;
+	output.LightAmount = vout.LightAmount;
+	output.TexCoord    = vout.TexCoord;
+
+	output.Shadow = GetShadowData(output.PositionWS);
 
 	return output;
 }
@@ -88,6 +104,16 @@ VSOutput SkinnedVS(SkinnedVSInput svin)
 	vin.Normal   = svin.Normal;
 	vin.TexCoord = svin.TexCoord;
 	return VS(vin);
+}
+
+VSOutputWithShadows SkinnedVSWithShadows(SkinnedVSInput svin)
+{
+	Skin(svin);
+	VSInput vin;
+	vin.Position = svin.Position;
+	vin.Normal   = svin.Normal;
+	vin.TexCoord = svin.TexCoord;
+	return VSWithShadows(vin);
 }
 
 OutlineVSOutput SkinnedOutlineVS(SkinnedVSInput svin)

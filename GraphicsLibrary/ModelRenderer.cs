@@ -12,12 +12,15 @@ namespace GraphicsLibrary
         #region Private Variables
 
         protected Model mModel;
+        protected BoundingSphere mBoundingSphere;
         
         #endregion
 
         #region Public Properties
 
         public Model Model { get { return mModel; } }
+
+        public BoundingSphere BoundingSphere { get { return mBoundingSphere; } }
 
         #endregion
 
@@ -26,6 +29,19 @@ namespace GraphicsLibrary
         public ModelRenderer(Model model)
         {
             mModel = model;
+
+            mBoundingSphere = new BoundingSphere(Vector3.Zero, 0.0f);
+
+            foreach (ModelMesh mesh in mModel.Meshes)
+            {
+                float meshRadius = (mesh.BoundingSphere.Center - mBoundingSphere.Center).Length() + mesh.BoundingSphere.Radius;
+                mBoundingSphere.Center += mesh.BoundingSphere.Center;
+                if (meshRadius > mBoundingSphere.Radius)
+                {
+                    mBoundingSphere.Radius = meshRadius;
+                }
+            }
+            mBoundingSphere.Center /= mModel.Meshes.Count > 0 ? mModel.Meshes.Count : 1;
         }
 
         #endregion
@@ -99,10 +115,10 @@ namespace GraphicsLibrary
 
         protected override void DrawGeometry(Matrix view, Matrix projection, object[] optionalParameters, EffectConfigurer effectConfigurer, RendererParameters instance)
         {
-            /*if (effectConfigurer != ShadowMapConfigurer && GraphicsManager.ViewBoundingFrustum.Contains(instance.BoundingBox) == ContainmentType.Disjoint)
+            if (effectConfigurer != ShadowMapConfigurer && GraphicsManager.ViewBoundingFrustum.Contains(instance.BoundingBox) == ContainmentType.Disjoint)
             {
                 return;
-            }*/
+            }
 
             foreach (ModelMesh mesh in mModel.Meshes)
             {

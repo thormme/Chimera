@@ -159,8 +159,14 @@
     <Compile Include="Dialogs\ObjectParametersForm.Designer.cs">
       <DependentUpon>ObjectParametersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ObjectPlacementPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ObjectPlacementPanel.Designer.cs">
+      <DependentUpon>ObjectPlacementPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\TextureSelectionForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Dialogs\TextureSelectionForm.Designer.cs">
       <DependentUpon>TextureSelectionForm.cs</DependentUpon>
@@ -351,6 +357,9 @@
     <EmbeddedResource Include="Dialogs\ObjectParametersForm.resx">
       <DependentUpon>ObjectParametersForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ObjectPlacementPanel.resx">
+      <DependentUpon>ObjectPlacementPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\TextureSelectionForm.resx">
       <DependentUpon>TextureSelectionForm.cs</DependentUpon>
