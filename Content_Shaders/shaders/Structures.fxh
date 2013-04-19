@@ -60,8 +60,18 @@ struct VSOutput
 	float2     TexCoord    : TEXCOORD0;
 	float      LightAmount : TEXCOORD1;
 	float4     PositionPS  : SV_Position;
-	ShadowData Shadow      : TEXCOORD2;
 	float4	   PositionWS  : COLOR2;
+};
+
+struct VSOutputWithShadows
+{
+	float4     Diffuse     : COLOR0;
+	float4     Specular    : COLOR1;
+	float2     TexCoord    : TEXCOORD0;
+	float      LightAmount : TEXCOORD1;
+	float4     PositionPS  : SV_Position;
+	ShadowData Shadow      : TEXCOORD2;
+	float4	   PositionWS  : COLOR2;	
 };
 
 struct OutlineVSOutput

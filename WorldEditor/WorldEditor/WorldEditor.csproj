@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WorldEditor</RootNamespace>
+    <RootNamespace>MapEditor</RootNamespace>
     <AssemblyName>WorldEditor</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -141,150 +141,118 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dialogs\EditorForm.cs">
+    <Compile Include="Dialogs\TextureBrushPropertiesForm.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TextureBrushPropertiesForm.Designer.cs">
+      <DependentUpon>TextureBrushPropertiesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\HeightMapBrushPropertiesForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogs\HeightMapBrushPropertiesForm.Designer.cs">
+      <DependentUpon>HeightMapBrushPropertiesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\BrushSelectionForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogs\BrushSelectionForm.Designer.cs">
+      <DependentUpon>BrushSelectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\EditorForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\EditorForm.Designer.cs">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\GameDeviceControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Dialogs\GraphicsDeviceControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Dialogs\ObjectParametersForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Dialogs\ObjectParametersForm.Designer.cs">
       <DependentUpon>ObjectParametersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ObjectPlacementPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ObjectPlacementPanel.Designer.cs">
+      <DependentUpon>ObjectPlacementPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\TextureSelectionForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Dialogs\TextureSelectionForm.Designer.cs">
       <DependentUpon>TextureSelectionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\ToolMenu.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Dialogs\ToolMenu.Designer.cs">
-      <DependentUpon>ToolMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="DummyWorld.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="EditorObjectDefinition.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="GraphicsDeviceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Editor.cs" />
+    <Compile Include="Editor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ServiceContainer.cs" />
     <Compile Include="UILibrary.cs" />
-    <Compile Include="WorldEditor.cs" />
+    <Compile Include="MapEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Artwork\block_brush_feathered_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Artwork\block_brush_feathered_icon_selected.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Artwork\block_brush_icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Artwork\block_brush_icon_selected.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Artwork\circle_brush_feathered_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Artwork\circle_brush_feathered_icon_selected.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Artwork\circle_brush_icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Artwork\circle_brush_icon_selected.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Artwork\flatten_terrain_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Artwork\flatten_terrain_icon_selected.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Artwork\heightmap_icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Artwork\heightmap_icon_selected.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Artwork\lower_terrain_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Artwork\lower_terrain_icon_selected.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Artwork\object_icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Artwork\object_icon_selected.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Artwork\painting_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Artwork\painting_icon_selected.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Artwork\raise_terrain_icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Artwork\raise_terrain_icon_selected.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Artwork\set_terrain_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Artwork\set_terrain_icon_selected.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Artwork\smooth_terrain_icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Artwork\smooth_terrain_icon_selected.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Artwork\heightmap_background.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Artwork\painting_background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Artwork\layer_1_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Artwork\layer_1_icon_selected.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Artwork\layer_2_icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Artwork\layer_2_icon_selected.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Artwork\layer_3_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Artwork\layer_3_icon_selected.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Artwork\layer_4_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Artwork\layer_4_icon_selected.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Artwork\layer_background_icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Artwork\layer_background_icon_selected.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Artwork\texture_background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Game.ico" />
@@ -341,20 +309,28 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Dialogs\TextureBrushPropertiesForm.resx">
+      <DependentUpon>TextureBrushPropertiesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\HeightMapBrushPropertiesForm.resx">
+      <DependentUpon>HeightMapBrushPropertiesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\BrushSelectionForm.resx">
+      <DependentUpon>BrushSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ObjectParametersForm.resx">
       <DependentUpon>ObjectParametersForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ObjectPlacementPanel.resx">
+      <DependentUpon>ObjectPlacementPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\TextureSelectionForm.resx">
       <DependentUpon>TextureSelectionForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\ToolMenu.resx">
-      <DependentUpon>ToolMenu.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

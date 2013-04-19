@@ -45,12 +45,19 @@ namespace WorldEditor
 
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, System.Drawing.Point viewportPosition)
         {
-            
             InputAction.Update();
             MouseState = Mouse.GetState();
-
+            MouseState = new MouseState(
+                MouseState.X - viewportPosition.X,
+                MouseState.Y - viewportPosition.Y,
+                MouseState.ScrollWheelValue,
+                MouseState.LeftButton,
+                MouseState.MiddleButton,
+                MouseState.RightButton,
+                MouseState.XButton1,
+                MouseState.XButton2);
         }
 
     }

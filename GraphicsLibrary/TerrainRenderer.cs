@@ -172,6 +172,8 @@ namespace GraphicsLibrary
             {
                 DrawTerrainChunk(-1, -1, sideIndex);
             }
+
+            GraphicsManager.Device.SetVertexBuffer(null);
         }
 
         private void DrawTerrainChunk(int rowIndex, int colIndex, int sideIndex)

@@ -334,6 +334,41 @@ namespace GraphicsLibrary
             return ids;            
         }
 
+        static public Texture2D RenderPreviewImage(ModelRenderer renderer)
+        {
+            RenderTarget2D previewTexture = new RenderTarget2D(mDevice, 256, 256, false, SurfaceFormat.Color, DepthFormat.Depth24);
+
+            mDevice.SetRenderTarget(previewTexture);
+            mDevice.Clear(Color.DimGray);
+
+            mDevice.SamplerStates[0] = SamplerState.PointClamp;
+            mDevice.SamplerStates[1] = SamplerState.PointClamp;
+
+            RasterizerState cull = new RasterizerState();
+            cull.CullMode = CullMode.CullCounterClockwiseFace;
+
+            mDevice.RasterizerState = cull;
+            mDevice.BlendState = BlendState.Opaque;
+            mDevice.DepthStencilState = DepthStencilState.Default;
+
+            AnimateModelRenderer.AnimateModelParameters parameters = new AnimateModelRenderer.AnimateModelParameters();
+            parameters.SkinTransforms = new Matrix[] { Matrix.Identity };
+            parameters.World = Matrix.Identity;
+
+            Vector3 cameraOffset = new Vector3(1.7f * renderer.BoundingSphere.Radius, 1.0f * renderer.BoundingSphere.Radius, 1.7f * renderer.BoundingSphere.Radius);
+
+            renderer.ClearAllInstances();
+            renderer.AddInstance(parameters);
+            renderer.RenderAllInstancesWithoutShadows(
+                Matrix.CreateLookAt(renderer.BoundingSphere.Center + cameraOffset, renderer.BoundingSphere.Center, Vector3.Up), 
+                Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, 1.0f, 0.1f, 1000.0f),
+                new Light(Vector3.Up, -Vector3.Up, Color.White.ToVector3(), Color.White.ToVector3(), Color.White.ToVector3()));
+
+            mDevice.SetRenderTarget(null);
+
+            return previewTexture;
+        }
+
         #endregion
 
         #region Renderable Enqueue Methods

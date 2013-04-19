@@ -7,6 +7,7 @@ using GameConstructLibrary;
 using BEPUphysics;
 using Microsoft.Xna.Framework.Graphics;
 using GraphicsLibrary;
+using System.Windows.Forms;
 
 namespace WorldEditor
 {
@@ -102,8 +103,10 @@ namespace WorldEditor
                         (int)Math.Max(Math.Abs(mDragPoint.Y - mControls.MouseState.Y), 1))).ToArray());
         }
 
-        public Tuple<RayHit, DummyObject> GetPickingLocation(DummyWorld dummyWorld)
+        public Tuple<RayHit, DummyObject> GetPickingLocation(DummyWorld dummyWorld, Form gameForm)
         {
+            //Form gameForm = this.Parent as Form;
+            //gameForm.RectangleToScreen(gameForm.ClientRectangle).X;
             Vector3 nearScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 0.0f);
             Vector3 farScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 1.0f);
             Vector3 nearWorld = mViewport.Unproject(nearScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);

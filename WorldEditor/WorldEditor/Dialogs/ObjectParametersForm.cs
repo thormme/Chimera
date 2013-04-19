@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using GameConstructLibrary;
@@ -11,8 +12,20 @@ using Microsoft.Xna.Framework;
 
 namespace WorldEditor.Dialogs
 {
-    public partial class ObjectParametersForm : Form
+    public partial class ObjectParametersForm : UserControl
     {
+        /*private const int WS_EX_TOOLWINDOW = 0x00000080;
+        private const int WS_EX_NOACTIVATE = 0x08000000;
+        private const int WS_EX_TOPMOST = 0x00000008;
+        [DllImport("user32")]
+        public static extern int SetParent
+         (IntPtr hWndChild, IntPtr hWndNewParent);
+
+        [DllImport("user32")]
+        public static extern int ShowWindow
+         (IntPtr hWnd, int nCmdShow);*/
+
+
         public ObjectParametersForm()
         {
             InitializeComponent();
@@ -20,6 +33,25 @@ namespace WorldEditor.Dialogs
 
         public List<DummyObject> SelectedObjects = new List<DummyObject>();
 
+        /*protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams p = base.CreateParams;
+                p.ExStyle |= (WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST);
+                p.Parent = IntPtr.Zero;
+                return p;
+            }
+        }
+        
+        public new void Show()
+        {
+            if (this.Handle == IntPtr.Zero) base.CreateControl();
+
+            SetParent(base.Handle, IntPtr.Zero);
+            ShowWindow(base.Handle, 1);
+        }*/
+        
         public void UpdateParameterFields()
         {
             // Background default color.
@@ -349,6 +381,26 @@ namespace WorldEditor.Dialogs
             {
                 dummyObject.Parameters[(int)(sender as TextBox).Tag] = (sender as TextBox).Text;
             }
+        }
+
+        private void OrientationLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ScaleLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HeightLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PositionLabel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

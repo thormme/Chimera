@@ -131,6 +131,7 @@ namespace Chimera
             DebugConsole.AddCommand("BirdsEyeView", new DebugConsole.ConsoleCommand(BirdsEyeViewCommand));
             DebugConsole.AddCommand("BEV", new DebugConsole.ConsoleCommand(BirdsEyeViewCommand));
             DebugConsole.AddCommand("level", new DebugConsole.ConsoleCommand(LoadLevel));
+            DebugConsole.AddCommand("toggleShadows", new DebugConsole.ConsoleCommand(ToggleShadows));
             DebugConsole.Hide();
             // END
 
@@ -563,6 +564,11 @@ namespace Chimera
                 mGameStates[mGameStates.Count - 1] = new GameWorld(DebugModelDrawer);
                 (mGameStates[mGameStates.Count - 1] as GameWorld).AddLevelFromFile(parameters[0], Vector3.Zero, Quaternion.Identity, Utils.WorldScale);
             }
+        }
+
+        private void ToggleShadows(List<string> parameters)
+        {
+            GraphicsManager.CastingShadows = !GraphicsManager.CastingShadows;
         }
 
         #endregion

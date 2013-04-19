@@ -1,4 +1,6 @@
 using System;
+using System.Windows.Forms;
+using WorldEditor.Dialogs;
 
 namespace WorldEditor
 {
@@ -11,10 +13,9 @@ namespace WorldEditor
         [STAThread]
         static void Main(string[] args)
         {
-            using (Editor game = new Editor())
-            {
-                game.Run();
-            }
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new EditorForm());
         }
     }
 #endif

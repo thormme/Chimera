@@ -32,45 +32,60 @@ float4 CompositeTerrainTexture(float2 texCoord)
 	return float4(baseRedGreenBlueAlphaComp.rgb, 1.0f);
 }
 
-float4 CelShadePSHelper(VSOutput pin, float4 textureColor)
+float CelShadeWeight(float lightAmount)
 {
-	float4 color = textureColor;
-
-	float textureWeight = 1.0f - xOverlayColorWeight;
-	color.rgb *= textureWeight;
-	color.rgb += xOverlayColorWeight * xOverlayColor;
-
 	const float A = 0.3f;
 	const float B = 0.6f;
 	const float C = 1.0f;
 
+	if (lightAmount < A)
+	{
+		return A;
+	}
+	else if (lightAmount < B)
+	{
+		return B;
+	}
+	return C;
+}
+
+float4 CelShadePSHelper(VSOutput pin, float4 color)
+{
+	float textureWeight = 1.0f - xOverlayColorWeight;
+	color.rgb *= textureWeight;
+	color.rgb += xOverlayColorWeight * xOverlayColor;
+
+	color *= CelShadeWeight(pin.LightAmount);	
+
+	return float4(color.rgb, 1);
+}
+
+float4 CelShadePSWithShadowsHelper(VSOutputWithShadows pin, float4 color)
+{
+	float textureWeight = 1.0f - xOverlayColorWeight;
+	color.rgb *= textureWeight;
+	color.rgb += xOverlayColorWeight * xOverlayColor;
+
 	ShadowPixel shadowPixel = ComputeShadow(pin.Shadow, pin.LightAmount);
 
-	float lightAmount;
-	if (shadowPixel.InShadow || pin.LightAmount < A)
+	if (shadowPixel.InShadow)
 	{
-		lightAmount = A;
-	}
-	else if (pin.LightAmount < B)
-	{
-		lightAmount = B;
+		color *= 0.3f;
 	}
 	else
 	{
-		lightAmount = C;
+		color *= CelShadeWeight(pin.LightAmount);
 	}
-
-	color *= lightAmount;
 
 	if (xVisualizeCascades == true)
 	{
 		color = (color + shadowPixel.Color) / 2.0f;
 	}
 
-	return color;
+	return float4(color.rgb, 1);
 }
 
-float4 PhongPSHelper(VSOutput pin, float4 textureColor)
+float4 PhongPSHelper(VSOutputWithShadows pin, float4 textureColor)
 {
 	float4 diffuseColor = textureColor;
 
@@ -147,9 +162,12 @@ sampler NoShade_Sampler = sampler_state
 
 float4 CelShadePS(VSOutput pin) : SV_Target0
 {
-	float4 color = SAMPLE_TEXTURE(Texture, pin.TexCoord + xTextureOffset);
+	return CelShadePSHelper(pin, SAMPLE_TEXTURE(Texture, pin.TexCoord + xTextureOffset));
+}
 
-	return CelShadePSHelper(pin, color);
+float4 CelShadePSWithShadows(VSOutputWithShadows pin) : SV_Target0
+{
+	return CelShadePSWithShadowsHelper(pin, SAMPLE_TEXTURE(Texture, pin.TexCoord + xTextureOffset));
 }
 
 float4 TerrainCelShadePS(VSOutput pin) : SV_Target0
@@ -159,19 +177,27 @@ float4 TerrainCelShadePS(VSOutput pin) : SV_Target0
 		return float4(0, 1, 0, 1);
 	}
 
-	float4 color = CompositeTerrainTexture(pin.TexCoord + xTextureOffset);
-
-	return CelShadePSHelper(pin, color);
+	return CelShadePSHelper(pin, CompositeTerrainTexture(pin.TexCoord + xTextureOffset));
 }
 
-float4 PhongPS(VSOutput pin) : SV_Target0
+float4 TerrainCelShadePSWithShadows(VSOutputWithShadows pin) : SV_Target0
+{
+	if (DrawCursor(pin.PositionWS))
+	{
+		return float4(0, 1, 0, 1);
+	}
+
+	return CelShadePSWithShadowsHelper(pin, CompositeTerrainTexture(pin.TexCoord + xTextureOffset));
+}
+
+float4 PhongPS(VSOutputWithShadows pin) : SV_Target0
 {
 	float4 color = SAMPLE_TEXTURE(Texture, pin.TexCoord + xTextureOffset);
 		
 	return PhongPSHelper(pin, color);
 }
 
-float4 TerrainPhongPS(VSOutput pin) : SV_Target0
+float4 TerrainPhongPS(VSOutputWithShadows pin) : SV_Target0
 {
 	if (DrawCursor(pin.PositionWS))
 	{

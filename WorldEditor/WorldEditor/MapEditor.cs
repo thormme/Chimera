@@ -18,7 +18,7 @@ namespace WorldEditor
 
     public enum EditMode { Object, Height, Texture }
 
-    public class WorldEditor
+    public class MapEditor
     {
 
         #region Constants
@@ -54,14 +54,22 @@ namespace WorldEditor
         #region Public Properties
 
         //Dialog for the world editor.
-        public ToolMenu ToolMenu = new ToolMenu();
+        public EditorForm EditorForm = null;
 
         public EditorForm EditorPane = new EditorForm();
 
         //Dialog for object parameters.
-        public ObjectParametersForm ObjectParameterPane = new ObjectParametersForm();
+        public ObjectParametersForm ObjectParameterPane = null;
 
-        public TextureSelectionForm TextureSelectionPane = new TextureSelectionForm();
+        public ObjectPlacementPanel ObjectPlacementPane = null;
+
+        public TextureSelectionForm TextureSelectionPane = null;
+
+        public BrushSelectionForm BrushSelectionPane = null;
+
+        public HeightMapBrushPropertiesForm HeightMapBrushPropertiesPane = null;
+
+        public TextureBrushPropertiesForm TextureBrushPropertiesPane = null;
 
         public bool Closed = false;
 
@@ -86,8 +94,6 @@ namespace WorldEditor
 
         private FPSCamera mCamera = null;
 
-        private GameWindow Window = null;
-
         private Dictionary<string, EditorObjectDefinition> mObjectDefinitions = new Dictionary<string, EditorObjectDefinition>(); 
 
         //Stores all placeable objects.
@@ -108,19 +114,28 @@ namespace WorldEditor
         //Stores the objects placed in the world and the height map.
         private DummyWorld mDummyWorld = null;
 
+        private GameDeviceControl mGameControl = null;
+
         private double mTimeSinceUndo = 0.0;
 
         #endregion
 
         #region Public Interface
 
-        public WorldEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content, GameWindow window)
+        public MapEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content, GameDeviceControl gameControl, EditorForm editorForm)
         {
-            Window = window;
+            this.EditorForm = editorForm;
+            this.BrushSelectionPane = editorForm.BrushSelectionForm;
+            this.HeightMapBrushPropertiesPane = editorForm.HeightMapBrushPropertiesForm;
+            this.ObjectParameterPane = editorForm.ObjectParametersForm;
+            this.ObjectPlacementPane = editorForm.ObjectPlacementPanel;
+            this.TextureBrushPropertiesPane = editorForm.TextureBrushPropertiesForm;
+            this.TextureSelectionPane = editorForm.TextureSelectionForm;
+            mGameControl = gameControl;
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
             mEntity = new Entity(graphicsDevice, mControls, mCamera);
-            CreateEditorForm();
+            InitializePanes();
 
             mTextureTransformShader = content.Load<Effect>("shaders/TextureTransform");
         }
@@ -129,7 +144,7 @@ namespace WorldEditor
         {
             mIsActive = gameWindowActive;
 
-            mControls.Update(gameTime);
+            mControls.Update(gameTime, mGameControl.RectangleToScreen(mGameControl.ClientRectangle).Location);
             mDummyWorld.Update(gameTime, mCamera.Position);
 
             mPlaceable = false;
@@ -138,7 +153,7 @@ namespace WorldEditor
             {
                 mEntity.Update(gameTime);
 
-                var pickingResult = mEntity.GetPickingLocation(mDummyWorld);
+                var pickingResult = mEntity.GetPickingLocation(mDummyWorld, null);
 
                 mPlaceable = pickingResult != null;
 
@@ -158,14 +173,14 @@ namespace WorldEditor
 
             if (mPlaceable)
             {
-                switch (ToolMenu.Mode)
+                switch (EditorForm.Mode)
                 {
-                    case ToolMenu.EditorMode.HEIGHTMAP:
-                        brush = ToolMenu.HeightMapBrush == ToolMenu.Brushes.BLOCK || ToolMenu.HeightMapBrush == ToolMenu.Brushes.BLOCK_FEATHERED ? 
+                    case EditorForm.EditorMode.HEIGHTMAP:
+                        brush = EditorForm.HeightMapBrush == EditorForm.Brushes.BLOCK || EditorForm.HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
                             TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
                         break;
-                    case ToolMenu.EditorMode.PAINTING:
-                        brush = ToolMenu.PaintingBrush == ToolMenu.Brushes.BLOCK || ToolMenu.HeightMapBrush == ToolMenu.Brushes.BLOCK_FEATHERED ? 
+                    case EditorForm.EditorMode.PAINTING:
+                        brush = EditorForm.PaintingBrush == EditorForm.Brushes.BLOCK || EditorForm.HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
                             TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
                         break;
                 }
@@ -183,46 +198,40 @@ namespace WorldEditor
 
         #region Editor Form Creation and Handling
 
-        private void CreateEditorForm()
+        private void InitializePanes()
         {
-            TextureSelectionPane.Hide();
+            EditorForm.NewMenu.Click    += NewHandler;
+            EditorForm.SaveMenu.Click += SaveHandler;
+            EditorForm.SaveAsMenu.Click += SaveAsHandler;
+            EditorForm.OpenMenu.Click += OpenHandler;
+            EditorForm.PlayMenu.Click += PlayHandler;
+            EditorForm.ViewWaterMenu.Click += ViewWaterHandler;
+            EditorForm.ViewSkyBoxMenu.Click += ViewSkyBoxHandler;
+            EditorForm.ViewShadowsMenu.Click += ViewShadowsHandler;
+            EditorForm.UndoMenu.Click += UndoHandler;
+            EditorForm.RedoMenu.Click += RedoHandler;
 
-            mCursorObject.Scale = new Vector3(5.0f, 0.0f, 5.0f);
+            EditorForm.ModeChanged += UpdateModeContext;
 
-            ToolMenu.NewMenu.Click    += NewHandler;
-            ToolMenu.SaveMenu.Click += SaveHandler;
-            ToolMenu.SaveAsMenu.Click += SaveAsHandler;
-            ToolMenu.OpenMenu.Click += OpenHandler;
-            ToolMenu.PlayMenu.Click += PlayHandler;
-            ToolMenu.ViewWaterMenu.Click += ViewWaterHandler;
-            ToolMenu.ViewSkyBoxMenu.Click += ViewSkyBoxHandler;
-            ToolMenu.UndoMenu.Click += UndoHandler;
-            ToolMenu.RedoMenu.Click += RedoHandler;
+            ObjectParameterPane.Show();
+            ObjectParameterPane.Dock = DockStyle.Left;
 
-            ToolMenu.ModeChanged += UpdateContextTools;
-
-            //TabControl editModes = (EditorPane.Controls["EditTabs"] as TabControl);
-
-            //((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).SelectedIndexChanged += TextureHandler;
-
-            //(EditorPane as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseTextureForm);
-            //(EditorPane as EditorForm).HeightmapModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
-
-            //(EditorPane as EditorForm).PaintModeButton.Click += new System.EventHandler(this.OpenTextureForm);
-            //(EditorPane as EditorForm).PaintModeButton.Click += new System.EventHandler(this.CloseObjectParameterForm);
-
-            //(EditorPane as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.CloseTextureForm);
-            //(EditorPane as EditorForm).ObjectModeButton.Click += new System.EventHandler(this.OpenObjectParameterForm);
-
-            //(EditorPane as EditorForm).SizeUpDown.ValueChanged += CursorResizeHandler;
-
+            TextureSelectionPane.TextureList.SelectedIndexChanged += TextureHandler;
             TextureSelectionPane.UOffset.ValueChanged += TextureHandler;
             TextureSelectionPane.VOffset.ValueChanged += TextureHandler;
             TextureSelectionPane.UScale.ValueChanged += TextureHandler;
             TextureSelectionPane.VScale.ValueChanged += TextureHandler;
 
-            ObjectParameterPane.Create.Click += CreateObjectButtonHandler;
+            EditorForm.ObjectPlacementPanel.ObjectTree.NodeMouseDoubleClick += CreateObjectButtonHandler;
+            EditorForm.ObjectPlacementPanel.ObjectTree.AfterSelect += UpdatePreviewImage;
 
+            HeightMapBrushPropertiesPane.BrushSizeTrackBar.ValueChanged += CursorResizeHandler;
+            TextureBrushPropertiesPane.BrushSizeTrackBar.ValueChanged += CursorResizeHandler;
+
+            TreeNode modelNode = new TreeNode("Models");
+            TreeNode entityNode = new TreeNode("Entities");
+            EditorForm.ObjectPlacementPanel.ObjectTree.Nodes.Add(modelNode);
+            EditorForm.ObjectPlacementPanel.ObjectTree.Nodes.Add(entityNode);
             foreach (var model in AssetLibrary.ModelLibrary)
             {
                 DummyObject tempObject = new DummyObject();
@@ -234,7 +243,7 @@ namespace WorldEditor
                 tempObject.Scale = Vector3.One;
                 tempObject.Height = 0.0f;
                 mObjects.Add(tempObject.Model, tempObject);
-                (EditorPane.ObjectList as ListBox).Items.Add(tempObject.Model);
+                modelNode.Nodes.Add(new TreeNode(tempObject.Model));
             }
 
             FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
@@ -246,7 +255,7 @@ namespace WorldEditor
 
                     mObjectDefinitions.Add(definition.EditorType, definition);
                     mObjects.Add(definition.EditorType, definition.CreateDummyObject());
-                    ((EditorPane as EditorForm).ObjectList as ListBox).Items.Add(definition.EditorType);
+                    entityNode.Nodes.Add(definition.EditorType);
                 }
                 catch (SystemException)
                 {
@@ -256,8 +265,11 @@ namespace WorldEditor
 
             foreach (var texture in AssetLibrary.TextureLibrary)
             {
-                ((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).Items.Add(texture.Key);
+                (TextureSelectionPane.TextureList as ListBox).Items.Add(texture.Key);
             }
+
+            UpdateModeContext(EditorForm, null);
+            CursorResizeHandler(HeightMapBrushPropertiesPane.BrushSizeTrackBar, null);
         }
 
         private void CloseHandler(object sender, EventArgs e)
@@ -269,7 +281,7 @@ namespace WorldEditor
         {
             if (!TextureSelectionPane.Visible)
             {
-                TextureSelectionPane.Show((Form)Form.FromHandle(Window.Handle));
+                TextureSelectionPane.Show();
             }
         }
 
@@ -283,6 +295,11 @@ namespace WorldEditor
             mDummyWorld.DrawSkyBox = !mDummyWorld.DrawSkyBox;
         }
 
+        private void ViewShadowsHandler(object sender, EventArgs e)
+        {
+            GraphicsManager.CastingShadows = !GraphicsManager.CastingShadows;
+        }
+
         private void CloseTextureForm(object sender, EventArgs e)
         {
             TextureSelectionPane.Hide();
@@ -292,13 +309,65 @@ namespace WorldEditor
         {
             if (!ObjectParameterPane.Visible)
             {
-                ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
+                ObjectParameterPane.Show(/*(Form)Form.FromHandle(Window.Handle)*/);
             }
         }
 
         private void CloseObjectParameterForm(object sender, EventArgs e)
         {
             ObjectParameterPane.Hide();
+        }
+
+        private void OpenBrushSelectionForm(object sender, EventArgs e)
+        {
+            if (!BrushSelectionPane.Visible)
+            {
+                BrushSelectionPane.Show();
+            }
+        }
+
+        private void CloseBrushSelectionForm(object sender, EventArgs e)
+        {
+            BrushSelectionPane.Hide();
+        }
+
+        private void OpenHeightMapBrushPropertiesPane(object sender, EventArgs e)
+        {
+            if (!HeightMapBrushPropertiesPane.Visible)
+            {
+                HeightMapBrushPropertiesPane.Show();
+            }
+        }
+
+        private void CloseHeightMapBrushPropertiesPane(object sender, EventArgs e)
+        {
+            HeightMapBrushPropertiesPane.Hide();
+        }
+
+        private void OpenTextureBrushPropertiesPane(object sender, EventArgs e)
+        {
+            if (!TextureBrushPropertiesPane.Visible)
+            {
+                TextureBrushPropertiesPane.Show();
+            }
+        }
+
+        private void CloseTextureBrushPropertiesPane(object sender, EventArgs e)
+        {
+            TextureBrushPropertiesPane.Hide();
+        }
+
+        private void OpenObjectCreationForm(object sender, EventArgs e)
+        {
+            if (!ObjectPlacementPane.Visible)
+            {
+                ObjectPlacementPane.Show();
+            }
+        }
+
+        private void CloseObjectCreationForm(object sender, EventArgs e)
+        {
+            ObjectPlacementPane.Hide();
         }
 
         private void NewHandler(object sender, EventArgs e)
@@ -372,15 +441,36 @@ namespace WorldEditor
 
         private void SelectNewObjectHandler(object sender, EventArgs e)
         {
-            ObjectParameterPane.Show((Form)Form.FromHandle(Window.Handle));
+            ObjectParameterPane.Show(/*(Form)Form.FromHandle(Window.Handle)*/);
+        }
+                
+        private void UpdatePreviewImage(object sender, EventArgs e)
+        {
+            TreeNode selectedObject = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode;
+            if (mObjects.ContainsKey(selectedObject.Text) && selectedObject.Nodes.Count == 0)
+            {
+                Texture2D previewImage = GraphicsManager.RenderPreviewImage(AssetLibrary.LookupModel(mObjects[selectedObject.Text].Model));
+                MemoryStream ms = new MemoryStream();
+
+                previewImage.SaveAsPng(ms, previewImage.Width, previewImage.Height);
+                ms.Seek(0, SeekOrigin.Begin);
+
+                System.Drawing.Image bmp = System.Drawing.Bitmap.FromStream(ms);
+
+                ms.Close();
+                ms = null;
+                EditorForm.ObjectPlacementPanel.PreviewPictureBox.BackgroundImage = bmp;
+                EditorForm.ObjectPlacementPanel.PreviewPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            }
         }
 
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
-            if (EditorPane.ObjectList.SelectedItem != null)
+            TreeNode selectedObject = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode;
+            if (selectedObject != null && mObjects.ContainsKey(selectedObject.Text) && selectedObject.Nodes.Count <= 0)
             {
                 ObjectParameterPane.SelectedObjects.Clear();
-                DummyObject dummy = new DummyObject(mObjects[EditorPane.ObjectList.SelectedItem.ToString()]);
+                DummyObject dummy = new DummyObject(mObjects[selectedObject.Text]);
                 ObjectParameterPane.SelectedObjects.Add(dummy);
                 SetObjectPropertiesToForm(dummy);
                 mDummyWorld.AddObject(dummy);
@@ -453,7 +543,7 @@ namespace WorldEditor
 
         private void CursorResizeHandler(object sender, EventArgs e)
         {
-            mCursorObject.Scale = new Vector3((int)(sender as NumericUpDown).Value, 0, (int)(sender as NumericUpDown).Value);
+            mCursorObject.Scale = new Vector3((int)(sender as TrackBar).Value, 0, (int)(sender as TrackBar).Value);
         }
 
         private void UndoHandler(object sender, EventArgs e)
@@ -474,13 +564,57 @@ namespace WorldEditor
             }
         }
 
-        private void UpdateContextTools(object sender, EventArgs e)
+        private void UpdateModeContext(object sender, EventArgs e)
         {
-            switch ((sender as ToolMenu).Mode)
+            switch ((sender as EditorForm).Mode)
             {
-                case Dialogs.ToolMenu.EditorMode.OBJECTS:
+                case Dialogs.EditorForm.EditorMode.OBJECTS:
+                    CloseBrushSelectionForm(this, EventArgs.Empty);
+                    CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
+                    CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
+                    OpenObjectCreationForm(this, EventArgs.Empty);
                     OpenObjectParameterForm(this, EventArgs.Empty);
+                    CloseTextureForm(this, EventArgs.Empty);
+
+                    if (ObjectPlacementPane.ObjectTree.SelectedNode == null)
+                    {
+                        ObjectPlacementPane.ObjectTree.SelectedNode = ObjectPlacementPane.ObjectTree.Nodes[0].Nodes[0];
+                        ObjectPlacementPane.ObjectTree.CollapseAll();
+                    }
                     break;
+                case Dialogs.EditorForm.EditorMode.HEIGHTMAP:
+                    OpenBrushSelectionForm(this, EventArgs.Empty);
+                    OpenHeightMapBrushPropertiesPane(this, EventArgs.Empty);
+                    CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
+                    CloseObjectCreationForm(this, EventArgs.Empty);
+                    CloseObjectParameterForm(this, EventArgs.Empty);
+                    CloseTextureForm(this, EventArgs.Empty);
+                    break;
+                case Dialogs.EditorForm.EditorMode.PAINTING:
+                    OpenBrushSelectionForm(this, EventArgs.Empty);
+                    CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
+                    OpenTextureBrushPropertiesPane(this, EventArgs.Empty);
+                    CloseObjectCreationForm(this, EventArgs.Empty);
+                    CloseObjectParameterForm(this, EventArgs.Empty);
+                    OpenTextureForm(this, EventArgs.Empty);
+
+                    if (TextureSelectionPane.TextureList.SelectedIndex < 0)
+                    {
+                        TextureSelectionPane.TextureList.SelectedIndex = 0;
+                    }
+                    break;
+            }
+        }
+
+        private void UpdateToolContext(object sender, EventArgs e)
+        {
+            if ((sender as EditorForm).Tool == Dialogs.EditorForm.Tools.PLACE)
+            {
+                OpenObjectCreationForm(this, EventArgs.Empty);
+            }
+            else
+            {
+                CloseObjectCreationForm(this, EventArgs.Empty);
             }
         }
 
@@ -518,7 +652,7 @@ namespace WorldEditor
 
             mDummyWorld.NewHeightMapAction = mDummyWorld.NewHeightMapAction || !mControls.LeftHold.Active;
 
-            if (mControls.LeftReleased.Active && ToolMenu.Mode == ToolMenu.EditorMode.OBJECTS)
+            if (mControls.LeftReleased.Active && EditorForm.Mode == EditorForm.EditorMode.OBJECTS)
             {
                 foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
                 {
@@ -537,21 +671,22 @@ namespace WorldEditor
             }
             else if (mControls.LeftHold.Active)
             {
-                switch (ToolMenu.Mode)
+                switch (EditorForm.Mode)
                 {
-                    case ToolMenu.EditorMode.HEIGHTMAP:
+                    case EditorForm.EditorMode.HEIGHTMAP:
                     {
-                        float strength = 10.0f;// form.Strength * 10.0f;
-                        mDummyWorld.ModifyHeightMap(mCursorObject.Position, 5.0f/*form.Size*/, strength, ToolMenu.HeightMapBrush, ToolMenu.Tool);
+                        float size = HeightMapBrushPropertiesPane.BrushSizeTrackBar.Value;
+                        float strength = HeightMapBrushPropertiesPane.BrushMagnitudeTrackBar.Value * 10.0f;
+                        mDummyWorld.ModifyHeightMap(mCursorObject.Position, size, strength, EditorForm.HeightMapBrush, EditorForm.Tool);
                         break;
                     }
-                    case ToolMenu.EditorMode.PAINTING:
+                    case EditorForm.EditorMode.PAINTING:
                     {
                         TextureSelectionForm textureForm = TextureSelectionPane as TextureSelectionForm;
                         if ((textureForm.TextureList as ListBox).SelectedItem != null)
                         {
-                            float alpha = EditorPane.Strength / 100.0f;
-                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(EditorPane.PaintingLayers);
+                            float alpha = /*EditorPane.Strength*/50 / 100.0f; // TODO: Fixit
+                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(/*EditorPane.PaintingLayers*/GameConstructLibrary.TerrainTexture.TextureLayer.BACKGROUND);
                             string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
 
                             float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
@@ -562,9 +697,9 @@ namespace WorldEditor
                                 textureName,
                                 new Vector2(uOffset, vOffset),
                                 new Vector2(uScale, vScale),
-                                EditorPane.Size, alpha,
-                                (ToolMenu.Brushes)EditorPane.PaintingBrush,
-                                ToolMenu.Tool,
+                                /*EditorPane.Size*/1, alpha,// TODO Fixit
+                                (EditorForm.Brushes)/*EditorPane.PaintingBrush*/EditorForm.Brushes.CIRCLE,
+                                EditorForm.Tool,
                                 layer);
                         }
                         break;

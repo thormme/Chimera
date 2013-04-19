@@ -1,8 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-using System.IO;
-using System.Reflection;
-namespace WorldEditor.Dialogs
+﻿namespace WorldEditor.Dialogs
 {
     partial class EditorForm
     {
@@ -33,468 +29,493 @@ namespace WorldEditor.Dialogs
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditorForm));
-            this.ObjectList = new System.Windows.Forms.ListBox();
+            this.ToolStrip = new System.Windows.Forms.ToolStrip();
+            this.raiseTerrainButton = new System.Windows.Forms.ToolStripButton();
+            this.lowerTerrainButton = new System.Windows.Forms.ToolStripButton();
+            this.setTerrainButton = new System.Windows.Forms.ToolStripButton();
+            this.flattenTerrainButton = new System.Windows.Forms.ToolStripButton();
+            this.smoothTerrainButton = new System.Windows.Forms.ToolStripButton();
+            this.terrainSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.paintTextureButton = new System.Windows.Forms.ToolStripButton();
+            this.eraseTextureButton = new System.Windows.Forms.ToolStripButton();
+            this.smoothTextureButton = new System.Windows.Forms.ToolStripButton();
+            this.textureSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.SelectObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.TranslateObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.RotateObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.ScaleObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.objectSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
-            this.File = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PlayMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.Edit = new System.Windows.Forms.ToolStripMenuItem();
-            this.terrainModeButton = new System.Windows.Forms.PictureBox();
-            this.paintModeButton = new System.Windows.Forms.PictureBox();
-            this.objectModeButton = new System.Windows.Forms.PictureBox();
-            this.background = new System.Windows.Forms.PictureBox();
-            this.circleBrushButton = new System.Windows.Forms.PictureBox();
-            this.circleFeatherBrushButton = new System.Windows.Forms.PictureBox();
-            this.blockBrushButton = new System.Windows.Forms.PictureBox();
-            this.blockFeatherBrushButton = new System.Windows.Forms.PictureBox();
-            this.sizeUpDown = new System.Windows.Forms.NumericUpDown();
-            this.strengthUpDown = new System.Windows.Forms.NumericUpDown();
-            this.toolButton0 = new System.Windows.Forms.PictureBox();
-            this.toolButton1 = new System.Windows.Forms.PictureBox();
-            this.toolButton2 = new System.Windows.Forms.PictureBox();
-            this.toolButton4 = new System.Windows.Forms.PictureBox();
-            this.toolButton3 = new System.Windows.Forms.PictureBox();
-            this.layerBackgroundButton = new System.Windows.Forms.PictureBox();
-            this.layer1Button = new System.Windows.Forms.PictureBox();
-            this.layer2Button = new System.Windows.Forms.PictureBox();
-            this.layer4Button = new System.Windows.Forms.PictureBox();
-            this.layer3Button = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.UndoMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.RedoMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.vIEWToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewSkyBoxMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewWaterMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewShadowsMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextToolsPanel = new System.Windows.Forms.Panel();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.TerrainToolsLabel = new System.Windows.Forms.ToolStripLabel();
+            this.TextureToolsLabel = new System.Windows.Forms.ToolStripLabel();
+            this.ObjectToolsLabel = new System.Windows.Forms.ToolStripLabel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.TextureSelectionForm = new WorldEditor.Dialogs.TextureSelectionForm();
+            this.ObjectParametersForm = new WorldEditor.Dialogs.ObjectParametersForm();
+            this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
+            this.HeightMapBrushPropertiesForm = new WorldEditor.Dialogs.HeightMapBrushPropertiesForm();
+            this.TextureBrushPropertiesForm = new WorldEditor.Dialogs.TextureBrushPropertiesForm();
+            this.BrushSelectionForm = new WorldEditor.Dialogs.BrushSelectionForm();
+            this.editorPanel = new WorldEditor.Dialogs.Editor();
+            this.ToolStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.terrainModeButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.paintModeButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.objectModeButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.background)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.circleBrushButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.circleFeatherBrushButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.blockBrushButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.blockFeatherBrushButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sizeUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.strengthUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toolButton0)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toolButton1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toolButton2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toolButton4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toolButton3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layerBackgroundButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layer1Button)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layer2Button)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layer4Button)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layer3Button)).BeginInit();
+            this.ContextToolsPanel.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // ObjectList
+            // ToolStrip
             // 
-            this.ObjectList.Enabled = false;
-            this.ObjectList.FormattingEnabled = true;
-            this.ObjectList.ItemHeight = 14;
-            this.ObjectList.Location = new System.Drawing.Point(82, 175);
-            this.ObjectList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.ObjectList.Name = "ObjectList";
-            this.ObjectList.Size = new System.Drawing.Size(154, 312);
-            this.ObjectList.TabIndex = 2;
-            this.ObjectList.Visible = false;
+            this.ToolStrip.AutoSize = false;
+            this.ToolStrip.BackColor = System.Drawing.SystemColors.Menu;
+            this.ToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.raiseTerrainButton,
+            this.lowerTerrainButton,
+            this.setTerrainButton,
+            this.flattenTerrainButton,
+            this.smoothTerrainButton,
+            this.terrainSeparator,
+            this.paintTextureButton,
+            this.eraseTextureButton,
+            this.smoothTextureButton,
+            this.textureSeparator,
+            this.SelectObjectButton,
+            this.TranslateObjectButton,
+            this.RotateObjectButton,
+            this.ScaleObjectButton,
+            this.objectSeparator});
+            this.ToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+            this.ToolStrip.Location = new System.Drawing.Point(0, 26);
+            this.ToolStrip.Name = "ToolStrip";
+            this.ToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.ToolStrip.Size = new System.Drawing.Size(926, 47);
+            this.ToolStrip.TabIndex = 2;
+            this.ToolStrip.Text = "ToolStrip";
+            // 
+            // raiseTerrainButton
+            // 
+            this.raiseTerrainButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.raiseTerrainButton.Image = ((System.Drawing.Image)(resources.GetObject("raiseTerrainButton.Image")));
+            this.raiseTerrainButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.raiseTerrainButton.Margin = new System.Windows.Forms.Padding(5, 1, 0, 2);
+            this.raiseTerrainButton.Name = "raiseTerrainButton";
+            this.raiseTerrainButton.Size = new System.Drawing.Size(44, 44);
+            this.raiseTerrainButton.Text = "Raise Terrain";
+            this.raiseTerrainButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // lowerTerrainButton
+            // 
+            this.lowerTerrainButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.lowerTerrainButton.Image = ((System.Drawing.Image)(resources.GetObject("lowerTerrainButton.Image")));
+            this.lowerTerrainButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.lowerTerrainButton.Name = "lowerTerrainButton";
+            this.lowerTerrainButton.Size = new System.Drawing.Size(44, 44);
+            this.lowerTerrainButton.Text = "Lower Terrain";
+            this.lowerTerrainButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // setTerrainButton
+            // 
+            this.setTerrainButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.setTerrainButton.Image = ((System.Drawing.Image)(resources.GetObject("setTerrainButton.Image")));
+            this.setTerrainButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.setTerrainButton.Name = "setTerrainButton";
+            this.setTerrainButton.Size = new System.Drawing.Size(44, 44);
+            this.setTerrainButton.Text = "Set Terrain";
+            this.setTerrainButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // flattenTerrainButton
+            // 
+            this.flattenTerrainButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.flattenTerrainButton.Image = ((System.Drawing.Image)(resources.GetObject("flattenTerrainButton.Image")));
+            this.flattenTerrainButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.flattenTerrainButton.Name = "flattenTerrainButton";
+            this.flattenTerrainButton.Size = new System.Drawing.Size(44, 44);
+            this.flattenTerrainButton.Text = "Flatten Terrain";
+            this.flattenTerrainButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // smoothTerrainButton
+            // 
+            this.smoothTerrainButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.smoothTerrainButton.Image = ((System.Drawing.Image)(resources.GetObject("smoothTerrainButton.Image")));
+            this.smoothTerrainButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.smoothTerrainButton.Name = "smoothTerrainButton";
+            this.smoothTerrainButton.Size = new System.Drawing.Size(44, 44);
+            this.smoothTerrainButton.Text = "Smooth Terrain";
+            this.smoothTerrainButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // terrainSeparator
+            // 
+            this.terrainSeparator.AutoSize = false;
+            this.terrainSeparator.Name = "terrainSeparator";
+            this.terrainSeparator.Size = new System.Drawing.Size(6, 44);
+            // 
+            // paintTextureButton
+            // 
+            this.paintTextureButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.paintTextureButton.Image = ((System.Drawing.Image)(resources.GetObject("paintTextureButton.Image")));
+            this.paintTextureButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.paintTextureButton.Name = "paintTextureButton";
+            this.paintTextureButton.Size = new System.Drawing.Size(44, 44);
+            this.paintTextureButton.Text = "Paint Terrain Texture";
+            // 
+            // eraseTextureButton
+            // 
+            this.eraseTextureButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.eraseTextureButton.Image = ((System.Drawing.Image)(resources.GetObject("eraseTextureButton.Image")));
+            this.eraseTextureButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.eraseTextureButton.Name = "eraseTextureButton";
+            this.eraseTextureButton.Size = new System.Drawing.Size(44, 44);
+            this.eraseTextureButton.Text = "Erase Terrain Texture";
+            this.eraseTextureButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // smoothTextureButton
+            // 
+            this.smoothTextureButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.smoothTextureButton.Image = ((System.Drawing.Image)(resources.GetObject("smoothTextureButton.Image")));
+            this.smoothTextureButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.smoothTextureButton.Name = "smoothTextureButton";
+            this.smoothTextureButton.Size = new System.Drawing.Size(44, 44);
+            this.smoothTextureButton.Text = "Blend Terrain Texture";
+            this.smoothTextureButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // textureSeparator
+            // 
+            this.textureSeparator.AutoSize = false;
+            this.textureSeparator.Name = "textureSeparator";
+            this.textureSeparator.Size = new System.Drawing.Size(6, 44);
+            // 
+            // SelectObjectButton
+            // 
+            this.SelectObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SelectObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("SelectObjectButton.Image")));
+            this.SelectObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SelectObjectButton.Name = "SelectObjectButton";
+            this.SelectObjectButton.Size = new System.Drawing.Size(44, 44);
+            this.SelectObjectButton.Text = "Select Objects";
+            this.SelectObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // TranslateObjectButton
+            // 
+            this.TranslateObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.TranslateObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("TranslateObjectButton.Image")));
+            this.TranslateObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.TranslateObjectButton.Name = "TranslateObjectButton";
+            this.TranslateObjectButton.Size = new System.Drawing.Size(44, 44);
+            this.TranslateObjectButton.Text = "Translate Selected Object";
+            this.TranslateObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // RotateObjectButton
+            // 
+            this.RotateObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.RotateObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("RotateObjectButton.Image")));
+            this.RotateObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.RotateObjectButton.Name = "RotateObjectButton";
+            this.RotateObjectButton.Size = new System.Drawing.Size(44, 44);
+            this.RotateObjectButton.Text = "Rotate Selected Object";
+            this.RotateObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // ScaleObjectButton
+            // 
+            this.ScaleObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ScaleObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("ScaleObjectButton.Image")));
+            this.ScaleObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ScaleObjectButton.Name = "ScaleObjectButton";
+            this.ScaleObjectButton.Size = new System.Drawing.Size(44, 44);
+            this.ScaleObjectButton.Text = "Scale Selected Object";
+            this.ScaleObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // objectSeparator
+            // 
+            this.objectSeparator.AutoSize = false;
+            this.objectSeparator.Name = "objectSeparator";
+            this.objectSeparator.Size = new System.Drawing.Size(6, 44);
             // 
             // MenuStrip
             // 
-            this.MenuStrip.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MenuStrip.BackColor = System.Drawing.SystemColors.Menu;
+            this.MenuStrip.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.File,
-            this.Edit});
+            this.fileToolStripMenuItem,
+            this.editToolStripMenuItem,
+            this.vIEWToolStripMenuItem});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
-            this.MenuStrip.Size = new System.Drawing.Size(320, 28);
-            this.MenuStrip.TabIndex = 4;
-            this.MenuStrip.Text = "menuStrip1";
+            this.MenuStrip.Size = new System.Drawing.Size(926, 25);
+            this.MenuStrip.TabIndex = 3;
+            this.MenuStrip.Text = "MenuStrip";
             // 
-            // File
+            // fileToolStripMenuItem
             // 
-            this.File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NewMenu,
             this.OpenMenu,
             this.SaveMenu,
             this.SaveAsMenu,
             this.PlayMenu});
-            this.File.Name = "File";
-            this.File.Size = new System.Drawing.Size(46, 22);
-            this.File.Text = "File";
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(42, 21);
+            this.fileToolStripMenuItem.Text = "FILE";
             // 
             // NewMenu
             // 
             this.NewMenu.Name = "NewMenu";
-            this.NewMenu.Size = new System.Drawing.Size(168, 22);
+            this.NewMenu.Size = new System.Drawing.Size(151, 22);
             this.NewMenu.Text = "New";
             // 
             // OpenMenu
             // 
             this.OpenMenu.Name = "OpenMenu";
-            this.OpenMenu.Size = new System.Drawing.Size(168, 22);
+            this.OpenMenu.Size = new System.Drawing.Size(151, 22);
             this.OpenMenu.Text = "Open";
             // 
             // SaveMenu
             // 
             this.SaveMenu.Name = "SaveMenu";
-            this.SaveMenu.Size = new System.Drawing.Size(168, 22);
+            this.SaveMenu.Size = new System.Drawing.Size(151, 22);
             this.SaveMenu.Text = "Save";
             // 
             // SaveAsMenu
             // 
             this.SaveAsMenu.Name = "SaveAsMenu";
-            this.SaveAsMenu.Size = new System.Drawing.Size(168, 22);
+            this.SaveAsMenu.Size = new System.Drawing.Size(151, 22);
             this.SaveAsMenu.Text = "Save As";
             // 
             // PlayMenu
             // 
             this.PlayMenu.Name = "PlayMenu";
-            this.PlayMenu.Size = new System.Drawing.Size(168, 22);
+            this.PlayMenu.Size = new System.Drawing.Size(151, 22);
             this.PlayMenu.Text = "Play In Game";
             // 
-            // Edit
+            // editToolStripMenuItem
             // 
-            this.Edit.Name = "Edit";
-            this.Edit.Size = new System.Drawing.Size(48, 22);
-            this.Edit.Text = "Edit";
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.UndoMenu,
+            this.RedoMenu});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(46, 21);
+            this.editToolStripMenuItem.Text = "EDIT";
             // 
-            // terrainModeButton
+            // UndoMenu
             // 
-            this.terrainModeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("terrainModeButton.BackgroundImage")));
-            this.terrainModeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.terrainModeButton.Location = new System.Drawing.Point(15, 54);
-            this.terrainModeButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.terrainModeButton.Name = "terrainModeButton";
-            this.terrainModeButton.Size = new System.Drawing.Size(96, 103);
-            this.terrainModeButton.TabIndex = 5;
-            this.terrainModeButton.TabStop = false;
-            this.terrainModeButton.Click += new System.EventHandler(this.terrainModeButton_Click);
+            this.UndoMenu.Name = "UndoMenu";
+            this.UndoMenu.Size = new System.Drawing.Size(108, 22);
+            this.UndoMenu.Text = "Undo";
             // 
-            // paintModeButton
+            // RedoMenu
             // 
-            this.paintModeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("paintModeButton.BackgroundImage")));
-            this.paintModeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.paintModeButton.Location = new System.Drawing.Point(118, 54);
-            this.paintModeButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.paintModeButton.Name = "paintModeButton";
-            this.paintModeButton.Size = new System.Drawing.Size(96, 103);
-            this.paintModeButton.TabIndex = 6;
-            this.paintModeButton.TabStop = false;
-            this.paintModeButton.Click += new System.EventHandler(this.paintModeButton_Click);
+            this.RedoMenu.Name = "RedoMenu";
+            this.RedoMenu.Size = new System.Drawing.Size(108, 22);
+            this.RedoMenu.Text = "Redo";
             // 
-            // objectModeButton
+            // vIEWToolStripMenuItem
             // 
-            this.objectModeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("objectModeButton.BackgroundImage")));
-            this.objectModeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.objectModeButton.Location = new System.Drawing.Point(221, 54);
-            this.objectModeButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.objectModeButton.Name = "objectModeButton";
-            this.objectModeButton.Size = new System.Drawing.Size(96, 103);
-            this.objectModeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.objectModeButton.TabIndex = 7;
-            this.objectModeButton.TabStop = false;
-            this.objectModeButton.Click += new System.EventHandler(this.objectModeButton_Click);
+            this.vIEWToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ViewSkyBoxMenu,
+            this.ViewWaterMenu,
+            this.ViewShadowsMenu});
+            this.vIEWToolStripMenuItem.Name = "vIEWToolStripMenuItem";
+            this.vIEWToolStripMenuItem.Size = new System.Drawing.Size(50, 21);
+            this.vIEWToolStripMenuItem.Text = "VIEW";
             // 
-            // background
+            // ViewSkyBoxMenu
             // 
-            this.background.BackColor = System.Drawing.Color.Transparent;
-            this.background.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("background.BackgroundImage")));
-            this.background.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.background.Location = new System.Drawing.Point(15, 175);
-            this.background.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.background.Name = "background";
-            this.background.Size = new System.Drawing.Size(302, 685);
-            this.background.TabIndex = 8;
-            this.background.TabStop = false;
+            this.ViewSkyBoxMenu.Checked = true;
+            this.ViewSkyBoxMenu.CheckOnClick = true;
+            this.ViewSkyBoxMenu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ViewSkyBoxMenu.Name = "ViewSkyBoxMenu";
+            this.ViewSkyBoxMenu.Size = new System.Drawing.Size(146, 22);
+            this.ViewSkyBoxMenu.Text = "Sky Box";
             // 
-            // circleBrushButton
+            // ViewWaterMenu
             // 
-            this.circleBrushButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.circleBrushButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("circleBrushButton.BackgroundImage")));
-            this.circleBrushButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.circleBrushButton.Location = new System.Drawing.Point(25, 489);
-            this.circleBrushButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.circleBrushButton.Name = "circleBrushButton";
-            this.circleBrushButton.Size = new System.Drawing.Size(97, 104);
-            this.circleBrushButton.TabIndex = 9;
-            this.circleBrushButton.TabStop = false;
-            this.circleBrushButton.Click += new System.EventHandler(this.circleBrushButton_Click);
+            this.ViewWaterMenu.Checked = true;
+            this.ViewWaterMenu.CheckOnClick = true;
+            this.ViewWaterMenu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ViewWaterMenu.Name = "ViewWaterMenu";
+            this.ViewWaterMenu.Size = new System.Drawing.Size(146, 22);
+            this.ViewWaterMenu.Text = "Water Plane";
             // 
-            // circleFeatherBrushButton
+            // ViewShadowsMenu
             // 
-            this.circleFeatherBrushButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.circleFeatherBrushButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("circleFeatherBrushButton.BackgroundImage")));
-            this.circleFeatherBrushButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.circleFeatherBrushButton.Location = new System.Drawing.Point(117, 489);
-            this.circleFeatherBrushButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.circleFeatherBrushButton.Name = "circleFeatherBrushButton";
-            this.circleFeatherBrushButton.Size = new System.Drawing.Size(97, 104);
-            this.circleFeatherBrushButton.TabIndex = 10;
-            this.circleFeatherBrushButton.TabStop = false;
-            this.circleFeatherBrushButton.Click += new System.EventHandler(this.circleFeatherBrushButton_Click);
+            this.ViewShadowsMenu.Checked = true;
+            this.ViewShadowsMenu.CheckOnClick = true;
+            this.ViewShadowsMenu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ViewShadowsMenu.Name = "ViewShadowsMenu";
+            this.ViewShadowsMenu.Size = new System.Drawing.Size(146, 22);
+            this.ViewShadowsMenu.Text = "Shadows";
             // 
-            // blockBrushButton
+            // ContextToolsPanel
             // 
-            this.blockBrushButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.blockBrushButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("blockBrushButton.BackgroundImage")));
-            this.blockBrushButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.blockBrushButton.Location = new System.Drawing.Point(210, 489);
-            this.blockBrushButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.blockBrushButton.Name = "blockBrushButton";
-            this.blockBrushButton.Size = new System.Drawing.Size(97, 104);
-            this.blockBrushButton.TabIndex = 11;
-            this.blockBrushButton.TabStop = false;
-            this.blockBrushButton.Click += new System.EventHandler(this.blockBrushButton_Click);
+            this.ContextToolsPanel.AutoScroll = true;
+            this.ContextToolsPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.ContextToolsPanel.Controls.Add(this.TextureSelectionForm);
+            this.ContextToolsPanel.Controls.Add(this.ObjectParametersForm);
+            this.ContextToolsPanel.Controls.Add(this.ObjectPlacementPanel);
+            this.ContextToolsPanel.Controls.Add(this.HeightMapBrushPropertiesForm);
+            this.ContextToolsPanel.Controls.Add(this.TextureBrushPropertiesForm);
+            this.ContextToolsPanel.Controls.Add(this.BrushSelectionForm);
+            this.ContextToolsPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ContextToolsPanel.Location = new System.Drawing.Point(675, 102);
+            this.ContextToolsPanel.Name = "ContextToolsPanel";
+            this.ContextToolsPanel.Size = new System.Drawing.Size(251, 462);
+            this.ContextToolsPanel.TabIndex = 4;
             // 
-            // blockFeatherBrushButton
+            // toolStrip1
             // 
-            this.blockFeatherBrushButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.blockFeatherBrushButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("blockFeatherBrushButton.BackgroundImage")));
-            this.blockFeatherBrushButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.blockFeatherBrushButton.Location = new System.Drawing.Point(25, 590);
-            this.blockFeatherBrushButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.blockFeatherBrushButton.Name = "blockFeatherBrushButton";
-            this.blockFeatherBrushButton.Size = new System.Drawing.Size(97, 104);
-            this.blockFeatherBrushButton.TabIndex = 12;
-            this.blockFeatherBrushButton.TabStop = false;
-            this.blockFeatherBrushButton.Click += new System.EventHandler(this.blockFeatherBrushButton_Click);
+            this.toolStrip1.AutoSize = false;
+            this.toolStrip1.BackColor = System.Drawing.SystemColors.Control;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TerrainToolsLabel,
+            this.TextureToolsLabel,
+            this.ObjectToolsLabel});
+            this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+            this.toolStrip1.Location = new System.Drawing.Point(0, 73);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.toolStrip1.Size = new System.Drawing.Size(926, 25);
+            this.toolStrip1.TabIndex = 5;
+            this.toolStrip1.Text = "toolStrip1";
             // 
-            // sizeUpDown
+            // TerrainToolsLabel
             // 
-            this.sizeUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(93)))), ((int)(((byte)(93)))));
-            this.sizeUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.sizeUpDown.Font = new System.Drawing.Font("Arial", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sizeUpDown.ForeColor = System.Drawing.Color.White;
-            this.sizeUpDown.Location = new System.Drawing.Point(35, 759);
-            this.sizeUpDown.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.sizeUpDown.Name = "sizeUpDown";
-            this.sizeUpDown.Size = new System.Drawing.Size(115, 48);
-            this.sizeUpDown.TabIndex = 13;
-            this.sizeUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.sizeUpDown.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            this.TerrainToolsLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.TerrainToolsLabel.Margin = new System.Windows.Forms.Padding(55, 1, 55, 2);
+            this.TerrainToolsLabel.Name = "TerrainToolsLabel";
+            this.TerrainToolsLabel.Size = new System.Drawing.Size(115, 15);
+            this.TerrainToolsLabel.Text = "Terrain Modification";
             // 
-            // strengthUpDown
+            // TextureToolsLabel
             // 
-            this.strengthUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(93)))), ((int)(((byte)(93)))));
-            this.strengthUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.strengthUpDown.Font = new System.Drawing.Font("Arial", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.strengthUpDown.ForeColor = System.Drawing.Color.White;
-            this.strengthUpDown.Location = new System.Drawing.Point(184, 759);
-            this.strengthUpDown.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.strengthUpDown.Name = "strengthUpDown";
-            this.strengthUpDown.Size = new System.Drawing.Size(115, 48);
-            this.strengthUpDown.TabIndex = 14;
-            this.strengthUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.strengthUpDown.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
+            this.TextureToolsLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.TextureToolsLabel.Margin = new System.Windows.Forms.Padding(25, 1, 21, 2);
+            this.TextureToolsLabel.Name = "TextureToolsLabel";
+            this.TextureToolsLabel.Size = new System.Drawing.Size(93, 15);
+            this.TextureToolsLabel.Text = "Texture Painting";
             // 
-            // toolButton0
+            // ObjectToolsLabel
             // 
-            this.toolButton0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.toolButton0.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("toolButton0.BackgroundImage")));
-            this.toolButton0.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.toolButton0.Location = new System.Drawing.Point(25, 184);
-            this.toolButton0.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.toolButton0.Name = "toolButton0";
-            this.toolButton0.Size = new System.Drawing.Size(97, 104);
-            this.toolButton0.TabIndex = 15;
-            this.toolButton0.TabStop = false;
-            this.toolButton0.Click += new System.EventHandler(this.toolButton0_Click);
+            this.ObjectToolsLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.ObjectToolsLabel.Margin = new System.Windows.Forms.Padding(43, 1, 37, 2);
+            this.ObjectToolsLabel.Name = "ObjectToolsLabel";
+            this.ObjectToolsLabel.Size = new System.Drawing.Size(101, 15);
+            this.ObjectToolsLabel.Text = "Object Placement";
             // 
-            // toolButton1
+            // panel1
             // 
-            this.toolButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.toolButton1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("toolButton1.BackgroundImage")));
-            this.toolButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.toolButton1.Location = new System.Drawing.Point(117, 184);
-            this.toolButton1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.toolButton1.Name = "toolButton1";
-            this.toolButton1.Size = new System.Drawing.Size(97, 104);
-            this.toolButton1.TabIndex = 16;
-            this.toolButton1.TabStop = false;
-            this.toolButton1.Click += new System.EventHandler(this.toolButton1_Click);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 98);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(926, 4);
+            this.panel1.TabIndex = 6;
             // 
-            // toolButton2
+            // panel2
             // 
-            this.toolButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.toolButton2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("toolButton2.BackgroundImage")));
-            this.toolButton2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.toolButton2.Location = new System.Drawing.Point(210, 184);
-            this.toolButton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.toolButton2.Name = "toolButton2";
-            this.toolButton2.Size = new System.Drawing.Size(97, 104);
-            this.toolButton2.TabIndex = 17;
-            this.toolButton2.TabStop = false;
-            this.toolButton2.Click += new System.EventHandler(this.toolButton2_Click);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 25);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(926, 1);
+            this.panel2.TabIndex = 7;
             // 
-            // toolButton4
+            // TextureSelectionForm
             // 
-            this.toolButton4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.toolButton4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("toolButton4.BackgroundImage")));
-            this.toolButton4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.toolButton4.Location = new System.Drawing.Point(117, 282);
-            this.toolButton4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.toolButton4.Name = "toolButton4";
-            this.toolButton4.Size = new System.Drawing.Size(97, 104);
-            this.toolButton4.TabIndex = 19;
-            this.toolButton4.TabStop = false;
-            this.toolButton4.Click += new System.EventHandler(this.toolButton4_Click);
+            this.TextureSelectionForm.BackColor = System.Drawing.SystemColors.Control;
+            this.TextureSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TextureSelectionForm.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TextureSelectionForm.Location = new System.Drawing.Point(0, 1014);
+            this.TextureSelectionForm.Margin = new System.Windows.Forms.Padding(4);
+            this.TextureSelectionForm.Name = "TextureSelectionForm";
+            this.TextureSelectionForm.Size = new System.Drawing.Size(234, 555);
+            this.TextureSelectionForm.TabIndex = 2;
             // 
-            // toolButton3
+            // ObjectParametersForm
             // 
-            this.toolButton3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.toolButton3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("toolButton3.BackgroundImage")));
-            this.toolButton3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.toolButton3.Location = new System.Drawing.Point(25, 282);
-            this.toolButton3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.toolButton3.Name = "toolButton3";
-            this.toolButton3.Size = new System.Drawing.Size(97, 104);
-            this.toolButton3.TabIndex = 18;
-            this.toolButton3.TabStop = false;
-            this.toolButton3.Click += new System.EventHandler(this.toolButton3_Click);
+            this.ObjectParametersForm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ObjectParametersForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ObjectParametersForm.Location = new System.Drawing.Point(0, 893);
+            this.ObjectParametersForm.Name = "ObjectParametersForm";
+            this.ObjectParametersForm.Size = new System.Drawing.Size(234, 121);
+            this.ObjectParametersForm.TabIndex = 1;
             // 
-            // layerBackgroundButton
+            // ObjectPlacementPanel
             // 
-            this.layerBackgroundButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.layerBackgroundButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("layerBackgroundButton.BackgroundImage")));
-            this.layerBackgroundButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.layerBackgroundButton.Location = new System.Drawing.Point(23, 338);
-            this.layerBackgroundButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.layerBackgroundButton.Name = "layerBackgroundButton";
-            this.layerBackgroundButton.Size = new System.Drawing.Size(70, 87);
-            this.layerBackgroundButton.TabIndex = 20;
-            this.layerBackgroundButton.TabStop = false;
-            this.layerBackgroundButton.Visible = false;
-            this.layerBackgroundButton.Click += new System.EventHandler(this.layerBackgroundButton_Click);
+            this.ObjectPlacementPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 438);
+            this.ObjectPlacementPanel.Name = "ObjectPlacementPanel";
+            this.ObjectPlacementPanel.Size = new System.Drawing.Size(234, 455);
+            this.ObjectPlacementPanel.TabIndex = 0;
             // 
-            // layer1Button
+            // HeightMapBrushPropertiesForm
             // 
-            this.layer1Button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.layer1Button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("layer1Button.BackgroundImage")));
-            this.layer1Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.layer1Button.Location = new System.Drawing.Point(74, 338);
-            this.layer1Button.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.layer1Button.Name = "layer1Button";
-            this.layer1Button.Size = new System.Drawing.Size(70, 87);
-            this.layer1Button.TabIndex = 21;
-            this.layer1Button.TabStop = false;
-            this.layer1Button.Visible = false;
-            this.layer1Button.Click += new System.EventHandler(this.layer1Button_Click);
+            this.HeightMapBrushPropertiesForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.HeightMapBrushPropertiesForm.Location = new System.Drawing.Point(0, 267);
+            this.HeightMapBrushPropertiesForm.Name = "HeightMapBrushPropertiesForm";
+            this.HeightMapBrushPropertiesForm.Size = new System.Drawing.Size(234, 171);
+            this.HeightMapBrushPropertiesForm.TabIndex = 3;
             // 
-            // layer2Button
+            // TextureBrushPropertiesForm
             // 
-            this.layer2Button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.layer2Button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("layer2Button.BackgroundImage")));
-            this.layer2Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.layer2Button.Location = new System.Drawing.Point(130, 338);
-            this.layer2Button.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.layer2Button.Name = "layer2Button";
-            this.layer2Button.Size = new System.Drawing.Size(70, 87);
-            this.layer2Button.TabIndex = 22;
-            this.layer2Button.TabStop = false;
-            this.layer2Button.Visible = false;
-            this.layer2Button.Click += new System.EventHandler(this.layer2Button_Click);
+            this.TextureBrushPropertiesForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TextureBrushPropertiesForm.Location = new System.Drawing.Point(0, 96);
+            this.TextureBrushPropertiesForm.Name = "TextureBrushPropertiesForm";
+            this.TextureBrushPropertiesForm.Size = new System.Drawing.Size(234, 171);
+            this.TextureBrushPropertiesForm.TabIndex = 4;
             // 
-            // layer4Button
+            // BrushSelectionForm
             // 
-            this.layer4Button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.layer4Button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("layer4Button.BackgroundImage")));
-            this.layer4Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.layer4Button.Location = new System.Drawing.Point(242, 338);
-            this.layer4Button.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.layer4Button.Name = "layer4Button";
-            this.layer4Button.Size = new System.Drawing.Size(70, 87);
-            this.layer4Button.TabIndex = 24;
-            this.layer4Button.TabStop = false;
-            this.layer4Button.Visible = false;
-            this.layer4Button.Click += new System.EventHandler(this.layer4Button_Click);
+            this.BrushSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BrushSelectionForm.Location = new System.Drawing.Point(0, 0);
+            this.BrushSelectionForm.Name = "BrushSelectionForm";
+            this.BrushSelectionForm.Size = new System.Drawing.Size(234, 96);
+            this.BrushSelectionForm.TabIndex = 0;
             // 
-            // layer3Button
+            // editorPanel
             // 
-            this.layer3Button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(123)))), ((int)(((byte)(123)))));
-            this.layer3Button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("layer3Button.BackgroundImage")));
-            this.layer3Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.layer3Button.Location = new System.Drawing.Point(186, 338);
-            this.layer3Button.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.layer3Button.Name = "layer3Button";
-            this.layer3Button.Size = new System.Drawing.Size(70, 87);
-            this.layer3Button.TabIndex = 23;
-            this.layer3Button.TabStop = false;
-            this.layer3Button.Visible = false;
-            this.layer3Button.Click += new System.EventHandler(this.layer3Button_Click);
-            // 
-            // button1
-            // 
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.Location = new System.Drawing.Point(210, 590);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(97, 104);
-            this.button1.TabIndex = 25;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.editorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.editorPanel.Location = new System.Drawing.Point(4, 102);
+            this.editorPanel.Name = "editorPanel";
+            this.editorPanel.Size = new System.Drawing.Size(667, 458);
+            this.editorPanel.TabIndex = 0;
             // 
             // EditorForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.AutoSize = true;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.ObjectList);
-            this.Controls.Add(this.layer4Button);
-            this.Controls.Add(this.layer3Button);
-            this.Controls.Add(this.layer2Button);
-            this.Controls.Add(this.layer1Button);
-            this.Controls.Add(this.layerBackgroundButton);
-            this.Controls.Add(this.toolButton4);
-            this.Controls.Add(this.toolButton3);
-            this.Controls.Add(this.toolButton2);
-            this.Controls.Add(this.toolButton1);
-            this.Controls.Add(this.toolButton0);
-            this.Controls.Add(this.strengthUpDown);
-            this.Controls.Add(this.sizeUpDown);
-            this.Controls.Add(this.blockFeatherBrushButton);
-            this.Controls.Add(this.blockBrushButton);
-            this.Controls.Add(this.circleFeatherBrushButton);
-            this.Controls.Add(this.circleBrushButton);
-            this.Controls.Add(this.background);
-            this.Controls.Add(this.objectModeButton);
-            this.Controls.Add(this.paintModeButton);
-            this.Controls.Add(this.terrainModeButton);
-            //this.Controls.Add(this.MenuStrip);
-            this.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.ClientSize = new System.Drawing.Size(926, 564);
+            this.Controls.Add(this.ContextToolsPanel);
+            this.Controls.Add(this.editorPanel);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.ToolStrip);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.MenuStrip);
             this.Name = "EditorForm";
+            this.Text = "EditorForm";
+            this.ToolStrip.ResumeLayout(false);
+            this.ToolStrip.PerformLayout();
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.terrainModeButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.paintModeButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.objectModeButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.background)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.circleBrushButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.circleFeatherBrushButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.blockBrushButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.blockFeatherBrushButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sizeUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.strengthUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toolButton0)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toolButton1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toolButton2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toolButton4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toolButton3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layerBackgroundButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layer1Button)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layer2Button)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layer4Button)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layer3Button)).EndInit();
+            this.ContextToolsPanel.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -502,60 +523,49 @@ namespace WorldEditor.Dialogs
 
         #endregion
 
+        private Editor editorPanel;
+        private System.Windows.Forms.ToolStripButton raiseTerrainButton;
+        private System.Windows.Forms.ToolStripButton lowerTerrainButton;
+        private System.Windows.Forms.ToolStripButton setTerrainButton;
+        private System.Windows.Forms.ToolStripButton flattenTerrainButton;
+        private System.Windows.Forms.ToolStripButton smoothTerrainButton;
+        private System.Windows.Forms.ToolStripSeparator terrainSeparator;
+        private System.Windows.Forms.ToolStripButton paintTextureButton;
+        private System.Windows.Forms.ToolStripButton eraseTextureButton;
+        private System.Windows.Forms.ToolStripButton smoothTextureButton;
+        private System.Windows.Forms.ToolStripSeparator textureSeparator;
+        public System.Windows.Forms.ToolStripButton SelectObjectButton;
+        public System.Windows.Forms.ToolStripButton TranslateObjectButton;
+        public System.Windows.Forms.ToolStripButton RotateObjectButton;
+        public System.Windows.Forms.ToolStripButton ScaleObjectButton;
+        private System.Windows.Forms.ToolStripSeparator objectSeparator;
         public System.Windows.Forms.MenuStrip MenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem File;
-        private System.Windows.Forms.ToolStripMenuItem SaveMenu;
-        private System.Windows.Forms.ToolStripMenuItem OpenMenu;
-        private System.Windows.Forms.ToolStripMenuItem Edit;
-        public System.Windows.Forms.ListBox ObjectList;
-        private PictureBox terrainModeButton;
-        private PictureBox paintModeButton;
-        private PictureBox objectModeButton;
-        private PictureBox background;
-        private PictureBox circleBrushButton;
-        private PictureBox circleFeatherBrushButton;
-        private PictureBox blockBrushButton;
-        private PictureBox blockFeatherBrushButton;
-        private NumericUpDown sizeUpDown;
-        private NumericUpDown strengthUpDown;
-        private PictureBox toolButton0;
-        private PictureBox toolButton1;
-        private PictureBox toolButton2;
-        private PictureBox toolButton4;
-        private PictureBox toolButton3;
-        private PictureBox layerBackgroundButton;
-        private PictureBox layer1Button;
-        private PictureBox layer2Button;
-        private PictureBox layer4Button;
-        private PictureBox layer3Button;
-        private ToolStripMenuItem NewMenu;
-        private ToolStripMenuItem SaveAsMenu;
-        private ToolStripMenuItem PlayMenu;
-        private Button button1;
-
-        public NumericUpDown SizeUpDown
-        {
-            get { return sizeUpDown; }
-        }
-
-        public NumericUpDown StrengthUpDown
-        {
-            get { return strengthUpDown; }
-        }
-
-        public PictureBox PaintModeButton
-        {
-            get { return paintModeButton; }
-        }
-
-        public PictureBox ObjectModeButton
-        {
-            get { return objectModeButton; }
-        }
-
-        public PictureBox HeightmapModeButton
-        {
-            get { return terrainModeButton; }
-        }
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem NewMenu;
+        public System.Windows.Forms.ToolStripMenuItem OpenMenu;
+        public System.Windows.Forms.ToolStripMenuItem SaveMenu;
+        public System.Windows.Forms.ToolStripMenuItem SaveAsMenu;
+        public System.Windows.Forms.ToolStripMenuItem PlayMenu;
+        public System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem UndoMenu;
+        public System.Windows.Forms.ToolStripMenuItem RedoMenu;
+        public System.Windows.Forms.ToolStripMenuItem vIEWToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem ViewSkyBoxMenu;
+        public System.Windows.Forms.ToolStripMenuItem ViewWaterMenu;
+        public System.Windows.Forms.ToolStripMenuItem ViewShadowsMenu;
+        public System.Windows.Forms.Panel ContextToolsPanel;
+        public ObjectParametersForm ObjectParametersForm;
+        public System.Windows.Forms.ToolStrip ToolStrip;
+        public global::WorldEditor.Dialogs.ObjectPlacementPanel ObjectPlacementPanel;
+        public TextureSelectionForm TextureSelectionForm;
+        public BrushSelectionForm BrushSelectionForm;
+        public HeightMapBrushPropertiesForm HeightMapBrushPropertiesForm;
+        public TextureBrushPropertiesForm TextureBrushPropertiesForm;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripLabel TerrainToolsLabel;
+        private System.Windows.Forms.ToolStripLabel TextureToolsLabel;
+        private System.Windows.Forms.ToolStripLabel ObjectToolsLabel;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
     }
 }
