@@ -36,10 +36,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="objects\BearSpawner.prop">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Name>BearSpawner</Name>
-    </None>
     <None Include="objects\Checkpoint.prop">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Name>Checkpoint</Name>
@@ -47,10 +43,6 @@
     <None Include="objects\CheetahSpawner.prop">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Name>CheetahSpawner</Name>
-    </None>
-    <None Include="objects\CobraSpawner.prop">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Name>CobraSpawner</Name>
     </None>
     <None Include="objects\EagleSpawner.prop">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -67,10 +59,6 @@
     <None Include="objects\KangarooSpawner.prop">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Name>KangarooSpawner</Name>
-    </None>
-    <None Include="objects\LizardSpawner.prop">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Name>LizardSpawner</Name>
     </None>
     <None Include="objects\PenguinSpawner.prop">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -91,10 +79,6 @@
     <None Include="objects\TipTrigger.prop">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Name>TipTrigger</Name>
-    </None>
-    <None Include="objects\TurtleSpawner.prop">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Name>TurtleSpawner</Name>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

@@ -166,7 +166,7 @@
       <DependentUpon>ObjectPlacementPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\TextureSelectionForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Dialogs\TextureSelectionForm.Designer.cs">
       <DependentUpon>TextureSelectionForm.cs</DependentUpon>

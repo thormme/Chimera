@@ -102,7 +102,7 @@ namespace GraphicsLibrary
         {
             Light light = optionalParameters[0] as Light;
 
-            effect.CurrentTechnique = effect.Techniques["CelShadeNoShadows"];
+            effect.CurrentTechnique = effect.Techniques["CelShadeWithoutShadows"];
 
             effect.Parameters["xDirLightDirection"].SetValue(light.Direction);
             effect.Parameters["xDirLightDiffuseColor"].SetValue(light.DiffuseColor);

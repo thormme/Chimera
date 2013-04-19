@@ -62,6 +62,7 @@
             this.ObjectParametersForm = new WorldEditor.Dialogs.ObjectParametersForm();
             this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
             this.editorPanel = new WorldEditor.Dialogs.Editor();
+            this.TextureSelectionForm = new WorldEditor.Dialogs.TextureSelectionForm();
             this.ToolStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.ContextToolsPanel.SuspendLayout();
@@ -334,12 +335,13 @@
             // ContextToolsPanel
             // 
             this.ContextToolsPanel.AutoScroll = true;
+            this.ContextToolsPanel.Controls.Add(this.TextureSelectionForm);
             this.ContextToolsPanel.Controls.Add(this.ObjectParametersForm);
             this.ContextToolsPanel.Controls.Add(this.ObjectPlacementPanel);
             this.ContextToolsPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.ContextToolsPanel.Location = new System.Drawing.Point(675, 72);
             this.ContextToolsPanel.Name = "ContextToolsPanel";
-            this.ContextToolsPanel.Size = new System.Drawing.Size(251, 431);
+            this.ContextToolsPanel.Size = new System.Drawing.Size(251, 573);
             this.ContextToolsPanel.TabIndex = 4;
             // 
             // ObjectParametersForm
@@ -350,15 +352,15 @@
             this.ObjectParametersForm.MinimumSize = new System.Drawing.Size(260, 160);
             this.ObjectParametersForm.Name = "ObjectParametersForm";
             this.ObjectParametersForm.Size = new System.Drawing.Size(260, 160);
-            this.ObjectParametersForm.TabIndex = 0;
+            this.ObjectParametersForm.TabIndex = 1;
             // 
             // ObjectPlacementPanel
             // 
             this.ObjectPlacementPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 0);
             this.ObjectPlacementPanel.Name = "ObjectPlacementPanel";
-            this.ObjectPlacementPanel.Size = new System.Drawing.Size(234, 379);
-            this.ObjectPlacementPanel.TabIndex = 1;
+            this.ObjectPlacementPanel.Size = new System.Drawing.Size(234, 455);
+            this.ObjectPlacementPanel.TabIndex = 0;
             // 
             // editorPanel
             // 
@@ -367,14 +369,25 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.editorPanel.Location = new System.Drawing.Point(2, 74);
             this.editorPanel.Name = "editorPanel";
-            this.editorPanel.Size = new System.Drawing.Size(688, 428);
+            this.editorPanel.Size = new System.Drawing.Size(688, 570);
             this.editorPanel.TabIndex = 0;
+            // 
+            // textureSelectionForm1
+            // 
+            this.TextureSelectionForm.BackColor = System.Drawing.SystemColors.Control;
+            this.TextureSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TextureSelectionForm.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TextureSelectionForm.Location = new System.Drawing.Point(0, 539);
+            this.TextureSelectionForm.Margin = new System.Windows.Forms.Padding(4);
+            this.TextureSelectionForm.Name = "textureSelectionForm1";
+            this.TextureSelectionForm.Size = new System.Drawing.Size(234, 555);
+            this.TextureSelectionForm.TabIndex = 2;
             // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(926, 503);
+            this.ClientSize = new System.Drawing.Size(926, 645);
             this.Controls.Add(this.ContextToolsPanel);
             this.Controls.Add(this.ToolStrip);
             this.Controls.Add(this.MenuStrip);
@@ -426,5 +439,6 @@
         public ObjectParametersForm ObjectParametersForm;
         public System.Windows.Forms.ToolStrip ToolStrip;
         public global::WorldEditor.Dialogs.ObjectPlacementPanel ObjectPlacementPanel;
+        public TextureSelectionForm TextureSelectionForm;
     }
 }

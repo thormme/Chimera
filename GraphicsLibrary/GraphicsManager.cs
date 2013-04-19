@@ -358,7 +358,7 @@ namespace GraphicsLibrary
             renderer.ClearAllInstances();
             renderer.AddInstance(parameters);
             renderer.RenderAllInstancesWithoutShadows(
-                Matrix.CreateLookAt(renderer.BoundingSphere.Center + new Vector3(renderer.BoundingSphere.Radius, renderer.BoundingSphere.Radius, renderer.BoundingSphere.Radius), renderer.BoundingSphere.Center, Vector3.Up), 
+                Matrix.CreateLookAt(renderer.BoundingSphere.Center + new Vector3(0, 0, 2 * renderer.BoundingSphere.Radius), renderer.BoundingSphere.Center, Vector3.Up), 
                 Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, mCamera.AspectRatio, 0.1f, 1000.0f),
                 mDirectionalLight);
 
