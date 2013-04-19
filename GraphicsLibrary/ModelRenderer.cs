@@ -29,19 +29,28 @@ namespace GraphicsLibrary
         public ModelRenderer(Model model)
         {
             mModel = model;
+            ConstructBoundingSphere();
+        }
 
-            mBoundingSphere = new BoundingSphere(Vector3.Zero, 0.0f);
-
+        protected virtual void ConstructBoundingSphere()
+        {
+            Vector3 modelCenter = Vector3.Zero;
             foreach (ModelMesh mesh in mModel.Meshes)
             {
-                float meshRadius = (mesh.BoundingSphere.Center - mBoundingSphere.Center).Length() + mesh.BoundingSphere.Radius;
-                mBoundingSphere.Center += mesh.BoundingSphere.Center;
-                if (meshRadius > mBoundingSphere.Radius)
-                {
-                    mBoundingSphere.Radius = meshRadius;
-                }
+                modelCenter += mesh.BoundingSphere.Center;
             }
-            mBoundingSphere.Center /= mModel.Meshes.Count > 0 ? mModel.Meshes.Count : 1;
+
+            modelCenter /= mModel.Meshes.Count;
+
+            float modelRadius = 0;
+            foreach (ModelMesh mesh in mModel.Meshes)
+            {
+                float meshRadius = (mesh.BoundingSphere.Center - modelCenter).Length() + mesh.BoundingSphere.Radius;
+
+                modelRadius = Math.Max(modelRadius, meshRadius);
+            }
+
+            mBoundingSphere = new BoundingSphere(modelCenter, modelRadius);
         }
 
         #endregion

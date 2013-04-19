@@ -355,12 +355,14 @@ namespace GraphicsLibrary
             parameters.SkinTransforms = new Matrix[] { Matrix.Identity };
             parameters.World = Matrix.Identity;
 
+            Vector3 cameraOffset = new Vector3(1.7f * renderer.BoundingSphere.Radius, 1.0f * renderer.BoundingSphere.Radius, 1.7f * renderer.BoundingSphere.Radius);
+
             renderer.ClearAllInstances();
             renderer.AddInstance(parameters);
             renderer.RenderAllInstancesWithoutShadows(
-                Matrix.CreateLookAt(renderer.BoundingSphere.Center + new Vector3(0, 0, 2 * renderer.BoundingSphere.Radius), renderer.BoundingSphere.Center, Vector3.Up), 
-                Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, mCamera.AspectRatio, 0.1f, 1000.0f),
-                mDirectionalLight);
+                Matrix.CreateLookAt(renderer.BoundingSphere.Center + cameraOffset, renderer.BoundingSphere.Center, Vector3.Up), 
+                Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, 1.0f, 0.1f, 1000.0f),
+                new Light(Vector3.Up, -Vector3.Up, Color.White.ToVector3(), Color.White.ToVector3(), Color.White.ToVector3()));
 
             mDevice.SetRenderTarget(null);
 

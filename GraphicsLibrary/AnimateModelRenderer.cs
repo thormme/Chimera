@@ -36,6 +36,36 @@ namespace GraphicsLibrary
 
         public AnimateModelRenderer(Model model) : base(model) { }
 
+        protected override void ConstructBoundingSphere()
+        {
+            Matrix[] boneTransforms = new Matrix[mModel.Bones.Count];
+            mModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
+
+            Vector3 modelCenter = Vector3.Zero;
+            foreach (ModelMesh mesh in mModel.Meshes)
+            {
+                Matrix transform = boneTransforms[mesh.ParentBone.Index];
+                Vector3 meshCenter = Vector3.Transform(mesh.BoundingSphere.Center, transform);
+                modelCenter += meshCenter;
+            }
+
+            modelCenter /= mModel.Meshes.Count;
+
+            float modelRadius = 0;
+            foreach (ModelMesh mesh in mModel.Meshes)
+            {
+                Matrix transform = boneTransforms[mesh.ParentBone.Index];
+                Vector3 meshCenter = Vector3.Transform(mesh.BoundingSphere.Center, transform);
+
+                float transformScale = transform.Forward.Length();
+                float meshRadius = (meshCenter - modelCenter).Length() + mesh.BoundingSphere.Radius * transformScale;
+
+                modelRadius = Math.Max(modelRadius, meshRadius);
+            }
+
+            mBoundingSphere = new BoundingSphere(modelCenter, modelRadius);
+        }
+
         #endregion
 
         #region Instance Render Helper Methods

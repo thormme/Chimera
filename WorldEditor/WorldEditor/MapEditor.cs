@@ -65,6 +65,10 @@ namespace WorldEditor
 
         public TextureSelectionForm TextureSelectionPane = null;
 
+        public BrushSelectionForm BrushSelectionPane = null;
+
+        public HeightMapBrushPropertiesForm HeightMapBrushPropertiesPane = null;
+
         public bool Closed = false;
 
         //Handles camera movement and picking.
@@ -119,6 +123,8 @@ namespace WorldEditor
         public MapEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content, GameDeviceControl gameControl, EditorForm editorForm)
         {
             this.EditorForm = editorForm;
+            this.BrushSelectionPane = editorForm.BrushSelectionForm;
+            this.HeightMapBrushPropertiesPane = editorForm.HeightMapBrushPropertiesForm;
             this.ObjectParameterPane = editorForm.ObjectParametersForm;
             this.ObjectPlacementPane = editorForm.ObjectPlacementPanel;
             this.TextureSelectionPane = editorForm.TextureSelectionForm;
@@ -126,7 +132,7 @@ namespace WorldEditor
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
             mEntity = new Entity(graphicsDevice, mControls, mCamera);
-            CreateEditorForm();
+            InitializePanes();
 
             mTextureTransformShader = content.Load<Effect>("shaders/TextureTransform");
         }
@@ -189,12 +195,8 @@ namespace WorldEditor
 
         #region Editor Form Creation and Handling
 
-        private void CreateEditorForm()
+        private void InitializePanes()
         {
-            TextureSelectionPane.Hide();
-
-            mCursorObject.Scale = new Vector3(5.0f, 0.0f, 5.0f);
-
             EditorForm.NewMenu.Click    += NewHandler;
             EditorForm.SaveMenu.Click += SaveHandler;
             EditorForm.SaveAsMenu.Click += SaveAsHandler;
@@ -218,6 +220,8 @@ namespace WorldEditor
 
             EditorForm.ObjectPlacementPanel.ObjectTree.NodeMouseDoubleClick += CreateObjectButtonHandler;
             EditorForm.ObjectPlacementPanel.ObjectTree.AfterSelect += UpdatePreviewImage;
+
+            HeightMapBrushPropertiesPane.BrushSizeTrackBar.ValueChanged += CursorResizeHandler;
 
             TreeNode modelNode = new TreeNode("Models");
             TreeNode entityNode = new TreeNode("Entities");
@@ -260,6 +264,7 @@ namespace WorldEditor
             }
 
             UpdateModeContext(EditorForm, null);
+            CursorResizeHandler(HeightMapBrushPropertiesPane.BrushSizeTrackBar, null);
         }
 
         private void CloseHandler(object sender, EventArgs e)
@@ -489,7 +494,7 @@ namespace WorldEditor
 
         private void CursorResizeHandler(object sender, EventArgs e)
         {
-            mCursorObject.Scale = new Vector3((int)(sender as NumericUpDown).Value, 0, (int)(sender as NumericUpDown).Value);
+            mCursorObject.Scale = new Vector3((int)(sender as TrackBar).Value, 0, (int)(sender as TrackBar).Value);
         }
 
         private void UndoHandler(object sender, EventArgs e)
@@ -601,8 +606,9 @@ namespace WorldEditor
                 {
                     case EditorForm.EditorMode.HEIGHTMAP:
                     {
-                        float strength = 10.0f;// form.Strength * 10.0f;
-                        mDummyWorld.ModifyHeightMap(mCursorObject.Position, 5.0f/*form.Size*/, strength, EditorForm.HeightMapBrush, EditorForm.Tool);
+                        float size = HeightMapBrushPropertiesPane.BrushSizeTrackBar.Value;
+                        float strength = HeightMapBrushPropertiesPane.BrushMagnitudeTrackBar.Value * 10.0f;
+                        mDummyWorld.ModifyHeightMap(mCursorObject.Position, size, strength, EditorForm.HeightMapBrush, EditorForm.Tool);
                         break;
                     }
                     case EditorForm.EditorMode.PAINTING:
