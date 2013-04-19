@@ -34,6 +34,9 @@
             this.CircleFeatherBrushButton = new System.Windows.Forms.ToolStripButton();
             this.BlockBrushButton = new System.Windows.Forms.ToolStripButton();
             this.BlockFeatherBrushButton = new System.Windows.Forms.ToolStripButton();
+            this.BrushLabel = new System.Windows.Forms.Label();
+            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
+            this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.BrushToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,7 +44,6 @@
             // 
             this.BrushToolStrip.AutoSize = false;
             this.BrushToolStrip.BackColor = System.Drawing.Color.Transparent;
-            this.BrushToolStrip.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BrushToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.BrushToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.CircleBrushButton,
@@ -51,7 +53,7 @@
             this.BrushToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.BrushToolStrip.Location = new System.Drawing.Point(0, 0);
             this.BrushToolStrip.Name = "BrushToolStrip";
-            this.BrushToolStrip.Size = new System.Drawing.Size(243, 64);
+            this.BrushToolStrip.Size = new System.Drawing.Size(243, 47);
             this.BrushToolStrip.TabIndex = 0;
             this.BrushToolStrip.Text = "toolStrip1";
             // 
@@ -95,25 +97,62 @@
             this.BlockFeatherBrushButton.Size = new System.Drawing.Size(44, 44);
             this.BlockFeatherBrushButton.Text = "toolStripButton4";
             // 
+            // BrushLabel
+            // 
+            this.BrushLabel.AutoSize = true;
+            this.BrushLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BrushLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.BrushLabel.Location = new System.Drawing.Point(98, 53);
+            this.BrushLabel.Name = "BrushLabel";
+            this.BrushLabel.Size = new System.Drawing.Size(48, 15);
+            this.BrushLabel.TabIndex = 1;
+            this.BrushLabel.Text = "Brushes";
+            // 
+            // shapeContainer1
+            // 
+            this.shapeContainer1.Location = new System.Drawing.Point(0, 0);
+            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
+            this.shapeContainer1.Name = "shapeContainer1";
+            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
+            this.lineShape1});
+            this.shapeContainer1.Size = new System.Drawing.Size(243, 92);
+            this.shapeContainer1.TabIndex = 2;
+            this.shapeContainer1.TabStop = false;
+            // 
+            // lineShape1
+            // 
+            this.lineShape1.BorderColor = System.Drawing.SystemColors.ControlDark;
+            this.lineShape1.Name = "lineShape1";
+            this.lineShape1.X1 = 15;
+            this.lineShape1.X2 = 223;
+            this.lineShape1.Y1 = 77;
+            this.lineShape1.Y2 = 77;
+            // 
             // BrushSelectionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.BrushLabel);
             this.Controls.Add(this.BrushToolStrip);
+            this.Controls.Add(this.shapeContainer1);
             this.Name = "BrushSelectionForm";
-            this.Size = new System.Drawing.Size(243, 64);
+            this.Size = new System.Drawing.Size(243, 92);
             this.BrushToolStrip.ResumeLayout(false);
             this.BrushToolStrip.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.ToolStrip BrushToolStrip;
-        private System.Windows.Forms.ToolStripButton CircleBrushButton;
-        private System.Windows.Forms.ToolStripButton CircleFeatherBrushButton;
-        private System.Windows.Forms.ToolStripButton BlockBrushButton;
-        private System.Windows.Forms.ToolStripButton BlockFeatherBrushButton;
+        public System.Windows.Forms.ToolStripButton CircleBrushButton;
+        public System.Windows.Forms.ToolStripButton CircleFeatherBrushButton;
+        public System.Windows.Forms.ToolStripButton BlockBrushButton;
+        public System.Windows.Forms.ToolStripButton BlockFeatherBrushButton;
+        private System.Windows.Forms.Label BrushLabel;
+        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
+        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
     }
 }

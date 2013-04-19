@@ -35,7 +35,8 @@
             // 
             // ObjectTree
             // 
-            this.ObjectTree.Location = new System.Drawing.Point(3, 3);
+            this.ObjectTree.HideSelection = false;
+            this.ObjectTree.Location = new System.Drawing.Point(7, 3);
             this.ObjectTree.Name = "ObjectTree";
             this.ObjectTree.Size = new System.Drawing.Size(229, 214);
             this.ObjectTree.TabIndex = 0;
@@ -56,7 +57,7 @@
             this.Controls.Add(this.PreviewPictureBox);
             this.Controls.Add(this.ObjectTree);
             this.Name = "ObjectPlacementPanel";
-            this.Size = new System.Drawing.Size(235, 455);
+            this.Size = new System.Drawing.Size(243, 455);
             ((System.ComponentModel.ISupportInitialize)(this.PreviewPictureBox)).EndInit();
             this.ResumeLayout(false);
 

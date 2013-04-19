@@ -14,6 +14,32 @@ namespace WorldEditor.Dialogs
         public TextureBrushPropertiesForm()
         {
             InitializeComponent();
+
+            this.BrushSizeTrackBar.ValueChanged += UpdateSizeUpDown;
+            this.BrushSizeUpDown.ValueChanged += UpdateSizeTrackBar;
+
+            this.BrushMagnitudeTrackBar.ValueChanged += UpdateMagnitudeUpDown;
+            this.BrushMagnitudeUpDown.ValueChanged += UpdateMagnitudeTrackBar;
+        }
+
+        private void UpdateSizeUpDown(object sender, EventArgs e)
+        {
+            this.BrushSizeUpDown.Value = BrushSizeTrackBar.Value;
+        }
+
+        private void UpdateMagnitudeUpDown(object sender, EventArgs e)
+        {
+            this.BrushMagnitudeUpDown.Value = BrushMagnitudeTrackBar.Value;
+        }
+
+        private void UpdateSizeTrackBar(object sender, EventArgs e)
+        {
+            this.BrushSizeTrackBar.Value = (int)BrushSizeUpDown.Value;
+        }
+
+        private void UpdateMagnitudeTrackBar(object sender, EventArgs e)
+        {
+            this.BrushMagnitudeTrackBar.Value = (int)BrushMagnitudeUpDown.Value;
         }
     }
 }

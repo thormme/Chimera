@@ -32,16 +32,8 @@ namespace WorldEditor.Dialogs
             CircleFeatherBrushButton.Click += BrushButton_Click;
             BlockBrushButton.Click         += BrushButton_Click;
             BlockFeatherBrushButton.Click  += BrushButton_Click;
-            
-            //InitializeButtonImages();
-        }
 
-        private void InitializeButtonImages()
-        {
-            this.CircleBrushButton.Image        = UILibrary.CircleBrushIcon;
-            this.CircleFeatherBrushButton.Image = UILibrary.CircleFeatheredBrushIcon;
-            this.BlockBrushButton.Image         = UILibrary.BlockBrushIcon;
-            this.BlockFeatherBrushButton.Image  = UILibrary.BlockFeatheredBrushIcon;
+            this.BrushToolStrip.Renderer = new HardEdgeToolStripRenderer();
         }
 
         private void BrushButton_Click(object sender, EventArgs e)

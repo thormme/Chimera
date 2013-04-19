@@ -48,7 +48,7 @@ namespace WorldEditor.Dialogs
             this.texturePreview.BackColor = System.Drawing.Color.Black;
             this.texturePreview.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.texturePreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.texturePreview.Location = new System.Drawing.Point(19, 235);
+            this.texturePreview.Location = new System.Drawing.Point(23, 235);
             this.texturePreview.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.texturePreview.Name = "texturePreview";
             this.texturePreview.Size = new System.Drawing.Size(200, 200);
@@ -64,7 +64,7 @@ namespace WorldEditor.Dialogs
             this.textureList.ForeColor = System.Drawing.Color.Black;
             this.textureList.FormattingEnabled = true;
             this.textureList.HorizontalScrollbar = true;
-            this.textureList.Location = new System.Drawing.Point(3, 3);
+            this.textureList.Location = new System.Drawing.Point(7, 3);
             this.textureList.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.textureList.Name = "textureList";
             this.textureList.Size = new System.Drawing.Size(229, 197);
@@ -73,7 +73,7 @@ namespace WorldEditor.Dialogs
             // UScale
             // 
             this.UScale.DecimalPlaces = 2;
-            this.UScale.Location = new System.Drawing.Point(19, 457);
+            this.UScale.Location = new System.Drawing.Point(23, 457);
             this.UScale.Name = "UScale";
             this.UScale.Size = new System.Drawing.Size(93, 26);
             this.UScale.TabIndex = 21;
@@ -86,7 +86,7 @@ namespace WorldEditor.Dialogs
             // VScale
             // 
             this.VScale.DecimalPlaces = 2;
-            this.VScale.Location = new System.Drawing.Point(126, 457);
+            this.VScale.Location = new System.Drawing.Point(130, 457);
             this.VScale.Name = "VScale";
             this.VScale.Size = new System.Drawing.Size(93, 26);
             this.VScale.TabIndex = 22;
@@ -99,7 +99,7 @@ namespace WorldEditor.Dialogs
             // VOffset
             // 
             this.VOffset.DecimalPlaces = 2;
-            this.VOffset.Location = new System.Drawing.Point(126, 506);
+            this.VOffset.Location = new System.Drawing.Point(130, 506);
             this.VOffset.Name = "VOffset";
             this.VOffset.Size = new System.Drawing.Size(93, 26);
             this.VOffset.TabIndex = 24;
@@ -107,7 +107,7 @@ namespace WorldEditor.Dialogs
             // UOffset
             // 
             this.UOffset.DecimalPlaces = 2;
-            this.UOffset.Location = new System.Drawing.Point(19, 506);
+            this.UOffset.Location = new System.Drawing.Point(23, 506);
             this.UOffset.Name = "UOffset";
             this.UOffset.Size = new System.Drawing.Size(93, 26);
             this.UOffset.TabIndex = 23;
@@ -126,7 +126,7 @@ namespace WorldEditor.Dialogs
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "TextureSelectionForm";
-            this.Size = new System.Drawing.Size(235, 555);
+            this.Size = new System.Drawing.Size(243, 555);
             ((System.ComponentModel.ISupportInitialize)(this.texturePreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.UScale)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.VScale)).EndInit();

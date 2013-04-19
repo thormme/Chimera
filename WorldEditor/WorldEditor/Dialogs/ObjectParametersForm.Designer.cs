@@ -386,7 +386,7 @@
             this.Controls.Add(this.AdditionalParametersPanel);
             this.Controls.Add(this.panel2);
             this.Name = "ObjectParametersForm";
-            this.Size = new System.Drawing.Size(243, 128);
+            this.Size = new System.Drawing.Size(243, 111);
             ((System.ComponentModel.ISupportInitialize)(this.PositionX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PositionZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Yaw)).EndInit();

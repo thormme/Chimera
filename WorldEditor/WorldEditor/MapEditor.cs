@@ -69,6 +69,8 @@ namespace WorldEditor
 
         public HeightMapBrushPropertiesForm HeightMapBrushPropertiesPane = null;
 
+        public TextureBrushPropertiesForm TextureBrushPropertiesPane = null;
+
         public bool Closed = false;
 
         //Handles camera movement and picking.
@@ -127,6 +129,7 @@ namespace WorldEditor
             this.HeightMapBrushPropertiesPane = editorForm.HeightMapBrushPropertiesForm;
             this.ObjectParameterPane = editorForm.ObjectParametersForm;
             this.ObjectPlacementPane = editorForm.ObjectPlacementPanel;
+            this.TextureBrushPropertiesPane = editorForm.TextureBrushPropertiesForm;
             this.TextureSelectionPane = editorForm.TextureSelectionForm;
             mGameControl = gameControl;
             mCamera = camera;
@@ -204,6 +207,7 @@ namespace WorldEditor
             EditorForm.PlayMenu.Click += PlayHandler;
             EditorForm.ViewWaterMenu.Click += ViewWaterHandler;
             EditorForm.ViewSkyBoxMenu.Click += ViewSkyBoxHandler;
+            EditorForm.ViewShadowsMenu.Click += ViewShadowsHandler;
             EditorForm.UndoMenu.Click += UndoHandler;
             EditorForm.RedoMenu.Click += RedoHandler;
 
@@ -222,6 +226,7 @@ namespace WorldEditor
             EditorForm.ObjectPlacementPanel.ObjectTree.AfterSelect += UpdatePreviewImage;
 
             HeightMapBrushPropertiesPane.BrushSizeTrackBar.ValueChanged += CursorResizeHandler;
+            TextureBrushPropertiesPane.BrushSizeTrackBar.ValueChanged += CursorResizeHandler;
 
             TreeNode modelNode = new TreeNode("Models");
             TreeNode entityNode = new TreeNode("Entities");
@@ -260,7 +265,7 @@ namespace WorldEditor
 
             foreach (var texture in AssetLibrary.TextureLibrary)
             {
-                ((TextureSelectionPane as TextureSelectionForm).TextureList as ListBox).Items.Add(texture.Key);
+                (TextureSelectionPane.TextureList as ListBox).Items.Add(texture.Key);
             }
 
             UpdateModeContext(EditorForm, null);
@@ -290,6 +295,11 @@ namespace WorldEditor
             mDummyWorld.DrawSkyBox = !mDummyWorld.DrawSkyBox;
         }
 
+        private void ViewShadowsHandler(object sender, EventArgs e)
+        {
+            GraphicsManager.CastingShadows = !GraphicsManager.CastingShadows;
+        }
+
         private void CloseTextureForm(object sender, EventArgs e)
         {
             TextureSelectionPane.Hide();
@@ -306,6 +316,45 @@ namespace WorldEditor
         private void CloseObjectParameterForm(object sender, EventArgs e)
         {
             ObjectParameterPane.Hide();
+        }
+
+        private void OpenBrushSelectionForm(object sender, EventArgs e)
+        {
+            if (!BrushSelectionPane.Visible)
+            {
+                BrushSelectionPane.Show();
+            }
+        }
+
+        private void CloseBrushSelectionForm(object sender, EventArgs e)
+        {
+            BrushSelectionPane.Hide();
+        }
+
+        private void OpenHeightMapBrushPropertiesPane(object sender, EventArgs e)
+        {
+            if (!HeightMapBrushPropertiesPane.Visible)
+            {
+                HeightMapBrushPropertiesPane.Show();
+            }
+        }
+
+        private void CloseHeightMapBrushPropertiesPane(object sender, EventArgs e)
+        {
+            HeightMapBrushPropertiesPane.Hide();
+        }
+
+        private void OpenTextureBrushPropertiesPane(object sender, EventArgs e)
+        {
+            if (!TextureBrushPropertiesPane.Visible)
+            {
+                TextureBrushPropertiesPane.Show();
+            }
+        }
+
+        private void CloseTextureBrushPropertiesPane(object sender, EventArgs e)
+        {
+            TextureBrushPropertiesPane.Hide();
         }
 
         private void OpenObjectCreationForm(object sender, EventArgs e)
@@ -418,7 +467,7 @@ namespace WorldEditor
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
             TreeNode selectedObject = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode;
-            if (mObjects.ContainsKey(selectedObject.Text) && selectedObject.Nodes.Count <= 0)
+            if (selectedObject != null && mObjects.ContainsKey(selectedObject.Text) && selectedObject.Nodes.Count <= 0)
             {
                 ObjectParameterPane.SelectedObjects.Clear();
                 DummyObject dummy = new DummyObject(mObjects[selectedObject.Text]);
@@ -520,19 +569,39 @@ namespace WorldEditor
             switch ((sender as EditorForm).Mode)
             {
                 case Dialogs.EditorForm.EditorMode.OBJECTS:
+                    CloseBrushSelectionForm(this, EventArgs.Empty);
+                    CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
+                    CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     OpenObjectCreationForm(this, EventArgs.Empty);
                     OpenObjectParameterForm(this, EventArgs.Empty);
                     CloseTextureForm(this, EventArgs.Empty);
+
+                    if (ObjectPlacementPane.ObjectTree.SelectedNode == null)
+                    {
+                        ObjectPlacementPane.ObjectTree.SelectedNode = ObjectPlacementPane.ObjectTree.Nodes[0].Nodes[0];
+                        ObjectPlacementPane.ObjectTree.CollapseAll();
+                    }
                     break;
                 case Dialogs.EditorForm.EditorMode.HEIGHTMAP:
+                    OpenBrushSelectionForm(this, EventArgs.Empty);
+                    OpenHeightMapBrushPropertiesPane(this, EventArgs.Empty);
+                    CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
                     CloseObjectParameterForm(this, EventArgs.Empty);
                     CloseTextureForm(this, EventArgs.Empty);
                     break;
                 case Dialogs.EditorForm.EditorMode.PAINTING:
+                    OpenBrushSelectionForm(this, EventArgs.Empty);
+                    CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
+                    OpenTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
                     CloseObjectParameterForm(this, EventArgs.Empty);
                     OpenTextureForm(this, EventArgs.Empty);
+
+                    if (TextureSelectionPane.TextureList.SelectedIndex < 0)
+                    {
+                        TextureSelectionPane.TextureList.SelectedIndex = 0;
+                    }
                     break;
             }
         }

@@ -122,6 +122,9 @@ namespace WorldEditor.Dialogs
             }.AsReadOnly();
 
             SetButtonImages();
+
+            this.ToolStrip.Renderer = new HardEdgeToolStripRenderer();
+            this.toolStrip1.Renderer = new HardEdgeToolStripRenderer();
         }
 
         private void InitializeButtonState()
@@ -160,6 +163,11 @@ namespace WorldEditor.Dialogs
             this.TranslateObjectButton.Image = UILibrary.ObjectModeButtonIcon;
             this.RotateObjectButton.Image    = UILibrary.ObjectModeButtonIcon;
             this.ScaleObjectButton.Image     = UILibrary.ObjectModeButtonIcon;
+
+            this.BrushSelectionForm.CircleBrushButton.Image        = UILibrary.CircleBrushIcon;
+            this.BrushSelectionForm.CircleFeatherBrushButton.Image = UILibrary.CircleFeatheredBrushIcon;
+            this.BrushSelectionForm.BlockBrushButton.Image         = UILibrary.BlockBrushIcon;
+            this.BrushSelectionForm.BlockFeatherBrushButton.Image  = UILibrary.BlockFeatheredBrushIcon;
         }
 
         private void ToolButton_Click(object sender, EventArgs e)
@@ -180,6 +188,14 @@ namespace WorldEditor.Dialogs
 
             this.Mode = state.Item1;
             this.Tool = state.Item2;
+        }
+    }
+
+    public class HardEdgeToolStripRenderer : ToolStripProfessionalRenderer
+    {
+        public HardEdgeToolStripRenderer()
+        {
+            this.RoundedEdges = false;
         }
     }
 }
