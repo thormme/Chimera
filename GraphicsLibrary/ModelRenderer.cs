@@ -35,12 +35,13 @@ namespace GraphicsLibrary
             foreach (ModelMesh mesh in mModel.Meshes)
             {
                 float meshRadius = (mesh.BoundingSphere.Center - mBoundingSphere.Center).Length() + mesh.BoundingSphere.Radius;
-
+                mBoundingSphere.Center += mesh.BoundingSphere.Center;
                 if (meshRadius > mBoundingSphere.Radius)
                 {
                     mBoundingSphere.Radius = meshRadius;
                 }
             }
+            mBoundingSphere.Center /= mModel.Meshes.Count > 0 ? mModel.Meshes.Count : 1;
         }
 
         #endregion
@@ -101,7 +102,7 @@ namespace GraphicsLibrary
         {
             Light light = optionalParameters[0] as Light;
 
-            effect.CurrentTechnique = effect.Techniques["CelShadeWithoutShadows"];
+            effect.CurrentTechnique = effect.Techniques["CelShadeNoShadows"];
 
             effect.Parameters["xDirLightDirection"].SetValue(light.Direction);
             effect.Parameters["xDirLightDiffuseColor"].SetValue(light.DiffuseColor);

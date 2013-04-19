@@ -59,8 +59,8 @@
             this.ViewSkyBoxMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewWaterMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextToolsPanel = new System.Windows.Forms.Panel();
-            this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
             this.ObjectParametersForm = new WorldEditor.Dialogs.ObjectParametersForm();
+            this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
             this.editorPanel = new WorldEditor.Dialogs.Editor();
             this.ToolStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
@@ -342,14 +342,6 @@
             this.ContextToolsPanel.Size = new System.Drawing.Size(251, 431);
             this.ContextToolsPanel.TabIndex = 4;
             // 
-            // ObjectPlacementPanel
-            // 
-            this.ObjectPlacementPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 0);
-            this.ObjectPlacementPanel.Name = "ObjectPlacementPanel";
-            this.ObjectPlacementPanel.Size = new System.Drawing.Size(234, 379);
-            this.ObjectPlacementPanel.TabIndex = 1;
-            // 
             // ObjectParametersForm
             // 
             this.ObjectParametersForm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -359,6 +351,14 @@
             this.ObjectParametersForm.Name = "ObjectParametersForm";
             this.ObjectParametersForm.Size = new System.Drawing.Size(260, 160);
             this.ObjectParametersForm.TabIndex = 0;
+            // 
+            // ObjectPlacementPanel
+            // 
+            this.ObjectPlacementPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 0);
+            this.ObjectPlacementPanel.Name = "ObjectPlacementPanel";
+            this.ObjectPlacementPanel.Size = new System.Drawing.Size(234, 379);
+            this.ObjectPlacementPanel.TabIndex = 1;
             // 
             // editorPanel
             // 

@@ -420,10 +420,10 @@ namespace WorldEditor
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
             TreeNode selectedObject = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode;
-            if (mObjects.ContainsKey(selectedObject.Text) && selectedObject.NextNode == null)
+            if (mObjects.ContainsKey(selectedObject.Text) && selectedObject.Nodes.Count <= 0)
             {
                 ObjectParameterPane.SelectedObjects.Clear();
-                DummyObject dummy = new DummyObject(mObjects[selectedObject.Name]);
+                DummyObject dummy = new DummyObject(mObjects[selectedObject.Text]);
                 ObjectParameterPane.SelectedObjects.Add(dummy);
                 SetObjectPropertiesToForm(dummy);
                 mDummyWorld.AddObject(dummy);
