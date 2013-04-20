@@ -132,6 +132,7 @@ namespace GraphicsLibrary
             {
                 GraphicsManager.Device.SamplerStates[i] = SamplerState.PointWrap;
             }
+            GraphicsManager.Device.SamplerStates[2] = SamplerState.LinearClamp;
 
             mEffect.World = instance.World;
             mEffect.View = view;
