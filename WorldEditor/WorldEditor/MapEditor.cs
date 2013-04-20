@@ -234,16 +234,18 @@ namespace WorldEditor
             EditorForm.ObjectPlacementPanel.ObjectTree.Nodes.Add(entityNode);
             foreach (var model in AssetLibrary.ModelLibrary)
             {
-                DummyObject tempObject = new DummyObject();
-                tempObject.Type = "Chimera.Prop";
-                tempObject.Model = model.Key;
-                tempObject.Parameters = null;
-                tempObject.Position = Vector3.Zero;
-                tempObject.YawPitchRoll = Vector3.Up;
-                tempObject.Scale = Vector3.One;
-                tempObject.Height = 0.0f;
-                mObjects.Add(tempObject.Model, tempObject);
-                modelNode.Nodes.Add(new TreeNode(tempObject.Model));
+                try
+                {
+                    EditorObjectDefinition definition = new EditorObjectDefinition(model.Key, "Chimera.Prop", model.Key, new string[0]);
+
+                    mObjectDefinitions.Add(definition.EditorType, definition);
+                    mObjects.Add(definition.EditorType, definition.CreateDummyObject());
+                    modelNode.Nodes.Add(definition.EditorType);
+                }
+                catch (SystemException)
+                {
+                    Console.WriteLine("Couldn't make object from model: " + model.Key + ".");
+                }
             }
 
             FileInfo[] objects = (new DirectoryInfo(ContentPath + "/" + ObjectsPath + "/")).GetFiles();
@@ -309,7 +311,7 @@ namespace WorldEditor
         {
             if (!ObjectParameterPane.Visible)
             {
-                ObjectParameterPane.Show(/*(Form)Form.FromHandle(Window.Handle)*/);
+                ObjectParameterPane.Show();
             }
         }
 
@@ -459,8 +461,7 @@ namespace WorldEditor
 
                 ms.Close();
                 ms = null;
-                EditorForm.ObjectPlacementPanel.PreviewPictureBox.BackgroundImage = bmp;
-                EditorForm.ObjectPlacementPanel.PreviewPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+                EditorForm.ObjectPlacementPanel.PreviewPictureBox.Image = bmp;
             }
         }
 

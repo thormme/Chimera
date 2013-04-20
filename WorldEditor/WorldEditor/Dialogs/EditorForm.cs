@@ -125,6 +125,15 @@ namespace WorldEditor.Dialogs
 
             this.ToolStrip.Renderer = new HardEdgeToolStripRenderer();
             this.toolStrip1.Renderer = new HardEdgeToolStripRenderer();
+
+            ObjectParametersForm.SizeChanged += delegate { ObjectParameterFormContainer.Height = ObjectParametersForm.Height; };
+            ObjectParametersForm.VisibleChanged += UpdateParameterFormVisibility;
+        }
+
+        private void UpdateParameterFormVisibility(object sender, EventArgs e)
+        {
+            // Cannot simply set to parent visibility, if the parent is not visible, neither is the child.
+            ObjectParameterFormContainer.Height = (sender as ObjectParametersForm).Visible ? (sender as ObjectParametersForm).Height : 0; 
         }
 
         private void InitializeButtonState()

@@ -365,7 +365,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(243, 112);
+            this.panel2.Size = new System.Drawing.Size(247, 112);
             this.panel2.TabIndex = 20;
             // 
             // AdditionalParametersPanel
@@ -375,7 +375,7 @@
             this.AdditionalParametersPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.AdditionalParametersPanel.Location = new System.Drawing.Point(0, 112);
             this.AdditionalParametersPanel.Name = "AdditionalParametersPanel";
-            this.AdditionalParametersPanel.Size = new System.Drawing.Size(243, 0);
+            this.AdditionalParametersPanel.Size = new System.Drawing.Size(247, 0);
             this.AdditionalParametersPanel.TabIndex = 21;
             // 
             // ObjectParametersForm
@@ -386,7 +386,7 @@
             this.Controls.Add(this.AdditionalParametersPanel);
             this.Controls.Add(this.panel2);
             this.Name = "ObjectParametersForm";
-            this.Size = new System.Drawing.Size(243, 111);
+            this.Size = new System.Drawing.Size(247, 113);
             ((System.ComponentModel.ISupportInitialize)(this.PositionX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PositionZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Yaw)).EndInit();
