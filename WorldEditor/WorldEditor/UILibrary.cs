@@ -23,10 +23,8 @@ namespace WorldEditor
         public static Image SmoothTerrainIcon = Image.FromFile(@"Artwork/smooth_terrain_icon.png");
         public static Image FlattenTerrainIcon = Image.FromFile(@"Artwork/flatten_terrain_icon.png");
 
-        public static Image LayerBackgroundIcon = Image.FromFile(@"Artwork/layer_background_icon.png");
-        public static Image Layer1Icon = Image.FromFile(@"Artwork/layer_1_icon.png");
-        public static Image Layer2Icon = Image.FromFile(@"Artwork/layer_2_icon.png");
-        public static Image Layer3Icon = Image.FromFile(@"Artwork/layer_3_icon.png");
-        public static Image Layer4Icon = Image.FromFile(@"Artwork/layer_4_icon.png");
+        public static Image VisibleLayerIcon = Image.FromFile(@"Artwork/visible_layer_icon.png");
+
+        public static Image InvalidIcon = Image.FromFile(@"Artwork/invalidTexture.png");
     }
 }

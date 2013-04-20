@@ -168,7 +168,7 @@
         #endregion
 
         public System.Windows.Forms.TrackBar BrushSizeTrackBar;
-        private System.Windows.Forms.TrackBar BrushMagnitudeTrackBar;
+        public System.Windows.Forms.TrackBar BrushMagnitudeTrackBar;
         private System.Windows.Forms.NumericUpDown BrushSizeUpDown;
         private System.Windows.Forms.NumericUpDown BrushMagnitudeUpDown;
         private System.Windows.Forms.Label StrengthLabel;

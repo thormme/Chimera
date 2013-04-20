@@ -74,7 +74,7 @@ namespace WorldEditor.Dialogs
         public Brushes HeightMapBrush = Brushes.CIRCLE;
 
         public Brushes PaintingBrush = Brushes.CIRCLE;
-        public Layers PaintingLayers = Layers.BACKGROUND;
+        public Layers PaintingLayer = Layers.BACKGROUND;
 
         #endregion
 
@@ -84,11 +84,29 @@ namespace WorldEditor.Dialogs
         private readonly ReadOnlyCollection<ToolStripButton> mTextureTools;
         private readonly ReadOnlyCollection<ToolStripButton> mObjectTools;
 
+        private readonly ReadOnlyCollection<TextureLayerForm> mLayers;
+
         public EditorForm()
         {
             InitializeComponent();
 
             InitializeButtonState();
+
+            this.TextureLayerForm.BackgroundLayer.InvisibleButton.Click += Layer_Click;
+            this.TextureLayerForm.BackgroundLayer.LayerTexturePreview.Click += Layer_Click;
+            this.TextureLayerForm.Layer1.InvisibleButton.Click += Layer_Click;
+            this.TextureLayerForm.Layer1.LayerTexturePreview.Click += Layer_Click;
+            this.TextureLayerForm.Layer2.InvisibleButton.Click += Layer_Click;
+            this.TextureLayerForm.Layer2.LayerTexturePreview.Click += Layer_Click;
+            this.TextureLayerForm.Layer3.InvisibleButton.Click += Layer_Click;
+            this.TextureLayerForm.Layer3.LayerTexturePreview.Click += Layer_Click;
+            this.TextureLayerForm.Layer4.InvisibleButton.Click += Layer_Click;
+            this.TextureLayerForm.Layer4.LayerTexturePreview.Click += Layer_Click;
+
+            this.TextureLayerForm.Layer1.LayerVisibilityButton.Click += Layer_Visibility_Click;
+            this.TextureLayerForm.Layer2.LayerVisibilityButton.Click += Layer_Visibility_Click;
+            this.TextureLayerForm.Layer3.LayerVisibilityButton.Click += Layer_Visibility_Click;
+            this.TextureLayerForm.Layer4.LayerVisibilityButton.Click += Layer_Visibility_Click;
 
             mTerrainTools = new List<ToolStripButton>()
             {
@@ -121,6 +139,15 @@ namespace WorldEditor.Dialogs
                 mObjectTools
             }.AsReadOnly();
 
+            mLayers = new List<TextureLayerForm>
+            {
+                TextureLayerForm.BackgroundLayer,
+                TextureLayerForm.Layer1,
+                TextureLayerForm.Layer2,
+                TextureLayerForm.Layer3,
+                TextureLayerForm.Layer4
+            }.AsReadOnly();
+
             SetButtonImages();
 
             this.ToolStrip.Renderer = new HardEdgeToolStripRenderer();
@@ -145,6 +172,12 @@ namespace WorldEditor.Dialogs
             this.TranslateObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.PLACE);
             this.RotateObjectButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.ROTATE);
             this.ScaleObjectButton.Tag     = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SCALE);
+
+            this.TextureLayerForm.BackgroundLayer.Tag = new Layers?(Layers.BACKGROUND);
+            this.TextureLayerForm.Layer1.Tag = new Layers?(Layers.LAYER1);
+            this.TextureLayerForm.Layer2.Tag = new Layers?(Layers.LAYER2);
+            this.TextureLayerForm.Layer3.Tag = new Layers?(Layers.LAYER3);
+            this.TextureLayerForm.Layer4.Tag = new Layers?(Layers.LAYER4);
         }
 
         private void SetButtonImages()
@@ -168,6 +201,29 @@ namespace WorldEditor.Dialogs
             this.BrushSelectionForm.CircleFeatherBrushButton.Image = UILibrary.CircleFeatheredBrushIcon;
             this.BrushSelectionForm.BlockBrushButton.Image         = UILibrary.BlockBrushIcon;
             this.BrushSelectionForm.BlockFeatherBrushButton.Image  = UILibrary.BlockFeatheredBrushIcon;
+
+            this.TextureLayerForm.BackgroundLayer.LayerTexturePreview.Image = UILibrary.InvalidIcon;
+            this.TextureLayerForm.Layer1.LayerTexturePreview.Image = UILibrary.InvalidIcon;
+            this.TextureLayerForm.Layer2.LayerTexturePreview.Image = UILibrary.InvalidIcon;
+            this.TextureLayerForm.Layer3.LayerTexturePreview.Image = UILibrary.InvalidIcon;
+            this.TextureLayerForm.Layer4.LayerTexturePreview.Image = UILibrary.InvalidIcon;
+
+            this.TextureLayerForm.BackgroundLayer.LayerVisibilityButton.BackgroundImage = UILibrary.VisibleLayerIcon;
+            this.TextureLayerForm.BackgroundLayer.LayerVisibilityButton.Tag = this.TextureLayerForm.BackgroundLayer.LayerVisibilityButton.BackgroundImage;
+            
+            this.TextureLayerForm.Layer1.LayerVisibilityButton.BackgroundImage = UILibrary.VisibleLayerIcon;
+            this.TextureLayerForm.Layer1.LayerVisibilityButton.Tag = this.TextureLayerForm.Layer1.LayerVisibilityButton.BackgroundImage;
+            
+            this.TextureLayerForm.Layer2.LayerVisibilityButton.BackgroundImage = UILibrary.VisibleLayerIcon;
+            this.TextureLayerForm.Layer2.LayerVisibilityButton.Tag = this.TextureLayerForm.Layer2.LayerVisibilityButton.BackgroundImage;
+            
+            this.TextureLayerForm.Layer3.LayerVisibilityButton.BackgroundImage = UILibrary.VisibleLayerIcon;
+            this.TextureLayerForm.Layer3.LayerVisibilityButton.Tag = this.TextureLayerForm.Layer3.LayerVisibilityButton.BackgroundImage;
+
+            this.TextureLayerForm.Layer4.LayerVisibilityButton.BackgroundImage = UILibrary.VisibleLayerIcon;
+            this.TextureLayerForm.Layer4.LayerVisibilityButton.Tag = this.TextureLayerForm.Layer4.LayerVisibilityButton.BackgroundImage;
+
+            this.TextureLayerForm.BackgroundLayer.MainPanel.BackColor = SystemColors.Highlight;
         }
 
         private void ToolButton_Click(object sender, EventArgs e)
@@ -189,8 +245,27 @@ namespace WorldEditor.Dialogs
             this.Mode = state.Item1;
             this.Tool = state.Item2;
         }
-    }
 
+        private void Layer_Click(object sender, EventArgs e)
+        {
+            foreach (TextureLayerForm layer in mLayers)
+            {
+                layer.MainPanel.BackColor = SystemColors.Window;
+                if (layer.InvisibleButton == sender || layer.LayerTexturePreview == sender)
+                {
+                    this.PaintingLayer = (layer.Tag as Layers?).Value;
+                    layer.MainPanel.BackColor = SystemColors.Highlight;
+                }
+            }
+        }
+
+        private void Layer_Visibility_Click(object sender, EventArgs e)
+        {
+            Button visibilityButton = sender as Button;
+            visibilityButton.BackgroundImage = visibilityButton.BackgroundImage == null ? visibilityButton.BackgroundImage = visibilityButton.Tag as Image : null;
+        }
+    }
+    
     public class HardEdgeToolStripRenderer : ToolStripProfessionalRenderer
     {
         public HardEdgeToolStripRenderer()

@@ -56,8 +56,6 @@ namespace WorldEditor
         //Dialog for the world editor.
         public EditorForm EditorForm = null;
 
-        public EditorForm EditorPane = new EditorForm();
-
         //Dialog for object parameters.
         public ObjectParametersForm ObjectParameterPane = null;
 
@@ -70,6 +68,8 @@ namespace WorldEditor
         public HeightMapBrushPropertiesForm HeightMapBrushPropertiesPane = null;
 
         public TextureBrushPropertiesForm TextureBrushPropertiesPane = null;
+
+        public TextureLayerContainerForm TextureLayerPane = null;
 
         public bool Closed = false;
 
@@ -118,6 +118,9 @@ namespace WorldEditor
 
         private double mTimeSinceUndo = 0.0;
 
+        private EditorForm.Layers mLastLayer = EditorForm.Layers.BACKGROUND;
+        private string mLastTexture = "default_terrain_detail";
+
         #endregion
 
         #region Public Interface
@@ -130,6 +133,7 @@ namespace WorldEditor
             this.ObjectParameterPane = editorForm.ObjectParametersForm;
             this.ObjectPlacementPane = editorForm.ObjectPlacementPanel;
             this.TextureBrushPropertiesPane = editorForm.TextureBrushPropertiesForm;
+            this.TextureLayerPane = editorForm.TextureLayerForm;
             this.TextureSelectionPane = editorForm.TextureSelectionForm;
             mGameControl = gameControl;
             mCamera = camera;
@@ -184,6 +188,14 @@ namespace WorldEditor
                             TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
                         break;
                 }
+
+                Vector4 layerMask = new Vector4(
+                    EditorForm.TextureLayerForm.Layer1.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
+                    EditorForm.TextureLayerForm.Layer2.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
+                    EditorForm.TextureLayerForm.Layer3.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
+                    EditorForm.TextureLayerForm.Layer4.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f);
+
+                mDummyWorld.Terrain.TerrainRenderable.LayerMask = layerMask;
 
                 mDummyWorld.Terrain.TerrainRenderable.CursorPosition = mCursorObject.Position - mCursorObject.Scale;
                 mDummyWorld.Terrain.TerrainRenderable.CursorInnerRadius = 8.0f * mCursorObject.Scale.X;
@@ -270,6 +282,7 @@ namespace WorldEditor
 
             UpdateModeContext(EditorForm, null);
             CursorResizeHandler(HeightMapBrushPropertiesPane.BrushSizeTrackBar, null);
+            UpdateLayerPaneImages(Dialogs.EditorForm.Layers.BACKGROUND, "default_terrain_detail");
         }
 
         private void CloseHandler(object sender, EventArgs e)
@@ -355,6 +368,19 @@ namespace WorldEditor
         private void CloseTextureBrushPropertiesPane(object sender, EventArgs e)
         {
             TextureBrushPropertiesPane.Hide();
+        }
+
+        private void OpenTextureLayerPane(object sender, EventArgs e)
+        {
+            if (!TextureLayerPane.Visible)
+            {
+                TextureLayerPane.Show();
+            }
+        }
+
+        private void CloseTextureLayerPane(object sender, EventArgs e)
+        {
+            TextureLayerPane.Hide();
         }
 
         private void OpenObjectCreationForm(object sender, EventArgs e)
@@ -575,6 +601,7 @@ namespace WorldEditor
                     OpenObjectCreationForm(this, EventArgs.Empty);
                     OpenObjectParameterForm(this, EventArgs.Empty);
                     CloseTextureForm(this, EventArgs.Empty);
+                    CloseTextureLayerPane(this, EventArgs.Empty);
 
                     if (ObjectPlacementPane.ObjectTree.SelectedNode == null)
                     {
@@ -589,6 +616,7 @@ namespace WorldEditor
                     CloseObjectCreationForm(this, EventArgs.Empty);
                     CloseObjectParameterForm(this, EventArgs.Empty);
                     CloseTextureForm(this, EventArgs.Empty);
+                    CloseTextureLayerPane(this, EventArgs.Empty);
                     break;
                 case Dialogs.EditorForm.EditorMode.PAINTING:
                     OpenBrushSelectionForm(this, EventArgs.Empty);
@@ -597,6 +625,7 @@ namespace WorldEditor
                     CloseObjectCreationForm(this, EventArgs.Empty);
                     CloseObjectParameterForm(this, EventArgs.Empty);
                     OpenTextureForm(this, EventArgs.Empty);
+                    OpenTextureLayerPane(this, EventArgs.Empty);
 
                     if (TextureSelectionPane.TextureList.SelectedIndex < 0)
                     {
@@ -682,29 +711,80 @@ namespace WorldEditor
                     }
                     case EditorForm.EditorMode.PAINTING:
                     {
-                        TextureSelectionForm textureForm = TextureSelectionPane as TextureSelectionForm;
-                        if ((textureForm.TextureList as ListBox).SelectedItem != null)
+                        bool layerHidden = false;
+                        switch (EditorForm.PaintingLayer)
                         {
-                            float alpha = /*EditorPane.Strength*/50 / 100.0f; // TODO: Fixit
-                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(/*EditorPane.PaintingLayers*/GameConstructLibrary.TerrainTexture.TextureLayer.BACKGROUND);
-                            string textureName = (textureForm.TextureList as ListBox).SelectedItem.ToString();
+                            case Dialogs.EditorForm.Layers.LAYER1:
+                                layerHidden = TextureLayerPane.Layer1.LayerVisibilityButton.BackgroundImage == null;
+                                break;
+                            case Dialogs.EditorForm.Layers.LAYER2:
+                                layerHidden = TextureLayerPane.Layer2.LayerVisibilityButton.BackgroundImage == null;
+                                break;
+                            case Dialogs.EditorForm.Layers.LAYER3:
+                                layerHidden = TextureLayerPane.Layer3.LayerVisibilityButton.BackgroundImage == null;
+                                break;
+                            case Dialogs.EditorForm.Layers.LAYER4:
+                                layerHidden = TextureLayerPane.Layer4.LayerVisibilityButton.BackgroundImage == null;
+                                break;
+                        }
+
+                        TextureSelectionForm textureForm = TextureSelectionPane as TextureSelectionForm;
+                        if (!layerHidden && (textureForm.TextureList as ListBox).SelectedItem != null)
+                        {
+                            float size = TextureBrushPropertiesPane.BrushSizeTrackBar.Value;
+                            float alpha = TextureBrushPropertiesPane.BrushMagnitudeTrackBar.Value;
+                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(EditorForm.PaintingLayer);
+                            string textureName = EditorForm.Tool == Dialogs.EditorForm.Tools.PAINT ? (textureForm.TextureList as ListBox).SelectedItem.ToString() : null;
 
                             float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
                             float uScale = (float)textureForm.UScale.Value, vScale = (float)textureForm.VScale.Value;
 
-                            mDummyWorld.ModifyTextureMap(
-                                mCursorObject.Position,
-                                textureName,
-                                new Vector2(uOffset, vOffset),
-                                new Vector2(uScale, vScale),
-                                /*EditorPane.Size*/1, alpha,// TODO Fixit
-                                (EditorForm.Brushes)/*EditorPane.PaintingBrush*/EditorForm.Brushes.CIRCLE,
-                                EditorForm.Tool,
-                                layer);
+                            mDummyWorld.ModifyTextureMap(mCursorObject.Position, textureName, new Vector2(uOffset, vOffset), new Vector2(uScale, vScale), size, alpha, (EditorForm.Brushes)EditorForm.PaintingBrush, EditorForm.Tool, layer);
+
+                            if (EditorForm.Tool == EditorForm.Tools.PAINT && (mLastTexture != textureName || mLastLayer != EditorForm.PaintingLayer))
+                            {
+                                mLastTexture = textureName;
+                                mLastLayer = EditorForm.PaintingLayer;
+                                UpdateLayerPaneImages(mLastLayer, mLastTexture);
+                            }
                         }
                         break;
                     }
                 }
+            }
+        }
+
+        private void UpdateLayerPaneImages(EditorForm.Layers layer, string textureName)
+        {
+            MemoryStream ms = new MemoryStream();
+            Texture2D texture = AssetLibrary.LookupSprite(textureName);
+
+            texture.SaveAsPng(ms, 30, 30);
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            System.Drawing.Image bmp = System.Drawing.Bitmap.FromStream(ms);
+
+            ms.Close();
+            ms = null;
+
+            switch (layer)
+            {
+                case Dialogs.EditorForm.Layers.BACKGROUND:
+                    TextureLayerPane.BackgroundLayer.LayerTexturePreview.Image = bmp;
+                    break;
+                case Dialogs.EditorForm.Layers.LAYER1:
+                    TextureLayerPane.Layer1.LayerTexturePreview.Image = bmp;
+                    break;
+                case Dialogs.EditorForm.Layers.LAYER2:
+                    TextureLayerPane.Layer2.LayerTexturePreview.Image = bmp;
+                    break;
+                case Dialogs.EditorForm.Layers.LAYER3:
+                    TextureLayerPane.Layer3.LayerTexturePreview.Image = bmp;
+                    break;
+                case Dialogs.EditorForm.Layers.LAYER4:
+                    TextureLayerPane.Layer4.LayerTexturePreview.Image = bmp;
+                    break;
             }
         }
 

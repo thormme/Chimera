@@ -42,6 +42,7 @@ namespace GraphicsLibrary
             public Vector3 CursorPosition { get; set; }
             public float CursorInnerRadius { get; set; }
             public float CursorOuterRadius { get; set; }
+            public Vector4 TextureMask { get; set; }
         }
 
         #endregion
@@ -148,6 +149,8 @@ namespace GraphicsLibrary
                 mEffect.Parameters["xCursorInnerRadius"].SetValue(terrainInstance.CursorInnerRadius);
                 mEffect.Parameters["xCursorOuterRadius"].SetValue(terrainInstance.CursorOuterRadius);
             }
+
+            mEffect.Parameters["xTextureMask"].SetValue(terrainInstance.TextureMask);
 
             effectConfigurer(mEffect, instance, optionalParameters);
             
