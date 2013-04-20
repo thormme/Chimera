@@ -153,12 +153,6 @@
     <Compile Include="Dialogs\HeightMapBrushPropertiesForm.Designer.cs">
       <DependentUpon>HeightMapBrushPropertiesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\BrushSelectionForm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Dialogs\BrushSelectionForm.Designer.cs">
-      <DependentUpon>BrushSelectionForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\EditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -332,9 +326,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\HeightMapBrushPropertiesForm.resx">
       <DependentUpon>HeightMapBrushPropertiesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\BrushSelectionForm.resx">
-      <DependentUpon>BrushSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>

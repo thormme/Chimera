@@ -72,8 +72,8 @@ namespace WorldEditor.Dialogs
             }
         }
         public Brushes HeightMapBrush = Brushes.CIRCLE;
+        public Brushes TextureBrush = Brushes.CIRCLE;
 
-        public Brushes PaintingBrush = Brushes.CIRCLE;
         public Layers PaintingLayer = Layers.BACKGROUND;
 
         #endregion
@@ -84,6 +84,9 @@ namespace WorldEditor.Dialogs
         private readonly ReadOnlyCollection<ToolStripButton> mTextureTools;
         private readonly ReadOnlyCollection<ToolStripButton> mObjectTools;
 
+        private readonly ReadOnlyCollection<ToolStripButton> mHeightMapBrushes;
+        private readonly ReadOnlyCollection<ToolStripButton> mTextureBrushes;
+
         private readonly ReadOnlyCollection<TextureLayerForm> mLayers;
 
         public EditorForm()
@@ -91,6 +94,16 @@ namespace WorldEditor.Dialogs
             InitializeComponent();
 
             InitializeButtonState();
+
+            this.HeightMapBrushPropertiesForm.CircleBrushButton.Click += HeightMapBrushButton_Click;
+            this.HeightMapBrushPropertiesForm.CircleFeatherBrushButton.Click += HeightMapBrushButton_Click;
+            this.HeightMapBrushPropertiesForm.BlockBrushButton.Click += HeightMapBrushButton_Click;
+            this.HeightMapBrushPropertiesForm.BlockFeatherBrushButton.Click += HeightMapBrushButton_Click;
+
+            this.TextureBrushPropertiesForm.CircleBrushButton.Click += TextureBrushButton_Click;
+            this.TextureBrushPropertiesForm.CircleFeatherBrushButton.Click += TextureBrushButton_Click;
+            this.TextureBrushPropertiesForm.BlockBrushButton.Click += TextureBrushButton_Click;
+            this.TextureBrushPropertiesForm.BlockFeatherBrushButton.Click += TextureBrushButton_Click;
 
             this.TextureLayerForm.BackgroundLayer.InvisibleButton.Click += Layer_Click;
             this.TextureLayerForm.BackgroundLayer.LayerTexturePreview.Click += Layer_Click;
@@ -148,10 +161,25 @@ namespace WorldEditor.Dialogs
                 TextureLayerForm.Layer4
             }.AsReadOnly();
 
+            mHeightMapBrushes = new List<ToolStripButton>
+            {
+                HeightMapBrushPropertiesForm.CircleBrushButton,
+                HeightMapBrushPropertiesForm.CircleFeatherBrushButton,
+                HeightMapBrushPropertiesForm.BlockBrushButton,
+                HeightMapBrushPropertiesForm.BlockFeatherBrushButton
+            }.AsReadOnly();
+
+            mTextureBrushes = new List<ToolStripButton>
+            {
+                TextureBrushPropertiesForm.CircleBrushButton,
+                TextureBrushPropertiesForm.CircleFeatherBrushButton,
+                TextureBrushPropertiesForm.BlockBrushButton,
+                TextureBrushPropertiesForm.BlockFeatherBrushButton
+            }.AsReadOnly();
+
             SetButtonImages();
 
             this.ToolStrip.Renderer = new HardEdgeToolStripRenderer();
-            this.toolStrip1.Renderer = new HardEdgeToolStripRenderer();
 
             ObjectParametersForm.SizeChanged += delegate { ObjectParameterFormContainer.Height = ObjectParametersForm.Height; };
             ObjectParametersForm.VisibleChanged += UpdateParameterFormVisibility;
@@ -167,26 +195,36 @@ namespace WorldEditor.Dialogs
         {
             this.raiseTerrainButton.Checked = true;
 
-            this.raiseTerrainButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.RAISE);
-            this.lowerTerrainButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.LOWER);
-            this.setTerrainButton.Tag      = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.SET);
-            this.flattenTerrainButton.Tag  = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.FLATTEN);
-            this.smoothTerrainButton.Tag   = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.SMOOTH);
+            this.raiseTerrainButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.RAISE);
+            this.lowerTerrainButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.LOWER);
+            this.setTerrainButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.SET);
+            this.flattenTerrainButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.FLATTEN);
+            this.smoothTerrainButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.SMOOTH);
 
-            this.paintTextureButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.PAINTING, Tools.PAINT);
-            this.eraseTextureButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.PAINTING, Tools.ERASE);
-            this.smoothTextureButton.Tag   = new Tuple<EditorMode, Tools>(EditorMode.PAINTING, Tools.BLEND);
+            this.paintTextureButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.PAINTING, Tools.PAINT);
+            this.eraseTextureButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.PAINTING, Tools.ERASE);
+            this.smoothTextureButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.PAINTING, Tools.BLEND);
 
-            this.SelectObjectButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SELECT);
+            this.SelectObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SELECT);
             this.TranslateObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.PLACE);
-            this.RotateObjectButton.Tag    = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.ROTATE);
-            this.ScaleObjectButton.Tag     = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SCALE);
+            this.RotateObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.ROTATE);
+            this.ScaleObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SCALE);
 
             this.TextureLayerForm.BackgroundLayer.Tag = new Layers?(Layers.BACKGROUND);
             this.TextureLayerForm.Layer1.Tag = new Layers?(Layers.LAYER1);
             this.TextureLayerForm.Layer2.Tag = new Layers?(Layers.LAYER2);
             this.TextureLayerForm.Layer3.Tag = new Layers?(Layers.LAYER3);
             this.TextureLayerForm.Layer4.Tag = new Layers?(Layers.LAYER4);
+
+            this.HeightMapBrushPropertiesForm.CircleBrushButton.Tag = new Brushes?(Brushes.CIRCLE);
+            this.HeightMapBrushPropertiesForm.CircleFeatherBrushButton.Tag = new Brushes?(Brushes.CIRCLE_FEATHERED);
+            this.HeightMapBrushPropertiesForm.BlockBrushButton.Tag = new Brushes?(Brushes.BLOCK);
+            this.HeightMapBrushPropertiesForm.BlockFeatherBrushButton.Tag = new Brushes?(Brushes.BLOCK_FEATHERED);
+
+            this.TextureBrushPropertiesForm.CircleBrushButton.Tag = new Brushes?(Brushes.CIRCLE);
+            this.TextureBrushPropertiesForm.CircleFeatherBrushButton.Tag = new Brushes?(Brushes.CIRCLE_FEATHERED);
+            this.TextureBrushPropertiesForm.BlockBrushButton.Tag = new Brushes?(Brushes.BLOCK);
+            this.TextureBrushPropertiesForm.BlockFeatherBrushButton.Tag = new Brushes?(Brushes.BLOCK_FEATHERED);
         }
 
         private void SetButtonImages()
@@ -206,10 +244,15 @@ namespace WorldEditor.Dialogs
             this.RotateObjectButton.Image    = UILibrary.ObjectModeButtonIcon;
             this.ScaleObjectButton.Image     = UILibrary.ObjectModeButtonIcon;
 
-            this.BrushSelectionForm.CircleBrushButton.Image        = UILibrary.CircleBrushIcon;
-            this.BrushSelectionForm.CircleFeatherBrushButton.Image = UILibrary.CircleFeatheredBrushIcon;
-            this.BrushSelectionForm.BlockBrushButton.Image         = UILibrary.BlockBrushIcon;
-            this.BrushSelectionForm.BlockFeatherBrushButton.Image  = UILibrary.BlockFeatheredBrushIcon;
+            this.HeightMapBrushPropertiesForm.CircleBrushButton.Image        = UILibrary.CircleBrushIcon;
+            this.HeightMapBrushPropertiesForm.CircleFeatherBrushButton.Image = UILibrary.CircleFeatheredBrushIcon;
+            this.HeightMapBrushPropertiesForm.BlockBrushButton.Image         = UILibrary.BlockBrushIcon;
+            this.HeightMapBrushPropertiesForm.BlockFeatherBrushButton.Image  = UILibrary.BlockFeatheredBrushIcon;
+
+            this.TextureBrushPropertiesForm.CircleBrushButton.Image = UILibrary.CircleBrushIcon;
+            this.TextureBrushPropertiesForm.CircleFeatherBrushButton.Image = UILibrary.CircleFeatheredBrushIcon;
+            this.TextureBrushPropertiesForm.BlockBrushButton.Image = UILibrary.BlockBrushIcon;
+            this.TextureBrushPropertiesForm.BlockFeatherBrushButton.Image = UILibrary.BlockFeatheredBrushIcon;
 
             this.TextureLayerForm.BackgroundLayer.LayerTexturePreview.Image = UILibrary.InvalidIcon;
             this.TextureLayerForm.Layer1.LayerTexturePreview.Image = UILibrary.InvalidIcon;
@@ -218,19 +261,19 @@ namespace WorldEditor.Dialogs
             this.TextureLayerForm.Layer4.LayerTexturePreview.Image = UILibrary.InvalidIcon;
 
             this.TextureLayerForm.BackgroundLayer.LayerVisibilityButton.BackgroundImage = UILibrary.VisibleLayerIcon;
-            this.TextureLayerForm.BackgroundLayer.LayerVisibilityButton.Tag = this.TextureLayerForm.BackgroundLayer.LayerVisibilityButton.BackgroundImage;
+            this.TextureLayerForm.BackgroundLayer.LayerVisibilityButton.Tag             = this.TextureLayerForm.BackgroundLayer.LayerVisibilityButton.BackgroundImage;
             
             this.TextureLayerForm.Layer1.LayerVisibilityButton.BackgroundImage = UILibrary.VisibleLayerIcon;
-            this.TextureLayerForm.Layer1.LayerVisibilityButton.Tag = this.TextureLayerForm.Layer1.LayerVisibilityButton.BackgroundImage;
+            this.TextureLayerForm.Layer1.LayerVisibilityButton.Tag             = this.TextureLayerForm.Layer1.LayerVisibilityButton.BackgroundImage;
             
             this.TextureLayerForm.Layer2.LayerVisibilityButton.BackgroundImage = UILibrary.VisibleLayerIcon;
-            this.TextureLayerForm.Layer2.LayerVisibilityButton.Tag = this.TextureLayerForm.Layer2.LayerVisibilityButton.BackgroundImage;
+            this.TextureLayerForm.Layer2.LayerVisibilityButton.Tag             = this.TextureLayerForm.Layer2.LayerVisibilityButton.BackgroundImage;
             
             this.TextureLayerForm.Layer3.LayerVisibilityButton.BackgroundImage = UILibrary.VisibleLayerIcon;
-            this.TextureLayerForm.Layer3.LayerVisibilityButton.Tag = this.TextureLayerForm.Layer3.LayerVisibilityButton.BackgroundImage;
+            this.TextureLayerForm.Layer3.LayerVisibilityButton.Tag             = this.TextureLayerForm.Layer3.LayerVisibilityButton.BackgroundImage;
 
             this.TextureLayerForm.Layer4.LayerVisibilityButton.BackgroundImage = UILibrary.VisibleLayerIcon;
-            this.TextureLayerForm.Layer4.LayerVisibilityButton.Tag = this.TextureLayerForm.Layer4.LayerVisibilityButton.BackgroundImage;
+            this.TextureLayerForm.Layer4.LayerVisibilityButton.Tag             = this.TextureLayerForm.Layer4.LayerVisibilityButton.BackgroundImage;
 
             this.TextureLayerForm.BackgroundLayer.MainPanel.BackColor = SystemColors.Highlight;
         }
@@ -253,6 +296,30 @@ namespace WorldEditor.Dialogs
 
             this.Mode = state.Item1;
             this.Tool = state.Item2;
+        }
+
+        private void HeightMapBrushButton_Click(object sender, EventArgs e)
+        {
+            foreach (ToolStripButton button in mHeightMapBrushes)
+            {
+                button.Checked = button == sender;
+                if (button.Checked == true)
+                {
+                    HeightMapBrush = (button.Tag as Brushes?).Value;
+                }
+            }
+        }
+
+        private void TextureBrushButton_Click(object sender, EventArgs e)
+        {
+            foreach (ToolStripButton button in mTextureBrushes)
+            {
+                button.Checked = button == sender;
+                if (button.Checked == true)
+                {
+                    TextureBrush = (button.Tag as Brushes?).Value;
+                }
+            }
         }
 
         private void Layer_Click(object sender, EventArgs e)

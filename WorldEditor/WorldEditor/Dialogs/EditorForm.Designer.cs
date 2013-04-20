@@ -65,13 +65,8 @@
             this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
             this.HeightMapBrushPropertiesForm = new WorldEditor.Dialogs.HeightMapBrushPropertiesForm();
             this.TextureBrushPropertiesForm = new WorldEditor.Dialogs.TextureBrushPropertiesForm();
-            this.BrushSelectionForm = new WorldEditor.Dialogs.BrushSelectionForm();
             this.ObjectParameterFormContainer = new System.Windows.Forms.Panel();
             this.ObjectParametersForm = new WorldEditor.Dialogs.ObjectParametersForm();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.TerrainToolsLabel = new System.Windows.Forms.ToolStripLabel();
-            this.TextureToolsLabel = new System.Windows.Forms.ToolStripLabel();
-            this.ObjectToolsLabel = new System.Windows.Forms.ToolStripLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.editorPanel = new WorldEditor.Dialogs.Editor();
@@ -79,7 +74,6 @@
             this.MenuStrip.SuspendLayout();
             this.ContextToolsPanel.SuspendLayout();
             this.ObjectParameterFormContainer.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ToolStrip
@@ -368,23 +362,22 @@
             // 
             this.ContextToolsPanel.AutoScroll = true;
             this.ContextToolsPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.ContextToolsPanel.Controls.Add(this.TextureLayerForm);
             this.ContextToolsPanel.Controls.Add(this.TextureSelectionForm);
             this.ContextToolsPanel.Controls.Add(this.ObjectPlacementPanel);
+            this.ContextToolsPanel.Controls.Add(this.TextureLayerForm);
             this.ContextToolsPanel.Controls.Add(this.HeightMapBrushPropertiesForm);
             this.ContextToolsPanel.Controls.Add(this.TextureBrushPropertiesForm);
-            this.ContextToolsPanel.Controls.Add(this.BrushSelectionForm);
             this.ContextToolsPanel.Controls.Add(this.ObjectParameterFormContainer);
             this.ContextToolsPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.ContextToolsPanel.Location = new System.Drawing.Point(675, 102);
+            this.ContextToolsPanel.Location = new System.Drawing.Point(675, 77);
             this.ContextToolsPanel.Name = "ContextToolsPanel";
-            this.ContextToolsPanel.Size = new System.Drawing.Size(251, 462);
+            this.ContextToolsPanel.Size = new System.Drawing.Size(251, 487);
             this.ContextToolsPanel.TabIndex = 4;
             // 
             // TextureLayerForm
             // 
             this.TextureLayerForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TextureLayerForm.Location = new System.Drawing.Point(0, 1569);
+            this.TextureLayerForm.Location = new System.Drawing.Point(0, 368);
             this.TextureLayerForm.Name = "TextureLayerForm";
             this.TextureLayerForm.Size = new System.Drawing.Size(234, 211);
             this.TextureLayerForm.TabIndex = 5;
@@ -394,7 +387,7 @@
             this.TextureSelectionForm.BackColor = System.Drawing.SystemColors.Control;
             this.TextureSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
             this.TextureSelectionForm.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextureSelectionForm.Location = new System.Drawing.Point(0, 1035);
+            this.TextureSelectionForm.Location = new System.Drawing.Point(0, 1034);
             this.TextureSelectionForm.Margin = new System.Windows.Forms.Padding(4);
             this.TextureSelectionForm.Name = "TextureSelectionForm";
             this.TextureSelectionForm.Size = new System.Drawing.Size(234, 555);
@@ -403,7 +396,7 @@
             // ObjectPlacementPanel
             // 
             this.ObjectPlacementPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 580);
+            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 579);
             this.ObjectPlacementPanel.Name = "ObjectPlacementPanel";
             this.ObjectPlacementPanel.Size = new System.Drawing.Size(234, 455);
             this.ObjectPlacementPanel.TabIndex = 17;
@@ -411,26 +404,19 @@
             // HeightMapBrushPropertiesForm
             // 
             this.HeightMapBrushPropertiesForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.HeightMapBrushPropertiesForm.Location = new System.Drawing.Point(0, 409);
+            this.HeightMapBrushPropertiesForm.Location = new System.Drawing.Point(0, 258);
             this.HeightMapBrushPropertiesForm.Name = "HeightMapBrushPropertiesForm";
-            this.HeightMapBrushPropertiesForm.Size = new System.Drawing.Size(234, 171);
+            this.HeightMapBrushPropertiesForm.Size = new System.Drawing.Size(234, 110);
             this.HeightMapBrushPropertiesForm.TabIndex = 20;
             // 
             // TextureBrushPropertiesForm
             // 
+            this.TextureBrushPropertiesForm.BackColor = System.Drawing.SystemColors.Control;
             this.TextureBrushPropertiesForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TextureBrushPropertiesForm.Location = new System.Drawing.Point(0, 238);
+            this.TextureBrushPropertiesForm.Location = new System.Drawing.Point(0, 142);
             this.TextureBrushPropertiesForm.Name = "TextureBrushPropertiesForm";
-            this.TextureBrushPropertiesForm.Size = new System.Drawing.Size(234, 171);
+            this.TextureBrushPropertiesForm.Size = new System.Drawing.Size(234, 116);
             this.TextureBrushPropertiesForm.TabIndex = 21;
-            // 
-            // BrushSelectionForm
-            // 
-            this.BrushSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BrushSelectionForm.Location = new System.Drawing.Point(0, 142);
-            this.BrushSelectionForm.Name = "BrushSelectionForm";
-            this.BrushSelectionForm.Size = new System.Drawing.Size(234, 96);
-            this.BrushSelectionForm.TabIndex = 18;
             // 
             // ObjectParameterFormContainer
             // 
@@ -450,50 +436,10 @@
             this.ObjectParametersForm.Size = new System.Drawing.Size(234, 121);
             this.ObjectParametersForm.TabIndex = 12;
             // 
-            // toolStrip1
-            // 
-            this.toolStrip1.AutoSize = false;
-            this.toolStrip1.BackColor = System.Drawing.SystemColors.Control;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TerrainToolsLabel,
-            this.TextureToolsLabel,
-            this.ObjectToolsLabel});
-            this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.toolStrip1.Location = new System.Drawing.Point(0, 73);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(926, 25);
-            this.toolStrip1.TabIndex = 5;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // TerrainToolsLabel
-            // 
-            this.TerrainToolsLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.TerrainToolsLabel.Margin = new System.Windows.Forms.Padding(55, 1, 55, 2);
-            this.TerrainToolsLabel.Name = "TerrainToolsLabel";
-            this.TerrainToolsLabel.Size = new System.Drawing.Size(115, 15);
-            this.TerrainToolsLabel.Text = "Terrain Modification";
-            // 
-            // TextureToolsLabel
-            // 
-            this.TextureToolsLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.TextureToolsLabel.Margin = new System.Windows.Forms.Padding(25, 1, 21, 2);
-            this.TextureToolsLabel.Name = "TextureToolsLabel";
-            this.TextureToolsLabel.Size = new System.Drawing.Size(93, 15);
-            this.TextureToolsLabel.Text = "Texture Painting";
-            // 
-            // ObjectToolsLabel
-            // 
-            this.ObjectToolsLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.ObjectToolsLabel.Margin = new System.Windows.Forms.Padding(43, 1, 37, 2);
-            this.ObjectToolsLabel.Name = "ObjectToolsLabel";
-            this.ObjectToolsLabel.Size = new System.Drawing.Size(101, 15);
-            this.ObjectToolsLabel.Text = "Object Placement";
-            // 
             // panel1
             // 
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 98);
+            this.panel1.Location = new System.Drawing.Point(0, 73);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(926, 4);
             this.panel1.TabIndex = 6;
@@ -511,9 +457,9 @@
             this.editorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.editorPanel.Location = new System.Drawing.Point(4, 102);
+            this.editorPanel.Location = new System.Drawing.Point(4, 77);
             this.editorPanel.Name = "editorPanel";
-            this.editorPanel.Size = new System.Drawing.Size(667, 458);
+            this.editorPanel.Size = new System.Drawing.Size(667, 483);
             this.editorPanel.TabIndex = 0;
             // 
             // EditorForm
@@ -525,7 +471,6 @@
             this.Controls.Add(this.ContextToolsPanel);
             this.Controls.Add(this.editorPanel);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.ToolStrip);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.MenuStrip);
@@ -537,8 +482,6 @@
             this.MenuStrip.PerformLayout();
             this.ContextToolsPanel.ResumeLayout(false);
             this.ObjectParameterFormContainer.ResumeLayout(false);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -578,10 +521,6 @@
         public System.Windows.Forms.ToolStripMenuItem ViewShadowsMenu;
         public System.Windows.Forms.Panel ContextToolsPanel;
         public System.Windows.Forms.ToolStrip ToolStrip;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripLabel TerrainToolsLabel;
-        private System.Windows.Forms.ToolStripLabel TextureToolsLabel;
-        private System.Windows.Forms.ToolStripLabel ObjectToolsLabel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         public TextureSelectionForm TextureSelectionForm;
@@ -589,7 +528,6 @@
         public ObjectPlacementPanel ObjectPlacementPanel;
         public HeightMapBrushPropertiesForm HeightMapBrushPropertiesForm;
         public TextureBrushPropertiesForm TextureBrushPropertiesForm;
-        public BrushSelectionForm BrushSelectionForm;
         private System.Windows.Forms.Panel ObjectParameterFormContainer;
         public ObjectParametersForm ObjectParametersForm;
     }

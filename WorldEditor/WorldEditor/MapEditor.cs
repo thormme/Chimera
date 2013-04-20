@@ -63,8 +63,6 @@ namespace WorldEditor
 
         public TextureSelectionForm TextureSelectionPane = null;
 
-        public BrushSelectionForm BrushSelectionPane = null;
-
         public HeightMapBrushPropertiesForm HeightMapBrushPropertiesPane = null;
 
         public TextureBrushPropertiesForm TextureBrushPropertiesPane = null;
@@ -128,7 +126,6 @@ namespace WorldEditor
         public MapEditor(GraphicsDevice graphicsDevice, FPSCamera camera, ContentManager content, GameDeviceControl gameControl, EditorForm editorForm)
         {
             this.EditorForm = editorForm;
-            this.BrushSelectionPane = editorForm.BrushSelectionForm;
             this.HeightMapBrushPropertiesPane = editorForm.HeightMapBrushPropertiesForm;
             this.ObjectParameterPane = editorForm.ObjectParametersForm;
             this.ObjectPlacementPane = editorForm.ObjectPlacementPanel;
@@ -184,7 +181,7 @@ namespace WorldEditor
                             TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
                         break;
                     case EditorForm.EditorMode.PAINTING:
-                        brush = EditorForm.PaintingBrush == EditorForm.Brushes.BLOCK || EditorForm.HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
+                        brush = EditorForm.TextureBrush == EditorForm.Brushes.BLOCK || EditorForm.TextureBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
                             TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
                         break;
                 }
@@ -331,19 +328,6 @@ namespace WorldEditor
         private void CloseObjectParameterForm(object sender, EventArgs e)
         {
             ObjectParameterPane.Hide();
-        }
-
-        private void OpenBrushSelectionForm(object sender, EventArgs e)
-        {
-            if (!BrushSelectionPane.Visible)
-            {
-                BrushSelectionPane.Show();
-            }
-        }
-
-        private void CloseBrushSelectionForm(object sender, EventArgs e)
-        {
-            BrushSelectionPane.Hide();
         }
 
         private void OpenHeightMapBrushPropertiesPane(object sender, EventArgs e)
@@ -596,7 +580,6 @@ namespace WorldEditor
             switch ((sender as EditorForm).Mode)
             {
                 case Dialogs.EditorForm.EditorMode.OBJECTS:
-                    CloseBrushSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     OpenObjectCreationForm(this, EventArgs.Empty);
@@ -611,7 +594,6 @@ namespace WorldEditor
                     }
                     break;
                 case Dialogs.EditorForm.EditorMode.HEIGHTMAP:
-                    OpenBrushSelectionForm(this, EventArgs.Empty);
                     OpenHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
@@ -620,7 +602,6 @@ namespace WorldEditor
                     CloseTextureLayerPane(this, EventArgs.Empty);
                     break;
                 case Dialogs.EditorForm.EditorMode.PAINTING:
-                    OpenBrushSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     OpenTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
@@ -740,7 +721,7 @@ namespace WorldEditor
                             float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;
                             float uScale = (float)textureForm.UScale.Value, vScale = (float)textureForm.VScale.Value;
 
-                            mDummyWorld.ModifyTextureMap(mCursorObject.Position, textureName, new Vector2(uOffset, vOffset), new Vector2(uScale, vScale), size, alpha, (EditorForm.Brushes)EditorForm.PaintingBrush, EditorForm.Tool, layer);
+                            mDummyWorld.ModifyTextureMap(mCursorObject.Position, textureName, new Vector2(uOffset, vOffset), new Vector2(uScale, vScale), size, alpha, (EditorForm.Brushes)EditorForm.TextureBrush, EditorForm.Tool, layer);
 
                             if (EditorForm.Tool == EditorForm.Tools.PAINT && (mLastTexture != textureName || mLastLayer != EditorForm.PaintingLayer))
                             {
