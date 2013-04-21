@@ -148,19 +148,20 @@ namespace WorldEditor
         {
             if (mDrawable)
             {
-                Vector3 scale = Vector3.One * 100;
+                float scaleMagnitude = 100;
+                Vector3 scale = Vector3.One * scaleMagnitude;
 
                 if (Mode == ModificationMode.Position)
                 {
-                    mXPositionArm.Render(Position + Vector3.UnitX * 20, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red,   1.0f, false);
-                    mYPositionArm.Render(Position + Vector3.UnitY * 20, Matrix.Identity,                             scale, Color.Green, 1.0f, false);
-                    mZPositionArm.Render(Position + Vector3.UnitZ * 20, Matrix.CreateRotationX(MathHelper.PiOver2),  scale, Color.Blue,  1.0f, false);
+                    mXPositionArm.Render(Position + Vector3.UnitX * scaleMagnitude / 5, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red,   1.0f, false);
+                    mYPositionArm.Render(Position + Vector3.UnitY * scaleMagnitude / 5, Matrix.Identity, scale, Color.Green, 1.0f, false);
+                    mZPositionArm.Render(Position + Vector3.UnitZ * scaleMagnitude / 5, Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
                 }
                 else if (Mode == ModificationMode.Scale)
                 {
-                    mXScaleArm.Render(Position + Vector3.UnitX * 20, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red,   1.0f, false);
-                    mYScaleArm.Render(Position + Vector3.UnitY * 20, Matrix.Identity,                             scale, Color.Green, 1.0f, false);
-                    mZScaleArm.Render(Position + Vector3.UnitZ * 20, Matrix.CreateRotationX(MathHelper.PiOver2),  scale, Color.Blue,  1.0f, false);
+                    mXScaleArm.Render(Position + Vector3.UnitX * scaleMagnitude / 5, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red, 1.0f, false);
+                    mYScaleArm.Render(Position + Vector3.UnitY * scaleMagnitude / 5, Matrix.Identity, scale, Color.Green, 1.0f, false);
+                    mZScaleArm.Render(Position + Vector3.UnitZ * scaleMagnitude / 5, Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
                 }
 
                 mPitchArm.Render(Position, Matrix.CreateRotationZ(MathHelper.PiOver2), scale, Color.Red, 1.0f, false);

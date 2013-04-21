@@ -636,6 +636,9 @@ namespace GraphicsLibrary
         {
             mDevice.SetRenderTarget(null);
 
+            mDevice.Clear(ClearOptions.DepthBuffer, new Vector4(0), 65535, 0);
+            mDevice.DepthStencilState = DepthStencilState.Default;
+
             foreach (RendererBase renderer in mRenderQueue)
             {
                 renderer.RenderAllInstancesUI(mView, mProjection);
