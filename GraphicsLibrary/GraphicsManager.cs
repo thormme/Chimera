@@ -292,8 +292,27 @@ namespace GraphicsLibrary
 
             foreach (RendererBase renderer in mRenderQueue)
             {
+                if (renderer is UIModelRenderer)
+                {
+                    continue;
+                }
+
                 renderer.RenderAllInstancesPicking(
                     Utils.GetViewMatrixFromRay(ray), 
+                    Matrix.CreateOrthographic(1, 1, mCamera.GetNearPlaneDistance(), mCamera.GetFarPlaneDistance()));
+            }
+
+            mDevice.Clear(ClearOptions.DepthBuffer, new Vector4(0), 65535, 0);
+
+            foreach (RendererBase renderer in mRenderQueue)
+            {
+                if (!(renderer is UIModelRenderer))
+                {
+                    continue;
+                }
+
+                renderer.RenderAllInstancesPicking(
+                    Utils.GetViewMatrixFromRay(ray),
                     Matrix.CreateOrthographic(1, 1, mCamera.GetNearPlaneDistance(), mCamera.GetFarPlaneDistance()));
             }
 
@@ -519,6 +538,25 @@ namespace GraphicsLibrary
 
             foreach (RendererBase renderer in mRenderQueue)
             {
+                if (renderer is UIModelRenderer)
+                {
+                    continue;
+                }
+
+                renderer.RenderAllInstancesPicking(
+                    mView,
+                    mProjection);
+            }
+
+            mDevice.Clear(ClearOptions.DepthBuffer, new Vector4(0), 65535, 0);
+
+            foreach (RendererBase renderer in mRenderQueue)
+            {
+                if (!(renderer is UIModelRenderer))
+                {
+                    continue;
+                }
+
                 renderer.RenderAllInstancesPicking(
                     mView,
                     mProjection);

@@ -55,9 +55,7 @@ namespace WorldEditor
             get { return mHeightMap.NewAction; }
             set { mHeightMap.NewAction = value; }
         }
-
-        private UIModel mGizmo;
-
+        
         public DummyWorld(Controls controls)
         {
             mName = null;
@@ -66,7 +64,6 @@ namespace WorldEditor
             mTerrainPhysics = null;
 
             New();
-            mGizmo = new UIModel("translateGizmo");
         }
 
         public void AddObject(DummyObject dummyObject)
@@ -387,11 +384,6 @@ namespace WorldEditor
             	{
                 	dummy.Draw();
             	}
-            }
-
-            if (mDummies.Count > 0)
-            {
-                mGizmo.Render(mDummies[0].Position, Color.Red, 1.0f, false);
             }
         }
 
