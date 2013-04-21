@@ -40,11 +40,15 @@ namespace WorldEditor
         private bool mDrawable = false;
         private Controls mControls = null;
         private Vector3 mStartDragPoint = Vector3.Zero;
-        private bool mIsDragging = false;
         private ModificationMode mDragMode = ModificationMode.Position;
         private ModificationDirection mDragDirection = ModificationDirection.X;
 
         public ModificationMode Mode = ModificationMode.Position;
+        public bool IsDragging
+        {
+            get;
+            protected set;
+        }
 
         public ObjectModificationGizmo(Controls controls, FPSCamera camera, Viewport viewport)
         {
@@ -63,6 +67,8 @@ namespace WorldEditor
             mYawArm.ObjectID = mYawPickingID;
             mPitchArm.ObjectID = mPitchPickingID;
             mRollArm.ObjectID = mRollPickingID;
+
+            IsDragging = false;
         }
 
         public void Update(List<DummyObject> selectedObjects)
@@ -75,16 +81,16 @@ namespace WorldEditor
                 if (mousePixel == mXPickingID || mousePixel == mYPickingID || mousePixel == mZPickingID)
                 {
                     mDragMode = Mode;
-                    mIsDragging = true;
+                    IsDragging = true;
                 }
                 else if (mousePixel == mYawPickingID || mousePixel == mPitchPickingID || mousePixel == mRollPickingID)
                 {
                     mDragMode = ModificationMode.Rotate;
-                    mIsDragging = true;
+                    IsDragging = true;
                 }
                 else
                 {
-                    mIsDragging = false;
+                    IsDragging = false;
                 }
                 switch (mousePixel)
                 {
@@ -109,8 +115,12 @@ namespace WorldEditor
                 }
                 mStartDragPoint = GetMouseWorldPosition();
             }
+            else if (mControls.LeftReleased.Active)
+            {
+                IsDragging = false;
+            }
 
-            if (mIsDragging)
+            if (IsDragging)
             {
                 Vector3 newDragPoint = GetMouseWorldPosition();
                 switch (mDragMode)
@@ -118,7 +128,7 @@ namespace WorldEditor
                     case ModificationMode.Position:
                         foreach (DummyObject dummyObject in selectedObjects)
                         {
-                            dummyObject.Position += newDragPoint - mStartDragPoint;
+                            dummyObject.Position += (newDragPoint - mStartDragPoint) * GetDragDirection();
                         }
                         break;
                     case ModificationMode.Scale:

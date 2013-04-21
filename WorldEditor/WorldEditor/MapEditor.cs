@@ -167,9 +167,9 @@ namespace WorldEditor
 
             }
 
-            mGizmo.Update(ObjectParameterPane.SelectedObjects);
-
             PerformActions(gameTime);
+
+            mGizmo.Update(ObjectParameterPane.SelectedObjects);
         }
 
         public void Draw()
@@ -684,19 +684,22 @@ namespace WorldEditor
 
             if (mControls.LeftReleased.Active && EditorForm.Mode == EditorForm.EditorMode.OBJECTS)
             {
-                foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
+                if (!mGizmo.IsDragging)
                 {
-                    oldObject.IsHighlighted = false;
-                }
-                ObjectParameterPane.SelectedObjects.Clear();
+                    foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
+                    {
+                        oldObject.IsHighlighted = false;
+                    }
+                    ObjectParameterPane.SelectedObjects.Clear();
 
-                List<DummyObject> dummyObjects = Entity.GetObjectsInSelection(mDummyWorld);
-                foreach (DummyObject newObject in dummyObjects)
-                {
-                    newObject.IsHighlighted = true;
-                }
+                    List<DummyObject> dummyObjects = Entity.GetObjectsInSelection(mDummyWorld);
+                    foreach (DummyObject newObject in dummyObjects)
+                    {
+                        newObject.IsHighlighted = true;
+                    }
 
-                ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
+                    ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
+                }
                 ObjectParameterPane.UpdateParameterFields();
             }
             else if (mControls.LeftHold.Active)
@@ -705,7 +708,10 @@ namespace WorldEditor
                 {
                     case Dialogs.EditorForm.EditorMode.OBJECTS:
                     {
-                        Entity.HighlightObjectsInSelection();
+                        if (!mGizmo.IsDragging)
+                        {
+                            Entity.HighlightObjectsInSelection();
+                        }
                         break;
                     }
                     case EditorForm.EditorMode.HEIGHTMAP:
