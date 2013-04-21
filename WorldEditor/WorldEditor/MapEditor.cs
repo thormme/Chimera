@@ -797,6 +797,14 @@ namespace WorldEditor
                         break;
                 }
             }
+            if (mControls.Delete.Active)
+            {
+                foreach (DummyObject dummyObject in ObjectParameterPane.SelectedObjects)
+                {
+                    mDummyWorld.RemoveObject(dummyObject);
+                }
+                ObjectParameterPane.SelectedObjects.Clear();
+            }
         }
 
         private void UpdateLayerPaneImages(EditorForm.Layers layer, string textureName)
