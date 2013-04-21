@@ -22,8 +22,6 @@ namespace GraphicsLibrary
 
         private AnimationUtilities.SkinnedEffect mEffect;
 
-        private bool mNoRender = false;
-
         #endregion
 
         #region Structures
@@ -42,23 +40,18 @@ namespace GraphicsLibrary
             mEffect = effect;
 
             CreateBuffers();
+
+            mNormalDepthConfigurer = null;
+            mShadowMapConfigurer = null;
+            mPickingConfigurer = null;
+            mUIConfigurer = null;
         }
 
         #endregion
 
         #region Instance Render Helper Methods
 
-        protected override void NormalDepthConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
-        {
-            mNoRender = true;
-        }
-
-        protected override void ShadowMapConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
-        {
-            mNoRender = true;
-        }
-
-        protected override void ShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
+        protected override void WithShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
         {
             WithoutShadowsConfigurer(effect, instance, optionalParameters);
         }
@@ -68,20 +61,14 @@ namespace GraphicsLibrary
             effect.CurrentTechnique = effect.Techniques["NoShade"];
         }
 
-        protected override void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
+        protected override void NoShadeConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
         {
-            mNoRender = true;
+            WithoutShadowsConfigurer(effect, instance, optionalParameters);
         }
 
         protected override void DrawGeometry(Matrix view, Matrix projection, object[] optionalParameters, EffectConfigurer effectConfigurer, RendererParameters instance)
         {
             effectConfigurer(mEffect, instance, optionalParameters);
-
-            if (mNoRender == true)
-            {
-                mNoRender = false;
-                return;
-            }
 
             GraphicsManager.Device.SamplerStates[0] = SamplerState.PointClamp;
 
@@ -100,7 +87,7 @@ namespace GraphicsLibrary
             mEffect.Parameters["xOverlayColorWeight"].SetValue(skyBoxInstance.OverlayWeight);
             mEffect.Parameters["xTextureOffset"].SetValue(skyBoxInstance.TextureAnimationOffset);
             
-            mEffect.Texture = AssetLibrary.LookupSprite(skyBoxInstance.TextureName);
+            mEffect.Texture = AssetLibrary.LookupTexture(skyBoxInstance.TextureName);
 
             GraphicsManager.Device.SetVertexBuffer(mVertexBuffer);
             GraphicsManager.Device.Indices = mIndexBuffer;

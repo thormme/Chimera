@@ -14,7 +14,6 @@ namespace GraphicsLibrary
     {
         #region Fields
 
-        private string          mModelName;
         private string          mAnimationName;
         private AnimationPlayer mAnimationPlayer;
         private SkinningData    mSkinningData;
@@ -51,10 +50,9 @@ namespace GraphicsLibrary
 
         /// <param name="modelName">Name of model stored in model database at startup.</param>
         public AnimateModel(string modelName, string defaultAnimation)
+            : base(modelName, typeof(AnimateModelRenderer))
         {
-            mModelName = modelName;
-
-            mSkinningData = AssetLibrary.LookupModelSkinningData(mModelName + mAnimationName);
+            mSkinningData = AssetLibrary.LookupModelSkinningData(Name + mAnimationName);
             if (mSkinningData == null)
             {
                 throw new Exception("This model does not contain skinningData.");
@@ -73,10 +71,10 @@ namespace GraphicsLibrary
             int boneIndex;
             if (!SkinningData.BoneIndices.TryGetValue(boneName, out boneIndex))
             {
-                throw new Exception(mModelName + " does not contain bone: " + boneName);
+                throw new Exception(Name + " does not contain bone: " + boneName);
             }
 
-            return AssetLibrary.LookupTweakedBoneOrientation(mModelName, boneName) * AnimationPlayer.GetWorldTransforms()[boneIndex];
+            return AssetLibrary.LookupTweakedBoneOrientation(Name, boneName) * AnimationPlayer.GetWorldTransforms()[boneIndex];
         }
 
         /// <summary>
@@ -93,7 +91,7 @@ namespace GraphicsLibrary
                 AnimationClip clip;
                 if (!SkinningData.AnimationClips.TryGetValue(animationName, out clip))
                 {
-                    throw new Exception(animationName + " is not a valid animation for " + mModelName);
+                    throw new Exception(animationName + " is not a valid animation for " + Name);
                 }
 
                 AnimationPlayer.StartClip(clip, loop);
@@ -109,6 +107,14 @@ namespace GraphicsLibrary
             AnimationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
         }
 
+        protected override void AlertAssetLibrary()
+        {
+            if (AssetLibrary.LookupAnimateModel(Name) == null)
+            {
+                AssetLibrary.AddAnimateModel(Name, new AnimateModelRenderer(AssetLibrary.LookupInanimateModel(Name).Model));
+            }
+        }
+
         /// <summary>
         /// Draws animated model to the screen.
         /// </summary>
@@ -117,14 +123,14 @@ namespace GraphicsLibrary
         {
             AnimateModelRenderer.AnimateModelParameters parameters = new AnimateModelRenderer.AnimateModelParameters();
             parameters.BoundingBox = BoundingBox;
-            parameters.Name = mModelName;
+            parameters.Name = Name;
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
             parameters.SkinTransforms = AnimationPlayer.GetSkinTransforms(); ;
             parameters.TryCull = tryCull;
             parameters.World = worldTransform;
 
-            GraphicsManager.EnqueueRenderable(parameters);
+            GraphicsManager.EnqueueRenderable(parameters, RendererType);
         }
 
         #endregion

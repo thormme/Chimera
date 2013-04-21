@@ -14,6 +14,15 @@ namespace GraphicsLibrary
     {
         #region Constants
 
+        static private Type InanimateModelKey = typeof(ModelRenderer);
+        static private Type AnimateModelKey = typeof(AnimateModelRenderer);
+        static private Type TransparentModelKey = typeof(TransparentModelRenderer);
+        static private Type UIModelKey = typeof(UIModelRenderer);
+        static private Type SkyBoxKey = typeof(SkyBoxRenderer);
+        static private Type WaterKey = typeof(WaterRenderer);
+        static private Type TerrainKey = typeof(TerrainRenderer);
+        static private Type TextureKey = typeof(Texture2D);
+
         static private char[] mDelimeterChars = { ' ' };
 
         #endregion
@@ -28,50 +37,98 @@ namespace GraphicsLibrary
         static public AnimationUtilities.SkinnedEffect VertexBufferShader { get { return mVertexBufferShader; } }
         static private AnimationUtilities.SkinnedEffect mVertexBufferShader;
 
-        static private Dictionary<string, ModelRenderer> mUniqueModelLibrary = new Dictionary<string, ModelRenderer>();
-        static private Dictionary<string, TerrainRenderer> mUniqueTerrainLibrary = new Dictionary<string, TerrainRenderer>();
-        static private Dictionary<string, Texture2D> mUniqueTextureLibrary = new Dictionary<string, Texture2D>();
-        static private Dictionary<string, TexturedParticles> mUniqueParticleLibrary = new Dictionary<string, TexturedParticles>();
-
-        static private WaterRenderer mWaterRenderer;
-        static private SkyBoxRenderer mSkyBoxRenderer;
+        static private Dictionary<Type, Dictionary<string, object>> mAssetLibrary = new Dictionary<Type, Dictionary<string, object>>();
 
         #endregion
 
         #region Public Properties
 
-        static public Dictionary<string, ModelRenderer> ModelLibrary { get { return mUniqueModelLibrary; } }
+        static public Dictionary<string, object> InanimateModelLibrary { get { return mAssetLibrary[InanimateModelKey]; } }
 
-        static public Dictionary<string, Texture2D> TextureLibrary { get { return mUniqueTextureLibrary; } }
+        static public Dictionary<string, object> TextureLibrary { get { return mAssetLibrary[TextureKey]; } }
 
         #endregion
 
         #region Add Asset Methods
 
-        static public void AddModel(string modelName, ModelRenderer model)
+        static public void AddInanimateModel(string modelName, ModelRenderer model)
         {
-            if (mUniqueModelLibrary.ContainsKey(modelName))
+            if (mAssetLibrary[InanimateModelKey].ContainsKey(modelName))
             {
                 throw new Exception("Duplicate model key: " + modelName);
             }
-            mUniqueModelLibrary.Add(modelName, model);
+            mAssetLibrary[InanimateModelKey].Add(modelName, model);
+        }
+
+        static public void AddAnimateModel(string modelName, AnimateModelRenderer model)
+        {
+            if (mAssetLibrary[AnimateModelKey].ContainsKey(modelName))
+            {
+                throw new Exception("Duplicate animate model key: " + modelName);
+            }
+            mAssetLibrary[AnimateModelKey].Add(modelName, model);
+        }
+
+        static public void AddTransparentModel(string modelName, TransparentModelRenderer model)
+        {
+            if (mAssetLibrary[TransparentModelKey].ContainsKey(modelName))
+            {
+                throw new Exception("Duplicate transparent model key: " + modelName);
+            }
+            mAssetLibrary[TransparentModelKey].Add(modelName, model);
+        }
+
+        static public void AddUIModel(string modelName, UIModelRenderer model)
+        {
+            if (mAssetLibrary[UIModelKey].ContainsKey(modelName))
+            {
+                throw new Exception("Duplicate UI model key: " + modelName);
+            }
+            mAssetLibrary[UIModelKey].Add(modelName, model);
+        }
+
+        static public void AddWater(string waterName, WaterRenderer water)
+        {
+            if (mAssetLibrary[WaterKey].ContainsKey(waterName))
+            {
+                throw new Exception("Duplicate water key: " + waterName);
+            }
+            mAssetLibrary[WaterKey].Add(waterName, water);
+        }
+
+        static public void AddSkyBox(string skyBoxName, SkyBoxRenderer skyBox)
+        {
+            if (mAssetLibrary[SkyBoxKey].ContainsKey(skyBoxName))
+            {
+                throw new Exception("Duplicate sky box key: " + skyBoxName);
+            }
+            mAssetLibrary[SkyBoxKey].Add(skyBoxName, skyBox);
+        }
+
+        static public void AddTexture(string textureName, Texture2D texture)
+        {
+            if (mAssetLibrary[TextureKey].ContainsKey(textureName))
+            {
+                throw new Exception("Duplicate texture key: " + textureName);
+            }
+            mAssetLibrary[TextureKey].Add(textureName, texture);
         }
 
         static public void AddTerrain(FileInfo level, TerrainHeightMap heightMap, TerrainTexture texture)
         {
-            if (mUniqueTerrainLibrary.ContainsKey(level.Name))
+            if (mAssetLibrary[TerrainKey].ContainsKey(level.Name))
             {
-                mUniqueTerrainLibrary.Remove(level.Name);
+                mAssetLibrary[TerrainKey].Remove(level.Name);
             }
 
-            mUniqueTerrainLibrary.Add(level.Name, new TerrainRenderer(heightMap, texture, mVertexBufferShader));
+            mAssetLibrary[TerrainKey].Add(level.Name, new TerrainRenderer(heightMap, texture, mVertexBufferShader));
         }
 
         static public void UpdateTerrain(FileInfo savePath, ref string levelName)
         {
-            if (!mUniqueTerrainLibrary.ContainsKey(savePath.Name))
+            if (!mAssetLibrary[TerrainKey].ContainsKey(savePath.Name))
             {
-                mUniqueTerrainLibrary.Add(savePath.Name, mUniqueTerrainLibrary[levelName]);
+                mAssetLibrary[TerrainKey].Add(savePath.Name, mAssetLibrary[TerrainKey][levelName]);
                 levelName = savePath.Name;
             }
         }
@@ -80,49 +137,66 @@ namespace GraphicsLibrary
 
         #region Lookup Asset Methods
 
-        static public RendererBase LookupRenderer(string rendererName)
+        static public RendererBase LookupRenderer(string rendererName, Type rendererType)
         {
-            if (rendererName == "WATER_RENDERER")
+            if (mAssetLibrary.ContainsKey(rendererType))
             {
-                return mWaterRenderer;
+                if (mAssetLibrary[rendererType].ContainsKey(rendererName))
+                {
+                    return mAssetLibrary[rendererType][rendererName] as RendererBase;
+                }
             }
-
-            if (rendererName == "SKY_BOX_RENDERER")
-            {
-                return mSkyBoxRenderer;
-            }
-
-            if (mUniqueModelLibrary.ContainsKey(rendererName))
-            {
-                return mUniqueModelLibrary[rendererName];
-            }
-
-            if (mUniqueTerrainLibrary.ContainsKey(rendererName))
-            {
-                return mUniqueTerrainLibrary[rendererName];
-            }
-
-            throw new Exception("Unable to locate " + rendererName + " in Renderer library.");
+            return null;
         }
 
-        static public ModelRenderer LookupModel(string modelName)
+        static public ModelRenderer LookupInanimateModel(string modelName)
         {
-            ModelRenderer result;
-            if (mUniqueModelLibrary.TryGetValue(modelName, out result))
+            object result;
+            if (mAssetLibrary[InanimateModelKey].TryGetValue(modelName, out result))
             {
-                return result;
+                return result as ModelRenderer;
             }
-            throw new KeyNotFoundException("Unable to find model key: " + modelName);
+            return null;
+        }
+
+        static public AnimateModelRenderer LookupAnimateModel(string modelName)
+        {
+            object result;
+            if (mAssetLibrary[AnimateModelKey].TryGetValue(modelName, out result))
+            {
+                return result as AnimateModelRenderer;
+            }
+            return null;
+        }
+
+        static public TransparentModelRenderer LookupTransparentModel(string modelName)
+        {
+            object result;
+            if (mAssetLibrary[TransparentModelKey].TryGetValue(modelName, out result))
+            {
+                return result as TransparentModelRenderer;
+            }
+            return null;
+        }
+
+        static public UIModelRenderer LookupUIModel(string modelName)
+        {
+            object result;
+            if (mAssetLibrary[UIModelKey].TryGetValue(modelName, out result))
+            {
+                return result as UIModelRenderer;
+            }
+            return null;
         }
 
         static public TerrainRenderer LookupTerrain(string terrainName)
         {
-            TerrainRenderer result;
-            if (mUniqueTerrainLibrary.TryGetValue(terrainName, out result))
+            object result;
+            if (mAssetLibrary[TerrainKey].TryGetValue(terrainName, out result))
             {
-                return result;
+                return result as TerrainRenderer;
             }
-            throw new KeyNotFoundException("Unable to find terrain key: " + terrainName);
+            return null;
         }
 
         static public TerrainHeightMap LookupTerrainHeightMap(string terrainName)
@@ -137,14 +211,13 @@ namespace GraphicsLibrary
 
         static public AnimationUtilities.SkinningData LookupModelSkinningData(string modelName)
         {
-            AnimateModelRenderer renderer = LookupModel(modelName) as AnimateModelRenderer;
-            return renderer.SkinningData;
+            return LookupAnimateModel(modelName).SkinningData;
         }
 
         static public Matrix LookupTweakedBoneOrientation(string modelName, string boneName)
         {
-            ModelRenderer model;
-            if (!mUniqueModelLibrary.TryGetValue(modelName, out model) || !(model is AnimateModelRenderer))
+            object model;
+            if (!mAssetLibrary[AnimateModelKey].TryGetValue(modelName, out model))
             {
                 throw new Exception(modelName + " does not contain any bone orientation tweaks");
             }
@@ -160,24 +233,34 @@ namespace GraphicsLibrary
             return localBoneOrientation;
         }
         
-        static public Texture2D LookupSprite(string spriteName)
+        static public Texture2D LookupTexture(string spriteName)
         {
-            Texture2D result;
-            if (mUniqueTextureLibrary.TryGetValue(spriteName, out result))
+            object result;
+            if (mAssetLibrary[TextureKey].TryGetValue(spriteName, out result))
             {
-                return result;
+                return result as Texture2D;
             }
-            throw new KeyNotFoundException("Unable to find sprite key: " + spriteName);
+            return null;
         }
 
-        static public TexturedParticles LookupParticles(string particleSystemName)
+        static public SkyBoxRenderer LookupSkyBox(string skyBoxName)
         {
-            TexturedParticles result;
-            if (mUniqueParticleLibrary.TryGetValue(particleSystemName, out result))
+            object result;
+            if (mAssetLibrary[SkyBoxKey].TryGetValue(skyBoxName, out result))
             {
-                return result;
+                return result as SkyBoxRenderer;
             }
-            throw new KeyNotFoundException("Unable to find particle key: " + particleSystemName);
+            return null;
+        }
+
+        static public WaterRenderer LookupWater(string waterName)
+        {
+            object result;
+            if (mAssetLibrary[SkyBoxKey].TryGetValue(waterName, out result))
+            {
+                return result as WaterRenderer;
+            }
+            return null;
         }
 
         #endregion
@@ -186,12 +269,20 @@ namespace GraphicsLibrary
 
         static public void LoadContent(ContentManager content)
         {
+            mAssetLibrary.Add(InanimateModelKey, new Dictionary<string, object>());
+            mAssetLibrary.Add(AnimateModelKey, new Dictionary<string, object>());
+            mAssetLibrary.Add(TransparentModelKey, new Dictionary<string, object>());
+            mAssetLibrary.Add(UIModelKey, new Dictionary<string, object>());
+            mAssetLibrary.Add(SkyBoxKey, new Dictionary<string, object>());
+            mAssetLibrary.Add(WaterKey, new Dictionary<string, object>());
+            mAssetLibrary.Add(TerrainKey, new Dictionary<string, object>());
+            mAssetLibrary.Add(TextureKey, new Dictionary<string, object>());
+
             LoadShaders(content);
             LoadModels(content);
-            LoadSprites(content);
-            LoadParticles(content);
-            CreateWater();
-            CreateSkyBox();
+            LoadTextures(content);
+            LoadWater();
+            LoadSkyBox();
         }
 
         /// <summary>
@@ -255,8 +346,11 @@ namespace GraphicsLibrary
                             }
                         }
 
-                        ModelRenderer renderer = isSkinned ? new AnimateModelRenderer(input) : new ModelRenderer(input);
-                        AddModel(modelName, renderer);
+                        AddInanimateModel(modelName, new ModelRenderer(input));
+                        if (isSkinned)
+                        {
+                            AddAnimateModel(modelName, new AnimateModelRenderer(input));
+                        }
                     }
                     catch { }
                 }
@@ -281,12 +375,12 @@ namespace GraphicsLibrary
                     }
                     tr.Close();
 
-                    (LookupModel(Path.GetFileNameWithoutExtension(file.Name)) as AnimateModelRenderer).BoneTweakLibrary = tweakLibrary;
+                    LookupAnimateModel(Path.GetFileNameWithoutExtension(file.Name)).BoneTweakLibrary = tweakLibrary;
                 }
             }
         }
 
-        static private void LoadSprites(ContentManager content)
+        static private void LoadTextures(ContentManager content)
         {
             DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/maps/");
             if (!dir.Exists)
@@ -300,11 +394,7 @@ namespace GraphicsLibrary
                 string mapName = Path.GetFileNameWithoutExtension(file.Name);
                 Texture2D map = content.Load<Texture2D>("textures/maps/" + mapName);
 
-                if (mUniqueTextureLibrary.ContainsKey(mapName))
-                {
-                    throw new Exception("Duplicate map key: " + mapName);
-                }
-                mUniqueTextureLibrary.Add(mapName, map);
+                AddTexture(mapName, map);
             }
 
             dir = new DirectoryInfo(content.RootDirectory + "\\" + "textures/sprites/");
@@ -319,36 +409,18 @@ namespace GraphicsLibrary
                 string spriteName = Path.GetFileNameWithoutExtension(file.Name);
                 Texture2D sprite = content.Load<Texture2D>("textures/sprites/" + spriteName);
 
-                if (mUniqueTextureLibrary.ContainsKey(spriteName))
-                {
-                    throw new Exception("Duplicate sprite key: " + spriteName);
-                }
-                mUniqueTextureLibrary.Add(spriteName, sprite);
+                AddTexture(spriteName, sprite);
             }
         }
 
-        static private void LoadParticles(ContentManager content)
+        static private void LoadWater()
         {
-            //mParticleManager = new ParticleSystemManager();
-
-            //for (int i = 0; i < 1; ++i)
-            //{
-            //    TexturedParticles newParticleSystem = new TexturedParticles(null, "puff");
-            //    newParticleSystem.AutoInitialize(mDevice, content, mSpriteBatch);
-
-            //    mParticleManager.AddParticleSystem(newParticleSystem);
-            //    mUniqueParticleLibrary.Add("puff", newParticleSystem);
-            //}
+            AddWater("WATER_RENDERER", new WaterRenderer(new Vector2(2, 2), mVertexBufferShader));
         }
 
-        static private void CreateWater()
+        static private void LoadSkyBox()
         {
-            mWaterRenderer = new WaterRenderer(new Vector2(2, 2), mVertexBufferShader);
-        }
-
-        static private void CreateSkyBox()
-        {
-            mSkyBoxRenderer = new SkyBoxRenderer(mVertexBufferShader);
+            AddSkyBox("SKY_BOX_RENDERER", new SkyBoxRenderer(mVertexBufferShader));
         }
 
         #endregion

@@ -30,6 +30,8 @@ namespace GraphicsLibrary
         {
             mModel = model;
             ConstructBoundingSphere();
+
+            mUIConfigurer = null;
         }
 
         protected virtual void ConstructBoundingSphere()
@@ -81,7 +83,7 @@ namespace GraphicsLibrary
             effect.Parameters["xLightProjection"].SetValue(lightProjection);
         }
 
-        protected override void ShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
+        protected override void WithShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
         {
             CascadedShadowMap shadowMap = optionalParameters[0] as CascadedShadowMap;
             Light light = optionalParameters[1] as Light;
@@ -122,6 +124,11 @@ namespace GraphicsLibrary
             effect.SpecularPower = 16;
         }
 
+        protected override void NoShadeConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
+        {
+            effect.CurrentTechnique = effect.Techniques["NoShade"];
+        }
+        
         protected override void DrawGeometry(Matrix view, Matrix projection, object[] optionalParameters, EffectConfigurer effectConfigurer, RendererParameters instance)
         {
             if (instance.TryCull && GraphicsManager.ViewBoundingFrustum.Contains(instance.BoundingBox) == ContainmentType.Disjoint)

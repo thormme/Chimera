@@ -5,14 +5,19 @@ namespace GraphicsLibrary
 {
     abstract public class Renderable
     {
-        ///////////////////////////// Internal Constants /////////////////////////////
+        #region Constants
 
         private Vector3 mDefaultWorldView  = new Vector3(0.0f, 0.0f, -1.0f);
         private Vector3 mDefaultWorldScale = new Vector3(1.0f);
         private Color mDefaultOverlayColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         private float mDefaultOverlayWeight = 0.0f;
 
-        ///////////////////////////////// Interface //////////////////////////////////
+        #endregion
+
+        #region State
+
+        protected string Name;
+        protected Type RendererType;
 
         public BoundingBox BoundingBox
         {
@@ -23,6 +28,22 @@ namespace GraphicsLibrary
 
         protected float mElapsedTime = 0.0f;
 
+        #endregion
+
+        #region Public Interface
+
+        public Renderable(string name, Type rendererType)
+        {
+            Name = name;
+            RendererType = rendererType;
+
+            AlertAssetLibrary();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
             mElapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -292,7 +313,14 @@ namespace GraphicsLibrary
             Draw(worldTransform, overlayColor, overlayColorWeight, tryCull);
         }
 
-        ///////////////////////////// Internal functions /////////////////////////////
+        #endregion
+
+        #region Abstract Methods
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected abstract void AlertAssetLibrary();
 
         /// <summary>
         /// 
@@ -300,6 +328,8 @@ namespace GraphicsLibrary
         /// <param name="worldTransform">The object's world transform.</param>
         /// <param name="overlayColor">Color with which to modify the object.</param>
         /// <param name="overlayColorWeight">Amount to colorify the object. 0-none 1-full</param>
-        abstract protected void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull);
+        protected abstract void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull);
+
+        #endregion
     }
 }

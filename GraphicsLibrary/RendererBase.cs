@@ -13,6 +13,14 @@ namespace GraphicsLibrary
 
         protected Queue<RendererParameters> mInstances = new Queue<RendererParameters>();
 
+        protected EffectConfigurer mNormalDepthConfigurer    = null;
+        protected EffectConfigurer mShadowMapConfigurer      = null;
+        protected EffectConfigurer mWithoutShadowsConfigurer = null;
+        protected EffectConfigurer mWithShadowsConfigurer    = null;
+        protected EffectConfigurer mPickingConfigurer        = null;
+        protected EffectConfigurer mNoShadeConfigurer        = null;
+        protected EffectConfigurer mUIConfigurer             = null;
+
         #endregion
 
         #region Structures
@@ -34,6 +42,17 @@ namespace GraphicsLibrary
 
         #region Public Interface
 
+        public RendererBase()
+        {
+            mNormalDepthConfigurer    = NormalDepthConfigurer;
+            mShadowMapConfigurer      = ShadowMapConfigurer;
+            mWithoutShadowsConfigurer = WithoutShadowsConfigurer;
+            mWithShadowsConfigurer    = WithShadowsConfigurer;
+            mPickingConfigurer        = PickingConfigurer;
+            mNoShadeConfigurer        = NoShadeConfigurer;
+            mUIConfigurer             = UIConfigurer;
+        }
+
         public void AddInstance(RendererParameters instance)
         {
             mInstances.Enqueue(instance);
@@ -46,41 +65,78 @@ namespace GraphicsLibrary
 
         public void RenderAllInstancesNormalDepth(Matrix view, Matrix projection)
         {
-            foreach (RendererParameters instance in mInstances)
+            if (mNormalDepthConfigurer != null)
             {
-                RenderNormalDepth(view, projection, instance);
+                foreach (RendererParameters instance in mInstances)
+                {
+                    RenderNormalDepth(view, projection, instance);
+                }
             }
         }
 
         public void RenderAllInstancesShadowMap(Matrix lightView, Matrix lightProjection)
         {
-            foreach (RendererParameters instance in mInstances)
+            if (mShadowMapConfigurer != null)
             {
-                RenderShadowMap(lightView, lightProjection, instance);
+                foreach (RendererParameters instance in mInstances)
+                {
+                    RenderShadowMap(lightView, lightProjection, instance);
+                }
             }
         }
 
         public void RenderAllInstancesWithoutShadows(Matrix view, Matrix projection, Light light)
         {
-            foreach (RendererParameters instance in mInstances)
+            if (mWithoutShadowsConfigurer != null)
             {
-                RenderWithoutShadows(view, projection, light, instance);
+                foreach (RendererParameters instance in mInstances)
+                {
+                    RenderWithoutShadows(view, projection, light, instance);
+                }
             }
         }
 
         public void RenderAllInstancesWithShadows(CascadedShadowMap shadowMap, Matrix view, Matrix projection, Light light)
         {
-            foreach (RendererParameters instance in mInstances)
+            if (mWithShadowsConfigurer != null)
             {
-                RenderWithShadows(shadowMap, view, projection, light, instance);
+                foreach (RendererParameters instance in mInstances)
+                {
+                    RenderWithShadows(shadowMap, view, projection, light, instance);
+                }
+            }
+        }
+
+        public void RenderAllInstancesNoShading(Matrix view, Matrix projection)
+        {
+            if (mNoShadeConfigurer != null)
+            {
+                foreach (RendererParameters instance in mInstances)
+                {
+                    RenderNoShading(view, projection, instance);
+                }
             }
         }
 
         public void RenderAllInstancesPicking(Matrix view, Matrix projection)
         {
-            foreach (RendererParameters instance in mInstances)
+            if (mPickingConfigurer != null)
             {
-                RenderPicking(view, projection, instance);
+                foreach (RendererParameters instance in mInstances)
+                {
+                    RenderPicking(view, projection, instance);
+                }
+            }
+        }
+
+        public void RenderAllInstancesUI(Matrix view, Matrix projection)
+        {
+            if (mUIConfigurer != null)
+            {
+                foreach (RendererParameters instances in mInstances)
+                {
+                    RenderUI(view, projection, instances);
+                }
             }
         }
 
@@ -90,44 +146,51 @@ namespace GraphicsLibrary
 
         protected void RenderNormalDepth(Matrix view, Matrix projection, RendererParameters instance)
         {
-            EffectConfigurer normalDepthConfigurer = NormalDepthConfigurer;
-            DrawGeometry(view, projection, null, normalDepthConfigurer, instance);
+            DrawGeometry(view, projection, null, mNormalDepthConfigurer, instance);
         }
 
         protected void RenderShadowMap(Matrix lightView, Matrix lightProjection, RendererParameters instance)
         {
             instance.TryCull = false;
-            EffectConfigurer shadowMapConfigurer = ShadowMapConfigurer;
-            DrawGeometry(Matrix.Identity, Matrix.Identity, new object[] { (Matrix?)lightView, (Matrix?)lightProjection }, shadowMapConfigurer, instance);
+            DrawGeometry(Matrix.Identity, Matrix.Identity, new object[] { (Matrix?)lightView, (Matrix?)lightProjection }, mShadowMapConfigurer, instance);
         }
 
         protected void RenderWithoutShadows(Matrix view, Matrix projection, Light light, RendererParameters instance)
         {
-            EffectConfigurer withoutShadowsConfigurer = WithoutShadowsConfigurer;
-            DrawGeometry(view, projection, new object[] { light }, withoutShadowsConfigurer, instance);
+            DrawGeometry(view, projection, new object[] { light }, mWithoutShadowsConfigurer, instance);
         }
 
         protected void RenderWithShadows(CascadedShadowMap shadowMap, Matrix view, Matrix projection, Light light, RendererParameters instance)
         {
-            EffectConfigurer shadowsConfigurer = ShadowsConfigurer;
-            DrawGeometry(view, projection, new object[] { shadowMap, light }, shadowsConfigurer, instance);
+            DrawGeometry(view, projection, new object[] { shadowMap, light }, mWithShadowsConfigurer, instance);
+        }
+
+        protected void RenderNoShading(Matrix view, Matrix projection, RendererParameters instance)
+        {
+            DrawGeometry(view, projection, null, mNoShadeConfigurer, instance);
         }
 
         protected void RenderPicking(Matrix view, Matrix projection, RendererParameters instance)
         {
-            EffectConfigurer pickingConfigurer = PickingConfigurer;
-            DrawGeometry(view, projection, null, pickingConfigurer, instance);
+            DrawGeometry(view, projection, null, mPickingConfigurer, instance);
+        }
+
+        protected void RenderUI(Matrix view, Matrix projection, RendererParameters instance)
+        {
+            DrawGeometry(view, projection, null, mUIConfigurer, instance);
         }
 
         #endregion
 
         #region Instance Render Helper Methods
 
-        protected abstract void NormalDepthConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters);
-        protected abstract void ShadowMapConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters);
-        protected abstract void ShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters);
-        protected abstract void WithoutShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters);
-        protected abstract void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters);
+        protected virtual void NormalDepthConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters) { }
+        protected virtual void ShadowMapConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters) { }
+        protected virtual void WithShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters) { }
+        protected virtual void WithoutShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters) { }
+        protected virtual void NoShadeConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters) { }
+        protected virtual void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters) { }
+        protected virtual void UIConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters) { }
 
         protected abstract void DrawGeometry(Matrix view, Matrix projection, object[] optionalParameters, EffectConfigurer effectConfigurer, RendererParameters instance);
 

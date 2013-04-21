@@ -99,9 +99,9 @@ namespace GraphicsLibrary
             effect.CurrentTechnique = effect.Techniques["SkinnedShadowCast"];
         }
 
-        protected override void ShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
+        protected override void WithShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
         {
-            base.ShadowsConfigurer(effect, instance, optionalParameters);
+            base.WithShadowsConfigurer(effect, instance, optionalParameters);
 
             Matrix[] skinTransforms = new Matrix[] { Matrix.Identity };
             if (instance is AnimateModelParameters)
@@ -127,9 +127,7 @@ namespace GraphicsLibrary
 
 
             effect.CurrentTechnique = effect.Techniques["SkinnedCelShadeWithoutShadows"];
-        }
-
-        
+        }  
 
         #endregion
     }

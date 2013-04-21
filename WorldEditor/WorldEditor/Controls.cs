@@ -18,19 +18,21 @@ namespace WorldEditor
         public KeyInputAction Left = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.A);
         public KeyInputAction Right = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.D);
 
-        public KeyInputAction Inverse = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.D1);
-        public KeyInputAction Smooth = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.D2);
-        public KeyInputAction Flatten = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.D2);
+        public KeyInputAction Inverse = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.D1);
+        public KeyInputAction Smooth = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.D2);
+        public KeyInputAction Flatten = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.D2);
 
         public KeyInputAction Control = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.LeftControl);
         public KeyInputAction Alt = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.LeftAlt);
         public KeyInputAction Shift = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.LeftShift);
 
-        public KeyInputAction Undo = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Z);
-        public KeyInputAction Redo = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Y);
-        public KeyInputAction Delete = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.Delete);
+        public KeyInputAction Undo = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.Z);
+        public KeyInputAction Redo = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.Y);
+        public KeyInputAction Delete = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.Delete);
         public KeyInputAction Increase = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.OemPlus);
         public KeyInputAction Decrease = new KeyInputAction(0, InputAction.ButtonAction.Down, Keys.OemMinus);
+
+        public KeyInputAction Play = new KeyInputAction(0, InputAction.ButtonAction.Pressed, Keys.F5);
 
         public MouseButtonInputAction LeftPressed = new MouseButtonInputAction(0, InputAction.ButtonAction.Pressed, InputAction.MouseButton.Left);
         public MouseButtonInputAction LeftHold = new MouseButtonInputAction(0, InputAction.ButtonAction.Down, InputAction.MouseButton.Left);

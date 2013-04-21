@@ -334,6 +334,9 @@ namespace GraphicsLibrary
             return ids;            
         }
 
+        /// <summary>
+        /// Renders to texture a centered image of a given renderer.
+        /// </summary>
         static public Texture2D RenderPreviewImage(ModelRenderer renderer)
         {
             RenderTarget2D previewTexture = new RenderTarget2D(mDevice, 256, 256, false, SurfaceFormat.Color, DepthFormat.Depth24);
@@ -373,14 +376,14 @@ namespace GraphicsLibrary
 
         #region Renderable Enqueue Methods
 
-        static public void EnqueueRenderable(RendererBase.RendererParameters instance)
+        static public void EnqueueRenderable(RendererBase.RendererParameters instance, Type rendererType)
         {
             if (!mCanRender)
             {
                 throw new Exception("Unable to render " + instance.Name + " before calling BeginRendering() or after FinishRendering().\n");
             }
 
-            RendererBase renderer = AssetLibrary.LookupRenderer(instance.Name);
+            RendererBase renderer = AssetLibrary.LookupRenderer(instance.Name, rendererType);
             if (!mRenderQueue.Contains(renderer))
             {
                 mRenderQueue.Enqueue(renderer);
@@ -398,7 +401,7 @@ namespace GraphicsLibrary
                 throw new Exception("Unable to render transparent renderer " + instance.Name + " before calling BeginRendering() or after FinishRendering().\n");
             }
 
-            ModelRenderer renderer = AssetLibrary.LookupModel(instance.Name);
+            ModelRenderer renderer = AssetLibrary.LookupTransparentModel(instance.Name);
             if (!(renderer is TransparentModelRenderer))
             {
                 renderer = new TransparentModelRenderer(renderer.Model);
@@ -571,14 +574,20 @@ namespace GraphicsLibrary
         static private void RenderGUI()
         {
             mDevice.SetRenderTarget(null);
+
+            foreach (RendererBase renderer in mRenderQueue)
+            {
+                renderer.RenderAllInstancesUI(mView, mProjection);
+            }
+
             foreach (SpriteDefinition sprite in mSpriteQueue)
             {
                 mSpriteBatch.Begin(0, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
-                mSpriteBatch.Draw(AssetLibrary.LookupSprite(sprite.Name), sprite.ScreenSpace, Color.White);
+                mSpriteBatch.Draw(AssetLibrary.LookupTexture(sprite.Name), sprite.ScreenSpace, Color.White);
                 if (sprite.BlendColorWeight > 0.0f)
                 {
                     Color overlay = new Color(sprite.BlendColor.R, sprite.BlendColor.G, sprite.BlendColor.B, sprite.BlendColorWeight);
-                    mSpriteBatch.Draw(AssetLibrary.LookupSprite(sprite.Name), sprite.ScreenSpace, overlay);
+                    mSpriteBatch.Draw(AssetLibrary.LookupTexture(sprite.Name), sprite.ScreenSpace, overlay);
                 }
                 mSpriteBatch.End();
             }

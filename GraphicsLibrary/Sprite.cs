@@ -21,7 +21,7 @@ namespace GraphicsLibrary
             {
                 if (mTexture == null)
                 {
-                    mTexture = AssetLibrary.LookupSprite(mName);
+                    mTexture = AssetLibrary.LookupTexture(mName);
                 }
                 return mTexture.Width;
             }
@@ -32,7 +32,7 @@ namespace GraphicsLibrary
             {
                 if (mTexture == null)
                 {
-                    mTexture = AssetLibrary.LookupSprite(mName);
+                    mTexture = AssetLibrary.LookupTexture(mName);
                 }
                 return mTexture.Height;
             }
