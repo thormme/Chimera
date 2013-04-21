@@ -8,6 +8,7 @@ using BEPUphysics;
 using Microsoft.Xna.Framework.Graphics;
 using GraphicsLibrary;
 using System.Windows.Forms;
+using Utility;
 
 namespace WorldEditor
 {
@@ -105,15 +106,12 @@ namespace WorldEditor
 
         public Tuple<RayHit, DummyObject> GetPickingLocation(DummyWorld dummyWorld, Form gameForm)
         {
-            //Form gameForm = this.Parent as Form;
-            //gameForm.RectangleToScreen(gameForm.ClientRectangle).X;
-            Vector3 nearScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 0.0f);
-            Vector3 farScreen = new Vector3(mControls.MouseState.X, mControls.MouseState.Y, 1.0f);
-            Vector3 nearWorld = mViewport.Unproject(nearScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
-            Vector3 farWorld = mViewport.Unproject(farScreen, mCamera.ProjectionTransform, mCamera.ViewTransform, Matrix.Identity);
-            Vector3 projectionDirection = (farWorld - nearWorld);
-            projectionDirection.Normalize();
-            Ray ray = new Ray(mCamera.Position, projectionDirection);
+            Ray ray = Utils.CreateWorldRayFromScreenPoint(
+                new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
+                mViewport,
+                mCamera.Position,
+                mCamera.ViewTransform,
+                mCamera.ProjectionTransform);
             FPSCamera cam =  new FPSCamera(new Viewport(0, 0, 1, 1));
             cam.Position = mCamera.Position;
 

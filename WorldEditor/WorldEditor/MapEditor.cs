@@ -105,6 +105,9 @@ namespace WorldEditor
 
         //Determines whether or not you are able to place an object/modify heights or textures.
         private bool mPlaceable;
+        
+        //Whether the object transformation gizmo is shown.
+        private bool IsGizmoVisible = false;
 
         //Handles input.
         private Controls mControls = new Controls();
@@ -198,6 +201,11 @@ namespace WorldEditor
                 EditorForm.TextureLayerForm.Layer3.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
                 EditorForm.TextureLayerForm.Layer4.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f);
             mDummyWorld.Terrain.TerrainRenderable.LayerMask = layerMask;
+
+            if (IsGizmoVisible)
+            {
+                DrawGizmo();
+            }
 
             mDummyWorld.Draw();
         }
@@ -619,6 +627,14 @@ namespace WorldEditor
 
         private void UpdateToolContext(object sender, EventArgs e)
         {
+            if ((sender as EditorForm).Tool == Dialogs.EditorForm.Tools.SELECT)
+            {
+                ShowObjectGizmo(this, EventArgs.Empty);
+            }
+            else
+            {
+                HideObjectGizmo(this, EventArgs.Empty);
+            }
             if ((sender as EditorForm).Tool == Dialogs.EditorForm.Tools.PLACE)
             {
                 OpenObjectCreationForm(this, EventArgs.Empty);
@@ -627,6 +643,16 @@ namespace WorldEditor
             {
                 CloseObjectCreationForm(this, EventArgs.Empty);
             }
+        }
+
+        private void ShowObjectGizmo(MapEditor mapEditor, EventArgs eventArgs)
+        {
+            IsGizmoVisible = true;
+        }
+
+        private void HideObjectGizmo(MapEditor mapEditor, EventArgs eventArgs)
+        {
+            IsGizmoVisible = false;
         }
 
         #endregion
@@ -678,7 +704,7 @@ namespace WorldEditor
                 }
 
                 ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
-                    ObjectParameterPane.UpdateParameterFields();
+                ObjectParameterPane.UpdateParameterFields();
             }
             else if (mControls.LeftHold.Active)
             {
@@ -734,6 +760,11 @@ namespace WorldEditor
                     }
                 }
             }
+        }
+
+        private void DrawGizmo()
+        {
+            throw new NotImplementedException();
         }
 
         private void UpdateLayerPaneImages(EditorForm.Layers layer, string textureName)

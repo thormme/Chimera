@@ -72,5 +72,41 @@ namespace Utility
 
             return retrievedColor[0];
         }
+
+        public static void ProjectRayToScreenSpace(Ray ray, Viewport viewport, Matrix viewTransform, Matrix projectionTransform,
+            out Vector2 rayPosition,
+            out Vector2 rayDirection)
+        {
+            Vector3 screenPosition1 = viewport.Project(ray.Position, projectionTransform, viewTransform, Matrix.Identity);
+            Vector3 screenPosition2 = viewport.Project(ray.Position + ray.Direction, projectionTransform, viewTransform, Matrix.Identity);
+
+            Vector3 direction = screenPosition2 - screenPosition1;
+            rayPosition = new Vector2(screenPosition1.X, screenPosition1.Y);
+            rayDirection = new Vector2(direction.X, direction.Y);
+        }
+
+        public static Vector3 ProjectVectorOntoPlane(Ray ray, Vector3 pointOnPlane, Vector3 planeNormal)
+        {
+            float r = Vector3.Dot(planeNormal, pointOnPlane - ray.Position) / Vector3.Dot(planeNormal, ray.Direction);
+            return ray.Position + ray.Direction * r;
+        }
+
+        public static Vector2 NearestPointOnLine(Vector2 linePoint, Vector2 lineDirection, Vector2 point)
+        {
+            float t = Vector2.Dot(lineDirection, point - linePoint) / lineDirection.LengthSquared();
+            return linePoint + t * lineDirection;
+        }
+
+        public static Ray CreateWorldRayFromScreenPoint(Vector2 screenPosition, Viewport viewport, Vector3 cameraPosition, Matrix viewTransform, Matrix projectionTransform)
+        {
+            Vector3 nearScreen = new Vector3(screenPosition.X, screenPosition.Y, 0.0f);
+            Vector3 farScreen = new Vector3(screenPosition.X, screenPosition.Y, 1.0f);
+            Vector3 nearWorld = viewport.Unproject(nearScreen, projectionTransform, viewTransform, Matrix.Identity);
+            Vector3 farWorld = viewport.Unproject(farScreen, projectionTransform, viewTransform, Matrix.Identity);
+            Vector3 projectionDirection = (farWorld - nearWorld);
+            projectionDirection.Normalize();
+            Ray ray = new Ray(cameraPosition, projectionDirection);
+            return ray;
+        }
     }
 }
