@@ -27,6 +27,7 @@ namespace GraphicsLibrary
         #endregion
 
         public SkyBoxRenderable(string textureName)
+            : base("SKY_BOX_RENDERER", typeof(SkyBoxRenderer))
         {
             if (textureName != "default")
             {
@@ -38,17 +39,19 @@ namespace GraphicsLibrary
             }
         }
 
+        protected override void AlertAssetLibrary() { }
+
         protected override void Draw(Microsoft.Xna.Framework.Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
             SkyBoxRenderer.SkyBoxParameters parameters = new SkyBoxRenderer.SkyBoxParameters();
-            parameters.Name = "SKY_BOX_RENDERER";
+            parameters.Name = Name;
             parameters.OverlayColor  = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
             parameters.TextureName   = mTextureName;
             parameters.TryCull       = tryCull;
             parameters.World         = worldTransform;
 
-            GraphicsManager.EnqueueRenderable(parameters);
+            GraphicsManager.EnqueueRenderable(parameters, RendererType);
         }
     }
 }

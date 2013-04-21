@@ -6,19 +6,13 @@ namespace GraphicsLibrary
 {
     public class TerrainRenderable : Renderable
     {
-        private string mTerrainName;
+        #region Public Properties
 
         public new BoundingBox[,] BoundingBoxes
         {
             get { return mBoundingBoxes; }
         }
         private BoundingBox[,] mBoundingBoxes;
-
-        public TerrainRenderable(string terrainName)
-        {
-            mTerrainName = terrainName;
-            BuildTerrainBoundingBox();
-        }
 
         public Vector4 LayerMask
         {
@@ -57,6 +51,16 @@ namespace GraphicsLibrary
         }
         private float mCursorOuterRadius;
 
+        #endregion
+
+        public TerrainRenderable(string terrainName)
+            : base(terrainName, typeof(TerrainRenderer))
+        {
+            BuildTerrainBoundingBox();
+        }
+
+        protected override void AlertAssetLibrary() { }
+
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
             BoundingBox[,] transformedBoundingBoxes = new BoundingBox[mBoundingBoxes.GetLength(0), mBoundingBoxes.GetLength(1)];
@@ -74,19 +78,19 @@ namespace GraphicsLibrary
             parameters.CursorPosition = CursorPosition;
             parameters.CursorInnerRadius = CursorInnerRadius;
             parameters.CursorOuterRadius = CursorOuterRadius;
-            parameters.Name = mTerrainName;
+            parameters.Name = Name;
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
             parameters.TextureMask = LayerMask;
             parameters.TryCull = tryCull;
             parameters.World = worldTransform;
 
-            GraphicsManager.EnqueueRenderable(parameters);
+            GraphicsManager.EnqueueRenderable(parameters, RendererType);
         }
 
         private void BuildTerrainBoundingBox()
         {
-            TerrainHeightMap terrain = AssetLibrary.LookupTerrain(mTerrainName).HeightMap;
+            TerrainHeightMap terrain = AssetLibrary.LookupTerrain(Name).HeightMap;
 
             mBoundingBoxes = new BoundingBox[terrain.NumChunksVertical, terrain.NumChunksHorizontal];
 

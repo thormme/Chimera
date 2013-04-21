@@ -31,8 +31,6 @@ namespace WorldEditor
         private const int DefaultWidth = 100;
         private const int DefaultHeight = 100;
 
-        private const double UndoTimeLimit = 0.10;
-
         #endregion
 
         #region UndoRedo
@@ -116,8 +114,6 @@ namespace WorldEditor
         private DummyWorld mDummyWorld = null;
 
         private GameDeviceControl mGameControl = null;
-
-        private double mTimeSinceUndo = 0.0;
 
         private EditorForm.Layers mLastLayer = EditorForm.Layers.BACKGROUND;
         private string mLastTexture = "default_terrain_detail";
@@ -249,7 +245,7 @@ namespace WorldEditor
             TreeNode entityNode = new TreeNode("Entities");
             EditorForm.ObjectPlacementPanel.ObjectTree.Nodes.Add(modelNode);
             EditorForm.ObjectPlacementPanel.ObjectTree.Nodes.Add(entityNode);
-            foreach (var model in AssetLibrary.ModelLibrary)
+            foreach (var model in AssetLibrary.InanimateModelLibrary)
             {
                 try
                 {
@@ -446,6 +442,10 @@ namespace WorldEditor
             {
                 SaveAsHandler(sender, e);
             }
+            else
+            {
+                SaveHandler(sender, e);
+            }
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.CreateNoWindow = false;
@@ -469,7 +469,7 @@ namespace WorldEditor
             TreeNode selectedObject = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode;
             if (mObjects.ContainsKey(selectedObject.Text) && selectedObject.Nodes.Count == 0)
             {
-                Texture2D previewImage = GraphicsManager.RenderPreviewImage(AssetLibrary.LookupModel(mObjects[selectedObject.Text].Model));
+                Texture2D previewImage = GraphicsManager.RenderPreviewImage(AssetLibrary.LookupInanimateModel(mObjects[selectedObject.Text].Model));
                 MemoryStream ms = new MemoryStream();
 
                 previewImage.SaveAsPng(ms, previewImage.Width, previewImage.Height);
@@ -521,7 +521,7 @@ namespace WorldEditor
         private void TextureHandler(object sender, EventArgs e)
         {
             PictureBox pictureBox = (TextureSelectionPane as TextureSelectionForm).TexturePreview as PictureBox;
-            Texture2D texture = AssetLibrary.LookupSprite(TextureSelectionPane.TextureList.SelectedItem.ToString());
+            Texture2D texture = AssetLibrary.LookupTexture(TextureSelectionPane.TextureList.SelectedItem.ToString());
             RenderTarget2D transformedTexture = new RenderTarget2D(GraphicsManager.Device, pictureBox.Width, pictureBox.Height);
 
             GraphicsManager.Device.SetRenderTarget(transformedTexture);
@@ -567,20 +567,12 @@ namespace WorldEditor
 
         private void UndoHandler(object sender, EventArgs e)
         {
-            if (mTimeSinceUndo > UndoTimeLimit)
-            {
-                mTimeSinceUndo = 0.0;
-                mDummyWorld.UndoHeightMap();
-            }
+            mDummyWorld.UndoHeightMap();
         }
 
         private void RedoHandler(object sender, EventArgs e)
         {
-            if (mTimeSinceUndo > UndoTimeLimit)
-            {
-                mTimeSinceUndo = 0.0;
-                mDummyWorld.RedoHeightMap();
-            }
+            mDummyWorld.RedoHeightMap();
         }
 
         private void UpdateModeContext(object sender, EventArgs e)
@@ -661,30 +653,26 @@ namespace WorldEditor
 
         private void PerformActions(GameTime gameTime)
         {
-            mTimeSinceUndo += gameTime.ElapsedGameTime.TotalSeconds;
-
             if (!mIsActive)
             {
                 return;
             }
 
-            if (mControls.Control.Active && mTimeSinceUndo > UndoTimeLimit)
+            if (mControls.Play.Active)
+            {
+                PlayHandler(this, EventArgs.Empty);
+            }
+
+            if (mControls.Control.Active)
             {
                 if (mControls.Undo.Active)
                 {
-                    mTimeSinceUndo = 0.0;
                     mDummyWorld.UndoHeightMap();
                 }
                 else if (mControls.Redo.Active)
                 {
-                    mTimeSinceUndo = 0.0;
                     mDummyWorld.RedoHeightMap();
                 }
-            }
-
-            if (!mPlaceable)
-            {
-                return;
             }
 
             mDummyWorld.NewHeightMapAction = mDummyWorld.NewHeightMapAction || !mControls.LeftHold.Active;
@@ -710,8 +698,18 @@ namespace WorldEditor
             {
                 switch (EditorForm.Mode)
                 {
+                    case Dialogs.EditorForm.EditorMode.OBJECTS:
+                    {
+                        Entity.HighlightObjectsInSelection();
+                        break;
+                    }
                     case EditorForm.EditorMode.HEIGHTMAP:
                     {
+                        if (!mPlaceable)
+                        {
+                            return;
+                        }
+
                         float size = HeightMapBrushPropertiesPane.BrushSizeTrackBar.Value;
                         float strength = HeightMapBrushPropertiesPane.BrushMagnitudeTrackBar.Value * 10.0f;
                         mDummyWorld.ModifyHeightMap(mCursorObject.Position, size, strength, EditorForm.HeightMapBrush, EditorForm.Tool);
@@ -719,6 +717,11 @@ namespace WorldEditor
                     }
                     case EditorForm.EditorMode.PAINTING:
                     {
+                        if (!mPlaceable)
+                        {
+                            return;
+                        }
+
                         bool layerHidden = false;
                         switch (EditorForm.PaintingLayer)
                         {
@@ -770,7 +773,7 @@ namespace WorldEditor
         private void UpdateLayerPaneImages(EditorForm.Layers layer, string textureName)
         {
             MemoryStream ms = new MemoryStream();
-            Texture2D texture = AssetLibrary.LookupSprite(textureName);
+            Texture2D texture = AssetLibrary.LookupTexture(textureName);
 
             texture.SaveAsPng(ms, 30, 30);
 

@@ -54,6 +54,8 @@ namespace GraphicsLibrary
             mHeightMap = heightMap;
             mTexture   = texture;
             mEffect    = effect;
+
+            mUIConfigurer = null;
         }
 
         #endregion
@@ -76,7 +78,7 @@ namespace GraphicsLibrary
             effect.Parameters["xLightProjection"].SetValue(lightProjection);
         }
 
-        protected override void ShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
+        protected override void WithShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
         {
             CascadedShadowMap shadowMap = optionalParameters[0] as CascadedShadowMap;
             Light light = optionalParameters[1] as Light;
@@ -115,6 +117,11 @@ namespace GraphicsLibrary
 
             effect.SpecularColor = new Vector3(0.25f);
             effect.SpecularPower = 16;
+        }
+
+        protected override void NoShadeConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
+        {
+            effect.CurrentTechnique = effect.Techniques["NoShade"];
         }
 
         protected override void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
@@ -196,7 +203,7 @@ namespace GraphicsLibrary
 
                     if (detailTextureName != null)
                     {
-                        mEffect.Parameters[LAYER_TEXTURE_NAMES[i]].SetValue(AssetLibrary.LookupSprite(detailTextureName));
+                        mEffect.Parameters[LAYER_TEXTURE_NAMES[i]].SetValue(AssetLibrary.LookupTexture(detailTextureName));
 
                         mEffect.Parameters[LAYER_TEXTURE_NAMES[i] + "_uvOffset"].SetValue(uvOffset);
                         mEffect.Parameters[LAYER_TEXTURE_NAMES[i] + "_uvScale"].SetValue(uvScale);

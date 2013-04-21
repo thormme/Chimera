@@ -26,6 +26,12 @@ const float SobelYKernel[9] = { 1, 2,  1, 0, 0,  0, -1, -2, -1 };
 // Resolution of scene rendered to texture.
 float2 ScreenResolution;
 
+// Parameters for selection box rendering.
+float2 xSelectionStart;
+float2 xSelectionEnd;
+float2 xSelectionLineWidth;
+float4 xSelectionColor;
+
 // Current scene rendered to texture without any post processing.
 DECLARE_TEXTURE(SceneTexture, 0);
 
@@ -83,6 +89,21 @@ float4 CompositePS(float2 texCoord : TEXCOORD0) : COLOR0
 	return float4(sceneColor * (1.0 - 0.75 * outline.r), 1.0);
 }
 
+float4 SelectionBoxPS(float2 texCoord : TEXCOORD0) : COLOR0
+{
+	float3 sceneColor = SAMPLE_TEXTURE(SceneTexture, texCoord);
+
+	if ((texCoord.r >= xSelectionStart.r && texCoord.r <= xSelectionStart.r + xSelectionLineWidth.r ||
+		 texCoord.r <= xSelectionEnd.r   && texCoord.r >= xSelectionEnd.r   - xSelectionLineWidth.r) &&
+		(texCoord.g >= xSelectionStart.g && texCoord.g <= xSelectionStart.g + xSelectionLineWidth.g ||
+		 texCoord.g <= xSelectionEnd.g   && texCoord.g >= xSelectionEnd.g   - xSelectionLineWidth.g))
+	{
+		sceneColor = xSelectionColor.rgb;
+	}
+
+	return float4(sceneColor, 1.0);
+}
+
 technique EdgeDetect
 {
 	Pass
@@ -96,5 +117,13 @@ technique Composite
 	Pass
 	{
 		PixelShader = compile ps_2_0 CompositePS();
+	}
+}
+
+technique SelectionBox
+{
+	Pass
+	{
+		PixelShader = compile ps_2_0 SelectionBoxPS();
 	}
 }

@@ -50,6 +50,8 @@ namespace GraphicsLibrary
             ResizeVertices();
             ResizeIndices();
             FillBuffers();
+
+            mUIConfigurer = null;
         }
 
         #endregion
@@ -72,7 +74,7 @@ namespace GraphicsLibrary
             effect.Parameters["xLightProjection"].SetValue(lightProjection);
         }
 
-        protected override void ShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
+        protected override void WithShadowsConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
         {
             CascadedShadowMap shadowMap = optionalParameters[0] as CascadedShadowMap;
             Light light = optionalParameters[1] as Light;
@@ -113,6 +115,11 @@ namespace GraphicsLibrary
             effect.SpecularPower = 16;
         }
 
+        protected override void NoShadeConfigurer(AnimationUtilities.SkinnedEffect effect, RendererBase.RendererParameters instance, object[] optionalParameters)
+        {
+            effect.CurrentTechnique = effect.Techniques["NoShade"];
+        }
+
         protected override void PickingConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
         {
             effect.CurrentTechnique = effect.Techniques["PickingShade"];
@@ -133,7 +140,7 @@ namespace GraphicsLibrary
             mEffect.Parameters["xOverlayColor"].SetValue(waterInstance.OverlayColor.ToVector3());
             mEffect.Parameters["xOverlayColorWeight"].SetValue(waterInstance.OverlayWeight);
             mEffect.Parameters["xTextureOffset"].SetValue(waterInstance.TextureAnimationOffset);
-            mEffect.Texture = AssetLibrary.LookupSprite(waterInstance.TextureName);
+            mEffect.Texture = AssetLibrary.LookupTexture(waterInstance.TextureName);
 
             GraphicsManager.Device.SetVertexBuffer(mVertexBuffer);
             GraphicsManager.Device.Indices = mIndexBuffer;

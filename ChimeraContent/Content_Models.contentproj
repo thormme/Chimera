@@ -242,7 +242,6 @@
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Compile Include="models\suckCone\suckCone.X">
       <Name>suckCone</Name>
@@ -311,6 +310,27 @@
     </Compile>
     <Compile Include="models\skyBox\skyBox.X">
       <Name>skyBox</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\gizmo\translateGizmo.X">
+      <Name>translateGizmo</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\gizmo\scaleGizmo.X">
+      <Name>scaleGizmo</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\gizmo\rotateGizmo.X">
+      <Name>rotateGizmo</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

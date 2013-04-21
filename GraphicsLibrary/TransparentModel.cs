@@ -5,11 +5,16 @@ namespace GraphicsLibrary
 {
     public class TransparentModel : Renderable
     {
-        private string mModelName;
-
-        public TransparentModel(string modelName)
+        public TransparentModel(string modelName) : base(modelName, typeof(TransparentModelRenderer))
         {
-            mModelName = modelName;
+        }
+
+        protected override void AlertAssetLibrary()
+        {
+            if (AssetLibrary.LookupTransparentModel(Name) == null)
+            {
+                AssetLibrary.AddTransparentModel(Name, new TransparentModelRenderer(AssetLibrary.LookupInanimateModel(Name).Model));
+            }
         }
 
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
@@ -17,7 +22,7 @@ namespace GraphicsLibrary
             TransparentModelRenderer.TransparentModelParameters parameters = new TransparentModelRenderer.TransparentModelParameters();
             parameters.AnimationOffset = Vector2.Zero;
             parameters.BoundingBox = BoundingBox;
-            parameters.Name = mModelName;
+            parameters.Name = Name;
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
             parameters.TryCull = tryCull;

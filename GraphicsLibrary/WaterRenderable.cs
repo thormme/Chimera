@@ -40,17 +40,20 @@ namespace GraphicsLibrary
         #endregion
 
         public WaterRenderable(string textureName, Vector2 animationRate, float seaLevel)
+            : base("WATER_RENDERER", typeof(WaterRenderer))
         {
             mAnimationRate = animationRate;
             mSeaLevel = seaLevel;
             mTextureName = textureName;
         }
+
+        protected override void AlertAssetLibrary() { }
         
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
             WaterRenderer.WaterParameters parameters = new WaterRenderer.WaterParameters();
             parameters.TextureAnimationOffset = new Vector2((mAnimationRate.X * mElapsedTime) % 1.0f, (mAnimationRate.Y * mElapsedTime) % 1.0f);
-            parameters.Name = "WATER_RENDERER";
+            parameters.Name = Name;
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
             parameters.SeaLevel = mSeaLevel;
@@ -58,7 +61,7 @@ namespace GraphicsLibrary
             parameters.TryCull = tryCull;
             parameters.World = worldTransform;
 
-            GraphicsManager.EnqueueRenderable(parameters);
+            GraphicsManager.EnqueueRenderable(parameters, RendererType);
         }
     }
 }

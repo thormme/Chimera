@@ -133,6 +133,8 @@
     <Compile Include="TerrainTexture.cs" />
     <Compile Include="TransparentModel.cs" />
     <Compile Include="TransparentModelRenderer.cs" />
+    <Compile Include="UIModel.cs" />
+    <Compile Include="UIModelRenderer.cs" />
     <Compile Include="WaterRenderable.cs" />
     <Compile Include="WaterRenderer.cs" />
   </ItemGroup>

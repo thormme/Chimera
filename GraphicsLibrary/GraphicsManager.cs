@@ -98,6 +98,18 @@ namespace GraphicsLibrary
 
         #endregion
 
+        #region Picking Variables
+
+        static private bool mDrawSelectionBox = false;
+
+        static private Rectangle mSelectionBox;
+
+        static private int SelectionBoxLineWidth = 1;
+
+        static private Color SelectionBoxColor = Color.Red;
+
+        #endregion
+
         #region Configuration Variables And Properties
 
         public enum CelShaded { All, Models, AnimateModels, Terrain, None };
@@ -292,8 +304,27 @@ namespace GraphicsLibrary
 
             foreach (RendererBase renderer in mRenderQueue)
             {
+                if (renderer is UIModelRenderer)
+                {
+                    continue;
+                }
+
                 renderer.RenderAllInstancesPicking(
                     Utils.GetViewMatrixFromRay(ray), 
+                    Matrix.CreateOrthographic(1, 1, mCamera.GetNearPlaneDistance(), mCamera.GetFarPlaneDistance()));
+            }
+
+            mDevice.Clear(ClearOptions.DepthBuffer, new Vector4(0), 65535, 0);
+
+            foreach (RendererBase renderer in mRenderQueue)
+            {
+                if (!(renderer is UIModelRenderer))
+                {
+                    continue;
+                }
+
+                renderer.RenderAllInstancesPicking(
+                    Utils.GetViewMatrixFromRay(ray),
                     Matrix.CreateOrthographic(1, 1, mCamera.GetNearPlaneDistance(), mCamera.GetFarPlaneDistance()));
             }
 
@@ -317,9 +348,9 @@ namespace GraphicsLibrary
 
             List<UInt32> ids = new List<UInt32>();
 
-            for (int y = Math.Max(0, bounds.Y); y - bounds.Y < bounds.Height; y++)
+            for (int y = Math.Max(0, bounds.Y); y < Math.Min(bounds.Y + bounds.Height, mPickingBuffer.Height); y++)
             {
-                for (int x = Math.Max(0, bounds.X); x - bounds.X < bounds.Width; x++)
+                for (int x = Math.Max(0, bounds.X); x < Math.Min(bounds.X + bounds.Width, mPickingBuffer.Width); x++)
                 {
                     Color pixelColor = depthColor[y * mPickingBuffer.Width + x];
                     UInt32 id = ConvertPickingColorToID(pixelColor);
@@ -334,6 +365,15 @@ namespace GraphicsLibrary
             return ids;            
         }
 
+        static public void HighlightSelection(Rectangle selectionBox)
+        {
+            mDrawSelectionBox = true;
+            mSelectionBox = selectionBox;
+        }
+
+        /// <summary>
+        /// Renders to texture a centered image of a given renderer.
+        /// </summary>
         static public Texture2D RenderPreviewImage(ModelRenderer renderer)
         {
             RenderTarget2D previewTexture = new RenderTarget2D(mDevice, 256, 256, false, SurfaceFormat.Color, DepthFormat.Depth24);
@@ -373,14 +413,14 @@ namespace GraphicsLibrary
 
         #region Renderable Enqueue Methods
 
-        static public void EnqueueRenderable(RendererBase.RendererParameters instance)
+        static public void EnqueueRenderable(RendererBase.RendererParameters instance, Type rendererType)
         {
             if (!mCanRender)
             {
                 throw new Exception("Unable to render " + instance.Name + " before calling BeginRendering() or after FinishRendering().\n");
             }
 
-            RendererBase renderer = AssetLibrary.LookupRenderer(instance.Name);
+            RendererBase renderer = AssetLibrary.LookupRenderer(instance.Name, rendererType);
             if (!mRenderQueue.Contains(renderer))
             {
                 mRenderQueue.Enqueue(renderer);
@@ -398,7 +438,7 @@ namespace GraphicsLibrary
                 throw new Exception("Unable to render transparent renderer " + instance.Name + " before calling BeginRendering() or after FinishRendering().\n");
             }
 
-            ModelRenderer renderer = AssetLibrary.LookupModel(instance.Name);
+            ModelRenderer renderer = AssetLibrary.LookupTransparentModel(instance.Name);
             if (!(renderer is TransparentModelRenderer))
             {
                 renderer = new TransparentModelRenderer(renderer.Model);
@@ -516,6 +556,25 @@ namespace GraphicsLibrary
 
             foreach (RendererBase renderer in mRenderQueue)
             {
+                if (renderer is UIModelRenderer)
+                {
+                    continue;
+                }
+
+                renderer.RenderAllInstancesPicking(
+                    mView,
+                    mProjection);
+            }
+
+            mDevice.Clear(ClearOptions.DepthBuffer, new Vector4(0), 65535, 0);
+
+            foreach (RendererBase renderer in mRenderQueue)
+            {
+                if (!(renderer is UIModelRenderer))
+                {
+                    continue;
+                }
+
                 renderer.RenderAllInstancesPicking(
                     mView,
                     mProjection);
@@ -571,14 +630,36 @@ namespace GraphicsLibrary
         static private void RenderGUI()
         {
             mDevice.SetRenderTarget(null);
+
+            foreach (RendererBase renderer in mRenderQueue)
+            {
+                renderer.RenderAllInstancesUI(mView, mProjection);
+            }
+
+            if (mDrawSelectionBox)
+            {
+                Texture2D whitePrimitive = new Texture2D(mDevice, 1, 1);
+                whitePrimitive.SetData(new Color[] { Color.White });
+
+                SpriteBatch.Begin();
+                SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X, mSelectionBox.Y, SelectionBoxLineWidth, mSelectionBox.Height), SelectionBoxColor);
+                SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X + mSelectionBox.Width - SelectionBoxLineWidth, mSelectionBox.Y, SelectionBoxLineWidth, mSelectionBox.Height), SelectionBoxColor);
+                SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X, mSelectionBox.Y, mSelectionBox.Width, SelectionBoxLineWidth), SelectionBoxColor);
+                SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X, mSelectionBox.Y + mSelectionBox.Height - SelectionBoxLineWidth, mSelectionBox.Width, SelectionBoxLineWidth), SelectionBoxColor);
+                SpriteBatch.Draw(whitePrimitive, mSelectionBox, new Color(SelectionBoxColor.R, SelectionBoxColor.G, SelectionBoxColor.B, 0.2f));
+                SpriteBatch.End();
+
+                mDrawSelectionBox = false;
+            }
+
             foreach (SpriteDefinition sprite in mSpriteQueue)
             {
                 mSpriteBatch.Begin(0, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
-                mSpriteBatch.Draw(AssetLibrary.LookupSprite(sprite.Name), sprite.ScreenSpace, Color.White);
+                mSpriteBatch.Draw(AssetLibrary.LookupTexture(sprite.Name), sprite.ScreenSpace, Color.White);
                 if (sprite.BlendColorWeight > 0.0f)
                 {
                     Color overlay = new Color(sprite.BlendColor.R, sprite.BlendColor.G, sprite.BlendColor.B, sprite.BlendColorWeight);
-                    mSpriteBatch.Draw(AssetLibrary.LookupSprite(sprite.Name), sprite.ScreenSpace, overlay);
+                    mSpriteBatch.Draw(AssetLibrary.LookupTexture(sprite.Name), sprite.ScreenSpace, overlay);
                 }
                 mSpriteBatch.End();
             }
