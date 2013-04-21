@@ -167,9 +167,9 @@ namespace WorldEditor
 
             }
 
-            mGizmo.Update(ObjectParameterPane.SelectedObjects);
-
             PerformActions(gameTime);
+
+            mGizmo.Update(ObjectParameterPane.SelectedObjects);
         }
 
         public void Draw()
@@ -490,6 +490,11 @@ namespace WorldEditor
 
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
+            CreateNewObjectFromParameters();
+        }
+
+        private DummyObject CreateNewObjectFromParameters()
+        {
             TreeNode selectedObject = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode;
             if (selectedObject != null && mObjects.ContainsKey(selectedObject.Text) && selectedObject.Nodes.Count <= 0)
             {
@@ -498,7 +503,9 @@ namespace WorldEditor
                 ObjectParameterPane.SelectedObjects.Add(dummy);
                 SetObjectPropertiesToForm(dummy);
                 mDummyWorld.AddObject(dummy);
+                return dummy;
             }
+            return null;
         }
 
         private void SetObjectPropertiesToForm(DummyObject dummyObject)
@@ -684,19 +691,22 @@ namespace WorldEditor
 
             if (mControls.LeftReleased.Active && EditorForm.Mode == EditorForm.EditorMode.OBJECTS)
             {
-                foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
+                if (!mGizmo.IsDragging)
                 {
-                    oldObject.IsHighlighted = false;
-                }
-                ObjectParameterPane.SelectedObjects.Clear();
+                    foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
+                    {
+                        oldObject.IsHighlighted = false;
+                    }
+                    ObjectParameterPane.SelectedObjects.Clear();
 
-                List<DummyObject> dummyObjects = Entity.GetObjectsInSelection(mDummyWorld);
-                foreach (DummyObject newObject in dummyObjects)
-                {
-                    newObject.IsHighlighted = true;
-                }
+                    List<DummyObject> dummyObjects = Entity.GetObjectsInSelection(mDummyWorld);
+                    foreach (DummyObject newObject in dummyObjects)
+                    {
+                        newObject.IsHighlighted = true;
+                    }
 
-                ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
+                    ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
+                }
                 ObjectParameterPane.UpdateParameterFields();
             }
             else if (mControls.LeftHold.Active)
@@ -705,7 +715,10 @@ namespace WorldEditor
                 {
                     case Dialogs.EditorForm.EditorMode.OBJECTS:
                     {
-                        Entity.HighlightObjectsInSelection();
+                        if (!mGizmo.IsDragging)
+                        {
+                            Entity.HighlightObjectsInSelection();
+                        }
                         break;
                     }
                     case EditorForm.EditorMode.HEIGHTMAP:
@@ -767,6 +780,30 @@ namespace WorldEditor
                         break;
                     }
                 }
+            }
+            if (mControls.LeftPressed.Active)
+            {
+                switch (EditorForm.Tool)
+                {
+                    case Dialogs.EditorForm.Tools.PLACE:
+                        if (mPlaceable)
+                        {
+                            DummyObject dummyObject = CreateNewObjectFromParameters();
+                            if (dummyObject != null)
+                            {
+                                dummyObject.Position = mCursorObject.Position;
+                            }
+                        }
+                        break;
+                }
+            }
+            if (mControls.Delete.Active)
+            {
+                foreach (DummyObject dummyObject in ObjectParameterPane.SelectedObjects)
+                {
+                    mDummyWorld.RemoveObject(dummyObject);
+                }
+                ObjectParameterPane.SelectedObjects.Clear();
             }
         }
 
