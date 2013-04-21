@@ -649,11 +649,6 @@ namespace WorldEditor
                 }
             }
 
-            if (!mPlaceable)
-            {
-                return;
-            }
-
             mDummyWorld.NewHeightMapAction = mDummyWorld.NewHeightMapAction || !mControls.LeftHold.Active;
 
             if (mControls.LeftReleased.Active && EditorForm.Mode == EditorForm.EditorMode.OBJECTS)
@@ -677,8 +672,18 @@ namespace WorldEditor
             {
                 switch (EditorForm.Mode)
                 {
+                    case Dialogs.EditorForm.EditorMode.OBJECTS:
+                    {
+                        Entity.HighlightObjectsInSelection();
+                        break;
+                    }
                     case EditorForm.EditorMode.HEIGHTMAP:
                     {
+                        if (!mPlaceable)
+                        {
+                            return;
+                        }
+
                         float size = HeightMapBrushPropertiesPane.BrushSizeTrackBar.Value;
                         float strength = HeightMapBrushPropertiesPane.BrushMagnitudeTrackBar.Value * 10.0f;
                         mDummyWorld.ModifyHeightMap(mCursorObject.Position, size, strength, EditorForm.HeightMapBrush, EditorForm.Tool);
@@ -686,6 +691,11 @@ namespace WorldEditor
                     }
                     case EditorForm.EditorMode.PAINTING:
                     {
+                        if (!mPlaceable)
+                        {
+                            return;
+                        }
+
                         bool layerHidden = false;
                         switch (EditorForm.PaintingLayer)
                         {

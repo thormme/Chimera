@@ -98,6 +98,18 @@ namespace GraphicsLibrary
 
         #endregion
 
+        #region Picking Variables
+
+        static private bool mDrawSelectionBox = false;
+
+        static private Rectangle mSelectionBox;
+
+        static private int SelectionBoxLineWidth = 1;
+
+        static private Color SelectionBoxColor = Color.Red;
+
+        #endregion
+
         #region Configuration Variables And Properties
 
         public enum CelShaded { All, Models, AnimateModels, Terrain, None };
@@ -336,9 +348,9 @@ namespace GraphicsLibrary
 
             List<UInt32> ids = new List<UInt32>();
 
-            for (int y = Math.Max(0, bounds.Y); y - bounds.Y < bounds.Height; y++)
+            for (int y = Math.Max(0, bounds.Y); y < Math.Min(bounds.Y + bounds.Height, mPickingBuffer.Height); y++)
             {
-                for (int x = Math.Max(0, bounds.X); x - bounds.X < bounds.Width; x++)
+                for (int x = Math.Max(0, bounds.X); x < Math.Min(bounds.X + bounds.Width, mPickingBuffer.Width); x++)
                 {
                     Color pixelColor = depthColor[y * mPickingBuffer.Width + x];
                     UInt32 id = ConvertPickingColorToID(pixelColor);
@@ -351,6 +363,12 @@ namespace GraphicsLibrary
             }
 
             return ids;            
+        }
+
+        static public void HighlightSelection(Rectangle selectionBox)
+        {
+            mDrawSelectionBox = true;
+            mSelectionBox = selectionBox;
         }
 
         /// <summary>
@@ -616,6 +634,22 @@ namespace GraphicsLibrary
             foreach (RendererBase renderer in mRenderQueue)
             {
                 renderer.RenderAllInstancesUI(mView, mProjection);
+            }
+
+            if (mDrawSelectionBox)
+            {
+                Texture2D whitePrimitive = new Texture2D(mDevice, 1, 1);
+                whitePrimitive.SetData(new Color[] { Color.White });
+
+                SpriteBatch.Begin();
+                SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X, mSelectionBox.Y, SelectionBoxLineWidth, mSelectionBox.Height), SelectionBoxColor);
+                SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X + mSelectionBox.Width - SelectionBoxLineWidth, mSelectionBox.Y, SelectionBoxLineWidth, mSelectionBox.Height), SelectionBoxColor);
+                SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X, mSelectionBox.Y, mSelectionBox.Width, SelectionBoxLineWidth), SelectionBoxColor);
+                SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X, mSelectionBox.Y + mSelectionBox.Height - SelectionBoxLineWidth, mSelectionBox.Width, SelectionBoxLineWidth), SelectionBoxColor);
+                SpriteBatch.Draw(whitePrimitive, mSelectionBox, new Color(SelectionBoxColor.R, SelectionBoxColor.G, SelectionBoxColor.B, 0.2f));
+                SpriteBatch.End();
+
+                mDrawSelectionBox = false;
             }
 
             foreach (SpriteDefinition sprite in mSpriteQueue)

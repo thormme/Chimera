@@ -32,6 +32,18 @@ namespace WorldEditor
         private Vector3 mDirection = Vector3.Zero;
         private float mSpeed = 0.05f;
 
+        private Rectangle SelectionRectangle
+        {
+            get
+            {
+                return new Rectangle(
+                        (int)Math.Min(mControls.MouseState.X, mDragPoint.X) - Viewport.X,
+                        (int)Math.Min(mControls.MouseState.Y, mDragPoint.Y) - Viewport.Y,
+                        (int)Math.Max(Math.Abs(mDragPoint.X - mControls.MouseState.X), 1),
+                        (int)Math.Max(Math.Abs(mDragPoint.Y - mControls.MouseState.Y), 1));
+            }
+        }
+
         public Entity(GraphicsDevice graphicsDevice, Controls controls, FPSCamera camera)
         {
             mGraphicsDevice = graphicsDevice;
@@ -95,12 +107,12 @@ namespace WorldEditor
         public List<DummyObject> GetObjectsInSelection(DummyWorld dummyWorld)
         {
             return dummyWorld.GetDummyObjectFromID(
-                GraphicsManager.GetPickingScreenObjects(
-                    new Rectangle(
-                        (int)Math.Min(mControls.MouseState.X, mDragPoint.X) - Viewport.X,
-                        (int)Math.Min(mControls.MouseState.Y, mDragPoint.Y) - Viewport.Y, 
-                        (int)Math.Max(Math.Abs(mDragPoint.X - mControls.MouseState.X), 1),
-                        (int)Math.Max(Math.Abs(mDragPoint.Y - mControls.MouseState.Y), 1))).ToArray());
+                GraphicsManager.GetPickingScreenObjects(SelectionRectangle).ToArray());
+        }
+
+        public void HighlightObjectsInSelection()
+        {
+            GraphicsManager.HighlightSelection(SelectionRectangle);
         }
 
         public Tuple<RayHit, DummyObject> GetPickingLocation(DummyWorld dummyWorld, Form gameForm)
