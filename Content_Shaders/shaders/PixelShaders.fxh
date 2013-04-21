@@ -19,10 +19,10 @@ float4 CompositeTerrainTexture(float2 texCoord)
 	float2 alphaUV = AlphaTexture_uvOffset + float2(texCoord.r * AlphaTexture_uvScale.r, texCoord.g * AlphaTexture_uvScale.g);
 	float4 alphaTextureColor = SAMPLE_TEXTURE(AlphaTexture, alphaUV);
 
-	textureWeights.r *= redTextureColor.a;
-	textureWeights.g *= greenTextureColor.a;
-	textureWeights.b *= blueTextureColor.a;
-	textureWeights.a *= alphaTextureColor.a;
+	textureWeights.r *= redTextureColor.a   * xTextureMask.r;
+	textureWeights.g *= greenTextureColor.a * xTextureMask.g;
+	textureWeights.b *= blueTextureColor.a  * xTextureMask.b;
+	textureWeights.a *= alphaTextureColor.a * xTextureMask.a;
 
 	float4 baseRedComp			     = textureWeights.r * redTextureColor   + (1.0 - textureWeights.r) * baseColor;
 	float4 baseRedGreenComp			 = textureWeights.g * greenTextureColor + (1.0 - textureWeights.g) * baseRedComp;

@@ -20,6 +20,13 @@ namespace GraphicsLibrary
             BuildTerrainBoundingBox();
         }
 
+        public Vector4 LayerMask
+        {
+            get { return mLayerMask; }
+            set { mLayerMask = value; }
+        }
+        private Vector4 mLayerMask = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+
         public enum CursorShape { NONE, CIRCLE, BLOCK };
 
         public CursorShape DrawCursor
@@ -70,6 +77,7 @@ namespace GraphicsLibrary
             parameters.Name = mTerrainName;
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
+            parameters.TextureMask = LayerMask;
             parameters.World = worldTransform;
 
             GraphicsManager.EnqueueRenderable(parameters);

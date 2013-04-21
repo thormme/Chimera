@@ -153,12 +153,6 @@
     <Compile Include="Dialogs\HeightMapBrushPropertiesForm.Designer.cs">
       <DependentUpon>HeightMapBrushPropertiesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\BrushSelectionForm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Dialogs\BrushSelectionForm.Designer.cs">
-      <DependentUpon>BrushSelectionForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\EditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,6 +176,18 @@
     </Compile>
     <Compile Include="Dialogs\ObjectPlacementPanel.Designer.cs">
       <DependentUpon>ObjectPlacementPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\TextureLayerContainerForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TextureLayerContainerForm.Designer.cs">
+      <DependentUpon>TextureLayerContainerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\TextureLayerForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TextureLayerForm.Designer.cs">
+      <DependentUpon>TextureLayerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\TextureSelectionForm.cs">
       <SubType>UserControl</SubType>
@@ -255,6 +261,12 @@
     <None Include="Artwork\layer_background_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Artwork\invalidTexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Artwork\visible_layer_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
@@ -315,9 +327,6 @@
     <EmbeddedResource Include="Dialogs\HeightMapBrushPropertiesForm.resx">
       <DependentUpon>HeightMapBrushPropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\BrushSelectionForm.resx">
-      <DependentUpon>BrushSelectionForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -327,6 +336,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ObjectPlacementPanel.resx">
       <DependentUpon>ObjectPlacementPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\TextureLayerContainerForm.resx">
+      <DependentUpon>TextureLayerContainerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\TextureLayerForm.resx">
+      <DependentUpon>TextureLayerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\TextureSelectionForm.resx">
       <DependentUpon>TextureSelectionForm.cs</DependentUpon>

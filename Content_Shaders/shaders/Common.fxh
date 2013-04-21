@@ -68,6 +68,8 @@ BEGIN_CONSTANTS
 	float2 AlphaTexture_uvOffset;
 	float2 AlphaTexture_uvScale;
 
+	float4 xTextureMask;
+
 MATRIX_CONSTANTS
 
     float4x4 WorldViewProj                      _vs(c15)          _cb(c0);
