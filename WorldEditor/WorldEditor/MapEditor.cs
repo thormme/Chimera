@@ -220,6 +220,7 @@ namespace WorldEditor
             EditorForm.RedoMenu.Click += RedoHandler;
 
             EditorForm.ModeChanged += UpdateModeContext;
+            EditorForm.ToolChanged += UpdateToolContext;
 
             ObjectParameterPane.Show();
             ObjectParameterPane.Dock = DockStyle.Left;
