@@ -140,9 +140,7 @@ namespace WorldEditor.Dialogs
             mObjectTools = new List<ToolStripButton>()
             {
                 SelectObjectButton,
-                TranslateObjectButton,
-                RotateObjectButton,
-                ScaleObjectButton
+                CreateObjectButton
             }.AsReadOnly();
 
             mToolGroups = new List<ReadOnlyCollection<ToolStripButton>>
@@ -206,9 +204,7 @@ namespace WorldEditor.Dialogs
             this.smoothTextureButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.PAINTING, Tools.BLEND);
 
             this.SelectObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SELECT);
-            this.TranslateObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.PLACE);
-            this.RotateObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.ROTATE);
-            this.ScaleObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SCALE);
+            this.CreateObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.PLACE);
 
             this.TextureLayerForm.BackgroundLayer.Tag = new Layers?(Layers.BACKGROUND);
             this.TextureLayerForm.Layer1.Tag = new Layers?(Layers.LAYER1);
@@ -235,14 +231,12 @@ namespace WorldEditor.Dialogs
             this.flattenTerrainButton.Image = UILibrary.FlattenTerrainIcon;
             this.smoothTerrainButton.Image  = UILibrary.SmoothTerrainIcon;
 
-            this.paintTextureButton.Image  = UILibrary.PaintingModeButtonIcon;
-            this.eraseTextureButton.Image  = UILibrary.LowerTerrainIcon;
-            this.smoothTextureButton.Image = UILibrary.SmoothTerrainIcon;
+            this.paintTextureButton.Image  = UILibrary.PaintBrushIcon;
+            this.eraseTextureButton.Image  = UILibrary.EraserIcon;
+            this.smoothTextureButton.Image = UILibrary.SpongeIcon;
 
-            this.SelectObjectButton.Image    = UILibrary.ObjectModeButtonIcon;
-            this.TranslateObjectButton.Image = UILibrary.ObjectModeButtonIcon;
-            this.RotateObjectButton.Image    = UILibrary.ObjectModeButtonIcon;
-            this.ScaleObjectButton.Image     = UILibrary.ObjectModeButtonIcon;
+            this.SelectObjectButton.Image  = UILibrary.ObjectSelectionIcon;
+            this.CreateObjectButton.Image  = UILibrary.NewObjectIcon;
 
             this.HeightMapBrushPropertiesForm.CircleBrushButton.Image        = UILibrary.CircleBrushIcon;
             this.HeightMapBrushPropertiesForm.CircleFeatherBrushButton.Image = UILibrary.CircleFeatheredBrushIcon;

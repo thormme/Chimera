@@ -9,8 +9,13 @@ namespace WorldEditor
     public static class UILibrary
     {
         public static Image HeightmapModeButtonIcon = Image.FromFile(@"Artwork/heightmap_icon.png");
-        public static Image PaintingModeButtonIcon = Image.FromFile(@"Artwork/painting_icon.png");
-        public static Image ObjectModeButtonIcon = Image.FromFile(@"Artwork/object_icon.png");
+
+        public static Image PaintBrushIcon = Image.FromFile(@"Artwork/painting_icon.png");
+        public static Image EraserIcon = Image.FromFile(@"Artwork/eraser_icon.png");
+        public static Image SpongeIcon = Image.FromFile(@"Artwork/sponge_icon.png");
+        
+        public static Image NewObjectIcon = Image.FromFile(@"Artwork/new_object_icon.png");
+        public static Image ObjectSelectionIcon = Image.FromFile(@"Artwork/object_selection_icon.png");
 
         public static Image CircleBrushIcon = Image.FromFile(@"Artwork/circle_brush_icon.png");
         public static Image CircleFeatheredBrushIcon = Image.FromFile(@"Artwork/circle_brush_feathered_icon.png");

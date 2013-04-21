@@ -106,7 +106,7 @@ namespace GraphicsLibrary
 
         static private int SelectionBoxLineWidth = 1;
 
-        static private Color SelectionBoxColor = Color.Red;
+        static private Color SelectionBoxColor = Color.White;
 
         #endregion
 
@@ -649,12 +649,12 @@ namespace GraphicsLibrary
                 Texture2D whitePrimitive = new Texture2D(mDevice, 1, 1);
                 whitePrimitive.SetData(new Color[] { Color.White });
 
-                SpriteBatch.Begin();
+                SpriteBatch.Begin(0, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
                 SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X, mSelectionBox.Y, SelectionBoxLineWidth, mSelectionBox.Height), SelectionBoxColor);
                 SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X + mSelectionBox.Width - SelectionBoxLineWidth, mSelectionBox.Y, SelectionBoxLineWidth, mSelectionBox.Height), SelectionBoxColor);
                 SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X, mSelectionBox.Y, mSelectionBox.Width, SelectionBoxLineWidth), SelectionBoxColor);
                 SpriteBatch.Draw(whitePrimitive, new Rectangle(mSelectionBox.X, mSelectionBox.Y + mSelectionBox.Height - SelectionBoxLineWidth, mSelectionBox.Width, SelectionBoxLineWidth), SelectionBoxColor);
-                SpriteBatch.Draw(whitePrimitive, mSelectionBox, new Color(SelectionBoxColor.R, SelectionBoxColor.G, SelectionBoxColor.B, 0.2f));
+                //SpriteBatch.Draw(whitePrimitive, mSelectionBox, new Color(SelectionBoxColor.R, SelectionBoxColor.G, SelectionBoxColor.B, 0.2f));
                 SpriteBatch.End();
 
                 mDrawSelectionBox = false;

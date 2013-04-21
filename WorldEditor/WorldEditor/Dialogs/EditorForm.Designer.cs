@@ -41,9 +41,7 @@
             this.smoothTextureButton = new System.Windows.Forms.ToolStripButton();
             this.textureSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.SelectObjectButton = new System.Windows.Forms.ToolStripButton();
-            this.TranslateObjectButton = new System.Windows.Forms.ToolStripButton();
-            this.RotateObjectButton = new System.Windows.Forms.ToolStripButton();
-            this.ScaleObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.CreateObjectButton = new System.Windows.Forms.ToolStripButton();
             this.objectSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,15 +58,15 @@
             this.ViewWaterMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewShadowsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextToolsPanel = new System.Windows.Forms.Panel();
-            this.ObjectParameterFormContainer = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.TextureSelectionForm = new WorldEditor.Dialogs.TextureSelectionForm();
             this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
             this.TextureLayerForm = new WorldEditor.Dialogs.TextureLayerContainerForm();
             this.HeightMapBrushPropertiesForm = new WorldEditor.Dialogs.HeightMapBrushPropertiesForm();
             this.TextureBrushPropertiesForm = new WorldEditor.Dialogs.TextureBrushPropertiesForm();
+            this.ObjectParameterFormContainer = new System.Windows.Forms.Panel();
             this.ObjectParametersForm = new WorldEditor.Dialogs.ObjectParametersForm();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.editorPanel = new WorldEditor.Dialogs.Editor();
             this.ToolStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
@@ -93,9 +91,7 @@
             this.smoothTextureButton,
             this.textureSeparator,
             this.SelectObjectButton,
-            this.TranslateObjectButton,
-            this.RotateObjectButton,
-            this.ScaleObjectButton,
+            this.CreateObjectButton,
             this.objectSeparator});
             this.ToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.ToolStrip.Location = new System.Drawing.Point(0, 26);
@@ -208,35 +204,15 @@
             this.SelectObjectButton.Text = "Select Objects";
             this.SelectObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
             // 
-            // TranslateObjectButton
+            // CreateObjectButton
             // 
-            this.TranslateObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.TranslateObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("TranslateObjectButton.Image")));
-            this.TranslateObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.TranslateObjectButton.Name = "TranslateObjectButton";
-            this.TranslateObjectButton.Size = new System.Drawing.Size(44, 44);
-            this.TranslateObjectButton.Text = "Translate Selected Object";
-            this.TranslateObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
-            // 
-            // RotateObjectButton
-            // 
-            this.RotateObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.RotateObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("RotateObjectButton.Image")));
-            this.RotateObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.RotateObjectButton.Name = "RotateObjectButton";
-            this.RotateObjectButton.Size = new System.Drawing.Size(44, 44);
-            this.RotateObjectButton.Text = "Rotate Selected Object";
-            this.RotateObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
-            // 
-            // ScaleObjectButton
-            // 
-            this.ScaleObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ScaleObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("ScaleObjectButton.Image")));
-            this.ScaleObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ScaleObjectButton.Name = "ScaleObjectButton";
-            this.ScaleObjectButton.Size = new System.Drawing.Size(44, 44);
-            this.ScaleObjectButton.Text = "Scale Selected Object";
-            this.ScaleObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
+            this.CreateObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.CreateObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("CreateObjectButton.Image")));
+            this.CreateObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.CreateObjectButton.Name = "CreateObjectButton";
+            this.CreateObjectButton.Size = new System.Drawing.Size(44, 44);
+            this.CreateObjectButton.Text = "Create New Objects";
+            this.CreateObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
             // 
             // objectSeparator
             // 
@@ -374,31 +350,6 @@
             this.ContextToolsPanel.Size = new System.Drawing.Size(251, 487);
             this.ContextToolsPanel.TabIndex = 4;
             // 
-            // ObjectParameterFormContainer
-            // 
-            this.ObjectParameterFormContainer.Controls.Add(this.ObjectParametersForm);
-            this.ObjectParameterFormContainer.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ObjectParameterFormContainer.Location = new System.Drawing.Point(0, 0);
-            this.ObjectParameterFormContainer.Name = "ObjectParameterFormContainer";
-            this.ObjectParameterFormContainer.Size = new System.Drawing.Size(234, 142);
-            this.ObjectParameterFormContainer.TabIndex = 12;
-            // 
-            // panel1
-            // 
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 73);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(926, 4);
-            this.panel1.TabIndex = 6;
-            // 
-            // panel2
-            // 
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 25);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(926, 1);
-            this.panel2.TabIndex = 7;
-            // 
             // TextureSelectionForm
             // 
             this.TextureSelectionForm.BackColor = System.Drawing.SystemColors.Control;
@@ -443,6 +394,15 @@
             this.TextureBrushPropertiesForm.Size = new System.Drawing.Size(234, 116);
             this.TextureBrushPropertiesForm.TabIndex = 21;
             // 
+            // ObjectParameterFormContainer
+            // 
+            this.ObjectParameterFormContainer.Controls.Add(this.ObjectParametersForm);
+            this.ObjectParameterFormContainer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ObjectParameterFormContainer.Location = new System.Drawing.Point(0, 0);
+            this.ObjectParameterFormContainer.Name = "ObjectParameterFormContainer";
+            this.ObjectParameterFormContainer.Size = new System.Drawing.Size(234, 142);
+            this.ObjectParameterFormContainer.TabIndex = 12;
+            // 
             // ObjectParametersForm
             // 
             this.ObjectParametersForm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -451,6 +411,22 @@
             this.ObjectParametersForm.Name = "ObjectParametersForm";
             this.ObjectParametersForm.Size = new System.Drawing.Size(234, 121);
             this.ObjectParametersForm.TabIndex = 12;
+            // 
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 73);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(926, 4);
+            this.panel1.TabIndex = 6;
+            // 
+            // panel2
+            // 
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 25);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(926, 1);
+            this.panel2.TabIndex = 7;
             // 
             // editorPanel
             // 
@@ -501,9 +477,7 @@
         private System.Windows.Forms.ToolStripButton smoothTextureButton;
         private System.Windows.Forms.ToolStripSeparator textureSeparator;
         public System.Windows.Forms.ToolStripButton SelectObjectButton;
-        public System.Windows.Forms.ToolStripButton TranslateObjectButton;
-        public System.Windows.Forms.ToolStripButton RotateObjectButton;
-        public System.Windows.Forms.ToolStripButton ScaleObjectButton;
+        public System.Windows.Forms.ToolStripButton CreateObjectButton;
         private System.Windows.Forms.ToolStripSeparator objectSeparator;
         public System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
