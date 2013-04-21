@@ -111,21 +111,28 @@ namespace WorldEditor
             }
 
             if (mIsDragging)
-            { 
-                
-
+            {
+                Vector3 newDragPoint = GetMouseWorldPosition();
                 switch (mDragMode)
                 {
                     case ModificationMode.Position:
-
+                        foreach (DummyObject dummyObject in selectedObjects)
+                        {
+                            dummyObject.Position += newDragPoint - mStartDragPoint;
+                        }
                         break;
                     case ModificationMode.Scale:
-
+                        float scaleMultiplier = (newDragPoint - Position).Length() / (mStartDragPoint - Position).Length();
+                        foreach (DummyObject dummyObject in selectedObjects)
+                        {
+                            dummyObject.Scale = dummyObject.Scale * scaleMultiplier * GetDragDirection() + (dummyObject.Scale * (Vector3.One - GetDragDirection()));
+                        }
                         break;
                     case ModificationMode.Rotate:
 
                         break;
                 }
+                mStartDragPoint = newDragPoint;
             }
 
             Position = Vector3.Zero;
@@ -152,15 +159,15 @@ namespace WorldEditor
 
                 if (Mode == ModificationMode.Position)
                 {
-                    mXPositionArm.Render(Position + Vector3.UnitX * 20, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red,   1.0f, false);
-                    mYPositionArm.Render(Position + Vector3.UnitY * 20, Matrix.Identity,                             scale, Color.Green, 1.0f, false);
-                    mZPositionArm.Render(Position + Vector3.UnitZ * 20, Matrix.CreateRotationX(MathHelper.PiOver2),  scale, Color.Blue,  1.0f, false);
+                    mXPositionArm.Render(Position + Vector3.UnitX * 0.2f * scale, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red, 1.0f, false);
+                    mYPositionArm.Render(Position + Vector3.UnitY * 0.2f * scale, Matrix.Identity, scale, Color.Green, 1.0f, false);
+                    mZPositionArm.Render(Position + Vector3.UnitZ * 0.2f * scale, Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
                 }
                 else if (Mode == ModificationMode.Scale)
                 {
-                    mXScaleArm.Render(Position + Vector3.UnitX * 20, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red,   1.0f, false);
-                    mYScaleArm.Render(Position + Vector3.UnitY * 20, Matrix.Identity,                             scale, Color.Green, 1.0f, false);
-                    mZScaleArm.Render(Position + Vector3.UnitZ * 20, Matrix.CreateRotationX(MathHelper.PiOver2),  scale, Color.Blue,  1.0f, false);
+                    mXScaleArm.Render(Position + Vector3.UnitX * 0.2f * scale, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red,   1.0f, false);
+                    mYScaleArm.Render(Position + Vector3.UnitY * 0.2f * scale, Matrix.Identity, scale, Color.Green, 1.0f, false);
+                    mZScaleArm.Render(Position + Vector3.UnitZ * 0.2f * scale, Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
                 }
 
                 mPitchArm.Render(Position, Matrix.CreateRotationZ(MathHelper.PiOver2), scale, Color.Red, 1.0f, false);
@@ -219,7 +226,7 @@ namespace WorldEditor
                     new Vector2(mControls.MouseState.X, mControls.MouseState.Y));
                 Vector3 worldPosition = Utils.ProjectVectorOntoPlane(
                     Utils.CreateWorldRayFromScreenPoint(
-                        new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
+                        screenPoint,
                         mViewport,
                         mCamera.Position,
                         mCamera.ViewTransform,
