@@ -385,10 +385,9 @@ namespace GraphicsLibrary
             mDevice.SamplerStates[1] = SamplerState.PointClamp;
 
             RasterizerState cull = new RasterizerState();
-            cull.CullMode = CullMode.CullCounterClockwiseFace;
-
+            cull.CullMode = CullMode.None;
             mDevice.RasterizerState = cull;
-            mDevice.BlendState = BlendState.Opaque;
+            mDevice.BlendState = BlendState.AlphaBlend;
             mDevice.DepthStencilState = DepthStencilState.Default;
 
             AnimateModelRenderer.AnimateModelParameters parameters = new AnimateModelRenderer.AnimateModelParameters();
@@ -396,12 +395,18 @@ namespace GraphicsLibrary
             parameters.World = Matrix.Identity;
 
             Vector3 cameraOffset = new Vector3(1.7f * renderer.BoundingSphere.Radius, 1.0f * renderer.BoundingSphere.Radius, 1.7f * renderer.BoundingSphere.Radius);
+            Vector3 cameraPosition = renderer.BoundingSphere.Center + cameraOffset;
+
+            float offsetLength = cameraOffset.Length();
+            float nearDistance = offsetLength - renderer.BoundingSphere.Radius;
+            float farDistance  = offsetLength + renderer.BoundingSphere.Radius;
 
             renderer.ClearAllInstances();
             renderer.AddInstance(parameters);
+
             renderer.RenderAllInstancesWithoutShadows(
-                Matrix.CreateLookAt(renderer.BoundingSphere.Center + cameraOffset, renderer.BoundingSphere.Center, Vector3.Up), 
-                Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, 1.0f, 0.1f, 1000.0f),
+                Matrix.CreateLookAt(cameraPosition, renderer.BoundingSphere.Center, Vector3.Up), 
+                Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, 1.0f, nearDistance, farDistance),
                 new Light(Vector3.Up, -Vector3.Up, Color.White.ToVector3(), Color.White.ToVector3(), Color.White.ToVector3()));
 
             mDevice.SetRenderTarget(null);
