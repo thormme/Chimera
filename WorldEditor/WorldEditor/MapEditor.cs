@@ -113,6 +113,8 @@ namespace WorldEditor
         //Stores the objects placed in the world and the height map.
         private DummyWorld mDummyWorld = null;
 
+        private ObjectModificationGizmo mGizmo = null;
+
         private GameDeviceControl mGameControl = null;
 
         private EditorForm.Layers mLastLayer = EditorForm.Layers.BACKGROUND;
@@ -135,6 +137,7 @@ namespace WorldEditor
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
             mEntity = new Entity(graphicsDevice, mControls, mCamera);
+            mGizmo = new ObjectModificationGizmo(mControls, mCamera, graphicsDevice.Viewport);
             InitializePanes();
 
             mTextureTransformShader = content.Load<Effect>("shaders/TextureTransform");
@@ -163,6 +166,8 @@ namespace WorldEditor
                 }
 
             }
+
+            mGizmo.Update(ObjectParameterPane.SelectedObjects);
 
             PerformActions(gameTime);
         }
@@ -200,7 +205,7 @@ namespace WorldEditor
 
             if (IsGizmoVisible)
             {
-                DrawGizmo();
+                mGizmo.Draw();
             }
 
             mDummyWorld.Draw();
@@ -763,11 +768,6 @@ namespace WorldEditor
                     }
                 }
             }
-        }
-
-        private void DrawGizmo()
-        {
-            throw new NotImplementedException();
         }
 
         private void UpdateLayerPaneImages(EditorForm.Layers layer, string textureName)
