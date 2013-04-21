@@ -57,7 +57,7 @@ namespace GraphicsLibrary
         }
         private float mCursorOuterRadius;
 
-        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
+        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
             BoundingBox[,] transformedBoundingBoxes = new BoundingBox[mBoundingBoxes.GetLength(0), mBoundingBoxes.GetLength(1)];
             for (int row = 0; row < mBoundingBoxes.GetLength(0); ++row)
@@ -78,6 +78,7 @@ namespace GraphicsLibrary
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
             parameters.TextureMask = LayerMask;
+            parameters.TryCull = tryCull;
             parameters.World = worldTransform;
 
             GraphicsManager.EnqueueRenderable(parameters);

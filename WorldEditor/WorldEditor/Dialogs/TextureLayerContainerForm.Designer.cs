@@ -46,45 +46,45 @@
             this.LayerPanel.Controls.Add(this.Layer2);
             this.LayerPanel.Controls.Add(this.Layer1);
             this.LayerPanel.Controls.Add(this.BackgroundLayer);
-            this.LayerPanel.Location = new System.Drawing.Point(10, 10);
+            this.LayerPanel.Location = new System.Drawing.Point(10, 6);
             this.LayerPanel.Name = "LayerPanel";
-            this.LayerPanel.Size = new System.Drawing.Size(223, 191);
+            this.LayerPanel.Size = new System.Drawing.Size(223, 156);
             this.LayerPanel.TabIndex = 0;
             // 
             // Layer4
             // 
             this.Layer4.BackColor = System.Drawing.SystemColors.ControlDark;
             this.Layer4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Layer4.Location = new System.Drawing.Point(0, 152);
+            this.Layer4.Location = new System.Drawing.Point(0, 124);
             this.Layer4.Name = "Layer4";
-            this.Layer4.Size = new System.Drawing.Size(221, 38);
+            this.Layer4.Size = new System.Drawing.Size(221, 31);
             this.Layer4.TabIndex = 5;
             // 
             // Layer3
             // 
             this.Layer3.BackColor = System.Drawing.SystemColors.ControlDark;
             this.Layer3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Layer3.Location = new System.Drawing.Point(0, 114);
+            this.Layer3.Location = new System.Drawing.Point(0, 93);
             this.Layer3.Name = "Layer3";
-            this.Layer3.Size = new System.Drawing.Size(221, 38);
+            this.Layer3.Size = new System.Drawing.Size(221, 31);
             this.Layer3.TabIndex = 4;
             // 
             // Layer2
             // 
             this.Layer2.BackColor = System.Drawing.SystemColors.ControlDark;
             this.Layer2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Layer2.Location = new System.Drawing.Point(0, 76);
+            this.Layer2.Location = new System.Drawing.Point(0, 62);
             this.Layer2.Name = "Layer2";
-            this.Layer2.Size = new System.Drawing.Size(221, 38);
+            this.Layer2.Size = new System.Drawing.Size(221, 31);
             this.Layer2.TabIndex = 3;
             // 
             // Layer1
             // 
             this.Layer1.BackColor = System.Drawing.SystemColors.ControlDark;
             this.Layer1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Layer1.Location = new System.Drawing.Point(0, 38);
+            this.Layer1.Location = new System.Drawing.Point(0, 31);
             this.Layer1.Name = "Layer1";
-            this.Layer1.Size = new System.Drawing.Size(221, 38);
+            this.Layer1.Size = new System.Drawing.Size(221, 31);
             this.Layer1.TabIndex = 2;
             // 
             // BackgroundLayer
@@ -93,14 +93,14 @@
             this.BackgroundLayer.Dock = System.Windows.Forms.DockStyle.Top;
             this.BackgroundLayer.Location = new System.Drawing.Point(0, 0);
             this.BackgroundLayer.Name = "BackgroundLayer";
-            this.BackgroundLayer.Size = new System.Drawing.Size(221, 38);
+            this.BackgroundLayer.Size = new System.Drawing.Size(221, 31);
             this.BackgroundLayer.TabIndex = 1;
             // 
             // TextureLayerContainerForm
             // 
             this.Controls.Add(this.LayerPanel);
             this.Name = "TextureLayerContainerForm";
-            this.Size = new System.Drawing.Size(243, 211);
+            this.Size = new System.Drawing.Size(243, 168);
             this.LayerPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 

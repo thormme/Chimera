@@ -27,6 +27,7 @@ namespace GraphicsLibrary
             public Color OverlayColor { get; set; }
             public float OverlayWeight { get; set; }
             public Vector2 TextureAnimationOffset { get; set; }
+            public bool TryCull { get; set; }
         }
 
         #endregion
@@ -95,6 +96,7 @@ namespace GraphicsLibrary
 
         protected void RenderShadowMap(Matrix lightView, Matrix lightProjection, RendererParameters instance)
         {
+            instance.TryCull = false;
             EffectConfigurer shadowMapConfigurer = ShadowMapConfigurer;
             DrawGeometry(Matrix.Identity, Matrix.Identity, new object[] { (Matrix?)lightView, (Matrix?)lightProjection }, shadowMapConfigurer, instance);
         }

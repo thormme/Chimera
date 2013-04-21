@@ -15,13 +15,14 @@ namespace GraphicsLibrary
             mModelName = modelName;
         }
 
-        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
+        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
             ModelRenderer.RendererParameters parameters = new RendererBase.RendererParameters();
             parameters.BoundingBox = BoundingBox;
             parameters.Name = mModelName;
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
+            parameters.TryCull = tryCull;
             parameters.World = worldTransform;
             parameters.ObjectID = ObjectID;
 

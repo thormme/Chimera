@@ -246,11 +246,11 @@ namespace GameConstructLibrary
             Matrix orientation = RotationAngle == 0 ? Matrix.CreateFromYawPitchRoll(YawPitchRoll.X, YawPitchRoll.Y, YawPitchRoll.Z) : Matrix.CreateFromAxisAngle(RotationAxis, RotationAngle);
             if (IsHighlighted)
             {
-                mDrawableModel.Render(finalPosition, orientation, Scale, Color.Red, 0.5f);
+                mDrawableModel.Render(finalPosition, orientation, Scale, Color.Red, 0.5f, false);
             }
             else
             {
-                mDrawableModel.Render(finalPosition, orientation, Scale);
+                mDrawableModel.Render(finalPosition, orientation, Scale, false);
             }
         }
 

@@ -113,7 +113,7 @@ namespace GraphicsLibrary
         /// Draws animated model to the screen.
         /// </summary>
         /// <param name="worldTransform">Transformation of model in to place in world space.</param>
-        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
+        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
             AnimateModelRenderer.AnimateModelParameters parameters = new AnimateModelRenderer.AnimateModelParameters();
             parameters.BoundingBox = BoundingBox;
@@ -121,6 +121,7 @@ namespace GraphicsLibrary
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
             parameters.SkinTransforms = AnimationPlayer.GetSkinTransforms(); ;
+            parameters.TryCull = tryCull;
             parameters.World = worldTransform;
 
             GraphicsManager.EnqueueRenderable(parameters);

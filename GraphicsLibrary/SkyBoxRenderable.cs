@@ -38,13 +38,14 @@ namespace GraphicsLibrary
             }
         }
 
-        protected override void Draw(Microsoft.Xna.Framework.Matrix worldTransform, Color overlayColor, float overlayColorWeight)
+        protected override void Draw(Microsoft.Xna.Framework.Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
             SkyBoxRenderer.SkyBoxParameters parameters = new SkyBoxRenderer.SkyBoxParameters();
             parameters.Name = "SKY_BOX_RENDERER";
             parameters.OverlayColor  = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
             parameters.TextureName   = mTextureName;
+            parameters.TryCull       = tryCull;
             parameters.World         = worldTransform;
 
             GraphicsManager.EnqueueRenderable(parameters);

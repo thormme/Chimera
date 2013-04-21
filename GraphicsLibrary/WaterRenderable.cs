@@ -46,7 +46,7 @@ namespace GraphicsLibrary
             mTextureName = textureName;
         }
         
-        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
+        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
             WaterRenderer.WaterParameters parameters = new WaterRenderer.WaterParameters();
             parameters.TextureAnimationOffset = new Vector2((mAnimationRate.X * mElapsedTime) % 1.0f, (mAnimationRate.Y * mElapsedTime) % 1.0f);
@@ -55,6 +55,7 @@ namespace GraphicsLibrary
             parameters.OverlayWeight = overlayColorWeight;
             parameters.SeaLevel = mSeaLevel;
             parameters.TextureName = mTextureName;
+            parameters.TryCull = tryCull;
             parameters.World = worldTransform;
 
             GraphicsManager.EnqueueRenderable(parameters);

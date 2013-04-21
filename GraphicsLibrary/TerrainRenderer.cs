@@ -159,7 +159,7 @@ namespace GraphicsLibrary
             {
                 for (int chunkColIndex = 0; chunkColIndex < mHeightMap.NumChunksHorizontal; ++chunkColIndex )
                 {
-                    if (effectConfigurer != ShadowMapConfigurer && GraphicsManager.ViewBoundingFrustum.Contains((instance as TerrainParameters).BoundingBoxes[chunkRowIndex, chunkColIndex]) == ContainmentType.Disjoint)
+                    if (terrainInstance.TryCull && GraphicsManager.ViewBoundingFrustum.Contains((instance as TerrainParameters).BoundingBoxes[chunkRowIndex, chunkColIndex]) == ContainmentType.Disjoint)
                     {
                         // Hey, it looks like you.
                         // Just tried to draw me.

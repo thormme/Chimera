@@ -22,7 +22,7 @@ namespace GraphicsLibrary
             mAnimationRate = animationRate;
         }
 
-        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
+        protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
             TransparentModelRenderer.TransparentModelParameters parameters = new TransparentModelRenderer.TransparentModelParameters();
             parameters.AnimationOffset = new Vector2((mAnimationRate.X * mElapsedTime) % 1.0f, (mAnimationRate.Y * mElapsedTime) % 1.0f);
@@ -30,6 +30,7 @@ namespace GraphicsLibrary
             parameters.Name = mModelName;
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
+            parameters.TryCull = tryCull;
             parameters.World = worldTransform;
 
             GraphicsManager.EnqueueTransparentRenderable(parameters);

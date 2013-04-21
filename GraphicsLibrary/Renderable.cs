@@ -41,9 +41,27 @@ namespace GraphicsLibrary
         /// Draws the IRenderable object at worldPosition using default scale and orientation.
         /// </summary>
         /// <param name="worldPosition">Poition of the object's center of mass in world coordinates.</param>
+        public void Render(Vector3 worldPosition, bool tryCull)
+        {
+            Render(worldPosition, mDefaultWorldView, mDefaultWorldScale, tryCull);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable object at worldPosition using default scale and orientation.
+        /// </summary>
+        /// <param name="worldPosition">Poition of the object's center of mass in world coordinates.</param>
         public void Render(Vector3 worldPosition, Color overlayColor, float overlayColorWeight)
         {
             Render(worldPosition, mDefaultWorldView, mDefaultWorldScale, overlayColor, overlayColorWeight);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable object at worldPosition using default scale and orientation.
+        /// </summary>
+        /// <param name="worldPosition">Poition of the object's center of mass in world coordinates.</param>
+        public void Render(Vector3 worldPosition, Color overlayColor, float overlayColorWeight, bool tryCull)
+        {
+            Render(worldPosition, mDefaultWorldView, mDefaultWorldScale, overlayColor, overlayColorWeight, tryCull);
         }
 
         /// <summary>
@@ -61,9 +79,29 @@ namespace GraphicsLibrary
         /// </summary>
         /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
         /// <param name="worldViewDirection">View vector of object in world coordinates.  Used to calculate rotation.</param>
+        public void Render(Vector3 worldPosition, Vector3 worldViewDirection, bool tryCull)
+        {
+            Render(worldPosition, worldViewDirection, mDefaultWorldScale, tryCull);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable at worldPosition facing worldViewDirection using default scale.
+        /// </summary>
+        /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="worldViewDirection">View vector of object in world coordinates.  Used to calculate rotation.</param>
         public void Render(Vector3 worldPosition, Vector3 worldViewDirection, Color overlayColor, float overlayColorWeight)
         {
             Render(worldPosition, worldViewDirection, mDefaultWorldScale, overlayColor, overlayColorWeight);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable at worldPosition facing worldViewDirection using default scale.
+        /// </summary>
+        /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="worldViewDirection">View vector of object in world coordinates.  Used to calculate rotation.</param>
+        public void Render(Vector3 worldPosition, Vector3 worldViewDirection, Color overlayColor, float overlayColorWeight, bool tryCull)
+        {
+            Render(worldPosition, worldViewDirection, mDefaultWorldScale, overlayColor, overlayColorWeight, tryCull);
         }
 
         /// <summary>
@@ -74,7 +112,18 @@ namespace GraphicsLibrary
         /// <param name="worldScale">Scale along each axis of the object.</param>
         public void Render(Vector3 worldPosition, Vector3 worldViewDirection, Vector3 worldScale)
         {
-            Draw(Matrix.CreateScale(worldScale) * Matrix.CreateWorld(worldPosition, worldViewDirection, Vector3.Up), mDefaultOverlayColor, mDefaultOverlayWeight);
+            Draw(Matrix.CreateScale(worldScale) * Matrix.CreateWorld(worldPosition, worldViewDirection, Vector3.Up), mDefaultOverlayColor, mDefaultOverlayWeight, true);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable at worldPositions facing worldViewDirection, and scaled to worldScale.
+        /// </summary>
+        /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="worldViewDirection">View vector of object in world coordinates.  Used to calculate rotation.</param>
+        /// <param name="worldScale">Scale along each axis of the object.</param>
+        public void Render(Vector3 worldPosition, Vector3 worldViewDirection, Vector3 worldScale, bool tryCull)
+        {
+            Draw(Matrix.CreateScale(worldScale) * Matrix.CreateWorld(worldPosition, worldViewDirection, Vector3.Up), mDefaultOverlayColor, mDefaultOverlayWeight, tryCull);
         }
 
         /// <summary>
@@ -85,7 +134,18 @@ namespace GraphicsLibrary
         /// <param name="worldScale">Scale along each axis of the object.</param>
         public void Render(Vector3 worldPosition, Vector3 worldViewDirection, Vector3 worldScale, Color overlayColor, float overlayColorWeight)
         {
-            Draw(Matrix.CreateScale(worldScale) * Matrix.CreateWorld(worldPosition, worldViewDirection, Vector3.Up), overlayColor, overlayColorWeight);
+            Draw(Matrix.CreateScale(worldScale) * Matrix.CreateWorld(worldPosition, worldViewDirection, Vector3.Up), overlayColor, overlayColorWeight, true);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable at worldPositions facing worldViewDirection, and scaled to worldScale.
+        /// </summary>
+        /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="worldViewDirection">View vector of object in world coordinates.  Used to calculate rotation.</param>
+        /// <param name="worldScale">Scale along each axis of the object.</param>
+        public void Render(Vector3 worldPosition, Vector3 worldViewDirection, Vector3 worldScale, Color overlayColor, float overlayColorWeight, bool tryCull)
+        {
+            Draw(Matrix.CreateScale(worldScale) * Matrix.CreateWorld(worldPosition, worldViewDirection, Vector3.Up), overlayColor, overlayColorWeight, tryCull);
         }
 
         /// <summary>
@@ -103,9 +163,29 @@ namespace GraphicsLibrary
         /// </summary>
         /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
         /// <param name="worldRotation">Rotation matrix of the object.</param>
+        public void Render(Vector3 worldPosition, Matrix worldRotation, bool tryCull)
+        {
+            Render(worldPosition, worldRotation, mDefaultWorldScale, tryCull);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable at worldPositions facing worldRotation using default scale.
+        /// </summary>
+        /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="worldRotation">Rotation matrix of the object.</param>
         public void Render(Vector3 worldPosition, Matrix worldRotation, Color overlayColor, float overlayColorWeight)
         {
             Render(worldPosition, worldRotation, mDefaultWorldScale, overlayColor, overlayColorWeight);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable at worldPositions facing worldRotation using default scale.
+        /// </summary>
+        /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="worldRotation">Rotation matrix of the object.</param>
+        public void Render(Vector3 worldPosition, Matrix worldRotation, Color overlayColor, float overlayColorWeight, bool tryCull)
+        {
+            Render(worldPosition, worldRotation, mDefaultWorldScale, overlayColor, overlayColorWeight, tryCull);
         }
 
         /// <summary>
@@ -120,7 +200,22 @@ namespace GraphicsLibrary
             worldTransforms *= worldRotation;
             worldTransforms *= Matrix.CreateTranslation(worldPosition);
 
-            Draw(worldTransforms, mDefaultOverlayColor, mDefaultOverlayWeight);
+            Draw(worldTransforms, mDefaultOverlayColor, mDefaultOverlayWeight, true);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable at worldPositions facing worldRotation, and scaled to worldScale.
+        /// </summary>
+        /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="worldRotation">Rotation matrix of the object.</param>
+        /// <param name="worldScale">Scale along each axis of the object.</param>
+        public void Render(Vector3 worldPosition, Matrix worldRotation, Vector3 worldScale, bool tryCull)
+        {
+            Matrix worldTransforms = Matrix.CreateScale(worldScale);
+            worldTransforms *= worldRotation;
+            worldTransforms *= Matrix.CreateTranslation(worldPosition);
+
+            Draw(worldTransforms, mDefaultOverlayColor, mDefaultOverlayWeight, tryCull);
         }
 
         /// <summary>
@@ -137,7 +232,24 @@ namespace GraphicsLibrary
             worldTransforms *= worldRotation;
             worldTransforms *= Matrix.CreateTranslation(worldPosition);
 
-            Draw(worldTransforms, overlayColor, overlayColorWeight);
+            Draw(worldTransforms, overlayColor, overlayColorWeight, true);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable at worldPositions facing worldRotation, and scaled to worldScale.
+        /// </summary>
+        /// <param name="worldPosition">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="worldRotation">Rotation matrix of the object.</param>
+        /// <param name="worldScale">Scale along each axis of the object.</param>
+        /// <param name="overlayColor">Color with which to modify the object.</param>
+        /// <param name="overlayColorWeight">Amount to colorify the object. 0-none 1-full</param>
+        public void Render(Vector3 worldPosition, Matrix worldRotation, Vector3 worldScale, Color overlayColor, float overlayColorWeight, bool tryCull)
+        {
+            Matrix worldTransforms = Matrix.CreateScale(worldScale);
+            worldTransforms *= worldRotation;
+            worldTransforms *= Matrix.CreateTranslation(worldPosition);
+
+            Draw(worldTransforms, overlayColor, overlayColorWeight, tryCull);
         }
 
         /// <summary>
@@ -146,7 +258,16 @@ namespace GraphicsLibrary
         /// <param name="worldTransform">The object's world transform.</param>
         public void Render(Matrix worldTransform)
         {
-            Draw(worldTransform, mDefaultOverlayColor, mDefaultOverlayWeight);
+            Draw(worldTransform, mDefaultOverlayColor, mDefaultOverlayWeight, true);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable using the given world transform.
+        /// </summary>
+        /// <param name="worldTransform">The object's world transform.</param>
+        public void Render(Matrix worldTransform, bool tryCull)
+        {
+            Draw(worldTransform, mDefaultOverlayColor, mDefaultOverlayWeight, tryCull);
         }
 
         /// <summary>
@@ -157,7 +278,18 @@ namespace GraphicsLibrary
         /// <param name="overlayColorWeight">Amount to colorify the object. 0-none 1-full</param>
         public void Render(Matrix worldTransform, Color overlayColor, float overlayColorWeight)
         {
-            Draw(worldTransform, overlayColor, overlayColorWeight);
+            Draw(worldTransform, overlayColor, overlayColorWeight, true);
+        }
+
+        /// <summary>
+        /// Draws the IRenderable using the given world transform.
+        /// </summary>
+        /// <param name="worldTransform">Position of the object's center of mass in world coordinates.</param>
+        /// <param name="overlayColor">Color with which to modify the object.</param>
+        /// <param name="overlayColorWeight">Amount to colorify the object. 0-none 1-full</param>
+        public void Render(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
+        {
+            Draw(worldTransform, overlayColor, overlayColorWeight, tryCull);
         }
 
         ///////////////////////////// Internal functions /////////////////////////////
@@ -168,6 +300,6 @@ namespace GraphicsLibrary
         /// <param name="worldTransform">The object's world transform.</param>
         /// <param name="overlayColor">Color with which to modify the object.</param>
         /// <param name="overlayColorWeight">Amount to colorify the object. 0-none 1-full</param>
-        abstract protected void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight);
+        abstract protected void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull);
     }
 }

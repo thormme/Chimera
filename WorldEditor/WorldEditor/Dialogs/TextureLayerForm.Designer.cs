@@ -31,8 +31,8 @@
             this.LayerTexturePreview = new System.Windows.Forms.PictureBox();
             this.LayerVisibilityButton = new System.Windows.Forms.Button();
             this.MainPanel = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.InvisibleButton = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.LayerTexturePreview)).BeginInit();
             this.MainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -41,9 +41,9 @@
             // 
             this.LayerTexturePreview.BackColor = System.Drawing.Color.Black;
             this.LayerTexturePreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.LayerTexturePreview.Location = new System.Drawing.Point(4, 4);
+            this.LayerTexturePreview.Location = new System.Drawing.Point(3, 3);
             this.LayerTexturePreview.Name = "LayerTexturePreview";
-            this.LayerTexturePreview.Size = new System.Drawing.Size(30, 30);
+            this.LayerTexturePreview.Size = new System.Drawing.Size(25, 25);
             this.LayerTexturePreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.LayerTexturePreview.TabIndex = 0;
             this.LayerTexturePreview.TabStop = false;
@@ -51,9 +51,9 @@
             // LayerVisibilityButton
             // 
             this.LayerVisibilityButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.LayerVisibilityButton.Location = new System.Drawing.Point(192, 8);
+            this.LayerVisibilityButton.Location = new System.Drawing.Point(196, 5);
             this.LayerVisibilityButton.Name = "LayerVisibilityButton";
-            this.LayerVisibilityButton.Size = new System.Drawing.Size(22, 22);
+            this.LayerVisibilityButton.Size = new System.Drawing.Size(20, 20);
             this.LayerVisibilityButton.TabIndex = 2;
             this.LayerVisibilityButton.UseVisualStyleBackColor = true;
             // 
@@ -63,16 +63,8 @@
             this.MainPanel.Controls.Add(this.InvisibleButton);
             this.MainPanel.Location = new System.Drawing.Point(1, 1);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(183, 36);
+            this.MainPanel.Size = new System.Drawing.Size(189, 29);
             this.MainPanel.TabIndex = 3;
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.SystemColors.Window;
-            this.panel2.Location = new System.Drawing.Point(185, 1);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(36, 36);
-            this.panel2.TabIndex = 4;
             // 
             // InvisibleButton
             // 
@@ -86,11 +78,19 @@
             this.InvisibleButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InvisibleButton.Location = new System.Drawing.Point(1, 1);
             this.InvisibleButton.Name = "InvisibleButton";
-            this.InvisibleButton.Size = new System.Drawing.Size(183, 34);
+            this.InvisibleButton.Size = new System.Drawing.Size(188, 29);
             this.InvisibleButton.TabIndex = 0;
             this.InvisibleButton.Text = "           ";
             this.InvisibleButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.InvisibleButton.UseVisualStyleBackColor = false;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.SystemColors.Window;
+            this.panel2.Location = new System.Drawing.Point(191, 1);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(30, 29);
+            this.panel2.TabIndex = 4;
             // 
             // TextureLayerForm
             // 
@@ -102,7 +102,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.MainPanel);
             this.Name = "TextureLayerForm";
-            this.Size = new System.Drawing.Size(222, 38);
+            this.Size = new System.Drawing.Size(222, 31);
             ((System.ComponentModel.ISupportInitialize)(this.LayerTexturePreview)).EndInit();
             this.MainPanel.ResumeLayout(false);
             this.ResumeLayout(false);

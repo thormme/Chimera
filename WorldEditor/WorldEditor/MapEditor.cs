@@ -186,19 +186,18 @@ namespace WorldEditor
                         break;
                 }
 
-                Vector4 layerMask = new Vector4(
-                    EditorForm.TextureLayerForm.Layer1.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
-                    EditorForm.TextureLayerForm.Layer2.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
-                    EditorForm.TextureLayerForm.Layer3.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
-                    EditorForm.TextureLayerForm.Layer4.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f);
-
-                mDummyWorld.Terrain.TerrainRenderable.LayerMask = layerMask;
-
                 mDummyWorld.Terrain.TerrainRenderable.CursorPosition = mCursorObject.Position - mCursorObject.Scale;
                 mDummyWorld.Terrain.TerrainRenderable.CursorInnerRadius = 8.0f * mCursorObject.Scale.X;
                 mDummyWorld.Terrain.TerrainRenderable.CursorOuterRadius = 9.0f * mCursorObject.Scale.X;
                 mDummyWorld.Terrain.TerrainRenderable.DrawCursor = brush;
             }
+
+            Vector4 layerMask = new Vector4(
+                EditorForm.TextureLayerForm.Layer1.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
+                EditorForm.TextureLayerForm.Layer2.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
+                EditorForm.TextureLayerForm.Layer3.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
+                EditorForm.TextureLayerForm.Layer4.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f);
+            mDummyWorld.Terrain.TerrainRenderable.LayerMask = layerMask;
 
             mDummyWorld.Draw();
         }

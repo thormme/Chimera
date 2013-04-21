@@ -60,15 +60,15 @@
             this.ViewWaterMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewShadowsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextToolsPanel = new System.Windows.Forms.Panel();
-            this.TextureLayerForm = new WorldEditor.Dialogs.TextureLayerContainerForm();
-            this.TextureSelectionForm = new WorldEditor.Dialogs.TextureSelectionForm();
-            this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
-            this.HeightMapBrushPropertiesForm = new WorldEditor.Dialogs.HeightMapBrushPropertiesForm();
-            this.TextureBrushPropertiesForm = new WorldEditor.Dialogs.TextureBrushPropertiesForm();
             this.ObjectParameterFormContainer = new System.Windows.Forms.Panel();
-            this.ObjectParametersForm = new WorldEditor.Dialogs.ObjectParametersForm();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.TextureSelectionForm = new WorldEditor.Dialogs.TextureSelectionForm();
+            this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
+            this.TextureLayerForm = new WorldEditor.Dialogs.TextureLayerContainerForm();
+            this.HeightMapBrushPropertiesForm = new WorldEditor.Dialogs.HeightMapBrushPropertiesForm();
+            this.TextureBrushPropertiesForm = new WorldEditor.Dialogs.TextureBrushPropertiesForm();
+            this.ObjectParametersForm = new WorldEditor.Dialogs.ObjectParametersForm();
             this.editorPanel = new WorldEditor.Dialogs.Editor();
             this.ToolStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
@@ -374,20 +374,37 @@
             this.ContextToolsPanel.Size = new System.Drawing.Size(251, 487);
             this.ContextToolsPanel.TabIndex = 4;
             // 
-            // TextureLayerForm
+            // ObjectParameterFormContainer
             // 
-            this.TextureLayerForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TextureLayerForm.Location = new System.Drawing.Point(0, 368);
-            this.TextureLayerForm.Name = "TextureLayerForm";
-            this.TextureLayerForm.Size = new System.Drawing.Size(234, 211);
-            this.TextureLayerForm.TabIndex = 5;
+            this.ObjectParameterFormContainer.Controls.Add(this.ObjectParametersForm);
+            this.ObjectParameterFormContainer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ObjectParameterFormContainer.Location = new System.Drawing.Point(0, 0);
+            this.ObjectParameterFormContainer.Name = "ObjectParameterFormContainer";
+            this.ObjectParameterFormContainer.Size = new System.Drawing.Size(234, 142);
+            this.ObjectParameterFormContainer.TabIndex = 12;
+            // 
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 73);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(926, 4);
+            this.panel1.TabIndex = 6;
+            // 
+            // panel2
+            // 
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 25);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(926, 1);
+            this.panel2.TabIndex = 7;
             // 
             // TextureSelectionForm
             // 
             this.TextureSelectionForm.BackColor = System.Drawing.SystemColors.Control;
             this.TextureSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
             this.TextureSelectionForm.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextureSelectionForm.Location = new System.Drawing.Point(0, 1034);
+            this.TextureSelectionForm.Location = new System.Drawing.Point(0, 995);
             this.TextureSelectionForm.Margin = new System.Windows.Forms.Padding(4);
             this.TextureSelectionForm.Name = "TextureSelectionForm";
             this.TextureSelectionForm.Size = new System.Drawing.Size(234, 555);
@@ -396,10 +413,18 @@
             // ObjectPlacementPanel
             // 
             this.ObjectPlacementPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 579);
+            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 540);
             this.ObjectPlacementPanel.Name = "ObjectPlacementPanel";
             this.ObjectPlacementPanel.Size = new System.Drawing.Size(234, 455);
             this.ObjectPlacementPanel.TabIndex = 17;
+            // 
+            // TextureLayerForm
+            // 
+            this.TextureLayerForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TextureLayerForm.Location = new System.Drawing.Point(0, 368);
+            this.TextureLayerForm.Name = "TextureLayerForm";
+            this.TextureLayerForm.Size = new System.Drawing.Size(234, 172);
+            this.TextureLayerForm.TabIndex = 5;
             // 
             // HeightMapBrushPropertiesForm
             // 
@@ -418,15 +443,6 @@
             this.TextureBrushPropertiesForm.Size = new System.Drawing.Size(234, 116);
             this.TextureBrushPropertiesForm.TabIndex = 21;
             // 
-            // ObjectParameterFormContainer
-            // 
-            this.ObjectParameterFormContainer.Controls.Add(this.ObjectParametersForm);
-            this.ObjectParameterFormContainer.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ObjectParameterFormContainer.Location = new System.Drawing.Point(0, 0);
-            this.ObjectParameterFormContainer.Name = "ObjectParameterFormContainer";
-            this.ObjectParameterFormContainer.Size = new System.Drawing.Size(234, 142);
-            this.ObjectParameterFormContainer.TabIndex = 12;
-            // 
             // ObjectParametersForm
             // 
             this.ObjectParametersForm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -435,22 +451,6 @@
             this.ObjectParametersForm.Name = "ObjectParametersForm";
             this.ObjectParametersForm.Size = new System.Drawing.Size(234, 121);
             this.ObjectParametersForm.TabIndex = 12;
-            // 
-            // panel1
-            // 
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 73);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(926, 4);
-            this.panel1.TabIndex = 6;
-            // 
-            // panel2
-            // 
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 25);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(926, 1);
-            this.panel2.TabIndex = 7;
             // 
             // editorPanel
             // 
