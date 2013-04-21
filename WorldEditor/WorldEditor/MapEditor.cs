@@ -490,6 +490,11 @@ namespace WorldEditor
 
         private void CreateObjectButtonHandler(object sender, EventArgs e)
         {
+            CreateNewObjectFromParameters();
+        }
+
+        private DummyObject CreateNewObjectFromParameters()
+        {
             TreeNode selectedObject = EditorForm.ObjectPlacementPanel.ObjectTree.SelectedNode;
             if (selectedObject != null && mObjects.ContainsKey(selectedObject.Text) && selectedObject.Nodes.Count <= 0)
             {
@@ -498,7 +503,9 @@ namespace WorldEditor
                 ObjectParameterPane.SelectedObjects.Add(dummy);
                 SetObjectPropertiesToForm(dummy);
                 mDummyWorld.AddObject(dummy);
+                return dummy;
             }
+            return null;
         }
 
         private void SetObjectPropertiesToForm(DummyObject dummyObject)
@@ -772,6 +779,22 @@ namespace WorldEditor
                         }
                         break;
                     }
+                }
+            }
+            if (mControls.LeftPressed.Active)
+            {
+                switch (EditorForm.Tool)
+                {
+                    case Dialogs.EditorForm.Tools.PLACE:
+                        if (mPlaceable)
+                        {
+                            DummyObject dummyObject = CreateNewObjectFromParameters();
+                            if (dummyObject != null)
+                            {
+                                dummyObject.Position = mCursorObject.Position;
+                            }
+                        }
+                        break;
                 }
             }
         }
