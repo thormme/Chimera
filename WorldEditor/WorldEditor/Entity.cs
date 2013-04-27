@@ -89,7 +89,29 @@ namespace WorldEditor
         private void UpdateCamera(GameTime gameTime)
         {
             mCamera.Move(mSpeed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds, mSpeed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds, 0.0f);
-            mCamera.RotateAroundSelf(mDirection.X, mDirection.Y, 0.0f);
+            
+            // Rotate horizontally
+            mCamera.RotateAroundSelf(mDirection.X, 0.0f, 0.0f);
+
+            // Get the normalized vector along the x/z plane
+            Vector3 startForward = mCamera.Forward;
+            startForward.Y = 0;
+            startForward.Normalize();
+
+            // Rotate vertically
+            mCamera.RotateAroundSelf(0.0f, mDirection.Y, 0.0f);
+
+            // Get the normalized vector along the x/z plane again
+            Vector3 rotForward = mCamera.Forward;
+            rotForward.Y = 0;
+            rotForward.Normalize();
+
+            // Check if they are different, if so you've passed
+            // the top or bottom of the rotation range.
+            if ((rotForward - startForward).Length() > .5)
+            {
+                mCamera.RotateAroundSelf(0.0f, -mDirection.Y, 0.0f);
+            }
         }
 
         private void UpdateDragPoint()
