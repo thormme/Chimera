@@ -42,18 +42,23 @@ namespace WorldEditor
         public MouseButtonInputAction RightHold = new MouseButtonInputAction(0, InputAction.ButtonAction.Down, InputAction.MouseButton.Right);
         public MouseButtonInputAction RightReleased = new MouseButtonInputAction(0, InputAction.ButtonAction.Released, InputAction.MouseButton.Right);
 
+        public bool MouseInViewport = false;
+
         public Controls()
         {
 
         }
 
-        public void Update(GameTime gameTime, System.Drawing.Point viewportPosition)
+        public void Update(GameTime gameTime, System.Drawing.Rectangle viewportBounds)
         {
             InputAction.Update();
             MouseState = Mouse.GetState();
+
+            MouseInViewport = viewportBounds.Contains(new System.Drawing.Point(MouseState.X, MouseState.Y));
+
             MouseState = new MouseState(
-                MouseState.X - viewportPosition.X,
-                MouseState.Y - viewportPosition.Y,
+                MouseState.X - viewportBounds.X,
+                MouseState.Y - viewportBounds.Y,
                 MouseState.ScrollWheelValue,
                 MouseState.LeftButton,
                 MouseState.MiddleButton,
@@ -61,7 +66,5 @@ namespace WorldEditor
                 MouseState.XButton1,
                 MouseState.XButton2);
         }
-
     }
-
 }

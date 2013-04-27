@@ -90,6 +90,8 @@ namespace WorldEditor
 
         private FPSCamera mCamera = null;
 
+        private GraphicsDevice mGraphics = null;
+
         private Dictionary<string, EditorObjectDefinition> mObjectDefinitions = new Dictionary<string, EditorObjectDefinition>(); 
 
         //Stores all placeable objects.
@@ -133,6 +135,7 @@ namespace WorldEditor
             this.TextureBrushPropertiesPane = editorForm.TextureBrushPropertiesForm;
             this.TextureLayerPane = editorForm.TextureLayerForm;
             this.TextureSelectionPane = editorForm.TextureSelectionForm;
+            mGraphics = graphicsDevice;
             mGameControl = gameControl;
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
@@ -147,7 +150,7 @@ namespace WorldEditor
         {
             mIsActive = gameWindowActive;
 
-            mControls.Update(gameTime, mGameControl.RectangleToScreen(mGameControl.ClientRectangle).Location);
+            mControls.Update(gameTime, mGameControl.RectangleToScreen(mGameControl.ClientRectangle));
             mDummyWorld.Update(gameTime, mCamera.Position);
 
             mPlaceable = false;
@@ -158,7 +161,7 @@ namespace WorldEditor
 
                 var pickingResult = mEntity.GetPickingLocation(mDummyWorld, null);
 
-                mPlaceable = pickingResult != null;
+                mPlaceable = pickingResult != null && mControls.MouseInViewport;
 
                 if (mPlaceable && mCursorObject != null)
                 {
