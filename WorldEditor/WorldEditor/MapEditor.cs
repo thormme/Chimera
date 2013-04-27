@@ -140,7 +140,7 @@ namespace WorldEditor
             mCamera = camera;
             mDummyWorld = new DummyWorld(mControls);
             mEntity = new Entity(graphicsDevice, mControls, mCamera);
-            mGizmo = new ObjectModificationGizmo(mControls, mCamera, graphicsDevice.Viewport);
+            mGizmo = new ObjectModificationGizmo(mControls, mCamera);
             InitializePanes();
 
             mTextureTransformShader = content.Load<Effect>("shaders/TextureTransform");
@@ -172,7 +172,7 @@ namespace WorldEditor
 
             PerformActions(gameTime);
 
-            mGizmo.Update(ObjectParameterPane.SelectedObjects);
+            mGizmo.Update(ObjectParameterPane.SelectedObjects, mGraphics.Viewport);
         }
 
         public void Draw()

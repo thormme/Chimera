@@ -35,11 +35,11 @@ namespace WorldEditor
         private UIModel mRollArm = new UIModel("rotateGizmo");
 
         private FPSCamera mCamera = null;
-        private Viewport mViewport;
         private Vector3 Position = Vector3.Zero;
         private bool mDrawable = false;
         private Controls mControls = null;
         private Vector3 mStartDragPoint = Vector3.Zero;
+        private Vector3 mPreviousDragPoint = Vector3.Zero;
         private ModificationMode mDragMode = ModificationMode.Position;
         private ModificationDirection mDragDirection = ModificationDirection.X;
 
@@ -50,11 +50,10 @@ namespace WorldEditor
             protected set;
         }
 
-        public ObjectModificationGizmo(Controls controls, FPSCamera camera, Viewport viewport)
+        public ObjectModificationGizmo(Controls controls, FPSCamera camera)
         {
             mControls = controls;
             mCamera = camera;
-            mViewport = viewport;
 
             mXPositionArm.ObjectID = mXPickingID;
             mYPositionArm.ObjectID = mYPickingID;
@@ -71,7 +70,7 @@ namespace WorldEditor
             IsDragging = false;
         }
 
-        public void Update(List<DummyObject> selectedObjects)
+        public void Update(List<DummyObject> selectedObjects, Viewport viewport)
         {
             if (mControls.LeftPressed.Active)
             {
@@ -113,7 +112,8 @@ namespace WorldEditor
                         mDragDirection = ModificationDirection.Roll;
                         break;
                 }
-                mStartDragPoint = GetMouseWorldPosition();
+                mStartDragPoint = GetMouseWorldPosition(viewport);
+                mPreviousDragPoint = mStartDragPoint;
             }
             else if (mControls.LeftReleased.Active)
             {
@@ -122,17 +122,17 @@ namespace WorldEditor
 
             if (IsDragging)
             {
-                Vector3 newDragPoint = GetMouseWorldPosition();
+                Vector3 newDragPoint = GetMouseWorldPosition(viewport);
                 switch (mDragMode)
                 {
                     case ModificationMode.Position:
                         foreach (DummyObject dummyObject in selectedObjects)
                         {
-                            dummyObject.Position += (newDragPoint - mStartDragPoint) * GetDragDirection();
+                            dummyObject.Position += (newDragPoint - mPreviousDragPoint) * GetDragDirection();
                         }
                         break;
                     case ModificationMode.Scale:
-                        float scaleMultiplier = (newDragPoint - Position).Length() / (mStartDragPoint - Position).Length();
+                        float scaleMultiplier = (newDragPoint - Position).Length() / (mPreviousDragPoint - Position).Length();
                         foreach (DummyObject dummyObject in selectedObjects)
                         {
                             dummyObject.Scale = dummyObject.Scale * scaleMultiplier * GetDragDirection() + (dummyObject.Scale * (Vector3.One - GetDragDirection()));
@@ -142,7 +142,7 @@ namespace WorldEditor
 
                         break;
                 }
-                mStartDragPoint = newDragPoint;
+                mPreviousDragPoint = newDragPoint;
             }
 
             Position = Vector3.Zero;
@@ -165,7 +165,7 @@ namespace WorldEditor
         {
             if (mDrawable)
             {
-                float scaleMagnitude = 100;
+                float scaleMagnitude = (mCamera.Position - Position).Length();
                 Vector3 scale = Vector3.One * scaleMagnitude;
 
                 if (Mode == ModificationMode.Position)
@@ -217,7 +217,7 @@ namespace WorldEditor
             }
         }
 
-        private Vector3 GetMouseWorldPosition()
+        private Vector3 GetMouseWorldPosition(Viewport viewport)
         {
             if (mDragDirection == ModificationDirection.X || mDragDirection == ModificationDirection.Y || mDragDirection == ModificationDirection.Z)
             {
@@ -227,7 +227,7 @@ namespace WorldEditor
                 Vector2 rayPosition;
                 Vector2 rayDirection;
                 Utils.ProjectRayToScreenSpace(new Ray(Position, dragDirection),
-                    mViewport, mCamera.ViewTransform,
+                    viewport, mCamera.ViewTransform,
                     mCamera.ProjectionTransform,
                     out rayPosition,
                     out rayDirection);
@@ -238,7 +238,7 @@ namespace WorldEditor
                 Vector3 worldPosition = Utils.ProjectVectorOntoPlane(
                     Utils.CreateWorldRayFromScreenPoint(
                         screenPoint,
-                        mViewport,
+                        viewport,
                         mCamera.Position,
                         mCamera.ViewTransform,
                         mCamera.ProjectionTransform),
@@ -251,7 +251,7 @@ namespace WorldEditor
                 Vector3 worldPosition = Utils.ProjectVectorOntoPlane(
                     Utils.CreateWorldRayFromScreenPoint(
                         new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
-                        mViewport,
+                        viewport,
                         mCamera.Position,
                         mCamera.ViewTransform,
                         mCamera.ProjectionTransform),
