@@ -16,14 +16,8 @@ namespace WorldEditor
     {
         private const float SpeedMinimum = 0.0025f;
         private const float SpeedAcceleration = 0.05f;
-        private const float Sensitivity = 0.1f;
+        private const float Sensitivity = 0.175f;
 
-        public Viewport Viewport
-        {
-            get { return mViewport; }
-            set { mViewport = value; }
-        }
-        private Viewport mViewport = new Viewport();
         GraphicsDevice mGraphicsDevice = null;
         private FPSCamera mCamera = null;
         private Controls mControls = null;
@@ -38,8 +32,8 @@ namespace WorldEditor
             get
             {
                 return new Rectangle(
-                        (int)Math.Min(mControls.MouseState.X, mDragPoint.X) - Viewport.X,
-                        (int)Math.Min(mControls.MouseState.Y, mDragPoint.Y) - Viewport.Y,
+                        (int)Math.Min(mControls.MouseState.X, mDragPoint.X) - mGraphicsDevice.Viewport.X,
+                        (int)Math.Min(mControls.MouseState.Y, mDragPoint.Y) - mGraphicsDevice.Viewport.Y,
                         (int)Math.Max(Math.Abs(mDragPoint.X - mControls.MouseState.X), 1),
                         (int)Math.Max(Math.Abs(mDragPoint.Y - mControls.MouseState.Y), 1));
             }
@@ -48,7 +42,6 @@ namespace WorldEditor
         public Entity(GraphicsDevice graphicsDevice, Controls controls, FPSCamera camera)
         {
             mGraphicsDevice = graphicsDevice;
-            mViewport = graphicsDevice.Viewport;
             mControls = controls;
             mCamera = camera;
         }
@@ -96,7 +89,7 @@ namespace WorldEditor
         private void UpdateCamera(GameTime gameTime)
         {
             mCamera.Move(mSpeed * mMovement.Y * gameTime.ElapsedGameTime.Milliseconds, mSpeed * mMovement.X * gameTime.ElapsedGameTime.Milliseconds, 0.0f);
-            mCamera.RotateAroundSelf(Sensitivity * mDirection.X * gameTime.ElapsedGameTime.Milliseconds, Sensitivity * mDirection.Y * gameTime.ElapsedGameTime.Milliseconds, 0.0f);
+            mCamera.RotateAroundSelf(mDirection.X, mDirection.Y, 0.0f);
         }
 
         private void UpdateDragPoint()
@@ -120,7 +113,7 @@ namespace WorldEditor
         {
             Ray ray = Utils.CreateWorldRayFromScreenPoint(
                 new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
-                mViewport,
+                mGraphicsDevice.Viewport,
                 mCamera.Position,
                 mCamera.ViewTransform,
                 mCamera.ProjectionTransform);

@@ -131,7 +131,6 @@ namespace WorldEditor.Dialogs
             GraphicsDevice.Reset(presentationParams);
 
             GraphicsDevice.Viewport = newViewport;
-            mWorldEditor.Entity.Viewport = newViewport;
 
             GraphicsManager.OverrideViewport = (Viewport?)newViewport;
 
