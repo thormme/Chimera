@@ -694,7 +694,7 @@ namespace WorldEditor
 
             if (mControls.LeftReleased.Active && EditorForm.Mode == EditorForm.EditorMode.OBJECTS)
             {
-                if (!mGizmo.IsDragging)
+                if (!mGizmo.IsDragging && mControls.MouseInViewport)
                 {
                     foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
                     {
@@ -718,7 +718,7 @@ namespace WorldEditor
                 {
                     case Dialogs.EditorForm.EditorMode.OBJECTS:
                     {
-                        if (!mGizmo.IsDragging)
+                        if (!mGizmo.IsDragging && mControls.MouseInViewport)
                         {
                             Entity.HighlightObjectsInSelection();
                         }
