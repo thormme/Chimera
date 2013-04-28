@@ -74,6 +74,18 @@ namespace WorldEditor
         public void RemoveObject(DummyObject dummyObject)
         {
             mDummies.Remove(dummyObject);
+
+            if (dummyObject.Type == Utils.PlayerTypeName)
+            {
+                foreach (DummyObject dummy in mDummies)
+                {
+                    if (dummy.Type == Utils.PlayerTypeName)
+                    {
+                        return;
+                    }
+                }
+                mDummies.Add(dummyObject);
+            }
         }
 
         public void LinkHeightMap()
@@ -196,7 +208,7 @@ namespace WorldEditor
             mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
 
             mSkyBox = new SkyBox("overcastSkyBox");
-            mWater = new Water("waterTexture", 100);
+            mWater = new Water("waterTexture", 0.1f);
         }
 
         private void UnscaleObjects()

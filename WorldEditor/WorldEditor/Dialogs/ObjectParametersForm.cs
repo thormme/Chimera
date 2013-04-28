@@ -14,6 +14,9 @@ namespace WorldEditor.Dialogs
 {
     public partial class ObjectParametersForm : UserControl
     {
+        const string PhysicsPropTypeName = "Chimera.PhysicsProp, Chimera";
+        const string StaticPropTypeName = "Chimera.Prop, Chimera";
+
         public ObjectParametersForm()
         {
             InitializeComponent();
@@ -67,7 +70,7 @@ namespace WorldEditor.Dialogs
             for (int i = 0; i < SelectedObjects.Count; i++)
             {
                 // Check that certain conditions are met for every selected object.
-                if (!(SelectedObjects[i].Type.Contains("Chimera.PhysicsProp") || SelectedObjects[i].Type.Contains("Chimera.Prop")))
+                if (!(SelectedObjects[i].Type.Contains(PhysicsPropTypeName) || SelectedObjects[i].Type.Contains(StaticPropTypeName)))
                 {
                     Physical.Enabled = false;
                 }
@@ -203,7 +206,7 @@ namespace WorldEditor.Dialogs
 
                 if ((CheckState)Physical.Tag != CheckState.Indeterminate && Physical.Enabled)
                 {
-                    Physical.CheckState = SelectedObjects[0].Type.Contains("Chimera.PhysicsProp") ? CheckState.Checked : CheckState.Unchecked;
+                    Physical.CheckState = SelectedObjects[0].Type.Contains(PhysicsPropTypeName) ? CheckState.Checked : CheckState.Unchecked;
                 }
                 else
                 {
@@ -339,7 +342,7 @@ namespace WorldEditor.Dialogs
             {
                 foreach (DummyObject dummyObject in SelectedObjects)
                 {
-                    dummyObject.Type = ((sender as CheckBox).Checked) ? "Chimera.PhysicsProp" : "Chimera.Prop";
+                    dummyObject.Type = ((sender as CheckBox).Checked) ? PhysicsPropTypeName : StaticPropTypeName;
                 }
             }
         }

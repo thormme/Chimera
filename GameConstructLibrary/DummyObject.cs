@@ -37,6 +37,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
+
         /// <summary>
         /// The in game object type this will be create.
         /// </summary>
@@ -53,6 +54,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
+
         private string mModel { get; set; }
         public string Model
         {
@@ -68,6 +70,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
+
         private string[] mParameters { get; set; }
         public string[] Parameters
         {
@@ -81,6 +84,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
+
         private Vector3 mPosition { get; set; }
         public Vector3 Position
         {
@@ -98,6 +102,7 @@ namespace GameConstructLibrary
                 }
             }
         }
+
         private Vector3 mYawPitchRoll { get; set; }
         public Vector3 YawPitchRoll
         {
@@ -111,6 +116,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
+
         private Vector3 mScale { get; set; }
         public Vector3 Scale
         {
@@ -124,6 +130,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
+
         private Vector3 mRotationAxis { get; set; }
         public Vector3 RotationAxis
         {
@@ -137,6 +144,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
+
         private float mRotationAngle { get; set; }
         public float RotationAngle
         {
@@ -150,6 +158,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
+
         private float mHeight { get; set; }
         public float Height
         {
@@ -163,6 +172,7 @@ namespace GameConstructLibrary
                 ParameterChanged();
             }
         }
+
         private bool mFloating { get; set; }
         public bool Floating
         {

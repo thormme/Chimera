@@ -142,7 +142,7 @@ namespace GameConstructLibrary
             Color[] heightMapBuffer = new Color[heightMapHeight * heightMapWidth];
             for (int i = 0; i < heightMapBuffer.Length; ++i)
             {
-                heightMapBuffer[i] = new Color(0, 255, 0, 0);
+                heightMapBuffer[i] = new Color(0, 0, 255, 0);
             }
             Texture2D heightMapTexture = new Texture2D(GraphicsManager.Device, heightMapWidth, heightMapHeight);
             heightMapTexture.SetData(heightMapBuffer);
@@ -274,7 +274,7 @@ namespace GameConstructLibrary
 
                 for (int i = 0; i < numDummies; ++i)
                 {
-                    if (mLastLoadedObjectList[i].Type == "Chimera.PlayerCreature, Chimera")
+                    if (mLastLoadedObjectList[i].Type == Utility.Utils.PlayerTypeName)
                     {
                         containsPlayer = true;
                     }
@@ -288,7 +288,7 @@ namespace GameConstructLibrary
                 if (containsPlayer == false)
                 {
                     DummyObject player = new DummyObject();
-                    player.Type = "Chimera.PlayerCreature, Chimera";
+                    player.Type = Utility.Utils.PlayerTypeName;
                     player.Model = "playerBean";
                     player.Position = new Vector3(0.0f, mLastLoadedTerrainDescription.Terrain.HeightAt(0.0f, 0.0f), 0.0f);
                     player.YawPitchRoll = Vector3.Zero;

@@ -55,7 +55,7 @@
             this.BrushSizeTrackBar.Name = "BrushSizeTrackBar";
             this.BrushSizeTrackBar.Size = new System.Drawing.Size(125, 45);
             this.BrushSizeTrackBar.TabIndex = 0;
-            this.BrushSizeTrackBar.Value = 10;
+            this.BrushSizeTrackBar.Value = 1;
             // 
             // BrushMagnitudeTrackBar
             // 
@@ -78,7 +78,7 @@
             this.BrushSizeUpDown.Size = new System.Drawing.Size(44, 20);
             this.BrushSizeUpDown.TabIndex = 2;
             this.BrushSizeUpDown.Value = new decimal(new int[] {
-            10,
+            1,
             0,
             0,
             0});

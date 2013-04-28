@@ -18,8 +18,10 @@ namespace Utility
     /// </summary>
     public static class Utils
     {
+        public static string PlayerTypeName = "Chimera.PlayerCreature, Chimera";
 
-        public static Vector3 WorldScale = new Vector3(8.0f, 0.01f, 8.0f);
+        public static Vector3 WorldScale = new Vector3(4.0f, 0.01f, 4.0f);
+
         public static int AlphaMapScale = 10;
 
         public static Matrix GetMatrixFromLookAtVector(Vector3 lookAt)

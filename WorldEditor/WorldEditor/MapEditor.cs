@@ -144,6 +144,8 @@ namespace WorldEditor
             InitializePanes();
 
             mTextureTransformShader = content.Load<Effect>("shaders/TextureTransform");
+
+            NewHandler(this, EventArgs.Empty);
         }
 
         public void Update(GameTime gameTime, bool gameWindowActive)
@@ -193,9 +195,9 @@ namespace WorldEditor
                         break;
                 }
 
-                mDummyWorld.Terrain.TerrainRenderable.CursorPosition = mCursorObject.Position - mCursorObject.Scale;
-                mDummyWorld.Terrain.TerrainRenderable.CursorInnerRadius = 8.0f * mCursorObject.Scale.X;
-                mDummyWorld.Terrain.TerrainRenderable.CursorOuterRadius = 9.0f * mCursorObject.Scale.X;
+                mDummyWorld.Terrain.TerrainRenderable.CursorPosition = mCursorObject.Position;
+                mDummyWorld.Terrain.TerrainRenderable.CursorInnerRadius = Utils.WorldScale.X * mCursorObject.Scale.X;
+                mDummyWorld.Terrain.TerrainRenderable.CursorOuterRadius = Utils.WorldScale.X * 9.0f / 8.0f * mCursorObject.Scale.X;
                 mDummyWorld.Terrain.TerrainRenderable.DrawCursor = brush;
             }
 
@@ -257,7 +259,15 @@ namespace WorldEditor
             {
                 try
                 {
-                    EditorObjectDefinition definition = new EditorObjectDefinition(model.Key, "Chimera.Prop", model.Key, new string[0]);
+                    EditorObjectDefinition definition = null;
+                    if (model.Key != "playerBean")
+                    {
+                        definition = new EditorObjectDefinition(model.Key, "Chimera.Prop, Chimera", model.Key, new string[0]);
+                    }
+                    else
+                    {
+                        definition = new EditorObjectDefinition(model.Key, Utils.PlayerTypeName, model.Key, new string[0]);
+                    }
 
                     mObjectDefinitions.Add(definition.EditorType, definition);
                     mObjects.Add(definition.EditorType, definition.CreateDummyObject());
@@ -397,6 +407,11 @@ namespace WorldEditor
         private void NewHandler(object sender, EventArgs e)
         {
             mDummyWorld.New();
+            DummyObject player = new DummyObject(mObjects["playerBean"]);
+            SetObjectPropertiesToForm(player);
+            player.Scale = new Vector3(5.0f);
+
+            mDummyWorld.AddObject(player);
         }
 
         private void SaveHandler(object sender, EventArgs e)
@@ -732,7 +747,7 @@ namespace WorldEditor
                         }
 
                         float size = HeightMapBrushPropertiesPane.BrushSizeTrackBar.Value;
-                        float strength = HeightMapBrushPropertiesPane.BrushMagnitudeTrackBar.Value * 10.0f;
+                        float strength = HeightMapBrushPropertiesPane.BrushMagnitudeTrackBar.Value / 5.0f;
                         mDummyWorld.ModifyHeightMap(mCursorObject.Position, size, strength, EditorForm.HeightMapBrush, EditorForm.Tool);
                         break;
                     }
@@ -764,7 +779,7 @@ namespace WorldEditor
                         if (!layerHidden && (textureForm.TextureList as ListBox).SelectedItem != null)
                         {
                             float size = TextureBrushPropertiesPane.BrushSizeTrackBar.Value;
-                            float alpha = TextureBrushPropertiesPane.BrushMagnitudeTrackBar.Value;
+                            float alpha = TextureBrushPropertiesPane.BrushMagnitudeTrackBar.Value / 100.0f;
                             GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(EditorForm.PaintingLayer);
                             string textureName = EditorForm.Tool == Dialogs.EditorForm.Tools.PAINT ? (textureForm.TextureList as ListBox).SelectedItem.ToString() : null;
 
