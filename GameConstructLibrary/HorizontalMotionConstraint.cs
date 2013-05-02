@@ -21,7 +21,6 @@ namespace GameConstructLibrary
     {
         CharacterController character;
 
-
         SupportData supportData;
         /// <summary>
         /// Gets or sets the support data used by the constraint.
@@ -77,8 +76,7 @@ namespace GameConstructLibrary
             }
         }
 
-
-        float speed = 8f;
+        float speed = 8.0f;
         /// <summary>
         /// Gets or sets the maximum speed at which the character can move while standing with a support that provides traction.
         /// Relative velocities with a greater magnitude will be decelerated.
@@ -96,7 +94,8 @@ namespace GameConstructLibrary
                 speed = value;
             }
         }
-        float crouchingSpeed = 3f;
+
+        float crouchingSpeed = 3.0f;
         /// <summary>
         /// Gets or sets the maximum speed at which the character can move while crouching with a support that provides traction.
         /// Relative velocities with a greater magnitude will be decelerated.
@@ -114,7 +113,7 @@ namespace GameConstructLibrary
                 crouchingSpeed = value;
             }
         }
-        float slidingSpeed = 6;
+        float slidingSpeed = 6.0f;
         /// <summary>
         /// Gets or sets the maximum speed at which the character can move while on a support that does not provide traction.
         /// Relative velocities with a greater magnitude will be decelerated.
@@ -132,7 +131,8 @@ namespace GameConstructLibrary
                 slidingSpeed = value;
             }
         }
-        float airSpeed = 1;
+
+        float airSpeed = 1.0f;
         /// <summary>
         /// Gets or sets the maximum speed at which the character can move with no support.
         /// The character will not be decelerated while airborne.
@@ -150,7 +150,8 @@ namespace GameConstructLibrary
                 airSpeed = value;
             }
         }
-        float maximumForce = 1000;
+
+        float maximumForce = 1000.0f;
         /// <summary>
         /// Gets or sets the maximum force that the character can apply while on a support which provides traction.
         /// </summary>
@@ -167,7 +168,8 @@ namespace GameConstructLibrary
                 maximumForce = value;
             }
         }
-        float maximumSlidingForce = 50;
+
+        float maximumSlidingForce = 50.0f;
         /// <summary>
         /// Gets or sets the maximum force that the character can apply while on a support which does not provide traction.
         /// </summary>
@@ -184,7 +186,8 @@ namespace GameConstructLibrary
                 maximumSlidingForce = value;
             }
         }
-        float maximumAirForce = 250;
+
+        float maximumAirForce = 250.0f;
         /// <summary>
         /// Gets or sets the maximum force that the character can apply with no support.
         /// </summary>
@@ -202,7 +205,7 @@ namespace GameConstructLibrary
             }
         }
 
-        float supportForceFactor = 1;
+        float supportForceFactor = 1.0f;
         /// <summary>
         /// Gets or sets the scaling factor of forces applied to the supporting object if it is a dynamic entity.
         /// Low values (below 1) reduce the amount of motion imparted to the support object; it acts 'heavier' as far as horizontal motion is concerned.
@@ -231,7 +234,6 @@ namespace GameConstructLibrary
 
         float maxSpeed;
         float maxForce;
-
 
         Matrix2X2 massMatrix;
         Entity supportEntity;
@@ -262,7 +264,6 @@ namespace GameConstructLibrary
             this.character = characterController;
             CollectInvolvedEntities();
         }
-
 
         protected override void CollectInvolvedEntities(RawList<Entity> outputInvolvedEntities)
         {

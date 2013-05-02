@@ -79,7 +79,8 @@ namespace GameConstructLibrary
                 jumpSpeed = value;
             }
         }
-        float slidingJumpSpeed = 3;
+
+        float slidingJumpSpeed = 3.0f;
         /// <summary>
         /// Gets or sets the speed at which the character leaves the ground when it jumps without traction.
         /// </summary>
@@ -96,7 +97,8 @@ namespace GameConstructLibrary
                 slidingJumpSpeed = value;
             }
         }
-        float jumpForceFactor = 1f;
+
+        float jumpForceFactor = 1.0f;
         /// <summary>
         /// Gets or sets the amount of force to apply to supporting dynamic entities as a fraction of the force used to reach the jump speed.
         /// </summary>
@@ -119,7 +121,10 @@ namespace GameConstructLibrary
         /// </summary>
         public float BodyRadius
         {
-            get { return Body.CollisionInformation.Shape.Radius; }
+            get 
+            { 
+                return Body.CollisionInformation.Shape.Radius; 
+            }
             set
             {
                 if (value <= 0)
@@ -136,17 +141,14 @@ namespace GameConstructLibrary
         /// </summary>
         public SupportFinder SupportFinder { get; private set; }
 
-
-
         /// <summary>
         /// Constructs a new character controller with the default configuration.
         /// </summary>
         public CharacterController()
-            : this(new Vector3(), 1.7f, 1.7f * .7f, .6f, 10)
+            : this(Vector3.Zero, 2.0f, 2.0f * 0.8f, 0.6f, 10.0f)
         {
 
         }
-
 
         /// <summary>
         /// Constructs a new character controller with the most common configuration options.
@@ -159,8 +161,9 @@ namespace GameConstructLibrary
         public CharacterController(Vector3 position, float height, float crouchingHeight, float radius, float mass)
         {
             Body = new Cylinder(position, height, radius, mass);
-            Body.IgnoreShapeChanges = true; //Wouldn't want inertia tensor recomputations to occur when crouching and such.
-            Body.CollisionInformation.Shape.CollisionMargin = .1f;
+            //Wouldn't want inertia tensor recomputations to occur when crouching and such.
+            Body.IgnoreShapeChanges = true;
+            Body.CollisionInformation.Shape.CollisionMargin = 0.1f;
             //Making the character a continuous object prevents it from flying through walls which would be pretty jarring from a player's perspective.
             Body.PositionUpdateMode = PositionUpdateMode.Continuous;
             Body.LocalInertiaTensorInverse = new Matrix3X3();
@@ -691,6 +694,7 @@ namespace GameConstructLibrary
             Body.AngularVelocity = new Vector3();
             Body.LinearVelocity = new Vector3();
         }
+
         public override void OnRemovalFromSpace(ISpace oldSpace)
         {
             //Remove any supplements from the space too.

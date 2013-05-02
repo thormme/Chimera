@@ -212,7 +212,6 @@ namespace Chimera
                 AssetLibrary.LoadContent(Content);
                 CollisionMeshManager.LoadContent(Content);
                 SoundManager.LoadContent(Content);
-
                 ExitToMenu();
             }
             catch (Exception e) 

@@ -24,7 +24,7 @@ namespace GameConstructLibrary
     public class StepManager
     {
         CharacterController character;
-        float maximumStepHeight = 1f;
+        float maximumStepHeight = 1.0f;
         /// <summary>
         /// Gets or sets the maximum height which the character is capable of stepping up or down onto.
         /// </summary>
@@ -36,12 +36,12 @@ namespace GameConstructLibrary
             }
             set
             {
-                if (maximumStepHeight < 0)
+                if (maximumStepHeight < 0.0f)
                     throw new Exception("Value must be nonnegative.");
                 maximumStepHeight = value;
             }
         }
-        float minimumDownStepHeight = .1f;
+        float minimumDownStepHeight = 0.1f;
         /// <summary>
         /// Gets or sets the minimum down step height.  Down steps which are smaller than this are simply ignored by the step system; instead, the character falls.
         /// If the new step location has traction, the intermediate falling will not remove traction from the character.  The only difference is that the character isn't
@@ -55,7 +55,7 @@ namespace GameConstructLibrary
             }
             set
             {
-                if (minimumDownStepHeight < 0)
+                if (minimumDownStepHeight < 0.0f)
                     throw new Exception("Value must be nonnegative.");
                 minimumDownStepHeight = value;
             }
@@ -314,7 +314,7 @@ namespace GameConstructLibrary
             return false;
         }
 
-        float upStepMargin = .1f;  //There's a little extra space above the maximum step height to start the obstruction and downcast test rays.  Helps when a step is very close to the max step height.
+        float upStepMargin = 0.1f;  //There's a little extra space above the maximum step height to start the obstruction and downcast test rays.  Helps when a step is very close to the max step height.
         void FindUpStepCandidates(RawList<ContactData> outputStepCandidates)
         {
             foreach (var c in character.SupportFinder.sideContacts)
@@ -491,7 +491,7 @@ namespace GameConstructLibrary
 
 
             //This guess may either win immediately, or at least give us a better idea of where to search.
-            float hitT;
+            float hitT = 0.0f;
             if (Toolbox.GetRayPlaneIntersection(ref downRay, ref plane, out hitT, out intersection))
             {
                 hitT = -downRayLength + hitT + CollisionDetectionSettings.AllowedPenetration;
@@ -609,7 +609,7 @@ namespace GameConstructLibrary
 
         PositionState TryUpStepPosition(ref Vector3 sideNormal, ref Vector3 position, out float hintOffset)
         {
-            hintOffset = 0;
+            hintOffset = 0.0f;
             character.QueryManager.QueryContacts(position);
             bool hasTraction;
             PositionState supportState;
@@ -777,9 +777,6 @@ namespace GameConstructLibrary
             }
             return false;
         }
-
-
-
-
+        
     }
 }
