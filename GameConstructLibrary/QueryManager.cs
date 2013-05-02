@@ -359,8 +359,6 @@ namespace GameConstructLibrary
 
     }
 
-
-
     enum PositionState
     {
         Accepted,
@@ -370,4 +368,5 @@ namespace GameConstructLibrary
         HeadObstructed,
         NoHit
     }
+
 }

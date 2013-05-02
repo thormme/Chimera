@@ -18,25 +18,33 @@ namespace GameConstructLibrary
         public static CollisionGroup ProjectileGroup = new CollisionGroup();
         public static CollisionGroup SensorProjectileGroup = new CollisionGroup();
 
-        public bool CheckHits { get; set; }
-        public Entity StuckEntity;
-        private WeldJoint mStickConstraint;
+        public bool CheckHits
+        {
+            get
+            {
+                return mCheckHits;
+            }
+            set
+            {
+                mCheckHits = value;
+            }
+        }
+        protected bool mCheckHits = true;
 
-        protected Actor mOwner;
-        protected Vector3 mProjectileImpulse;
-        protected float mSpeed;
-        protected float mForce;
+        public Entity StuckEntity = null;
+        private WeldJoint mStickConstraint = null;
 
-        public Projectile(Renderable renderable, Entity entity, Actor owner, Vector3 direction, float speed, Vector3 scale) :
-            base(renderable, entity)
+        protected Actor mOwner = null;
+        protected Vector3 mProjectileImpulse = Vector3.Zero;
+        protected float mSpeed = 0.0f;
+
+        public Projectile(Renderable renderable, Entity entity, Actor owner, Vector3 direction, float speed, Vector3 scale) 
+            : base(renderable, entity)
         {
             if (direction.Length() != 0.0f)
             {
                 direction.Normalize();
             }
-
-            CheckHits = true;
-            StuckEntity = null;
 
             mOwner = owner;
             mProjectileImpulse = new Vector3(direction.X * speed, direction.Y * speed, direction.Z * speed);
@@ -57,7 +65,7 @@ namespace GameConstructLibrary
 
         public override void Update(Microsoft.Xna.Framework.GameTime time)
         {
-            if (CheckHits)
+            if (mCheckHits)
             {
                 foreach (IGameObject gameObject in CollidingObjects)
                 {
