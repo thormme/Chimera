@@ -119,6 +119,13 @@ namespace GameConstructLibrary
             }
         }
 
+        public void AddLevelBlock(LevelBlock block, Vector3 position, float radius, object[] parameters)
+        {
+            List<IGameObject> objectAdditions = parameters[0] as List<IGameObject>;
+
+            objectAdditions.Add(block.HeightMap);
+        }
+
         /// <summary>
         /// Queue an object for removal from the World.
         /// </summary>
@@ -180,8 +187,10 @@ namespace GameConstructLibrary
             }
 
             FileInfo fileInfo = new FileInfo(mapName);
-            List<DummyObject> objects = LevelFileLoader.LoadObjectsFromFile(fileInfo);
-            AssetLibrary.AddTerrain(fileInfo, LevelFileLoader.LoadHeightMapFromFile(fileInfo), LevelFileLoader.LoadTextureFromFile(fileInfo));
+            Tuple<Level, List<DummyObject>> newLevel = LevelFileLoader.LoadLevelFromFile(fileInfo);
+            List<DummyObject> objects = newLevel.Item2;
+            //List<DummyObject> objects = LevelFileLoader.LoadObjectsFromFile(fileInfo);
+            //AssetLibrary.AddTerrain(fileInfo, LevelFileLoader.LoadHeightMapFromFile(fileInfo), LevelFileLoader.LoadTextureFromFile(fileInfo));
 
             foreach (DummyObject dummy in objects)
             {
@@ -211,13 +220,10 @@ namespace GameConstructLibrary
                 }
             }
 
-            TerrainPhysics terrain = LoadTerrain(fileInfo.Name, position, orientation, scale);
-            Add(terrain);
+            Level level = newLevel.Item1;
+            level.IterateOverEveryBlock(AddLevelBlock, new object[] { mUncommittedGameObjectAdditions });
 
-            //Water water = new Water("waterTexture", 50, new Vector2(2, 2));
-            //Add(water);
-
-            SkyBox skydome = new SkyBox("overcastSkyBox");
+            SkyBox skydome = new SkyBox("default");
             Add(skydome);
 
             LevelTheme = SoundManager.LookupSound("desertTheme").CreateInstance();

@@ -61,6 +61,8 @@ namespace WorldEditor
 
         public TextureSelectionForm TextureSelectionPane = null;
 
+        public BlockLayerSelectionForm BlockLayerSelectionForm = null;
+
         public HeightMapBrushPropertiesForm HeightMapBrushPropertiesPane = null;
 
         public TextureBrushPropertiesForm TextureBrushPropertiesPane = null;
@@ -135,6 +137,7 @@ namespace WorldEditor
             this.TextureBrushPropertiesPane = editorForm.TextureBrushPropertiesForm;
             this.TextureLayerPane = editorForm.TextureLayerForm;
             this.TextureSelectionPane = editorForm.TextureSelectionForm;
+            this.BlockLayerSelectionForm = editorForm.BlockLayerSelectionForm;
             mGraphics = graphicsDevice;
             mGameControl = gameControl;
             mCamera = camera;
@@ -179,26 +182,26 @@ namespace WorldEditor
 
         public void Draw()
         {
-            TerrainRenderable.CursorShape brush = TerrainRenderable.CursorShape.NONE;
+            HeightMapRenderable.CursorShape brush = HeightMapRenderable.CursorShape.NONE;
 
             if (mPlaceable)
             {
                 switch (EditorForm.Mode)
                 {
                     case EditorForm.EditorMode.HEIGHTMAP:
-                        brush = EditorForm.HeightMapBrush == EditorForm.Brushes.BLOCK || EditorForm.HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
-                            TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
+                        brush = EditorForm.HeightMapBrush == EditorForm.Brushes.BLOCK || EditorForm.HeightMapBrush == EditorForm.Brushes.BLOCK_FEATHERED ?
+                            HeightMapRenderable.CursorShape.BLOCK : HeightMapRenderable.CursorShape.CIRCLE;
                         break;
                     case EditorForm.EditorMode.PAINTING:
-                        brush = EditorForm.TextureBrush == EditorForm.Brushes.BLOCK || EditorForm.TextureBrush == EditorForm.Brushes.BLOCK_FEATHERED ? 
-                            TerrainRenderable.CursorShape.BLOCK : TerrainRenderable.CursorShape.CIRCLE;
+                        brush = EditorForm.TextureBrush == EditorForm.Brushes.BLOCK || EditorForm.TextureBrush == EditorForm.Brushes.BLOCK_FEATHERED ?
+                            HeightMapRenderable.CursorShape.BLOCK : HeightMapRenderable.CursorShape.CIRCLE;
                         break;
                 }
 
-                mDummyWorld.Terrain.TerrainRenderable.CursorPosition = mCursorObject.Position;
-                mDummyWorld.Terrain.TerrainRenderable.CursorInnerRadius = Utils.WorldScale.X * mCursorObject.Scale.X;
-                mDummyWorld.Terrain.TerrainRenderable.CursorOuterRadius = Utils.WorldScale.X * 9.0f / 8.0f * mCursorObject.Scale.X;
-                mDummyWorld.Terrain.TerrainRenderable.DrawCursor = brush;
+                mDummyWorld.CursorPosition = mCursorObject.Position;
+                mDummyWorld.CursorInnerRadius = mCursorObject.Scale.X;
+                mDummyWorld.CursorOuterRadius = 9.0f / 8.0f * mCursorObject.Scale.X;
+                mDummyWorld.DrawCursor = brush;
             }
 
             Vector4 layerMask = new Vector4(
@@ -206,7 +209,7 @@ namespace WorldEditor
                 EditorForm.TextureLayerForm.Layer2.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
                 EditorForm.TextureLayerForm.Layer3.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f,
                 EditorForm.TextureLayerForm.Layer4.LayerVisibilityButton.BackgroundImage == null ? 0.0f : 1.0f);
-            mDummyWorld.Terrain.TerrainRenderable.LayerMask = layerMask;
+            mDummyWorld.TerrainLayerMask = layerMask;
 
             if (IsGizmoVisible)
             {
@@ -302,6 +305,7 @@ namespace WorldEditor
             }
 
             UpdateModeContext(EditorForm, null);
+            UpdateToolContext(EditorForm, null);
             CursorResizeHandler(HeightMapBrushPropertiesPane.BrushSizeTrackBar, null);
             UpdateLayerPaneImages(Dialogs.EditorForm.Layers.BACKGROUND, "default_terrain_detail");
         }
@@ -350,6 +354,19 @@ namespace WorldEditor
         private void CloseObjectParameterForm(object sender, EventArgs e)
         {
             ObjectParameterPane.Hide();
+        }
+
+        private void OpenBlockLayerSelectionForm(object sender, EventArgs e)
+        {
+            if (!BlockLayerSelectionForm.Visible)
+            {
+                BlockLayerSelectionForm.Show();
+            }
+        }
+
+        private void CloseBlockLayerSelectionForm(object sender, EventArgs e)
+        {
+            BlockLayerSelectionForm.Hide();
         }
 
         private void OpenHeightMapBrushPropertiesPane(object sender, EventArgs e)
@@ -410,6 +427,7 @@ namespace WorldEditor
             DummyObject player = new DummyObject(mObjects["playerBean"]);
             SetObjectPropertiesToForm(player);
             player.Scale = new Vector3(5.0f);
+            player.Position = new Vector3(Level.BLOCK_SIZE / 2.0f, 0.0f, Level.BLOCK_SIZE / 2.0f);
 
             mDummyWorld.AddObject(player);
         }
@@ -610,6 +628,7 @@ namespace WorldEditor
             switch ((sender as EditorForm).Mode)
             {
                 case Dialogs.EditorForm.EditorMode.OBJECTS:
+                    CloseBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     OpenObjectCreationForm(this, EventArgs.Empty);
@@ -623,7 +642,26 @@ namespace WorldEditor
                         ObjectPlacementPane.ObjectTree.CollapseAll();
                     }
                     break;
+                case Dialogs.EditorForm.EditorMode.BLOCKCREATION:
+                    CloseBlockLayerSelectionForm(this, EventArgs.Empty);
+                    CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
+                    CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
+                    CloseObjectCreationForm(this, EventArgs.Empty);
+                    CloseObjectParameterForm(this, EventArgs.Empty);
+                    CloseTextureForm(this, EventArgs.Empty);
+                    CloseTextureLayerPane(this, EventArgs.Empty);
+                    break;
+                case Dialogs.EditorForm.EditorMode.BLOCKSELECTION:
+                    CloseBlockLayerSelectionForm(this, EventArgs.Empty);
+                    CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
+                    CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
+                    CloseObjectCreationForm(this, EventArgs.Empty);
+                    CloseObjectParameterForm(this, EventArgs.Empty);
+                    CloseTextureForm(this, EventArgs.Empty);
+                    CloseTextureLayerPane(this, EventArgs.Empty);
+                    break;
                 case Dialogs.EditorForm.EditorMode.HEIGHTMAP:
+                    CloseBlockLayerSelectionForm(this, EventArgs.Empty);
                     OpenHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
@@ -632,6 +670,7 @@ namespace WorldEditor
                     CloseTextureLayerPane(this, EventArgs.Empty);
                     break;
                 case Dialogs.EditorForm.EditorMode.PAINTING:
+                    CloseBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     OpenTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
@@ -705,27 +744,56 @@ namespace WorldEditor
                 }
             }
 
-            mDummyWorld.NewHeightMapAction = mDummyWorld.NewHeightMapAction || !mControls.LeftHold.Active;
-
-            if (mControls.LeftReleased.Active && EditorForm.Mode == EditorForm.EditorMode.OBJECTS)
+            if (mControls.LeftReleased.Active && mControls.MouseInViewport)
             {
-                if (!mGizmo.IsDragging && mControls.MouseInViewport)
+                switch (EditorForm.Mode)
                 {
-                    foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
+                    case EditorForm.EditorMode.OBJECTS:
                     {
-                        oldObject.IsHighlighted = false;
-                    }
-                    ObjectParameterPane.SelectedObjects.Clear();
+                        if (!mGizmo.IsDragging)
+                        {
+                            foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
+                            {
+                                oldObject.IsHighlighted = false;
+                            }
+                            ObjectParameterPane.SelectedObjects.Clear();
 
-                    List<DummyObject> dummyObjects = Entity.GetObjectsInSelection(mDummyWorld);
-                    foreach (DummyObject newObject in dummyObjects)
+                            List<DummyObject> dummyObjects = Entity.GetObjectsInSelection(mDummyWorld);
+                            foreach (DummyObject newObject in dummyObjects)
+                            {
+                                newObject.IsHighlighted = true;
+                            }
+
+                            ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
+                        }
+                        ObjectParameterPane.UpdateParameterFields();
+                        break;
+                    }
+                    case Dialogs.EditorForm.EditorMode.BLOCKCREATION:
                     {
-                        newObject.IsHighlighted = true;
+                        Vector3 coordinate;
+                        if (Entity.GetBlockCoordinatePickingLocation(EditorForm.BlockLayer, out coordinate))
+                        {
+                            mDummyWorld.AddBlock(new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), EditorForm.BlockLayer, (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE)));
+                        }
+                        break;
                     }
+                    case Dialogs.EditorForm.EditorMode.BLOCKSELECTION:
+                    {
+                        Vector3 coordinate;
+                        if (Entity.GetBlockCoordinatePickingLocation(EditorForm.BlockLayer, out coordinate))
+                        {
+                            coordinate = new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), EditorForm.BlockLayer, (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE));
+                            if (!mDummyWorld.ContainsBlock(coordinate) ||!mControls.Control.Active)
+                            {
+                                mDummyWorld.ClearSelectedBlocks();
+                            }
 
-                    ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
+                            mDummyWorld.SelectBlock(coordinate);
+                        }
+                        break;
+                    }
                 }
-                ObjectParameterPane.UpdateParameterFields();
             }
             else if (mControls.LeftHold.Active)
             {
@@ -780,7 +848,7 @@ namespace WorldEditor
                         {
                             float size = TextureBrushPropertiesPane.BrushSizeTrackBar.Value;
                             float alpha = TextureBrushPropertiesPane.BrushMagnitudeTrackBar.Value / 100.0f;
-                            GameConstructLibrary.TerrainTexture.TextureLayer layer = (GameConstructLibrary.TerrainTexture.TextureLayer)(EditorForm.PaintingLayer);
+                            HeightMapMesh.TextureLayer layer = (HeightMapMesh.TextureLayer)(EditorForm.PaintingLayer);
                             string textureName = EditorForm.Tool == Dialogs.EditorForm.Tools.PAINT ? (textureForm.TextureList as ListBox).SelectedItem.ToString() : null;
 
                             float uOffset = (float)textureForm.UOffset.Value, vOffset = (float)textureForm.VOffset.Value;

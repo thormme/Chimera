@@ -562,7 +562,7 @@ namespace Chimera
                 (mGameStates[mGameStates.Count - 1] as GameWorld).Clear();
                 mGameStates[mGameStates.Count - 1] = null;
                 mGameStates[mGameStates.Count - 1] = new GameWorld(DebugModelDrawer);
-                (mGameStates[mGameStates.Count - 1] as GameWorld).AddLevelFromFile(parameters[0], Vector3.Zero, Quaternion.Identity, Utils.WorldScale);
+                (mGameStates[mGameStates.Count - 1] as GameWorld).AddLevelFromFile(parameters[0], Vector3.Zero, Quaternion.Identity, Vector3.One);
             }
         }
 

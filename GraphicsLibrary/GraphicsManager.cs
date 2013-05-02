@@ -404,10 +404,13 @@ namespace GraphicsLibrary
             renderer.ClearAllInstances();
             renderer.AddInstance(parameters);
 
-            renderer.RenderAllInstancesWithoutShadows(
-                Matrix.CreateLookAt(cameraPosition, renderer.BoundingSphere.Center, Vector3.Up), 
-                Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, 1.0f, nearDistance, farDistance),
-                new Light(Vector3.Up, -Vector3.Up, Color.White.ToVector3(), Color.White.ToVector3(), Color.White.ToVector3()));
+            if (mCamera != null)
+            {
+                renderer.RenderAllInstancesWithoutShadows(
+                    Matrix.CreateLookAt(cameraPosition, renderer.BoundingSphere.Center, Vector3.Up),
+                    Matrix.CreatePerspectiveFieldOfView(mCamera.FieldOfView, 1.0f, nearDistance, farDistance),
+                    new Light(Vector3.Up, -Vector3.Up, Color.White.ToVector3(), Color.White.ToVector3(), Color.White.ToVector3()));
+            }
 
             mDevice.SetRenderTarget(null);
 
@@ -592,6 +595,7 @@ namespace GraphicsLibrary
             mDevice.Clear(Color.CornflowerBlue);
 
             RasterizerState cull = new RasterizerState();
+            cull.FillMode = FillMode.Solid;
             cull.CullMode = CullMode.CullCounterClockwiseFace;
 
             mDevice.RasterizerState = cull;

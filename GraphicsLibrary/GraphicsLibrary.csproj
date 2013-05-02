@@ -108,13 +108,29 @@
     <Compile Include="AnimationPlayer.cs" />
     <Compile Include="AssetLibrary.cs" />
     <Compile Include="CascadedShadowMap.cs" />
+    <Compile Include="HeightMapMesh.cs" />
+    <Compile Include="HeightMapRenderable.cs" />
+    <Compile Include="HeightMapRenderer.cs" />
     <Compile Include="RendererBase.cs" />
     <Compile Include="ModelRenderer.cs" />
     <Compile Include="ParticleDefinition.cs" />
     <Compile Include="ParticleSystem.cs" />
     <Compile Include="SkyBoxRenderer.cs" />
-    <Compile Include="TerrainDescription.cs" />
-    <Compile Include="TerrainRenderer.cs" />
+    <Compile Include="TerrainDescription.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TerrainHeightMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TerrainRenderable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TerrainRenderer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TerrainTexture.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TexturedParticles.cs" />
     <Compile Include="DirectoryManager.cs" />
     <Compile Include="BoundingBoxRenderer.cs" />
@@ -128,9 +144,6 @@
     <Compile Include="SkyBoxRenderable.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteDefinition.cs" />
-    <Compile Include="TerrainHeightMap.cs" />
-    <Compile Include="TerrainRenderable.cs" />
-    <Compile Include="TerrainTexture.cs" />
     <Compile Include="TransparentModel.cs" />
     <Compile Include="TransparentModelRenderer.cs" />
     <Compile Include="UIModel.cs" />

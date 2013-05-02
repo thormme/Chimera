@@ -17,7 +17,7 @@ namespace GameConstructLibrary
         #region Previously Loaded Level Content
 
         static private string mLastLoadedLevelName = null;
-        static private TerrainDescription mLastLoadedTerrainDescription = null;
+        //static private TerrainDescription mLastLoadedTerrainDescription = null;
         static private List<DummyObject> mLastLoadedObjectList = null;
 
         #endregion
@@ -28,41 +28,141 @@ namespace GameConstructLibrary
         /// 
         /// </summary>
         /// <param name="filePathAndName"></param>
-        /// <returns></returns>
-        static public TerrainHeightMap LoadHeightMapFromFile(FileInfo filePathAndName)
+        static public Tuple<Level, List<DummyObject>> LoadLevelFromFile(FileInfo filePathAndName)
         {
-            if (!filePathAndName.Name.Contains(".lvl"))
+            Tuple<Level, List<DummyObject>> result;
+
+            ZipFile zipFile = null;
+            try
             {
-                filePathAndName = new FileInfo(filePathAndName.Name + ".lvl");
+                FileStream fileStream = File.OpenRead(filePathAndName.FullName);
+                zipFile = new ZipFile(fileStream);
+
+                Level level = new Level(filePathAndName.Name);
+
+                Dictionary<Vector3, Texture2D> levelHeightMaps = new Dictionary<Vector3, Texture2D>();
+                Dictionary<Vector3, Texture2D> levelAlphaMaps = new Dictionary<Vector3, Texture2D>();
+                Dictionary<Vector3, string[]> levelTextureNames = new Dictionary<Vector3, string[]>();
+                Dictionary<Vector3, Vector2[]> levelUVOffset = new Dictionary<Vector3, Vector2[]>();
+                Dictionary<Vector3, Vector2[]> levelUVScale = new Dictionary<Vector3, Vector2[]>();
+
+                HashSet<Vector3> coordinates = new HashSet<Vector3>();
+
+                List<DummyObject> dummies = new List<DummyObject>();
+
+                foreach (ZipEntry zipEntry in zipFile)
+                {
+                    if (!zipEntry.IsFile)
+                    {
+                        continue;
+                    }
+
+                    string entryFileName = Path.GetFileName(zipEntry.Name);
+
+                    Stream zipStream = zipFile.GetInputStream(zipEntry);
+                    MemoryStream memoryStream = new MemoryStream();
+                    zipStream.CopyTo(memoryStream);
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+
+                    if (entryFileName.Contains("Objects"))
+                    {
+                        dummies = LoadDummyObjects(memoryStream);
+                        continue;
+                    }
+
+                    string[] nameSegments = entryFileName.Split(new char[] { '_' });
+                    Vector3 coordinate = new Vector3(float.Parse(nameSegments[1]), float.Parse(nameSegments[2]), float.Parse(nameSegments[3]));
+
+                    if (!coordinates.Contains(coordinate))
+                    {
+                        coordinates.Add(coordinate);
+                    }
+
+                    if (entryFileName.Contains("AlphaMap"))
+                    {
+                        levelAlphaMaps.Add(coordinate, Texture2D.FromStream(GraphicsManager.Device, memoryStream));
+                    }
+                    else if (entryFileName.Contains("HeightMap"))
+                    {
+                        levelHeightMaps.Add(coordinate, Texture2D.FromStream(GraphicsManager.Device, memoryStream));
+                    }
+                    else if (entryFileName.Contains("DetailTextures"))
+                    {
+                        string[] textureNames;
+                        Vector2[] uvOffsets;
+                        Vector2[] uvScales;
+                        LoadDetailTextureNames(memoryStream, out textureNames, out uvOffsets, out uvScales);
+
+                        levelTextureNames.Add(coordinate, textureNames);
+                        levelUVOffset.Add(coordinate, uvOffsets);
+                        levelUVScale.Add(coordinate, uvScales);
+                    }
+                    else if (entryFileName.Contains("Objects"))
+                    {
+                        mLastLoadedObjectList = LoadDummyObjects(memoryStream);
+                    }
+
+                    zipStream.Close();
+                }
+
+                foreach (Vector3 coordinate in coordinates)
+                {
+                    AddNewLevelBlock(level, coordinate, levelHeightMaps[coordinate], levelAlphaMaps[coordinate], levelTextureNames[coordinate], levelUVOffset[coordinate], levelUVScale[coordinate]);
+                }
+
+                result = new Tuple<Level, List<DummyObject>>(level, dummies);
+            }
+            finally
+            {
+                if (zipFile != null)
+                {
+                    zipFile.IsStreamOwner = true;
+                    zipFile.Close();
+                }
             }
 
-            if (mLastLoadedLevelName == null || filePathAndName.Name != mLastLoadedLevelName)
-            {
-                LoadLevelFromFile(filePathAndName);
-            }
-
-            return mLastLoadedTerrainDescription.Terrain;
+            return result;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="filePathAndName"></param>
-        /// <returns></returns>
-        static public TerrainTexture LoadTextureFromFile(FileInfo filePathAndName)
-        {
-            if (!filePathAndName.Name.Contains(".lvl"))
-            {
-                filePathAndName = new FileInfo(filePathAndName.Name + ".lvl");
-            }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="filePathAndName"></param>
+        ///// <returns></returns>
+        //static public TerrainHeightMap LoadHeightMapFromFile(FileInfo filePathAndName)
+        //{
+        //    if (!filePathAndName.Name.Contains(".lvl"))
+        //    {
+        //        filePathAndName = new FileInfo(filePathAndName.Name + ".lvl");
+        //    }
 
-            if (mLastLoadedLevelName == null || filePathAndName.Name != mLastLoadedLevelName)
-            {
-                LoadLevelFromFile(filePathAndName);
-            }
+        //    if (mLastLoadedLevelName == null || filePathAndName.Name != mLastLoadedLevelName)
+        //    {
+        //        LoadLevelFromFile(filePathAndName);
+        //    }
 
-            return mLastLoadedTerrainDescription.Texture;
-        }
+        //    return mLastLoadedTerrainDescription.Terrain;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="filePathAndName"></param>
+        ///// <returns></returns>
+        //static public TerrainTexture LoadTextureFromFile(FileInfo filePathAndName)
+        //{
+        //    if (!filePathAndName.Name.Contains(".lvl"))
+        //    {
+        //        filePathAndName = new FileInfo(filePathAndName.Name + ".lvl");
+        //    }
+
+        //    if (mLastLoadedLevelName == null || filePathAndName.Name != mLastLoadedLevelName)
+        //    {
+        //        LoadLevelFromFile(filePathAndName);
+        //    }
+
+        //    return mLastLoadedTerrainDescription.Texture;
+        //}
 
         /// <summary>
         /// 
@@ -84,11 +184,7 @@ namespace GameConstructLibrary
             return mLastLoadedObjectList;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="filePathAndName"></param>
-        static public void SaveLevelToFile(FileInfo filePathAndName)
+        static public void WriteLevel(Level level, List<DummyObject> objects, FileInfo filePathAndName)
         {
             if (!filePathAndName.Name.Contains(".lvl"))
             {
@@ -103,19 +199,19 @@ namespace GameConstructLibrary
             FileStream output = File.Create(filePathAndName.FullName);
             ZipOutputStream zipStream = new ZipOutputStream(output);
 
-            string[] entryNames = { "AlphaMap.png", "DetailTextures.ctl", "HeightMap.png", "Objects.col" };
-            MemoryStream[] entryStreams = { mLastLoadedTerrainDescription.Texture.ExportTextureToStream(), mLastLoadedTerrainDescription.Texture.ExportDetailListToStream(), mLastLoadedTerrainDescription.Terrain.ExportToStream(), CreateObjectStream() };
+            List<Tuple<string, MemoryStream>> serializedLevel = level.Serialize();
+            serializedLevel.Add(SerializedDummies(objects));
 
             zipStream.SetLevel(5);
 
-            for (int i = 0; i < entryNames.Length; ++i)
+            foreach (Tuple<string, MemoryStream> file in serializedLevel)
             {
-                ZipEntry newEntry = new ZipEntry(entryNames[i]);
+                ZipEntry newEntry = new ZipEntry(file.Item1);
                 newEntry.DateTime = DateTime.Now;
 
                 zipStream.PutNextEntry(newEntry);
 
-                StreamUtils.Copy(entryStreams[i], zipStream, new byte[4096]);
+                StreamUtils.Copy(file.Item2, zipStream, new byte[4096]);
                 zipStream.CloseEntry();
             }
 
@@ -123,64 +219,124 @@ namespace GameConstructLibrary
             zipStream.Close();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="heightMapWidth"></param>
-        /// <param name="heightMapHeight"></param>
-        /// <param name="alphaMapWidth"></param>
-        /// <param name="alphaMapHeight"></param>
-        /// <param name="chunkRows"></param>
-        /// <param name="chunkCols"></param>
-        /// <param name="defaultTexture"></param>
-        /// <returns></returns>
-        static public string GenerateBlankLevel(int heightMapWidth, int heightMapHeight, int alphaMapWidth, int alphaMapHeight, int chunkRows, int chunkCols, string defaultTexture, out List<DummyObject> dummyObjectList)
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="heightMapWidth"></param>
+        ///// <param name="heightMapHeight"></param>
+        ///// <param name="alphaMapWidth"></param>
+        ///// <param name="alphaMapHeight"></param>
+        ///// <param name="chunkRows"></param>
+        ///// <param name="chunkCols"></param>
+        ///// <param name="defaultTexture"></param>
+        ///// <returns></returns>
+        //static public string GenerateBlankLevel(int heightMapWidth, int heightMapHeight, int alphaMapWidth, int alphaMapHeight, int chunkRows, int chunkCols, string defaultTexture, out List<DummyObject> dummyObjectList)
+        //{
+        //    mLastLoadedObjectList = new List<DummyObject>();
+        //    dummyObjectList = mLastLoadedObjectList;
+
+        //    Color[] heightMapBuffer = new Color[heightMapHeight * heightMapWidth];
+        //    for (int i = 0; i < heightMapBuffer.Length; ++i)
+        //    {
+        //        heightMapBuffer[i] = new Color(0, 0, 255, 0);
+        //    }
+        //    Texture2D heightMapTexture = new Texture2D(GraphicsManager.Device, heightMapWidth, heightMapHeight);
+        //    heightMapTexture.SetData(heightMapBuffer);
+
+        //    Color[] alphaMapBuffer = new Color[alphaMapHeight * alphaMapWidth];
+        //    for (int i = 0; i < alphaMapBuffer.Length; ++i)
+        //    {
+        //        alphaMapBuffer[i] = new Color(0, 0, 0, 0);
+        //    }
+        //    Texture2D alphaMapTexture = new Texture2D(GraphicsManager.Device, alphaMapWidth, alphaMapHeight);
+        //    alphaMapTexture.SetData(alphaMapBuffer);
+
+        //    string[, ,] detailTextureNames = new string[chunkRows, chunkCols, 5];
+        //    Vector2[, ,] detailTextureUVOffsets = new Vector2[chunkRows, chunkCols, 5];
+        //    Vector2[, ,] detailTextureUVScales = new Vector2[chunkRows, chunkCols, 5];
+
+        //    for (int row = 0; row < chunkRows; ++row)
+        //    {
+        //        for (int col = 0; col < chunkCols; ++col)
+        //        {
+        //            detailTextureNames[row, col, 0] = defaultTexture;
+        //            for (int index = 0; index < 5; ++index)
+        //            {
+        //                detailTextureUVOffsets[row, col, index] = Vector2.Zero;
+        //                detailTextureUVScales[row, col, index] = Vector2.One;
+        //            }
+        //        }
+        //    }
+
+        //    TerrainHeightMap heightMap = new TerrainHeightMap(heightMapTexture, chunkRows, chunkCols, GraphicsManager.Device);
+        //    TerrainTexture texture = new TerrainTexture(alphaMapTexture, detailTextureNames, detailTextureUVOffsets, detailTextureUVScales, chunkRows, chunkCols, GraphicsManager.Device);
+
+        //    mLastLoadedTerrainDescription = new TerrainDescription(heightMap, texture);
+
+        //    string name = "PROCEDURALLY_GENERATED_DEFAULT_LEVEL.lvl";
+        //    mLastLoadedLevelName = name;
+
+        //    return name;
+        //}
+
+        static public Level GenerateNewLevel(string levelName, string defaultTexture)
         {
-            mLastLoadedObjectList = new List<DummyObject>();
-            dummyObjectList = mLastLoadedObjectList;
+            Level level = new Level(levelName);
 
-            Color[] heightMapBuffer = new Color[heightMapHeight * heightMapWidth];
-            for (int i = 0; i < heightMapBuffer.Length; ++i)
+            GenerateBlankLevelBlock(level, Vector3.Zero, defaultTexture);
+
+            return level;
+        }
+
+        static public bool GenerateBlankLevelBlock(Level level, Vector3 coordinate, string defaultTextureName)
+        {
+            if (level.Contains(coordinate))
             {
-                heightMapBuffer[i] = new Color(0, 0, 255, 0);
-            }
-            Texture2D heightMapTexture = new Texture2D(GraphicsManager.Device, heightMapWidth, heightMapHeight);
-            heightMapTexture.SetData(heightMapBuffer);
-
-            Color[] alphaMapBuffer = new Color[alphaMapHeight * alphaMapWidth];
-            for (int i = 0; i < alphaMapBuffer.Length; ++i)
-            {
-                alphaMapBuffer[i] = new Color(0, 0, 0, 0);
-            }
-            Texture2D alphaMapTexture = new Texture2D(GraphicsManager.Device, alphaMapWidth, alphaMapHeight);
-            alphaMapTexture.SetData(alphaMapBuffer);
-
-            string[, ,] detailTextureNames = new string[chunkRows, chunkCols, 5];
-            Vector2[, ,] detailTextureUVOffsets = new Vector2[chunkRows, chunkCols, 5];
-            Vector2[, ,] detailTextureUVScales = new Vector2[chunkRows, chunkCols, 5];
-
-            for (int row = 0; row < chunkRows; ++row)
-            {
-                for (int col = 0; col < chunkCols; ++col)
-                {
-                    detailTextureNames[row, col, 0] = defaultTexture;
-                    for (int index = 0; index < 5; ++index)
-                    {
-                        detailTextureUVOffsets[row, col, index] = Vector2.Zero;
-                        detailTextureUVScales[row, col, index] = Vector2.One;
-                    }
-                }
+                return false;
             }
 
-            TerrainHeightMap heightMap = new TerrainHeightMap(heightMapTexture, chunkRows, chunkCols, GraphicsManager.Device);
-            TerrainTexture texture = new TerrainTexture(alphaMapTexture, detailTextureNames, detailTextureUVOffsets, detailTextureUVScales, chunkRows, chunkCols, GraphicsManager.Device);
+            string[] detailTextureNames = new string[5] { defaultTextureName, null, null, null, null };
+            Vector2[] uvOffsets = new Vector2[5] { Vector2.Zero, Vector2.Zero, Vector2.Zero, Vector2.Zero, Vector2.Zero };
+            Vector2[] uvScales = new Vector2[5] { Vector2.One, Vector2.One, Vector2.One, Vector2.One, Vector2.One };
 
-            mLastLoadedTerrainDescription = new TerrainDescription(heightMap, texture);
+            Color[] blankHeightMap = new Color[HeightMapMesh.NUM_VERT_VERTICES * HeightMapMesh.NUM_HORIZ_VERTICES];
+            for (int i = 0; i < blankHeightMap.Length; i++)
+            {
+                blankHeightMap[i] = new Color(0, 0, 0, 0);
+            }
+            Texture2D blankHeightMapTexture = new Texture2D(GraphicsManager.Device, HeightMapMesh.NUM_HORIZ_VERTICES, HeightMapMesh.NUM_VERT_VERTICES);
 
-            string name = "PROCEDURALLY_GENERATED_DEFAULT_LEVEL.lvl";
-            mLastLoadedLevelName = name;
+            Color[] blankAlphaMap = new Color[HeightMapMesh.NUM_VERT_VERTICES * HeightMapMesh.NUM_HORIZ_VERTICES * HeightMapMesh.NUM_VERT_TEXELS_PER_QUAD * HeightMapMesh.NUM_HORIZ_TEXELS_PER_QUAD];
+            for (int i = 0; i < blankAlphaMap.Length; i++)
+            {
+                blankAlphaMap[i] = new Color(0, 0, 0, 0);
+            }
+            Texture2D blankAlphaMapTexture = new Texture2D(GraphicsManager.Device, HeightMapMesh.NUM_HORIZ_VERTICES * HeightMapMesh.NUM_HORIZ_TEXELS_PER_QUAD, HeightMapMesh.NUM_VERT_VERTICES * HeightMapMesh.NUM_VERT_TEXELS_PER_QUAD);
 
-            return name;
+            return AddNewLevelBlock(level, coordinate, blankHeightMapTexture, blankAlphaMapTexture, detailTextureNames, uvOffsets, uvScales);
+        }
+
+        static public bool AddNewLevelBlock(Level level, Vector3 coordinate, Texture2D heightMap, Texture2D alphaMap, string[] detailTextureNames, Vector2[] uvOffsets, Vector2[] uvScales)
+        {
+            if (level.Contains(coordinate))
+            {
+                return false;
+            }
+
+            Color[] heightColors = new Color[heightMap.Width * heightMap.Height];
+            heightMap.GetData(heightColors);
+
+            float[,] heights = new float[heightMap.Height, heightMap.Width];
+            for (int i = 0; i < heightColors.Length; i++)
+            {
+                heights[i % HeightMapMesh.NUM_HORIZ_VERTICES, i / HeightMapMesh.NUM_HORIZ_VERTICES] = ConvertColorToFloat(heightColors[i]);
+            }
+
+            HeightMapMesh heightMapMesh = new HeightMapMesh(heights, alphaMap, detailTextureNames, uvOffsets, uvScales);
+
+            AssetLibrary.AddHeightMap(level.Name + coordinate.ToString(), heightMapMesh);
+            level.AddNewBlock(coordinate);
+            return true;
         }
 
         /// <summary>
@@ -190,7 +346,7 @@ namespace GameConstructLibrary
         {
             mLastLoadedLevelName = null;
             mLastLoadedObjectList = null;
-            mLastLoadedTerrainDescription = null;
+            //mLastLoadedTerrainDescription = null;
         }
 
         #endregion
@@ -200,146 +356,18 @@ namespace GameConstructLibrary
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="filePathAndName"></param>
-        static private void LoadLevelFromFile(FileInfo filePathAndName)
-        {
-            ZipFile zipFile = null;
-            try
-            {
-                int numChunks = 9;
-
-                FileStream fileStream = File.OpenRead(filePathAndName.FullName);
-                zipFile = new ZipFile(fileStream);
-
-                Texture2D alphaMap = null, heightMap = null;
-                string[, ,] detailTextureNames = null;
-                Vector2[, ,] detailTextureUVOffsets = null;
-                Vector2[, ,] detailTextureUVScales = null;
-
-                mLastLoadedObjectList = new List<DummyObject>();
-
-                foreach (ZipEntry zipEntry in zipFile)
-                {
-                    if (!zipEntry.IsFile)
-                    {
-                        continue;
-                    }
-
-                    string entryFileName = Path.GetFileName(zipEntry.Name);
-
-                    Stream zipStream = zipFile.GetInputStream(zipEntry);
-
-                    MemoryStream memoryStream = new MemoryStream();
-                    zipStream.CopyTo(memoryStream);
-
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-
-                    if (entryFileName.Contains("AlphaMap"))
-                    {
-                        alphaMap = Texture2D.FromStream(GraphicsManager.Device, memoryStream);
-                    }
-                    else if (entryFileName.Contains("HeightMap"))
-                    {
-                        heightMap = Texture2D.FromStream(GraphicsManager.Device, memoryStream);
-                    }
-                    else if (entryFileName.Contains("DetailTextures"))
-                    {
-                        LoadDetailTextureNames(memoryStream, out detailTextureNames, out detailTextureUVOffsets, out detailTextureUVScales);
-                    }
-                    else if (entryFileName.Contains("Objects"))
-                    {
-                        mLastLoadedObjectList = LoadDummyObjects(memoryStream);
-                    }
-
-                    zipStream.Close();
-                }
-
-                TerrainHeightMap terrainHeightMap = new TerrainHeightMap(heightMap, numChunks, numChunks, GraphicsManager.Device);
-                TerrainTexture texture = new TerrainTexture(alphaMap, detailTextureNames, detailTextureUVOffsets, detailTextureUVScales, numChunks, numChunks, GraphicsManager.Device);
-
-                mLastLoadedTerrainDescription = new TerrainDescription(terrainHeightMap, texture);
-                mLastLoadedLevelName = filePathAndName.Name;
-            }
-            finally
-            {
-                if (zipFile != null)
-                {
-                    zipFile.IsStreamOwner = true;
-                    zipFile.Close();
-                }
-
-                int numDummies = mLastLoadedObjectList.Count;
-
-                bool containsPlayer = false, containsGoal = false;
-
-                for (int i = 0; i < numDummies; ++i)
-                {
-                    if (mLastLoadedObjectList[i].Type == Utility.Utils.PlayerTypeName)
-                    {
-                        containsPlayer = true;
-                    }
-
-                    if (mLastLoadedObjectList[i].Type == "Chimera.GoalPoint, Chimera")
-                    {
-                        containsGoal = true;
-                    }
-                }
-
-                if (containsPlayer == false)
-                {
-                    DummyObject player = new DummyObject();
-                    player.Type = Utility.Utils.PlayerTypeName;
-                    player.Model = "playerBean";
-                    player.Position = new Vector3(0.0f, mLastLoadedTerrainDescription.Terrain.HeightAt(0.0f, 0.0f), 0.0f);
-                    player.YawPitchRoll = Vector3.Zero;
-                    player.Scale = Vector3.Zero;
-                    player.RotationAxis = Vector3.Zero;
-                    player.RotationAngle = 0.0f;
-                    player.Height = 0.0f;
-
-                    mLastLoadedObjectList.Add(player);
-                }
-
-                if (containsGoal == false)
-                {
-                    DummyObject goal = new DummyObject();
-                    goal.Type = "Chimera.GoalPoint, Chimera";
-                    goal.Model = "tractorBeam";
-                    goal.Parameters = new string[2] { null, "PenguinLimbs" };
-                    goal.Position = new Vector3(50.0f, mLastLoadedTerrainDescription.Terrain.HeightAt(50.0f, 50.0f), 50.0f);
-                    goal.YawPitchRoll = Vector3.Zero;
-                    goal.Scale = new Vector3(0.125f, 100f, 0.125f);
-                    goal.RotationAxis = Vector3.Zero;
-                    goal.RotationAngle = 0.0f;
-                    goal.Height = 0.0f;
-
-                    mLastLoadedObjectList.Add(goal);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="fileStream"></param>
         /// <returns></returns>
-        static private void LoadDetailTextureNames(MemoryStream fileStream, out string[, ,] detailTextureNames, out Vector2[, ,] detailTextureUVOffset, out Vector2[, ,] detailTextureUVScale)
+        static private void LoadDetailTextureNames(MemoryStream fileStream, out string[] detailTextureNames, out Vector2[] detailTextureUVOffset, out Vector2[] detailTextureUVScale)
         {
             using (StreamReader reader = new StreamReader(fileStream))
             {
-                List<int> size = ParseStringForIntegers(reader.ReadLine(), ' ');
-                int numChunksRow = size[0];
-                int numChunksCol = size[1];
+                detailTextureNames = new string[5];
+                detailTextureUVOffset = new Vector2[5];
+                detailTextureUVScale = new Vector2[5];
 
-                detailTextureNames = new string[numChunksRow, numChunksCol, 5];
-                detailTextureUVOffset = new Vector2[numChunksRow, numChunksCol, 5];
-                detailTextureUVScale = new Vector2[numChunksRow, numChunksCol, 5];
-
-                string intString = reader.ReadLine();
                 while (!reader.EndOfStream)
                 {
-                    List<int> chunkDetails = ParseStringForIntegers(intString, ' ');
-
                     for (int textureNameIndex = 0; textureNameIndex < 5; textureNameIndex++)
                     {
                         string line = reader.ReadLine();
@@ -352,13 +380,11 @@ namespace GameConstructLibrary
                             float uOffset = float.Parse(parsedLine[1]), vOffset = float.Parse(parsedLine[2]);
                             float uScale = float.Parse(parsedLine[3]), vScale = float.Parse(parsedLine[4]);
 
-                            detailTextureNames[chunkDetails[0], chunkDetails[1], textureNameIndex] = textureName;
-                            detailTextureUVOffset[chunkDetails[0], chunkDetails[1], textureNameIndex] = new Vector2(uOffset, vOffset);
-                            detailTextureUVScale[chunkDetails[0], chunkDetails[1], textureNameIndex] = new Vector2(uScale, vScale);
+                            detailTextureNames[textureNameIndex] = textureName;
+                            detailTextureUVOffset[textureNameIndex] = new Vector2(uOffset, vOffset);
+                            detailTextureUVScale[textureNameIndex] = new Vector2(uScale, vScale);
                         }
                     }
-
-                    intString = reader.ReadLine();
                 }
 
                 reader.Close();
@@ -390,7 +416,7 @@ namespace GameConstructLibrary
             return dummyObjects;
         }
 
-        static private MemoryStream CreateObjectStream()
+        static private Tuple<string, MemoryStream> SerializedDummies(List<DummyObject> dummies)
         {
             XmlRootAttribute root = new XmlRootAttribute();
             root.ElementName = "object";
@@ -401,10 +427,10 @@ namespace GameConstructLibrary
                 StreamWriter writer = new StreamWriter(ms);
 
                 XmlSerializer serializer = new XmlSerializer(typeof(List<DummyObject>), root);
-                serializer.Serialize(writer, mLastLoadedObjectList);
+                serializer.Serialize(writer, dummies);
                 writer.Close();
 
-                return new MemoryStream(ms.ToArray(), false);
+                return new Tuple<string, MemoryStream>("Objects.col", new MemoryStream(ms.ToArray(), false));
             }
         }
 
@@ -426,6 +452,11 @@ namespace GameConstructLibrary
             }
 
             return result;
+        }
+
+        static private float ConvertColorToFloat(Color heightColor)
+        {
+            return heightColor.R * 256.0f * 256.0f + heightColor.G * 256.0f + heightColor.B;
         }
 
         #endregion

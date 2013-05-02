@@ -30,6 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditorForm));
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
+            this.SelectObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.CreateObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.objectSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.SelectBlockButton = new System.Windows.Forms.ToolStripButton();
+            this.CreateBlockButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.raiseTerrainButton = new System.Windows.Forms.ToolStripButton();
             this.lowerTerrainButton = new System.Windows.Forms.ToolStripButton();
             this.setTerrainButton = new System.Windows.Forms.ToolStripButton();
@@ -40,9 +46,6 @@
             this.eraseTextureButton = new System.Windows.Forms.ToolStripButton();
             this.smoothTextureButton = new System.Windows.Forms.ToolStripButton();
             this.textureSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.SelectObjectButton = new System.Windows.Forms.ToolStripButton();
-            this.CreateObjectButton = new System.Windows.Forms.ToolStripButton();
-            this.objectSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,6 +61,7 @@
             this.ViewWaterMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewShadowsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextToolsPanel = new System.Windows.Forms.Panel();
+            this.BlockLayerSelectionForm = new WorldEditor.Dialogs.BlockLayerSelectionForm();
             this.TextureSelectionForm = new WorldEditor.Dialogs.TextureSelectionForm();
             this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
             this.TextureLayerForm = new WorldEditor.Dialogs.TextureLayerContainerForm();
@@ -80,6 +84,12 @@
             this.ToolStrip.BackColor = System.Drawing.SystemColors.Menu;
             this.ToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SelectObjectButton,
+            this.CreateObjectButton,
+            this.objectSeparator,
+            this.SelectBlockButton,
+            this.CreateBlockButton,
+            this.toolStripSeparator1,
             this.raiseTerrainButton,
             this.lowerTerrainButton,
             this.setTerrainButton,
@@ -89,10 +99,7 @@
             this.paintTextureButton,
             this.eraseTextureButton,
             this.smoothTextureButton,
-            this.textureSeparator,
-            this.SelectObjectButton,
-            this.CreateObjectButton,
-            this.objectSeparator});
+            this.textureSeparator});
             this.ToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.ToolStrip.Location = new System.Drawing.Point(0, 26);
             this.ToolStrip.Name = "ToolStrip";
@@ -101,12 +108,64 @@
             this.ToolStrip.TabIndex = 2;
             this.ToolStrip.Text = "ToolStrip";
             // 
+            // SelectObjectButton
+            // 
+            this.SelectObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SelectObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("SelectObjectButton.Image")));
+            this.SelectObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SelectObjectButton.Margin = new System.Windows.Forms.Padding(5, 1, 0, 2);
+            this.SelectObjectButton.Name = "SelectObjectButton";
+            this.SelectObjectButton.Size = new System.Drawing.Size(44, 44);
+            this.SelectObjectButton.Text = "Select Objects";
+            this.SelectObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // CreateObjectButton
+            // 
+            this.CreateObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.CreateObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("CreateObjectButton.Image")));
+            this.CreateObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.CreateObjectButton.Name = "CreateObjectButton";
+            this.CreateObjectButton.Size = new System.Drawing.Size(44, 44);
+            this.CreateObjectButton.Text = "Create New Objects";
+            this.CreateObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // objectSeparator
+            // 
+            this.objectSeparator.AutoSize = false;
+            this.objectSeparator.Name = "objectSeparator";
+            this.objectSeparator.Size = new System.Drawing.Size(6, 44);
+            // 
+            // SelectBlockButton
+            // 
+            this.SelectBlockButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SelectBlockButton.Image = ((System.Drawing.Image)(resources.GetObject("SelectBlockButton.Image")));
+            this.SelectBlockButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SelectBlockButton.Name = "SelectBlockButton";
+            this.SelectBlockButton.Size = new System.Drawing.Size(44, 44);
+            this.SelectBlockButton.Text = "Select Blocks";
+            this.SelectBlockButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // CreateBlockButton
+            // 
+            this.CreateBlockButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.CreateBlockButton.Image = ((System.Drawing.Image)(resources.GetObject("CreateBlockButton.Image")));
+            this.CreateBlockButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.CreateBlockButton.Name = "CreateBlockButton";
+            this.CreateBlockButton.Size = new System.Drawing.Size(44, 44);
+            this.CreateBlockButton.Text = "Create New Blocks";
+            this.CreateBlockButton.Click += new System.EventHandler(this.ToolButton_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.AutoSize = false;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 44);
+            // 
             // raiseTerrainButton
             // 
             this.raiseTerrainButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.raiseTerrainButton.Image = ((System.Drawing.Image)(resources.GetObject("raiseTerrainButton.Image")));
             this.raiseTerrainButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.raiseTerrainButton.Margin = new System.Windows.Forms.Padding(5, 1, 0, 2);
             this.raiseTerrainButton.Name = "raiseTerrainButton";
             this.raiseTerrainButton.Size = new System.Drawing.Size(44, 44);
             this.raiseTerrainButton.Text = "Raise Terrain";
@@ -193,32 +252,6 @@
             this.textureSeparator.AutoSize = false;
             this.textureSeparator.Name = "textureSeparator";
             this.textureSeparator.Size = new System.Drawing.Size(6, 44);
-            // 
-            // SelectObjectButton
-            // 
-            this.SelectObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SelectObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("SelectObjectButton.Image")));
-            this.SelectObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SelectObjectButton.Name = "SelectObjectButton";
-            this.SelectObjectButton.Size = new System.Drawing.Size(44, 44);
-            this.SelectObjectButton.Text = "Select Objects";
-            this.SelectObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
-            // 
-            // CreateObjectButton
-            // 
-            this.CreateObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.CreateObjectButton.Image = ((System.Drawing.Image)(resources.GetObject("CreateObjectButton.Image")));
-            this.CreateObjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.CreateObjectButton.Name = "CreateObjectButton";
-            this.CreateObjectButton.Size = new System.Drawing.Size(44, 44);
-            this.CreateObjectButton.Text = "Create New Objects";
-            this.CreateObjectButton.Click += new System.EventHandler(this.ToolButton_Click);
-            // 
-            // objectSeparator
-            // 
-            this.objectSeparator.AutoSize = false;
-            this.objectSeparator.Name = "objectSeparator";
-            this.objectSeparator.Size = new System.Drawing.Size(6, 44);
             // 
             // MenuStrip
             // 
@@ -338,6 +371,7 @@
             // 
             this.ContextToolsPanel.AutoScroll = true;
             this.ContextToolsPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.ContextToolsPanel.Controls.Add(this.BlockLayerSelectionForm);
             this.ContextToolsPanel.Controls.Add(this.TextureSelectionForm);
             this.ContextToolsPanel.Controls.Add(this.ObjectPlacementPanel);
             this.ContextToolsPanel.Controls.Add(this.TextureLayerForm);
@@ -349,6 +383,14 @@
             this.ContextToolsPanel.Name = "ContextToolsPanel";
             this.ContextToolsPanel.Size = new System.Drawing.Size(251, 487);
             this.ContextToolsPanel.TabIndex = 4;
+            // 
+            // BlockLayerSelectionForm
+            // 
+            this.BlockLayerSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BlockLayerSelectionForm.Location = new System.Drawing.Point(0, 1550);
+            this.BlockLayerSelectionForm.Name = "BlockLayerSelectionForm";
+            this.BlockLayerSelectionForm.Size = new System.Drawing.Size(234, 30);
+            this.BlockLayerSelectionForm.TabIndex = 22;
             // 
             // TextureSelectionForm
             // 
@@ -504,5 +546,9 @@
         public TextureBrushPropertiesForm TextureBrushPropertiesForm;
         private System.Windows.Forms.Panel ObjectParameterFormContainer;
         public ObjectParametersForm ObjectParametersForm;
+        private System.Windows.Forms.ToolStripButton SelectBlockButton;
+        private System.Windows.Forms.ToolStripButton CreateBlockButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        public BlockLayerSelectionForm BlockLayerSelectionForm;
     }
 }

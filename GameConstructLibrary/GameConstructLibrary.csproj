@@ -112,6 +112,7 @@
     <Compile Include="CollisionMeshManager.cs" />
     <Compile Include="DummyObject.cs" />
     <Compile Include="FPSCamera.cs" />
+    <Compile Include="HeightMapBlock.cs" />
     <Compile Include="IGameState.cs" />
     <Compile Include="HorizontalMotionConstraint.cs" />
     <Compile Include="IActor.cs" />
@@ -129,6 +130,8 @@
     <Compile Include="Input\KeyInputAction.cs" />
     <Compile Include="Input\MouseButtonInputAction.cs" />
     <Compile Include="Input\MouseMovementInputAction.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="LevelBlock.cs" />
     <Compile Include="LevelFileLoader.cs" />
     <Compile Include="LevelManager.cs" />
     <Compile Include="Menu\Button.cs" />

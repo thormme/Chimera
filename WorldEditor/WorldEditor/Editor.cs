@@ -50,9 +50,9 @@ namespace WorldEditor.Dialogs
             GraphicsManager.EnableScreenPicking = true;
 
             mCamera = new FPSCamera(GraphicsDevice.Viewport);
-            mCamera.Position = new Vector3(20.0f, 12.0f, 20.0f);
-            mCamera.Target = new Vector3(19.33f, 11.66f, 19.33f);
-            mCamera.FarPlaneDistance = 2500;
+            mCamera.Position = new Vector3(28.0f, 25.0f, 29.0f);
+            mCamera.Target = new Vector3(27.5f, 24.3f, 28.5f);
+            mCamera.FarPlaneDistance = 1500;
             mCamera.NearPlaneDistance = 0.2f;
         }
 

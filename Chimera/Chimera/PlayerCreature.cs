@@ -614,7 +614,7 @@ namespace Chimera
 
             base.Render();
             RenderReticle();
-            RenderRequirement();
+            //RenderRequirement();
             RenderAbilities();
             //mTrailParticles.Render();
         }

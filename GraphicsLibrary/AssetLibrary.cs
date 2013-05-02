@@ -18,9 +18,10 @@ namespace GraphicsLibrary
         static private Type AnimateModelKey = typeof(AnimateModelRenderer);
         static private Type TransparentModelKey = typeof(TransparentModelRenderer);
         static private Type UIModelKey = typeof(UIModelRenderer);
+        static private Type HeightMapKey = typeof(HeightMapRenderer);
         static private Type SkyBoxKey = typeof(SkyBoxRenderer);
         static private Type WaterKey = typeof(WaterRenderer);
-        static private Type TerrainKey = typeof(TerrainRenderer);
+        //static private Type TerrainKey = typeof(TerrainRenderer);
         static private Type TextureKey = typeof(Texture2D);
 
         static private char[] mDelimeterChars = { ' ' };
@@ -87,6 +88,15 @@ namespace GraphicsLibrary
             mAssetLibrary[UIModelKey].Add(modelName, model);
         }
 
+        static public void AddHeightMap(string heightMapName, HeightMapMesh heightMap)
+        {
+            if (mAssetLibrary[HeightMapKey].ContainsKey(heightMapName))
+            {
+                throw new Exception("Duplicate height map key: " + heightMapName);
+            }
+            mAssetLibrary[HeightMapKey].Add(heightMapName, new HeightMapRenderer(heightMap, mVertexBufferShader));
+        }
+
         static public void AddWater(string waterName, WaterRenderer water)
         {
             if (mAssetLibrary[WaterKey].ContainsKey(waterName))
@@ -114,23 +124,23 @@ namespace GraphicsLibrary
             mAssetLibrary[TextureKey].Add(textureName, texture);
         }
 
-        static public void AddTerrain(FileInfo level, TerrainHeightMap heightMap, TerrainTexture texture)
-        {
-            if (mAssetLibrary[TerrainKey].ContainsKey(level.Name))
-            {
-                mAssetLibrary[TerrainKey].Remove(level.Name);
-            }
+        //static public void AddTerrain(FileInfo level, TerrainHeightMap heightMap, TerrainTexture texture)
+        //{
+        //    if (mAssetLibrary[TerrainKey].ContainsKey(level.Name))
+        //    {
+        //        mAssetLibrary[TerrainKey].Remove(level.Name);
+        //    }
 
-            mAssetLibrary[TerrainKey].Add(level.Name, new TerrainRenderer(heightMap, texture, mVertexBufferShader));
-        }
+        //    mAssetLibrary[TerrainKey].Add(level.Name, new TerrainRenderer(heightMap, texture, mVertexBufferShader));
+        //}
 
         static public void UpdateTerrain(FileInfo savePath, ref string levelName)
         {
-            if (!mAssetLibrary[TerrainKey].ContainsKey(savePath.Name))
-            {
-                mAssetLibrary[TerrainKey].Add(savePath.Name, mAssetLibrary[TerrainKey][levelName]);
-                levelName = savePath.Name;
-            }
+            //if (!mAssetLibrary[TerrainKey].ContainsKey(savePath.Name))
+            //{
+            //    mAssetLibrary[TerrainKey].Add(savePath.Name, mAssetLibrary[TerrainKey][levelName]);
+            //    levelName = savePath.Name;
+            //}
         }
 
         #endregion
@@ -189,24 +199,14 @@ namespace GraphicsLibrary
             return null;
         }
 
-        static public TerrainRenderer LookupTerrain(string terrainName)
+        static public HeightMapRenderer LookupHeightMap(string heightMapName)
         {
             object result;
-            if (mAssetLibrary[TerrainKey].TryGetValue(terrainName, out result))
+            if (mAssetLibrary[HeightMapKey].TryGetValue(heightMapName, out result))
             {
-                return result as TerrainRenderer;
+                return result as HeightMapRenderer;
             }
             return null;
-        }
-
-        static public TerrainHeightMap LookupTerrainHeightMap(string terrainName)
-        {
-            return LookupTerrain(terrainName).HeightMap;
-        }
-
-        static public TerrainTexture LookupTerrainTexture(string terrainName)
-        {
-            return LookupTerrain(terrainName).Texture;
         }
 
         static public AnimationUtilities.SkinningData LookupModelSkinningData(string modelName)
@@ -265,6 +265,24 @@ namespace GraphicsLibrary
 
         #endregion
 
+        #region Remove Methods
+
+        static public void RemoveHeightMap(string heightMapName)
+        {
+            if (mAssetLibrary[HeightMapKey].ContainsKey(heightMapName))
+            {
+                mAssetLibrary[HeightMapKey][heightMapName] = null;
+                mAssetLibrary[HeightMapKey].Remove(heightMapName);
+            }
+        }
+
+        static public void ClearHeightMaps()
+        {
+            mAssetLibrary[HeightMapKey].Clear();
+        }
+
+        #endregion
+
         #region Asset Loading Methods
 
         static public void LoadContent(ContentManager content)
@@ -273,9 +291,10 @@ namespace GraphicsLibrary
             mAssetLibrary.Add(AnimateModelKey, new Dictionary<string, object>());
             mAssetLibrary.Add(TransparentModelKey, new Dictionary<string, object>());
             mAssetLibrary.Add(UIModelKey, new Dictionary<string, object>());
+            mAssetLibrary.Add(HeightMapKey, new Dictionary<string, object>());
             mAssetLibrary.Add(SkyBoxKey, new Dictionary<string, object>());
             mAssetLibrary.Add(WaterKey, new Dictionary<string, object>());
-            mAssetLibrary.Add(TerrainKey, new Dictionary<string, object>());
+            //mAssetLibrary.Add(TerrainKey, new Dictionary<string, object>());
             mAssetLibrary.Add(TextureKey, new Dictionary<string, object>());
 
             LoadShaders(content);

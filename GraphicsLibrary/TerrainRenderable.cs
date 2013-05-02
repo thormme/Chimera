@@ -90,7 +90,7 @@ namespace GraphicsLibrary
 
         private void BuildTerrainBoundingBox()
         {
-            TerrainHeightMap terrain = AssetLibrary.LookupTerrain(Name).HeightMap;
+            TerrainHeightMap terrain = null;// AssetLibrary.LookupTerrain(Name).HeightMap;
 
             mBoundingBoxes = new BoundingBox[terrain.NumChunksVertical, terrain.NumChunksHorizontal];
 

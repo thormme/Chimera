@@ -252,7 +252,7 @@ namespace GameConstructLibrary
 
         public void Draw()
         {
-            Vector3 finalPosition = new Vector3(Position.X, Position.Y + Height * Utils.WorldScale.Y, Position.Z);
+            Vector3 finalPosition = new Vector3(Position.X, Position.Y + Height/* * Utils.WorldScale.Y*/, Position.Z);
             Matrix orientation = RotationAngle == 0 ? Matrix.CreateFromYawPitchRoll(YawPitchRoll.X, YawPitchRoll.Y, YawPitchRoll.Z) : Matrix.CreateFromAxisAngle(RotationAxis, RotationAngle);
             if (IsHighlighted)
             {

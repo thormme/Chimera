@@ -24,9 +24,9 @@ namespace WorldEditor.Dialogs
 
         #region Enums
 
-        public enum EditorMode { HEIGHTMAP, PAINTING, OBJECTS };
+        public enum EditorMode { HEIGHTMAP, PAINTING, OBJECTS, BLOCKSELECTION, BLOCKCREATION };
 
-        public enum Tools { RAISE, LOWER, SET, SMOOTH, FLATTEN, PAINT, ERASE, BLEND, SELECT, PLACE, ROTATE, SCALE, NONE };
+        public enum Tools { RAISE, LOWER, SET, SMOOTH, FLATTEN, PAINT, ERASE, BLEND, SELECT, PLACE, BLOCKSELECT, BLOCKCREATE, NONE };
 
         public enum Brushes { CIRCLE, CIRCLE_FEATHERED, BLOCK, BLOCK_FEATHERED, NONE };
         
@@ -36,7 +36,7 @@ namespace WorldEditor.Dialogs
 
         #region State
 
-        private EditorMode mMode = EditorMode.HEIGHTMAP;
+        private EditorMode mMode = EditorMode.OBJECTS;
         public EditorMode Mode
         {
             get
@@ -54,7 +54,7 @@ namespace WorldEditor.Dialogs
             }
         }
 
-        private Tools mTool = Tools.RAISE;
+        private Tools mTool = Tools.SELECT;
         public Tools Tool
         {
             get
@@ -76,6 +76,8 @@ namespace WorldEditor.Dialogs
 
         public Layers PaintingLayer = Layers.BACKGROUND;
 
+        public int BlockLayer = 0;
+
         #endregion
 
         private readonly ReadOnlyCollection<ReadOnlyCollection<ToolStripButton>> mToolGroups;
@@ -83,6 +85,7 @@ namespace WorldEditor.Dialogs
         private readonly ReadOnlyCollection<ToolStripButton> mTerrainTools;
         private readonly ReadOnlyCollection<ToolStripButton> mTextureTools;
         private readonly ReadOnlyCollection<ToolStripButton> mObjectTools;
+        private readonly ReadOnlyCollection<ToolStripButton> mBlockTools;
 
         private readonly ReadOnlyCollection<ToolStripButton> mHeightMapBrushes;
         private readonly ReadOnlyCollection<ToolStripButton> mTextureBrushes;
@@ -143,11 +146,18 @@ namespace WorldEditor.Dialogs
                 CreateObjectButton
             }.AsReadOnly();
 
+            mBlockTools = new List<ToolStripButton>()
+            {
+                SelectBlockButton,
+                CreateBlockButton
+            }.AsReadOnly();
+
             mToolGroups = new List<ReadOnlyCollection<ToolStripButton>>
             {
                 mTerrainTools,
                 mTextureTools,
-                mObjectTools
+                mObjectTools,
+                mBlockTools
             }.AsReadOnly();
 
             mLayers = new List<TextureLayerForm>
@@ -181,6 +191,8 @@ namespace WorldEditor.Dialogs
 
             ObjectParametersForm.SizeChanged += delegate { ObjectParameterFormContainer.Height = ObjectParametersForm.Height; };
             ObjectParametersForm.VisibleChanged += UpdateParameterFormVisibility;
+
+            BlockLayerSelectionForm.BlockLayerUpDown.ValueChanged += Block_Layer_Changed;
         }
 
         private void UpdateParameterFormVisibility(object sender, EventArgs e)
@@ -191,7 +203,7 @@ namespace WorldEditor.Dialogs
 
         private void InitializeButtonState()
         {
-            this.raiseTerrainButton.Checked = true;
+            this.SelectObjectButton.Checked = true;
 
             this.raiseTerrainButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.RAISE);
             this.lowerTerrainButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.LOWER);
@@ -205,6 +217,9 @@ namespace WorldEditor.Dialogs
 
             this.SelectObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.SELECT);
             this.CreateObjectButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.OBJECTS, Tools.PLACE);
+
+            this.SelectBlockButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.BLOCKSELECTION, Tools.BLOCKSELECT);
+            this.CreateBlockButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.BLOCKCREATION, Tools.BLOCKCREATE);
 
             this.TextureLayerForm.BackgroundLayer.Tag = new Layers?(Layers.BACKGROUND);
             this.TextureLayerForm.Layer1.Tag = new Layers?(Layers.LAYER1);
@@ -333,6 +348,12 @@ namespace WorldEditor.Dialogs
         {
             Button visibilityButton = sender as Button;
             visibilityButton.BackgroundImage = visibilityButton.BackgroundImage == null ? visibilityButton.BackgroundImage = visibilityButton.Tag as Image : null;
+        }
+
+        private void Block_Layer_Changed(object sender, EventArgs e)
+        {
+            NumericUpDown blockLayerControl = sender as NumericUpDown;
+            this.BlockLayer = (int)blockLayerControl.Value;
         }
     }
     

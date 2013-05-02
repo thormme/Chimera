@@ -139,8 +139,6 @@ namespace WorldEditor
                 mCamera.Position,
                 mCamera.ViewTransform,
                 mCamera.ProjectionTransform);
-            FPSCamera cam =  new FPSCamera(new Viewport(0, 0, 1, 1));
-            cam.Position = mCamera.Position;
 
             Tuple<RayHit, DummyObject> castResult;
             if (dummyWorld.RayCast(ray, 2000.0f, out castResult))
@@ -148,6 +146,28 @@ namespace WorldEditor
                 return castResult;
             }
             return null;
+        }
+
+        public bool GetBlockCoordinatePickingLocation(float planeYCoordinate, out Vector3 coordinate)
+        {
+            Ray ray = Utils.CreateWorldRayFromScreenPoint(
+                new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
+                mGraphicsDevice.Viewport,
+                mCamera.Position,
+                mCamera.ViewTransform,
+                mCamera.ProjectionTransform);
+
+            Plane plane = new Plane(Vector3.Up, planeYCoordinate);
+
+            float? intersectionDistance = ray.Intersects(plane);
+            if (intersectionDistance == null)
+            {
+                coordinate = Vector3.Zero;
+                return false;
+            }
+
+            coordinate = ray.Position + ray.Direction * intersectionDistance.Value;
+            return true;
         }
     }
 }

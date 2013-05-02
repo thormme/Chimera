@@ -11,7 +11,7 @@ namespace GraphicsLibrary
     {
         #region Constants
 
-        const string DefaultTextureName = "overcastSkyBox";
+        const string DefaultTextureName = "basic_skybox";
 
         #endregion
 

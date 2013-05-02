@@ -15,12 +15,10 @@ namespace WorldEditor
 {
     public class DummyWorld
     {
-        public bool DrawSkyBox = true;
-        public bool DrawWater = true;
+        #region Public Properties
 
-        private const float MoveSpeed = 1.0f;
-        private const float ScaleSpeed = 1.05f;
-        private const float RotateSpeed = 0.1f;
+        public bool DrawSkyBox = true;
+        public bool DrawWater = false;
 
         public String Name
         {
@@ -28,42 +26,76 @@ namespace WorldEditor
         }
         private string mName = String.Empty;
 
-        private TerrainHeightMap mHeightMap = null;
-        private TerrainTexture mTextureMap = null;
+        #endregion
+
+        #region HeightMap Modification Visualization
+
+        public Vector3 CursorPosition { get; set; }
+        public float CursorInnerRadius { get; set; }
+        public float CursorOuterRadius { get; set; }
+        public HeightMapRenderable.CursorShape DrawCursor { get; set; }
+
+        public Vector4 TerrainLayerMask { get; set; }
+
+        #endregion
+
+        #region Block Selection
+
+        public HashSet<Vector3> SelectedBlocks { get { return mSelectedBlocks; } }
+        private HashSet<Vector3> mSelectedBlocks = new HashSet<Vector3>();
+
+        #endregion
+
+        #region Constants
+
+        private const float MoveSpeed = 1.0f;
+        private const float ScaleSpeed = 1.05f;
+        private const float RotateSpeed = 0.1f;
+
+        #endregion
+
+        #region Level and Objects Representation
+
+        private Level mLevel = null;
+        private List<DummyObject> mDummies = new List<DummyObject>();
+
+        private Space Space = new Space();
+
         private SkyBox mSkyBox = null;
         private Water mWater = null;
 
-        public TerrainPhysics Terrain
-        {
-            get
-            {
-                return mTerrainPhysics;
-            }
-            private set
-            {
-                mTerrainPhysics = value;
-            }
-        }
-        private TerrainPhysics mTerrainPhysics = null;
+        #endregion
 
-        private List<DummyObject> mDummies = new List<DummyObject>();
-
-        public Space Space = new Space();
-
-        public bool NewHeightMapAction
-        {
-            get { return mHeightMap.NewAction; }
-            set { mHeightMap.NewAction = value; }
-        }
-        
         public DummyWorld(Controls controls)
         {
             mName = null;
-            mHeightMap = null;
-            mTextureMap = null;
-            mTerrainPhysics = null;
+            mLevel = null;
+        }
 
-            New();
+        public void AddBlock(Vector3 coordinate)
+        {
+            if (LevelFileLoader.GenerateBlankLevelBlock(mLevel, coordinate, "default_terrain_detail"))
+            {
+                mLevel.ModifySingleBlock(coordinate, AddBlockToSpace, new object[] { Space });
+            }
+        }
+
+        public void SelectBlock(Vector3 coordinate)
+        {
+            if (!mSelectedBlocks.Contains(coordinate))
+            {
+                mSelectedBlocks.Add(coordinate);
+            }
+        }
+
+        public void ClearSelectedBlocks()
+        {
+            mSelectedBlocks.Clear();
+        }
+
+        public bool ContainsBlock(Vector3 coordinate)
+        {
+            return mLevel.Contains(coordinate);
         }
 
         public void AddObject(DummyObject dummyObject)
@@ -88,12 +120,6 @@ namespace WorldEditor
             }
         }
 
-        public void LinkHeightMap()
-        {
-            mHeightMap = AssetLibrary.LookupTerrainHeightMap(mName);
-            mTextureMap = AssetLibrary.LookupTerrainTexture(mName);
-        }
-
         public void ModifyHeightMap(
             Vector3 position, 
             float radius, 
@@ -101,44 +127,45 @@ namespace WorldEditor
             EditorForm.Brushes brush,
             EditorForm.Tools tool)
         {
-            mHeightMap.IsFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+            intensity /= 1000.0f;
+            bool isFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+            bool isBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
 
-            mHeightMap.IsBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
-
+            Level.BlockModifier heightMapModifier = null;
             switch (tool)
             {
                 case EditorForm.Tools.SET:
-                    mHeightMap.SetTerrain(new Vector2(position.X, position.Z), radius, intensity);
+                    heightMapModifier = SetTerrain;
                     break;
                 case EditorForm.Tools.SMOOTH:
-                    mHeightMap.SmoothTerrain(new Vector2(position.X, position.Z), radius);
+                    heightMapModifier = SmoothTerrain;
                     break;
                 case EditorForm.Tools.FLATTEN:
-                    mHeightMap.FlattenTerrain(new Vector2(position.X, position.Z), radius);
+                    heightMapModifier = FlattenTerrain;
                     break;
                 case EditorForm.Tools.LOWER:
-                    mHeightMap.LowerTerrain(new Vector2(position.X, position.Z), radius, intensity);
+                    heightMapModifier = LowerTerrain;
                     break;
                 case EditorForm.Tools.RAISE:
-                    mHeightMap.RaiseTerrain(new Vector2(position.X, position.Z), radius, intensity);
+                    heightMapModifier = RaiseTerrain;
                     break;
             }
 
-            mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
+            mLevel.IterateOverBlocksInRadius(position, radius, heightMapModifier, new object[] { (bool?)isFeathered, (bool?)isBlock, (float?)intensity });
         }
 
         public void UndoHeightMap()
         {
-            mHeightMap.Undo();
+            //mHeightMap.Undo();
 
-            mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
+            //mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
         }
 
         public void RedoHeightMap()
         {
-            mHeightMap.Redo();
+            //mHeightMap.Redo();
 
-            mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
+            //mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
         }
 
         public void ModifyTextureMap(
@@ -150,83 +177,72 @@ namespace WorldEditor
             float alpha,
             EditorForm.Brushes brush,
             EditorForm.Tools tool, 
-            GameConstructLibrary.TerrainTexture.TextureLayer layer)
+            HeightMapMesh.TextureLayer layer)
         {
-            mTextureMap.IsFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+            bool isFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
+            bool isBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
 
-            mTextureMap.IsBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
-
+            Level.BlockModifier textureModifier = null;
             switch (tool)
             {
                 case EditorForm.Tools.PAINT:
-                    mTextureMap.PaintTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture, UVOffset, UVScale);
+                    textureModifier = PaintTexture;
                     break;
                 case EditorForm.Tools.ERASE:
-                    mTextureMap.EraseTerrain(new Vector2(position.X, position.Z), radius, alpha, layer, texture, UVOffset, UVScale);
+                    textureModifier = EraseTexture;
                     break;
                 case EditorForm.Tools.BLEND:
-                    mTextureMap.SmoothPaint(new Vector2(position.X, position.Z), radius);
+                    textureModifier = BlendTexture;
                     break;
             }
+
+            mLevel.IterateOverBlocksInRadius(
+                position, 
+                radius, 
+                textureModifier, 
+                new object[] { (bool?)isFeathered, (bool?)isBlock, (float?)alpha, (HeightMapMesh.TextureLayer?)layer, texture, (Vector2?)UVOffset, (Vector2?)UVScale});
         }
 
         public void Save(string filePath)
         {
             FileInfo fileInfo = new FileInfo(filePath);
-            UnscaleObjects();
-            LevelFileLoader.SaveLevelToFile(fileInfo);
-            ScaleObjects();
+            LevelFileLoader.WriteLevel(mLevel, mDummies, fileInfo);
             AssetLibrary.UpdateTerrain(fileInfo, ref mName);
         }
 
         public void Open(FileInfo fileInfo)
         {
+            AssetLibrary.ClearHeightMaps();
+
+            mLevel.IterateOverEveryBlock(RemoveBlockFromSpace, new object[] { Space });
+
             mName = fileInfo.Name;
 
-            mHeightMap = LevelFileLoader.LoadHeightMapFromFile(fileInfo);
-            mTextureMap = LevelFileLoader.LoadTextureFromFile(fileInfo);
+            Tuple<Level, List<DummyObject>> loadedLevel = LevelFileLoader.LoadLevelFromFile(fileInfo);
+            mLevel = loadedLevel.Item1;
 
-            AssetLibrary.AddTerrain(fileInfo, mHeightMap, mTextureMap);
+            mLevel.IterateOverEveryBlock(AddBlockToSpace, new object[] { Space });
 
-            mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
-
-            mDummies = LevelFileLoader.LoadObjectsFromFile(fileInfo);
-            ScaleObjects();
+            mDummies = loadedLevel.Item2;
         }
 
         public void New()
         {
-            mName = LevelFileLoader.GenerateBlankLevel(100, 100, 900, 900, 9, 9, "default_terrain_detail", out mDummies);
+            if (mLevel != null)
+            {
+                AssetLibrary.ClearHeightMaps();
+                mLevel.IterateOverEveryBlock(RemoveBlockFromSpace, new object[] { Space });
+            }
+
+            mName = "default";
+            mLevel = LevelFileLoader.GenerateNewLevel(mName, "default_terrain_detail");
 
             FileInfo fileInfo = new FileInfo(mName);
 
-            mHeightMap = LevelFileLoader.LoadHeightMapFromFile(fileInfo);
-            mTextureMap = LevelFileLoader.LoadTextureFromFile(fileInfo);
+            mLevel.IterateOverEveryBlock(AddBlockToSpace, new object[] { Space });
 
-            AssetLibrary.AddTerrain(fileInfo, mHeightMap, mTextureMap);
-
-            mTerrainPhysics = new TerrainPhysics(mName, Vector3.Zero, new Quaternion(), Utils.WorldScale);
-
-            mSkyBox = new SkyBox("overcastSkyBox");
+            mSkyBox = new SkyBox("default");
             mWater = new Water("waterTexture", 0.1f);
-        }
-
-        private void UnscaleObjects()
-        {
-            foreach (DummyObject obj in mDummies)
-            {
-                obj.Position = new Vector3(obj.Position.X / Utils.WorldScale.X, obj.Position.Y / Utils.WorldScale.Y + obj.Height, obj.Position.Z / Utils.WorldScale.Z);
-                obj.Scale = new Vector3(obj.Scale.X / Utils.WorldScale.X, obj.Scale.Y / Utils.WorldScale.Y, obj.Scale.Z / Utils.WorldScale.Z);
-            }
-        }
-
-        private void ScaleObjects()
-        {
-            foreach (DummyObject obj in mDummies)
-            {
-                obj.Position = new Vector3(obj.Position.X * Utils.WorldScale.X, obj.Position.Y * Utils.WorldScale.Y - obj.Height, obj.Position.Z * Utils.WorldScale.Z);
-                obj.Scale = new Vector3(obj.Scale.X * Utils.WorldScale.X, obj.Scale.Y * Utils.WorldScale.Y, obj.Scale.Z * Utils.WorldScale.Z);
-            }
         }
 
         public void Update(GameTime gameTime, Vector3 cameraPosition)
@@ -247,53 +263,12 @@ namespace WorldEditor
                 {
                     if (obj.Floating)
                     {
-                        Ray ray = new Ray(new Vector3(obj.Position.X, mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f, obj.Position.Z), -Vector3.Up);
-                        RayHit result;
-                        mTerrainPhysics.StaticCollidable.RayCast(ray, (mTerrainPhysics.StaticCollidable.BoundingBox.Max.Y + 200.0f) - (mTerrainPhysics.StaticCollidable.BoundingBox.Min.Y - 200.0f), out result);
-                        obj.Position = result.Location;
+                        Ray ray = new Ray(obj.Position - new Vector3(0.0f, 10.0f, 0.0f), -Vector3.Down);
+                        RayCastResult result;
+                        Space.RayCast(ray, 2000.0f, out result);
+                        obj.Position = new Vector3(obj.Position.X, result.HitData.Location.Y, obj.Position.Z);
                     }
                 }
-            }
-        }
-
-        private void DrawTerrain(GraphicsDevice graphics, Matrix view, Matrix projection)
-        {
-            AnimationUtilities.SkinnedEffect effect = AssetLibrary.VertexBufferShader;
-
-            effect.CurrentTechnique = effect.Techniques["NormalDepthShade"];
-
-            effect.World = Matrix.Identity;
-            effect.View = view;
-            effect.Projection = projection;
-
-            var heightMap = AssetLibrary.LookupTerrainHeightMap(mName);
-            for (int chunkCol = 0; chunkCol < heightMap.NumChunksHorizontal; chunkCol++)
-            {
-                for (int chunkRow = 0; chunkRow < heightMap.NumChunksVertical; chunkRow++)
-                {
-                    VertexBuffer vertexBuffer = heightMap.VertexBuffers[chunkRow, chunkCol];
-                    IndexBuffer indexBuffer = heightMap.IndexBuffers[chunkRow, chunkCol];
-
-                    graphics.SetVertexBuffer(vertexBuffer);
-                    graphics.Indices = indexBuffer;
-
-                    effect.CurrentTechnique.Passes[0].Apply();
-
-                    graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
-                }
-            }
-
-            for (int side = 0; side < 4; side++)
-            {
-                VertexBuffer vertexBuffer = heightMap.EdgeVertexBuffers[side];
-                IndexBuffer indexBuffer = heightMap.EdgeIndexBuffers[side];
-
-                graphics.SetVertexBuffer(vertexBuffer);
-                graphics.Indices = indexBuffer;
-
-                effect.CurrentTechnique.Passes[0].Apply();
-
-                graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
             }
         }
 
@@ -363,10 +338,12 @@ namespace WorldEditor
 
             if (selectedObject == null || !selectedObject.RayCast(ray, maximumDistance, out rayHit))
             {
-                if (!Terrain.StaticCollidable.RayCast(ray, maximumDistance, out rayHit))
+                RayCastResult rayResult = new RayCastResult();
+                if (!Space.RayCast(ray, maximumDistance, out rayResult))
                 {
                     return false;
                 }
+                rayHit = rayResult.HitData;
             }
 
             castResult = new Tuple<RayHit, DummyObject>(rayHit, selectedObject);
@@ -375,9 +352,11 @@ namespace WorldEditor
 
         public void Draw()
         {
-            if (mTerrainPhysics != null)
+            if (mLevel != null)
             {
-                mTerrainPhysics.Render();
+                mLevel.IterateOverBlocksInRadius(CursorPosition, CursorOuterRadius, RenderCursor, new object[] { (HeightMapRenderable.CursorShape?)DrawCursor, (float?)(CursorInnerRadius), (float?)CursorOuterRadius, (Vector3?)CursorPosition });
+                mLevel.IterateOverBlockInContainer(mSelectedBlocks, SelectBlock, null);
+                mLevel.Render();
             }
 
             if (mWater != null && DrawWater)
@@ -399,5 +378,106 @@ namespace WorldEditor
             }
         }
 
+        private void RenderCursor(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            block.HeightMap.Renderable.DrawCursor = (parameters[0] as HeightMapRenderable.CursorShape?).Value;
+            block.HeightMap.Renderable.CursorInnerRadius = (parameters[1] as float?).Value;
+            block.HeightMap.Renderable.CursorOuterRadius = (parameters[2] as float?).Value;
+            block.HeightMap.Renderable.CursorPosition = (parameters[3] as Vector3?).Value;
+        }
+
+        private void SelectBlock(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            block.HeightMap.Renderable.Selected = true;
+        }
+
+        private void AddBlockToSpace(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            Space space = parameters[0] as Space;
+            space.Add(block.HeightMap.StaticCollidable);
+        }
+
+        private void RemoveBlockFromSpace(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            Space space = parameters[0] as Space;
+            space.Remove(block.HeightMap.StaticCollidable);
+        }
+
+        private void SetTerrain(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            bool isFeathered = (parameters[0] as bool?).Value;
+            bool isBlock     = (parameters[1] as bool?).Value;
+            float intensity  = (parameters[2] as float?).Value;
+
+            block.HeightMap.SetTerrain(centerCoordinate, radius, intensity, isFeathered, isBlock);
+        }
+
+        private void SmoothTerrain(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            bool isFeathered = (parameters[0] as bool?).Value;
+            bool isBlock = (parameters[1] as bool?).Value;
+
+            block.HeightMap.SmoothTerrain(centerCoordinate, radius, isFeathered, isBlock);
+        }
+
+        private void FlattenTerrain(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            bool isFeathered = (parameters[0] as bool?).Value;
+            bool isBlock = (parameters[1] as bool?).Value;
+
+            block.HeightMap.FlattenTerrain(centerCoordinate, radius, isFeathered, isBlock);
+        }
+
+        private void LowerTerrain(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            bool isFeathered = (parameters[0] as bool?).Value;
+            bool isBlock = (parameters[1] as bool?).Value;
+            float intensity = (parameters[2] as float?).Value;
+
+            block.HeightMap.LowerTerrain(centerCoordinate, radius, intensity, isFeathered, isBlock);
+        }
+
+        private void RaiseTerrain(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            bool isFeathered = (parameters[0] as bool?).Value;
+            bool isBlock = (parameters[1] as bool?).Value;
+            float intensity = (parameters[2] as float?).Value;
+
+            block.HeightMap.RaiseTerrain(centerCoordinate, radius, intensity, isFeathered, isBlock);
+        }
+
+        private void PaintTexture(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            bool isFeathered = (parameters[0] as bool?).Value;
+            bool isBlock = (parameters[1] as bool?).Value;
+            float alpha = (parameters[2] as float?).Value;
+            HeightMapMesh.TextureLayer layer = (parameters[3] as HeightMapMesh.TextureLayer?).Value;
+            string texture = parameters[4] as string;
+            Vector2 UVOffset = (parameters[5] as Vector2?).Value;
+            Vector2 UVScale = (parameters[6] as Vector2?).Value;
+
+            block.HeightMap.PaintTexture(centerCoordinate, radius, alpha, layer, texture, UVOffset, UVScale, isFeathered, isBlock);
+        }
+
+        private void EraseTexture(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            bool isFeathered = (parameters[0] as bool?).Value;
+            bool isBlock = (parameters[1] as bool?).Value;
+            float alpha = (parameters[2] as float?).Value;
+            HeightMapMesh.TextureLayer layer = (parameters[3] as HeightMapMesh.TextureLayer?).Value;
+            string texture = parameters[4] as string;
+            Vector2 UVOffset = (parameters[5] as Vector2?).Value;
+            Vector2 UVScale = (parameters[6] as Vector2?).Value;
+
+            block.HeightMap.EraseTexture(centerCoordinate, radius, alpha, layer, texture, UVOffset, UVScale, isFeathered, isBlock);
+        }
+
+        private void BlendTexture(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        {
+            bool isFeathered = (parameters[0] as bool?).Value;
+            bool isBlock = (parameters[1] as bool?).Value;
+
+            block.HeightMap.BlendTexture(centerCoordinate, radius, isFeathered, isBlock);
+        }
     }
 }

@@ -166,6 +166,7 @@ namespace GameConstructLibrary
 
         #endregion
 
+        public enum TextureLayer {};
         #region Structures
 
         public struct ActionParameters
@@ -198,11 +199,7 @@ namespace GameConstructLibrary
 
         #endregion
 
-        #region Enums
 
-        public enum TextureLayer { BACKGROUND, RED, GREEN, BLUE, ALPHA };
-
-        #endregion
 
         #region Construction
 
@@ -382,23 +379,23 @@ namespace GameConstructLibrary
         {
             float newColor = 255.0f * alpha;
 
-            switch (layer)
-            {
-                case TextureLayer.ALPHA:
-                    result.A = (byte)Math.Max(Math.Min(result.A + newColor, 255), 0);
-                    break;
-                case TextureLayer.RED:
-                    result.R = (byte)Math.Max(Math.Min(result.R + newColor, 255), 0);
-                    break;
-                case TextureLayer.GREEN:
-                    result.G = (byte)Math.Max(Math.Min(result.G + newColor, 255), 0);
-                    break;
-                case TextureLayer.BLUE:
-                    result.B = (byte)Math.Max(Math.Min(result.B + newColor, 255), 0);
-                    break;
-                case TextureLayer.BACKGROUND:
-                    break;
-            }
+            //switch (layer)
+            //{
+            //    case TextureLayer.ALPHA:
+            //        result.A = (byte)Math.Max(Math.Min(result.A + newColor, 255), 0);
+            //        break;
+            //    case TextureLayer.RED:
+            //        result.R = (byte)Math.Max(Math.Min(result.R + newColor, 255), 0);
+            //        break;
+            //    case TextureLayer.GREEN:
+            //        result.G = (byte)Math.Max(Math.Min(result.G + newColor, 255), 0);
+            //        break;
+            //    case TextureLayer.BLUE:
+            //        result.B = (byte)Math.Max(Math.Min(result.B + newColor, 255), 0);
+            //        break;
+            //    case TextureLayer.BACKGROUND:
+            //        break;
+            //}
         }
 
         public delegate void Brush(int u, int v, float distance, float radius, float alpha, TextureLayer layer);
@@ -515,8 +512,8 @@ namespace GameConstructLibrary
             radius = radius / 100.0f * mHeight;
             float radiusSquared = radius * radius;
 
-            position.X = (position.X / Utils.WorldScale.X + 50.0f) / 100.0f * mWidth;
-            position.Y = (position.Y / Utils.WorldScale.Z + 50.0f) / 100.0f * mHeight;
+            //position.X = (position.X / Utils.WorldScale.X + 50.0f) / 100.0f * mWidth;
+            //position.Y = (position.Y / Utils.WorldScale.Z + 50.0f) / 100.0f * mHeight;
 
             int minZ = (int)Math.Max(0, position.Y - radius), maxZ = (int)Math.Min(mHeight - 1, position.Y + radius);
             int minX = (int)Math.Max(0, position.X - radius), maxX = (int)Math.Min(mWidth - 1, position.X + radius);
