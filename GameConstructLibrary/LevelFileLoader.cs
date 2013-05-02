@@ -329,7 +329,7 @@ namespace GameConstructLibrary
             float[,] heights = new float[heightMap.Height, heightMap.Width];
             for (int i = 0; i < heightColors.Length; i++)
             {
-                heights[i % HeightMapMesh.NUM_HORIZ_VERTICES, i / HeightMapMesh.NUM_HORIZ_VERTICES] = ConvertColorToFloat(heightColors[i]);
+                heights[i / HeightMapMesh.NUM_HORIZ_VERTICES, i % HeightMapMesh.NUM_HORIZ_VERTICES] = ConvertColorToFloat(heightColors[i]);
             }
 
             HeightMapMesh heightMapMesh = new HeightMapMesh(heights, alphaMap, detailTextureNames, uvOffsets, uvScales);
@@ -456,7 +456,7 @@ namespace GameConstructLibrary
 
         static private float ConvertColorToFloat(Color heightColor)
         {
-            return heightColor.R * 256.0f * 256.0f + heightColor.G * 256.0f + heightColor.B;
+            return heightColor.R / 255.0f;
         }
 
         #endregion

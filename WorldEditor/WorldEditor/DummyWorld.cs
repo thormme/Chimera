@@ -80,6 +80,21 @@ namespace WorldEditor
             }
         }
 
+        public void RemoveBlock(Vector3 coordinate)
+        {
+            mLevel.ModifySingleBlock(coordinate, RemoveBlockFromSpace, new object[] { Space });
+            mLevel.RemoveBlock(coordinate);
+        }
+
+        public void RemoveSelectedBlocks()
+        {
+            foreach (Vector3 coordinate in mSelectedBlocks)
+            {
+                RemoveBlock(coordinate);
+            }
+            ClearSelectedBlocks();
+        }
+
         public void SelectBlock(Vector3 coordinate)
         {
             if (!mSelectedBlocks.Contains(coordinate))

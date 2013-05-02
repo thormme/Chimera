@@ -885,11 +885,23 @@ namespace WorldEditor
             }
             if (mControls.Delete.Active)
             {
-                foreach (DummyObject dummyObject in ObjectParameterPane.SelectedObjects)
+                switch (EditorForm.Mode)
                 {
-                    mDummyWorld.RemoveObject(dummyObject);
+                    case Dialogs.EditorForm.EditorMode.OBJECTS:
+                    {
+                        foreach (DummyObject dummyObject in ObjectParameterPane.SelectedObjects)
+                        {
+                            mDummyWorld.RemoveObject(dummyObject);
+                        }
+                        ObjectParameterPane.SelectedObjects.Clear();
+                        break;
+                    }
+                    case Dialogs.EditorForm.EditorMode.BLOCKSELECTION:
+                    {
+                        mDummyWorld.RemoveSelectedBlocks();
+                        break;
+                    }
                 }
-                ObjectParameterPane.SelectedObjects.Clear();
             }
         }
 

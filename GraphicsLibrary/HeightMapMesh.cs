@@ -256,7 +256,7 @@ namespace GraphicsLibrary
         {
             VertexPositionNormalTexture vertex = new VertexPositionNormalTexture();
             vertex.TextureCoordinate = new Vector2((float)horizVertex / (float)(NUM_HORIZ_VERTICES - 1), (float)vertVertex / (float)(NUM_VERT_VERTICES - 1));
-            vertex.Position          = new Vector3((float)horizVertex / (float)(NUM_HORIZ_VERTICES - 1), mHeights[vertVertex, horizVertex], (float)vertVertex / (float)(NUM_VERT_VERTICES - 1));
+            vertex.Position          = new Vector3((float)horizVertex / (float)(NUM_HORIZ_VERTICES - 1), mHeights[horizVertex, vertVertex], (float)vertVertex / (float)(NUM_VERT_VERTICES - 1));
             vertex.Normal            = Vector3.Up;
 
             mVertices[horizVertex + vertVertex * NUM_HORIZ_VERTICES] = vertex;
@@ -371,10 +371,10 @@ namespace GraphicsLibrary
         /// <param name="pass">Unused.</param>
         private void RaiseLowerVertex(int x, int z, float magnitude, int pass)
         {
-            mHeights[z,x] = mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y + magnitude;
-            mHeights[z, x] = Math.Max(0, Math.Min(mHeights[z, x], (256.0f * 256.0f * 256.0f - 1.0f)));
+            mHeights[x,z] = mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y + magnitude;
+            mHeights[x, z] = Math.Max(0, Math.Min(mHeights[x, z], (256.0f * 256.0f * 256.0f - 1.0f)));
 
-            mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y = mHeights[z, x];
+            mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y = mHeights[x, z];
         }
 
         /// <summary>
@@ -409,8 +409,8 @@ namespace GraphicsLibrary
 
                 case 1:
                     {
-                        mHeights[z, x] = (mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y + mSmoothHeightAverages[zSmoothIndex, xSmoothIndex]) / 2;
-                        mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y = mHeights[z, x];
+                        mHeights[x, z] = (mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y + mSmoothHeightAverages[zSmoothIndex, xSmoothIndex]) / 2;
+                        mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y = mHeights[x, z];
                         break;
                     }
             }
@@ -425,8 +425,8 @@ namespace GraphicsLibrary
         /// <param name="pass">Unused.</param>
         private void SetVertex(int x, int z, float magnitude, int pass)
         {
-            mHeights[z,x] = Math.Max(0, Math.Min(magnitude, (256.0f * 256.0f * 256.0f - 1.0f)));
-            mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y = mHeights[z, x];
+            mHeights[x, z] = Math.Max(0, Math.Min(magnitude, (256.0f * 256.0f * 256.0f - 1.0f)));
+            mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y = mHeights[x, z];
         }
 
         /// <summary>
@@ -449,8 +449,8 @@ namespace GraphicsLibrary
 
                 case 1:
                     {
-                        mHeights[z,x] = mFlattenHeightSum / mFlattenNumVertices;
-                        mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y = mHeights[z, x];
+                        mHeights[x, z] = mFlattenHeightSum / mFlattenNumVertices;
+                        mVertices[x + z * NUM_HORIZ_VERTICES].Position.Y = mHeights[x, z];
                         break;
                     }
             }
@@ -771,7 +771,7 @@ namespace GraphicsLibrary
             {
                 for (int col = 0; col < NUM_HORIZ_VERTICES; ++col)
                 {
-                    heightTexels[col + row * NUM_HORIZ_VERTICES] = HeightAsColor((int)mVertices[col + row * NUM_HORIZ_VERTICES].Position.Y);
+                    heightTexels[col + row * NUM_HORIZ_VERTICES] = HeightAsColor(mVertices[col + row * NUM_HORIZ_VERTICES].Position.Y);
                 }
             }
 
@@ -832,13 +832,9 @@ namespace GraphicsLibrary
             return ms;
         }
 
-        private Color HeightAsColor(int height)
+        private Color HeightAsColor(float height)
         {
-            int blue = height % 256;
-            int green = ((height - blue) / 256) % 256;
-            int red = ((height - (blue + green)) / (256 * 256) % 256);
-
-            return new Color(red, green, blue);
+            return new Color(height, height, height);
         }
 
         #endregion

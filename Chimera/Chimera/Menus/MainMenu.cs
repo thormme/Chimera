@@ -95,7 +95,7 @@ namespace Chimera.Menus
             ChimeraGame.PopState();
 
             GameWorld world = new GameWorld(mDebugDrawer);
-            world.AddLevelFromFile(mFirstLevelName == null ? "blocks" : mFirstLevelName, Vector3.Zero, Quaternion.Identity, Vector3.One);
+            world.AddLevelFromFile(mFirstLevelName == null ? "default" : mFirstLevelName, Vector3.Zero, Quaternion.Identity, Vector3.One);
             ChimeraGame.PushState(world);
         }
 

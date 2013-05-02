@@ -28,6 +28,15 @@ namespace GameConstructLibrary
             mBlocks.Add(blockCoordinate, new LevelBlock(mName, blockCoordinate, BLOCK_SIZE));
         }
 
+        public void RemoveBlock(Vector3 blockCoordinate)
+        {
+            if (mBlocks.ContainsKey(blockCoordinate))
+            {
+                AssetLibrary.RemoveHeightMap(mBlocks[blockCoordinate].Name);
+                mBlocks.Remove(blockCoordinate);
+            }
+        }
+
         public bool Contains(Vector3 blockCoordinate)
         {
             return mBlocks.ContainsKey(blockCoordinate);

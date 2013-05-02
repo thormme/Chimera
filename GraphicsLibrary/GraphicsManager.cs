@@ -640,8 +640,14 @@ namespace GraphicsLibrary
         {
             mDevice.SetRenderTarget(null);
 
+            RasterizerState oldState = mDevice.RasterizerState;
+
             mDevice.Clear(ClearOptions.DepthBuffer, new Vector4(0), 65535, 0);
             mDevice.DepthStencilState = DepthStencilState.Default;
+
+            RasterizerState newState = new RasterizerState();
+            newState.CullMode = CullMode.None;
+            mDevice.RasterizerState = newState;
 
             foreach (RendererBase renderer in mRenderQueue)
             {
@@ -663,6 +669,8 @@ namespace GraphicsLibrary
 
                 mDrawSelectionBox = false;
             }
+
+            mDevice.RasterizerState = oldState;
 
             foreach (SpriteDefinition sprite in mSpriteQueue)
             {

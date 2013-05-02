@@ -181,9 +181,9 @@ namespace WorldEditor
                     mZScaleArm.Render(Position + Vector3.UnitZ * scaleMagnitude / 5, Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
                 }
 
-                mPitchArm.Render(Position, Matrix.CreateRotationZ(MathHelper.PiOver2), scale, Color.Red, 1.0f, false);
-                mYawArm.Render(Position,   Matrix.Identity,                            scale, Color.Green, 1.0f, false);
-                mRollArm.Render(Position,  Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
+                mPitchArm.Render(Position, Matrix.CreateRotationZ(-MathHelper.PiOver2) * Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Red, 1.0f, false);
+                mYawArm.Render(Position,   Matrix.CreateRotationY(MathHelper.Pi),                            scale, Color.Green, 1.0f, false);
+                mRollArm.Render(Position, Matrix.CreateRotationZ(-MathHelper.PiOver2) * Matrix.CreateRotationY(-MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
             }
         }
 
