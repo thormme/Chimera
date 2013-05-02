@@ -165,7 +165,7 @@ namespace WorldEditor
         {
             if (mDrawable)
             {
-                float scaleMagnitude = (mCamera.Position - Position).Length();
+                float scaleMagnitude = (mCamera.Position - Position).Length() / 2.0f;
                 Vector3 scale = Vector3.One * scaleMagnitude;
 
                 if (Mode == ModificationMode.Position)
