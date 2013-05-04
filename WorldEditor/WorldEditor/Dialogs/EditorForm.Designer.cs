@@ -61,6 +61,7 @@
             this.ViewWaterMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewShadowsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextToolsPanel = new System.Windows.Forms.Panel();
+            this.GizmoForm = new WorldEditor.Dialogs.GizmoForm();
             this.BlockLayerSelectionForm = new WorldEditor.Dialogs.BlockLayerSelectionForm();
             this.TextureSelectionForm = new WorldEditor.Dialogs.TextureSelectionForm();
             this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
@@ -371,6 +372,7 @@
             // 
             this.ContextToolsPanel.AutoScroll = true;
             this.ContextToolsPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.ContextToolsPanel.Controls.Add(this.GizmoForm);
             this.ContextToolsPanel.Controls.Add(this.BlockLayerSelectionForm);
             this.ContextToolsPanel.Controls.Add(this.TextureSelectionForm);
             this.ContextToolsPanel.Controls.Add(this.ObjectPlacementPanel);
@@ -384,10 +386,18 @@
             this.ContextToolsPanel.Size = new System.Drawing.Size(251, 487);
             this.ContextToolsPanel.TabIndex = 4;
             // 
+            // GizmoForm
+            // 
+            this.GizmoForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.GizmoForm.Location = new System.Drawing.Point(0, 1556);
+            this.GizmoForm.Name = "GizmoForm";
+            this.GizmoForm.Size = new System.Drawing.Size(234, 57);
+            this.GizmoForm.TabIndex = 23;
+            // 
             // BlockLayerSelectionForm
             // 
             this.BlockLayerSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BlockLayerSelectionForm.Location = new System.Drawing.Point(0, 1550);
+            this.BlockLayerSelectionForm.Location = new System.Drawing.Point(0, 1526);
             this.BlockLayerSelectionForm.Name = "BlockLayerSelectionForm";
             this.BlockLayerSelectionForm.Size = new System.Drawing.Size(234, 30);
             this.BlockLayerSelectionForm.TabIndex = 22;
@@ -397,7 +407,7 @@
             this.TextureSelectionForm.BackColor = System.Drawing.SystemColors.Control;
             this.TextureSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
             this.TextureSelectionForm.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextureSelectionForm.Location = new System.Drawing.Point(0, 995);
+            this.TextureSelectionForm.Location = new System.Drawing.Point(0, 971);
             this.TextureSelectionForm.Margin = new System.Windows.Forms.Padding(4);
             this.TextureSelectionForm.Name = "TextureSelectionForm";
             this.TextureSelectionForm.Size = new System.Drawing.Size(234, 555);
@@ -406,7 +416,7 @@
             // ObjectPlacementPanel
             // 
             this.ObjectPlacementPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 540);
+            this.ObjectPlacementPanel.Location = new System.Drawing.Point(0, 516);
             this.ObjectPlacementPanel.Name = "ObjectPlacementPanel";
             this.ObjectPlacementPanel.Size = new System.Drawing.Size(234, 455);
             this.ObjectPlacementPanel.TabIndex = 17;
@@ -414,7 +424,7 @@
             // TextureLayerForm
             // 
             this.TextureLayerForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TextureLayerForm.Location = new System.Drawing.Point(0, 368);
+            this.TextureLayerForm.Location = new System.Drawing.Point(0, 344);
             this.TextureLayerForm.Name = "TextureLayerForm";
             this.TextureLayerForm.Size = new System.Drawing.Size(234, 172);
             this.TextureLayerForm.TabIndex = 5;
@@ -422,7 +432,7 @@
             // HeightMapBrushPropertiesForm
             // 
             this.HeightMapBrushPropertiesForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.HeightMapBrushPropertiesForm.Location = new System.Drawing.Point(0, 258);
+            this.HeightMapBrushPropertiesForm.Location = new System.Drawing.Point(0, 234);
             this.HeightMapBrushPropertiesForm.Name = "HeightMapBrushPropertiesForm";
             this.HeightMapBrushPropertiesForm.Size = new System.Drawing.Size(234, 110);
             this.HeightMapBrushPropertiesForm.TabIndex = 20;
@@ -431,7 +441,7 @@
             // 
             this.TextureBrushPropertiesForm.BackColor = System.Drawing.SystemColors.Control;
             this.TextureBrushPropertiesForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TextureBrushPropertiesForm.Location = new System.Drawing.Point(0, 142);
+            this.TextureBrushPropertiesForm.Location = new System.Drawing.Point(0, 118);
             this.TextureBrushPropertiesForm.Name = "TextureBrushPropertiesForm";
             this.TextureBrushPropertiesForm.Size = new System.Drawing.Size(234, 116);
             this.TextureBrushPropertiesForm.TabIndex = 21;
@@ -442,7 +452,7 @@
             this.ObjectParameterFormContainer.Dock = System.Windows.Forms.DockStyle.Top;
             this.ObjectParameterFormContainer.Location = new System.Drawing.Point(0, 0);
             this.ObjectParameterFormContainer.Name = "ObjectParameterFormContainer";
-            this.ObjectParameterFormContainer.Size = new System.Drawing.Size(234, 142);
+            this.ObjectParameterFormContainer.Size = new System.Drawing.Size(234, 118);
             this.ObjectParameterFormContainer.TabIndex = 12;
             // 
             // ObjectParametersForm
@@ -451,7 +461,7 @@
             this.ObjectParametersForm.Dock = System.Windows.Forms.DockStyle.Top;
             this.ObjectParametersForm.Location = new System.Drawing.Point(0, 0);
             this.ObjectParametersForm.Name = "ObjectParametersForm";
-            this.ObjectParametersForm.Size = new System.Drawing.Size(234, 121);
+            this.ObjectParametersForm.Size = new System.Drawing.Size(234, 112);
             this.ObjectParametersForm.TabIndex = 12;
             // 
             // panel1
@@ -550,5 +560,6 @@
         private System.Windows.Forms.ToolStripButton CreateBlockButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         public BlockLayerSelectionForm BlockLayerSelectionForm;
+        public GizmoForm GizmoForm;
     }
 }

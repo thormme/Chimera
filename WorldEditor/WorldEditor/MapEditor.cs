@@ -67,6 +67,8 @@ namespace WorldEditor
 
         public TextureBrushPropertiesForm TextureBrushPropertiesPane = null;
 
+        public GizmoForm GizmoForm = null;
+
         public TextureLayerContainerForm TextureLayerPane = null;
 
         public bool Closed = false;
@@ -138,6 +140,7 @@ namespace WorldEditor
             this.TextureLayerPane = editorForm.TextureLayerForm;
             this.TextureSelectionPane = editorForm.TextureSelectionForm;
             this.BlockLayerSelectionForm = editorForm.BlockLayerSelectionForm;
+            this.GizmoForm = editorForm.GizmoForm;
             mGraphics = graphicsDevice;
             mGameControl = gameControl;
             mCamera = camera;
@@ -214,6 +217,11 @@ namespace WorldEditor
             if (IsGizmoVisible)
             {
                 mGizmo.Draw();
+            }
+
+            foreach (DummyObject selectedDummy in ObjectParameterPane.SelectedObjects)
+            {
+                selectedDummy.IsHighlighted = true;
             }
 
             mDummyWorld.Draw();
@@ -367,6 +375,19 @@ namespace WorldEditor
         private void CloseBlockLayerSelectionForm(object sender, EventArgs e)
         {
             BlockLayerSelectionForm.Hide();
+        }
+
+        private void OpenGizmoForm(object sender, EventArgs e)
+        {
+            if (!GizmoForm.Visible)
+            {
+                GizmoForm.Show();
+            }
+        }
+
+        private void CloseGizmoForm(object sender, EventArgs e)
+        {
+            GizmoForm.Hide();
         }
 
         private void OpenHeightMapBrushPropertiesPane(object sender, EventArgs e)
@@ -628,6 +649,7 @@ namespace WorldEditor
             switch ((sender as EditorForm).Mode)
             {
                 case Dialogs.EditorForm.EditorMode.OBJECTS:
+                    OpenGizmoForm(this, EventArgs.Empty);
                     CloseBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
@@ -643,6 +665,7 @@ namespace WorldEditor
                     }
                     break;
                 case Dialogs.EditorForm.EditorMode.BLOCKCREATION:
+                    CloseGizmoForm(this, EventArgs.Empty);
                     CloseBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
@@ -652,6 +675,7 @@ namespace WorldEditor
                     CloseTextureLayerPane(this, EventArgs.Empty);
                     break;
                 case Dialogs.EditorForm.EditorMode.BLOCKSELECTION:
+                    CloseGizmoForm(this, EventArgs.Empty);
                     CloseBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
@@ -661,6 +685,7 @@ namespace WorldEditor
                     CloseTextureLayerPane(this, EventArgs.Empty);
                     break;
                 case Dialogs.EditorForm.EditorMode.HEIGHTMAP:
+                    CloseGizmoForm(this, EventArgs.Empty);
                     CloseBlockLayerSelectionForm(this, EventArgs.Empty);
                     OpenHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
@@ -670,6 +695,7 @@ namespace WorldEditor
                     CloseTextureLayerPane(this, EventArgs.Empty);
                     break;
                 case Dialogs.EditorForm.EditorMode.PAINTING:
+                    CloseGizmoForm(this, EventArgs.Empty);
                     CloseBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     OpenTextureBrushPropertiesPane(this, EventArgs.Empty);
@@ -714,6 +740,7 @@ namespace WorldEditor
         private void HideObjectGizmo(MapEditor mapEditor, EventArgs eventArgs)
         {
             IsGizmoVisible = false;
+            ObjectParameterPane.SelectedObjects.Clear();
         }
 
         #endregion
@@ -752,18 +779,8 @@ namespace WorldEditor
                     {
                         if (!mGizmo.IsDragging)
                         {
-                            foreach (DummyObject oldObject in ObjectParameterPane.SelectedObjects)
-                            {
-                                oldObject.IsHighlighted = false;
-                            }
                             ObjectParameterPane.SelectedObjects.Clear();
-
                             List<DummyObject> dummyObjects = Entity.GetObjectsInSelection(mDummyWorld);
-                            foreach (DummyObject newObject in dummyObjects)
-                            {
-                                newObject.IsHighlighted = true;
-                            }
-
                             ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
                         }
                         ObjectParameterPane.UpdateParameterFields();

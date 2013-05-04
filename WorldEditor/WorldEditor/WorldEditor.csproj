@@ -147,6 +147,12 @@
     <Compile Include="Dialogs\BlockLayerSelectionForm.Designer.cs">
       <DependentUpon>BlockLayerSelectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\GizmoForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogs\GizmoForm.Designer.cs">
+      <DependentUpon>GizmoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\TextureBrushPropertiesForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -342,6 +348,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Dialogs\BlockLayerSelectionForm.resx">
       <DependentUpon>BlockLayerSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\GizmoForm.resx">
+      <DependentUpon>GizmoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\TextureBrushPropertiesForm.resx">
       <DependentUpon>TextureBrushPropertiesForm.cs</DependentUpon>

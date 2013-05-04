@@ -644,6 +644,7 @@ namespace GraphicsLibrary
 
             mDevice.Clear(ClearOptions.DepthBuffer, new Vector4(0), 65535, 0);
             mDevice.DepthStencilState = DepthStencilState.Default;
+            mDevice.BlendState = BlendState.AlphaBlend;
 
             RasterizerState newState = new RasterizerState();
             newState.CullMode = CullMode.None;

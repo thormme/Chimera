@@ -20,6 +20,10 @@ namespace WorldEditor
         const uint mPitchPickingID = 16777111;
         const uint mRollPickingID  = 16777112;
 
+        private Matrix mYawArmBaseRotation   = Matrix.CreateRotationY(MathHelper.Pi);
+        private Matrix mPitchArmBaseRotation = Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateRotationZ(-MathHelper.PiOver2);
+        private Matrix mRollArmBaseRotation = Matrix.CreateRotationY(-MathHelper.PiOver2) * Matrix.CreateRotationX(MathHelper.PiOver2);
+
         public enum ModificationMode { Position, Scale, Rotate };
 
         private enum ModificationDirection { X, Y, Z, Yaw, Pitch, Roll };
@@ -139,7 +143,28 @@ namespace WorldEditor
                         }
                         break;
                     case ModificationMode.Rotate:
+                        Vector3 axis = GetRotationPlaneNormal();
+                        Vector3 newDirection = Vector3.Normalize(newDragPoint - Position);
+                        Vector3 previousDirection = Vector3.Normalize(mPreviousDragPoint - Position);
 
+                        float dot = Math.Min(1.0f, Math.Max(-1.0f, Vector3.Dot(newDirection, previousDirection)));
+                        float angle = (float)Math.Acos(dot);
+                        angle *= Vector3.Dot(Vector3.Cross(newDirection, previousDirection), axis) < 0.0f ? 1.0f : -1.0f;
+                        
+                        foreach (DummyObject dummyObject in selectedObjects)
+                        {
+                            Vector3 dummyOffset = dummyObject.Position - Position;
+                            if (dummyOffset != Vector3.Zero)
+                            {
+                                Matrix rotation = Matrix.CreateFromAxisAngle(axis, angle);
+                                Vector3 rotatedOffset = Vector3.Transform(dummyOffset, rotation);
+                                dummyObject.Position = Position + Vector3.Normalize(rotatedOffset) * dummyOffset.Length();
+                            }
+
+                            Vector3 deltaYawPitchRoll = axis * angle;
+                            dummyObject.YawPitchRoll += deltaYawPitchRoll;
+                            dummyObject.YawPitchRoll = new Vector3(dummyObject.YawPitchRoll.X % MathHelper.TwoPi, dummyObject.YawPitchRoll.Y % MathHelper.TwoPi, dummyObject.YawPitchRoll.Z % MathHelper.TwoPi);
+                        }
                         break;
                 }
                 mPreviousDragPoint = newDragPoint;
@@ -181,9 +206,42 @@ namespace WorldEditor
                     mZScaleArm.Render(Position + Vector3.UnitZ * scaleMagnitude / 5, Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
                 }
 
-                mPitchArm.Render(Position, Matrix.CreateRotationZ(-MathHelper.PiOver2) * Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Red, 1.0f, false);
-                mYawArm.Render(Position,   Matrix.CreateRotationY(MathHelper.Pi),                            scale, Color.Green, 1.0f, false);
-                mRollArm.Render(Position, Matrix.CreateRotationZ(-MathHelper.PiOver2) * Matrix.CreateRotationY(-MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
+                Vector3 gizmoToCamera = mCamera.Position - Position;
+                gizmoToCamera = Vector3.Normalize(new Vector3(
+                    gizmoToCamera.X /= Math.Abs(gizmoToCamera.X),
+                    gizmoToCamera.Y /= Math.Abs(gizmoToCamera.Y),
+                    gizmoToCamera.Z /= Math.Abs(gizmoToCamera.Z)));
+
+                Vector3 pitchGizmoToCamera = Vector3.Normalize(new Vector3(0.0f, gizmoToCamera.Y, gizmoToCamera.Z));
+                Vector3 pitchDefault       = Vector3.Normalize(new Vector3(0.0f, 1.0f, 1.0f));
+
+                Vector3 yawGizmoToCamera   = Vector3.Normalize(new Vector3(gizmoToCamera.X, 0.0f, gizmoToCamera.Z));
+                Vector3 yawDefault         = Vector3.Normalize(new Vector3(1.0f, 0.0f, 1.0f));
+
+                Vector3 rollGizmoToCamera = Vector3.Normalize(new Vector3(gizmoToCamera.X, gizmoToCamera.Y, 0.0f));
+                Vector3 rollDefault       = Vector3.Normalize(new Vector3(1.0f, 1.0f, 0.0f));
+
+                float pitchAngle = (float)Math.Acos(Vector3.Dot(pitchGizmoToCamera, pitchDefault));
+                if (Vector3.Cross(pitchGizmoToCamera, pitchDefault).X >= 0.0f)
+                {
+                    pitchAngle *= -1.0f;
+                }
+
+                float yawAngle   = (float)Math.Acos(Vector3.Dot(yawGizmoToCamera,   yawDefault));
+                if (Vector3.Cross(yawGizmoToCamera, yawDefault).Y >= 0.0f)
+                {
+                    yawAngle *= -1.0f;
+                }
+
+                float rollAngle  = (float)Math.Acos(Vector3.Dot(rollGizmoToCamera,  rollDefault));
+                if (Vector3.Cross(rollGizmoToCamera, rollDefault).Z >= 0.0f)
+                {
+                    rollAngle *= -1.0f;
+                }
+
+                mPitchArm.Render(Position, mPitchArmBaseRotation * Matrix.CreateRotationX(pitchAngle), scale, Color.Red,   1.0f, false);
+                mYawArm.Render(Position,   mYawArmBaseRotation   * Matrix.CreateRotationY(yawAngle), scale, Color.Green, 1.0f, false);
+                mRollArm.Render(Position,  mRollArmBaseRotation  * Matrix.CreateRotationZ(rollAngle), scale, Color.Blue,  1.0f, false);
             }
         }
 
