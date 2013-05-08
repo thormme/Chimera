@@ -12,7 +12,7 @@ namespace GraphicsLibrary
     {
         #region Constants
 
-        public const int NUM_SIDE_VERTICES = 10;
+        public const int NUM_SIDE_VERTICES = 20;
 
         public const int NUM_SIDE_TEXELS_PER_QUAD = 10;
 
@@ -81,6 +81,7 @@ namespace GraphicsLibrary
             get { return mIndexBuffer; }
         }
         static private IndexBuffer mIndexBuffer = null;
+        static private int[] mIndices = null;
 
         #endregion
 
@@ -187,8 +188,10 @@ namespace GraphicsLibrary
 
             InitializeBottomFaceIndices(indices);
 
+            mIndices = indices.ToArray();
+
             mIndexBuffer = new IndexBuffer(GraphicsManager.Device, typeof(int), indices.Count, BufferUsage.WriteOnly);
-            mIndexBuffer.SetData(indices.ToArray());
+            mIndexBuffer.SetData(mIndices);
         }
 
         private void InitializeTexture()
@@ -244,26 +247,28 @@ namespace GraphicsLibrary
         /// <param name="maxX"></param>
         private void UpdateNormalVectors()
         {
-            for (int zIndex = 0; zIndex <= NUM_SIDE_VERTICES; ++zIndex)
+            for (int i = 0; i < mVertices.Length; i++ )
             {
-                for (int xIndex = 0; xIndex <= NUM_SIDE_VERTICES; ++xIndex)
+                mVertices[i].Normal = Vector3.Zero;
+            }
+
+            for (int index = 0; index < mIndices.Length; index += 3)
+            {
+                int[] polyIndices = new int[3] { mIndices[index], mIndices[index + 1], mIndices[index + 2] };
+                Vector3[] positions = new Vector3[3] { mVertices[polyIndices[0]].Position, mVertices[polyIndices[1]].Position, mVertices[polyIndices[2]].Position };
+                Vector3[] edges = new Vector3[2] { positions[1] - positions[0], positions[2] - positions[0] }; 
+                
+                Vector3 normal = Vector3.Normalize(Vector3.Cross(edges[1], edges[0]));
+
+                foreach (int polyIndex in polyIndices)
                 {
-                    for (int faceIndex = 0; faceIndex < 6; ++faceIndex)
-                    {
-                        if (xIndex > 0 && xIndex < NUM_SIDE_VERTICES - 1 && zIndex > 0 && zIndex < NUM_SIDE_VERTICES - 1)
-                        {
-                            int index0 = xIndex + (int)VERTEX_0_OFFSET[faceIndex].X + (zIndex + (int)VERTEX_0_OFFSET[faceIndex].Y) * NUM_SIDE_VERTICES;
-                            int index1 = xIndex + (int)VERTEX_1_OFFSET[faceIndex].X + (zIndex + (int)VERTEX_1_OFFSET[faceIndex].Y) * NUM_SIDE_VERTICES;
-                            int index2 = xIndex + (int)VERTEX_2_OFFSET[faceIndex].X + (zIndex + (int)VERTEX_2_OFFSET[faceIndex].Y) * NUM_SIDE_VERTICES;
-
-                            Vector3 edge0 = mVertices[index0].Position - mVertices[index1].Position;
-                            Vector3 edge1 = mVertices[index0].Position - mVertices[index2].Position;
-                            Vector3 normal = Vector3.Cross(edge1, edge0);
-
-                            mVertices[xIndex + zIndex * NUM_SIDE_VERTICES].Normal = Vector3.Normalize(mVertices[xIndex + zIndex * NUM_SIDE_VERTICES].Normal + normal);
-                        }
-                    }
+                    mVertices[polyIndex].Normal += normal;
                 }
+            }
+
+            for (int i = 0; i < mVertices.Length; i++)
+            {
+                Vector3.Normalize(mVertices[i].Normal);
             }
         }
 
@@ -353,44 +358,6 @@ namespace GraphicsLibrary
         #endregion
 
         //#region HeightMap Modification
-
-        ///// <summary>
-        ///// Raises the terrain in the radius around position by intensity meters.
-        ///// </summary>
-        ///// <param name="position">HeightMap coordinate at which height change originated.</param>
-        ///// <param name="radius">Radius around position in which to raise the terrain.</param>
-        ///// <param name="intensity">Amount by which to raise the terrain.</param>
-        //public void RaiseTerrain(Vector3 position, float radius, float deltaHeight, bool isFeathered, bool isBlock)
-        //{
-        //    VertexModifier modifier = RaiseLowerVertex;
-        //    ModifyVertices(position, radius, deltaHeight, 1, modifier, isFeathered, isBlock);
-        //}
-
-        ///// <summary>
-        ///// Lowers the terrain in the radius around position by intensity meters.
-        ///// </summary>
-        ///// <param name="position">HeightMap coordinate at which height change originated.</param>
-        ///// <param name="radius">Radius around position in which to lower the terrain.</param>
-        ///// <param name="intensity">Amount by which to lower the terrain.</param>
-        //public void LowerTerrain(Vector3 position, float radius, float deltaHeight, bool isFeathered, bool isBlock)
-        //{
-        //    VertexModifier modifier = RaiseLowerVertex;
-        //    ModifyVertices(position, radius, -deltaHeight, 1, modifier, isFeathered, isBlock);
-        //}
-
-        ///// <summary>
-        ///// Sets the height of the terrain in the radius around position to intensity meters.
-        ///// </summary>
-        ///// <param name="position">HeightMap coordinate at which height change originated.</param>
-        ///// <param name="radius">Radius around position in which to set the terrain.</param>
-        ///// <param name="intensity">New height of the terrain.</param>
-        //public void SetTerrain(Vector3 position, float radius, float height, bool isFeathered, bool isBlock)
-        //{
-        //    VertexModifier modifier = SetVertex;
-        //    height *= 130.56f;
-
-        //    ModifyVertices(position, radius, height, 1, modifier, isFeathered, isBlock);
-        //}
 
         ///// <summary>
         ///// Sets height of terrain in the radius around position to the average existing height.

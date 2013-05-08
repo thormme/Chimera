@@ -59,61 +59,28 @@ namespace WorldEditor
 
         #region Block Modifiers
 
-        public delegate float VertexModifier(float initialHeight, float deltaHeight);
-
-        public void IterateOverTerrainVertices(Vector3 center, float radius, VertexModifier modifier, float deltaHeight)
+        public void RaiseTerrain(Vector3 center, float radius, float deltaHeight)
         {
-            Vector2 centerVertexSpace = new Vector2(center.X / BLOCK_SIZE * HeightMapMesh.NUM_SIDE_VERTICES, center.Z / BLOCK_SIZE * HeightMapMesh.NUM_SIDE_VERTICES);
+            VertexModifier raise = RaiseVertex;
+            IterateOverTerrainVertices(center, radius, raise, deltaHeight);
+        }
 
-            float radiusVertexSpace = radius / BLOCK_SIZE * (float)Math.Sqrt(2 * HeightMapMesh.NUM_SIDE_VERTICES * HeightMapMesh.NUM_SIDE_VERTICES);
-            float radiusSquared = radiusVertexSpace * radiusVertexSpace;
+        public void LowerTerrain(Vector3 center, float radius, float deltaHeight)
+        {
+            VertexModifier lower = LowerVertex;
+            IterateOverTerrainVertices(center, radius, lower, deltaHeight);
+        }
 
-            int minX = (int)Math.Floor(centerVertexSpace.X - radiusVertexSpace), maxX = (int)Math.Ceiling(centerVertexSpace.X + radiusVertexSpace);
-            int minZ = (int)Math.Floor(centerVertexSpace.Y - radiusVertexSpace), maxZ = (int)Math.Ceiling(centerVertexSpace.Y + radiusVertexSpace);
+        public void SetTerrain(Vector3 center, float radius, float deltaHeight)
+        {
+            VertexModifier set = SetVertex;
+            IterateOverTerrainVertices(center, radius, set, deltaHeight);
+        }
 
-            for (int z = minZ; z <= maxZ; z++)
-            {
-                for (int x = minX; x <= maxX; x++)
-                {
-                    Vector2 positionVertexSpace = new Vector2(x, z);
-                    if ((positionVertexSpace - centerVertexSpace).LengthSquared() <= radiusSquared)
-                    {
-                        Tuple<Vector3, Vector2> vertex = VertexAtPosition(positionVertexSpace);
-                        if (vertex != null)
-                        {
-                            HeightMapMesh mesh = AssetLibrary.LookupHeightMap(mName + vertex.Item1.ToString()).Mesh;
-
-                            float vertexHeight = modifier(mesh.GetVertexHeight(vertex.Item2), deltaHeight);
-                            mesh.SetVertexHeight(vertex.Item2, vertexHeight);
-
-                        }
-                    }
-                }
-            }
-
-            Vector3 radiusOffset = new Vector3(radius, 0, radius);
-            Vector3 minCoordinate = CoordinateFromPosition(center - radiusOffset);
-            Vector3 maxCoordinate = CoordinateFromPosition(center + radiusOffset);
-
-            for (int blockZ = (int)minCoordinate.Z; blockZ <= (int)maxCoordinate.Z; ++blockZ)
-            {
-                for (int blockX = (int)minCoordinate.X; blockX <= (int)maxCoordinate.X; ++blockX)
-                {
-                    Vector3 coordinate = new Vector3(blockX, minCoordinate.Y, blockZ);
-                    if (!mBlocks.ContainsKey(coordinate))
-                    {
-                        continue;
-                    }
-
-                    AttachMesh(coordinate, new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST });
-
-                    mSpace.Remove(mBlocks[coordinate].HeightMap.StaticCollidable);
-
-                    mBlocks[coordinate].HeightMap.UpdateStaticCollidable();
-
-                    mSpace.Add(mBlocks[coordinate].HeightMap.StaticCollidable);
-                }
-            }
+        public void SmoothTerrain(Vector3 center, float radius, float deltaHeight)
+        {
+            VertexModifier smooth = SmoothVertex;
+            IterateOverTerrainVertices(center, radius, smooth, deltaHeight);
         }
 
         public void IterateOverBlocksInRadius(Vector3 position, float radius, BlockModifier modifier, object[] parameters)
@@ -176,6 +143,8 @@ namespace WorldEditor
 
         public delegate void BlockModifier(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters);
 
+        public delegate void VertexModifier(Vector2 positionVertexSpace, float height);
+
         #endregion
 
         #region Helper Methods
@@ -221,6 +190,123 @@ namespace WorldEditor
                 for (int count = 0; count < HeightMapMesh.NUM_SIDE_VERTICES; count++)
                 {
                     sink.SetVertexHeight(sinkStartIndex + count * indexIncrement, source.GetVertexHeight(sourceStartIndex + count * indexIncrement));
+                }
+            }
+        }
+
+        private void RaiseVertex(Vector2 positionVertexSpace, float deltaHeight)
+        {
+            Tuple<Vector3, Vector2> vertex = VertexAtPosition(positionVertexSpace);
+            if (vertex != null)
+            {
+                HeightMapMesh mesh = AssetLibrary.LookupHeightMap(mName + vertex.Item1.ToString()).Mesh;
+
+                mesh.SetVertexHeight(vertex.Item2, mesh.GetVertexHeight(vertex.Item2) + deltaHeight);
+            }
+        }
+
+        private void LowerVertex(Vector2 positionVertexSpace, float deltaHeight)
+        {
+            Tuple<Vector3, Vector2> vertex = VertexAtPosition(positionVertexSpace);
+            if (vertex != null)
+            {
+                HeightMapMesh mesh = AssetLibrary.LookupHeightMap(mName + vertex.Item1.ToString()).Mesh;
+
+                mesh.SetVertexHeight(vertex.Item2, mesh.GetVertexHeight(vertex.Item2) - deltaHeight);
+            }
+        }
+
+        private void SetVertex(Vector2 positionVertexSpace, float newHeight)
+        {
+            Tuple<Vector3, Vector2> vertex = VertexAtPosition(positionVertexSpace);
+            if (vertex != null)
+            {
+                HeightMapMesh mesh = AssetLibrary.LookupHeightMap(mName + vertex.Item1.ToString()).Mesh;
+
+                mesh.SetVertexHeight(vertex.Item2, newHeight);
+            }
+        }
+
+        private void SmoothVertex(Vector2 positionVertexSpace, float newHeight)
+        {
+            Tuple<Vector3, Vector2> centerVertex = VertexAtPosition(positionVertexSpace);
+            if (centerVertex != null)
+            {
+                int count = 0;
+                float neighborSum = 0.0f;
+
+                for (int i = -1; i < 2; i++)
+                {
+                    for (int j = -1; j < 2; j++)
+                    {
+                        if (i == 0 && j == 0)
+                        {
+                            continue;
+                        }
+
+                        Vector2 neighborVertexSpace = new Vector2(positionVertexSpace.X + i, positionVertexSpace.Y + j);
+                        Tuple<Vector3, Vector2> neighborVertex = VertexAtPosition(neighborVertexSpace);
+                        if (neighborVertex != null)
+                        {
+                            neighborSum += AssetLibrary.LookupHeightMap(mName + neighborVertex.Item1.ToString()).Mesh.GetVertexHeight(neighborVertex.Item2);
+                            count++;
+                        }
+                    }
+                }
+
+                HeightMapMesh mesh = AssetLibrary.LookupHeightMap(mName + centerVertex.Item1.ToString()).Mesh;
+                float centerHeight = mesh.GetVertexHeight(centerVertex.Item2);
+                neighborSum += centerHeight;
+                count++;
+
+                neighborSum /= (float)count;
+                mesh.SetVertexHeight(centerVertex.Item2, centerHeight * 0.9f + neighborSum * 0.1f);
+            }
+        }
+
+        private void IterateOverTerrainVertices(Vector3 center, float radius, VertexModifier modifier, float deltaHeight)
+        {
+            Vector2 centerVertexSpace = new Vector2(center.X / BLOCK_SIZE * HeightMapMesh.NUM_SIDE_VERTICES, center.Z / BLOCK_SIZE * HeightMapMesh.NUM_SIDE_VERTICES);
+
+            float radiusVertexSpace = radius / BLOCK_SIZE * (float)Math.Sqrt(2 * HeightMapMesh.NUM_SIDE_VERTICES * HeightMapMesh.NUM_SIDE_VERTICES);
+            float radiusSquared = radiusVertexSpace * radiusVertexSpace;
+
+            int minX = (int)Math.Floor(centerVertexSpace.X - radiusVertexSpace), maxX = (int)Math.Ceiling(centerVertexSpace.X + radiusVertexSpace);
+            int minZ = (int)Math.Floor(centerVertexSpace.Y - radiusVertexSpace), maxZ = (int)Math.Ceiling(centerVertexSpace.Y + radiusVertexSpace);
+
+            for (int z = minZ; z <= maxZ; z++)
+            {
+                for (int x = minX; x <= maxX; x++)
+                {
+                    Vector2 positionVertexSpace = new Vector2(x, z);
+                    if ((positionVertexSpace - centerVertexSpace).LengthSquared() <= radiusSquared)
+                    {
+                        modifier(positionVertexSpace, deltaHeight);
+                    }
+                }
+            }
+
+            Vector3 radiusOffset = new Vector3(radius, 0, radius);
+            Vector3 minCoordinate = CoordinateFromPosition(center - radiusOffset);
+            Vector3 maxCoordinate = CoordinateFromPosition(center + radiusOffset);
+
+            for (int blockZ = (int)minCoordinate.Z; blockZ <= (int)maxCoordinate.Z; ++blockZ)
+            {
+                for (int blockX = (int)minCoordinate.X; blockX <= (int)maxCoordinate.X; ++blockX)
+                {
+                    Vector3 coordinate = new Vector3(blockX, minCoordinate.Y, blockZ);
+                    if (!mBlocks.ContainsKey(coordinate))
+                    {
+                        continue;
+                    }
+
+                    AttachMesh(coordinate, new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST });
+
+                    mSpace.Remove(mBlocks[coordinate].HeightMap.StaticCollidable);
+
+                    mBlocks[coordinate].HeightMap.UpdateStaticCollidable();
+
+                    mSpace.Add(mBlocks[coordinate].HeightMap.StaticCollidable);
                 }
             }
         }

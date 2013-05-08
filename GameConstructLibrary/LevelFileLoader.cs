@@ -191,13 +191,51 @@ namespace GameConstructLibrary
                 return false;
             }
 
-            Color[] heightColors = new Color[heightMap.Width * heightMap.Height];
-            heightMap.GetData(heightColors);
+            Color[] heightColors = new Color[HeightMapMesh.NUM_SIDE_VERTICES * HeightMapMesh.NUM_SIDE_VERTICES];
+            if (heightMap.Width != HeightMapMesh.NUM_SIDE_VERTICES || heightMap.Height != HeightMapMesh.NUM_SIDE_VERTICES)
+            {
+                RenderTarget2D resizedHeightMap = new RenderTarget2D(GraphicsManager.Device, HeightMapMesh.NUM_SIDE_VERTICES, HeightMapMesh.NUM_SIDE_VERTICES);
+                GraphicsManager.Device.SetRenderTarget(resizedHeightMap);
 
-            float[,] heights = new float[heightMap.Height, heightMap.Width];
+                GraphicsManager.SpriteBatch.Begin();
+                GraphicsManager.SpriteBatch.Draw(heightMap, new Rectangle(0, 0, HeightMapMesh.NUM_SIDE_VERTICES, HeightMapMesh.NUM_SIDE_VERTICES), Color.White);
+                GraphicsManager.SpriteBatch.End();
+
+                GraphicsManager.Device.SetRenderTarget(null);
+                resizedHeightMap.GetData(heightColors);
+            }
+            else
+            {
+                heightMap.GetData(heightColors);
+            }
+
+            float[,] heights = new float[HeightMapMesh.NUM_SIDE_VERTICES, HeightMapMesh.NUM_SIDE_VERTICES];
             for (int i = 0; i < heightColors.Length; i++)
             {
                 heights[i % HeightMapMesh.NUM_SIDE_VERTICES, i / HeightMapMesh.NUM_SIDE_VERTICES] = ConvertColorToFloat(heightColors[i]);
+            }
+
+            if (alphaMap.Height != HeightMapMesh.NUM_SIDE_VERTICES * HeightMapMesh.NUM_SIDE_TEXELS_PER_QUAD ||
+                alphaMap.Width != HeightMapMesh.NUM_SIDE_VERTICES * HeightMapMesh.NUM_SIDE_TEXELS_PER_QUAD)
+            {
+                RenderTarget2D resizedAlphaMap = new RenderTarget2D(GraphicsManager.Device, 
+                    HeightMapMesh.NUM_SIDE_VERTICES * HeightMapMesh.NUM_SIDE_TEXELS_PER_QUAD,
+                    HeightMapMesh.NUM_SIDE_VERTICES * HeightMapMesh.NUM_SIDE_TEXELS_PER_QUAD);
+
+                GraphicsManager.Device.SetRenderTarget(resizedAlphaMap);
+
+                GraphicsManager.SpriteBatch.Begin();
+                GraphicsManager.SpriteBatch.Draw(alphaMap, 
+                    new Rectangle(0, 
+                        0, 
+                        HeightMapMesh.NUM_SIDE_VERTICES * HeightMapMesh.NUM_SIDE_TEXELS_PER_QUAD, 
+                        HeightMapMesh.NUM_SIDE_VERTICES * HeightMapMesh.NUM_SIDE_TEXELS_PER_QUAD), 
+                    Color.White);
+                GraphicsManager.SpriteBatch.End();
+
+                GraphicsManager.Device.SetRenderTarget(null);
+
+                alphaMap = resizedAlphaMap;
             }
 
             HeightMapMesh heightMapMesh = new HeightMapMesh(heights, alphaMap, detailTextureNames, uvOffsets, uvScales);
