@@ -122,7 +122,7 @@ namespace Chimera
             DebugConsole.AddCommand("enableAllParts", new DebugConsole.ConsoleCommand(EnableParts));
             DebugConsole.AddCommand("partMenu", new DebugConsole.ConsoleCommand(PartMenuCommand));
             DebugConsole.AddCommand("resizeShadowCascade", new DebugConsole.ConsoleCommand(ResizeShadowCascadesCommand));
-            DebugConsole.AddCommand("wireframe", new DebugConsole.ConsoleCommand(WireframeConsoleCommand));
+            DebugConsole.AddCommand("collisions", new DebugConsole.ConsoleCommand(CollisionMeshCommand));
             DebugConsole.AddCommand("debug", new DebugConsole.ConsoleCommand(DebugConsoleCommand));
             DebugConsole.AddCommand("visualizeCascades", new DebugConsole.ConsoleCommand(VisualizeCascadesCommand));
             DebugConsole.AddCommand("celShading", new DebugConsole.ConsoleCommand(CelShadingCommand));
@@ -132,6 +132,7 @@ namespace Chimera
             DebugConsole.AddCommand("BEV", new DebugConsole.ConsoleCommand(BirdsEyeViewCommand));
             DebugConsole.AddCommand("level", new DebugConsole.ConsoleCommand(LoadLevel));
             DebugConsole.AddCommand("toggleShadows", new DebugConsole.ConsoleCommand(ToggleShadows));
+            DebugConsole.AddCommand("wireframe", new DebugConsole.ConsoleCommand(WireframeCommand));
             DebugConsole.Hide();
             // END
 
@@ -455,7 +456,7 @@ namespace Chimera
 
         }
 
-        private void WireframeConsoleCommand(List<string> parameters)
+        private void CollisionMeshCommand(List<string> parameters)
         {
             debugMode = !debugMode;
         }
@@ -568,6 +569,11 @@ namespace Chimera
         private void ToggleShadows(List<string> parameters)
         {
             GraphicsManager.CastingShadows = !GraphicsManager.CastingShadows;
+        }
+
+        private void WireframeCommand(List<string> parameters)
+        {
+            GraphicsManager.WireframeRendering = !GraphicsManager.WireframeRendering;
         }
 
         #endregion

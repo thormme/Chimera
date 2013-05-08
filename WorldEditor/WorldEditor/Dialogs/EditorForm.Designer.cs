@@ -393,6 +393,9 @@
             this.GizmoForm.Name = "GizmoForm";
             this.GizmoForm.Size = new System.Drawing.Size(234, 57);
             this.GizmoForm.TabIndex = 23;
+            this.GizmoForm.TranslateButton.Click += GizmoStateButton_Click;
+            this.GizmoForm.RotateButton.Click += GizmoStateButton_Click;
+            this.GizmoForm.ScaleButton.Click += GizmoStateButton_Click;
             // 
             // BlockLayerSelectionForm
             // 

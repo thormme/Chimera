@@ -56,7 +56,7 @@ namespace WorldEditor
 
         #region Level and Objects Representation
 
-        private Level mLevel = null;
+        private ModifiableLevel mLevel = null;
         private List<DummyObject> mDummies = new List<DummyObject>();
 
         private Space Space = new Space();
@@ -97,7 +97,11 @@ namespace WorldEditor
 
         public void SelectBlock(Vector3 coordinate)
         {
-            if (!mSelectedBlocks.Contains(coordinate))
+            if (!mLevel.Contains(coordinate))
+            {
+                mSelectedBlocks.Clear();
+            }
+            else if (!mSelectedBlocks.Contains(coordinate))
             {
                 mSelectedBlocks.Add(coordinate);
             }
@@ -146,7 +150,7 @@ namespace WorldEditor
             bool isFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
             bool isBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
 
-            Level.BlockModifier heightMapModifier = null;
+            ModifiableLevel.VertexModifier heightMapModifier = null;
             switch (tool)
             {
                 case EditorForm.Tools.SET:
@@ -166,7 +170,7 @@ namespace WorldEditor
                     break;
             }
 
-            mLevel.IterateOverBlocksInRadius(position, radius, heightMapModifier, new object[] { (bool?)isFeathered, (bool?)isBlock, (float?)intensity });
+            mLevel.IterateOverTerrainVertices(position, radius, heightMapModifier, intensity);
         }
 
         public void UndoHeightMap()
@@ -197,7 +201,7 @@ namespace WorldEditor
             bool isFeathered = brush == EditorForm.Brushes.CIRCLE_FEATHERED || brush == EditorForm.Brushes.BLOCK_FEATHERED;
             bool isBlock = brush == EditorForm.Brushes.BLOCK || brush == EditorForm.Brushes.BLOCK_FEATHERED;
 
-            Level.BlockModifier textureModifier = null;
+            ModifiableLevel.BlockModifier textureModifier = null;
             switch (tool)
             {
                 case EditorForm.Tools.PAINT:
@@ -211,7 +215,8 @@ namespace WorldEditor
                     break;
             }
 
-            mLevel.IterateOverBlocksInRadius(
+            mLevel.IterateOverBlocksInContainerInRadius(
+                mSelectedBlocks.Count == 0 ? null : mSelectedBlocks,
                 position, 
                 radius, 
                 textureModifier, 
@@ -234,7 +239,7 @@ namespace WorldEditor
             mName = fileInfo.Name;
 
             Tuple<Level, List<DummyObject>> loadedLevel = LevelFileLoader.LoadLevelFromFile(fileInfo);
-            mLevel = loadedLevel.Item1;
+            mLevel = new ModifiableLevel(loadedLevel.Item1, Space);
 
             mLevel.IterateOverEveryBlock(AddBlockToSpace, new object[] { Space });
 
@@ -250,7 +255,7 @@ namespace WorldEditor
             }
 
             mName = "default";
-            mLevel = LevelFileLoader.GenerateNewLevel(mName, "default_terrain_detail");
+            mLevel = new ModifiableLevel(LevelFileLoader.GenerateNewLevel(mName, "default_terrain_detail"), Space);
 
             FileInfo fileInfo = new FileInfo(mName);
 
@@ -370,7 +375,7 @@ namespace WorldEditor
             if (mLevel != null)
             {
                 mLevel.IterateOverBlocksInRadius(CursorPosition, CursorOuterRadius, RenderCursor, new object[] { (HeightMapRenderable.CursorShape?)DrawCursor, (float?)(CursorInnerRadius), (float?)CursorOuterRadius, (Vector3?)CursorPosition });
-                mLevel.IterateOverBlockInContainer(mSelectedBlocks, SelectBlock, null);
+                mLevel.IterateOverBlocksInContainer(mSelectedBlocks, SelectBlock, null);
                 mLevel.Render();
             }
 
@@ -418,47 +423,29 @@ namespace WorldEditor
             space.Remove(block.HeightMap.StaticCollidable);
         }
 
-        private void SetTerrain(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        private float SmoothTerrain(float initialHeight, float newHeight)
         {
-            bool isFeathered = (parameters[0] as bool?).Value;
-            bool isBlock     = (parameters[1] as bool?).Value;
-            float intensity  = (parameters[2] as float?).Value;
-
-            block.HeightMap.SetTerrain(centerCoordinate, radius, intensity, isFeathered, isBlock);
+            return initialHeight;
         }
 
-        private void SmoothTerrain(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        private float FlattenTerrain(float initialHeight, float newHeight)
         {
-            bool isFeathered = (parameters[0] as bool?).Value;
-            bool isBlock = (parameters[1] as bool?).Value;
-
-            block.HeightMap.SmoothTerrain(centerCoordinate, radius, isFeathered, isBlock);
+            return initialHeight;
         }
 
-        private void FlattenTerrain(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        private float SetTerrain(float initialHeight, float newHeight)
         {
-            bool isFeathered = (parameters[0] as bool?).Value;
-            bool isBlock = (parameters[1] as bool?).Value;
-
-            block.HeightMap.FlattenTerrain(centerCoordinate, radius, isFeathered, isBlock);
+            return newHeight;
         }
 
-        private void LowerTerrain(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        private float LowerTerrain(float initialHeight, float deltaHeight)
         {
-            bool isFeathered = (parameters[0] as bool?).Value;
-            bool isBlock = (parameters[1] as bool?).Value;
-            float intensity = (parameters[2] as float?).Value;
-
-            block.HeightMap.LowerTerrain(centerCoordinate, radius, intensity, isFeathered, isBlock);
+            return Math.Max(0.0f, initialHeight - deltaHeight);
         }
 
-        private void RaiseTerrain(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)
+        private float RaiseTerrain(float initialHeight, float deltaHeight)
         {
-            bool isFeathered = (parameters[0] as bool?).Value;
-            bool isBlock = (parameters[1] as bool?).Value;
-            float intensity = (parameters[2] as float?).Value;
-
-            block.HeightMap.RaiseTerrain(centerCoordinate, radius, intensity, isFeathered, isBlock);
+            return initialHeight + deltaHeight;
         }
 
         private void PaintTexture(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters)

@@ -96,8 +96,8 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip GizmoButtonStrip;
-        private System.Windows.Forms.ToolStripButton TranslateButton;
-        private System.Windows.Forms.ToolStripButton RotateButton;
-        private System.Windows.Forms.ToolStripButton ScaleButton;
+        public System.Windows.Forms.ToolStripButton TranslateButton;
+        public System.Windows.Forms.ToolStripButton RotateButton;
+        public System.Windows.Forms.ToolStripButton ScaleButton;
     }
 }

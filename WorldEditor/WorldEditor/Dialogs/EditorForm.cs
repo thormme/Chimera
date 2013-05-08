@@ -29,7 +29,7 @@ namespace WorldEditor.Dialogs
         public enum Tools { RAISE, LOWER, SET, SMOOTH, FLATTEN, PAINT, ERASE, BLEND, SELECT, PLACE, BLOCKSELECT, BLOCKCREATE, NONE };
 
         public enum Brushes { CIRCLE, CIRCLE_FEATHERED, BLOCK, BLOCK_FEATHERED, NONE };
-        
+
         public enum Layers { BACKGROUND, LAYER1, LAYER2, LAYER3, LAYER4, NONE };
 
         #endregion
@@ -74,6 +74,8 @@ namespace WorldEditor.Dialogs
         public Brushes HeightMapBrush = Brushes.CIRCLE;
         public Brushes TextureBrush = Brushes.CIRCLE;
 
+        public ObjectModificationGizmo.ModificationMode GizmoState = ObjectModificationGizmo.ModificationMode.TRANSLATE;
+
         public Layers PaintingLayer = Layers.BACKGROUND;
 
         public int BlockLayer = 0;
@@ -89,6 +91,7 @@ namespace WorldEditor.Dialogs
 
         private readonly ReadOnlyCollection<ToolStripButton> mHeightMapBrushes;
         private readonly ReadOnlyCollection<ToolStripButton> mTextureBrushes;
+        private readonly ReadOnlyCollection<ToolStripButton> mGizmoStates;
 
         private readonly ReadOnlyCollection<TextureLayerForm> mLayers;
 
@@ -185,6 +188,13 @@ namespace WorldEditor.Dialogs
                 TextureBrushPropertiesForm.BlockFeatherBrushButton
             }.AsReadOnly();
 
+            mGizmoStates = new List<ToolStripButton>
+            {
+                GizmoForm.TranslateButton,
+                GizmoForm.RotateButton,
+                GizmoForm.ScaleButton
+            }.AsReadOnly();
+
             SetButtonImages();
 
             this.ToolStrip.Renderer = new HardEdgeToolStripRenderer();
@@ -236,6 +246,10 @@ namespace WorldEditor.Dialogs
             this.TextureBrushPropertiesForm.CircleFeatherBrushButton.Tag = new Brushes?(Brushes.CIRCLE_FEATHERED);
             this.TextureBrushPropertiesForm.BlockBrushButton.Tag = new Brushes?(Brushes.BLOCK);
             this.TextureBrushPropertiesForm.BlockFeatherBrushButton.Tag = new Brushes?(Brushes.BLOCK_FEATHERED);
+
+            this.GizmoForm.TranslateButton.Tag = new ObjectModificationGizmo.ModificationMode?(ObjectModificationGizmo.ModificationMode.TRANSLATE);
+            this.GizmoForm.RotateButton.Tag = new ObjectModificationGizmo.ModificationMode?(ObjectModificationGizmo.ModificationMode.ROTATE);
+            this.GizmoForm.ScaleButton.Tag = new ObjectModificationGizmo.ModificationMode?(ObjectModificationGizmo.ModificationMode.SCALE);
         }
 
         private void SetButtonImages()
@@ -327,6 +341,18 @@ namespace WorldEditor.Dialogs
                 if (button.Checked == true)
                 {
                     TextureBrush = (button.Tag as Brushes?).Value;
+                }
+            }
+        }
+
+        private void GizmoStateButton_Click(object sender, EventArgs e)
+        {
+            foreach (ToolStripButton button in mGizmoStates)
+            {
+                button.Checked = button == sender;
+                if (button.Checked == true)
+                {
+                    GizmoState = (button.Tag as ObjectModificationGizmo.ModificationMode?).Value;
                 }
             }
         }

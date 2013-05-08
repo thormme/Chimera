@@ -749,6 +749,8 @@ namespace WorldEditor
 
         private void PerformActions(GameTime gameTime)
         {
+            mGizmo.Mode = EditorForm.GizmoState;
+
             if (!mIsActive)
             {
                 return;
@@ -779,7 +781,10 @@ namespace WorldEditor
                     {
                         if (!mGizmo.IsDragging)
                         {
-                            ObjectParameterPane.SelectedObjects.Clear();
+                            if (!mControls.Control.Active)
+                            {
+                                ObjectParameterPane.SelectedObjects.Clear();
+                            }
                             List<DummyObject> dummyObjects = Entity.GetObjectsInSelection(mDummyWorld);
                             ObjectParameterPane.SelectedObjects.AddRange(dummyObjects);
                         }

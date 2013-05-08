@@ -11,19 +11,33 @@ namespace GameConstructLibrary
 {
     public class Level
     {
+        #region Constants
+
         public const float BLOCK_SIZE = 20.0f;
 
-        private Dictionary<Vector3, LevelBlock> mBlocks = new Dictionary<Vector3,LevelBlock>();
+        #endregion
+
+        #region Variables
+
+        public Dictionary<Vector3, LevelBlock> Blocks
+        {
+            get { return mBlocks; }
+        }
+        protected Dictionary<Vector3, LevelBlock> mBlocks = new Dictionary<Vector3,LevelBlock>();
 
         public string Name { get { return mName; } }
-        private string mName;
+        protected string mName;
+
+        #endregion
+
+        #region Public Interface
 
         public Level(string name)
         {
             mName = name;
         }
 
-        public void AddNewBlock(Vector3 blockCoordinate)
+        public virtual void AddNewBlock(Vector3 blockCoordinate)
         {
             mBlocks.Add(blockCoordinate, new LevelBlock(mName, blockCoordinate, BLOCK_SIZE));
         }
@@ -42,6 +56,14 @@ namespace GameConstructLibrary
             return mBlocks.ContainsKey(blockCoordinate);
         }
 
+        public void AddBlocksToWorld(List<IGameObject> uncommitedGameObjects)
+        {
+            foreach (LevelBlock block in mBlocks.Values)
+            {
+                uncommitedGameObjects.Add(block.HeightMap);
+            }
+        }
+
         public void Render()
         {
             foreach (LevelBlock block in mBlocks.Values)
@@ -49,6 +71,10 @@ namespace GameConstructLibrary
                 block.Render();
             }
         }
+
+        #endregion
+
+        #region Serialization
 
         public List<Tuple<string, MemoryStream>> Serialize()
         {
@@ -70,74 +96,9 @@ namespace GameConstructLibrary
             return serializedLevel;
         }
 
-        #region Block Modifiers
-
-        public void IterateOverBlocksInRadius(Vector3 position, float radius, BlockModifier modifier, object[] parameters)
-        {
-            if (position.X > 20.0f)
-            {
-                Console.WriteLine("");
-            }
-            Vector3 offset = new Vector3(radius, 0, radius);
-            Vector3 minCoordinate = CoordinateFromPosition(position - offset);
-            Vector3 maxCoordinate = CoordinateFromPosition(position + offset);
-
-            for (int z = (int)minCoordinate.Z; z <= (int)maxCoordinate.Z; z++)
-            {
-                for (int x = (int)minCoordinate.X; x <= (int)maxCoordinate.X; x++)
-                {
-                    Vector3 coordinate = new Vector3(x, minCoordinate.Y, z);
-                    LevelBlock block;
-                    if (mBlocks.TryGetValue(coordinate, out block))
-                    {
-                        modifier(block, (position - coordinate * BLOCK_SIZE) / BLOCK_SIZE, radius / BLOCK_SIZE, parameters);
-                    }
-                }
-            }
-        }
-
-        public void IterateOverEveryBlock(BlockModifier modifier, object[] parameters)
-        {
-            foreach (LevelBlock block in mBlocks.Values)
-            {
-                modifier(block, new Vector3(), 0, parameters);
-            }
-        }
-
-        public void IterateOverBlockInContainer(IEnumerable<Vector3> container, BlockModifier modifier, object[] parameters)
-        {
-            foreach (Vector3 coordinate in container)
-            {
-                if (!mBlocks.ContainsKey(coordinate))
-                {
-                    continue;
-                }
-
-                modifier(mBlocks[coordinate], new Vector3(), 0, parameters);
-            }
-        }
-
-        public void ModifySingleBlock(Vector3 coordinate, BlockModifier modifier, object[] parameters)
-        {
-            LevelBlock block;
-            if (mBlocks.TryGetValue(coordinate, out block))
-            {
-                modifier(block, new Vector3(), 0, parameters);
-            }
-        }
-
-        public delegate void BlockModifier(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters);
-
         #endregion
 
         #region Helper Methods
-
-        private Vector3 CoordinateFromPosition(Vector3 position)
-        {
-            return new Vector3((float)Math.Floor(position.X / BLOCK_SIZE),
-                (float)Math.Floor(position.Y / BLOCK_SIZE + 0.00001f),
-                (float)Math.Floor(position.Z / BLOCK_SIZE));
-        }
 
         private string Vector3ToString(Vector3 vector)
         {

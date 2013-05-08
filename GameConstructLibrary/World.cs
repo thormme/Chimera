@@ -119,13 +119,6 @@ namespace GameConstructLibrary
             }
         }
 
-        public void AddLevelBlock(LevelBlock block, Vector3 position, float radius, object[] parameters)
-        {
-            List<IGameObject> objectAdditions = parameters[0] as List<IGameObject>;
-
-            objectAdditions.Add(block.HeightMap);
-        }
-
         /// <summary>
         /// Queue an object for removal from the World.
         /// </summary>
@@ -179,8 +172,6 @@ namespace GameConstructLibrary
 
         public void AddLevelFromFile(String mapName, Vector3 position, Quaternion orientation, Vector3 scale)
         {
-            LevelFileLoader.Clear();
-
             if (!mapName.Contains(".lvl"))
             {
                 mapName += ".lvl";
@@ -189,8 +180,6 @@ namespace GameConstructLibrary
             FileInfo fileInfo = new FileInfo(mapName);
             Tuple<Level, List<DummyObject>> newLevel = LevelFileLoader.LoadLevelFromFile(fileInfo);
             List<DummyObject> objects = newLevel.Item2;
-            //List<DummyObject> objects = LevelFileLoader.LoadObjectsFromFile(fileInfo);
-            //AssetLibrary.AddTerrain(fileInfo, LevelFileLoader.LoadHeightMapFromFile(fileInfo), LevelFileLoader.LoadTextureFromFile(fileInfo));
 
             foreach (DummyObject dummy in objects)
             {
@@ -202,7 +191,7 @@ namespace GameConstructLibrary
 
                 if (type != null)
                 {
-                    Quaternion objectOrientation = Quaternion.CreateFromYawPitchRoll(dummy.YawPitchRoll.X, dummy.YawPitchRoll.Y, dummy.YawPitchRoll.Z);
+                    Quaternion objectOrientation = Quaternion.CreateFromRotationMatrix(Matrix.CreateRotationX(dummy.YawPitchRoll.X) * Matrix.CreateRotationY(dummy.YawPitchRoll.Y) * Matrix.CreateRotationZ(dummy.YawPitchRoll.Z));
                     object[] parameters = new object[5];
                     parameters[0] = dummy.Model;
                     parameters[1] = Vector3.Multiply(dummy.Position, scale) + position;
@@ -221,7 +210,7 @@ namespace GameConstructLibrary
             }
 
             Level level = newLevel.Item1;
-            level.IterateOverEveryBlock(AddLevelBlock, new object[] { mUncommittedGameObjectAdditions });
+            level.AddBlocksToWorld(mUncommittedGameObjectAdditions);
 
             SkyBox skydome = new SkyBox("default");
             Add(skydome);

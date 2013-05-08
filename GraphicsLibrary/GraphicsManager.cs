@@ -121,6 +121,7 @@ namespace GraphicsLibrary
         static private bool mDebugVisualization = false;
         static private bool mDrawBoundingBoxes = false;
         static private bool mRenderPickingBuffer = false;
+        static private bool mWireframeRendering = false;
 
         static private float mEdgeWidth = 1.0f;
         static private float mEdgeIntensity = 1.0f;
@@ -147,6 +148,12 @@ namespace GraphicsLibrary
         {
             get { return mCastingShadows; }
             set { mCastingShadows = value; }
+        }
+
+        static public bool WireframeRendering
+        {
+            get { return mWireframeRendering; }
+            set { mWireframeRendering = value; }
         }
 
         static public bool VisualizeCascades
@@ -595,7 +602,7 @@ namespace GraphicsLibrary
             mDevice.Clear(Color.CornflowerBlue);
 
             RasterizerState cull = new RasterizerState();
-            cull.FillMode = FillMode.Solid;
+            cull.FillMode = WireframeRendering ? FillMode.WireFrame : FillMode.Solid;
             cull.CullMode = CullMode.CullCounterClockwiseFace;
 
             mDevice.RasterizerState = cull;
@@ -644,7 +651,7 @@ namespace GraphicsLibrary
 
             mDevice.Clear(ClearOptions.DepthBuffer, new Vector4(0), 65535, 0);
             mDevice.DepthStencilState = DepthStencilState.Default;
-            mDevice.BlendState = BlendState.AlphaBlend;
+            //mDevice.BlendState = BlendState.AlphaBlend;
 
             RasterizerState newState = new RasterizerState();
             newState.CullMode = CullMode.None;

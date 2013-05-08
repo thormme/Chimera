@@ -24,7 +24,7 @@ namespace WorldEditor
         private Matrix mPitchArmBaseRotation = Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateRotationZ(-MathHelper.PiOver2);
         private Matrix mRollArmBaseRotation = Matrix.CreateRotationY(-MathHelper.PiOver2) * Matrix.CreateRotationX(MathHelper.PiOver2);
 
-        public enum ModificationMode { Position, Scale, Rotate };
+        public enum ModificationMode { TRANSLATE, SCALE, ROTATE };
 
         private enum ModificationDirection { X, Y, Z, Yaw, Pitch, Roll };
 
@@ -44,10 +44,10 @@ namespace WorldEditor
         private Controls mControls = null;
         private Vector3 mStartDragPoint = Vector3.Zero;
         private Vector3 mPreviousDragPoint = Vector3.Zero;
-        private ModificationMode mDragMode = ModificationMode.Position;
+        private ModificationMode mDragMode = ModificationMode.TRANSLATE;
         private ModificationDirection mDragDirection = ModificationDirection.X;
 
-        public ModificationMode Mode = ModificationMode.Position;
+        public ModificationMode Mode = ModificationMode.TRANSLATE;
         public bool IsDragging
         {
             get;
@@ -88,7 +88,7 @@ namespace WorldEditor
                 }
                 else if (mousePixel == mYawPickingID || mousePixel == mPitchPickingID || mousePixel == mRollPickingID)
                 {
-                    mDragMode = ModificationMode.Rotate;
+                    mDragMode = ModificationMode.ROTATE;
                     IsDragging = true;
                 }
                 else
@@ -129,20 +129,20 @@ namespace WorldEditor
                 Vector3 newDragPoint = GetMouseWorldPosition(viewport);
                 switch (mDragMode)
                 {
-                    case ModificationMode.Position:
+                    case ModificationMode.TRANSLATE:
                         foreach (DummyObject dummyObject in selectedObjects)
                         {
                             dummyObject.Position += (newDragPoint - mPreviousDragPoint) * GetDragDirection();
                         }
                         break;
-                    case ModificationMode.Scale:
+                    case ModificationMode.SCALE:
                         float scaleMultiplier = (newDragPoint - Position).Length() / (mPreviousDragPoint - Position).Length();
                         foreach (DummyObject dummyObject in selectedObjects)
                         {
                             dummyObject.Scale = dummyObject.Scale * scaleMultiplier * GetDragDirection() + (dummyObject.Scale * (Vector3.One - GetDragDirection()));
                         }
                         break;
-                    case ModificationMode.Rotate:
+                    case ModificationMode.ROTATE:
                         Vector3 axis = GetRotationPlaneNormal();
                         Vector3 newDirection = Vector3.Normalize(newDragPoint - Position);
                         Vector3 previousDirection = Vector3.Normalize(mPreviousDragPoint - Position);
@@ -193,55 +193,63 @@ namespace WorldEditor
                 float scaleMagnitude = (mCamera.Position - Position).Length() / 2.0f;
                 Vector3 scale = Vector3.One * scaleMagnitude;
 
-                if (Mode == ModificationMode.Position)
+                switch (Mode)
                 {
-                    mXPositionArm.Render(Position + Vector3.UnitX * scaleMagnitude / 5, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red,   1.0f, false);
-                    mYPositionArm.Render(Position + Vector3.UnitY * scaleMagnitude / 5, Matrix.Identity, scale, Color.Green, 1.0f, false);
-                    mZPositionArm.Render(Position + Vector3.UnitZ * scaleMagnitude / 5, Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
+                    case ModificationMode.TRANSLATE:
+                    {
+                        mXPositionArm.Render(Position + Vector3.UnitX * scaleMagnitude / 5, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red, 1.0f, false);
+                        mYPositionArm.Render(Position + Vector3.UnitY * scaleMagnitude / 5, Matrix.Identity, scale, Color.Green, 1.0f, false);
+                        mZPositionArm.Render(Position + Vector3.UnitZ * scaleMagnitude / 5, Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
+                        break;
+                    }
+                    case ModificationMode.SCALE:
+                    {
+                        mXScaleArm.Render(Position + Vector3.UnitX * scaleMagnitude / 5, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red, 1.0f, false);
+                        mYScaleArm.Render(Position + Vector3.UnitY * scaleMagnitude / 5, Matrix.Identity, scale, Color.Green, 1.0f, false);
+                        mZScaleArm.Render(Position + Vector3.UnitZ * scaleMagnitude / 5, Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
+                        break;
+                    }
+                    case ModificationMode.ROTATE:
+                    {
+                        Vector3 gizmoToCamera = mCamera.Position - Position;
+                        gizmoToCamera = Vector3.Normalize(new Vector3(
+                            gizmoToCamera.X /= Math.Abs(gizmoToCamera.X),
+                            gizmoToCamera.Y /= Math.Abs(gizmoToCamera.Y),
+                            gizmoToCamera.Z /= Math.Abs(gizmoToCamera.Z)));
+
+                        Vector3 pitchGizmoToCamera = Vector3.Normalize(new Vector3(0.0f, gizmoToCamera.Y, gizmoToCamera.Z));
+                        Vector3 pitchDefault = Vector3.Normalize(new Vector3(0.0f, 1.0f, 1.0f));
+
+                        Vector3 yawGizmoToCamera = Vector3.Normalize(new Vector3(gizmoToCamera.X, 0.0f, gizmoToCamera.Z));
+                        Vector3 yawDefault = Vector3.Normalize(new Vector3(1.0f, 0.0f, 1.0f));
+
+                        Vector3 rollGizmoToCamera = Vector3.Normalize(new Vector3(gizmoToCamera.X, gizmoToCamera.Y, 0.0f));
+                        Vector3 rollDefault = Vector3.Normalize(new Vector3(1.0f, 1.0f, 0.0f));
+
+                        float pitchAngle = (float)Math.Acos(Vector3.Dot(pitchGizmoToCamera, pitchDefault));
+                        if (Vector3.Cross(pitchGizmoToCamera, pitchDefault).X >= 0.0f)
+                        {
+                            pitchAngle *= -1.0f;
+                        }
+
+                        float yawAngle = (float)Math.Acos(Vector3.Dot(yawGizmoToCamera, yawDefault));
+                        if (Vector3.Cross(yawGizmoToCamera, yawDefault).Y >= 0.0f)
+                        {
+                            yawAngle *= -1.0f;
+                        }
+
+                        float rollAngle = (float)Math.Acos(Vector3.Dot(rollGizmoToCamera, rollDefault));
+                        if (Vector3.Cross(rollGizmoToCamera, rollDefault).Z >= 0.0f)
+                        {
+                            rollAngle *= -1.0f;
+                        }
+
+                        mPitchArm.Render(Position, mPitchArmBaseRotation * Matrix.CreateRotationX(pitchAngle), scale, Color.Red, 1.0f, false);
+                        mYawArm.Render(Position, mYawArmBaseRotation * Matrix.CreateRotationY(yawAngle), scale, Color.Green, 1.0f, false);
+                        mRollArm.Render(Position, mRollArmBaseRotation * Matrix.CreateRotationZ(rollAngle), scale, Color.Blue, 1.0f, false);
+                        break;
+                    }
                 }
-                else if (Mode == ModificationMode.Scale)
-                {
-                    mXScaleArm.Render(Position + Vector3.UnitX * scaleMagnitude / 5, Matrix.CreateRotationZ(-MathHelper.PiOver2), scale, Color.Red, 1.0f, false);
-                    mYScaleArm.Render(Position + Vector3.UnitY * scaleMagnitude / 5, Matrix.Identity, scale, Color.Green, 1.0f, false);
-                    mZScaleArm.Render(Position + Vector3.UnitZ * scaleMagnitude / 5, Matrix.CreateRotationX(MathHelper.PiOver2), scale, Color.Blue, 1.0f, false);
-                }
-
-                Vector3 gizmoToCamera = mCamera.Position - Position;
-                gizmoToCamera = Vector3.Normalize(new Vector3(
-                    gizmoToCamera.X /= Math.Abs(gizmoToCamera.X),
-                    gizmoToCamera.Y /= Math.Abs(gizmoToCamera.Y),
-                    gizmoToCamera.Z /= Math.Abs(gizmoToCamera.Z)));
-
-                Vector3 pitchGizmoToCamera = Vector3.Normalize(new Vector3(0.0f, gizmoToCamera.Y, gizmoToCamera.Z));
-                Vector3 pitchDefault       = Vector3.Normalize(new Vector3(0.0f, 1.0f, 1.0f));
-
-                Vector3 yawGizmoToCamera   = Vector3.Normalize(new Vector3(gizmoToCamera.X, 0.0f, gizmoToCamera.Z));
-                Vector3 yawDefault         = Vector3.Normalize(new Vector3(1.0f, 0.0f, 1.0f));
-
-                Vector3 rollGizmoToCamera = Vector3.Normalize(new Vector3(gizmoToCamera.X, gizmoToCamera.Y, 0.0f));
-                Vector3 rollDefault       = Vector3.Normalize(new Vector3(1.0f, 1.0f, 0.0f));
-
-                float pitchAngle = (float)Math.Acos(Vector3.Dot(pitchGizmoToCamera, pitchDefault));
-                if (Vector3.Cross(pitchGizmoToCamera, pitchDefault).X >= 0.0f)
-                {
-                    pitchAngle *= -1.0f;
-                }
-
-                float yawAngle   = (float)Math.Acos(Vector3.Dot(yawGizmoToCamera,   yawDefault));
-                if (Vector3.Cross(yawGizmoToCamera, yawDefault).Y >= 0.0f)
-                {
-                    yawAngle *= -1.0f;
-                }
-
-                float rollAngle  = (float)Math.Acos(Vector3.Dot(rollGizmoToCamera,  rollDefault));
-                if (Vector3.Cross(rollGizmoToCamera, rollDefault).Z >= 0.0f)
-                {
-                    rollAngle *= -1.0f;
-                }
-
-                mPitchArm.Render(Position, mPitchArmBaseRotation * Matrix.CreateRotationX(pitchAngle), scale, Color.Red,   1.0f, false);
-                mYawArm.Render(Position,   mYawArmBaseRotation   * Matrix.CreateRotationY(yawAngle), scale, Color.Green, 1.0f, false);
-                mRollArm.Render(Position,  mRollArmBaseRotation  * Matrix.CreateRotationZ(rollAngle), scale, Color.Blue,  1.0f, false);
             }
         }
 
