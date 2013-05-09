@@ -92,7 +92,7 @@ namespace GraphicsLibrary
         {
             if (mAssetLibrary[HeightMapKey].ContainsKey(heightMapName))
             {
-                throw new Exception("Duplicate height map key: " + heightMapName);
+                return;
             }
             mAssetLibrary[HeightMapKey].Add(heightMapName, new HeightMapRenderer(heightMap, mVertexBufferShader));
         }
@@ -101,7 +101,7 @@ namespace GraphicsLibrary
         {
             if (mAssetLibrary[GridKey].ContainsKey(gridName))
             {
-                throw new Exception("Duplicate grid key: " + gridName);
+                return;
             }
             mAssetLibrary[GridKey].Add(gridName, new GridRenderer(grid, mVertexBufferShader));
         }

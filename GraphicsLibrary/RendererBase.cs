@@ -167,8 +167,12 @@ namespace GraphicsLibrary
 
         protected void RenderShadowMap(Matrix lightView, Matrix lightProjection, RendererParameters instance)
         {
+            bool oldTryCull = instance.TryCull;
             instance.TryCull = false;
+
             DrawGeometry(Matrix.Identity, Matrix.Identity, new object[] { (Matrix?)lightView, (Matrix?)lightProjection }, mShadowMapConfigurer, instance);
+
+            instance.TryCull = oldTryCull;
         }
 
         protected void RenderWithoutShadows(Matrix view, Matrix projection, Light light, RendererParameters instance)

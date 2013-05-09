@@ -39,7 +39,13 @@ namespace WorldEditor
         {
             base.AddNewBlock(blockCoordinate);
 
-            AttachMesh(blockCoordinate, new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST });
+            List<Direction> neighbors = new List<Direction>();
+            neighbors.Add(Direction.NORTH);
+            neighbors.Add(Direction.EAST);
+            neighbors.Add(Direction.SOUTH);
+            neighbors.Add(Direction.WEST);
+
+            UpdateMesh(blockCoordinate, neighbors);
             mBlocks[blockCoordinate].HeightMap.UpdateStaticCollidable();
         }
 
@@ -51,8 +57,8 @@ namespace WorldEditor
         
         // NORTH, EAST, SOUTH, WEST
         private Vector3[] mNeighborOffsets    = new Vector3[] { -Vector3.UnitZ, Vector3.UnitX, Vector3.UnitZ, -Vector3.UnitX };
-        private Vector2[] mSinkStartIndices   = new Vector2[] {  Vector2.Zero , Vector2.UnitX, Vector2.UnitY,  Vector2.Zero  };
-        private Vector2[] mSourceStartIndices = new Vector2[] {  Vector2.UnitY, Vector2.Zero , Vector2.Zero ,  Vector2.UnitX };
+        private Vector2[] msourceStartIndices   = new Vector2[] {  Vector2.Zero , Vector2.UnitX, Vector2.UnitY,  Vector2.Zero  };
+        private Vector2[] msinkStartIndices = new Vector2[] {  Vector2.UnitY, Vector2.Zero , Vector2.Zero ,  Vector2.UnitX };
         private Vector2[] mIndexIncrements    = new Vector2[] {  Vector2.UnitX, Vector2.UnitY, Vector2.UnitX,  Vector2.UnitY };
 
         #endregion
@@ -170,9 +176,9 @@ namespace WorldEditor
             return null;
         }
 
-        private void AttachMesh(Vector3 coordinate, Direction[] attachmentSides)
+        private void UpdateMesh(Vector3 coordinate, List<Direction> attachmentSides)
         {
-            HeightMapMesh sink = AssetLibrary.LookupHeightMap(mName + coordinate.ToString()).Mesh;
+            HeightMapMesh source = AssetLibrary.LookupHeightMap(mName + coordinate.ToString()).Mesh;
 
             foreach (Direction side in attachmentSides)
             {
@@ -182,21 +188,50 @@ namespace WorldEditor
                     continue;
                 }
 
-                HeightMapMesh source = AssetLibrary.LookupHeightMap(mName + neighborCoordinate.ToString()).Mesh;
-                Vector2 sinkStartIndex = mSinkStartIndices[(int)side] * (HeightMapMesh.NUM_SIDE_VERTICES - 1);
-                Vector2 sourceStartIndex = mSourceStartIndices[(int)side] * (HeightMapMesh.NUM_SIDE_VERTICES - 1);
+                HeightMapMesh sink = AssetLibrary.LookupHeightMap(mName + neighborCoordinate.ToString()).Mesh;
+
+                Vector2 sourceStartIndex = msourceStartIndices[(int)side] * (HeightMapMesh.NUM_SIDE_VERTICES - 1);
+                Vector2 sinkStartIndex = msinkStartIndices[(int)side] * (HeightMapMesh.NUM_SIDE_VERTICES - 1);
                 Vector2 indexIncrement = mIndexIncrements[(int)side];
 
                 for (int count = 0; count < HeightMapMesh.NUM_SIDE_VERTICES; count++)
                 {
-                    Vector2 sinkIndex = sinkStartIndex + count * indexIncrement;
                     Vector2 sourceIndex = sourceStartIndex + count * indexIncrement;
-
-                    Vector3 normal = Vector3.Normalize(sink.GetVertexNormal(sinkIndex) + source.GetVertexNormal(sourceIndex));
-
+                    Vector2 sinkIndex = sinkStartIndex + count * indexIncrement;
                     sink.SetVertexHeight(sinkIndex, source.GetVertexHeight(sourceIndex));
-                    sink.SetVertexNormal(sinkIndex, normal);
+                }
+            }
+
+            source.UpdateNormalVectors();
+        }
+
+        private void AttachNeighborNormals(Vector3 coordinate, List<Direction> attachmentSides)
+        {
+            HeightMapMesh source = AssetLibrary.LookupHeightMap(mName + coordinate.ToString()).Mesh;
+
+            foreach (Direction side in attachmentSides)
+            {
+                Vector3 neighborCoordinate = coordinate + mNeighborOffsets[(int)side];
+                if (!mBlocks.ContainsKey(neighborCoordinate))
+                {
+                    continue;
+                }
+
+                HeightMapMesh sink = AssetLibrary.LookupHeightMap(mName + neighborCoordinate.ToString()).Mesh;
+
+                Vector2 sourceStartIndex = msourceStartIndices[(int)side] * (HeightMapMesh.NUM_SIDE_VERTICES - 1);
+                Vector2 sinkStartIndex = msinkStartIndices[(int)side] * (HeightMapMesh.NUM_SIDE_VERTICES - 1);
+                Vector2 indexIncrement = mIndexIncrements[(int)side];
+
+                for (int count = 0; count < HeightMapMesh.NUM_SIDE_VERTICES; count++)
+                {
+                    Vector2 sourceIndex = sourceStartIndex + count * indexIncrement;
+                    Vector2 sinkIndex = sinkStartIndex + count * indexIncrement;
+
+                    Vector3 normal = Vector3.Normalize(source.GetVertexNormal(sourceIndex) + sink.GetVertexNormal(sinkIndex));
+
                     source.SetVertexNormal(sourceIndex, normal);
+                    sink.SetVertexNormal(sinkIndex, normal);
                 }
             }
         }
@@ -294,9 +329,10 @@ namespace WorldEditor
             }
 
             Vector3 radiusOffset = new Vector3(radius, 0, radius);
-            Vector3 minCoordinate = CoordinateFromPosition(center - radiusOffset);
-            Vector3 maxCoordinate = CoordinateFromPosition(center + radiusOffset);
+            Vector3 minCoordinate = CoordinateFromPosition(center - radiusOffset) + new Vector3(-1, 0, -1);
+            Vector3 maxCoordinate = CoordinateFromPosition(center + radiusOffset) + new Vector3(1, 0, 1);
 
+            List<Tuple<Vector3, List<Direction>>> blocksToConnectNormals = new List<Tuple<Vector3,List<Direction>>>();
             for (int blockZ = (int)minCoordinate.Z; blockZ <= (int)maxCoordinate.Z; ++blockZ)
             {
                 for (int blockX = (int)minCoordinate.X; blockX <= (int)maxCoordinate.X; ++blockX)
@@ -307,14 +343,32 @@ namespace WorldEditor
                         continue;
                     }
 
-                    AttachMesh(coordinate, new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST });
+                    List<Direction> neighbors = new List<Direction>();
+                    if (blockZ == (int)minCoordinate.Z)
+                    {
+                        neighbors.Add(Direction.NORTH);
+                    }
+                    neighbors.Add(Direction.SOUTH);
+
+                    if (blockX == (int)minCoordinate.X)
+                    {
+                        neighbors.Add(Direction.WEST);
+                    }
+                    neighbors.Add(Direction.EAST);
+
+                    UpdateMesh(coordinate, neighbors);
+
+                    blocksToConnectNormals.Add(new Tuple<Vector3,List<Direction>>(coordinate, neighbors));
 
                     mSpace.Remove(mBlocks[coordinate].HeightMap.StaticCollidable);
-
                     mBlocks[coordinate].HeightMap.UpdateStaticCollidable();
-
                     mSpace.Add(mBlocks[coordinate].HeightMap.StaticCollidable);
                 }
+            }
+
+            foreach (Tuple<Vector3, List<Direction>> neighbor in blocksToConnectNormals)
+            {
+                AttachNeighborNormals(neighbor.Item1, neighbor.Item2);
             }
         }
 

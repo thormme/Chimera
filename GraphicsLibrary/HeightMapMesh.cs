@@ -56,8 +56,6 @@ namespace GraphicsLibrary
             {
                 if (mDirtyVertices)
                 {
-                    UpdateVertexHeights();
-                    UpdateNormalVectors();
                     UpdateVertexBuffer();
                     mDirtyVertices = false;
                 }
@@ -163,6 +161,7 @@ namespace GraphicsLibrary
         public void SetVertexHeight(Vector2 index, float newHeight)
         {
             mHeights[(int)index.X, (int)index.Y] = newHeight;
+            mVertices[(int)index.X + (int)index.Y * NUM_SIDE_VERTICES].Position.Y = newHeight;
             mDirtyVertices = true;
         }
 
@@ -179,6 +178,40 @@ namespace GraphicsLibrary
         public Vector3 GetVertexNormal(Vector2 index)
         {
             return mVertices[(int)index.X + (int)index.Y * NUM_SIDE_VERTICES].Normal;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="minZ"></param>
+        /// <param name="maxZ"></param>
+        /// <param name="minX"></param>
+        /// <param name="maxX"></param>
+        public void UpdateNormalVectors()
+        {
+            for (int i = 0; i < mVertices.Length; i++)
+            {
+                mVertices[i].Normal = Vector3.Zero;
+            }
+
+            for (int index = 0; index < mIndices.Length; index += 3)
+            {
+                int[] polyIndices = new int[3] { mIndices[index], mIndices[index + 1], mIndices[index + 2] };
+                Vector3[] positions = new Vector3[3] { mVertices[polyIndices[0]].Position, mVertices[polyIndices[1]].Position, mVertices[polyIndices[2]].Position };
+                Vector3[] edges = new Vector3[2] { positions[1] - positions[0], positions[2] - positions[0] };
+
+                Vector3 normal = Vector3.Normalize(Vector3.Cross(edges[1], edges[0]));
+
+                foreach (int polyIndex in polyIndices)
+                {
+                    mVertices[polyIndex].Normal += normal;
+                }
+            }
+
+            for (int i = 0; i < mVertices.Length; i++)
+            {
+                Vector3.Normalize(mVertices[i].Normal);
+            }
         }
 
         #endregion
@@ -238,51 +271,6 @@ namespace GraphicsLibrary
             }
 
             mVertexBuffer.SetData(mVertices);
-        }
-
-        private void UpdateVertexHeights()
-        {
-            for (int z = 0; z < NUM_SIDE_VERTICES; z++)
-            {
-                for (int x = 0; x < NUM_SIDE_VERTICES; x++)
-                {
-                    mVertices[x + z * NUM_SIDE_VERTICES].Position.Y = mHeights[x, z];
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="minZ"></param>
-        /// <param name="maxZ"></param>
-        /// <param name="minX"></param>
-        /// <param name="maxX"></param>
-        private void UpdateNormalVectors()
-        {
-            for (int i = 0; i < mVertices.Length; i++ )
-            {
-                mVertices[i].Normal = Vector3.Zero;
-            }
-
-            for (int index = 0; index < mIndices.Length; index += 3)
-            {
-                int[] polyIndices = new int[3] { mIndices[index], mIndices[index + 1], mIndices[index + 2] };
-                Vector3[] positions = new Vector3[3] { mVertices[polyIndices[0]].Position, mVertices[polyIndices[1]].Position, mVertices[polyIndices[2]].Position };
-                Vector3[] edges = new Vector3[2] { positions[1] - positions[0], positions[2] - positions[0] }; 
-                
-                Vector3 normal = Vector3.Normalize(Vector3.Cross(edges[1], edges[0]));
-
-                foreach (int polyIndex in polyIndices)
-                {
-                    mVertices[polyIndex].Normal += normal;
-                }
-            }
-
-            for (int i = 0; i < mVertices.Length; i++)
-            {
-                Vector3.Normalize(mVertices[i].Normal);
-            }
         }
 
         private void InitializeBottomFaceVertices()

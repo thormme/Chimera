@@ -131,6 +131,11 @@ namespace GraphicsLibrary
         {
             HeightMapParameters terrainInstance = instance as HeightMapParameters;
 
+            if (terrainInstance.TryCull && GraphicsManager.ViewBoundingFrustum.Contains(terrainInstance.BoundingBox) == ContainmentType.Disjoint)
+            {
+                return;
+            }
+
             for (int i = 0; i < 7; ++i)
             {
                 GraphicsManager.Device.SamplerStates[i] = SamplerState.PointWrap;

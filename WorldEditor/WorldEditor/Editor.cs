@@ -49,6 +49,7 @@ namespace WorldEditor.Dialogs
             GraphicsManager.CastingShadows = true;
             GraphicsManager.EnableScreenPicking = true;
             GraphicsManager.WireframeRendering = GraphicsManager.Wireframe.Both;
+            GraphicsManager.DebugVisualization = false;
 
             mCamera = new FPSCamera(GraphicsDevice.Viewport);
             mCamera.Position = new Vector3(28.0f, 25.0f, 29.0f);

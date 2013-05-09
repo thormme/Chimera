@@ -57,7 +57,7 @@ namespace GraphicsLibrary
         static private ICamera mCamera;
         static private ICamera mBirdsEyeViewCamera = null;
         
-        static private BoundingFrustum mBoundingFrustum;
+        static private BoundingFrustum mBoundingFrustum = new BoundingFrustum(Matrix.Identity);
         static private Vector3 mMinSceneExtent = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
         static private Vector3 mMaxSceneExtent = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
@@ -216,7 +216,7 @@ namespace GraphicsLibrary
             mView = mCamera.GetViewTransform();
             mProjection = mCamera.GetProjectionTransform();
 
-            mBoundingFrustum = new BoundingFrustum(camera.GetViewTransform() * camera.GetProjectionTransform());
+            mBoundingFrustum.Matrix = camera.GetViewTransform() * camera.GetProjectionTransform();
         }
 
         /// <summary>
