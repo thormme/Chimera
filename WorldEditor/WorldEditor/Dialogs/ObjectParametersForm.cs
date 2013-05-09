@@ -219,6 +219,23 @@ namespace WorldEditor.Dialogs
                     parameterTextBoxes[i].TextChanged += AdditionalParameterChanged;
                 }
             }
+            else
+            {
+                PositionX.Value = 0;
+                PositionY.Value = 0;
+                PositionZ.Value = 0;
+
+                Yaw.Value = 0;
+                Pitch.Value = 0;
+                Roll.Value = 0;
+
+                ScaleX.Value = 1;
+                ScaleY.Value = 1;
+                ScaleZ.Value = 1;
+
+                FloatingHeight.Value = 0;
+                Floating.CheckState = CheckState.Checked;
+            }
 
             // Resize form to fit contents.
             int height = 0;

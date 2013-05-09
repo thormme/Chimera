@@ -28,6 +28,13 @@ namespace WorldEditor
         public static Image SmoothTerrainIcon = Image.FromFile(@"Artwork/smooth_terrain_icon.png");
         public static Image FlattenTerrainIcon = Image.FromFile(@"Artwork/flatten_terrain_icon.png");
 
+        public static Image BlockSelectionIcon = Image.FromFile(@"Artwork/block_selection_icon.png");
+        public static Image BlockCreationIcon = Image.FromFile(@"Artwork/block_creation_icon.png");
+
+        public static Image GizmoScaleIcon = Image.FromFile(@"Artwork/gizmo_scale_icon.png");
+        public static Image GizmoRotateIcon = Image.FromFile(@"Artwork/gizmo_rotate_icon.png");
+        public static Image GizmoTranslateIcon = Image.FromFile(@"Artwork/gizmo_translate_icon.png");
+
         public static Image VisibleLayerIcon = Image.FromFile(@"Artwork/visible_layer_icon.png");
 
         public static Image InvalidIcon = Image.FromFile(@"Artwork/invalidTexture.png");

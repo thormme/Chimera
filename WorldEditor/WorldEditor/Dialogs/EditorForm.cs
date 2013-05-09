@@ -127,6 +127,10 @@ namespace WorldEditor.Dialogs
             this.TextureLayerForm.Layer3.LayerVisibilityButton.Click += Layer_Visibility_Click;
             this.TextureLayerForm.Layer4.LayerVisibilityButton.Click += Layer_Visibility_Click;
 
+            this.GizmoForm.TranslateButton.Click += GizmoStateButton_Click;
+            this.GizmoForm.RotateButton.Click += GizmoStateButton_Click;
+            this.GizmoForm.ScaleButton.Click += GizmoStateButton_Click;
+
             mTerrainTools = new List<ToolStripButton>()
             {
                 raiseTerrainButton,
@@ -214,6 +218,7 @@ namespace WorldEditor.Dialogs
         private void InitializeButtonState()
         {
             this.SelectObjectButton.Checked = true;
+            this.GizmoForm.TranslateButton.Checked = true;
 
             this.raiseTerrainButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.RAISE);
             this.lowerTerrainButton.Tag = new Tuple<EditorMode, Tools>(EditorMode.HEIGHTMAP, Tools.LOWER);
@@ -267,6 +272,9 @@ namespace WorldEditor.Dialogs
             this.SelectObjectButton.Image  = UILibrary.ObjectSelectionIcon;
             this.CreateObjectButton.Image  = UILibrary.NewObjectIcon;
 
+            this.SelectBlockButton.Image = UILibrary.BlockSelectionIcon;
+            this.CreateBlockButton.Image = UILibrary.BlockCreationIcon;
+
             this.HeightMapBrushPropertiesForm.CircleBrushButton.Image        = UILibrary.CircleBrushIcon;
             this.HeightMapBrushPropertiesForm.CircleFeatherBrushButton.Image = UILibrary.CircleFeatheredBrushIcon;
             this.HeightMapBrushPropertiesForm.BlockBrushButton.Image         = UILibrary.BlockBrushIcon;
@@ -299,6 +307,10 @@ namespace WorldEditor.Dialogs
             this.TextureLayerForm.Layer4.LayerVisibilityButton.Tag             = this.TextureLayerForm.Layer4.LayerVisibilityButton.BackgroundImage;
 
             this.TextureLayerForm.BackgroundLayer.MainPanel.BackColor = SystemColors.Highlight;
+
+            this.GizmoForm.TranslateButton.Image = UILibrary.GizmoTranslateIcon;
+            this.GizmoForm.RotateButton.Image = UILibrary.GizmoRotateIcon;
+            this.GizmoForm.ScaleButton.Image = UILibrary.GizmoScaleIcon;
         }
 
         private void ToolButton_Click(object sender, EventArgs e)

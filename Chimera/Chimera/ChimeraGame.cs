@@ -573,7 +573,18 @@ namespace Chimera
 
         private void WireframeCommand(List<string> parameters)
         {
-            GraphicsManager.WireframeRendering = !GraphicsManager.WireframeRendering;
+            if (parameters[0].ToLower().Contains("both"))
+            {
+                GraphicsManager.WireframeRendering = GraphicsManager.Wireframe.Both;
+            }
+            else if (parameters[0].ToLower().Contains("wireframe"))
+            {
+                GraphicsManager.WireframeRendering = GraphicsManager.Wireframe.Wireframe;
+            }
+            else if (parameters[0].ToLower().Contains("solid"))
+            {
+                GraphicsManager.WireframeRendering = GraphicsManager.Wireframe.Solid;
+            }
         }
 
         #endregion

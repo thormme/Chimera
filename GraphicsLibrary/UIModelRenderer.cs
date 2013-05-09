@@ -17,6 +17,7 @@ namespace GraphicsLibrary
             mShadowMapConfigurer = null;
             mWithShadowsConfigurer = null;
             mWithoutShadowsConfigurer = null;
+            mOverlayConfigurer = null;
 
             mUIConfigurer = UIConfigurer;
         }

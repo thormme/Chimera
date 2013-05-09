@@ -73,6 +73,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.editorPanel = new WorldEditor.Dialogs.Editor();
+            this.ViewWireframeMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.ContextToolsPanel.SuspendLayout();
@@ -336,7 +337,8 @@
             this.vIEWToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ViewSkyBoxMenu,
             this.ViewWaterMenu,
-            this.ViewShadowsMenu});
+            this.ViewShadowsMenu,
+            this.ViewWireframeMenu});
             this.vIEWToolStripMenuItem.Name = "vIEWToolStripMenuItem";
             this.vIEWToolStripMenuItem.Size = new System.Drawing.Size(50, 21);
             this.vIEWToolStripMenuItem.Text = "VIEW";
@@ -347,7 +349,7 @@
             this.ViewSkyBoxMenu.CheckOnClick = true;
             this.ViewSkyBoxMenu.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ViewSkyBoxMenu.Name = "ViewSkyBoxMenu";
-            this.ViewSkyBoxMenu.Size = new System.Drawing.Size(146, 22);
+            this.ViewSkyBoxMenu.Size = new System.Drawing.Size(152, 22);
             this.ViewSkyBoxMenu.Text = "Sky Box";
             // 
             // ViewWaterMenu
@@ -356,7 +358,7 @@
             this.ViewWaterMenu.CheckOnClick = true;
             this.ViewWaterMenu.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ViewWaterMenu.Name = "ViewWaterMenu";
-            this.ViewWaterMenu.Size = new System.Drawing.Size(146, 22);
+            this.ViewWaterMenu.Size = new System.Drawing.Size(152, 22);
             this.ViewWaterMenu.Text = "Water Plane";
             // 
             // ViewShadowsMenu
@@ -365,7 +367,7 @@
             this.ViewShadowsMenu.CheckOnClick = true;
             this.ViewShadowsMenu.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ViewShadowsMenu.Name = "ViewShadowsMenu";
-            this.ViewShadowsMenu.Size = new System.Drawing.Size(146, 22);
+            this.ViewShadowsMenu.Size = new System.Drawing.Size(152, 22);
             this.ViewShadowsMenu.Text = "Shadows";
             // 
             // ContextToolsPanel
@@ -393,9 +395,6 @@
             this.GizmoForm.Name = "GizmoForm";
             this.GizmoForm.Size = new System.Drawing.Size(234, 57);
             this.GizmoForm.TabIndex = 23;
-            this.GizmoForm.TranslateButton.Click += GizmoStateButton_Click;
-            this.GizmoForm.RotateButton.Click += GizmoStateButton_Click;
-            this.GizmoForm.ScaleButton.Click += GizmoStateButton_Click;
             // 
             // BlockLayerSelectionForm
             // 
@@ -493,6 +492,15 @@
             this.editorPanel.Size = new System.Drawing.Size(667, 483);
             this.editorPanel.TabIndex = 0;
             // 
+            // ViewWireframeMenu
+            // 
+            this.ViewWireframeMenu.Checked = true;
+            this.ViewWireframeMenu.CheckOnClick = true;
+            this.ViewWireframeMenu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ViewWireframeMenu.Name = "ViewWireframeMenu";
+            this.ViewWireframeMenu.Size = new System.Drawing.Size(152, 22);
+            this.ViewWireframeMenu.Text = "Wireframe";
+            // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -564,5 +572,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         public BlockLayerSelectionForm BlockLayerSelectionForm;
         public GizmoForm GizmoForm;
+        public System.Windows.Forms.ToolStripMenuItem ViewWireframeMenu;
     }
 }

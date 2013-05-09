@@ -47,9 +47,9 @@
             this.TranslateButton,
             this.RotateButton,
             this.ScaleButton});
-            this.GizmoButtonStrip.Location = new System.Drawing.Point(54, 4);
+            this.GizmoButtonStrip.Location = new System.Drawing.Point(31, 4);
             this.GizmoButtonStrip.Name = "GizmoButtonStrip";
-            this.GizmoButtonStrip.Size = new System.Drawing.Size(159, 52);
+            this.GizmoButtonStrip.Size = new System.Drawing.Size(202, 52);
             this.GizmoButtonStrip.TabIndex = 0;
             this.GizmoButtonStrip.Text = "toolStrip1";
             // 
@@ -67,6 +67,7 @@
             this.RotateButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.RotateButton.Image = ((System.Drawing.Image)(resources.GetObject("RotateButton.Image")));
             this.RotateButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.RotateButton.Margin = new System.Windows.Forms.Padding(25, 1, 0, 2);
             this.RotateButton.Name = "RotateButton";
             this.RotateButton.Size = new System.Drawing.Size(44, 49);
             this.RotateButton.Text = "toolStripButton2";
@@ -76,6 +77,7 @@
             this.ScaleButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ScaleButton.Image = ((System.Drawing.Image)(resources.GetObject("ScaleButton.Image")));
             this.ScaleButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ScaleButton.Margin = new System.Windows.Forms.Padding(25, 1, 0, 2);
             this.ScaleButton.Name = "ScaleButton";
             this.ScaleButton.Size = new System.Drawing.Size(44, 49);
             this.ScaleButton.Text = "toolStripButton3";

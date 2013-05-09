@@ -154,7 +154,10 @@ namespace GraphicsLibrary
             mDetailTextureUVOffset = uvOffsets;
             mDetailTextureUVScale  = uvScales;
 
-            InitializeTexture();
+            if (mAlphaMap != null)
+            {
+                InitializeTexture();
+            }
         }
 
         public void SetVertexHeight(Vector2 index, float newHeight)
@@ -166,6 +169,16 @@ namespace GraphicsLibrary
         public float GetVertexHeight(Vector2 index)
         {
             return mHeights[(int)index.X, (int)index.Y];
+        }
+
+        public void SetVertexNormal(Vector2 index, Vector3 normal)
+        {
+            mVertices[(int)index.X + (int)index.Y * NUM_SIDE_VERTICES].Normal = normal;
+        }
+
+        public Vector3 GetVertexNormal(Vector2 index)
+        {
+            return mVertices[(int)index.X + (int)index.Y * NUM_SIDE_VERTICES].Normal;
         }
 
         #endregion

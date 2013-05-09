@@ -20,6 +20,7 @@ namespace GraphicsLibrary
         protected EffectConfigurer mPickingConfigurer        = null;
         protected EffectConfigurer mNoShadeConfigurer        = null;
         protected EffectConfigurer mUIConfigurer             = null;
+        protected EffectConfigurer mOverlayConfigurer        = null;
 
         #endregion
 
@@ -51,6 +52,7 @@ namespace GraphicsLibrary
             mPickingConfigurer        = PickingConfigurer;
             mNoShadeConfigurer        = NoShadeConfigurer;
             mUIConfigurer             = UIConfigurer;
+            mOverlayConfigurer        = NoShadeConfigurer;
         }
 
         public void AddInstance(RendererParameters instance)
@@ -113,6 +115,20 @@ namespace GraphicsLibrary
             {
                 foreach (RendererParameters instance in mInstances)
                 {
+                    RenderNoShading(view, projection, instance);
+                }
+            }
+        }
+
+        public void RenderAllInstancesOverlayColor(Matrix view, Matrix projection, Color overlayColor, float overlayWeight)
+        {
+            if (mOverlayConfigurer != null)
+            {
+                foreach (RendererParameters instance in mInstances)
+                {
+                    instance.OverlayColor = overlayColor;
+                    instance.OverlayWeight = overlayWeight;
+
                     RenderNoShading(view, projection, instance);
                 }
             }

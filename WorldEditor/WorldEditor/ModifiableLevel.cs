@@ -189,7 +189,14 @@ namespace WorldEditor
 
                 for (int count = 0; count < HeightMapMesh.NUM_SIDE_VERTICES; count++)
                 {
-                    sink.SetVertexHeight(sinkStartIndex + count * indexIncrement, source.GetVertexHeight(sourceStartIndex + count * indexIncrement));
+                    Vector2 sinkIndex = sinkStartIndex + count * indexIncrement;
+                    Vector2 sourceIndex = sourceStartIndex + count * indexIncrement;
+
+                    Vector3 normal = Vector3.Normalize(sink.GetVertexNormal(sinkIndex) + source.GetVertexNormal(sourceIndex));
+
+                    sink.SetVertexHeight(sinkIndex, source.GetVertexHeight(sourceIndex));
+                    sink.SetVertexNormal(sinkIndex, normal);
+                    source.SetVertexNormal(sourceIndex, normal);
                 }
             }
         }

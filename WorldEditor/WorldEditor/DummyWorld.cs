@@ -63,6 +63,7 @@ namespace WorldEditor
 
         private SkyBox mSkyBox = null;
         private Water mWater = null;
+        private GridRenderable mGridRenderable = null;
 
         #endregion
 
@@ -70,6 +71,12 @@ namespace WorldEditor
         {
             mName = null;
             mLevel = null;
+
+            Texture2D gridAlphaMap = new Texture2D(GraphicsManager.Device, HeightMapMesh.NUM_SIDE_VERTICES * HeightMapMesh.NUM_SIDE_TEXELS_PER_QUAD, HeightMapMesh.NUM_SIDE_VERTICES * HeightMapMesh.NUM_SIDE_TEXELS_PER_QUAD);
+            HeightMapMesh gridMesh = new HeightMapMesh(new float[HeightMapMesh.NUM_SIDE_VERTICES, HeightMapMesh.NUM_SIDE_VERTICES], gridAlphaMap, new string[0], null, null);
+            AssetLibrary.AddGrid("BLOCK_GRID", gridMesh);
+
+            mGridRenderable = new GridRenderable("BLOCK_GRID");
         }
 
         public void AddBlock(Vector3 coordinate)
@@ -224,7 +231,6 @@ namespace WorldEditor
         {
             FileInfo fileInfo = new FileInfo(filePath);
             LevelFileLoader.WriteLevel(mLevel, mDummies, fileInfo);
-            AssetLibrary.UpdateTerrain(fileInfo, ref mName);
         }
 
         public void Open(FileInfo fileInfo)
@@ -280,10 +286,11 @@ namespace WorldEditor
                 {
                     if (obj.Floating)
                     {
-                        Ray ray = new Ray(obj.Position - new Vector3(0.0f, 10.0f, 0.0f), -Vector3.Down);
                         RayCastResult result;
-                        Space.RayCast(ray, 2000.0f, out result);
-                        obj.Position = new Vector3(obj.Position.X, result.HitData.Location.Y, obj.Position.Z);
+                        if (Space.RayCast(new Ray(obj.Position + Vector3.Up * 1000.0f, Vector3.Down), 2000.0f, out result))
+                        {
+                            obj.Position = new Vector3(obj.Position.X, result.HitData.Location.Y, obj.Position.Z);
+                        }
                     }
                 }
             }
@@ -367,8 +374,13 @@ namespace WorldEditor
             return true;
         }
 
-        public void Draw()
+        public void Draw(Vector3 cameraPosition)
         {
+            Vector3 blockNearestCamera = new Vector3((int)(cameraPosition.X / Level.BLOCK_SIZE) * Level.BLOCK_SIZE, 0, (int)(cameraPosition.Z / Level.BLOCK_SIZE) * Level.BLOCK_SIZE);
+            int scale = (HeightMapMesh.NUM_SIDE_VERTICES - 1) * (int)Level.BLOCK_SIZE;
+
+            mGridRenderable.Render(blockNearestCamera + new Vector3(Level.BLOCK_SIZE / 2 - scale / 2, 0, Level.BLOCK_SIZE / 2 - scale / 2), Matrix.Identity, new Vector3(scale, 1, scale));
+
             if (mLevel != null)
             {
                 mLevel.IterateOverBlocksInRadius(CursorPosition, CursorOuterRadius, RenderCursor, new object[] { (HeightMapRenderable.CursorShape?)DrawCursor, (float?)(CursorInnerRadius), (float?)CursorOuterRadius, (Vector3?)CursorPosition });

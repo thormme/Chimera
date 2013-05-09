@@ -20,8 +20,8 @@ namespace GraphicsLibrary
 
         #region Private Variables
 
-        private HeightMapMesh mMesh;
-        private AnimationUtilities.SkinnedEffect mEffect;
+        protected HeightMapMesh mMesh;
+        protected AnimationUtilities.SkinnedEffect mEffect;
 
         #endregion
 
@@ -160,11 +160,11 @@ namespace GraphicsLibrary
 
             mEffect.Parameters["AlphaMap"].SetValue(mMesh.AlphaMap);
 
-            for (int i = 0; i < MAX_TEXTURE_LAYERS; ++i)
+            for (int i = 0; i < mMesh.DetailTextureNames.Length; ++i)
             {
                 string detailTextureName = mMesh.DetailTextureNames[i];
-                Vector2 uvOffset = Vector2.Zero;// mMesh.UVOffset[i];
-                Vector2 uvScale = Vector2.One;// mMesh.UVScale[i];
+                Vector2 uvOffset = mMesh.DetailTextureUVOffset[i];
+                Vector2 uvScale = mMesh.DetailTextureUVScale[i];
 
                 if (detailTextureName != null)
                 {

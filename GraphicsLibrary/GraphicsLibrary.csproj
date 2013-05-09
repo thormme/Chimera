@@ -108,6 +108,8 @@
     <Compile Include="AnimationPlayer.cs" />
     <Compile Include="AssetLibrary.cs" />
     <Compile Include="CascadedShadowMap.cs" />
+    <Compile Include="GridRenderable.cs" />
+    <Compile Include="GridRenderer.cs" />
     <Compile Include="HeightMapMesh.cs" />
     <Compile Include="HeightMapRenderable.cs" />
     <Compile Include="HeightMapRenderer.cs" />

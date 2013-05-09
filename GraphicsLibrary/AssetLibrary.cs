@@ -21,7 +21,7 @@ namespace GraphicsLibrary
         static private Type HeightMapKey = typeof(HeightMapRenderer);
         static private Type SkyBoxKey = typeof(SkyBoxRenderer);
         static private Type WaterKey = typeof(WaterRenderer);
-        //static private Type TerrainKey = typeof(TerrainRenderer);
+        static private Type GridKey = typeof(GridRenderer);
         static private Type TextureKey = typeof(Texture2D);
 
         static private char[] mDelimeterChars = { ' ' };
@@ -97,6 +97,15 @@ namespace GraphicsLibrary
             mAssetLibrary[HeightMapKey].Add(heightMapName, new HeightMapRenderer(heightMap, mVertexBufferShader));
         }
 
+        static public void AddGrid(string gridName, HeightMapMesh grid)
+        {
+            if (mAssetLibrary[GridKey].ContainsKey(gridName))
+            {
+                throw new Exception("Duplicate grid key: " + gridName);
+            }
+            mAssetLibrary[GridKey].Add(gridName, new GridRenderer(grid, mVertexBufferShader));
+        }
+
         static public void AddWater(string waterName, WaterRenderer water)
         {
             if (mAssetLibrary[WaterKey].ContainsKey(waterName))
@@ -122,25 +131,6 @@ namespace GraphicsLibrary
                 throw new Exception("Duplicate texture key: " + textureName);
             }
             mAssetLibrary[TextureKey].Add(textureName, texture);
-        }
-
-        //static public void AddTerrain(FileInfo level, TerrainHeightMap heightMap, TerrainTexture texture)
-        //{
-        //    if (mAssetLibrary[TerrainKey].ContainsKey(level.Name))
-        //    {
-        //        mAssetLibrary[TerrainKey].Remove(level.Name);
-        //    }
-
-        //    mAssetLibrary[TerrainKey].Add(level.Name, new TerrainRenderer(heightMap, texture, mVertexBufferShader));
-        //}
-
-        static public void UpdateTerrain(FileInfo savePath, ref string levelName)
-        {
-            //if (!mAssetLibrary[TerrainKey].ContainsKey(savePath.Name))
-            //{
-            //    mAssetLibrary[TerrainKey].Add(savePath.Name, mAssetLibrary[TerrainKey][levelName]);
-            //    levelName = savePath.Name;
-            //}
         }
 
         #endregion
@@ -205,6 +195,16 @@ namespace GraphicsLibrary
             if (mAssetLibrary[HeightMapKey].TryGetValue(heightMapName, out result))
             {
                 return result as HeightMapRenderer;
+            }
+            return null;
+        }
+
+        static public GridRenderer LookupGrid(string gridName)
+        {
+            object result;
+            if (mAssetLibrary[GridKey].TryGetValue(gridName, out result))
+            {
+                return result as GridRenderer;
             }
             return null;
         }
@@ -294,7 +294,7 @@ namespace GraphicsLibrary
             mAssetLibrary.Add(HeightMapKey, new Dictionary<string, object>());
             mAssetLibrary.Add(SkyBoxKey, new Dictionary<string, object>());
             mAssetLibrary.Add(WaterKey, new Dictionary<string, object>());
-            //mAssetLibrary.Add(TerrainKey, new Dictionary<string, object>());
+            mAssetLibrary.Add(GridKey, new Dictionary<string, object>());
             mAssetLibrary.Add(TextureKey, new Dictionary<string, object>());
 
             LoadShaders(content);

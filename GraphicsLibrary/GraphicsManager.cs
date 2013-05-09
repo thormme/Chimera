@@ -112,6 +112,7 @@ namespace GraphicsLibrary
 
         #region Configuration Variables And Properties
 
+        public enum Wireframe { Solid, Wireframe, Both };
         public enum CelShaded { All, Models, AnimateModels, Terrain, None };
         public enum Outlines { All, AnimateModels, None };
 
@@ -121,7 +122,8 @@ namespace GraphicsLibrary
         static private bool mDebugVisualization = false;
         static private bool mDrawBoundingBoxes = false;
         static private bool mRenderPickingBuffer = false;
-        static private bool mWireframeRendering = false;
+
+        static private Wireframe mWireframeRendering = Wireframe.Solid;
 
         static private float mEdgeWidth = 1.0f;
         static private float mEdgeIntensity = 1.0f;
@@ -150,7 +152,7 @@ namespace GraphicsLibrary
             set { mCastingShadows = value; }
         }
 
-        static public bool WireframeRendering
+        static public Wireframe WireframeRendering
         {
             get { return mWireframeRendering; }
             set { mWireframeRendering = value; }
@@ -602,7 +604,7 @@ namespace GraphicsLibrary
             mDevice.Clear(Color.CornflowerBlue);
 
             RasterizerState cull = new RasterizerState();
-            cull.FillMode = WireframeRendering ? FillMode.WireFrame : FillMode.Solid;
+            cull.FillMode = WireframeRendering == Wireframe.Wireframe ? FillMode.WireFrame : FillMode.Solid;
             cull.CullMode = CullMode.CullCounterClockwiseFace;
 
             mDevice.RasterizerState = cull;
@@ -618,6 +620,19 @@ namespace GraphicsLibrary
                 else
                 {
                     renderer.RenderAllInstancesWithoutShadows(mView, mProjection, mDirectionalLight);
+                }
+            }
+
+            if (WireframeRendering == Wireframe.Both)
+            {
+                RasterizerState wireframe = new RasterizerState();
+                wireframe.FillMode = FillMode.WireFrame;
+                wireframe.CullMode = CullMode.CullCounterClockwiseFace;
+                mDevice.RasterizerState = wireframe;
+
+                foreach (RendererBase renderer in mRenderQueue)
+                {
+                    renderer.RenderAllInstancesOverlayColor(mView, mProjection, Color.Gray, 0.75f);
                 }
             }
 

@@ -45,6 +45,7 @@ namespace GraphicsLibrary
             mShadowMapConfigurer = null;
             mPickingConfigurer = null;
             mUIConfigurer = null;
+            mOverlayConfigurer = null;
         }
 
         #endregion

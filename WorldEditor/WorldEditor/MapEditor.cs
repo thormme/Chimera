@@ -224,7 +224,7 @@ namespace WorldEditor
                 selectedDummy.IsHighlighted = true;
             }
 
-            mDummyWorld.Draw();
+            mDummyWorld.Draw(mCamera.Position);
         }
 
         #endregion
@@ -241,6 +241,7 @@ namespace WorldEditor
             EditorForm.ViewWaterMenu.Click += ViewWaterHandler;
             EditorForm.ViewSkyBoxMenu.Click += ViewSkyBoxHandler;
             EditorForm.ViewShadowsMenu.Click += ViewShadowsHandler;
+            EditorForm.ViewWireframeMenu.Click += ViewWireframeHandler;
             EditorForm.UndoMenu.Click += UndoHandler;
             EditorForm.RedoMenu.Click += RedoHandler;
 
@@ -344,6 +345,11 @@ namespace WorldEditor
         private void ViewShadowsHandler(object sender, EventArgs e)
         {
             GraphicsManager.CastingShadows = !GraphicsManager.CastingShadows;
+        }
+
+        private void ViewWireframeHandler(object sender, EventArgs e)
+        {
+            GraphicsManager.WireframeRendering = GraphicsManager.WireframeRendering == GraphicsManager.Wireframe.Both ? GraphicsManager.Wireframe.Solid : GraphicsManager.Wireframe.Both;
         }
 
         private void CloseTextureForm(object sender, EventArgs e)
@@ -741,6 +747,7 @@ namespace WorldEditor
         {
             IsGizmoVisible = false;
             ObjectParameterPane.SelectedObjects.Clear();
+            ObjectParameterPane.UpdateParameterFields();
         }
 
         #endregion
