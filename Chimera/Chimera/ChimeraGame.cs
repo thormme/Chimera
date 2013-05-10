@@ -573,6 +573,11 @@ namespace Chimera
 
         private void WireframeCommand(List<string> parameters)
         {
+            if (parameters.Count <= 0)
+            {
+                return;
+            }
+
             if (parameters[0].ToLower().Contains("both"))
             {
                 GraphicsManager.WireframeRendering = GraphicsManager.Wireframe.Both;

@@ -159,7 +159,7 @@ namespace WorldEditor
             mIsActive = gameWindowActive;
 
             mControls.Update(gameTime, mGameControl.RectangleToScreen(mGameControl.ClientRectangle));
-            mDummyWorld.Update(gameTime, mCamera.Position);
+            mDummyWorld.Update(gameTime, mCamera.Position, EditorForm.BlockLayer);
 
             mPlaceable = false;
 
@@ -672,7 +672,7 @@ namespace WorldEditor
                     break;
                 case Dialogs.EditorForm.EditorMode.BLOCKCREATION:
                     CloseGizmoForm(this, EventArgs.Empty);
-                    CloseBlockLayerSelectionForm(this, EventArgs.Empty);
+                    OpenBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
@@ -682,7 +682,7 @@ namespace WorldEditor
                     break;
                 case Dialogs.EditorForm.EditorMode.BLOCKSELECTION:
                     CloseGizmoForm(this, EventArgs.Empty);
-                    CloseBlockLayerSelectionForm(this, EventArgs.Empty);
+                    OpenBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
@@ -723,10 +723,12 @@ namespace WorldEditor
             if ((sender as EditorForm).Tool == Dialogs.EditorForm.Tools.SELECT)
             {
                 ShowObjectGizmo(this, EventArgs.Empty);
+                OpenGizmoForm(this, EventArgs.Empty);
             }
             else
             {
                 HideObjectGizmo(this, EventArgs.Empty);
+                CloseGizmoForm(this, EventArgs.Empty);
             }
             if ((sender as EditorForm).Tool == Dialogs.EditorForm.Tools.PLACE)
             {
@@ -800,26 +802,34 @@ namespace WorldEditor
                     }
                     case Dialogs.EditorForm.EditorMode.BLOCKCREATION:
                     {
-                        Vector3 coordinate;
-                        if (Entity.GetBlockCoordinatePickingLocation(EditorForm.BlockLayer, out coordinate))
-                        {
-                            mDummyWorld.AddBlock(new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), EditorForm.BlockLayer, (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE)));
-                        }
+                        Ray ray = Utils.CreateWorldRayFromScreenPoint(
+                            new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
+                            mGraphics.Viewport,
+                            mCamera.Position,
+                            mCamera.ViewTransform,
+                            mCamera.ProjectionTransform);
+
+                        Vector3 coordinate = Utils.ProjectVectorOntoPlane(ray, new Vector3(0, EditorForm.BlockLayer * Level.BLOCK_SIZE, 0), Vector3.Up);
+                        mDummyWorld.AddBlock(new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), (float)Math.Floor(coordinate.Y / Level.BLOCK_SIZE), (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE)));
                         break;
                     }
                     case Dialogs.EditorForm.EditorMode.BLOCKSELECTION:
                     {
-                        Vector3 coordinate;
-                        if (Entity.GetBlockCoordinatePickingLocation(EditorForm.BlockLayer, out coordinate))
-                        {
-                            coordinate = new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), EditorForm.BlockLayer, (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE));
-                            if (!mDummyWorld.ContainsBlock(coordinate) ||!mControls.Control.Active)
-                            {
-                                mDummyWorld.ClearSelectedBlocks();
-                            }
+                        Ray ray = Utils.CreateWorldRayFromScreenPoint(
+                            new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
+                            mGraphics.Viewport,
+                            mCamera.Position,
+                            mCamera.ViewTransform,
+                            mCamera.ProjectionTransform);
 
-                            mDummyWorld.SelectBlock(coordinate);
+                        Vector3 coordinate = Utils.ProjectVectorOntoPlane(ray, new Vector3(0, EditorForm.BlockLayer * Level.BLOCK_SIZE, 0), Vector3.Up);
+                        coordinate = new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), (float)Math.Floor(coordinate.Y / Level.BLOCK_SIZE), (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE));
+                        if (!mDummyWorld.ContainsBlock(coordinate) ||!mControls.Control.Active)
+                        {
+                            mDummyWorld.ClearSelectedBlocks();
                         }
+
+                        mDummyWorld.SelectBlock(coordinate);
                         break;
                     }
                 }
