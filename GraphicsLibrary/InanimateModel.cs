@@ -17,6 +17,13 @@ namespace GraphicsLibrary
 
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
+            
+            if (Name == "rock1dark_collision")
+            {
+                overlayColor = Color.Beige;
+                overlayColorWeight = 1.0f;
+            }
+
             ModelRenderer.RendererParameters parameters = new RendererBase.RendererParameters();
             parameters.BoundingBox = BoundingBox;
             parameters.Name = Name;

@@ -162,19 +162,19 @@ namespace WorldEditor
             switch (tool)
             {
                 case EditorForm.Tools.SET:
-                    mLevel.SetTerrain(position, radius, intensity);
+                    mLevel.SetTerrain(mSelectedBlocks, position, radius, intensity);
                     break;
                 case EditorForm.Tools.SMOOTH:
-                    mLevel.SmoothTerrain(position, radius, intensity);
+                    mLevel.SmoothTerrain(mSelectedBlocks, position, radius, intensity);
                     break;
                 case EditorForm.Tools.FLATTEN:
-                    mLevel.RaiseTerrain(position, radius, intensity);
+                    mLevel.RaiseTerrain(mSelectedBlocks, position, radius, intensity);
                     break;
                 case EditorForm.Tools.LOWER:
-                    mLevel.LowerTerrain(position, radius, intensity);
+                    mLevel.LowerTerrain(mSelectedBlocks, position, radius, intensity);
                     break;
                 case EditorForm.Tools.RAISE:
-                    mLevel.RaiseTerrain(position, radius, intensity);
+                    mLevel.RaiseTerrain(mSelectedBlocks, position, radius, intensity);
                     break;
             }
         }

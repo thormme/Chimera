@@ -250,7 +250,7 @@
     <None Include="default.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="tree.lvl">
+    <None Include="whomp.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

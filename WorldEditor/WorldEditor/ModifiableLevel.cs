@@ -65,28 +65,28 @@ namespace WorldEditor
 
         #region Block Modifiers
 
-        public void RaiseTerrain(Vector3 center, float radius, float deltaHeight)
+        public void RaiseTerrain(IEnumerable<Vector3> selectedBlocks, Vector3 center, float radius, float deltaHeight)
         {
             VertexModifier raise = RaiseVertex;
-            IterateOverTerrainVertices(center, radius, raise, deltaHeight);
+            IterateOverTerrainVertices(selectedBlocks, center, radius, raise, deltaHeight);
         }
 
-        public void LowerTerrain(Vector3 center, float radius, float deltaHeight)
+        public void LowerTerrain(IEnumerable<Vector3> selectedBlocks, Vector3 center, float radius, float deltaHeight)
         {
             VertexModifier lower = LowerVertex;
-            IterateOverTerrainVertices(center, radius, lower, deltaHeight);
+            IterateOverTerrainVertices(selectedBlocks, center, radius, lower, deltaHeight);
         }
 
-        public void SetTerrain(Vector3 center, float radius, float deltaHeight)
+        public void SetTerrain(IEnumerable<Vector3> selectedBlocks, Vector3 center, float radius, float deltaHeight)
         {
             VertexModifier set = SetVertex;
-            IterateOverTerrainVertices(center, radius, set, deltaHeight);
+            IterateOverTerrainVertices(selectedBlocks, center, radius, set, deltaHeight);
         }
 
-        public void SmoothTerrain(Vector3 center, float radius, float deltaHeight)
+        public void SmoothTerrain(IEnumerable<Vector3> selectedBlocks, Vector3 center, float radius, float deltaHeight)
         {
             VertexModifier smooth = SmoothVertex;
-            IterateOverTerrainVertices(center, radius, smooth, deltaHeight);
+            IterateOverTerrainVertices(selectedBlocks, center, radius, smooth, deltaHeight);
         }
 
         public void IterateOverBlocksInRadius(Vector3 position, float radius, BlockModifier modifier, object[] parameters)
@@ -149,7 +149,7 @@ namespace WorldEditor
 
         public delegate void BlockModifier(LevelBlock block, Vector3 centerCoordinate, float radius, object[] parameters);
 
-        public delegate void VertexModifier(Vector2 positionVertexSpace, float height);
+        public delegate void VertexModifier(IEnumerable<Vector3> selectedBlocks, Vector2 positionVertexSpace, float height);
 
         #endregion
 
@@ -236,10 +236,10 @@ namespace WorldEditor
             }
         }
 
-        private void RaiseVertex(Vector2 positionVertexSpace, float deltaHeight)
+        private void RaiseVertex(IEnumerable<Vector3> selectedBlocks, Vector2 positionVertexSpace, float deltaHeight)
         {
             Tuple<Vector3, Vector2> vertex = VertexAtPosition(positionVertexSpace);
-            if (vertex != null)
+            if (vertex != null && (((HashSet<Vector3>)selectedBlocks).Count == 0 || selectedBlocks.Contains(vertex.Item1)))
             {
                 HeightMapMesh mesh = AssetLibrary.LookupHeightMap(mName + vertex.Item1.ToString()).Mesh;
 
@@ -247,10 +247,10 @@ namespace WorldEditor
             }
         }
 
-        private void LowerVertex(Vector2 positionVertexSpace, float deltaHeight)
+        private void LowerVertex(IEnumerable<Vector3> selectedBlocks, Vector2 positionVertexSpace, float deltaHeight)
         {
             Tuple<Vector3, Vector2> vertex = VertexAtPosition(positionVertexSpace);
-            if (vertex != null)
+            if (vertex != null && (((HashSet<Vector3>)selectedBlocks).Count == 0 || selectedBlocks.Contains(vertex.Item1)))
             {
                 HeightMapMesh mesh = AssetLibrary.LookupHeightMap(mName + vertex.Item1.ToString()).Mesh;
 
@@ -258,10 +258,10 @@ namespace WorldEditor
             }
         }
 
-        private void SetVertex(Vector2 positionVertexSpace, float newHeight)
+        private void SetVertex(IEnumerable<Vector3> selectedBlocks, Vector2 positionVertexSpace, float newHeight)
         {
             Tuple<Vector3, Vector2> vertex = VertexAtPosition(positionVertexSpace);
-            if (vertex != null)
+            if (vertex != null && (((HashSet<Vector3>)selectedBlocks).Count == 0 || selectedBlocks.Contains(vertex.Item1)))
             {
                 HeightMapMesh mesh = AssetLibrary.LookupHeightMap(mName + vertex.Item1.ToString()).Mesh;
 
@@ -269,10 +269,10 @@ namespace WorldEditor
             }
         }
 
-        private void SmoothVertex(Vector2 positionVertexSpace, float newHeight)
+        private void SmoothVertex(IEnumerable<Vector3> selectedBlocks, Vector2 positionVertexSpace, float newHeight)
         {
             Tuple<Vector3, Vector2> centerVertex = VertexAtPosition(positionVertexSpace);
-            if (centerVertex != null)
+            if (centerVertex != null && (((HashSet<Vector3>)selectedBlocks).Count == 0 || selectedBlocks.Contains(centerVertex.Item1)))
             {
                 int count = 0;
                 float neighborSum = 0.0f;
@@ -288,7 +288,7 @@ namespace WorldEditor
 
                         Vector2 neighborVertexSpace = new Vector2(positionVertexSpace.X + i, positionVertexSpace.Y + j);
                         Tuple<Vector3, Vector2> neighborVertex = VertexAtPosition(neighborVertexSpace);
-                        if (neighborVertex != null)
+                        if (neighborVertex != null && (((HashSet<Vector3>)selectedBlocks).Count == 0 || !selectedBlocks.Contains(neighborVertex.Item1)))
                         {
                             neighborSum += AssetLibrary.LookupHeightMap(mName + neighborVertex.Item1.ToString()).Mesh.GetVertexHeight(neighborVertex.Item2);
                             count++;
@@ -306,7 +306,7 @@ namespace WorldEditor
             }
         }
 
-        private void IterateOverTerrainVertices(Vector3 center, float radius, VertexModifier modifier, float deltaHeight)
+        private void IterateOverTerrainVertices(IEnumerable<Vector3> selectedBlocks, Vector3 center, float radius, VertexModifier modifier, float deltaHeight)
         {
             Vector2 centerVertexSpace = new Vector2(center.X / BLOCK_SIZE * HeightMapMesh.NUM_SIDE_VERTICES, center.Z / BLOCK_SIZE * HeightMapMesh.NUM_SIDE_VERTICES);
 
@@ -323,7 +323,7 @@ namespace WorldEditor
                     Vector2 positionVertexSpace = new Vector2(x, z);
                     if ((positionVertexSpace - centerVertexSpace).LengthSquared() <= radiusSquared)
                     {
-                        modifier(positionVertexSpace, deltaHeight);
+                        modifier(selectedBlocks, positionVertexSpace, deltaHeight);
                     }
                 }
             }

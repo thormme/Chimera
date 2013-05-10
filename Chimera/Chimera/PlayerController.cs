@@ -406,7 +406,7 @@ namespace Chimera
             PlayerCreature player = (mCreature as PlayerCreature);
 
             if ((mStealPressMouse.Active || mStealPress.Active) && 
-                player.CollidingObjects.Contains(player.Checkpoint))
+                player.Checkpoint != null && player.CollidingObjects.Contains(player.Checkpoint))
             {
                 ChimeraGame.PushState(new PlayerSlotMenu(ChimeraGame.Game, player));
             }
