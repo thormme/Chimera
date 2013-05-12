@@ -210,8 +210,8 @@ namespace Chimera
             try
             {
                 GraphicsManager.Initialize(GraphicsDevice, spriteBatch);
-                AssetLibrary.LoadContent(Content);
-                CollisionMeshManager.LoadContent(Content);
+                AssetLibrary.LoadContent(GraphicsDevice, Content);
+                CollisionMeshManager.LoadContent(GraphicsDevice, Content);
                 SoundManager.LoadContent(Content);
                 ExitToMenu();
             }

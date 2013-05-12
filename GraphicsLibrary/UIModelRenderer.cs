@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GraphicsLibrary.ModelLoader;
 
 namespace GraphicsLibrary
 {
@@ -11,7 +12,7 @@ namespace GraphicsLibrary
     {
         #region Public Interface
 
-        public UIModelRenderer(Model model) : base(model)
+        public UIModelRenderer(CustomModel model) : base(model)
         {
             mNormalDepthConfigurer = null;
             mShadowMapConfigurer = null;

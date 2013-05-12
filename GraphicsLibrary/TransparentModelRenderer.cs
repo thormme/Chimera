@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GraphicsLibrary.ModelLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -20,7 +21,7 @@ namespace GraphicsLibrary
 
         #region Public Interface
 
-        public TransparentModelRenderer(Model model) : base(model)
+        public TransparentModelRenderer(CustomModel model) : base(model)
         {
             mNormalDepthConfigurer = null;
             mShadowMapConfigurer = null;

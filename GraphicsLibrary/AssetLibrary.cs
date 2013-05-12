@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using GameConstructLibrary;
+using GraphicsLibrary.ModelLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -285,7 +286,7 @@ namespace GraphicsLibrary
 
         #region Asset Loading Methods
 
-        static public void LoadContent(ContentManager content)
+        static public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
         {
             mAssetLibrary.Add(InanimateModelKey, new Dictionary<string, object>());
             mAssetLibrary.Add(AnimateModelKey, new Dictionary<string, object>());
@@ -298,7 +299,7 @@ namespace GraphicsLibrary
             mAssetLibrary.Add(TextureKey, new Dictionary<string, object>());
 
             LoadShaders(content);
-            LoadModels(content);
+            LoadModels(graphicsDevice, content);
             LoadTextures(content);
             LoadWater();
             LoadSkyBox();
@@ -314,7 +315,7 @@ namespace GraphicsLibrary
             mVertexBufferShader = new AnimationUtilities.SkinnedEffect(mConfigurableShader);
         }
 
-        static private void LoadModels(ContentManager content)
+        static private void LoadModels(GraphicsDevice graphicsDevice, ContentManager content)
         {
             DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "models");
             if (!dir.Exists)
@@ -335,11 +336,11 @@ namespace GraphicsLibrary
                         string modelName = Path.GetFileNameWithoutExtension(file.Name);
                         bool isSkinned = false;
 
-                        Model input = content.Load<Model>("models/" + subDirName + "/" + modelName);
+                        CustomModel input = new CustomModel(graphicsDevice, "Content/" + "models/" + subDirName + "/" + modelName);
 
-                        foreach (ModelMesh mesh in input.Meshes)
+                        foreach (var mesh in input.Meshes)
                         {
-                            foreach (ModelMeshPart part in mesh.MeshParts)
+                            foreach (var part in mesh.Parts)
                             {
                                 Microsoft.Xna.Framework.Graphics.SkinnedEffect skinnedEffect = part.Effect as Microsoft.Xna.Framework.Graphics.SkinnedEffect;
                                 if (skinnedEffect != null)
@@ -348,8 +349,6 @@ namespace GraphicsLibrary
                                     newEffect.CopyFromSkinnedEffect(skinnedEffect);
 
                                     part.Effect = newEffect;
-
-                                    isSkinned = true;
                                 }
                                 else
                                 {
@@ -366,7 +365,7 @@ namespace GraphicsLibrary
                         }
 
                         AddInanimateModel(modelName, new ModelRenderer(input));
-                        if (isSkinned)
+                        if (input.SkinningData.AnimationClips.Count > 0)
                         {
                             AddAnimateModel(modelName, new AnimateModelRenderer(input));
                         }

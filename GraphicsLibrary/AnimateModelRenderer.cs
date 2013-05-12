@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GraphicsLibrary.ModelLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -26,7 +27,7 @@ namespace GraphicsLibrary
 
         #region Public Properties
 
-        public AnimationUtilities.SkinningData SkinningData { get { return mModel.Tag as AnimationUtilities.SkinningData; } }
+        public AnimationUtilities.SkinningData SkinningData { get { return mModel.SkinningData as AnimationUtilities.SkinningData; } }
 
         public Dictionary<string, Matrix> BoneTweakLibrary { get { return mBoneTweakLibrary; } set { mBoneTweakLibrary = value; } }
 
@@ -34,17 +35,14 @@ namespace GraphicsLibrary
 
         #region Public Interface
 
-        public AnimateModelRenderer(Model model) : base(model) { }
+        public AnimateModelRenderer(CustomModel model) : base(model) { }
 
         protected override void ConstructBoundingSphere()
         {
-            Matrix[] boneTransforms = new Matrix[mModel.Bones.Count];
-            mModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
-
             Vector3 modelCenter = Vector3.Zero;
-            foreach (ModelMesh mesh in mModel.Meshes)
+            foreach (GraphicsLibrary.ModelLoader.CustomModel.Mesh mesh in mModel.Meshes)
             {
-                Matrix transform = boneTransforms[mesh.ParentBone.Index];
+                Matrix transform = mesh.AbsoluteWorldTransform;
                 Vector3 meshCenter = Vector3.Transform(mesh.BoundingSphere.Center, transform);
                 modelCenter += meshCenter;
             }
@@ -52,9 +50,9 @@ namespace GraphicsLibrary
             modelCenter /= mModel.Meshes.Count;
 
             float modelRadius = 0;
-            foreach (ModelMesh mesh in mModel.Meshes)
+            foreach (var mesh in mModel.Meshes)
             {
-                Matrix transform = boneTransforms[mesh.ParentBone.Index];
+                Matrix transform = mesh.AbsoluteWorldTransform;
                 Vector3 meshCenter = Vector3.Transform(mesh.BoundingSphere.Center, transform);
 
                 float transformScale = transform.Forward.Length();

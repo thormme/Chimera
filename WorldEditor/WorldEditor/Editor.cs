@@ -69,8 +69,8 @@ namespace WorldEditor.Dialogs
 
             GraphicsManager.Initialize(GraphicsDevice, mSpriteBatch);
             Console.WriteLine(Content.RootDirectory);
-            AssetLibrary.LoadContent(Content);
-            CollisionMeshManager.LoadContent(Content);
+            AssetLibrary.LoadContent(GraphicsDevice, Content);
+            CollisionMeshManager.LoadContent(GraphicsDevice, Content);
             mWorldEditor = new MapEditor(GraphicsDevice, mCamera, Content, this, Parent as EditorForm);
 
             ResizedWindow(null, null);

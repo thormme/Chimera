@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GraphicsLibrary.ModelLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,14 +12,14 @@ namespace GraphicsLibrary
     {
         #region Private Variables
 
-        protected Model mModel;
+        protected CustomModel mModel;
         protected BoundingSphere mBoundingSphere;
         
         #endregion
 
         #region Public Properties
 
-        public Model Model { get { return mModel; } }
+        public CustomModel Model { get { return mModel; } }
 
         public BoundingSphere BoundingSphere { get { return mBoundingSphere; } }
 
@@ -26,7 +27,7 @@ namespace GraphicsLibrary
 
         #region Public Interface
 
-        public ModelRenderer(Model model)
+        public ModelRenderer(CustomModel model)
         {
             mModel = model;
             ConstructBoundingSphere();
@@ -37,7 +38,7 @@ namespace GraphicsLibrary
         protected virtual void ConstructBoundingSphere()
         {
             Vector3 modelCenter = Vector3.Zero;
-            foreach (ModelMesh mesh in mModel.Meshes)
+            foreach (GraphicsLibrary.ModelLoader.CustomModel.Mesh mesh in mModel.Meshes)
             {
                 modelCenter += mesh.BoundingSphere.Center;
             }
@@ -45,7 +46,7 @@ namespace GraphicsLibrary
             modelCenter /= mModel.Meshes.Count;
 
             float modelRadius = 0;
-            foreach (ModelMesh mesh in mModel.Meshes)
+            foreach (GraphicsLibrary.ModelLoader.CustomModel.Mesh mesh in mModel.Meshes)
             {
                 float meshRadius = (mesh.BoundingSphere.Center - modelCenter).Length() + mesh.BoundingSphere.Radius;
 
@@ -136,10 +137,11 @@ namespace GraphicsLibrary
                 return;
             }
 
-            foreach (ModelMesh mesh in mModel.Meshes)
+            foreach (GraphicsLibrary.ModelLoader.CustomModel.Mesh mesh in mModel.Meshes)
             {
-                foreach (AnimationUtilities.SkinnedEffect effect in mesh.Effects)
+                foreach (var part in mesh.Parts)
                 {
+                    AnimationUtilities.SkinnedEffect effect = part.Effect as AnimationUtilities.SkinnedEffect;
                     effect.World      = instance.World;
                     effect.View       = view;
                     effect.Projection = projection;
@@ -150,8 +152,8 @@ namespace GraphicsLibrary
 
                     effectConfigurer(effect, instance, optionalParameters);
                 }
-                mesh.Draw();
             }
+            mModel.Draw(instance.World, view, projection);
         }
 
         #endregion

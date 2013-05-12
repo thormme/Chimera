@@ -473,7 +473,7 @@ namespace Chimera
 
         protected void RenderPartsHelper(Color overlayColor, float overlayColorWeight, bool scale)
         {
-            foreach (PartAttachment partAttachment in mPartAttachments)
+            /*foreach (PartAttachment partAttachment in mPartAttachments)
             {
                 if (partAttachment != null)
                 {
@@ -487,7 +487,7 @@ namespace Chimera
                         count++;
                     }
                 }
-            }
+            }*/
         }
 
         protected abstract List<PartBone> GetUsablePartBones();

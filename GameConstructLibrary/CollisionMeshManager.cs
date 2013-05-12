@@ -20,7 +20,7 @@ namespace GameConstructLibrary
         static private Dictionary<string, InstancedMeshShape> mUniqueMeshLibrary = new Dictionary<string, InstancedMeshShape>();
         static private Dictionary<string, Model> mUniqueMeshModelLibrary = new Dictionary<string, Model>();
 
-        static private void LoadMeshIntoDatabase(ContentManager content, String directoryName, String meshName)
+        static private void LoadMeshIntoDatabase(GraphicsDevice graphicsDevice, ContentManager content, String directoryName, String meshName)
         {
             Model input;
 
@@ -75,7 +75,7 @@ namespace GameConstructLibrary
         /// Loads all meshes from content/models/collision/ into memory.
         /// </summary>
         /// <param name="content">Global game content manager.</param>
-        static public void LoadContent(ContentManager content)
+        static public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
         {
             // Load models.
             DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "\\" + "models");
@@ -93,7 +93,7 @@ namespace GameConstructLibrary
                     string meshName = Path.GetFileNameWithoutExtension(file.Name);
                     try
                     {
-                        LoadMeshIntoDatabase(content, subDir.Name, meshName);
+                        LoadMeshIntoDatabase(graphicsDevice, content, subDir.Name, meshName);
                     }
                     catch (Exception e)
                     {

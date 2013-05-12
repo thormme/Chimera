@@ -84,6 +84,7 @@ namespace GraphicsLibrary
         /// <param name="loop">Whether the animation will loop.</param>
         public void PlayAnimation(string animationName, bool loop)
         {
+            animationName = "full_animation";
             if (animationName != mAnimationName)
             {
                 mAnimationName = animationName;
