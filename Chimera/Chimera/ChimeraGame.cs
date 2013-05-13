@@ -288,6 +288,7 @@ namespace Chimera
                 DebugConsole.NavigateToPreviousCommand();
                 mDebugScreen.FocusedControl = DebugConsole.ConsoleInput;
             }
+
             if (debug.Active)
             {
                 if (DebugConsole.IsVisible)
@@ -301,72 +302,63 @@ namespace Chimera
                 }
             }
 
-            //try
-            //{
-                IsMouseVisible = !InputAction.IsMouseLocked;
+            IsMouseVisible = !InputAction.IsMouseLocked;
 
-                ChaseCamera camera = Camera as ChaseCamera;
+            ChaseCamera camera = Camera as ChaseCamera;
 
-                if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
+            if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
+            {
+                PopState();
+                if (mGameStates.Count >= 2 && mGameStates[mGameStates.Count - 2] is World)
                 {
-                    PopState();
-                    if (mGameStates.Count >= 2 && mGameStates[mGameStates.Count - 2] is World)
-                    {
-                        InputAction.IsMouseLocked = true;
-                    }
+                    InputAction.IsMouseLocked = true;
                 }
-                else if (mGameStates.Count > 0 && (mGameStates[mGameStates.Count - 1] is World) && pause.Active)
-                {
-                    PushState(new PauseState(this));
-                }
+            }
+            else if (mGameStates.Count > 0 && (mGameStates[mGameStates.Count - 1] is World) && pause.Active)
+            {
+                PushState(new PauseState(this));
+            }
 
-                // Allows the game to exit
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
-                    this.Exit();
+            // Allows the game to exit
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                this.Exit();
 
-                if (IsActive)
-                {
-                    InputAction.Update();
-                }
-                if (mGameStates.Count > 0)
-                {
-                    IGameState gameState = mGameStates[mGameStates.Count - 1];
+            if (IsActive)
+            {
+                InputAction.Update();
+            }
 
-                    gameState.Update(gameTime);
-                    
-                    if (gameState is Chimera.GameWorld && camera != null)
-                    {
-                        camera.World = gameState as World;
-                    }
-                }
+            if (mGameStates.Count > 0 && !DebugConsole.IsVisible)
+            {
+                IGameState gameState = mGameStates[mGameStates.Count - 1];
 
-                if (Camera != null)
-                {
-                    GraphicsManager.Update(Camera, gameTime);
-                }
-                DebugModelDrawer.Update();
+                gameState.Update(gameTime);
 
-                while (mNumPopQueued > 0)
+                if (gameState is Chimera.GameWorld && camera != null)
                 {
-                    mNumPopQueued--;
-                    mGameStates.RemoveAt(mGameStates.Count - 1);
+                    camera.World = gameState as World;
                 }
-                foreach (IGameState gameState in mGameStateAddQueue)
-                {
-                    mGameStates.Add(gameState);
-                }
-                mGameStateAddQueue.Clear();
+            }
 
-                base.Update(gameTime);
-            //}
-            //catch (Exception e) 
-            //{
-            //    TextWriter tw = new StreamWriter("log.txt");
-            //    tw.WriteLine(e.Message);
-            //    tw.WriteLine(e.StackTrace);
-            //    tw.Close();
-            //    throw e;
-            //}
+            if (Camera != null)
+            {
+                GraphicsManager.Update(Camera, gameTime);
+            }
+            DebugModelDrawer.Update();
+
+            while (mNumPopQueued > 0)
+            {
+                mNumPopQueued--;
+                mGameStates.RemoveAt(mGameStates.Count - 1);
+            }
+
+            foreach (IGameState gameState in mGameStateAddQueue)
+            {
+                mGameStates.Add(gameState);
+            }
+            mGameStateAddQueue.Clear();
+
+            base.Update(gameTime);
         }
 
         /// <summary>

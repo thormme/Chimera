@@ -383,7 +383,7 @@ namespace WorldEditor
             Vector3 blockNearestCamera = new Vector3((int)(cameraPosition.X / Level.BLOCK_SIZE) * Level.BLOCK_SIZE, mBlockLayer * Level.BLOCK_SIZE, (int)(cameraPosition.Z / Level.BLOCK_SIZE) * Level.BLOCK_SIZE);
             int scale = (HeightMapMesh.NUM_SIDE_VERTICES - 1) * (int)Level.BLOCK_SIZE;
 
-            mGridRenderable.Render(blockNearestCamera + new Vector3(Level.BLOCK_SIZE / 2 - scale / 2, 0, Level.BLOCK_SIZE / 2 - scale / 2), Matrix.Identity, new Vector3(scale, 1, scale));
+            mGridRenderable.Render(blockNearestCamera + new Vector3(-scale / 2, 0, -scale / 2), Matrix.Identity, new Vector3(scale, 1, scale));
 
             if (mLevel != null)
             {
