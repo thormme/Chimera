@@ -12,7 +12,7 @@ namespace GraphicsLibrary
     {
         #region Constants
 
-        public const int NUM_SIDE_VERTICES = 10;
+        public const int NUM_SIDE_VERTICES = 25;
 
         public const int NUM_SIDE_TEXELS_PER_QUAD = 10;
 

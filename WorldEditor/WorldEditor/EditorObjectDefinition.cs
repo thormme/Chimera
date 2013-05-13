@@ -72,7 +72,7 @@ namespace WorldEditor
             tempObject.Parameters = Parameters.ToArray();
 
             tempObject.Position = Vector3.Zero;
-            tempObject.YawPitchRoll = Vector3.Up;
+            tempObject.Rotation = Quaternion.Identity;
             tempObject.Scale = Vector3.One;
             tempObject.Height = 0.0f;
 

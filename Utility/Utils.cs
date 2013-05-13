@@ -110,5 +110,14 @@ namespace Utility
             Ray ray = new Ray(cameraPosition, projectionDirection);
             return ray;
         }
+
+        public static Vector3 GetYawPitchRollFromQuaternion(Quaternion rotation)
+        {
+            float yaw   = (float)Math.Atan2(2.0 * (rotation.W * rotation.X + rotation.Y * rotation.Z), 1.0 - 2.0 *(rotation.X * rotation.X + rotation.Y * rotation.Y));
+            float pitch = (float)Math.Asin(2.0 * (rotation.W * rotation.Y - rotation.Z * rotation.X));
+            float roll = (float)Math.Atan2(2.0 * (rotation.W * rotation.X + rotation.Y * rotation.Z), 1.0 - 2.0 * (rotation.X * rotation.X + rotation.Y * rotation.Y));
+
+            return new Vector3(yaw, pitch, roll);
+        }
     }
 }

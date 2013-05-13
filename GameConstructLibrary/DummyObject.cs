@@ -103,17 +103,16 @@ namespace GameConstructLibrary
             }
         }
 
-        private Vector3 mYawPitchRoll { get; set; }
-        public Vector3 YawPitchRoll
+        private Quaternion mRotation { get; set; }
+        public Quaternion Rotation
         {
             get
             {
-                return mYawPitchRoll;
+                return mRotation;
             }
             set
             {
-                mYawPitchRoll = value;
-                ParameterChanged();
+                mRotation = value;
             }
         }
 
@@ -127,34 +126,6 @@ namespace GameConstructLibrary
             set
             {
                 mScale = value;
-                ParameterChanged();
-            }
-        }
-
-        private Vector3 mRotationAxis { get; set; }
-        public Vector3 RotationAxis
-        {
-            get
-            {
-                return mRotationAxis;
-            }
-            set
-            {
-                mRotationAxis = value;
-                ParameterChanged();
-            }
-        }
-
-        private float mRotationAngle { get; set; }
-        public float RotationAngle
-        {
-            get
-            {
-                return mRotationAngle;
-            }
-            set
-            {
-                mRotationAngle = value;
                 ParameterChanged();
             }
         }
@@ -188,6 +159,26 @@ namespace GameConstructLibrary
         }
 
         [XmlIgnore]
+        private Vector3 mYawPitchRoll = Vector3.Zero;
+        [XmlIgnore]
+        public Vector3 YawPitchRoll
+        {
+            get
+            {
+                return mYawPitchRoll;
+            }
+            set
+            {
+                if (Math.Abs(value.X - mYawPitchRoll.X) > 0.0001 ||
+                    Math.Abs(value.Y - mYawPitchRoll.Y) > 0.0001 ||
+                    Math.Abs(value.Z - mYawPitchRoll.Z) > 0.0001)
+                {
+                    mRotation = Quaternion.CreateFromYawPitchRoll(value.X, value.Y, value.Z);
+                    mYawPitchRoll = value;
+                }
+            }
+        }
+        [XmlIgnore]
         public InanimateModel mDrawableModel { get; set; }
         [XmlIgnore]
         public UInt32 ObjectID
@@ -215,7 +206,7 @@ namespace GameConstructLibrary
                     mPhysicsStaticMesh = new StaticMesh(
                         vertices,
                         indices,
-                        new AffineTransform(Scale, Quaternion.CreateFromYawPitchRoll(YawPitchRoll.X, YawPitchRoll.Y, YawPitchRoll.Z), Position));
+                        new AffineTransform(Scale, Rotation, Position));
                 }
                 return mPhysicsStaticMesh;
             }
@@ -223,7 +214,6 @@ namespace GameConstructLibrary
 
         public DummyObject()
         {
-            RotationAngle = 0;
             IsHighlighted = false;
         }
 
@@ -235,9 +225,42 @@ namespace GameConstructLibrary
             Position = copy.Position;
             YawPitchRoll = copy.YawPitchRoll;
             Scale = copy.Scale;
+            Rotation = copy.Rotation;
             Height = copy.Height;
             Floating = copy.Floating;
             IsHighlighted = false;
+        }
+
+        public void ApplyRotation(Vector3 yawPitchRoll)
+        {
+            Quaternion newRotation = Quaternion.CreateFromYawPitchRoll(yawPitchRoll.X, yawPitchRoll.Y, yawPitchRoll.Z);
+
+            mRotation = Quaternion.Concatenate(mRotation, newRotation);
+            mYawPitchRoll = Utility.Utils.GetYawPitchRollFromQuaternion(mRotation);
+            ParameterChanged();
+        }
+
+        public void ApplyRotation(Vector3 yawPitchRoll, Vector3 centerOfRotation)
+        {
+            Quaternion newRotation = Quaternion.CreateFromYawPitchRoll(yawPitchRoll.X, yawPitchRoll.Y, yawPitchRoll.Z);
+
+            mRotation = Quaternion.Concatenate(mRotation, newRotation);
+            mYawPitchRoll = Utility.Utils.GetYawPitchRollFromQuaternion(mRotation);
+
+            Vector3 offset = Position - centerOfRotation;
+            float distance = offset.Length();
+            if (distance > 0.0001f)
+            {
+                Position = centerOfRotation + Vector3.Normalize(Vector3.Transform(offset, newRotation)) * distance;
+            }
+
+            ParameterChanged();
+        }
+
+        public void ApplyScale(Vector3 scale)
+        {
+            mScale *= scale;
+            ParameterChanged();
         }
 
         private void ParameterChanged()
@@ -252,16 +275,15 @@ namespace GameConstructLibrary
 
         public void Draw()
         {
-            Vector3 finalPosition = new Vector3(Position.X, Position.Y + Height/* * Utils.WorldScale.Y*/, Position.Z);
-            Matrix orientation = Matrix.CreateRotationX(mYawPitchRoll.X) * Matrix.CreateRotationY(mYawPitchRoll.Y) * Matrix.CreateRotationZ(mYawPitchRoll.Z);// RotationAngle == 0 ? Matrix.CreateFromYawPitchRoll(YawPitchRoll.X, YawPitchRoll.Y, YawPitchRoll.Z) : Matrix.CreateFromAxisAngle(RotationAxis, RotationAngle);
+            Vector3 finalPosition = new Vector3(Position.X, Position.Y + Height, Position.Z);
             if (IsHighlighted)
             {
-                mDrawableModel.Render(finalPosition, orientation, Scale, Color.Red, 0.5f, false);
+                mDrawableModel.Render(finalPosition, Matrix.CreateFromQuaternion(mRotation), Scale, Color.Red, 0.5f, false);
                 IsHighlighted = false;
             }
             else
             {
-                mDrawableModel.Render(finalPosition, orientation, Scale, false);
+                mDrawableModel.Render(finalPosition, Matrix.CreateFromQuaternion(mRotation), Scale, false);
             }
         }
 

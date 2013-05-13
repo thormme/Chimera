@@ -243,7 +243,7 @@ namespace WorldEditor
             {
                 HeightMapMesh mesh = AssetLibrary.LookupHeightMap(mName + vertex.Item1.ToString()).Mesh;
 
-                mesh.SetVertexHeight(vertex.Item2, mesh.GetVertexHeight(vertex.Item2) + deltaHeight);
+                mesh.SetVertexHeight(vertex.Item2, Math.Min(1.0f, mesh.GetVertexHeight(vertex.Item2) + deltaHeight));
             }
         }
 
@@ -254,7 +254,7 @@ namespace WorldEditor
             {
                 HeightMapMesh mesh = AssetLibrary.LookupHeightMap(mName + vertex.Item1.ToString()).Mesh;
 
-                mesh.SetVertexHeight(vertex.Item2, mesh.GetVertexHeight(vertex.Item2) - deltaHeight);
+                mesh.SetVertexHeight(vertex.Item2, Math.Max(0.0f, mesh.GetVertexHeight(vertex.Item2) - deltaHeight));
             }
         }
 

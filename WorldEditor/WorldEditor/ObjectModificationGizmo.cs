@@ -16,9 +16,6 @@ namespace WorldEditor
         const uint mXPickingID = 16777100;
         const uint mYPickingID = 16777101;
         const uint mZPickingID = 16777102;
-        const uint mYawPickingID   = 16777110;
-        const uint mPitchPickingID = 16777111;
-        const uint mRollPickingID  = 16777112;
 
         private Matrix mYawArmBaseRotation   = Matrix.CreateRotationY(MathHelper.Pi);
         private Matrix mPitchArmBaseRotation = Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateRotationZ(-MathHelper.PiOver2);
@@ -26,7 +23,7 @@ namespace WorldEditor
 
         public enum ModificationMode { TRANSLATE, SCALE, ROTATE };
 
-        private enum ModificationDirection { X, Y, Z, Yaw, Pitch, Roll };
+        private enum ModificationDirection { X, Y, Z};
 
         private UIModel mXPositionArm = new UIModel("translateGizmo");
         private UIModel mYPositionArm = new UIModel("translateGizmo");
@@ -67,12 +64,14 @@ namespace WorldEditor
             mYScaleArm.ObjectID = mYPickingID;
             mZScaleArm.ObjectID = mZPickingID;
 
-            mYawArm.ObjectID = mYawPickingID;
-            mPitchArm.ObjectID = mPitchPickingID;
-            mRollArm.ObjectID = mRollPickingID;
+            mYawArm.ObjectID   = mXPickingID;
+            mPitchArm.ObjectID = mYPickingID;
+            mRollArm.ObjectID  = mZPickingID;
 
             IsDragging = false;
         }
+
+        private Vector3 mOldPosition = Vector3.Zero;
 
         public void Update(List<DummyObject> selectedObjects, Viewport viewport)
         {
@@ -84,11 +83,6 @@ namespace WorldEditor
                 if (mousePixel == mXPickingID || mousePixel == mYPickingID || mousePixel == mZPickingID)
                 {
                     mDragMode = Mode;
-                    IsDragging = true;
-                }
-                else if (mousePixel == mYawPickingID || mousePixel == mPitchPickingID || mousePixel == mRollPickingID)
-                {
-                    mDragMode = ModificationMode.ROTATE;
                     IsDragging = true;
                 }
                 else
@@ -105,15 +99,6 @@ namespace WorldEditor
                         break;
                     case mZPickingID:
                         mDragDirection = ModificationDirection.Z;
-                        break;
-                    case mYawPickingID:
-                        mDragDirection = ModificationDirection.Yaw;
-                        break;
-                    case mPitchPickingID:
-                        mDragDirection = ModificationDirection.Pitch;
-                        break;
-                    case mRollPickingID:
-                        mDragDirection = ModificationDirection.Roll;
                         break;
                 }
                 mStartDragPoint = GetMouseWorldPosition(viewport);
@@ -139,11 +124,12 @@ namespace WorldEditor
                         float scaleMultiplier = (newDragPoint - Position).Length() / (mPreviousDragPoint - Position).Length();
                         foreach (DummyObject dummyObject in selectedObjects)
                         {
-                            dummyObject.Scale = dummyObject.Scale * scaleMultiplier * GetDragDirection() + (dummyObject.Scale * (Vector3.One - GetDragDirection()));
+                            Vector3 scale = scaleMultiplier * GetDragDirection() + (Vector3.One - GetDragDirection());
+                            dummyObject.ApplyScale(scale);
                         }
                         break;
                     case ModificationMode.ROTATE:
-                        Vector3 axis = GetRotationPlaneNormal();
+                        Vector3 axis = GetDragDirection();
                         Vector3 newDirection = Vector3.Normalize(newDragPoint - Position);
                         Vector3 previousDirection = Vector3.Normalize(mPreviousDragPoint - Position);
 
@@ -153,17 +139,8 @@ namespace WorldEditor
                         
                         foreach (DummyObject dummyObject in selectedObjects)
                         {
-                            Vector3 dummyOffset = dummyObject.Position - Position;
-                            if (dummyOffset != Vector3.Zero)
-                            {
-                                Matrix rotation = Matrix.CreateFromAxisAngle(axis, angle);
-                                Vector3 rotatedOffset = Vector3.Transform(dummyOffset, rotation);
-                                dummyObject.Position = Position + Vector3.Normalize(rotatedOffset) * dummyOffset.Length();
-                            }
-
                             Vector3 deltaYawPitchRoll = axis * angle;
-                            dummyObject.YawPitchRoll += deltaYawPitchRoll;
-                            dummyObject.YawPitchRoll = new Vector3(dummyObject.YawPitchRoll.X % MathHelper.TwoPi, dummyObject.YawPitchRoll.Y % MathHelper.TwoPi, dummyObject.YawPitchRoll.Z % MathHelper.TwoPi);
+                            dummyObject.ApplyRotation(deltaYawPitchRoll, Position);
                         }
                         break;
                 }
@@ -268,24 +245,9 @@ namespace WorldEditor
             }
         }
 
-        private Vector3 GetRotationPlaneNormal()
-        {
-            switch (mDragDirection)
-            {
-                case ModificationDirection.Yaw:
-                    return Vector3.UnitY;
-                case ModificationDirection.Pitch:
-                    return Vector3.UnitX;
-                case ModificationDirection.Roll:
-                    return Vector3.UnitZ;
-                default:
-                    return Vector3.Zero;
-            }
-        }
-
         private Vector3 GetMouseWorldPosition(Viewport viewport)
         {
-            if (mDragDirection == ModificationDirection.X || mDragDirection == ModificationDirection.Y || mDragDirection == ModificationDirection.Z)
+            if (Mode != ModificationMode.ROTATE)
             {
                 Vector3 dragDirection = GetDragDirection();
                 Plane perpendicularPlane = new Plane(mCamera.Position, Position + dragDirection, Position);
@@ -322,7 +284,7 @@ namespace WorldEditor
                         mCamera.ViewTransform,
                         mCamera.ProjectionTransform),
                     Position,
-                    GetRotationPlaneNormal());
+                    GetDragDirection());
                 return worldPosition;
             }
         }

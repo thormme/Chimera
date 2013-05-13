@@ -584,6 +584,10 @@ namespace GraphicsLibrary
             }
 
             mDevice.Clear(ClearOptions.DepthBuffer, new Vector4(0), 65535, 0);
+            cull = new RasterizerState();
+            cull.CullMode = CullMode.None;
+
+            mDevice.RasterizerState = cull;
 
             foreach (RendererBase renderer in mRenderQueue)
             {

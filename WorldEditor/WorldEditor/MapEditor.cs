@@ -581,7 +581,7 @@ namespace WorldEditor
             float Roll = (float)ObjectParameterPane.Roll.Value * (float)Math.PI / 180.0f;
             float Pitch = (float)ObjectParameterPane.Pitch.Value * (float)Math.PI / 180.0f;
             float Yaw = (float)ObjectParameterPane.Yaw.Value * (float)Math.PI / 180.0f;
-            dummyObject.YawPitchRoll = new Vector3(Roll, Pitch, Yaw);
+            dummyObject.Rotation = Quaternion.CreateFromYawPitchRoll(Yaw, Pitch, Roll);
 
             float ScaleX = (float)ObjectParameterPane.ScaleX.Value;
             float ScaleY = (float)ObjectParameterPane.ScaleY.Value;
