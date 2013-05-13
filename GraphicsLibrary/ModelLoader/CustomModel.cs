@@ -117,16 +117,16 @@ namespace GraphicsLibrary.ModelLoader
                 ParentMesh = parentMesh;
                 BindPose = bindPose;
                 Parts = parts;
-                Parts.CollectionChanged += Parts_CollectionChanged;
+                Parts.CollectionChanged += Parts_CollectionChanged<VertexPositionNormalTexture>;
             }
 
-            void Parts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+            void Parts_CollectionChanged<T>(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) where T : VertexPositionNormalTexture
             {
                 BoundingSphere.Center = Vector3.Zero;
                 int numVertices = 0;
                 foreach (var part in Parts)
                 {
-                    VertexPositionNormalTexture[] vertices = new VertexPositionNormalTexture[part.VertexBuffer.VertexCount];
+                    T[] vertices = new T[part.VertexBuffer.VertexCount];
                     part.VertexBuffer.GetData(vertices);
                     foreach (var vertex in vertices)
                     {
@@ -140,7 +140,7 @@ namespace GraphicsLibrary.ModelLoader
                 foreach (var part in Parts)
                 {
                     // TODO: don't extract verts twice
-                    VertexPositionNormalTexture[] vertices = new VertexPositionNormalTexture[part.VertexBuffer.VertexCount];
+                    T[] vertices = new T[part.VertexBuffer.VertexCount];
                     part.VertexBuffer.GetData(vertices);
                     foreach (var vertex in vertices)
                     {
