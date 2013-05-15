@@ -389,7 +389,7 @@ namespace WorldEditor
             {
                 mLevel.IterateOverBlocksInRadius(CursorPosition, CursorOuterRadius, RenderCursor, new object[] { (HeightMapRenderable.CursorShape?)DrawCursor, (float?)(CursorInnerRadius), (float?)CursorOuterRadius, (Vector3?)CursorPosition });
                 mLevel.IterateOverBlocksInContainer(mSelectedBlocks, SelectBlock, null);
-                mLevel.Render();
+                mLevel.Render(false);
             }
 
             if (mWater != null && DrawWater)

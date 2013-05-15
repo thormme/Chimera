@@ -60,9 +60,9 @@
             this.ViewSkyBoxMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewWaterMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewShadowsMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewWireframeMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextToolsPanel = new System.Windows.Forms.Panel();
             this.GizmoForm = new WorldEditor.Dialogs.GizmoForm();
-            this.BlockLayerSelectionForm = new WorldEditor.Dialogs.BlockLayerSelectionForm();
             this.TextureSelectionForm = new WorldEditor.Dialogs.TextureSelectionForm();
             this.ObjectPlacementPanel = new WorldEditor.Dialogs.ObjectPlacementPanel();
             this.TextureLayerForm = new WorldEditor.Dialogs.TextureLayerContainerForm();
@@ -73,7 +73,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.editorPanel = new WorldEditor.Dialogs.Editor();
-            this.ViewWireframeMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.ContextToolsPanel.SuspendLayout();
@@ -349,7 +348,7 @@
             this.ViewSkyBoxMenu.CheckOnClick = true;
             this.ViewSkyBoxMenu.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ViewSkyBoxMenu.Name = "ViewSkyBoxMenu";
-            this.ViewSkyBoxMenu.Size = new System.Drawing.Size(152, 22);
+            this.ViewSkyBoxMenu.Size = new System.Drawing.Size(146, 22);
             this.ViewSkyBoxMenu.Text = "Sky Box";
             // 
             // ViewWaterMenu
@@ -358,7 +357,7 @@
             this.ViewWaterMenu.CheckOnClick = true;
             this.ViewWaterMenu.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ViewWaterMenu.Name = "ViewWaterMenu";
-            this.ViewWaterMenu.Size = new System.Drawing.Size(152, 22);
+            this.ViewWaterMenu.Size = new System.Drawing.Size(146, 22);
             this.ViewWaterMenu.Text = "Water Plane";
             // 
             // ViewShadowsMenu
@@ -367,15 +366,23 @@
             this.ViewShadowsMenu.CheckOnClick = true;
             this.ViewShadowsMenu.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ViewShadowsMenu.Name = "ViewShadowsMenu";
-            this.ViewShadowsMenu.Size = new System.Drawing.Size(152, 22);
+            this.ViewShadowsMenu.Size = new System.Drawing.Size(146, 22);
             this.ViewShadowsMenu.Text = "Shadows";
+            // 
+            // ViewWireframeMenu
+            // 
+            this.ViewWireframeMenu.Checked = true;
+            this.ViewWireframeMenu.CheckOnClick = true;
+            this.ViewWireframeMenu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ViewWireframeMenu.Name = "ViewWireframeMenu";
+            this.ViewWireframeMenu.Size = new System.Drawing.Size(146, 22);
+            this.ViewWireframeMenu.Text = "Wireframe";
             // 
             // ContextToolsPanel
             // 
             this.ContextToolsPanel.AutoScroll = true;
             this.ContextToolsPanel.BackColor = System.Drawing.SystemColors.Control;
             this.ContextToolsPanel.Controls.Add(this.GizmoForm);
-            this.ContextToolsPanel.Controls.Add(this.BlockLayerSelectionForm);
             this.ContextToolsPanel.Controls.Add(this.TextureSelectionForm);
             this.ContextToolsPanel.Controls.Add(this.ObjectPlacementPanel);
             this.ContextToolsPanel.Controls.Add(this.TextureLayerForm);
@@ -391,18 +398,10 @@
             // GizmoForm
             // 
             this.GizmoForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.GizmoForm.Location = new System.Drawing.Point(0, 1556);
+            this.GizmoForm.Location = new System.Drawing.Point(0, 1526);
             this.GizmoForm.Name = "GizmoForm";
             this.GizmoForm.Size = new System.Drawing.Size(234, 57);
             this.GizmoForm.TabIndex = 23;
-            // 
-            // BlockLayerSelectionForm
-            // 
-            this.BlockLayerSelectionForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BlockLayerSelectionForm.Location = new System.Drawing.Point(0, 1526);
-            this.BlockLayerSelectionForm.Name = "BlockLayerSelectionForm";
-            this.BlockLayerSelectionForm.Size = new System.Drawing.Size(234, 30);
-            this.BlockLayerSelectionForm.TabIndex = 22;
             // 
             // TextureSelectionForm
             // 
@@ -492,15 +491,6 @@
             this.editorPanel.Size = new System.Drawing.Size(667, 483);
             this.editorPanel.TabIndex = 0;
             // 
-            // ViewWireframeMenu
-            // 
-            this.ViewWireframeMenu.Checked = true;
-            this.ViewWireframeMenu.CheckOnClick = true;
-            this.ViewWireframeMenu.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ViewWireframeMenu.Name = "ViewWireframeMenu";
-            this.ViewWireframeMenu.Size = new System.Drawing.Size(152, 22);
-            this.ViewWireframeMenu.Text = "Wireframe";
-            // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -570,7 +560,6 @@
         private System.Windows.Forms.ToolStripButton SelectBlockButton;
         private System.Windows.Forms.ToolStripButton CreateBlockButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        public BlockLayerSelectionForm BlockLayerSelectionForm;
         public GizmoForm GizmoForm;
         public System.Windows.Forms.ToolStripMenuItem ViewWireframeMenu;
     }

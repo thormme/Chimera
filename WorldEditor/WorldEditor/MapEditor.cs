@@ -20,7 +20,6 @@ namespace WorldEditor
 
     public class MapEditor
     {
-
         #region Constants
 
         private const string ContentPath = "Content";
@@ -139,7 +138,6 @@ namespace WorldEditor
             this.TextureBrushPropertiesPane = editorForm.TextureBrushPropertiesForm;
             this.TextureLayerPane = editorForm.TextureLayerForm;
             this.TextureSelectionPane = editorForm.TextureSelectionForm;
-            this.BlockLayerSelectionForm = editorForm.BlockLayerSelectionForm;
             this.GizmoForm = editorForm.GizmoForm;
             mGraphics = graphicsDevice;
             mGameControl = gameControl;
@@ -368,19 +366,6 @@ namespace WorldEditor
         private void CloseObjectParameterForm(object sender, EventArgs e)
         {
             ObjectParameterPane.Hide();
-        }
-
-        private void OpenBlockLayerSelectionForm(object sender, EventArgs e)
-        {
-            if (!BlockLayerSelectionForm.Visible)
-            {
-                BlockLayerSelectionForm.Show();
-            }
-        }
-
-        private void CloseBlockLayerSelectionForm(object sender, EventArgs e)
-        {
-            BlockLayerSelectionForm.Hide();
         }
 
         private void OpenGizmoForm(object sender, EventArgs e)
@@ -656,7 +641,6 @@ namespace WorldEditor
             {
                 case Dialogs.EditorForm.EditorMode.OBJECTS:
                     OpenGizmoForm(this, EventArgs.Empty);
-                    CloseBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     OpenObjectCreationForm(this, EventArgs.Empty);
@@ -672,7 +656,6 @@ namespace WorldEditor
                     break;
                 case Dialogs.EditorForm.EditorMode.BLOCKCREATION:
                     CloseGizmoForm(this, EventArgs.Empty);
-                    OpenBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
@@ -682,7 +665,6 @@ namespace WorldEditor
                     break;
                 case Dialogs.EditorForm.EditorMode.BLOCKSELECTION:
                     CloseGizmoForm(this, EventArgs.Empty);
-                    OpenBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
@@ -692,7 +674,6 @@ namespace WorldEditor
                     break;
                 case Dialogs.EditorForm.EditorMode.HEIGHTMAP:
                     CloseGizmoForm(this, EventArgs.Empty);
-                    CloseBlockLayerSelectionForm(this, EventArgs.Empty);
                     OpenHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     CloseTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
@@ -702,7 +683,6 @@ namespace WorldEditor
                     break;
                 case Dialogs.EditorForm.EditorMode.PAINTING:
                     CloseGizmoForm(this, EventArgs.Empty);
-                    CloseBlockLayerSelectionForm(this, EventArgs.Empty);
                     CloseHeightMapBrushPropertiesPane(this, EventArgs.Empty);
                     OpenTextureBrushPropertiesPane(this, EventArgs.Empty);
                     CloseObjectCreationForm(this, EventArgs.Empty);
@@ -810,7 +790,7 @@ namespace WorldEditor
                             mCamera.ProjectionTransform);
 
                         Vector3 coordinate = Utils.ProjectVectorOntoPlane(ray, new Vector3(0, EditorForm.BlockLayer * Level.BLOCK_SIZE, 0), Vector3.Up);
-                        mDummyWorld.AddBlock(new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), (float)Math.Floor(coordinate.Y / Level.BLOCK_SIZE), (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE)));
+                        mDummyWorld.AddBlock(new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), 0.0f, (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE)));
                         break;
                     }
                     case Dialogs.EditorForm.EditorMode.BLOCKSELECTION:
@@ -823,7 +803,7 @@ namespace WorldEditor
                             mCamera.ProjectionTransform);
 
                         Vector3 coordinate = Utils.ProjectVectorOntoPlane(ray, new Vector3(0, EditorForm.BlockLayer * Level.BLOCK_SIZE, 0), Vector3.Up);
-                        coordinate = new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), (float)Math.Floor(coordinate.Y / Level.BLOCK_SIZE), (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE));
+                        coordinate = new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), 0.0f, (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE));
                         if (!mDummyWorld.ContainsBlock(coordinate) ||!mControls.Control.Active)
                         {
                             mDummyWorld.ClearSelectedBlocks();

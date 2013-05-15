@@ -205,8 +205,6 @@ namespace WorldEditor.Dialogs
 
             ObjectParametersForm.SizeChanged += delegate { ObjectParameterFormContainer.Height = ObjectParametersForm.Height; };
             ObjectParametersForm.VisibleChanged += UpdateParameterFormVisibility;
-
-            BlockLayerSelectionForm.BlockLayerUpDown.ValueChanged += Block_Layer_Changed;
         }
 
         private void UpdateParameterFormVisibility(object sender, EventArgs e)

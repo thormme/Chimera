@@ -64,11 +64,11 @@ namespace GameConstructLibrary
             }
         }
 
-        public void Render()
+        public void Render(bool tryCull)
         {
             foreach (LevelBlock block in mBlocks.Values)
             {
-                block.Render();
+                block.Render(tryCull);
             }
         }
 

@@ -31,9 +31,9 @@ namespace GameConstructLibrary
             mHeightMapBlock = new HeightMapBlock(mName, coordinate * scale, new Quaternion(), new Vector3(scale));
         }
 
-        public void Render()
+        public void Render(bool tryCull)
         {
-            mHeightMapBlock.Render();
+            mHeightMapBlock.Render(tryCull);
         }
 
         public void SerializeObjects()

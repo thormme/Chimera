@@ -35,6 +35,11 @@ namespace GameConstructLibrary
 
         #region Properties
 
+        public void Render(bool tryCull)
+        {
+            mRenderable.Render(Position, XNAOrientationMatrix, Scale, tryCull);
+        }
+
         public void Render()
         {
             mRenderable.Render(Position, XNAOrientationMatrix, Scale);
