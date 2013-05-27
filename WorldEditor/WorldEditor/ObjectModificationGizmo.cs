@@ -255,8 +255,8 @@ namespace WorldEditor
                 Vector2 rayPosition;
                 Vector2 rayDirection;
                 Utils.ProjectRayToScreenSpace(new Ray(Position, dragDirection),
-                    viewport, mCamera.ViewTransform,
-                    mCamera.ProjectionTransform,
+                    viewport, mCamera.View,
+                    mCamera.Projection,
                     out rayPosition,
                     out rayDirection);
                 Vector2 screenPoint = Utils.NearestPointOnLine(
@@ -268,8 +268,8 @@ namespace WorldEditor
                         screenPoint,
                         viewport,
                         mCamera.Position,
-                        mCamera.ViewTransform,
-                        mCamera.ProjectionTransform),
+                        mCamera.View,
+                        mCamera.Projection),
                     Position,
                     pickingPlane.Normal);
                 return worldPosition;
@@ -281,8 +281,8 @@ namespace WorldEditor
                         new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
                         viewport,
                         mCamera.Position,
-                        mCamera.ViewTransform,
-                        mCamera.ProjectionTransform),
+                        mCamera.View,
+                        mCamera.Projection),
                     Position,
                     GetDragDirection());
                 return worldPosition;

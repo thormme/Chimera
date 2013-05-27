@@ -210,7 +210,7 @@ namespace GraphicsLibrary
             Vector3.Transform(sceneCorners, ref mLightView, sceneCorners);
             BoundingBox lightSpaceSceneAABB = BoundingBox.CreateFromPoints(sceneCorners);
 
-            float maxCameraDistance = camera.GetFarPlaneDistance() - camera.GetNearPlaneDistance();
+            float maxCameraDistance = camera.FarPlaneDistance - camera.NearPlaneDistance;
             Vector3 cameraPosition = Vector3.Transform(camera.Position, mLightView);
 
             for (int iCascadeCount = 0; iCascadeCount < mCascadeCount; iCascadeCount++)
@@ -235,11 +235,11 @@ namespace GraphicsLibrary
                     Matrix frustumProjection = Matrix.CreatePerspectiveFieldOfView(
                         camera.FieldOfView,
                         camera.AspectRatio,
-                        camera.GetNearPlaneDistance(),
-                        camera.GetNearPlaneDistance() + farCascadeDistance
+                        camera.NearPlaneDistance,
+                        camera.NearPlaneDistance + farCascadeDistance
                         );
 
-                    Vector3[] frustumCorners = new BoundingFrustum(camera.GetViewTransform() * frustumProjection).GetCorners();
+                    Vector3[] frustumCorners = new BoundingFrustum(camera.View * frustumProjection).GetCorners();
                     Vector3.Transform(frustumCorners, ref mLightView, frustumCorners);
                     BoundingBox frustumBounds = BoundingBox.CreateFromPoints(frustumCorners);
 

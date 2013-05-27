@@ -36,26 +36,33 @@ namespace GraphicsLibrary
         /// <summary>
         /// Transformation of vector in to camera space.
         /// </summary>
-        Matrix GetViewTransform();
+        Matrix View
+        {
+            get;
+        }
 
         /// <summary>
         /// Orthographic projection in to view frustum.
         /// </summary>
-        Matrix GetProjectionTransform();
+        Matrix Projection
+        {
+            get;
+        }
 
         /// <summary>
         /// Distance of far plane from camera.
         /// </summary>
-        float GetFarPlaneDistance();
+        float FarPlaneDistance
+        {
+            get;
+        }
 
         /// <summary>
         /// Distance of the near plance from camera.
         /// </summary>
-        float GetNearPlaneDistance();
-
-        /// <summary>
-        /// Sets distance of far plane from camera.
-        /// </summary>
-        void SetFarPlaneDistance(float value);
+        float NearPlaneDistance
+        {
+            get;
+        }
     }
 }

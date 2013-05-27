@@ -149,6 +149,7 @@
     <Compile Include="SkyBox.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="StanceManager.cs" />
+    <Compile Include="StaticCamera.cs" />
     <Compile Include="StepManager.cs" />
     <Compile Include="SupportFinder.cs" />
     <Compile Include="TerrainPhysics.cs" />

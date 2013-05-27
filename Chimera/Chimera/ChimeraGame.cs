@@ -168,7 +168,7 @@ namespace Chimera
             GraphicsManager.CreateBuffers();
             if (Camera != null)
             {
-                (Camera as ChaseCamera).Viewport = newViewport;
+                (Camera as StaticCamera).Viewport = newViewport;
             }
         }
 
@@ -304,7 +304,7 @@ namespace Chimera
 
             IsMouseVisible = !InputAction.IsMouseLocked;
 
-            ChaseCamera camera = Camera as ChaseCamera;
+            StaticCamera camera = Camera as StaticCamera;
 
             if (mGameStates.Count > 0 && mGameStates[mGameStates.Count - 1] is PauseState && pause.Active)
             {
@@ -387,7 +387,7 @@ namespace Chimera
                 // DEBUG
                 if (debugMode && Camera != null)
                 {
-                    DebugModelDrawer.Draw(ChimeraGame.Camera.GetViewTransform(), ChimeraGame.Camera.GetProjectionTransform());
+                    DebugModelDrawer.Draw(ChimeraGame.Camera.View, ChimeraGame.Camera.Projection);
                 }
                 // END
 
