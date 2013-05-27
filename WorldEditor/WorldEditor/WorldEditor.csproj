@@ -77,6 +77,10 @@
     <Reference Include="BEPUphysics">
       <HintPath>..\..\Chimera\Chimera\libraries\bepu\x86\Release\BEPUphysics.dll</HintPath>
     </Reference>
+    <Reference Include="BEPUphysicsDrawer, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Chimera\Chimera\libraries\bepu\x86\Release\BEPUphysicsDrawer.dll</HintPath>
+    </Reference>
     <Reference Include="LzmaSharp">
       <HintPath>..\..\Chimera\Chimera\libraries\nuclex\xna-4.0-x86\LzmaSharp.dll</HintPath>
     </Reference>

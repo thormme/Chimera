@@ -142,6 +142,8 @@ namespace GraphicsLibrary
             mEffect.Parameters["xTextureOffset"].SetValue(waterInstance.TextureAnimationOffset);
             mEffect.Texture = AssetLibrary.LookupTexture(waterInstance.TextureName);
 
+            mEffect.Parameters["xIsBeingSpaghettified"].SetValue(false);
+
             GraphicsManager.Device.SetVertexBuffer(mVertexBuffer);
             GraphicsManager.Device.Indices = mIndexBuffer;
 

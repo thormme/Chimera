@@ -150,6 +150,8 @@ namespace GraphicsLibrary
             mEffect.Parameters["xOverlayColorWeight"].SetValue(instance.OverlayWeight);
             mEffect.Parameters["xTextureOffset"].SetValue(instance.TextureAnimationOffset);
 
+            mEffect.Parameters["xIsBeingSpaghettified"].SetValue(false);
+
             mEffect.Parameters["xDrawCursor"].SetValue((int)terrainInstance.DrawCursor);
 
             if (terrainInstance.DrawCursor != HeightMapRenderable.CursorShape.NONE)

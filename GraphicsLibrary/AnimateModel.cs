@@ -44,6 +44,27 @@ namespace GraphicsLibrary
             }
         }
 
+        private bool mSpaghettify = false;
+        public bool Spaghettify
+        {
+            get { return mSpaghettify; }
+            set { mSpaghettify = value; }
+        }
+
+        private Vector3 mWormholePosition = Vector3.Zero;
+        public Vector3 WormholePosition
+        {
+            get { return mWormholePosition; }
+            set { mWormholePosition = value; }
+        }
+
+        private float mMaxWormholeDistance = 0.0f;
+        public float MaxWormholeDistance
+        {
+            get { return mMaxWormholeDistance; }
+            set { mMaxWormholeDistance = value; }
+        }
+
         #endregion
 
         #region Public Methods
@@ -123,12 +144,15 @@ namespace GraphicsLibrary
         {
             AnimateModelRenderer.AnimateModelParameters parameters = new AnimateModelRenderer.AnimateModelParameters();
             parameters.BoundingBox = BoundingBox;
+            parameters.Spaghettify = mSpaghettify;
+            parameters.MaxWormholeDistance = mMaxWormholeDistance;
             parameters.Name = Name;
             parameters.OverlayColor = overlayColor;
             parameters.OverlayWeight = overlayColorWeight;
             parameters.SkinTransforms = AnimationPlayer.GetSkinTransforms(); ;
             parameters.TryCull = tryCull;
             parameters.World = worldTransform;
+            parameters.WormholePosition = mWormholePosition;
 
             GraphicsManager.EnqueueRenderable(parameters, RendererType);
         }

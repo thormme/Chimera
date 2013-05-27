@@ -62,17 +62,20 @@ namespace Chimera.Menus
             );
             Add(redButton);
 
-            Sprite slot0Sprite = mPlayer.PartAttachments[0].Part.Icon;
-            mSlots[0] = new GraphicItem(
-                new Microsoft.Xna.Framework.Rectangle(
-                    x,
-                    y,
-                    width,
-                    height
-                ),
-                slot0Sprite
-            );
-            Add(mSlots[0]);
+            if (mPlayer.PartAttachments[0] != null)
+            {
+                Sprite slot0Sprite = mPlayer.PartAttachments[0].Part.Icon;
+                mSlots[0] = new GraphicItem(
+                    new Microsoft.Xna.Framework.Rectangle(
+                        x,
+                        y,
+                        width,
+                        height
+                    ),
+                    slot0Sprite
+                );
+                Add(mSlots[0]);
+            }
 
             x += (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth) / 6;
             Sprite blueSprite = new Sprite("blueButton");
@@ -88,17 +91,20 @@ namespace Chimera.Menus
             );
             Add(blueButton);
 
-            Sprite slot1Sprite = mPlayer.PartAttachments[1].Part.Icon;
-            mSlots[1] = new GraphicItem(
-                new Microsoft.Xna.Framework.Rectangle(
-                    x,
-                    y,
-                    width,
-                    height
-                ),
-                slot1Sprite
-            );
-            Add(mSlots[1]);
+            if (mPlayer.PartAttachments[1] != null)
+            {
+                Sprite slot1Sprite = mPlayer.PartAttachments[1].Part.Icon;
+                mSlots[1] = new GraphicItem(
+                    new Microsoft.Xna.Framework.Rectangle(
+                        x,
+                        y,
+                        width,
+                        height
+                    ),
+                    slot1Sprite
+                );
+                Add(mSlots[1]);
+            }
 
             x += (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth) / 6;
             Sprite yellowSprite = new Sprite("yellowButton");
@@ -114,17 +120,20 @@ namespace Chimera.Menus
             );
             Add(yellowButton);
 
-            Sprite slot2Sprite = mPlayer.PartAttachments[2].Part.Icon;
-            mSlots[2] = new GraphicItem(
-                new Microsoft.Xna.Framework.Rectangle(
-                    x,
-                    y,
-                    width,
-                    height
-                ),
-                slot2Sprite
-            );
-            Add(mSlots[2]);
+            if (mPlayer.PartAttachments[2] != null)
+            {
+                Sprite slot2Sprite = mPlayer.PartAttachments[2].Part.Icon;
+                mSlots[2] = new GraphicItem(
+                    new Microsoft.Xna.Framework.Rectangle(
+                        x,
+                        y,
+                        width,
+                        height
+                    ),
+                    slot2Sprite
+                );
+                Add(mSlots[2]);
+            }
 
             Sprite doneSprite = new Sprite("check");
             x += (int)(GraphicsManager.Device.PresentationParameters.BackBufferWidth) / 6;

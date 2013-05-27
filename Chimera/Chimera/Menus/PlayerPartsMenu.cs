@@ -73,8 +73,10 @@ namespace Chimera.Menus
 
         private void CreatePart(Type part, Button button)
         {
-
-            mPlayer.RemovePart(mPlayer.PartAttachments[mSlot].Part);
+            if (mPlayer.PartAttachments[mSlot] != null)
+            {
+                mPlayer.RemovePart(mPlayer.PartAttachments[mSlot].Part);
+            }
             mPlayer.AddPart(Activator.CreateInstance(part) as Part, mSlot);
 
             string[] fullName = part.ToString().Split('.');

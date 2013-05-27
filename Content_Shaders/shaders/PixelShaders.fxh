@@ -226,7 +226,12 @@ float4 PickingPS() : COLOR0
 
 float4 NoShadePS(VSOutput pin) : SV_Target0
 {
-	float4 color = tex2D(NoShade_Sampler, pin.TexCoord + xTextureOffset);
+	float2 rotatedTexCoord = pin.TexCoord;
+	rotatedTexCoord -= float2(0.5f, 0.5f);
+	rotatedTexCoord = mul(rotatedTexCoord, xTextureTransformation);
+	rotatedTexCoord += float2(0.5f, 0.5f);
+
+	float4 color = tex2D(NoShade_Sampler, rotatedTexCoord);
 
 	float textureWeight = 1.0f - xOverlayColorWeight;
 	color.rgb *= textureWeight;

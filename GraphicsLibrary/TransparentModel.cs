@@ -20,7 +20,7 @@ namespace GraphicsLibrary
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
             TransparentModelRenderer.TransparentModelParameters parameters = new TransparentModelRenderer.TransparentModelParameters();
-            parameters.AnimationOffset = Vector2.Zero;
+            parameters.AnimationTransformation = Matrix.Identity;
             parameters.BoundingBox = BoundingBox;
             parameters.Name = Name;
             parameters.OverlayColor = overlayColor;

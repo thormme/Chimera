@@ -152,6 +152,8 @@ namespace GraphicsLibrary
             mDetailTextureUVOffset = uvOffsets;
             mDetailTextureUVScale  = uvScales;
 
+            UpdateNormalVectors();
+            
             if (mAlphaMap != null)
             {
                 InitializeTexture();
@@ -763,7 +765,14 @@ namespace GraphicsLibrary
 
         private Color HeightAsColor(float height)
         {
-            return new Color(height, height, height);
+            int[] bgr = new int[3];
+            int heightInt = (int)(height * 255.0f);
+            for (int i = 0; i < 3; i++)
+            {
+                bgr[i] = heightInt % 255;
+                heightInt /= 255;
+            }
+            return new Color(bgr[2], bgr[1], bgr[0]);
         }
 
         #endregion

@@ -29,6 +29,8 @@ namespace GraphicsLibrary
             mEffect.Parameters["xOverlayColorWeight"].SetValue(instance.OverlayWeight);
             mEffect.Parameters["xTextureOffset"].SetValue(instance.TextureAnimationOffset);
 
+            mEffect.Parameters["xIsBeingSpaghettified"].SetValue(false);
+
             mEffect.Texture = mMesh.AlphaMap;
 
             effectConfigurer(mEffect, instance, optionalParameters);

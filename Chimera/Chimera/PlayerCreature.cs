@@ -337,7 +337,7 @@ namespace Chimera
 
             SpawnOrigin = position;
 
-            mSuckModel = new ScrollingTransparentModel("suckCone", new Vector2(0.5f, 0.5f));
+            mSuckModel = new ScrollingTransparentModel("suckCone", new Vector2(MathHelper.TwoPi * 2.0f));
 
             for (int i = 0; i < NumParts; i++)
             {

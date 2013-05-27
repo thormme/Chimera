@@ -533,6 +533,7 @@ namespace GameConstructLibrary
             // Check for intersection with the scene.  Move camera forward if need be.
             BEPUphysics.RayCastResult result = new BEPUphysics.RayCastResult();
             Func<BroadPhaseEntry, bool> filter = (bfe) => (
+                !(bfe.Tag is Actor) &&
                 !(bfe.Tag is Sensor) && 
                 !(bfe.Tag is CharacterSynchronizer) && 
                 !(bfe.Tag is InvisibleWall)

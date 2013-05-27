@@ -194,6 +194,7 @@
     <Compile Include="ListeningSensor.cs" />
     <Compile Include="StateTimer.cs" />
     <Compile Include="Trigger.cs" />
+    <Compile Include="Wormhole.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -248,6 +249,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="default.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mountain.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="whomp.lvl">

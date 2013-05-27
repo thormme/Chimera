@@ -31,7 +31,7 @@ namespace GraphicsLibrary
         protected override void Draw(Matrix worldTransform, Color overlayColor, float overlayColorWeight, bool tryCull)
         {
             TransparentModelRenderer.TransparentModelParameters parameters = new TransparentModelRenderer.TransparentModelParameters();
-            parameters.AnimationOffset = new Vector2((mAnimationRate.X * mElapsedTime) % 1.0f, (mAnimationRate.Y * mElapsedTime) % 1.0f);
+            parameters.AnimationTransformation = Matrix.CreateRotationZ((mAnimationRate.X * mElapsedTime) % MathHelper.TwoPi);
             parameters.BoundingBox = BoundingBox;
             parameters.Name = Name;
             parameters.OverlayColor = overlayColor;

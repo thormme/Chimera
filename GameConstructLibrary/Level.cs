@@ -13,7 +13,7 @@ namespace GameConstructLibrary
     {
         #region Constants
 
-        public const float BLOCK_SIZE = 25.0f;
+        public const float BLOCK_SIZE = 50.0f;
 
         #endregion
 

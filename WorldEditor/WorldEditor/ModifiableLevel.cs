@@ -158,7 +158,7 @@ namespace WorldEditor
         private Vector3 CoordinateFromPosition(Vector3 position)
         {
             return new Vector3((float)Math.Floor(position.X / BLOCK_SIZE),
-                (float)Math.Floor(position.Y / BLOCK_SIZE + 0.00001f),
+                0.0f,
                 (float)Math.Floor(position.Z / BLOCK_SIZE));
         }
 
@@ -243,7 +243,7 @@ namespace WorldEditor
             {
                 HeightMapMesh mesh = AssetLibrary.LookupHeightMap(mName + vertex.Item1.ToString()).Mesh;
 
-                mesh.SetVertexHeight(vertex.Item2, Math.Min(1.0f, mesh.GetVertexHeight(vertex.Item2) + deltaHeight));
+                mesh.SetVertexHeight(vertex.Item2, mesh.GetVertexHeight(vertex.Item2) + deltaHeight);
             }
         }
 

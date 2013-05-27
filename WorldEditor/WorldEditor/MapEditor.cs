@@ -167,7 +167,7 @@ namespace WorldEditor
 
                 var pickingResult = mEntity.GetPickingLocation(mDummyWorld, null);
 
-                mPlaceable = pickingResult != null && mControls.MouseInViewport;
+                mPlaceable = pickingResult != null;// && mControls.MouseInViewport;
 
                 if (mPlaceable && mCursorObject != null)
                 {

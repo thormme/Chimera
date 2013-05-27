@@ -24,6 +24,17 @@ namespace GraphicsLibrary
 
         #endregion
 
+        #region Structures
+
+        public class ModelParameters : RendererBase.RendererParameters
+        {
+            public bool Spaghettify { get; set; }
+            public Vector3 WormholePosition { get; set; }
+            public float MaxWormholeDistance { get; set; }
+        }
+
+        #endregion
+
         #region Public Interface
 
         public ModelRenderer(Model model)
@@ -131,7 +142,9 @@ namespace GraphicsLibrary
         
         protected override void DrawGeometry(Matrix view, Matrix projection, object[] optionalParameters, EffectConfigurer effectConfigurer, RendererParameters instance)
         {
-            if (instance.TryCull && GraphicsManager.ViewBoundingFrustum.Contains(instance.BoundingBox) == ContainmentType.Disjoint)
+            ModelParameters modelInstance = instance as ModelParameters;
+
+            if (modelInstance.TryCull && GraphicsManager.ViewBoundingFrustum.Contains(modelInstance.BoundingBox) == ContainmentType.Disjoint)
             {
                 return;
             }
@@ -140,15 +153,20 @@ namespace GraphicsLibrary
             {
                 foreach (AnimationUtilities.SkinnedEffect effect in mesh.Effects)
                 {
-                    effect.World      = instance.World;
+                    effect.World = modelInstance.World;
                     effect.View       = view;
                     effect.Projection = projection;
 
-                    effect.Parameters["xOverlayColor"].SetValue(instance.OverlayColor.ToVector3());
-                    effect.Parameters["xOverlayColorWeight"].SetValue(instance.OverlayWeight);
-                    effect.Parameters["xTextureOffset"].SetValue(instance.TextureAnimationOffset);
+                    effect.Parameters["xOverlayColor"].SetValue(modelInstance.OverlayColor.ToVector3());
+                    effect.Parameters["xOverlayColorWeight"].SetValue(modelInstance.OverlayWeight);
+                    effect.Parameters["xTextureOffset"].SetValue(modelInstance.TextureAnimationOffset);
 
-                    effectConfigurer(effect, instance, optionalParameters);
+                    effect.Parameters["xIsBeingSpaghettified"].SetValue(modelInstance.Spaghettify);
+                    effect.Parameters["xWormholePosition"].SetValue(modelInstance.WormholePosition);
+                    effect.Parameters["xMaxWormholeDistance"].SetValue(modelInstance.MaxWormholeDistance);
+                    effect.Parameters["xModelWormholeDistance"].SetValue((modelInstance.WormholePosition - modelInstance.World.Translation).Length());
+
+                    effectConfigurer(effect, modelInstance, optionalParameters);
                 }
                 mesh.Draw();
             }

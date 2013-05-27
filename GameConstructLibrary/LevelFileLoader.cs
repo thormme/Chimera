@@ -352,7 +352,7 @@ namespace GameConstructLibrary
 
         static private float ConvertColorToFloat(Color heightColor)
         {
-            return heightColor.R / 255.0f;
+            return (heightColor.R * 255.0f * 255.0f + heightColor.G * 255.0f + heightColor.B) / 255.0f;
         }
 
         #endregion

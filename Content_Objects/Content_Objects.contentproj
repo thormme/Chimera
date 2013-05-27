@@ -44,6 +44,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Name>CheetahSpawner</Name>
     </None>
+    <None Include="objects\Wormhole.prop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Wormhole</Name>
+    </None>
     <None Include="objects\EagleSpawner.prop">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Name>EagleSpawner</Name>

@@ -39,12 +39,18 @@ BEGIN_CONSTANTS
 	float  xOverlayColorWeight;
 
 	float2 xTextureOffset;
+	float4x4 xTextureTransformation;
 
 	float  xNumShadowBands;
 
 	bool  xVisualizeCascades;
 	float xCascadeCount;
 	float4 xCascadeBufferBounds[MAX_CASCADE_COUNT];
+
+	bool   xIsBeingSpaghettified;
+	float3 xWormholePosition;
+	float  xMaxWormholeDistance;
+	float  xModelWormholeDistance;
 
 	uint xDrawCursor;
 	float3 xCursorPosition;
@@ -72,7 +78,7 @@ BEGIN_CONSTANTS
 
 MATRIX_CONSTANTS
 
-    float4x4 WorldViewProj                      _vs(c15)          _cb(c0);
+    float4x4 ViewProj                      _vs(c15)          _cb(c0);
 	float4x4 LightWorldViewProj;
 	float4x4 AnimateLightWorldViewProj;
 	float4x4 xLightView;

@@ -17,7 +17,7 @@ namespace GraphicsLibrary
 
         #region Structures
 
-        public class AnimateModelParameters : RendererBase.RendererParameters
+        public class AnimateModelParameters : ModelRenderer.ModelParameters
         {
             public Matrix[] SkinTransforms { get; set; }
         }

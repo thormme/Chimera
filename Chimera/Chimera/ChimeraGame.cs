@@ -149,6 +149,13 @@ namespace Chimera
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Sensor.SensorGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, Projectile.SensorProjectileGroup), CollisionRule.NoBroadPhase);
             CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Projectile.SensorProjectileGroup, InvisibleWall.InvisibleWallGroup), CollisionRule.NoBroadPhase);
+
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Wormhole.WormholeGroup, CollisionRules.DefaultDynamicCollisionGroup), CollisionRule.NoSolver);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Wormhole.WormholeGroup, CollisionRules.DefaultKinematicCollisionGroup), CollisionRule.NoSolver);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Wormhole.WormholeGroup, Projectile.ProjectileGroup), CollisionRule.NoBroadPhase);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Wormhole.WormholeGroup, Wormhole.WormholeGroup), CollisionRule.NoBroadPhase);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Wormhole.WormholeGroup, TerrainPhysics.TerrainPhysicsGroup), CollisionRule.NoBroadPhase);
+            CollisionRules.CollisionGroupRules.Add(new CollisionGroupPair(Wormhole.WormholeGroup, InvisibleWall.InvisibleWallGroup), CollisionRule.NoBroadPhase);
         }
 
         protected void ResizedWindow(object sender, EventArgs e)

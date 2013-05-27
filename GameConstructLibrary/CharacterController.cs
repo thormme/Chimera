@@ -328,6 +328,11 @@ namespace GameConstructLibrary
 
         public SupportData supportData;
 
+        public void ClearSupportData()
+        {
+            SupportFinder.ClearSupportData();
+            supportData = new SupportData();
+        }
 
         void IBeforeSolverUpdateable.Update(float dt)
         {

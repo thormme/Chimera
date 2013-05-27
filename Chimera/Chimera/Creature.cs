@@ -88,6 +88,72 @@ namespace Chimera
             }
         }
 
+        #region Wormhole Interactions
+
+        public virtual void Spaghettify(Vector3 wormholePosition, Vector3 wormholeAxis, float minGravityDistance, float maxGravityDistance)
+        {
+            Entity.IsAffectedByGravity = false;
+
+            Vector3 offset = wormholePosition - Position;
+            float distance = offset.Length();
+
+            offset.Normalize();
+
+            float dot = Vector3.Dot(offset, wormholeAxis);
+            if (dot >= 0.0f)
+            {
+                Die();
+            }
+
+            float accelerationMagnitude = 1.0f - distance / (maxGravityDistance - minGravityDistance);
+
+            Entity.LinearVelocity += offset * accelerationMagnitude * accelerationMagnitude * 20.0f;
+            CharacterController.ClearSupportData();
+
+            (mRenderable as AnimateModel).Spaghettify = true;
+            (mRenderable as AnimateModel).WormholePosition = wormholePosition;
+            (mRenderable as AnimateModel).MaxWormholeDistance = maxGravityDistance;
+
+            foreach (PartAttachment partAttachment in mPartAttachments)
+            {
+                if (partAttachment != null)
+                {
+                    int count = 0;
+                    foreach (PartBone partBone in partAttachment.Bones)
+                    {
+                        (partAttachment.Part.SubParts[count].Renderable as AnimateModel).Spaghettify = true;
+                        (partAttachment.Part.SubParts[count].Renderable as AnimateModel).WormholePosition = wormholePosition;
+                        (partAttachment.Part.SubParts[count].Renderable as AnimateModel).MaxWormholeDistance = maxGravityDistance;
+
+                        count++;
+                    }
+                }
+            }
+        }
+
+        public virtual void EscapeWormhole()
+        {
+            Entity.IsAffectedByGravity = true;
+
+            (mRenderable as AnimateModel).Spaghettify = false;
+
+            foreach (PartAttachment partAttachment in mPartAttachments)
+            {
+                if (partAttachment != null)
+                {
+                    int count = 0;
+                    foreach (PartBone partBone in partAttachment.Bones)
+                    {
+                        (partAttachment.Part.SubParts[count].Renderable as AnimateModel).Spaghettify = false;
+
+                        count++;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         #region Fields
 
         protected const double FlashLength = 0.5f;

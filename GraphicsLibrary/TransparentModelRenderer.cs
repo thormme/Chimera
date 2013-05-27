@@ -11,9 +11,9 @@ namespace GraphicsLibrary
     {
         #region Structure
 
-        public class TransparentModelParameters : RendererBase.RendererParameters
+        public class TransparentModelParameters : ModelRenderer.ModelParameters
         {
-            public Vector2 AnimationOffset { get; set; }
+            public Matrix AnimationTransformation { get; set; }
         }
 
         #endregion
@@ -34,7 +34,7 @@ namespace GraphicsLibrary
 
         protected override void NoShadeConfigurer(AnimationUtilities.SkinnedEffect effect, RendererParameters instance, object[] optionalParameters)
         {
-            effect.Parameters["xTextureOffset"].SetValue((instance as TransparentModelParameters).AnimationOffset);
+            effect.Parameters["xTextureTransformation"].SetValue((instance as TransparentModelParameters).AnimationTransformation);
 
             effect.CurrentTechnique = effect.Techniques["NoShade"];
         }

@@ -87,7 +87,10 @@ namespace GraphicsLibrary
             mEffect.Parameters["xOverlayColor"].SetValue(skyBoxInstance.OverlayColor.ToVector3());
             mEffect.Parameters["xOverlayColorWeight"].SetValue(skyBoxInstance.OverlayWeight);
             mEffect.Parameters["xTextureOffset"].SetValue(skyBoxInstance.TextureAnimationOffset);
-            
+            mEffect.Parameters["xTextureTransformation"].SetValue(Matrix.Identity);
+
+            mEffect.Parameters["xIsBeingSpaghettified"].SetValue(false);
+
             mEffect.Texture = AssetLibrary.LookupTexture(skyBoxInstance.TextureName);
 
             GraphicsManager.Device.SetVertexBuffer(mVertexBuffer);

@@ -215,7 +215,7 @@ namespace GameConstructLibrary
             SkyBox skydome = new SkyBox("default");
             Add(skydome);
 
-            LevelTheme = SoundManager.LookupSound("desertTheme").CreateInstance();
+            LevelTheme = SoundManager.LookupSound("dragonRoostIsland").CreateInstance();
             LevelTheme.IsLooped = true;
             LevelTheme.Play();
         }
