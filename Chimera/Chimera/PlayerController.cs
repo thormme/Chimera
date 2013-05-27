@@ -27,7 +27,7 @@ namespace Chimera
         private const int NumKeys = 10;
         private const int NumButtons = 3;
 
-        public ChaseCamera mCamera;
+        public StaticCamera mCamera;
 
         private GamePadThumbStickInputAction mMoveForward;
         private GamePadThumbStickInputAction mMoveRight;
@@ -92,14 +92,15 @@ namespace Chimera
 
         public PlayerController(Viewport viewPort) 
         {
-            mCamera = new ChaseCamera(viewPort);
-            mCamera.DesiredPositionLocal = new Vector3(0.0f, 2.0f, 10.0f);
-            mCamera.LookAtLocal = new Vector3(0.0f, 1.5f, 0.0f);
-            mCamera.TargetDirection = Vector3.Forward;
-            mCamera.MaxRopeLengthSquared = mCamera.DesiredPositionLocal.LengthSquared();
-            mCamera.MinRopeLengthSquared = mCamera.MaxRopeLengthSquared * 0.75f;
+            mCamera = new StaticCamera(viewPort);
+            //mCamera.TargetPosition = mCreature.Position;
+            //mCamera.DesiredPositionLocal = new Vector3(0.0f, 2.0f, 10.0f);
+            //mCamera.LookAtLocal = new Vector3(0.0f, 1.5f, 0.0f);
+            //mCamera.TargetDirection = Vector3.Forward;
+            //mCamera.MaxRopeLengthSquared = mCamera.DesiredPositionLocal.LengthSquared();
+            //mCamera.MinRopeLengthSquared = mCamera.MaxRopeLengthSquared * 0.75f;
 
-            mCamera.TrackTarget = true;
+            //mCamera.TrackTarget = true;
 
             mMoveForward  = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.Y, GamePadDeadZone.Circular, -0.2f, 0.2f);
             mMoveRight    = new GamePadThumbStickInputAction(PlayerIndex.One, InputAction.ButtonAction.Down, InputAction.GamePadThumbStick.Left, InputAction.GamePadThumbStickAxis.X, GamePadDeadZone.Circular, -0.2f, 0.2f);
@@ -308,7 +309,7 @@ namespace Chimera
                     (mCreature as PlayerCreature).Stance = Stance.Walking;
                 }
 
-                Vector3 right = mCamera.Right;
+                Vector3 right = -Vector3.Normalize(Vector3.Cross(mCamera.Forward, mCamera.Up));
 
                 walkDirection += moveForwardDegree * new Vector2(forward.X, forward.Z);
                 walkDirection -= moveRightDegree * new Vector2(right.X, right.Z);
@@ -365,7 +366,7 @@ namespace Chimera
             {
                 mCamera.RotateAroundTarget(elapsedTime * rotationRate * lookRightDegree, elapsedTime * rotationRate * lookForwardDegree, 0.0f);
             }
-            else if (mCamera.TrackTarget && (moveForwardActive || moveRightActive))
+            /*else if (mCamera.TrackTarget && (moveForwardActive || moveRightActive))
             {
                 Vector3 walkDirection3D = new Vector3(walkDirection.X, 0.0f, walkDirection.Y);
                 float theta = Vector3.Dot(walkDirection3D, mCamera.Forward);
@@ -374,7 +375,7 @@ namespace Chimera
                     float direction = (Vector3.Cross(walkDirection3D, mCamera.Forward).Y < 0) ? -1.0f : 1.0f;
                     mCamera.RotateAroundTarget(elapsedTime * (1.0f - theta) * rotationRate * direction, 0.0f, 0.0f);
                 }
-            }
+            }*/
 
             if (mCreature.CharacterController.supportData.SupportObject == null && mCreature is PlayerCreature)
             {
@@ -394,7 +395,7 @@ namespace Chimera
                     direction2 = cameraDirection;
                 }
 
-                mCreature.Move(walkDirection, (mCamera.TrackTarget) ? walkDirection : direction2);
+                mCreature.Move(walkDirection, walkDirection);//(mCamera.TrackTarget) ? walkDirection : direction2);
             }
         }
 
@@ -607,7 +608,8 @@ namespace Chimera
         /// </summary>
         private void UpdateCamera(GameTime gameTime)
         {
-            mCamera.TargetPosition = mCreature.Position;
+            mCamera.PreferredTargetPosition = mCreature.Position;
+            mCamera.TargetForward = mCreature.Forward;
             mCamera.Up = Vector3.Up;
 
             mCamera.Update(gameTime);

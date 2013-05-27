@@ -82,7 +82,7 @@ namespace GraphicsLibrary
 
             mEffect.World      = Matrix.CreateScale(sceneScale) * skyBoxInstance.World * Matrix.CreateTranslation(-centerOffset);
             mEffect.View       = view;
-            mEffect.Projection = Matrix.CreatePerspectiveFieldOfView(GraphicsManager.Camera.FieldOfView, GraphicsManager.Camera.AspectRatio, GraphicsManager.Camera.GetNearPlaneDistance(), Scale); ;
+            mEffect.Projection = Matrix.CreatePerspectiveFieldOfView(GraphicsManager.Camera.FieldOfView, GraphicsManager.Camera.AspectRatio, GraphicsManager.Camera.NearPlaneDistance, Scale); ;
 
             mEffect.Parameters["xOverlayColor"].SetValue(skyBoxInstance.OverlayColor.ToVector3());
             mEffect.Parameters["xOverlayColorWeight"].SetValue(skyBoxInstance.OverlayWeight);

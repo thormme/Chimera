@@ -786,8 +786,8 @@ namespace WorldEditor
                             new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
                             mGraphics.Viewport,
                             mCamera.Position,
-                            mCamera.ViewTransform,
-                            mCamera.ProjectionTransform);
+                            mCamera.View,
+                            mCamera.Projection);
 
                         Vector3 coordinate = Utils.ProjectVectorOntoPlane(ray, new Vector3(0, EditorForm.BlockLayer * Level.BLOCK_SIZE, 0), Vector3.Up);
                         mDummyWorld.AddBlock(new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), 0.0f, (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE)));
@@ -799,8 +799,8 @@ namespace WorldEditor
                             new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
                             mGraphics.Viewport,
                             mCamera.Position,
-                            mCamera.ViewTransform,
-                            mCamera.ProjectionTransform);
+                            mCamera.View,
+                            mCamera.Projection);
 
                         Vector3 coordinate = Utils.ProjectVectorOntoPlane(ray, new Vector3(0, EditorForm.BlockLayer * Level.BLOCK_SIZE, 0), Vector3.Up);
                         coordinate = new Vector3((float)Math.Floor(coordinate.X / Level.BLOCK_SIZE), 0.0f, (float)Math.Floor(coordinate.Z / Level.BLOCK_SIZE));

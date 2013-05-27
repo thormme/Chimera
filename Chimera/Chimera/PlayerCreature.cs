@@ -103,7 +103,7 @@ namespace Chimera
             }
         }
 
-        public ChaseCamera Camera
+        public StaticCamera Camera
         {
             get
             {

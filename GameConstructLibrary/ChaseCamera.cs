@@ -362,7 +362,7 @@ namespace GameConstructLibrary
         /// <summary>
         /// Transformation of vector in to camera space.
         /// </summary>
-        public Matrix ViewTransform
+        public Matrix View
         {
             get
             {
@@ -370,11 +370,6 @@ namespace GameConstructLibrary
             }
         }
         private Matrix mViewTransform;
-
-        public Matrix GetViewTransform()
-        {
-            return ViewTransform;
-        }
 
         #endregion
 
@@ -385,7 +380,7 @@ namespace GameConstructLibrary
         /// <summary>
         /// Orthographic projection in to view frustum.
         /// </summary>
-        public Matrix ProjectionTransform
+        public Matrix Projection
         {
             get
             {
@@ -398,11 +393,6 @@ namespace GameConstructLibrary
             }
         }
         private Matrix mProjectionTransform;
-
-        public Matrix GetProjectionTransform()
-        {
-            return ProjectionTransform;
-        }
 
         /// <summary>
         /// Screen aspect ratio.
@@ -479,21 +469,6 @@ namespace GameConstructLibrary
             }
         }
         private float mFarPlaneDistance = 2000.0f;
-
-        public float GetFarPlaneDistance()
-        {
-            return FarPlaneDistance;
-        }
-
-        public float GetNearPlaneDistance()
-        {
-            return NearPlaneDistance;
-        }
-
-        public void SetFarPlaneDistance(float value)
-        {
-            FarPlaneDistance = value;
-        }
 
         #endregion
 

@@ -213,10 +213,10 @@ namespace GraphicsLibrary
                 mCamera = mBirdsEyeViewCamera;
             }
 
-            mView = mCamera.GetViewTransform();
-            mProjection = mCamera.GetProjectionTransform();
+            mView = mCamera.View;
+            mProjection = mCamera.Projection;
 
-            mBoundingFrustum.Matrix = camera.GetViewTransform() * camera.GetProjectionTransform();
+            mBoundingFrustum.Matrix = camera.View * camera.Projection;
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace GraphicsLibrary
 
                 renderer.RenderAllInstancesPicking(
                     Utils.GetViewMatrixFromRay(ray), 
-                    Matrix.CreateOrthographic(1, 1, mCamera.GetNearPlaneDistance(), mCamera.GetFarPlaneDistance()));
+                    Matrix.CreateOrthographic(1, 1, mCamera.NearPlaneDistance, mCamera.FarPlaneDistance));
             }
 
             mDevice.Clear(ClearOptions.DepthBuffer, new Vector4(0), 65535, 0);
@@ -334,7 +334,7 @@ namespace GraphicsLibrary
 
                 renderer.RenderAllInstancesPicking(
                     Utils.GetViewMatrixFromRay(ray),
-                    Matrix.CreateOrthographic(1, 1, mCamera.GetNearPlaneDistance(), mCamera.GetFarPlaneDistance()));
+                    Matrix.CreateOrthographic(1, 1, mCamera.NearPlaneDistance, mCamera.FarPlaneDistance));
             }
 
             mDevice.SetRenderTarget(null);

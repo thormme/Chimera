@@ -137,8 +137,8 @@ namespace WorldEditor
                 new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
                 mGraphicsDevice.Viewport,
                 mCamera.Position,
-                mCamera.ViewTransform,
-                mCamera.ProjectionTransform);
+                mCamera.View,
+                mCamera.Projection);
 
             Tuple<RayHit, DummyObject> castResult;
             if (dummyWorld.RayCast(ray, 2000.0f, out castResult))
@@ -154,8 +154,8 @@ namespace WorldEditor
                 new Vector2(mControls.MouseState.X, mControls.MouseState.Y),
                 mGraphicsDevice.Viewport,
                 mCamera.Position,
-                mCamera.ViewTransform,
-                mCamera.ProjectionTransform);
+                mCamera.View,
+                mCamera.Projection);
 
             Plane plane = new Plane(Vector3.Up, planeYCoordinate);
 
