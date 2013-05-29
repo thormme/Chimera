@@ -14,7 +14,7 @@ namespace GameConstructLibrary
         #region Constants
 
         private const float MIN_PITCH_ANGLE = 0.94f;
-        private const float PREFERRED_DISTANCE_FROM_TARGET = 15.0f;
+        private const float PREFERRED_DISTANCE_FROM_TARGET = 20.0f;
 
         #endregion
 
@@ -207,7 +207,7 @@ namespace GameConstructLibrary
 
             //mVelocity += acceleration * 0.01f;
 
-            mTargetPosition += acceleration * 0.3f;
+            mTargetPosition += acceleration * 0.4f;
 
             /*BEPUphysics.RayCastResult result = new BEPUphysics.RayCastResult();
             Func<BroadPhaseEntry, bool> filter = (bfe) => (

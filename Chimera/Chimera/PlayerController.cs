@@ -364,7 +364,7 @@ namespace Chimera
             // Rotating camera.
             if (lookForwardActive || lookRightActive)
             {
-                mCamera.RotateAroundTarget(elapsedTime * rotationRate * lookRightDegree, elapsedTime * rotationRate * lookForwardDegree, 0.0f);
+                mCamera.RotateAroundTarget(elapsedTime * rotationRate * lookRightDegree, 0.0f/*elapsedTime * rotationRate * lookForwardDegree*/, 0.0f);
             }
             /*else if (mCamera.TrackTarget && (moveForwardActive || moveRightActive))
             {
