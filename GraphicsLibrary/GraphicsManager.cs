@@ -591,12 +591,13 @@ namespace GraphicsLibrary
 
             foreach (RendererBase renderer in mRenderQueue)
             {
-                if (!(renderer is UIModelRenderer))
+                var uiRenderer = renderer as UIModelRenderer;
+                if (uiRenderer == null)
                 {
                     continue;
                 }
 
-                renderer.RenderAllInstancesPicking(
+                uiRenderer.RenderAllInstancesPicking(
                     mView,
                     mProjection);
             }

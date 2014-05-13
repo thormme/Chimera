@@ -1,4 +1,4 @@
-#include "Structures.fxh"
+ #include "Structures.fxh"
 #include "Common.fxh"
 #include "Skinning.fxh"
 #include "Lighting.fxh"

@@ -24,7 +24,7 @@ namespace GraphicsLibrary
 
         protected override void Draw(Microsoft.Xna.Framework.Matrix worldTransform, Microsoft.Xna.Framework.Color overlayColor, float overlayColorWeight, bool tryCull)
         {
-            RendererBase.RendererParameters parameters = new RendererBase.RendererParameters();
+            var parameters = new ModelRenderer.ModelParameters();
             parameters.Name = Name;
             parameters.ObjectID = ObjectID;
             parameters.OverlayColor = overlayColor;

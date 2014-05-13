@@ -144,7 +144,7 @@ namespace GraphicsLibrary
         {
             ModelParameters modelInstance = instance as ModelParameters;
 
-            if (modelInstance.TryCull && GraphicsManager.ViewBoundingFrustum.Contains(modelInstance.BoundingBox) == ContainmentType.Disjoint)
+            if (modelInstance != null && modelInstance.TryCull && GraphicsManager.ViewBoundingFrustum.Contains(modelInstance.BoundingBox) == ContainmentType.Disjoint)
             {
                 return;
             }

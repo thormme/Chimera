@@ -192,22 +192,26 @@ namespace GameConstructLibrary
 
         public void Update(GameTime gameTime)
         {
-            Vector3 preferredTarget = mPreferredTargetPosition + mTargetForward * 3.0f;
+            Vector3 preferredTarget = mPreferredTargetPosition + mTargetForward * 3.0f + mUp * 2.0f;
             Vector3 acceleration = preferredTarget - mTargetPosition;
             float length = acceleration.Length();
-            if (length < 0.5f)
-            {
-                acceleration = Vector3.Zero;
-                mVelocity = Vector3.Zero;
-            }
+
             if (acceleration != Vector3.Zero)
             {
                 acceleration.Normalize();
             }
 
-            //mVelocity += acceleration * 0.01f;
+            if (length < 0.3f)
+            {
+                acceleration = Vector3.Zero;
+                mVelocity = Vector3.Zero;
+            }
 
-            mTargetPosition += acceleration * 0.4f;
+
+            //mVelocity += acceleration * 0.1f;
+
+            //mTargetPosition += acceleration * 1.0f;
+            mTargetPosition = preferredTarget;
 
             /*BEPUphysics.RayCastResult result = new BEPUphysics.RayCastResult();
             Func<BroadPhaseEntry, bool> filter = (bfe) => (
@@ -227,7 +231,7 @@ namespace GameConstructLibrary
                 }
             }*/
 
-            mView = Matrix.CreateLookAt(mTargetPosition - mForward * targetDistance, mTargetPosition, mUp);
+            mView = Matrix.CreateLookAt(mTargetPosition - mForward * targetDistance - mUp * 5.0f, mTargetPosition, mUp);
         }
 
         public void RotateAroundTarget(float yaw, float pitch, float roll)
